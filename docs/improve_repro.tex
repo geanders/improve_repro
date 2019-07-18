@@ -660,6 +660,8 @@ with a recorded history.
 \hypertarget{discussion-questions}{%
 \subsection{Discussion questions}\label{discussion-questions}}
 
+:w
+
 \hypertarget{principles-and-power-of-structured-data-formats}{%
 \section{Principles and power of structured data formats}\label{principles-and-power-of-structured-data-formats}}
 
@@ -668,6 +670,24 @@ how easy and likely it is to implement reproducibility tools in later stages of
 the research workflow. Recording data in a ``structured'' format brings many
 benefits. In this module, we will explain what makes a dataset ``structured'' and
 why this format is a powerful tool for reproducible research.
+
+Every extra step of data cleaning is another chance to introduce errors in
+experimental biomedical data, and yet laboratory-based researchers often share
+experimental data with collaborators in a format that requires extensive
+additional cleaning before it can be input into data analysis
+\citep{broman2018data}. Recording data in a ``structured'' format brings many
+benefits for later stages of the research process, especially in terms of
+improving reproducibility and reducing the probability of errors in analysis
+\citep{ellis2018share}. Data that is in a structured, tabular, two-dimensional
+format is substantially easier for collaborators to understand and work with,
+without additional data formatting \citep{broman2018data}. Further, by using a
+consistent structured format across many or all data in a research project, it
+becomes much easier to create solid, well-tested code scripts for data
+pre-processing and analysis and to apply those scripts consistently and
+reproducibly across datasets from multiple experiments \citep{broman2018data}.
+However, many biomedical researchers are unaware of this simple yet powerful
+strategy in data recording and how it can improve the efficiency and
+effectiveness of collaborations \citep{ellis2018share}.
 
 \textbf{Objectives.} After this module, the trainee will be able to:
 
@@ -681,68 +701,718 @@ why this format is a powerful tool for reproducible research.
   Outline other benefits of using a structured format when recording data
 \end{itemize}
 
-\hypertarget{characteristics-of-a-structured-data-format}{%
-\subsection{Characteristics of a structured data format}\label{characteristics-of-a-structured-data-format}}
+\hypertarget{data-recording-standards}{%
+\subsection{Data recording standards}\label{data-recording-standards}}
 
-\hypertarget{benefits-of-a-structured-data-format}{%
-\subsection{Benefits of a structured data format}\label{benefits-of-a-structured-data-format}}
+For many areas of biological data, there has been a push to create standards for
+how data is recorded and communicated. Standards can clarify both the \emph{content}
+that should be included in a dataset, the \emph{format} in which that content is
+stored, and the \emph{vocabulary} used within this data. One article names these three
+facets of a data standard as the \textbf{minimum information}, \textbf{file formats}, and
+\textbf{ontologies} \citep{ghosh2011software}.
 
-From a working group on bioinformatics and data-intensive science: ``Many simple
-analyses are not automated because data formats are a moving target. \ldots{} The
-community has been slow to share tools, partially because tools are not robust
-against different input formats.'' \citep{barga2011bioinformatics}
+\begin{quote}
+``It is important to distinguish between standards that specify how to actually
+do experiments and standards that specify how to describe experiments.
+Recommendations such as what standard reporters (probes) should be printed on
+microarrays or what quality control steps should be used in an experiment belong
+to the first category. Here we focus on the standards that specify how to
+describe and communicate data and information.'' \citep{brazma2006standards}
+\end{quote}
 
-``Determine whether there is a community-based metadata schema or standard (i.e.,
-preferred sets of metadata elements) that can be adopted.'' \citep{michener2015ten}
+Many people and organizations (including funders) are excited about the idea
+of developing and using data standards, especially at the community level.
+Good standards, that are widely adapted by researchers, can help in making
+sure that data submitted to data repositories are used widely and that software
+can be developed that is \emph{interoperable} with data from many research group's
+experiments. There are also many advantages, if there are not community-level
+standards for recording a certain type of data, to develop and use local
+data standards for recording data from your own experiments. This section
+describes the elements that go into a data standard, discusses some choices
+to be made when definining a data standard (especially choices on data
+structure and file formats), and some of the advantages and disadvantages
+of developing and using data recording standards at both the research group
+and community levels.
 
-First, you can still use spreadsheets, but reduce their use to recording data,
-leaving all data cleaning and analysis to be handled with other software. To make
-it easier to collaborate with statisticians and to interface with a program like
-R for data cleaning and analysis, it will be easiest if you set up your data
-recording to include with other statistical programs like R or Python. These
-steps are described in a later section, ``\ldots{}''.
+\begin{quote}
+The first of four root causes for irreproducibility in biomedical research: ``First,
+a lack of standards for data generation leads to problems with the comparability
+and integration of data sets.'' \citep{waltemath2016modeling}
+\end{quote}
 
-\begin{itemize}
-\tightlist
-\item
-  Each sheet of the spreadsheet should contain data from a single
-  experiment.
-\item
-  Never use whitespace to represent a meaningful separation in data within
-  a spreadsheet. Never include multiple tables of data in the same sheet.
-\item
-  The first row of the spreadsheet should include a short column name for
-  each column with data. All column name information should be within a single row
-  (i.e., avoid subheadings). Avoid any special characters (e.g., ``\%'') in column
-  names. Instead, use only letters, numbers, and underscores ("\_"), and start with a letter.
-  It is especially helpful if you can avoid spaces in column names.
-\item
-  Missing data should be represented consistently in cells. ``NA'' is one choice. If
-  you want to clarify why data is missing, it's much better to add a column (e.g., ``why\_missing'')
-  where you can provide those details in text, rather than combining within a single column
-  numerical observation data with textual reasons for missingness in cells with missing values.
-\end{itemize}
+\textbf{Ontology standards.} Although it has the most complex name, an \emph{ontology}
+(sometimes called a \emph{terminology} \citep{sansone2012toward}) might be the easiest and
+quickest to adapt in recording data. An ontology helps define a vocabulary that
+is controlled and consistent to use that researchers can use to refer to
+concepts and concrete things within an area of research. It helps researchers,
+when they want to talk about an idea or thing, to use one word, and just one
+word, and to ensure that it will be the same word used by other researchers when
+they refer to that idea or thing. Ontologies also help to define the relationships
+between ideas or concrete things in a research area \citep{ghosh2011software}, but
+here we'll focus on their use in provided a consistent vocabulary to use when
+recording data.
 
-Next, you could record data using a statistical language like R. There is an
-excellent Integrated Development Environment for R called RStudio, and it creates a
-much clearer interface with R compared to running R from a commond line, particularly for new users. RStudio allows you to open delimited plain text files, like csvs, using
-a grid-style interface. This grid-style interface looks very similar to a
-spreadsheet, but lacks the ability to include formulas or macros. Therefore, this
-format enforces a separation of the recording of raw data from the cleaning and
-analysis of the data.
+For example, when recording a dataset, what do you call a small mammal that is
+often kept as a pet and that has four legs and whiskers and purrs? Do you record
+this as ``cat'' or ``feline'' or maybe, depending on the animal, even ``tabby'' or
+``tom'' or ``kitten''? Similarly, do you record tuberculosis as ``tuberculosis'' or
+``TB'' or or maybe even ``consumption''? If you do not use the same word
+consistently in a dataset to record an idea, then while a human might be able to
+understand that two words should be considered equivalent, a computer will not
+be able to immediately tell that ``TB'' should be treated equivalently to
+``tuberculosis''.
 
-{[}R Project templates{]}
+At a larger scale, if a research community can adapt an ontology they agree to
+use throughout their studies, it will make it easier to understand and integrate
+datasets produced by different research laboratories. If every research group
+uses the term ``cat'', then code can easily be written to extract and combine
+all data recorded for cats across a large repository of experimental data.
+On the other hand, if different terms are used, then it might be necessary to
+first create a list of all terms used in datasets in the respository, then pick
+through that list to find any terms that are exchangeable with ``cat'', then write
+script to pull data with any of those terms.
 
-Data cleaning and analysis can then be shifted away from the files used to
-record the data and into reproducible scripts. These scripts can be clearly
-documented, either through comments in the code or through open source
-documentation tools like RMarkdown than interweave code and text in a way that
-allows the creation of documents that are easier to read than commented code.
+Several onotologies already exist or are being created for biological and other
+biomedical research \citep{ghosh2011software}. Existing community-level ontologies in
+the biological sciences include {[}Gene Ontology and Systems Biology Ontology are
+listed in the Ghosh et al.~paper as two examples{]}. For biomedical science,
+practice, and research, the BioPortal website
+(\url{http://bioportal.bioontology.org/}) provides access to almost 800 ontologies,
+including several versions of the International Classification of Diseases, the
+Medical Subject Headings (MESH), the National Cancer Institute Thesaurus, the
+Orphanet Rare Disease Ontology and the National Center for Biotechnology
+Information (NCBI) Organismal Classification. For each ontology in the BioPortal
+website, the website provides a link for downloading the ontology in several
+formats. If you download the ontology as a ``CSV'', you can open it in your
+favorite spreadsheet program and explore how it defines specific terms to use
+for each idea or thing you might need to discuss within that topic area, as well
+as synonyms for some of the terms. To use an ontology when recording your own
+data, just make sure you use the ontology's suggested terms in your data. For
+example, if you'd like to use the Ontology for Biomedical Investigations
+(\url{http://bioportal.bioontology.org/ontologies/OBI}) and you are recording how many
+children a woman has had who were born alive, you should name that column of the
+data ``number of live births'', not ``\# live births'' or ``live births (N)'' or
+anything else. Other collections of ontologies exist for fields of scientific
+research, including the Open Biological and Biomedical Ontology (OBO) Foundry
+(\url{http://www.obofoundry.org/}).
 
-This documentation should explain why each step is being done. In cases where
-it is not immediately evident from the code \emph{how} the step is being done, this
-should be documented as well. Any assumptions being used should be clarified in
-the documentation.
+If there are community-wide ontologies in your field, it is worthwhile to use
+them in recording experimental data in your research group. Even better is to
+not only consistently use the defined terms, but also to follow any conventions
+with capitalization. While most statistical programs provide tools to change
+capitalization (for example, to change all letters in a character string to
+lower case), this process does require an extra step of data cleaning and an
+extra chance for confusion or for errors to be introduced into data.
+
+\textbf{Minimum information standards.} The next easiest facet of a data standard to
+bring into data recording in a research group is \emph{minimum information}. Within a
+data recording standard, \emph{minimum information} (sometimes also called \emph{minimum
+reporting guidelines} \citep{sansone2012toward} or \emph{reporting requirements}
+\citep{brazma2006standards}) specify \emph{what} should be included in a dataset
+\citep{ghosh2011software}. Using minimum information standards help ensure that data
+within a laboratory, or data posted to a repository, contain a number of
+required elements. This makes it easier to re-use the data, either to compare it
+to data that a lab has newly generated, or to combine several posted datasets to
+aggregate them for a new, integrated analysis, considerations that are growing
+in importance with the increasing prevalence of research repositories and
+research consortia in many fields of biomedical science \citep{keller2017evolution}.
+
+\begin{quote}
+``Minimum information is a checklist of required supporting information for
+datasets from different experiments. Examples include: Minimum Information About
+a Microarray Experiment (MIAME), Minimum Information About a Proteomic
+Experiment (MIAPE), and the Minimum Information for Biological and Biomedical
+Investigations (MIBBI) project.'' \citep{ghosh2011software}
+\end{quote}
+
+\emph{Standardized file formats.} While using a standard ontology and a standard for
+minimum information is a helpful start, it just means that each dataset has the
+required elements \emph{somewhere}, and using a consistent vocabulary---it doesn't
+specify where those elements are in the data or that they'll be in the same
+place in every dataset that meets those standards. As a result, datasets that all
+meet a common standard can still be very hard to combine, or to create common
+data analysis scripts and tools for, since each dataset will require a different
+process to pull out a given element.
+
+Computer files serve as a way to organize data, whether that's recorded
+datapoints or written documents or computer programs \citep{kernighan1984unix}. As
+the programmer Paul Ford writes,
+
+\begin{quote}
+``Data is just stuff, or rather, structured stuff: The cells of a spreadsheet,
+the structure of a Word document, computer programs themselves---all data.''
+\citep{ford2015i}
+\end{quote}
+
+\noindent A \emph{file format} defines the rules for how the bytes in the chunk of
+memory that makes up a certain file should be parsed and interpreted anytime you
+want to meaningfully access and use the data within that file
+\citep{murrell2009introduction}. There are many file formats you may be familiar
+with---a file that ends in ``.pdf'' must be opened with a Portable Document Format
+(PDF) Reader like Adobe Acrobat, or it won't make much sense (you can try this
+out by trying to open a ``.pdf'' file with a text editor, like TextEdit or
+Notepad). The Reader has been programmed to interpret the data in a ``.pdf'' file
+based on rules defining what data is stored where in the section of computer
+memory for that file. Because most ``.pdf'' files conform to the same \emph{file
+format} rules, powerful software can be built that works with any file in that
+format.
+
+For certain types of biomedical data, the challenge of standardizing a format
+has similarly been addressed through the use of well-defined rules for not only
+the content of data, but also the way that content is \emph{structured}. This can be
+standardized through \emph{standardized file formats} (sometimes also called \emph{data
+exchange formats} \citep{brazma2006standards}) and often defines not only the
+upper-level file format (e.g., use of a ``.csv'' file type), but also how data
+within that file type should be organized. If data from different research
+groups and experiments is recorded using the same file format, researchers can
+develop software tools that can be repeatedly used to interpret and visualize
+that data; on the other hand, if different experiments record data using
+different formats, bespoke analysis scripts must be written for each separate
+dataset. This is a blow not only to the efficiency of data analysis, but also a
+threat to the accuracy of that analysis. If a set of tools can be developed that
+will work over and over, more time can be devoted to refining those tools and
+testing them for potential errors and bugs, while one-shot scripts often can't
+be curated with similar care. One paper highlights the dangers that come with
+working with files that don't follow a defined format:
+
+\begin{quote}
+``Beware of common pitfalls when working with \emph{ad hoc} bioinformatics formats.
+Simple mistakes over minor details like file formats can consume a
+disproportionate amount of time and energy to discover and fix, so mind these
+details early on.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+Some biomedical data file formats have been created to help smooth over the
+transfer of data that's captured by complex equipment into software that can
+analyze that data. For example, many immunological studies need to measure
+immune cell populations in experiments, and to do so they use piece of
+equipment called a flow cytometer that probes cells in a sample with lasers
+and measures resulting intensities to determine characteristics of that cell.
+The data created by this equipment is large (often measurements from {[}x{]} or more
+lasers are taken for {[}x{]} cells in a single run) and somewhat complex, with a need
+to record not only the intensity measurements from each laser, but also some metadata
+about the equipment and characteristics of the run.
+If every company that manufactured flow cytometers used a different file format for
+saving the resulting data, then a different set of analysis software would need to
+be developed to accompany each piece of equipment. For example, a laboratory at
+a university with flow cytometers from two different companies would need licenses
+for two different software programs to work with data recorded by flow cytometers,
+and they would need to learn how to use each software package separately. There is a
+chance that software could be developed that used shared code for data analysis, but only
+if it also included separate sets of code to read in data from all types of equipment
+and to reformat them to a common format.
+
+This isn't the case, however. Instead, there is a commonly agreed on file
+format that flow cytometers should use to record the data they collect, called
+the the \emph{FCS file format}. This format has been defined through a series of
+papers {[}refs{]}, with several separate versions as the file format has evolved
+over the years. It provides clear specifications on where to save each relevant
+piece of information in the block of memory devoted to the data recorded by the
+flow cytometer (in some cases, leaving a slot in the file blank if no relevant
+information was collected on that element). As a result, people have been able
+to create software, both proprietary and open-source, that can be used with any
+data recorded by a flow cytometer, regardless of which company manufacturer the
+piece of equipment that was used to generate the data. Other types of biomedical
+data also have standardized file formats, including {[}example popular file
+formats for biomedical data{]}. In some cases these were defined by an
+organization, society, or initiative (e.g., the Metabolomics Standards
+Initiative) \citep{ghosh2011software}, while in some cases the file format developed
+by a specific equipment manufacturer has become popular enough that it's
+established itself as the standard for recording a type of data
+\citep{brazma2006standards}.
+
+For an even simpler example, thing about recording dates. The \emph{minimum
+information standard} for a date might always be the same---a recorded value
+must include the day of the month, month, and year. However, this information
+can be \emph{structured} in a variety of ways. In many scientific data, it's common
+to record this information going from the largest to smallest units, so March
+12, 2006, would be recorded ``2006-03-12''. Another convention (especially in the
+US) is to record the month first (e.g., ``3/12/06''), while another (more common
+in Europe) is to record the day of the month first (e.g., ``12/3/06'').
+
+If you are trying to combine data from different datasets with dates, and all
+use a different structure, it's easy to see how mistakes could be introduced
+unless the data is very carefully reformatted. For example, March 12 (``3-12''
+with month-first, ``12-3'' with day-first) could be easily mistaken to be December
+3, and vice versa. Even if errors are avoided, combining data in different
+structures will take more time than combining data in the same structure,
+because of the extra needs for reformatting to get all data in a common
+structure.
+
+\begin{quote}
+``Vast swathes of bioscience data remain locked in esoteric formats, are
+described using nonstandard terminology, lack sufficient contextual information,
+or simply are never shared due to the perceived cost or futility of the
+exercise.'' \citep{sansone2012toward}
+\end{quote}
+
+\hypertarget{defining-data-standards-for-a-research-group}{%
+\subsection{Defining data standards for a research group}\label{defining-data-standards-for-a-research-group}}
+
+If some of the data you record from your experiments comes from complex
+equipment, like flow cytometers {[}or?{]}, you may be recording much of that data in
+a standardized format without any extra effort, because that format is the
+default output format for the equipment. However, you may have more control over
+other data recorded from your experiments, including smaller, less complex data
+recorded directly into a laboratory notebook or spreadsheet. You can derive a
+number of benefits from defining and using a standard for collecting this data,
+as well.
+
+As already mentioned, for many of the complex types of biological data,
+standardized file formats exist. For example, flow cytometry data is typically
+collected and recorded in \emph{.fcs} files. Every piece of flow cytometry equipment
+can then be built to output data in this format, and every piece of software to
+analyze flow cytometry data can be built to read in this input. The \emph{.fcs} file
+format species how both raw data and metadata (e.g., compensation information,
+equipment details) can be saved within the file---everyone who uses that file
+format knows where to store data and where to find data of a certain type.
+
+Much of the data collected in a laboratory is smaller, less complex, or less
+structured than these types of data, data that is recorded ``by hand'', often into
+a laboratory notebook or a spreadsheet. One paper describes this type of data as
+the output of ``traditional, low-throughput bench science'' \citep{wilkinson2016fair}.
+For this data recording, the data may be written down in an \emph{ad hoc}
+way---however the particular researcher doing the experiment thinks makes
+sense---and that format might change with each experiment, even if many
+experiments have similar data outputs. As a result, it becomes harder to create
+standardized data processing and analysis scripts that work with this data or
+that integrate it with more complex data types. Further, if everyone in a
+laboratory sets up their spreadsheets for data recording in their own way, it is
+much harder for one person in the group to look at data another person recorded
+and immediately find what they need within the spreadsheet.
+
+As a step in a better direction, the head of a research group may
+designate some common formats (e.g., a spreadsheet template) that all
+researchers in the group should use when recording the data from a specific type
+of experiments. This provides consistency across the recorded data for the
+laboratory, making easier for one lab member to quickly understand and navigate
+data saved by another lab member. It also opens the possibility to create tools
+or scripts that read in and analyze the data that can be re-used across multiple
+experiments with minor changes. This helps improve the efficiency and
+reproducibility of data analysis, visualization, and reporting steps of the
+research project.
+
+This does require some extra time commitment \citep{brazma2006standards}. First, time
+is needed to design the format, and it does take a while to develop a format
+that is inclusive enough that it includes a place to put all data you might want
+to record for a certain type of experiment. Second, it will take some time to
+teach each laboratory member what the format is and how to make sure they comply
+with it when they record data.
+
+On the flip side, the longer-term advantages of using a defined, structured
+format will outweigh the short-term time investments for many laboratory groups
+for frequently used data types. By creating and using a consistent structure to
+record data of a certain type, members of a laboratory group can increase their
+efficiency (since they do not need to re-design a data recording structure
+repeatedly). They can also make it easier for downstream collaborators, like
+biostatisticians and bioinformaticians, to work with their output, as those
+collaborators can create tools and scripts that can be recycled across
+experiments and research projects if they know the data will always come to them
+in the same format. These benefits increase even more if data format standards
+are created and used by a whole research field (e.g., if a standard data
+recording format is always used for researchers conducting a certain type of
+drug development experiment), because then the tools built at one institution
+can be used at other insitutions. However, this level of field-wide coordination
+can be hard to achieve, and so a more realistic immediate goal might be
+formalizing data recording structures within your research group or department,
+while keeping an eye out for formats that are gaining popularity as standards in
+your field to adopt within your group.
+
+One key advantage to using standardized data formats even for recording simple,
+``low-throughput'' data is that everyone in the research group will be able to
+understand and work with data recorded by anyone else in the group---data will
+not become impenetrable once the person who recorded it leaves the group. Also,
+once a group member is used to the format, the process of setting up to record
+data from a new experiment will be quicker, as it won't require the effort of
+deciding and setting up a \emph{de novo} format for a spreadsheet or other recording
+file. Instead, a template file can be created that can be copied as a starting
+point for any new data recording.
+
+Finally, there are huge benefits further down the data analysis pipeline that
+come with always recording data in the same format. If your group is working
+with a statistician or data analyst, it becomes much easier for that person to
+quickly understand a new file if it follows the same format as previous files.
+Further, if you work with a statistician or data analyst, he or she probably
+creates code scripts to read in, re-format, analyze, and visualize the data
+you've shared. If you always record data using the same format, these scripts
+can be reused with very little modification. This saves valuable time, and it
+helps make more time for more interesting statistical analysis if your
+collaborator can trim time off reading in and reformatting the data in their
+statistical programming language.
+
+One paper suggests that the balance can be found, in terms of deciding whether
+the benefits of developing a standard outweigh the costs, by considering how
+often data of a certain type is generated and used:
+
+\begin{quote}
+``To develop and deploy a standard creates an overhead, which can be expensive.
+Standards will help only if a particular type of information has to be
+exchanged often enough to pay off the development, implementation, and usage
+of the standard during its lifespan.'' \citep{brazma2006standards}
+\end{quote}
+
+\hypertarget{two-dimensional-structured-data-format}{%
+\subsection{Two-dimensional structured data format}\label{two-dimensional-structured-data-format}}
+
+So far, this module has explored \emph{why} you might want to use standardized
+data formats for recording experimental data. The rest of the module
+aims to give you tips for how to design and define your own standardized
+data formats, if you decide that is worthwhile for certain data types
+recorded within your research group.
+
+Once you commit to creating a defined, structured format, you'll need to decide
+what that structure should be. There are many options here, and it's very
+tempting to use a format that is easy on human eyes
+\citep{buffalo2015bioinformatics}. For example, it may seem appealing to create a
+format that could easily be copied and pasted into presentations and Word
+documents and that will look nice in those presentation formats. To facilitate
+this use, a laboratory might set up a recording format base on a spreadsheet
+template that includes multiple tables of different data types on the same
+sheet, or multi-level column headings.
+
+Unfortunately, many of the characteristics that make a format attractive
+to human eyes will make it harder for a computer to make sense of. For example,
+if you include two tables in the same spreadsheet, it might make it easier for a
+person to get a one-screen look at two small data tables. However, if you want
+to read that data into a statistical program (or work with a collaborator who
+would), it will likely take some complex code to try to tell the computer how to
+find the second table in the spreadsheet. The same applies if you include some
+blank lines at the top of the spreadsheet, or use multi-level headers, or use
+``summary'' rows at the bottom of a table. Further, any information you've
+included with colors or with text boxes in the spreadsheet will be lost when the
+data's read into a statistical program. These design elements in a data
+format make it much harder to read the data embedded in a spreadsheet into other
+computer programs, including programs for more complex data analysis and
+visualization, like R and Python.
+
+\begin{quote}
+``Data should be formatted in a way that facilitates computer readability. All
+too often, we as humans record data in a way that maximizes its readability to
+us, but takes a considerable amount of cleaning and tidying before it can be
+processed by a computer. The more data (and metadata) that is computer readable,
+the more we can leverage our computers to work with this data.''
+\citep{buffalo2015bioinformatics}
+\end{quote}
+
+For most statistical programs, data can be easily read in from a spreadsheet if
+the computer can parse it in the following way: first, read in the first row,
+and assign each cell in that row as the \emph{name} of a column. Then, read in the
+second row, and put each cell in the column the corresponds with the name of the
+cell in the same position in the first row. Also, set the data type for that
+column (e.g., number, character) based on the data type in this cell. Then, keep
+reading in rows until getting to a row that's completely blank, and that will be
+the end of the data. If any of the rows has more cell than the first row, then
+that means that something went wrong, and should result in stopping or giving a
+warning. If any of the rows have fewer cells than the first row, then that means
+that there are missing data in that row, and should probably be recorded as
+missing values for any cells the row is ``short'' compared to the first row.
+
+One of the easiest format for a computer to read is therefore a two-dimensional
+``box'' of data, where the first row of the spreadsheet gives the column names,
+and where each row contains an equal number of entries. This type of
+two-dimensional tabular structure forms the basis for several popular
+``delimited'' file formats that serve as a \emph{lingua franca} across many simple
+computer programs, like the comma-separated values (CSV) format, the
+tab-delimited values (TSV) format, and the more general delimiter-separated
+values (DSV) format, which are a common format for data exchange across
+databases, spreadsheet programs, and statistical programs \citep{janssens2014data, raymond2003art, buffalo2015bioinformatics}.
+
+\begin{quote}
+``Tabular plain-text data formats are used extensively in computing. The basic
+format is incrediably simple: each row (also known as a record) is kept on its
+own line, and each column (also known as a field) is separate by some delimiter.''
+\citep{buffalo2015bioinformatics}
+\end{quote}
+
+If you think of the computer parsing a spreadsheet as described above, hopefully
+it clarifies why some spreadsheet formats would cause problems. For example, if
+you have two tables in the same spreadsheet, with blank lines between them, the
+computer will likely either think it's read all the data after the first table,
+and so not read in any data from the second table, or it will think the data
+from both tables belong in a single table, with some rows of missing data in the
+center. To write the code to read in data from two tables into two separate
+datasets in a statistical program, it will be necessary to write some complex
+code to tell the computer how to search out the start of the second table in the
+spreadsheet.
+
+Similar problems come up if a spreadsheet diverges from a regular,
+two-dimensional format, with a single row of column names to start the data.
+For example, if the data uses multiple rows to create multi-level
+column headers, anyone reading it into another program will need to
+either skip some of the rows of the column headers, and so lose information
+in the original spreadsheet, or write complex code to parse the column
+headers separately, then read in the later rows with data, and then stick
+the two elements back together. ``Summary'' rows at the end of a dataset
+(for example, the sums or means of all values in a column) will need to
+be trimmed off when the data is read into other programs, since most
+of the analysis and visualization someone would want to do in another
+program will calculate any summaries fresh, and will want each row of
+a dataset to represent the same ``type'' and level of data (e.g., one measurement
+from one animal).
+
+For anything in a data format that requires extra coding when reading data into
+another program, you are introducing a new opportunity for errors at the
+interface between data recording and data analysis. If there are strong reasons
+to use a format that requires these extra steps, it will still be possible to
+create code to read in and parse the data in statistical programs, and if the
+same format is consistently used, then scripts can be developed and thoroughly
+tested to allow this. However, do keep in mind that this will be an extra
+burden on any data analysis collaborators who are using a program besides a
+spreadsheet program. The extra time this will require could be large, since
+this code should be vetted and tested thoroughly to ensure that the data
+cleaning process is not introducing errors. By contrast, if the data is
+recorded in a two-dimensional format with a single row of column names as
+the first row, data analysts can likely read it quickly and cleanly into
+other programs, with low risks of errors in the transfer of data from the
+spreadsheet.
+
+\begin{quote}
+``Cleaning data is a short-term solution, and preventing errors is promoted as
+a permanent solution. The drawback to cleaning data is that the process never
+ends, is costly, and may allow many errors to avoid detection.''
+\citep{keller2017evolution}
+\end{quote}
+
+\hypertarget{saving-two-dimensional-structured-data-in-plain-text-file-formats}{%
+\subsection{Saving two-dimensional structured data in plain text file formats}\label{saving-two-dimensional-structured-data-in-plain-text-file-formats}}
+
+If you have recorded data in a two-dimensional structured format, you can choose
+to save it in either a \emph{plain text} format or a \emph{binary} format. With a plain
+text format, a file is ``human readable'' when it's opened in a text editor
+\citep{hunt2000pragmatic, janssens2014data}, because each byte that encodes the file
+translates to a single character \citep{murrell2009introduction}, usually using an
+ASCII or Unicode encoding. Common plain text file formats used for biomedical
+research include CSV and TSV files (these are distinguished only by the
+character used as a delimiter---commas for CSV files versus taabs for TSV files)
+\citep{buffalo2015bioinformatics}, other more complex file formats like SAM and XML
+are also typically saved in plain text.
+
+A binary file format, on the other hand, encodes data within the file using an
+encoding system that differs from ANSCII or Unicode. To extract the data in a
+meaningful way, a computer program must know and use rules for the encoding and
+structure of that file format, and those rules will be different for each
+different binary file format \citep{murrell2009introduction}. Some binary file
+formats are ``open'', with all the information on these rules and encodings
+available for anyone to read. On the otherhand, other binary file formats are
+proprietary, without available guidance on how to interpret or use the data
+stored in them when creating new software tools. Binary files, because they
+don't follow the restrictions of plain text encoding and format, can encode and
+organize data in a way that's often much more compressed, because it's optimized
+to suit a specific type of data. This means that binary file formats can often
+store more data within a certain amount of computer memory compared to plain
+text file formats. Binary files can also be designed so that the computer can
+find and read a specific piece of data, rather than needing to read data in
+linearly from the start to the end of a file as with plain text formats. This
+means that programs can often access specific bits of data much more quickly
+from a binary file format that from a plain text format, making computation
+processing run much faster.
+
+However, even with the speed and size advantages of many binary file formats, it
+is often worthwhile to record and save experimental data in a plain text, rather
+than binary, file format. There are a number of advantages to using a plain text
+format. A plain text format may take more space (in terms of computer memory)
+and take longer to process within other programs; however, its benefits
+typically outweigh these limitations \citep{hunt2000pragmatic}. Advantages include:
+(1) humans can read the file directly \citep{hunt2000pragmatic, janssens2014data},
+and should always be able to, regardless of changes in and future obsolescence
+of computer programs; (2) almost all software programs for analyzing and
+processing files can input plain-text files, while binary file formats often
+require specialized software \citep{murrell2009introduction}; (3) the
+Unix system, which has influenced many existing software programs, especially
+open-source programs for data analysis and command-line tools, are based on
+inputting and outputtin line-based plain-text files \citep{janssens2014data}; and (4)
+plain-text files can be easily tracked with version control
+\citep{hunt2000pragmatic}. These advantages might become particularly important in
+cases where researchers need to combine and integrate heterogeneous data, for
+example data coming from different instruments.
+
+Another advantage of storing data in a plain text format is that it makes
+version control, which we'll discuss in a later module, a much more powerful
+tool. With plain text files, you can use version control to see the specific
+changes to a file. With binary files, you can typically see if a file was
+changed, but it's much harder to see exactly what within the file was changed.
+
+The book \emph{The Pragmatic Programmer} highlights some of the advantages of plain
+text:
+
+\begin{quote}
+``Human-readable forms of data, and self-describing data, will outlive all
+other forms of data and the applications that created them. Period. As long as
+the data survives, you will have a chance to be able to use it---potentially
+long after the original application that wrote it is defunct. \ldots{} Even in the
+future of XML-based intelligent agents that travel the wild and dangerous
+Internet autonomously, negotiating data interchange among themselves, the
+ubiquitous text file will still be there. In fact, in heterogeneous environments
+the advantages of plain text can outweight all of the drawbacks. You need to
+ensure that all parties can communicate using a common standard. Plain text is
+that standard.'' \citep{hunt2000pragmatic}
+\end{quote}
+
+\noindent Paul Ford, by contrast, describes some of the disadvantages of
+a binary file format, using the Photoshop file format as an example:
+
+\begin{quote}
+``A Photoshop file is a lump of binary data. It just sits there on your hard
+drive. Open it in Photoshop, and there are your guides, your color swatches, and
+of course, the manifold pixels of your intent. But outside of Photoshop that
+file is an enigma. There is not `view source'. You can, if you're passionate,
+read the standard on the web, and it's all piled in there, the history of
+pictures on computers. That's when it becomes clear: only Photoshop's creator
+Adobe can understand this thing.'' \citep{ford2015on}
+\end{quote}
+
+Structuring data in a gridded, two-dimensional format, as described in the last
+section, will be helpful even if it is in a file format that is binary, like
+Excel. However, there are added benefits to saving the structured data in a
+plain text format. Older Excel spreadsheets are typically saved in a proprietary
+file format (``.xls''), while more recently Excel has saved files to an open
+binary format based on packaging XML files with the data (``.xlsx'' file format)
+\citep{janssens2014data}. While the open proprietary format is preferable, since
+tools can be developed to work with them by people other than the Microsoft
+team, both file formats still face some of the limitations of binary file
+formats as a way of recording experimental data. However, even if you have used
+a spreadsheet program like Excel to record data, it's very easy to still save
+that data in a plain text file format \citep{murrell2009introduction}. In most
+spreadsheet programs, you can choose to save a file ``As CSV''.
+
+\hypertarget{occassions-for-more-complex-data-structures-and-file-formats}{%
+\subsection{Occassions for more complex data structures and file formats}\label{occassions-for-more-complex-data-structures-and-file-formats}}
+
+There are some cases where a two-dimensional data format may not be adequate
+for recording experimental data, despite this format's advantages in
+improving reproducibility through later data analysis steps. Similarly,
+there may be cases where a binary file format, or use of a database, will
+outweigh the benefits of saving data to a plain text format. Being familiar
+with different file formats can also be helpful when you need to integrate
+data stored in different formats \citep{murrell2009introduction}.
+
+\textbf{Non-tabular plain-text formats.}
+First, some data has a linked or hierarchical nature, in terms of how data
+points are connected through the dataset. For example, data on a family try
+might have a hierarchical structure, where different numbers of children are
+recorded for each parent. As another example, if you were building a dataset
+describing how scientists have collaborated together as coauthors, that data
+might form a network. In many cases, it is possible to structure datasets with
+these types of ``non-tabular'' structure using the ``tidy data'' tabular format
+described in the next section. However, in very complex cases, it may work
+better to use a non-tabular data format \citep{raymond2003art}. Popular data formats
+that are non-tabular include the eXtensible Markup Language (XML) and JavaScript
+Object Notation (JSON) formats, both of which are well-suited for
+hierarchically-structured data. You may also have data you would like to use in
+XML or JSON formats if you are using web services to pull datasets from online
+repositories, as open data application programming interfaces (APIs) often
+return data in these formats \citep{janssens2014data}.
+
+Another use of file formats that are plain text but meant to be streamed, rather
+than read in as a whole. When reading in data stored in a delimited plain text
+file, like a CSV file, a statistical program like R will typically read in all
+the data and then operate on the dataset as a whole. If a data file is very
+large, then reading in all the data at once might require so much memory that it
+slows down processing, or even exceed the program's memory cap {[}?{]}. One strategy
+is to design a data format so that the program can read in a small amount of the
+file, process that piece of the data, write the result out, and remove that bit
+of data from the program's memory before moving into the next portion of data
+\citep{buffalo2015bioinformatics}. This \emph{streaming} approach is sometimes used with
+some file formats used for biomedical research, including FASTA and FASTQ files.
+
+\textbf{Databases.}
+When research datasets include not only data that can be expressed in plain
+text, but also data like images, photographs, or videos, it may be worth
+considering using a database to store the data \citep{murrell2009introduction}.
+Relational database managment system software, like {[}examples. MySQL?
+PostgreSQL?{]} can be used to organize data in a way that records connections
+(\emph{relations}) between different pieces of data and allows you to access
+different combinations of that data quickly using Structured Query Language, or
+\emph{SQL} \citep{ford2015i}. Further, some statistical programming languages, including
+R, now have tools that allow you to directly access and work with data from a
+database from within the statistical program, and in some cases using scripts
+that are very similar or identical to the code that would be used if you'd read
+the data into the program from a plain text file.
+
+\begin{quote}
+``The database is the unsung infrastructure of the world, the shared memory of
+every corporation, and the foundation of every major web site. And they are
+everywhere. Nearly every host-your-own-web-site package comes with access to a
+database called MySQL; just about every cell phone has SQLite3, aa tiny,
+pocket-sized database, built in.'' \citep{ford2015i}
+\end{quote}
+
+It will be more complicated to set up a database for recording experimental
+data, and so it's often preferable to instead save data in plain text files
+within a file directory, if the data is simple enough to allow that. However,
+there are some fairly simple database solutions that are now available,
+including SQLite \citep{buffalo2015bioinformatics}.
+
+\textbf{Binary file formats.}
+
+There are cases where it may not be best to store laboratory-generated data in a
+plain text format. For example, the output from a flow cytometer is large and
+would take up a lot (more) computer memory if stored in a plain text format, and
+it would take much longer to read and work with the data in analysis software if
+it were in that format. For very large datasets like this, it may be necessary
+to use a binary data format, either for size or speed or both
+\citep{kernighan1984unix, hunt2000pragmatic}. For very large biomedical datasets,
+binary file formats are sometimes designed for \emph{out-of-memory approaches}
+\citep{buffalo2015bioinformatics}, where a file format is designed in a way that
+allows computer programs to find and read only specific pieces of data in a file
+through a process called \emph{random access}, rather than needing to read the full
+file into memory before a specific piece of data in the file can be accessed
+(a.k.a., \emph{sequential access}) \citep{murrell2009introduction}.
+
+\hypertarget{levels-of-standardizationresearch-group-to-research-community}{%
+\subsection{Levels of standardization---research group to research community}\label{levels-of-standardizationresearch-group-to-research-community}}
+
+Standards can operate both at the level of individual research groups and at the
+level of the scientific community as a whole. The potential advantages of
+community-level standards are big: they offer the chance to develop
+common-purpose tools and code scripts for data analysis, as well as make it
+easier to re-use and combine experimental data from previous research that is
+posted in open data repositories. If a software tool can be reused, then more
+time can be spent in developing and testing it, and as more people use it, bugs
+and shortcomings can be identified and corrected. Community-wide standards can
+lead to databases with data from different experiments, and from different
+laboratory groups, structured in a way that makes it easy for other researchers
+to understand each dataset, find pieces of data of interest within datasets, and
+integrate different datasets \citep{lynch2008big}. Similarly, with community-wide
+standards, it can become much easier for different research groups to
+collaborate with each other or for a research group to use data generated by
+equipment from different manufacturers \citep{schadt2010computational}.
+
+\begin{quote}
+``Without community-level harmonization and interoperability, many community
+projects risk becoming data silos.'' \citep{sansone2012toward}
+\end{quote}
+
+\begin{quote}
+``Solutions to integrating the new generation of large-scale data sets require
+approaches akin to those used in physics, climatology and other quantitative
+disciplines that have mastered the collection of large data sets.''
+\citep{schadt2010computational}
+\end{quote}
+
+However, there are important limitations to community-wide standards, as well.
+It can be very difficult to impose such standards top-down and community-wide,
+particularly for low-throughput data collection (e.g., laboratory bench
+measurements), where research groups have long been in the habit of recording
+data in spreadsheets in a format defined by individual researchers or research
+groups. One paper highlights this point:
+
+\begin{quote}
+``The data exchange formats PSI-MI and MAGE-ML have helped to get many of the
+high-throughput data sets into the public domain. Nevertheless, from a bench
+biologist's point of view benefits from adopting standards are not yet
+overwhelming. Most standardization efforts are still mainly an investment for
+biologists.'' \citep{brazma2006standards}
+\end{quote}
+
+Further, in some fields, community-wide standards have struggled to remain
+stable, which can frustrate community members, as scripts and software must be
+revamped to handle shifting formats \citep{buffalo2015bioinformatics, barga2011bioinformatics}. In some cases, a useful compromise is to follow a
+general data recording format, rather than one that is very prescriptive. For
+example, committing to recording data in a format that is ``tidy'' (which we
+discuss extensively in the next module) may be much more flexible---and able to
+meet the needs of a large range of experimental designs---than the use of a
+common spreadsheet template or a more proscriptive standardized data format.
 
 \hypertarget{applied-exercise}{%
 \subsection{Applied exercise}\label{applied-exercise}}
@@ -769,8 +1439,199 @@ implementation of a structure data format can improve the ease and efficiency of
   and the `tidy' data format (one popular implementation)
 \end{itemize}
 
+In the previous module, we explained the benefits of saving data in a structured
+format, and in particular using a two-dimensional format saved to a plain text
+file when possible. In this section, we'll talk about the ``tidy text'' format---a
+set of principles to use when structuring two-dimensional tabular data. These
+principles cover some basic rules for ordering the data, and the resulting datasets
+can be very easily worked with, including to clean, model, and visualize the
+data, using a series of open-source tools on the R platform called the ``tidyverse''.
+These characteristics mean that, if you are planning to use a standardized data
+format for recording experimental data in your research group, you may want to
+consider creating on that adheres to the ``tidy data'' rules.
+
+To explain more simply, it is usually very little work to record data in a structure
+that follows the ``tidy data'' principles, especially if you are planning to record
+the data in a two-dimensional, tabular format already, and following these
+principles can bring some big advantages. We explain these rules and provide
+examples of biomedical datasets that both comply and don't comply with these
+principles, to help make it clearer how you could structure a ``tidy-compliant''
+structure for recording experimental data for your own research.
+
+Since a key advantage of the ``tidy data'' format is that it works so well with
+R's ``tidyverse'' tools, we'll also talk a bit in this section about the use of
+scripting languages like R, and how using them to analyze and visualize the
+data you collect can improve the overall reproducibility of your research.
+
+The principles of ``tidy data'' were explained in a paper in {[}x{]} by {[}x{]}. The word
+``tidy'' was used because \ldots{} . It is not meant to apply that other formats are
+``dirty'', or that they include data that is incorrect or subpar. In fact, the
+same set of datapoints could be saved in a file in a way that is either ``tidy''
+(in the sense of {[}paper{]} or untidy, depending only on how the data are organized
+across columns and rows.
+
+If the data is the same regardless of whether it's ``tidy'' or not, then why all
+the fuss about following the ``tidy'' principles when you're designing the format
+you'll use to record your data? The magic here in this---if you follow these
+principles, then your data can be immediately input into a collection of powerful
+tools for visualizing and analyzing the data, without further cleaning steps.
+What's more, all those tools (the set of tools is calld the ``tidyverse'') will
+typically \emph{output} your data in a ``tidy'' format, as well.
+
+Once you have tools that input and output data in the same way, it becomes very
+easy to model each of the tools as ``small, sharp tools''---each one does one
+thing, and does it really well. That's because, if each tool needs the same
+type of input and creates that same type of output, those tools can be chained
+together to solve complex problems. The alternative is to create large software
+tools, ones that do a lot to the input data before giving you some output.
+``Big'' tools are harder to understand, and more importantly, they make it hard
+to adapt your own solutions, and to go beyond the analysis or visualization that
+the original tool creators were thinking of when they created it. Think of it this
+way---if you were writing an essay, how much more can you say when you can mix and
+match words to create your own sentences versus if you were made to combine
+pre-set sentences?
+
+These small tools can be combined together because they take the same input
+(data in a ``tidy'' format) and they output in the same format (also data in a
+``tidy'' format). This is such a powerful idea that many of the best loved toys
+work on the same principle. Think of interlocking plastic block sets, like Lego.
+You can create almost anything with a large enough set of Legos, because they
+can be combined in almost any kind of way. Why? Because they all follow a
+standard size for the \ldots{} on top of each block, and they all ``input'' \ldots{} of that
+same size on the bottom of the block. That means they can be joined together in
+any order and combination, and as a result very complex structures can be
+created. It also means that each piece can be small and easy to understand---if
+you're building a Lego structure, even something very fancy, you'll probably use
+lots of rectangular brinks that are two \ldots{} across and four \ldots{} long, and that's
+easy enough to describe that you could probably get a young child to help you
+find those pieces when you need them.
+
+We'll next describe what rules a dataset's format must follow for it to be
+``tidy'', and try to clarify how you can set up your data recording to follow
+these rules. In a later part of this module, we'll talk more about the tidyverse
+tools that you can use with this data, as well as give some resources for
+finding out more about the tidyverse and how to use its tools.
+
+First, to be ``tidy'', a dataset must be tabular and two-dimensional, a structured
+data format described in the previous module. It should not be saved in a
+hierarchical structure, like XML (although there are now tools for converting
+data from XML to a ``tidy'' format, so you may still be able to take advantage of
+the tidyverse even if you must use XML for your data recording).
+
 \hypertarget{the-tidy-data-format-1}{%
 \subsection{The ``tidy'' data format}\label{the-tidy-data-format-1}}
+
+\begin{quote}
+``Software systems are transparent when they don't have murky corners or hidden
+depths. Transparency is a passive quality. A program is passive when it is possible
+to form a simple mental model of its behavior that is actuaally predictive for all
+or most cases, because you can see through the machinery to what is actually going
+on.'' \citep{raymond2003art}
+\end{quote}
+
+\begin{quote}
+``Software systems are discoverable when they include features that are designed
+to help you build in your mind a correct mental model of what they do and how they
+work. So, for example, good documentation helps discoverability to a programmer. Discoverability
+is an active quality. To achieve it in your software, you cannot merely fail to be obscure,
+you have to go out of your way to be helpful.'' \citep{raymond2003art}
+\end{quote}
+
+\begin{quote}
+``Elegant code does much with little. Elegant code is not only correct but visibly,
+\emph{transparently} correct. It does not merely communicate an algorithm to a computer,
+but also conveys insight and assurance to the mind of a human that reads it. By seeking
+elegance in our code, we build better code. Learning to write transparent code is a first,
+long step toward learning how to write elegant code---and taking care to make code
+discoverable helps us learn how to make it transparent. Elegant code is both transparent and
+discoverable.'' \citep{raymond2003art}
+\end{quote}
+
+\begin{quote}
+``To design for transparency and discoverability, you need to apply every tactic for
+keeping your code simple, and also concentrate on the ways in which your code is a
+communication to other human beings. The first questions to ask, after `Will this design
+work?' are `Will it be reaadable to other people? Is it elegant?' We hope it is clear \ldots{}
+that these questions are not fluff and that elegance is not a luxury. These qualities
+in the human reaction to software are essential for reducing its bugginess and
+increasing its long-term maintainability.'' \citep{raymond2003art}
+\end{quote}
+
+\begin{quote}
+``The Unix style of design applies the do-one-thing-well approach at the level of
+cooperating programs as well as cooperating routines within a program,
+emphasizing small programs connected by well-defined interprocess communication
+or by shared files. Accordingly, the Unix operating system encourages us to break our
+programs down into simple subprocesses, and to concentrate on the interfaces between
+these subprocesses.'' \citep{raymond2003art}
+\end{quote}
+
+\begin{quote}
+``The ability to combine programs {[}with piping{]} can be extremely useful. But the real
+win here is not cute combinations; it's that because both pipes and \emph{more(1)} exist,
+\emph{other programs can be simpler}. Pipes mean that programs like \emph{ls(1)} (and other
+programs that write to standard out) don't have to grow their own pagers---and we're
+saved from a word of a thousand built-in pagers (each, naturally, with its own divergent
+look and feel). Code bloat is avoided and global complexity reduced. As a bonus, if
+anyone needs to customize pager behavior, it can be done in \emph{one} place, by changing
+\emph{one} program. Indeed, multiple pagers can exist, and will all be useful with every application
+that writes to standard output.'' \citep{raymond2003art}
+\end{quote}
+
+\begin{quote}
+``Unix was born in 1969 and has been in continuous production use ever since. That's several
+geological eras by computer industry standards. \ldots{} Unix's durability and adaptability have
+been nothing short of astonishing. Other technologies have come and gone like mayflies.
+Machines have increased a thousand-fold in power, languages have mutated, industry practice
+has gone through multiple revolutions---and Unix hangs in there, still producing, still paying
+the bills, and still commanding loyalty from many of the best and brightest software technologists
+on the planet.'' \citep{raymond2003art}
+\end{quote}
+
+\begin{quote}
+``One of the many consequences of the exponential power-versus-time curve in computing, and the
+corresponding pace of software development, is that 50\% of what one knows becomes obsolete over
+every 18 months. Unix does not abolish this phenomenon, but does do a good job of containing it.
+There's a bedrock of unchanging basics---languages, system calls, and tool invocations---that one
+can actually keep for entire years, even decades. Elsewhere it is impossible to predict what will
+be stable; even entire operating systems cycle out of use. Under Unix, there is a fairly sharp
+distinction between transient knowledge and lasting knowledge, and one can know ahead of time
+(with about 90\% certainty) which category something is likely to fall in when one learns it. Thus
+the loyalty Unix commands.'' \citep{raymond2003art}
+\end{quote}
+
+\begin{quote}
+``Unix is famous for being designed around the philosophy of small, sharp tools, each
+intended to do one thing well. This philosophy is enabled by using a common underlying
+format---the line-oriented, plain text file. Databases used for system administration
+(users and passwords, network configuration, and so on) are all kept as plain
+text files. \ldots{} When a system crashes, you may be faced with only a minimal
+environment to restore it (you may not be able to access graphics drivers,
+for instance). Situations such as this can really make you appreciate the simplicity of
+plain text.'' \citep{hunt2000pragmatic}
+\end{quote}
+
+\begin{quote}
+``Unix is the foundational computing environment in bioinformatics because its
+design is the antithesis of {[}a{]} inflexible and fragile approach. The Unix shell
+was designed to allow users to easily build complex programs by interfacing
+smaller modular programs together. This approach is the Unix philosophy:
+`This is the Unix philosophy: Write programs that do one thing and do it well.
+Write programs to work together. Write programs to handle text streams, because
+that is a universal interface.'--Doug McIlory''. \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``Passing the output of one program directly into the input of another
+program with pipes is a computationally efficient and simple way to interface
+Unix programs. This is another reason why bioinformaticians (and software engineers
+in general) like Unix. Pipes allow us to build larger, more complex tools from
+modular parts. It doesn't matter what language a program is written in, either; pipes
+will work between anything as long as both programs understand the data passed
+between them. As the lowest common denominator between most programs, plain-text
+streams are often used---a point that McIlroy makes in his quote about the
+Unix philosophy.'' \citep{buffalo2015bioinformatics}
+\end{quote}
 
 \hypertarget{the-tidy-data-format-as-a-structured-data-format}{%
 \subsection{The ``tidy'' data format as a structured data format}\label{the-tidy-data-format-as-a-structured-data-format}}
@@ -801,13 +1662,60 @@ template complies with a ``tidy'' format.
 \hypertarget{subsection-1}{%
 \subsection{Subsection 1}\label{subsection-1}}
 
+\begin{quote}
 ``Or maybe your goal is that your data is \emph{usable} in a wide range of
 applications? If so, consider adopting standard formats and metadata
 standards early on. At the very least, keep track of versions of data
 and code, with associated dates.'' \citep{goodman2014ten}
+\end{quote}
 
+\begin{quote}
 ``Standards for data include, for example, data formats, data exchange
 protocols, and meta-data controlled vocabularies.'' \citep{barga2011bioinformatics}
+\end{quote}
+
+\begin{quote}
+``Software systems are transparent when they don't have murky corners or hidden
+depths. Transparency is a passive quality. A program is passive when it is possible
+to form a simple mental model of its behavior that is actuaally predictive for all
+or most cases, because you can see through the machinery to what is actually going
+on.'' \citep{raymond2003art}
+\end{quote}
+
+\begin{quote}
+``Software systems are discoverable when they include features that are designed
+to help you build in your mind a correct mental model of what they do and how they
+work. So, for example, good documentation helps discoverability to a programmer. Discoverability
+is an active quality. To achieve it in your software, you cannot merely fail to be obscure,
+you have to go out of your way to be helpful.'' \citep{raymond2003art}
+\end{quote}
+
+\begin{quote}
+``Elegant code does much with little. Elegant code is not only correct but visibly,
+\emph{transparently} correct. It does not merely communicate an algorithm to a computer,
+but also conveys insight and assurance to the mind of a human that reads it. By seeking
+elegance in our code, we build better code. Learning to write transparent code is a first,
+long step toward learning how to write elegant code---and taking care to make code
+discoverable helps us learn how to make it transparent. Elegant code is both transparent and
+discoverable.'' \citep{raymond2003art}
+\end{quote}
+
+\begin{quote}
+``To design for transparency and discoverability, you need to apply every tactic for
+keeping your code simple, and also concentrate on the ways in which your code is a
+communication to other human beings. The first questions to ask, after `Will this design
+work?' are `Will it be reaadable to other people? Is it elegant?' We hope it is clear \ldots{}
+that these questions are not fluff and that elegance is not a luxury. These qualities
+in the human reaction to software are essential for reducing its bugginess and
+increasing its long-term maintainability.'' \citep{raymond2003art}
+\end{quote}
+
+\begin{quote}
+``Software is maintainable to the extent that people who are not its author can
+successfully understand and modify it. Maintainability demands more than code that
+works; it demands code that follows the Rule of Clarity and communicates successfully
+to human beings as well as the computer.'' \citep{raymond2003art}
+\end{quote}
 
 \hypertarget{applied-exercise-1}{%
 \subsection{Applied exercise}\label{applied-exercise-1}}
@@ -877,9 +1785,108 @@ not organized in any decent way,'' and another, ``It's not even organized---a fi
 computer of protocols that we use, common lab protocols but those are just individual
 Word files within a folder so it's not searchable per se.'' \citep{anderson2007issues}
 
+\begin{quote}
 ``In general, data reuse is most possible when: 1) data; 2) metadata (information
 describing the data); and 3) information about the process of generating those data,
 such as code, are all provided.'' \citep{goodman2014ten}
+\end{quote}
+
+\begin{quote}
+``So far we have used filenames without ever saying what a legal name is, so it's time for a couple
+of rules. First, filenames are limited to 14 characters. Second, although you can use almost any
+character in a filename, common sense says you should stick to ones that are visible, and that you
+should avoid characters that might be used with other meanings. \ldots{} To avoid pitfalls, you would
+do well to use only letters, numbers, the period and the underscore until you're familiar with the
+situation {[}i.e., characters with pitfalls{]}. (The period and the underscore are conventionally used
+to divide filenames into chunks\ldots{}) Finally, don't forget that case distinctions matter---junk, Junk,
+and JUNK are three different names.'' \citep{kernighan1984unix}
+\end{quote}
+
+\begin{quote}
+``The {[}Unix{]} system distinguishes your file called `junk' from anyone else's of the same name. The
+distinction is made by grouping files into \emph{directories}, rather in the way that books are placed om
+shelves in a library, so files in different directories can have the same name without any conflict.
+Generally, each user haas a personal or \emph{home directory}, sometimes called login directory, that
+contains only the files that belong to him or her. When you log in, you are `in' your home directory.
+You may change the directory you are working in---often called your working or \emph{current directory}---but
+your home directory is always the same. Unless you take special action, when you create a new file it is
+made in your current directory. Since this is initially your home directory, the file is unrelated
+to a file of the same name that might exist in someone else's directory. A directory can contain
+other directories as well as ordinary files \ldots{} The natural way to picture this organization is as a
+tree of directories and files. It is possible to move around within this tree, and to find any file in the system
+by starting at the root of the tree and moving along the proper branches. Conversely, you can start where
+you are and move toward the root.'' \citep{kernighan1984unix}
+\end{quote}
+
+\begin{quote}
+``The name `/usr/you/junk' is called the \emph{pathname} of the file. `Pathname' has an intuitive meaning:
+it represents the full name of the path from the root through the tree of directories to a particular
+file. It is a universal rule in the Unix system that wherever you can use an ordinary filename, you can
+use a pathname.'' \citep{kernighan1984unix}
+\end{quote}
+
+\begin{quote}
+``If you work regularly with Mary on information in her directory, you can say `I want to work on Mary's
+files instead of my own.' This is done by changing your current directory with the \texttt{cd} command\ldots{}
+Now when you use a filename (without the /'s) as an argument to \texttt{cat} or \texttt{pr}, it refers to the file
+in Mary's directory. Changing directories doesn't affect any permissions associated with a file---if you
+couldn't access a file from your own directory, changing to another directory won't alter that fact.'' \citep{kernighan1984unix}
+\end{quote}
+
+\begin{quote}
+``It is usually convenient to arrange your own files so that all the files related to one thing are in a
+directory separate from other projects. For example, if you want to write a book, you might want to
+keep all the text in a directory called `book'.'' \citep{kernighan1984unix}
+\end{quote}
+
+\begin{quote}
+``Suppose you're typing a large document like a book. Logically this divides into many small pieces,
+like chapters and perhaps sections. Physically it should be divided too, because it is cumbersome
+to edit large files. Thus you should type the document as a number of files. You might have separate
+files for each chapter, called `ch1', `ch2', etc. \ldots{} With a systematic naming convention, you can tell at
+a glance where a particular file fits into the whole. What if you want to print the whole book? You could
+say \texttt{\$\ pr\ ch1.1\ ch1.2\ ch\ 1.3\ ...}, but you would soon get bored typing filenames and start to make mistakes.
+This is where filename shorthand comes in. If you say \texttt{\$\ pr\ ch*} the shell takes the \texttt{*} to mean `any
+string of characters,' so ch* is a pattern that matches all filenames in the current directory that
+begin with ch.~The shell creates the list, in alphabetical order, and passes the list to \texttt{pr}. The
+\texttt{pr} command never sees the \texttt{*}; the pattern match that the shell does in the current directory
+generates aa list of strings that are passed to \texttt{pr}.'' \citep{kernighan1984unix}
+\end{quote}
+
+\begin{quote}
+``The current directory is an attribute of a process, not a person or a program. \ldots{} The notion of a
+current directory is certainly a notational convenience, because it can save a lot of typing, but
+its real purpose is organizational. Related files belong together in the same directory. `/usr' is
+often the top directory of a user file system\ldots{} `/usr/you' is your login directory, your current
+directory when you first log in. \ldots{} Whenever you embark on a new project, or whenever you have
+a set of related files \ldots{} you could create a new directory with \texttt{mkdir} and put the files there.'' \citep{kernighan1984unix}
+\end{quote}
+
+\begin{quote}
+``Despite their fundamental properties inside the kernel, directories sit in the file system as
+ordinary files. They can be read as ordinary files. But they can't be created or written as
+ordinary files---to preserve its sanity and the users' files, the kernel reserves to itself all
+control over the contents of directories.'' \citep{kernighan1984unix}
+\end{quote}
+
+\begin{quote}
+``A file has several components: a name, contents, and administrative information such as
+permissions and modifications times. The administrative information is stored in the inode
+(over the years, the hyphen fell out of `i-node'), along with essential system data such as
+how long it is, where on the disc the contents of the file are stored, and so on. \ldots{}
+It is important to understand inodes, not only to appreciate the options on \texttt{ls}, but because
+in a strong sense the inodes \emph{are} the files. All the directory hierarchy does is provide
+convenient names for files. The system's name for a file is its \emph{i-number}: the number of the
+inode holding the file's information. \ldots{} It is the i-number that is stored in the first two bytes
+of a directory, before the name. \ldots{}
+The first two bytes in each directory entry are the only connection between the name of a file and its
+contents. A filename in a directory is therefore called a \emph{link}, because it links a name in the
+directory hierarchy to the inode, and hence to the data. The same i-number can appear in more than
+one directory. The \texttt{rm} command does not actually remove the inodes; it removes directory entries
+or links. Only when the last link to a file disappears does the system remove the inode, and hence
+the file itself. If the i-number in a directory entry is zero, it means that the link has been
+removed, but not necessarily the contents of the file---there may still be a link somewhere else.'' \citep{kernighan1984unix}
+\end{quote}
 
 \hypertarget{subsection-2-1}{%
 \subsection{Subsection 2}\label{subsection-2-1}}
@@ -1086,6 +2093,75 @@ RStudio.
 \hypertarget{subsection-1-7}{%
 \subsection{Subsection 1}\label{subsection-1-7}}
 
+\begin{quote}
+``When the system prints the prompt \texttt{\$} and you type commands that get
+executed, it's not the kernel that is talking to you, but a go-between called
+the command interpreter or \emph{shell}. The shell is just an ordinary program like
+\texttt{date} or \texttt{who}, although it can do some remarkable things. The fact that the shell
+sits between you and the facilities of the kernel has real benefits, some of which
+we'll talk about here. There are three main ones: (1) Filename shorthands: you can
+pick up a whole set of filenames as arguments to a program by specifying a
+pattern for the names---the shell will find the filenames that fit your pattern;
+(2) Input-output redirection: you can arrange for the output of any program to
+go into a file instead of onto the terminal, and for the input to come from
+a file instead of the terminal. Input and output can even be connected to
+other programs. (3) Personalizing the environment: you can define your own
+commands and shorthands.'' \citep{kernighan1984unix}
+\end{quote}
+
+\begin{quote}
+``Suppose you're typing a large document like a book. Logically this divides into many small pieces,
+like chapters and perhaps sections. Physically it should be divided too, because it is cumbersome
+to edit large files. Thus you should type the document as a number of files. You might have separate
+files for each chapter, called `ch1', `ch2', etc. \ldots{} With a systematic naming convention, you can tell at
+a glance where a particular file fits into the whole. What if you want to print the whole book? You could
+say \texttt{\$\ pr\ ch1.1\ ch1.2\ ch\ 1.3\ ...}, but you would soon get bored typing filenames and start to make mistakes.
+This is where filename shorthand comes in. If you say \texttt{\$\ pr\ ch*} the shell takes the \texttt{*} to mean `any
+string of characters,' so ch* is a pattern that matches all filenames in the current directory that
+begin with ch.~The shell creates the list, in alphabetical order, and passes the list to \texttt{pr}. The
+\texttt{pr} command never sees the \texttt{*}; the pattern match that the shell does in the current directory
+generates aa list of strings that are passed to \texttt{pr}. The crucial point is that filename shorthand
+is not a property of the \texttt{pr} command, but a service of the shell. Thus you can use it to generate
+a sequence of filenames for \emph{any} command.'' \citep{kernighan1984unix}
+\end{quote}
+
+\begin{quote}
+``One of the virtues of the Unix system is that there are several ways to bring it closer to
+your personal taste or the conventions of your local computing environmentl. \ldots{} If there is a file
+named `.profile' in your login directory, the shell will execute the commands in it when you log in,
+before printing the first prompt. So you can put commands into `.profile' to set up your environment
+as you like it, and they will be executed every time you log in. \ldots{}
+Some of the properties of the shell are actually controlled by so-called \emph{shell variables}, with
+values that you can access and set yourself. For example, the prompt string, which we have been showing
+as \texttt{\$}, is acually stored in a shell variable called `PS1', and you can set it to anything you like, like
+this \texttt{PS1=\textquotesingle{}Yes\ dear?\textquotesingle{}}. \ldots{} Probably the most useful shell variable is the one that controls where the shell
+looks for commands. Recall that when you type the name of a command, the shell normally looks for it
+first in the current directory, then in `/bin', and then in `/usr/bin'. This sequence of directories
+is called the \emph{search path}, and is stored in a shell variable called `PATH'. If the default search
+path isn't what you want, you can change it, again usually in your `.profile'. \ldots{} It is also possible
+to use variables for abbreviation. If you find yourself frequently referring to some directory with
+a long name, it might be worthwhile adding a line like \texttt{d=/horribly/long/directory/name} to your profile,
+so that you can say things like \texttt{\$cd\ \$d}. Personal variables like \texttt{d} are conventionally spelled
+in lower case to distinguish them from those used by the shell itself, like \texttt{PATH}.'' \citep{kernighan1984unix}
+\end{quote}
+
+\begin{quote}
+``The culmination of your login efforts is a \emph{prompt}, usually a single character, indicating that the
+system is ready to accept commands from you. The prompt is most likely to be a dolloar sign or a percent
+sign, but you can change it to anything you like\ldots{} The prompt is actually printed by a program called
+the \emph{command interpreter} or \emph{shell}, which is your main interface to the system. \ldots{} Once you receive
+the prompt, you can type \emph{commands}, which are requests that the system do something. We will use \emph{program}
+as a synonym for command.'' \citep{kernighan1984unix}
+\end{quote}
+
+\begin{quote}
+``While checksums are a great method to check if files are different, they don't tell
+us \emph{how} the files differ. One approach to this is to compute the \emph{diff} between
+two files using the Unix tool \emph{diff}. Unix's \emph{diff} works line by line, and outputs
+blocks (called \emph{hunks}) that differ between files (resembling Git's \emph{git diff} command).''
+\citep{buffalo2015bioinformatics}
+\end{quote}
+
 \hypertarget{subsection-2-6}{%
 \subsection{Subsection 2}\label{subsection-2-6}}
 
@@ -1120,18 +2196,52 @@ transparency and reproducibility.
 \hypertarget{subsection-1-8}{%
 \subsection{Subsection 1}\label{subsection-1-8}}
 
+\begin{quote}
 For bioinformatics, ``all too often the software is developed without
 thought toward future interoperability with other software products. As a
 result, the bioinformatics software landscape is currently characterized
 by fragmentation and silos, in which each research group develops and uses
 only the tools created within their lab.'' \citep{barga2011bioinformatics}
+\end{quote}
 
+\begin{quote}
 ``The group also noted the lack of agility. Although they may be aware of
 a new or better algorithm they cannot easily integrate it into their
 analysis pipelines given the lack of standards across both data formats
 and tools. It typically requires a complete rewrite of the code in order
 to take advntge of a new technique or algorithm, requiring time and often
 funding to hire developers.'' \citep{barga2011bioinformatics}
+\end{quote}
+
+\begin{quote}
+``The benefit of working with a programming language is that you have the code in
+a file. This means that you can easily reuse that code. If the code has
+parameters it can even be applied to problems that follow a similar pattern.''
+\citep{janssens2014data}
+\end{quote}
+
+\begin{quote}
+``Data exploration in spreadsheet software is typically conducted via menus and
+dialog boxes, which leaves no record of the steps taken.'' \citep{murrell2009introduction}
+\end{quote}
+
+\begin{quote}
+``One reason Unix developers have been cool toward GUI interfaces is that, in their
+designers' haste to make them `user-friendly' each one often becomes frustratingly
+opaque to anyone who has to solve user problems---or, indeed, interact with it anywhere
+outside the narrow range predicted by the user-interface designer.'' \citep{raymond2003art}
+\end{quote}
+
+\begin{quote}
+``Many operating systems touted as more `modern' or `user friendly' than Unix achieve their
+surface glossiness by locking users and developers into one interface policy, and offer an
+application-programming interface that for all its elaborateness is rather narrow and rigid.
+On such systems, tasks the designers have anticipated are very easy---but tasks they have
+not anticipated are often impossible or at best extremely painful. Unix, on the other hand, has
+flexibility in depth. The many ways Unix provides to glue together programs means that components
+of its basic toolkit can be combined to produce useful effects that the designers of the individual
+toolkit parts never anticipated.'' \citep{raymond2003art}
+\end{quote}
 
 \hypertarget{subsection-2-7}{%
 \subsection{Subsection 2}\label{subsection-2-7}}
@@ -1199,6 +2309,67 @@ reproducibly pre-processing experimental data.
 
 \hypertarget{subsection-1-10}{%
 \subsection{Subsection 1}\label{subsection-1-10}}
+
+\begin{quote}
+``There is a now-old trope in the world of programming. It's called the `worse is
+better' debate; it seeks to explain why the Unix operating systems (which include
+Mac OS X these days), made up of so many little interchangeable parts, were so much
+more successful in the marketplace than LISP systems, which were ideologically pure,
+based on a single languagae (again, LISP), which itself was exceptionally simple,
+a favorite of `serious' hackers everywhere. It's too complex to rehash here, but one
+of the ideas inherent within `worse is better' is thata systems made up of many
+simple pieces that can be roped together, even if those pieces don't share a consistent
+interface, are likely to be more successful than systems that are designed with consistency
+in every regard. And it strikes me that this is a fundamental drama of new technologies.
+Unix beat out the LISP machines. If you consider mobile handsets, many of which run
+descendants of Unit (iOS and Andriod), Unix beat out Windows as well. And HTML5 beat out
+all of the various initiatives to create a single unified web. It nods to accessibility:
+it doesn't get in the way of those who want to make something huge and interconnected.
+But it doesn't enforce; it doesn't seek to change the behavior of page creators in the
+same way that such lost standards as XHTML 2.0 (which eremged from the offices of
+the World Wide Web Consortium, and then disappeared under the weight of its own
+intentions) once did. It's not a bad place to end up. It means that there is no
+single framework, no set of easy rules to lear, no overarching principles that,
+once learned, can make the web appear like a golden statue atop a mountain. There
+are just components: HTML to get the words on the page, forms to get people to
+write in, videos and images to put up pictures, moving or otherwise, and
+JavaScript to make everything dance.'' \citep{ford2015on}
+\end{quote}
+
+\begin{quote}
+``One of the fundamental contributions of the Unix system {[}is{]} the idea of a \emph{pipe}.
+A pipe is a way to connect the output of one program to the input of another program
+without any temporary file; a \emph{pipeline} is a connection of two or more programs through
+pipes. \ldots{} Any program that reads from a terminal can read from a pipe instead; any program
+that writes on the terminal can write to a pipe. \ldots{} The programs in a pipeline actually
+run at the same time, not one after another. This means that the programs in a pipeline
+can be interactive; the kernel looks after whatever scheduling and synchronization is needed
+to make it all work. As you probably suspect by now, the shell arranges things when you
+ask for a pipe; the individual programs are oblivious to the redirection.'' \citep{kernighan1984unix}
+\end{quote}
+
+\begin{quote}
+``Even though the Unix system introduces a number of innovative programs and techniques,
+no single program or idea makes it work well. Instead, what makes it effective is an approach
+to programming, a philosophy of using the computer. Although that philosophy can't be written
+down in a single sentence, at its heart is the idea that the power of a system comes more from
+the relationships among programs than from the programs themselves. Many Unix programs do
+quite trivial things in isolation, but, combined with other programs, become general and
+useful tools.'' \citep{kernighan1984unix}
+\end{quote}
+
+\begin{quote}
+``What is `Unix'? In the narrowest sense, it is a time-sharing operating system \emph{kernel}:
+a program that controls the resources of a computer and allocates them among its users.
+It lets users run their programs; it controls the peripheral devices (discs, terminals,
+printers, and the like) connected to the machine; and it provides a file system that
+manages the long-term storage of information such as programs, data, and documents.
+In a broader sense, `Unix' is often taken to include not only the kernel, but also
+essential programs like compiles, editors, command languages, programs for copying and
+printing files, and so on. Still more broadly, `Unix' may even include programs
+develpoed by you or others to be run on your system, such as tools for document
+preparation, routines for statistical analysis, and graphics packages.'' \citep{kernighan1984unix}
+\end{quote}
 
 \hypertarget{subsection-2-9}{%
 \subsection{Subsection 2}\label{subsection-2-9}}
@@ -1273,6 +2444,22 @@ data stored in R in this format, including through the \emph{broom} and
 
 \hypertarget{subsection-1-12}{%
 \subsection{Subsection 1}\label{subsection-1-12}}
+
+\begin{quote}
+``Object-oriented design doesn't have to be over-complicated design, but we've
+observed that too often it is. Too many OO designs are spaghetti-like tangles of
+is-a and has-a relationships, or feature thick layers of glue in which many of the
+objects seem to exist simply to hold places in a steep-sided pyramid of abstractions.
+Such designs are the opposite of transparent; they are (notoriously) opaque and
+difficult to debug.'' \citep{raymond2003art}
+\end{quote}
+
+\begin{quote}
+``Unix programmers are the original zealots about modularity, but tend to go about it
+in a quiter way {[}that with OOP{]}. Keeping glue layers thin is part of it; more generally,
+our tradition teaches us to build lower, hugging the ground with algorithms and structures
+that are designed to be simple and transparent.'' \citep{raymond2003art}
+\end{quote}
 
 \hypertarget{subsection-2-11}{%
 \subsection{Subsection 2}\label{subsection-2-11}}
@@ -1377,6 +2564,137 @@ same data pre-processing steps to different sets of raw data.
 
 \hypertarget{subsection-1-15}{%
 \subsection{Subsection 1}\label{subsection-1-15}}
+
+\begin{quote}
+``WordPerfect was always the best word processor. Because it allowed for insight into
+its very structure. You could hit a certain key combination and suddenly the screen
+would split and you'd reveal the codes, the bolds and italics, and so forth,
+that would define your text when it was printed. It was beloved of legal secretaries
+and journalists alike. Because when you work with words, at the practical, everyday
+level, the ability to look under the hood is essential. Words are not simple. And
+WordPerfect acknowledged that. Microsoft Word did not. Microsoft kept insisting that
+what you saw on your screen was the way things \emph{were}, and if your fonts just kept
+sort of randonmly changing, well, you must have wanted it that way. Then along came
+HTML, and what I remember most was that sense of being back inside the file. Sure,
+HTML was a typographic nightmare, a bunch of unjustified Times New Roman in 12 pt on
+screens with chiclet-size pixels, but under the hood you could see all the pieces.
+Just like WordPerfect. That transparency was a wonderful thing, and it renewed
+computing for me.'' \citep{ford2015on}
+\end{quote}
+
+\begin{quote}
+``TeX was created by Donald E. Knuth, a professor at Stanford University who has
+achieved international renown as a mathematician and computer scientist.
+Knuth also has an aesthetic sense uncommon in his field, and his work output is
+truly phenomenal. TeX is a happy byproduct of Knuth's mammoth enterprise,
+\emph{The Art of Computer Programming}. This series of reference books, designed
+to cover the whole gamut of programming concepts and techniques, is a
+\emph{sine qua non} for all computer scientists.'' \citep{seroul2012beginner}
+\end{quote}
+
+\begin{quote}
+``Roughly speaking, text processors fall into two categories:
+(1) WYSIWYG systems: what you see is what you get. You see on the screen at all
+times what the printed document will look like, and what you type has immediate
+effect on the appearance of the document. (2) markup systems, where you type your text
+interspersed with formatting instructions, but don't see their effect right away. You must run a program to examine the
+resulting image, whether on paper or on the screen. In computer science jargon,
+markup systems must compile the source file you type. WYSIWYG systems have the obvious
+advantage of immediate feedback, but they
+are not very precise: what is acceptable at a resolution of 300 dots per inch, for an
+ephemeral publication such as a newsletter or flier, is no longer so for a book that
+will be phototypeset at high resolution. The human eye is extraordinarily sensitive:
+you can be bothered by the appearance of a text without being able to pinpoint why,
+just as you can tell when someone plays the wrong note in an orchestra, without
+being able to identify the CUlprit. One quickly leams in typesetting that the beauty,
+legibility and comfortable reading of a text depend on minute details: each element
+must be placed exactly right, within thousandths of an inch. For this type of work,
+the advantage of immediate feedback vanishes: fine details of spacing, alignment,
+and so on are much too small to be discernible at the screen's relatively low
+resolution, and even if it such were not the case, it would still be a monumental chore
+to find the right place for everything by hand. For this reason it is not surprising that in the world of professional typesetting
+markup systems are preferred. They automate the task of finding the right place
+for each character with great precision. Naturally, this approach is less attractive for
+beginners, since one can't see the results as one types, and must develop a feeling
+for what the system will do. But nowadays, you can have the best of both worlds
+by using a markup system with a WYSIWYG \emph{front end}; we'll talk about such front
+ends for TEX later on. TEX was developed in the late seventies and early eighties,
+before WYSIWYG systems were widespread. But were it to be redesigned now, it would
+still be a markup
+language. To give you an idea of the precision with which TEX operates: the internal
+unit it uses for its calculations is about a hundred times smaller than the
+wavelength of visible light! (That's right, a hundred times.) In other words, any
+round-off error introduced in the calculations is invisible to the naked eye.''
+\citep{seroul2012beginner}
+\end{quote}
+
+\begin{quote}
+``You should be sure to understand the difference between a text editor and a text
+processor. A text processor is a text editor together with formatting software that
+allows you to switch fonts, do double columns, indent, and so on. A text editor
+puts your text in a file on disk, and displays a portion of it on the screen. It doesn't
+format your text at all. We insist on the difference because those accustomed to WYSIWYG systems are
+often not aware of it: they only know text processors. Where can you find a text
+editor? Just about everywhere. Every text processor includes a text editor which
+you can use. But if you use your text processor as a text editor, be sure to save your
+file using a `save ASCII' or `save text only' option, so that the text processor's own
+formatting commands are stripped off. If you give TEX a file created without this
+precaution, you'll get garbage, because TEX cannot digest your text processor's
+commands.'' \citep{seroul2012beginner}
+\end{quote}
+
+\begin{quote}
+``TeX enabled authors to encode their precise intent into their manuscripts:
+This block of text is a computer program, while this word is a keyword in that
+program. The language it used, called TeX markup, formalized the slow,
+error-prone communication that is normally carried out with the printer over
+repeated galley proofs.'' \citep{apte2019lingua}
+\end{quote}
+
+\begin{quote}
+``The idea of writing markup inside text wasn't especially novel; it has been
+used from 1970's runoff (the UNIX family of printer-preparation utilities) to
+today's HTML tags. TeX was new in that it captured key concepts necessary for
+realistic typesetting and formalized them.'' \citep{apte2019lingua}
+\end{quote}
+
+\begin{quote}
+``With these higher-level commands, the free TeX engine, and the LaTeX book,
+the use of TeX exploded. The macro file has since evolved and changed names, but
+authors still typically run the program called latex or its variants. Hence,
+most people who write TeX manuscripts know the program as LaTeX and the commands
+they use as LaTeX commands.'' \citep{apte2019lingua}
+\end{quote}
+
+\begin{quote}
+``The effect of LaTeX on scientific and technical publishing has been profound.
+Precise typesetting is critical, particularly for conveying concepts using
+chemical and mathematical formulas, algorithms, and similar constructs. The
+sheer volume of papers, journals, books, and other publications generated in the
+modern world is far beyond the throughput possible via manual typesetting. And
+TeX enables automation without losing precision. Thanks to LaTeX, book authors
+can generate camera-ready copy on their own. Most academic and journal
+publishers accept article manuscripts written in LaTeX, and there's even an open
+archive maintained by Cornell University where authors of papers in physics,
+chemistry, and other disciplines can directly submit their LaTeX manuscripts for
+open viewing. Over 10,000 manuscripts are submitted to this archive every month
+from all over the world.'' \citep{apte2019lingua}
+\end{quote}
+
+\begin{quote}
+``For many users, a practical difficulty with typesetting using TeX is
+preparing the manuscripts. When TeX was first developed, technical authors were
+accustomed to using plain-text editors like WordStar, vi, or Emacs with a
+computer keyboard. The idea of marking up their text with commands and running
+the manuscript through a typesetting engine felt natural to them. Today's
+typesetters, particularly desktop publishers, have a different mental model.
+They expect to see the output in graphical form and then to visually make edits
+with a mouse and keyboard, as they would in any WYSIWYG program. They might not
+be too picky about the quality of the output, but they appreciate design
+capabilities, such as the ability to flow text around curved outlines. Many
+print products are now produced with tools like Microsoft Word for this very
+reason. TeX authors cannot do the same work as easily.'' \citep{apte2019lingua}
+\end{quote}
 
 \hypertarget{subsection-2-14}{%
 \subsection{Subsection 2}\label{subsection-2-14}}

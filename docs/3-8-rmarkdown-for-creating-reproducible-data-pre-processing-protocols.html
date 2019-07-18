@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta property="og:title" content="3.8 RMarkdown for creating reproducible data pre-processing protocols | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
 <meta property="og:type" content="book" />
 
@@ -52,9 +50,13 @@
 <li><a href="2-1-separating-data-recording-and-analysis.html#discussion-questions"><span class="toc-section-number">2.1.4</span> Discussion questions</a></li>
 </ul></li>
 <li class="has-sub"><a href="2-2-principles-and-power-of-structured-data-formats.html#principles-and-power-of-structured-data-formats"><span class="toc-section-number">2.2</span> Principles and power of structured data formats</a><ul>
-<li><a href="2-2-principles-and-power-of-structured-data-formats.html#characteristics-of-a-structured-data-format"><span class="toc-section-number">2.2.1</span> Characteristics of a structured data format</a></li>
-<li><a href="2-2-principles-and-power-of-structured-data-formats.html#benefits-of-a-structured-data-format"><span class="toc-section-number">2.2.2</span> Benefits of a structured data format</a></li>
-<li><a href="2-2-principles-and-power-of-structured-data-formats.html#applied-exercise"><span class="toc-section-number">2.2.3</span> Applied exercise</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#data-recording-standards"><span class="toc-section-number">2.2.1</span> Data recording standards</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#defining-data-standards-for-a-research-group"><span class="toc-section-number">2.2.2</span> Defining data standards for a research group</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#two-dimensional-structured-data-format"><span class="toc-section-number">2.2.3</span> Two-dimensional structured data format</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#saving-two-dimensional-structured-data-in-plain-text-file-formats"><span class="toc-section-number">2.2.4</span> Saving two-dimensional structured data in plain text file formats</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#occassions-for-more-complex-data-structures-and-file-formats"><span class="toc-section-number">2.2.5</span> Occassions for more complex data structures and file formats</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#levels-of-standardizationresearch-group-to-research-community"><span class="toc-section-number">2.2.6</span> Levels of standardization—research group to research community</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#applied-exercise"><span class="toc-section-number">2.2.7</span> Applied exercise</a></li>
 </ul></li>
 <li class="has-sub"><a href="2-3-the-tidy-data-format.html#the-tidy-data-format"><span class="toc-section-number">2.3</span> The ‘tidy’ data format</a><ul>
 <li><a href="2-3-the-tidy-data-format.html#the-tidy-data-format-1"><span class="toc-section-number">2.3.1</span> The “tidy” data format</a></li>
@@ -176,6 +178,128 @@ projects at the data pre-processing phase</li>
 </ul>
 <div id="subsection-1-15" class="section level3">
 <h3><span class="header-section-number">3.8.1</span> Subsection 1</h3>
+<blockquote>
+<p>“WordPerfect was always the best word processor. Because it allowed for insight into
+its very structure. You could hit a certain key combination and suddenly the screen
+would split and you’d reveal the codes, the bolds and italics, and so forth,
+that would define your text when it was printed. It was beloved of legal secretaries
+and journalists alike. Because when you work with words, at the practical, everyday
+level, the ability to look under the hood is essential. Words are not simple. And
+WordPerfect acknowledged that. Microsoft Word did not. Microsoft kept insisting that
+what you saw on your screen was the way things <em>were</em>, and if your fonts just kept
+sort of randonmly changing, well, you must have wanted it that way. Then along came
+HTML, and what I remember most was that sense of being back inside the file. Sure,
+HTML was a typographic nightmare, a bunch of unjustified Times New Roman in 12 pt on
+screens with chiclet-size pixels, but under the hood you could see all the pieces.
+Just like WordPerfect. That transparency was a wonderful thing, and it renewed
+computing for me.” <span class="citation">(Ford 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“TeX was created by Donald E. Knuth, a professor at Stanford University who has
+achieved international renown as a mathematician and computer scientist.
+Knuth also has an aesthetic sense uncommon in his field, and his work output is
+truly phenomenal. TeX is a happy byproduct of Knuth’s mammoth enterprise,
+<em>The Art of Computer Programming</em>. This series of reference books, designed
+to cover the whole gamut of programming concepts and techniques, is a
+<em>sine qua non</em> for all computer scientists.” <span class="citation">(Seroul 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“Roughly speaking, text processors fall into two categories:
+(1) WYSIWYG systems: what you see is what you get. You see on the screen at all
+times what the printed document will look like, and what you type has immediate
+effect on the appearance of the document. (2) markup systems, where you type your text
+interspersed with formatting instructions, but don’t see their effect right away. You must run a program to examine the
+resulting image, whether on paper or on the screen. In computer science jargon,
+markup systems must compile the source file you type. WYSIWYG systems have the obvious
+advantage of immediate feedback, but they
+are not very precise: what is acceptable at a resolution of 300 dots per inch, for an
+ephemeral publication such as a newsletter or flier, is no longer so for a book that
+will be phototypeset at high resolution. The human eye is extraordinarily sensitive:
+you can be bothered by the appearance of a text without being able to pinpoint why,
+just as you can tell when someone plays the wrong note in an orchestra, without
+being able to identify the CUlprit. One quickly leams in typesetting that the beauty,
+legibility and comfortable reading of a text depend on minute details: each element
+must be placed exactly right, within thousandths of an inch. For this type of work,
+the advantage of immediate feedback vanishes: fine details of spacing, alignment,
+and so on are much too small to be discernible at the screen’s relatively low
+resolution, and even if it such were not the case, it would still be a monumental chore
+to find the right place for everything by hand. For this reason it is not surprising that in the world of professional typesetting
+markup systems are preferred. They automate the task of finding the right place
+for each character with great precision. Naturally, this approach is less attractive for
+beginners, since one can’t see the results as one types, and must develop a feeling
+for what the system will do. But nowadays, you can have the best of both worlds
+by using a markup system with a WYSIWYG <em>front end</em>; we’ll talk about such front
+ends for TEX later on. TEX was developed in the late seventies and early eighties,
+before WYSIWYG systems were widespread. But were it to be redesigned now, it would
+still be a markup
+language. To give you an idea of the precision with which TEX operates: the internal
+unit it uses for its calculations is about a hundred times smaller than the
+wavelength of visible light! (That’s right, a hundred times.) In other words, any
+round-off error introduced in the calculations is invisible to the naked eye.”
+<span class="citation">(Seroul 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“You should be sure to understand the difference between a text editor and a text
+processor. A text processor is a text editor together with formatting software that
+allows you to switch fonts, do double columns, indent, and so on. A text editor
+puts your text in a file on disk, and displays a portion of it on the screen. It doesn’t
+format your text at all. We insist on the difference because those accustomed to WYSIWYG systems are
+often not aware of it: they only know text processors. Where can you find a text
+editor? Just about everywhere. Every text processor includes a text editor which
+you can use. But if you use your text processor as a text editor, be sure to save your
+file using a ‘save ASCII’ or ‘save text only’ option, so that the text processor’s own
+formatting commands are stripped off. If you give TEX a file created without this
+precaution, you’ll get garbage, because TEX cannot digest your text processor’s
+commands.” <span class="citation">(Seroul 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“TeX enabled authors to encode their precise intent into their manuscripts:
+This block of text is a computer program, while this word is a keyword in that
+program. The language it used, called TeX markup, formalized the slow,
+error-prone communication that is normally carried out with the printer over
+repeated galley proofs.” <span class="citation">(Apte, n.d.)</span></p>
+</blockquote>
+<blockquote>
+<p>“The idea of writing markup inside text wasn’t especially novel; it has been
+used from 1970’s runoff (the UNIX family of printer-preparation utilities) to
+today’s HTML tags. TeX was new in that it captured key concepts necessary for
+realistic typesetting and formalized them.” <span class="citation">(Apte, n.d.)</span></p>
+</blockquote>
+<blockquote>
+<p>“With these higher-level commands, the free TeX engine, and the LaTeX book,
+the use of TeX exploded. The macro file has since evolved and changed names, but
+authors still typically run the program called latex or its variants. Hence,
+most people who write TeX manuscripts know the program as LaTeX and the commands
+they use as LaTeX commands.” <span class="citation">(Apte, n.d.)</span></p>
+</blockquote>
+<blockquote>
+<p>“The effect of LaTeX on scientific and technical publishing has been profound.
+Precise typesetting is critical, particularly for conveying concepts using
+chemical and mathematical formulas, algorithms, and similar constructs. The
+sheer volume of papers, journals, books, and other publications generated in the
+modern world is far beyond the throughput possible via manual typesetting. And
+TeX enables automation without losing precision. Thanks to LaTeX, book authors
+can generate camera-ready copy on their own. Most academic and journal
+publishers accept article manuscripts written in LaTeX, and there’s even an open
+archive maintained by Cornell University where authors of papers in physics,
+chemistry, and other disciplines can directly submit their LaTeX manuscripts for
+open viewing. Over 10,000 manuscripts are submitted to this archive every month
+from all over the world.” <span class="citation">(Apte, n.d.)</span></p>
+</blockquote>
+<blockquote>
+<p>“For many users, a practical difficulty with typesetting using TeX is
+preparing the manuscripts. When TeX was first developed, technical authors were
+accustomed to using plain-text editors like WordStar, vi, or Emacs with a
+computer keyboard. The idea of marking up their text with commands and running
+the manuscript through a typesetting engine felt natural to them. Today’s
+typesetters, particularly desktop publishers, have a different mental model.
+They expect to see the output in graphical form and then to visually make edits
+with a mouse and keyboard, as they would in any WYSIWYG program. They might not
+be too picky about the quality of the output, but they appreciate design
+capabilities, such as the ability to flow text around curved outlines. Many
+print products are now produced with tools like Microsoft Word for this very
+reason. TeX authors cannot do the same work as easily.” <span class="citation">(Apte, n.d.)</span></p>
+</blockquote>
 </div>
 <div id="subsection-2-14" class="section level3">
 <h3><span class="header-section-number">3.8.2</span> Subsection 2</h3>

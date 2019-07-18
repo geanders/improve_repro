@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta property="og:title" content="2.11 Using git and GitLab to implement version control | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
 <meta property="og:type" content="book" />
 
@@ -52,9 +50,13 @@
 <li><a href="2-1-separating-data-recording-and-analysis.html#discussion-questions"><span class="toc-section-number">2.1.4</span> Discussion questions</a></li>
 </ul></li>
 <li class="has-sub"><a href="2-2-principles-and-power-of-structured-data-formats.html#principles-and-power-of-structured-data-formats"><span class="toc-section-number">2.2</span> Principles and power of structured data formats</a><ul>
-<li><a href="2-2-principles-and-power-of-structured-data-formats.html#characteristics-of-a-structured-data-format"><span class="toc-section-number">2.2.1</span> Characteristics of a structured data format</a></li>
-<li><a href="2-2-principles-and-power-of-structured-data-formats.html#benefits-of-a-structured-data-format"><span class="toc-section-number">2.2.2</span> Benefits of a structured data format</a></li>
-<li><a href="2-2-principles-and-power-of-structured-data-formats.html#applied-exercise"><span class="toc-section-number">2.2.3</span> Applied exercise</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#data-recording-standards"><span class="toc-section-number">2.2.1</span> Data recording standards</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#defining-data-standards-for-a-research-group"><span class="toc-section-number">2.2.2</span> Defining data standards for a research group</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#two-dimensional-structured-data-format"><span class="toc-section-number">2.2.3</span> Two-dimensional structured data format</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#saving-two-dimensional-structured-data-in-plain-text-file-formats"><span class="toc-section-number">2.2.4</span> Saving two-dimensional structured data in plain text file formats</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#occassions-for-more-complex-data-structures-and-file-formats"><span class="toc-section-number">2.2.5</span> Occassions for more complex data structures and file formats</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#levels-of-standardizationresearch-group-to-research-community"><span class="toc-section-number">2.2.6</span> Levels of standardization—research group to research community</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#applied-exercise"><span class="toc-section-number">2.2.7</span> Applied exercise</a></li>
 </ul></li>
 <li class="has-sub"><a href="2-3-the-tidy-data-format.html#the-tidy-data-format"><span class="toc-section-number">2.3</span> The ‘tidy’ data format</a><ul>
 <li><a href="2-3-the-tidy-data-format.html#the-tidy-data-format-1"><span class="toc-section-number">2.3.1</span> The “tidy” data format</a></li>
@@ -172,6 +174,70 @@ research projects while maintaining version control</li>
 </ul>
 <div id="subsection-1-7" class="section level3">
 <h3><span class="header-section-number">2.11.1</span> Subsection 1</h3>
+<blockquote>
+<p>“When the system prints the prompt <code>$</code> and you type commands that get
+executed, it’s not the kernel that is talking to you, but a go-between called
+the command interpreter or <em>shell</em>. The shell is just an ordinary program like
+<code>date</code> or <code>who</code>, although it can do some remarkable things. The fact that the shell
+sits between you and the facilities of the kernel has real benefits, some of which
+we’ll talk about here. There are three main ones: (1) Filename shorthands: you can
+pick up a whole set of filenames as arguments to a program by specifying a
+pattern for the names—the shell will find the filenames that fit your pattern;
+(2) Input-output redirection: you can arrange for the output of any program to
+go into a file instead of onto the terminal, and for the input to come from
+a file instead of the terminal. Input and output can even be connected to
+other programs. (3) Personalizing the environment: you can define your own
+commands and shorthands.” <span class="citation">(Kernighan and Pike 1984)</span></p>
+</blockquote>
+<blockquote>
+<p>“Suppose you’re typing a large document like a book. Logically this divides into many small pieces,
+like chapters and perhaps sections. Physically it should be divided too, because it is cumbersome
+to edit large files. Thus you should type the document as a number of files. You might have separate
+files for each chapter, called ‘ch1’, ‘ch2’, etc. … With a systematic naming convention, you can tell at
+a glance where a particular file fits into the whole. What if you want to print the whole book? You could
+say <code>$ pr ch1.1 ch1.2 ch 1.3 ...</code>, but you would soon get bored typing filenames and start to make mistakes.
+This is where filename shorthand comes in. If you say <code>$ pr ch*</code> the shell takes the <code>*</code> to mean ‘any
+string of characters,’ so ch* is a pattern that matches all filenames in the current directory that
+begin with ch. The shell creates the list, in alphabetical order, and passes the list to <code>pr</code>. The
+<code>pr</code> command never sees the <code>*</code>; the pattern match that the shell does in the current directory
+generates aa list of strings that are passed to <code>pr</code>. The crucial point is that filename shorthand
+is not a property of the <code>pr</code> command, but a service of the shell. Thus you can use it to generate
+a sequence of filenames for <em>any</em> command.” <span class="citation">(Kernighan and Pike 1984)</span></p>
+</blockquote>
+<blockquote>
+<p>“One of the virtues of the Unix system is that there are several ways to bring it closer to
+your personal taste or the conventions of your local computing environmentl. … If there is a file
+named ‘.profile’ in your login directory, the shell will execute the commands in it when you log in,
+before printing the first prompt. So you can put commands into ‘.profile’ to set up your environment
+as you like it, and they will be executed every time you log in. …
+Some of the properties of the shell are actually controlled by so-called <em>shell variables</em>, with
+values that you can access and set yourself. For example, the prompt string, which we have been showing
+as <code>$</code>, is acually stored in a shell variable called ‘PS1’, and you can set it to anything you like, like
+this <code>PS1='Yes dear?'</code>. … Probably the most useful shell variable is the one that controls where the shell
+looks for commands. Recall that when you type the name of a command, the shell normally looks for it
+first in the current directory, then in ‘/bin’, and then in ‘/usr/bin’. This sequence of directories
+is called the <em>search path</em>, and is stored in a shell variable called ‘PATH’. If the default search
+path isn’t what you want, you can change it, again usually in your ‘.profile’. … It is also possible
+to use variables for abbreviation. If you find yourself frequently referring to some directory with
+a long name, it might be worthwhile adding a line like <code>d=/horribly/long/directory/name</code> to your profile,
+so that you can say things like <code>$cd $d</code>. Personal variables like <code>d</code> are conventionally spelled
+in lower case to distinguish them from those used by the shell itself, like <code>PATH</code>.” <span class="citation">(Kernighan and Pike 1984)</span></p>
+</blockquote>
+<blockquote>
+<p>“The culmination of your login efforts is a <em>prompt</em>, usually a single character, indicating that the
+system is ready to accept commands from you. The prompt is most likely to be a dolloar sign or a percent
+sign, but you can change it to anything you like… The prompt is actually printed by a program called
+the <em>command interpreter</em> or <em>shell</em>, which is your main interface to the system. … Once you receive
+the prompt, you can type <em>commands</em>, which are requests that the system do something. We will use <em>program</em>
+as a synonym for command.” <span class="citation">(Kernighan and Pike 1984)</span></p>
+</blockquote>
+<blockquote>
+<p>“While checksums are a great method to check if files are different, they don’t tell
+us <em>how</em> the files differ. One approach to this is to compute the <em>diff</em> between
+two files using the Unix tool <em>diff</em>. Unix’s <em>diff</em> works line by line, and outputs
+blocks (called <em>hunks</em>) that differ between files (resembling Git’s <em>git diff</em> command).”
+<span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
 </div>
 <div id="subsection-2-6" class="section level3">
 <h3><span class="header-section-number">2.11.2</span> Subsection 2</h3>

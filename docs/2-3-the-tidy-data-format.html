@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta property="og:title" content="2.3 The ‘tidy’ data format | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
 <meta property="og:type" content="book" />
 
@@ -52,9 +50,13 @@
 <li><a href="2-1-separating-data-recording-and-analysis.html#discussion-questions"><span class="toc-section-number">2.1.4</span> Discussion questions</a></li>
 </ul></li>
 <li class="has-sub"><a href="2-2-principles-and-power-of-structured-data-formats.html#principles-and-power-of-structured-data-formats"><span class="toc-section-number">2.2</span> Principles and power of structured data formats</a><ul>
-<li><a href="2-2-principles-and-power-of-structured-data-formats.html#characteristics-of-a-structured-data-format"><span class="toc-section-number">2.2.1</span> Characteristics of a structured data format</a></li>
-<li><a href="2-2-principles-and-power-of-structured-data-formats.html#benefits-of-a-structured-data-format"><span class="toc-section-number">2.2.2</span> Benefits of a structured data format</a></li>
-<li><a href="2-2-principles-and-power-of-structured-data-formats.html#applied-exercise"><span class="toc-section-number">2.2.3</span> Applied exercise</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#data-recording-standards"><span class="toc-section-number">2.2.1</span> Data recording standards</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#defining-data-standards-for-a-research-group"><span class="toc-section-number">2.2.2</span> Defining data standards for a research group</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#two-dimensional-structured-data-format"><span class="toc-section-number">2.2.3</span> Two-dimensional structured data format</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#saving-two-dimensional-structured-data-in-plain-text-file-formats"><span class="toc-section-number">2.2.4</span> Saving two-dimensional structured data in plain text file formats</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#occassions-for-more-complex-data-structures-and-file-formats"><span class="toc-section-number">2.2.5</span> Occassions for more complex data structures and file formats</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#levels-of-standardizationresearch-group-to-research-community"><span class="toc-section-number">2.2.6</span> Levels of standardization—research group to research community</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#applied-exercise"><span class="toc-section-number">2.2.7</span> Applied exercise</a></li>
 </ul></li>
 <li class="has-sub"><a href="2-3-the-tidy-data-format.html#the-tidy-data-format"><span class="toc-section-number">2.3</span> The ‘tidy’ data format</a><ul>
 <li><a href="2-3-the-tidy-data-format.html#the-tidy-data-format-1"><span class="toc-section-number">2.3.1</span> The “tidy” data format</a></li>
@@ -170,8 +172,179 @@ implementation of a structure data format can improve the ease and efficiency of
 <li>Explain the difference between the a structured data format (general concept)
 and the ‘tidy’ data format (one popular implementation)</li>
 </ul>
+<p>In the previous module, we explained the benefits of saving data in a structured
+format, and in particular using a two-dimensional format saved to a plain text
+file when possible. In this section, we’ll talk about the “tidy text” format—a
+set of principles to use when structuring two-dimensional tabular data. These
+principles cover some basic rules for ordering the data, and the resulting datasets
+can be very easily worked with, including to clean, model, and visualize the
+data, using a series of open-source tools on the R platform called the “tidyverse”.
+These characteristics mean that, if you are planning to use a standardized data
+format for recording experimental data in your research group, you may want to
+consider creating on that adheres to the “tidy data” rules.</p>
+<p>To explain more simply, it is usually very little work to record data in a structure
+that follows the “tidy data” principles, especially if you are planning to record
+the data in a two-dimensional, tabular format already, and following these
+principles can bring some big advantages. We explain these rules and provide
+examples of biomedical datasets that both comply and don’t comply with these
+principles, to help make it clearer how you could structure a “tidy-compliant”
+structure for recording experimental data for your own research.</p>
+<p>Since a key advantage of the “tidy data” format is that it works so well with
+R’s “tidyverse” tools, we’ll also talk a bit in this section about the use of
+scripting languages like R, and how using them to analyze and visualize the
+data you collect can improve the overall reproducibility of your research.</p>
+<p>The principles of “tidy data” were explained in a paper in [x] by [x]. The word
+“tidy” was used because … . It is not meant to apply that other formats are
+“dirty”, or that they include data that is incorrect or subpar. In fact, the
+same set of datapoints could be saved in a file in a way that is either “tidy”
+(in the sense of [paper] or untidy, depending only on how the data are organized
+across columns and rows.</p>
+<p>If the data is the same regardless of whether it’s “tidy” or not, then why all
+the fuss about following the “tidy” principles when you’re designing the format
+you’ll use to record your data? The magic here in this—if you follow these
+principles, then your data can be immediately input into a collection of powerful
+tools for visualizing and analyzing the data, without further cleaning steps.
+What’s more, all those tools (the set of tools is calld the “tidyverse”) will
+typically <em>output</em> your data in a “tidy” format, as well.</p>
+<p>Once you have tools that input and output data in the same way, it becomes very
+easy to model each of the tools as “small, sharp tools”—each one does one
+thing, and does it really well. That’s because, if each tool needs the same
+type of input and creates that same type of output, those tools can be chained
+together to solve complex problems. The alternative is to create large software
+tools, ones that do a lot to the input data before giving you some output.
+“Big” tools are harder to understand, and more importantly, they make it hard
+to adapt your own solutions, and to go beyond the analysis or visualization that
+the original tool creators were thinking of when they created it. Think of it this
+way—if you were writing an essay, how much more can you say when you can mix and
+match words to create your own sentences versus if you were made to combine
+pre-set sentences?</p>
+<p>These small tools can be combined together because they take the same input
+(data in a “tidy” format) and they output in the same format (also data in a
+“tidy” format). This is such a powerful idea that many of the best loved toys
+work on the same principle. Think of interlocking plastic block sets, like Lego.
+You can create almost anything with a large enough set of Legos, because they
+can be combined in almost any kind of way. Why? Because they all follow a
+standard size for the … on top of each block, and they all “input” … of that
+same size on the bottom of the block. That means they can be joined together in
+any order and combination, and as a result very complex structures can be
+created. It also means that each piece can be small and easy to understand—if
+you’re building a Lego structure, even something very fancy, you’ll probably use
+lots of rectangular brinks that are two … across and four … long, and that’s
+easy enough to describe that you could probably get a young child to help you
+find those pieces when you need them.</p>
+<p>We’ll next describe what rules a dataset’s format must follow for it to be
+“tidy”, and try to clarify how you can set up your data recording to follow
+these rules. In a later part of this module, we’ll talk more about the tidyverse
+tools that you can use with this data, as well as give some resources for
+finding out more about the tidyverse and how to use its tools.</p>
+<p>First, to be “tidy”, a dataset must be tabular and two-dimensional, a structured
+data format described in the previous module. It should not be saved in a
+hierarchical structure, like XML (although there are now tools for converting
+data from XML to a “tidy” format, so you may still be able to take advantage of
+the tidyverse even if you must use XML for your data recording).</p>
 <div id="the-tidy-data-format-1" class="section level3">
 <h3><span class="header-section-number">2.3.1</span> The “tidy” data format</h3>
+<blockquote>
+<p>“Software systems are transparent when they don’t have murky corners or hidden
+depths. Transparency is a passive quality. A program is passive when it is possible
+to form a simple mental model of its behavior that is actuaally predictive for all
+or most cases, because you can see through the machinery to what is actually going
+on.” <span class="citation">(Raymond 2003)</span></p>
+</blockquote>
+<blockquote>
+<p>“Software systems are discoverable when they include features that are designed
+to help you build in your mind a correct mental model of what they do and how they
+work. So, for example, good documentation helps discoverability to a programmer. Discoverability
+is an active quality. To achieve it in your software, you cannot merely fail to be obscure,
+you have to go out of your way to be helpful.” <span class="citation">(Raymond 2003)</span></p>
+</blockquote>
+<blockquote>
+<p>“Elegant code does much with little. Elegant code is not only correct but visibly,
+<em>transparently</em> correct. It does not merely communicate an algorithm to a computer,
+but also conveys insight and assurance to the mind of a human that reads it. By seeking
+elegance in our code, we build better code. Learning to write transparent code is a first,
+long step toward learning how to write elegant code—and taking care to make code
+discoverable helps us learn how to make it transparent. Elegant code is both transparent and
+discoverable.” <span class="citation">(Raymond 2003)</span></p>
+</blockquote>
+<blockquote>
+<p>“To design for transparency and discoverability, you need to apply every tactic for
+keeping your code simple, and also concentrate on the ways in which your code is a
+communication to other human beings. The first questions to ask, after ‘Will this design
+work?’ are ‘Will it be reaadable to other people? Is it elegant?’ We hope it is clear …
+that these questions are not fluff and that elegance is not a luxury. These qualities
+in the human reaction to software are essential for reducing its bugginess and
+increasing its long-term maintainability.” <span class="citation">(Raymond 2003)</span></p>
+</blockquote>
+<blockquote>
+<p>“The Unix style of design applies the do-one-thing-well approach at the level of
+cooperating programs as well as cooperating routines within a program,
+emphasizing small programs connected by well-defined interprocess communication
+or by shared files. Accordingly, the Unix operating system encourages us to break our
+programs down into simple subprocesses, and to concentrate on the interfaces between
+these subprocesses.” <span class="citation">(Raymond 2003)</span></p>
+</blockquote>
+<blockquote>
+<p>“The ability to combine programs [with piping] can be extremely useful. But the real
+win here is not cute combinations; it’s that because both pipes and <em>more(1)</em> exist,
+<em>other programs can be simpler</em>. Pipes mean that programs like <em>ls(1)</em> (and other
+programs that write to standard out) don’t have to grow their own pagers—and we’re
+saved from a word of a thousand built-in pagers (each, naturally, with its own divergent
+look and feel). Code bloat is avoided and global complexity reduced. As a bonus, if
+anyone needs to customize pager behavior, it can be done in <em>one</em> place, by changing
+<em>one</em> program. Indeed, multiple pagers can exist, and will all be useful with every application
+that writes to standard output.” <span class="citation">(Raymond 2003)</span></p>
+</blockquote>
+<blockquote>
+<p>“Unix was born in 1969 and has been in continuous production use ever since. That’s several
+geological eras by computer industry standards. … Unix’s durability and adaptability have
+been nothing short of astonishing. Other technologies have come and gone like mayflies.
+Machines have increased a thousand-fold in power, languages have mutated, industry practice
+has gone through multiple revolutions—and Unix hangs in there, still producing, still paying
+the bills, and still commanding loyalty from many of the best and brightest software technologists
+on the planet.” <span class="citation">(Raymond 2003)</span></p>
+</blockquote>
+<blockquote>
+<p>“One of the many consequences of the exponential power-versus-time curve in computing, and the
+corresponding pace of software development, is that 50% of what one knows becomes obsolete over
+every 18 months. Unix does not abolish this phenomenon, but does do a good job of containing it.
+There’s a bedrock of unchanging basics—languages, system calls, and tool invocations—that one
+can actually keep for entire years, even decades. Elsewhere it is impossible to predict what will
+be stable; even entire operating systems cycle out of use. Under Unix, there is a fairly sharp
+distinction between transient knowledge and lasting knowledge, and one can know ahead of time
+(with about 90% certainty) which category something is likely to fall in when one learns it. Thus
+the loyalty Unix commands.” <span class="citation">(Raymond 2003)</span></p>
+</blockquote>
+<blockquote>
+<p>“Unix is famous for being designed around the philosophy of small, sharp tools, each
+intended to do one thing well. This philosophy is enabled by using a common underlying
+format—the line-oriented, plain text file. Databases used for system administration
+(users and passwords, network configuration, and so on) are all kept as plain
+text files. … When a system crashes, you may be faced with only a minimal
+environment to restore it (you may not be able to access graphics drivers,
+for instance). Situations such as this can really make you appreciate the simplicity of
+plain text.” <span class="citation">(Hunt, Thomas, and Cunningham 2000)</span></p>
+</blockquote>
+<blockquote>
+<p>“Unix is the foundational computing environment in bioinformatics because its
+design is the antithesis of [a] inflexible and fragile approach. The Unix shell
+was designed to allow users to easily build complex programs by interfacing
+smaller modular programs together. This approach is the Unix philosophy:
+‘This is the Unix philosophy: Write programs that do one thing and do it well.
+Write programs to work together. Write programs to handle text streams, because
+that is a universal interface.’–Doug McIlory”. <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Passing the output of one program directly into the input of another
+program with pipes is a computationally efficient and simple way to interface
+Unix programs. This is another reason why bioinformaticians (and software engineers
+in general) like Unix. Pipes allow us to build larger, more complex tools from
+modular parts. It doesn’t matter what language a program is written in, either; pipes
+will work between anything as long as both programs understand the data passed
+between them. As the lowest common denominator between most programs, plain-text
+streams are often used—a point that McIlroy makes in his quote about the
+Unix philosophy.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
 </div>
 <div id="the-tidy-data-format-as-a-structured-data-format" class="section level3">
 <h3><span class="header-section-number">2.3.2</span> The “tidy” data format as a structured data format</h3>

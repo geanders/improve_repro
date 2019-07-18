@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="4.3 Simplify scripted pre-processing through R’s ‘tidyverse’ tools | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
+<meta property="og:type" content="book" />
+
+
+<meta property="og:description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
+<meta name="github-repo" content="rstudio/bookdown-demo" />
+
+<meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, and Gregory Robertson" />
+
+
+
+<meta name="description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing.">
+
+<title>4.3 Simplify scripted pre-processing through R’s ‘tidyverse’ tools | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
+
+<link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
+
+
+
+
+<link rel="stylesheet" href="toc.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li class="has-sub"><a href="index.html#overview"><span class="toc-section-number">1</span> Overview</a><ul>
+<li class="has-sub"><a href="1-1-license.html#license"><span class="toc-section-number">1.1</span> License</a><ul>
+<li><a href="1-1-license.html#extra-quotes-for-future-revisions"><span class="toc-section-number">1.1.1</span> Extra quotes for future revisions</a></li>
+</ul></li>
+</ul></li>
+<li class="has-sub"><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a><ul>
+<li class="has-sub"><a href="2-1-separating-data-recording-and-analysis.html#separating-data-recording-and-analysis"><span class="toc-section-number">2.1</span> Separating data recording and analysis</a><ul>
+<li><a href="2-1-separating-data-recording-and-analysis.html#data-recording-versus-data-analysis"><span class="toc-section-number">2.1.1</span> Data recording versus data analysis</a></li>
+<li><a href="2-1-separating-data-recording-and-analysis.html#hazards-of-combining-recording-and-analysis"><span class="toc-section-number">2.1.2</span> Hazards of combining recording and analysis</a></li>
+<li><a href="2-1-separating-data-recording-and-analysis.html#approaches-to-separate-recording-and-analysis"><span class="toc-section-number">2.1.3</span> Approaches to separate recording and analysis</a></li>
+<li><a href="2-1-separating-data-recording-and-analysis.html#discussion-questions"><span class="toc-section-number">2.1.4</span> Discussion questions</a></li>
+<li><a href="2-1-separating-data-recording-and-analysis.html#additional-notes-quotes-for-revisions"><span class="toc-section-number">2.1.5</span> Additional notes / quotes for revisions</a></li>
+</ul></li>
+<li class="has-sub"><a href="2-2-principles-and-power-of-structured-data-formats.html#principles-and-power-of-structured-data-formats"><span class="toc-section-number">2.2</span> Principles and power of structured data formats</a><ul>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#focus-on-data-up-to-recording-less-on-for-post-recording"><span class="toc-section-number">2.2.1</span> Focus on data up to recording, less on for post-recording</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#characteristics-of-a-structured-data-format"><span class="toc-section-number">2.2.2</span> Characteristics of a structured data format</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#benefits-of-a-structured-data-format"><span class="toc-section-number">2.2.3</span> Benefits of a structured data format</a></li>
+</ul></li>
+</ul></li>
+<li class="has-sub"><a href="3-benefits-of-a-plain-text-format.html#benefits-of-a-plain-text-format"><span class="toc-section-number">3</span> Benefits of a plain text format</a><ul>
+<li><a href="3-benefits-of-a-plain-text-format.html#when-two-dimensional-structured-data-formats-might-not-work"><span class="toc-section-number">3.0.1</span> When two-dimensional structured data formats might not work</a></li>
+<li><a href="3-benefits-of-a-plain-text-format.html#recording-expermental-data-in-a-structured-format"><span class="toc-section-number">3.0.2</span> Recording expermental data in a structured format</a></li>
+<li><a href="3-benefits-of-a-plain-text-format.html#applied-exercise"><span class="toc-section-number">3.0.3</span> Applied exercise</a></li>
+<li class="has-sub"><a href="3-1-the-tidy-data-format.html#the-tidy-data-format"><span class="toc-section-number">3.1</span> The ‘tidy’ data format</a><ul>
+<li><a href="3-1-the-tidy-data-format.html#the-tidy-data-format-1"><span class="toc-section-number">3.1.1</span> The “tidy” data format</a></li>
+<li><a href="3-1-the-tidy-data-format.html#the-tidy-data-format-as-a-structured-data-format"><span class="toc-section-number">3.1.2</span> The “tidy” data format as a structured data format</a></li>
+<li><a href="3-1-the-tidy-data-format.html#practice-quiz"><span class="toc-section-number">3.1.3</span> Practice quiz</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-2-designing-templates-for-tidy-data-collection.html#designing-templates-for-tidy-data-collection"><span class="toc-section-number">3.2</span> Designing templates for “tidy” data collection</a><ul>
+<li><a href="3-2-designing-templates-for-tidy-data-collection.html#subsection-1"><span class="toc-section-number">3.2.1</span> Subsection 1</a></li>
+<li><a href="3-2-designing-templates-for-tidy-data-collection.html#applied-exercise-1"><span class="toc-section-number">3.2.2</span> Applied exercise</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-3-example-creating-a-template-for-tidy-data-collection.html#example-creating-a-template-for-tidy-data-collection"><span class="toc-section-number">3.3</span> Example: Creating a template for “tidy” data collection</a><ul>
+<li><a href="3-3-example-creating-a-template-for-tidy-data-collection.html#subsection-1-1"><span class="toc-section-number">3.3.1</span> Subsection 1</a></li>
+<li><a href="3-3-example-creating-a-template-for-tidy-data-collection.html#subsection-2"><span class="toc-section-number">3.3.2</span> Subsection 2</a></li>
+<li><a href="3-3-example-creating-a-template-for-tidy-data-collection.html#discussion-questions-1"><span class="toc-section-number">3.3.3</span> Discussion questions</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-4-power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files.html#power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files"><span class="toc-section-number">3.4</span> Power of using a single structured ‘Project’ directory for storing and tracking research project files</a><ul>
+<li><a href="3-4-power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files.html#subsection-1-2"><span class="toc-section-number">3.4.1</span> Subsection 1</a></li>
+<li><a href="3-4-power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files.html#subsection-2-1"><span class="toc-section-number">3.4.2</span> Subsection 2</a></li>
+<li><a href="3-4-power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files.html#practice-quiz-1"><span class="toc-section-number">3.4.3</span> Practice quiz</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-5-creating-project-templates.html#creating-project-templates"><span class="toc-section-number">3.5</span> Creating ‘Project’ templates</a><ul>
+<li><a href="3-5-creating-project-templates.html#subsection-1-3"><span class="toc-section-number">3.5.1</span> Subsection 1</a></li>
+<li><a href="3-5-creating-project-templates.html#subsection-2-2"><span class="toc-section-number">3.5.2</span> Subsection 2</a></li>
+<li><a href="3-5-creating-project-templates.html#discussion-questions-2"><span class="toc-section-number">3.5.3</span> Discussion questions</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-6-example-creating-a-project-template.html#example-creating-a-project-template"><span class="toc-section-number">3.6</span> Example: Creating a ‘Project’ template</a><ul>
+<li><a href="3-6-example-creating-a-project-template.html#subsection-1-4"><span class="toc-section-number">3.6.1</span> Subsection 1</a></li>
+<li><a href="3-6-example-creating-a-project-template.html#subsection-2-3"><span class="toc-section-number">3.6.2</span> Subsection 2</a></li>
+<li><a href="3-6-example-creating-a-project-template.html#applied-exercise-2"><span class="toc-section-number">3.6.3</span> Applied exercise</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-7-harnessing-version-control-for-transparent-data-recording.html#harnessing-version-control-for-transparent-data-recording"><span class="toc-section-number">3.7</span> Harnessing version control for transparent data recording</a><ul>
+<li><a href="3-7-harnessing-version-control-for-transparent-data-recording.html#subsection-1-5"><span class="toc-section-number">3.7.1</span> Subsection 1</a></li>
+<li><a href="3-7-harnessing-version-control-for-transparent-data-recording.html#subsection-2-4"><span class="toc-section-number">3.7.2</span> Subsection 2</a></li>
+<li><a href="3-7-harnessing-version-control-for-transparent-data-recording.html#discussion-questions-3"><span class="toc-section-number">3.7.3</span> Discussion questions</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-8-enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms.html#enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms"><span class="toc-section-number">3.8</span> Enhance the reproducibility of collaborative research with version control platforms</a><ul>
+<li><a href="3-8-enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms.html#subsection-1-6"><span class="toc-section-number">3.8.1</span> Subsection 1</a></li>
+<li><a href="3-8-enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms.html#subsection-2-5"><span class="toc-section-number">3.8.2</span> Subsection 2</a></li>
+<li><a href="3-8-enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms.html#discussion-questions-4"><span class="toc-section-number">3.8.3</span> Discussion questions</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-9-using-git-and-gitlab-to-implement-version-control.html#using-git-and-gitlab-to-implement-version-control"><span class="toc-section-number">3.9</span> Using git and GitLab to implement version control</a><ul>
+<li><a href="3-9-using-git-and-gitlab-to-implement-version-control.html#subsection-1-7"><span class="toc-section-number">3.9.1</span> Subsection 1</a></li>
+<li><a href="3-9-using-git-and-gitlab-to-implement-version-control.html#subsection-2-6"><span class="toc-section-number">3.9.2</span> Subsection 2</a></li>
+<li><a href="3-9-using-git-and-gitlab-to-implement-version-control.html#applied-exercise-3"><span class="toc-section-number">3.9.3</span> Applied exercise</a></li>
+</ul></li>
+</ul></li>
+<li class="has-sub"><a href="4-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">4</span> Experimental Data Preprocessing</a><ul>
+<li class="has-sub"><a href="4-1-principles-and-benefits-of-scripted-pre-processing-of-experimental-data.html#principles-and-benefits-of-scripted-pre-processing-of-experimental-data"><span class="toc-section-number">4.1</span> Principles and benefits of scripted pre-processing of experimental data</a><ul>
+<li><a href="4-1-principles-and-benefits-of-scripted-pre-processing-of-experimental-data.html#subsection-1-8"><span class="toc-section-number">4.1.1</span> Subsection 1</a></li>
+<li><a href="4-1-principles-and-benefits-of-scripted-pre-processing-of-experimental-data.html#subsection-2-7"><span class="toc-section-number">4.1.2</span> Subsection 2</a></li>
+<li><a href="4-1-principles-and-benefits-of-scripted-pre-processing-of-experimental-data.html#discussion-questions-5"><span class="toc-section-number">4.1.3</span> Discussion questions</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-2-introduction-to-scripted-data-pre-processing-in-r.html#introduction-to-scripted-data-pre-processing-in-r"><span class="toc-section-number">4.2</span> Introduction to scripted data pre-processing in R</a><ul>
+<li><a href="4-2-introduction-to-scripted-data-pre-processing-in-r.html#subsection-1-9"><span class="toc-section-number">4.2.1</span> Subsection 1</a></li>
+<li><a href="4-2-introduction-to-scripted-data-pre-processing-in-r.html#subsection-2-8"><span class="toc-section-number">4.2.2</span> Subsection 2</a></li>
+<li><a href="4-2-introduction-to-scripted-data-pre-processing-in-r.html#applied-exercise-4"><span class="toc-section-number">4.2.3</span> Applied exercise</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-3-simplify-scripted-pre-processing-through-rs-tidyverse-tools.html#simplify-scripted-pre-processing-through-rs-tidyverse-tools"><span class="toc-section-number">4.3</span> Simplify scripted pre-processing through R’s ‘tidyverse’ tools</a><ul>
+<li><a href="4-3-simplify-scripted-pre-processing-through-rs-tidyverse-tools.html#subsection-1-10"><span class="toc-section-number">4.3.1</span> Subsection 1</a></li>
+<li><a href="4-3-simplify-scripted-pre-processing-through-rs-tidyverse-tools.html#subsection-2-9"><span class="toc-section-number">4.3.2</span> Subsection 2</a></li>
+<li><a href="4-3-simplify-scripted-pre-processing-through-rs-tidyverse-tools.html#practice-quiz-2"><span class="toc-section-number">4.3.3</span> Practice quiz</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-4-complex-data-types-in-experimental-data-pre-processing.html#complex-data-types-in-experimental-data-pre-processing"><span class="toc-section-number">4.4</span> Complex data types in experimental data pre-processing</a><ul>
+<li><a href="4-4-complex-data-types-in-experimental-data-pre-processing.html#subsection-1-11"><span class="toc-section-number">4.4.1</span> Subsection 1</a></li>
+<li><a href="4-4-complex-data-types-in-experimental-data-pre-processing.html#subsection-2-10"><span class="toc-section-number">4.4.2</span> Subsection 2</a></li>
+<li><a href="4-4-complex-data-types-in-experimental-data-pre-processing.html#practice-quiz-3"><span class="toc-section-number">4.4.3</span> Practice quiz</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-5-complex-data-types-in-r-and-bioconductor.html#complex-data-types-in-r-and-bioconductor"><span class="toc-section-number">4.5</span> Complex data types in R and Bioconductor</a><ul>
+<li><a href="4-5-complex-data-types-in-r-and-bioconductor.html#subsection-1-12"><span class="toc-section-number">4.5.1</span> Subsection 1</a></li>
+<li><a href="4-5-complex-data-types-in-r-and-bioconductor.html#subsection-2-11"><span class="toc-section-number">4.5.2</span> Subsection 2</a></li>
+<li><a href="4-5-complex-data-types-in-r-and-bioconductor.html#applied-exercise-5"><span class="toc-section-number">4.5.3</span> Applied exercise</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-6-example-converting-from-complex-to-tidy-data-formats.html#example-converting-from-complex-to-tidy-data-formats"><span class="toc-section-number">4.6</span> Example: Converting from complex to ‘tidy’ data formats</a><ul>
+<li><a href="4-6-example-converting-from-complex-to-tidy-data-formats.html#subsection-1-13"><span class="toc-section-number">4.6.1</span> Subsection 1</a></li>
+<li><a href="4-6-example-converting-from-complex-to-tidy-data-formats.html#subsection-2-12"><span class="toc-section-number">4.6.2</span> Subsection 2</a></li>
+<li><a href="4-6-example-converting-from-complex-to-tidy-data-formats.html#applied-exercise-6"><span class="toc-section-number">4.6.3</span> Applied exercise</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-7-introduction-to-reproducible-data-pre-processing-protocols.html#introduction-to-reproducible-data-pre-processing-protocols"><span class="toc-section-number">4.7</span> Introduction to reproducible data pre-processing protocols</a><ul>
+<li><a href="4-7-introduction-to-reproducible-data-pre-processing-protocols.html#subsection-1-14"><span class="toc-section-number">4.7.1</span> Subsection 1</a></li>
+<li><a href="4-7-introduction-to-reproducible-data-pre-processing-protocols.html#subsection-2-13"><span class="toc-section-number">4.7.2</span> Subsection 2</a></li>
+<li><a href="4-7-introduction-to-reproducible-data-pre-processing-protocols.html#discussion-questions-6"><span class="toc-section-number">4.7.3</span> Discussion questions</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#rmarkdown-for-creating-reproducible-data-pre-processing-protocols"><span class="toc-section-number">4.8</span> RMarkdown for creating reproducible data pre-processing protocols</a><ul>
+<li><a href="4-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#subsection-1-15"><span class="toc-section-number">4.8.1</span> Subsection 1</a></li>
+<li><a href="4-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#subsection-2-14"><span class="toc-section-number">4.8.2</span> Subsection 2</a></li>
+<li><a href="4-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#applied-exercise-7"><span class="toc-section-number">4.8.3</span> Applied exercise</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-9-example-creating-a-reproducible-data-pre-processing-protocol.html#example-creating-a-reproducible-data-pre-processing-protocol"><span class="toc-section-number">4.9</span> Example: Creating a reproducible data pre-processing protocol</a><ul>
+<li><a href="4-9-example-creating-a-reproducible-data-pre-processing-protocol.html#subsection-1-16"><span class="toc-section-number">4.9.1</span> Subsection 1</a></li>
+<li><a href="4-9-example-creating-a-reproducible-data-pre-processing-protocol.html#subsection-2-15"><span class="toc-section-number">4.9.2</span> Subsection 2</a></li>
+<li><a href="4-9-example-creating-a-reproducible-data-pre-processing-protocol.html#practice-quiz-4"><span class="toc-section-number">4.9.3</span> Practice quiz</a></li>
+</ul></li>
+</ul></li>
+<li><a href="5-references.html#references"><span class="toc-section-number">5</span> References</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="simplify-scripted-pre-processing-through-rs-tidyverse-tools" class="section level2">
+<h2><span class="header-section-number">4.3</span> Simplify scripted pre-processing through R’s ‘tidyverse’ tools</h2>
+<p>The R programming language now includes a collection of ‘tidyverse’ extension
+packages that enable user-friendly yet powerful work with experimental data,
+including pre-processing and exploratory visualizations. The principle behind
+the ‘tidyverse’ is that a collection of simple, general tools can be joined
+together to solve complex problems, as long as a consistent format is used for
+the input and output of each tool (the ‘tidy’ data format taught in other
+modules). In this module, we will explain why this ‘tidyverse’ system is so
+powerful and how it can be leveraged within biomedical research, especially for
+reproducibly pre-processing experimental data.</p>
+<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
+<ul>
+<li>Define R’s ‘tidyverse’ system</li>
+<li>Explain how the ‘tidyverse’ collection of packages can be both user-friendly
+and powerful in solving many complex tasks with data</li>
+<li>Describe the difference between base R and R’s ‘tidyverse’.</li>
+</ul>
+<div id="subsection-1-10" class="section level3">
+<h3><span class="header-section-number">4.3.1</span> Subsection 1</h3>
+<blockquote>
+<p>“There is a now-old trope in the world of programming. It’s called the ‘worse is
+better’ debate; it seeks to explain why the Unix operating systems (which include
+Mac OS X these days), made up of so many little interchangeable parts, were so much
+more successful in the marketplace than LISP systems, which were ideologically pure,
+based on a single languagae (again, LISP), which itself was exceptionally simple,
+a favorite of ‘serious’ hackers everywhere. It’s too complex to rehash here, but one
+of the ideas inherent within ‘worse is better’ is thata systems made up of many
+simple pieces that can be roped together, even if those pieces don’t share a consistent
+interface, are likely to be more successful than systems that are designed with consistency
+in every regard. And it strikes me that this is a fundamental drama of new technologies.
+Unix beat out the LISP machines. If you consider mobile handsets, many of which run
+descendants of Unit (iOS and Andriod), Unix beat out Windows as well. And HTML5 beat out
+all of the various initiatives to create a single unified web. It nods to accessibility:
+it doesn’t get in the way of those who want to make something huge and interconnected.
+But it doesn’t enforce; it doesn’t seek to change the behavior of page creators in the
+same way that such lost standards as XHTML 2.0 (which eremged from the offices of
+the World Wide Web Consortium, and then disappeared under the weight of its own
+intentions) once did. It’s not a bad place to end up. It means that there is no
+single framework, no set of easy rules to lear, no overarching principles that,
+once learned, can make the web appear like a golden statue atop a mountain. There
+are just components: HTML to get the words on the page, forms to get people to
+write in, videos and images to put up pictures, moving or otherwise, and
+JavaScript to make everything dance.” <span class="citation">(Ford 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“One of the fundamental contributions of the Unix system [is] the idea of a <em>pipe</em>.
+A pipe is a way to connect the output of one program to the input of another program
+without any temporary file; a <em>pipeline</em> is a connection of two or more programs through
+pipes. … Any program that reads from a terminal can read from a pipe instead; any program
+that writes on the terminal can write to a pipe. … The programs in a pipeline actually
+run at the same time, not one after another. This means that the programs in a pipeline
+can be interactive; the kernel looks after whatever scheduling and synchronization is needed
+to make it all work. As you probably suspect by now, the shell arranges things when you
+ask for a pipe; the individual programs are oblivious to the redirection.” <span class="citation">(Kernighan and Pike 1984)</span></p>
+</blockquote>
+<blockquote>
+<p>“Even though the Unix system introduces a number of innovative programs and techniques,
+no single program or idea makes it work well. Instead, what makes it effective is an approach
+to programming, a philosophy of using the computer. Although that philosophy can’t be written
+down in a single sentence, at its heart is the idea that the power of a system comes more from
+the relationships among programs than from the programs themselves. Many Unix programs do
+quite trivial things in isolation, but, combined with other programs, become general and
+useful tools.” <span class="citation">(Kernighan and Pike 1984)</span></p>
+</blockquote>
+<blockquote>
+<p>“What is ‘Unix’? In the narrowest sense, it is a time-sharing operating system <em>kernel</em>:
+a program that controls the resources of a computer and allocates them among its users.
+It lets users run their programs; it controls the peripheral devices (discs, terminals,
+printers, and the like) connected to the machine; and it provides a file system that
+manages the long-term storage of information such as programs, data, and documents.
+In a broader sense, ‘Unix’ is often taken to include not only the kernel, but also
+essential programs like compiles, editors, command languages, programs for copying and
+printing files, and so on. Still more broadly, ‘Unix’ may even include programs
+develpoed by you or others to be run on your system, such as tools for document
+preparation, routines for statistical analysis, and graphics packages.” <span class="citation">(Kernighan and Pike 1984)</span></p>
+</blockquote>
+</div>
+<div id="subsection-2-9" class="section level3">
+<h3><span class="header-section-number">4.3.2</span> Subsection 2</h3>
+</div>
+<div id="practice-quiz-2" class="section level3">
+<h3><span class="header-section-number">4.3.3</span> Practice quiz</h3>
+
+</div>
+</div>
+<p style="text-align: center;">
+<a href="4-2-introduction-to-scripted-data-pre-processing-in-r.html"><button class="btn btn-default">Previous</button></a>
+<a href="4-4-complex-data-types-in-experimental-data-pre-processing.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+
+</body>
+</html>

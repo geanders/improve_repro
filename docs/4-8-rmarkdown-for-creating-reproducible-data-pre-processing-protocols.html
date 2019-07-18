@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="4.8 RMarkdown for creating reproducible data pre-processing protocols | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
+<meta property="og:type" content="book" />
+
+
+<meta property="og:description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
+<meta name="github-repo" content="rstudio/bookdown-demo" />
+
+<meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, and Gregory Robertson" />
+
+
+
+<meta name="description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing.">
+
+<title>4.8 RMarkdown for creating reproducible data pre-processing protocols | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
+
+<link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
+
+
+
+
+<link rel="stylesheet" href="toc.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li class="has-sub"><a href="index.html#overview"><span class="toc-section-number">1</span> Overview</a><ul>
+<li class="has-sub"><a href="1-1-license.html#license"><span class="toc-section-number">1.1</span> License</a><ul>
+<li><a href="1-1-license.html#extra-quotes-for-future-revisions"><span class="toc-section-number">1.1.1</span> Extra quotes for future revisions</a></li>
+</ul></li>
+</ul></li>
+<li class="has-sub"><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a><ul>
+<li class="has-sub"><a href="2-1-separating-data-recording-and-analysis.html#separating-data-recording-and-analysis"><span class="toc-section-number">2.1</span> Separating data recording and analysis</a><ul>
+<li><a href="2-1-separating-data-recording-and-analysis.html#data-recording-versus-data-analysis"><span class="toc-section-number">2.1.1</span> Data recording versus data analysis</a></li>
+<li><a href="2-1-separating-data-recording-and-analysis.html#hazards-of-combining-recording-and-analysis"><span class="toc-section-number">2.1.2</span> Hazards of combining recording and analysis</a></li>
+<li><a href="2-1-separating-data-recording-and-analysis.html#approaches-to-separate-recording-and-analysis"><span class="toc-section-number">2.1.3</span> Approaches to separate recording and analysis</a></li>
+<li><a href="2-1-separating-data-recording-and-analysis.html#discussion-questions"><span class="toc-section-number">2.1.4</span> Discussion questions</a></li>
+<li><a href="2-1-separating-data-recording-and-analysis.html#additional-notes-quotes-for-revisions"><span class="toc-section-number">2.1.5</span> Additional notes / quotes for revisions</a></li>
+</ul></li>
+<li class="has-sub"><a href="2-2-principles-and-power-of-structured-data-formats.html#principles-and-power-of-structured-data-formats"><span class="toc-section-number">2.2</span> Principles and power of structured data formats</a><ul>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#focus-on-data-up-to-recording-less-on-for-post-recording"><span class="toc-section-number">2.2.1</span> Focus on data up to recording, less on for post-recording</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#characteristics-of-a-structured-data-format"><span class="toc-section-number">2.2.2</span> Characteristics of a structured data format</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#benefits-of-a-structured-data-format"><span class="toc-section-number">2.2.3</span> Benefits of a structured data format</a></li>
+</ul></li>
+</ul></li>
+<li class="has-sub"><a href="3-benefits-of-a-plain-text-format.html#benefits-of-a-plain-text-format"><span class="toc-section-number">3</span> Benefits of a plain text format</a><ul>
+<li><a href="3-benefits-of-a-plain-text-format.html#when-two-dimensional-structured-data-formats-might-not-work"><span class="toc-section-number">3.0.1</span> When two-dimensional structured data formats might not work</a></li>
+<li><a href="3-benefits-of-a-plain-text-format.html#recording-expermental-data-in-a-structured-format"><span class="toc-section-number">3.0.2</span> Recording expermental data in a structured format</a></li>
+<li><a href="3-benefits-of-a-plain-text-format.html#applied-exercise"><span class="toc-section-number">3.0.3</span> Applied exercise</a></li>
+<li class="has-sub"><a href="3-1-the-tidy-data-format.html#the-tidy-data-format"><span class="toc-section-number">3.1</span> The ‘tidy’ data format</a><ul>
+<li><a href="3-1-the-tidy-data-format.html#the-tidy-data-format-1"><span class="toc-section-number">3.1.1</span> The “tidy” data format</a></li>
+<li><a href="3-1-the-tidy-data-format.html#the-tidy-data-format-as-a-structured-data-format"><span class="toc-section-number">3.1.2</span> The “tidy” data format as a structured data format</a></li>
+<li><a href="3-1-the-tidy-data-format.html#practice-quiz"><span class="toc-section-number">3.1.3</span> Practice quiz</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-2-designing-templates-for-tidy-data-collection.html#designing-templates-for-tidy-data-collection"><span class="toc-section-number">3.2</span> Designing templates for “tidy” data collection</a><ul>
+<li><a href="3-2-designing-templates-for-tidy-data-collection.html#subsection-1"><span class="toc-section-number">3.2.1</span> Subsection 1</a></li>
+<li><a href="3-2-designing-templates-for-tidy-data-collection.html#applied-exercise-1"><span class="toc-section-number">3.2.2</span> Applied exercise</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-3-example-creating-a-template-for-tidy-data-collection.html#example-creating-a-template-for-tidy-data-collection"><span class="toc-section-number">3.3</span> Example: Creating a template for “tidy” data collection</a><ul>
+<li><a href="3-3-example-creating-a-template-for-tidy-data-collection.html#subsection-1-1"><span class="toc-section-number">3.3.1</span> Subsection 1</a></li>
+<li><a href="3-3-example-creating-a-template-for-tidy-data-collection.html#subsection-2"><span class="toc-section-number">3.3.2</span> Subsection 2</a></li>
+<li><a href="3-3-example-creating-a-template-for-tidy-data-collection.html#discussion-questions-1"><span class="toc-section-number">3.3.3</span> Discussion questions</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-4-power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files.html#power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files"><span class="toc-section-number">3.4</span> Power of using a single structured ‘Project’ directory for storing and tracking research project files</a><ul>
+<li><a href="3-4-power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files.html#subsection-1-2"><span class="toc-section-number">3.4.1</span> Subsection 1</a></li>
+<li><a href="3-4-power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files.html#subsection-2-1"><span class="toc-section-number">3.4.2</span> Subsection 2</a></li>
+<li><a href="3-4-power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files.html#practice-quiz-1"><span class="toc-section-number">3.4.3</span> Practice quiz</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-5-creating-project-templates.html#creating-project-templates"><span class="toc-section-number">3.5</span> Creating ‘Project’ templates</a><ul>
+<li><a href="3-5-creating-project-templates.html#subsection-1-3"><span class="toc-section-number">3.5.1</span> Subsection 1</a></li>
+<li><a href="3-5-creating-project-templates.html#subsection-2-2"><span class="toc-section-number">3.5.2</span> Subsection 2</a></li>
+<li><a href="3-5-creating-project-templates.html#discussion-questions-2"><span class="toc-section-number">3.5.3</span> Discussion questions</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-6-example-creating-a-project-template.html#example-creating-a-project-template"><span class="toc-section-number">3.6</span> Example: Creating a ‘Project’ template</a><ul>
+<li><a href="3-6-example-creating-a-project-template.html#subsection-1-4"><span class="toc-section-number">3.6.1</span> Subsection 1</a></li>
+<li><a href="3-6-example-creating-a-project-template.html#subsection-2-3"><span class="toc-section-number">3.6.2</span> Subsection 2</a></li>
+<li><a href="3-6-example-creating-a-project-template.html#applied-exercise-2"><span class="toc-section-number">3.6.3</span> Applied exercise</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-7-harnessing-version-control-for-transparent-data-recording.html#harnessing-version-control-for-transparent-data-recording"><span class="toc-section-number">3.7</span> Harnessing version control for transparent data recording</a><ul>
+<li><a href="3-7-harnessing-version-control-for-transparent-data-recording.html#subsection-1-5"><span class="toc-section-number">3.7.1</span> Subsection 1</a></li>
+<li><a href="3-7-harnessing-version-control-for-transparent-data-recording.html#subsection-2-4"><span class="toc-section-number">3.7.2</span> Subsection 2</a></li>
+<li><a href="3-7-harnessing-version-control-for-transparent-data-recording.html#discussion-questions-3"><span class="toc-section-number">3.7.3</span> Discussion questions</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-8-enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms.html#enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms"><span class="toc-section-number">3.8</span> Enhance the reproducibility of collaborative research with version control platforms</a><ul>
+<li><a href="3-8-enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms.html#subsection-1-6"><span class="toc-section-number">3.8.1</span> Subsection 1</a></li>
+<li><a href="3-8-enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms.html#subsection-2-5"><span class="toc-section-number">3.8.2</span> Subsection 2</a></li>
+<li><a href="3-8-enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms.html#discussion-questions-4"><span class="toc-section-number">3.8.3</span> Discussion questions</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-9-using-git-and-gitlab-to-implement-version-control.html#using-git-and-gitlab-to-implement-version-control"><span class="toc-section-number">3.9</span> Using git and GitLab to implement version control</a><ul>
+<li><a href="3-9-using-git-and-gitlab-to-implement-version-control.html#subsection-1-7"><span class="toc-section-number">3.9.1</span> Subsection 1</a></li>
+<li><a href="3-9-using-git-and-gitlab-to-implement-version-control.html#subsection-2-6"><span class="toc-section-number">3.9.2</span> Subsection 2</a></li>
+<li><a href="3-9-using-git-and-gitlab-to-implement-version-control.html#applied-exercise-3"><span class="toc-section-number">3.9.3</span> Applied exercise</a></li>
+</ul></li>
+</ul></li>
+<li class="has-sub"><a href="4-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">4</span> Experimental Data Preprocessing</a><ul>
+<li class="has-sub"><a href="4-1-principles-and-benefits-of-scripted-pre-processing-of-experimental-data.html#principles-and-benefits-of-scripted-pre-processing-of-experimental-data"><span class="toc-section-number">4.1</span> Principles and benefits of scripted pre-processing of experimental data</a><ul>
+<li><a href="4-1-principles-and-benefits-of-scripted-pre-processing-of-experimental-data.html#subsection-1-8"><span class="toc-section-number">4.1.1</span> Subsection 1</a></li>
+<li><a href="4-1-principles-and-benefits-of-scripted-pre-processing-of-experimental-data.html#subsection-2-7"><span class="toc-section-number">4.1.2</span> Subsection 2</a></li>
+<li><a href="4-1-principles-and-benefits-of-scripted-pre-processing-of-experimental-data.html#discussion-questions-5"><span class="toc-section-number">4.1.3</span> Discussion questions</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-2-introduction-to-scripted-data-pre-processing-in-r.html#introduction-to-scripted-data-pre-processing-in-r"><span class="toc-section-number">4.2</span> Introduction to scripted data pre-processing in R</a><ul>
+<li><a href="4-2-introduction-to-scripted-data-pre-processing-in-r.html#subsection-1-9"><span class="toc-section-number">4.2.1</span> Subsection 1</a></li>
+<li><a href="4-2-introduction-to-scripted-data-pre-processing-in-r.html#subsection-2-8"><span class="toc-section-number">4.2.2</span> Subsection 2</a></li>
+<li><a href="4-2-introduction-to-scripted-data-pre-processing-in-r.html#applied-exercise-4"><span class="toc-section-number">4.2.3</span> Applied exercise</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-3-simplify-scripted-pre-processing-through-rs-tidyverse-tools.html#simplify-scripted-pre-processing-through-rs-tidyverse-tools"><span class="toc-section-number">4.3</span> Simplify scripted pre-processing through R’s ‘tidyverse’ tools</a><ul>
+<li><a href="4-3-simplify-scripted-pre-processing-through-rs-tidyverse-tools.html#subsection-1-10"><span class="toc-section-number">4.3.1</span> Subsection 1</a></li>
+<li><a href="4-3-simplify-scripted-pre-processing-through-rs-tidyverse-tools.html#subsection-2-9"><span class="toc-section-number">4.3.2</span> Subsection 2</a></li>
+<li><a href="4-3-simplify-scripted-pre-processing-through-rs-tidyverse-tools.html#practice-quiz-2"><span class="toc-section-number">4.3.3</span> Practice quiz</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-4-complex-data-types-in-experimental-data-pre-processing.html#complex-data-types-in-experimental-data-pre-processing"><span class="toc-section-number">4.4</span> Complex data types in experimental data pre-processing</a><ul>
+<li><a href="4-4-complex-data-types-in-experimental-data-pre-processing.html#subsection-1-11"><span class="toc-section-number">4.4.1</span> Subsection 1</a></li>
+<li><a href="4-4-complex-data-types-in-experimental-data-pre-processing.html#subsection-2-10"><span class="toc-section-number">4.4.2</span> Subsection 2</a></li>
+<li><a href="4-4-complex-data-types-in-experimental-data-pre-processing.html#practice-quiz-3"><span class="toc-section-number">4.4.3</span> Practice quiz</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-5-complex-data-types-in-r-and-bioconductor.html#complex-data-types-in-r-and-bioconductor"><span class="toc-section-number">4.5</span> Complex data types in R and Bioconductor</a><ul>
+<li><a href="4-5-complex-data-types-in-r-and-bioconductor.html#subsection-1-12"><span class="toc-section-number">4.5.1</span> Subsection 1</a></li>
+<li><a href="4-5-complex-data-types-in-r-and-bioconductor.html#subsection-2-11"><span class="toc-section-number">4.5.2</span> Subsection 2</a></li>
+<li><a href="4-5-complex-data-types-in-r-and-bioconductor.html#applied-exercise-5"><span class="toc-section-number">4.5.3</span> Applied exercise</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-6-example-converting-from-complex-to-tidy-data-formats.html#example-converting-from-complex-to-tidy-data-formats"><span class="toc-section-number">4.6</span> Example: Converting from complex to ‘tidy’ data formats</a><ul>
+<li><a href="4-6-example-converting-from-complex-to-tidy-data-formats.html#subsection-1-13"><span class="toc-section-number">4.6.1</span> Subsection 1</a></li>
+<li><a href="4-6-example-converting-from-complex-to-tidy-data-formats.html#subsection-2-12"><span class="toc-section-number">4.6.2</span> Subsection 2</a></li>
+<li><a href="4-6-example-converting-from-complex-to-tidy-data-formats.html#applied-exercise-6"><span class="toc-section-number">4.6.3</span> Applied exercise</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-7-introduction-to-reproducible-data-pre-processing-protocols.html#introduction-to-reproducible-data-pre-processing-protocols"><span class="toc-section-number">4.7</span> Introduction to reproducible data pre-processing protocols</a><ul>
+<li><a href="4-7-introduction-to-reproducible-data-pre-processing-protocols.html#subsection-1-14"><span class="toc-section-number">4.7.1</span> Subsection 1</a></li>
+<li><a href="4-7-introduction-to-reproducible-data-pre-processing-protocols.html#subsection-2-13"><span class="toc-section-number">4.7.2</span> Subsection 2</a></li>
+<li><a href="4-7-introduction-to-reproducible-data-pre-processing-protocols.html#discussion-questions-6"><span class="toc-section-number">4.7.3</span> Discussion questions</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#rmarkdown-for-creating-reproducible-data-pre-processing-protocols"><span class="toc-section-number">4.8</span> RMarkdown for creating reproducible data pre-processing protocols</a><ul>
+<li><a href="4-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#subsection-1-15"><span class="toc-section-number">4.8.1</span> Subsection 1</a></li>
+<li><a href="4-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#subsection-2-14"><span class="toc-section-number">4.8.2</span> Subsection 2</a></li>
+<li><a href="4-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#applied-exercise-7"><span class="toc-section-number">4.8.3</span> Applied exercise</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-9-example-creating-a-reproducible-data-pre-processing-protocol.html#example-creating-a-reproducible-data-pre-processing-protocol"><span class="toc-section-number">4.9</span> Example: Creating a reproducible data pre-processing protocol</a><ul>
+<li><a href="4-9-example-creating-a-reproducible-data-pre-processing-protocol.html#subsection-1-16"><span class="toc-section-number">4.9.1</span> Subsection 1</a></li>
+<li><a href="4-9-example-creating-a-reproducible-data-pre-processing-protocol.html#subsection-2-15"><span class="toc-section-number">4.9.2</span> Subsection 2</a></li>
+<li><a href="4-9-example-creating-a-reproducible-data-pre-processing-protocol.html#practice-quiz-4"><span class="toc-section-number">4.9.3</span> Practice quiz</a></li>
+</ul></li>
+</ul></li>
+<li><a href="5-references.html#references"><span class="toc-section-number">5</span> References</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="rmarkdown-for-creating-reproducible-data-pre-processing-protocols" class="section level2">
+<h2><span class="header-section-number">4.8</span> RMarkdown for creating reproducible data pre-processing protocols</h2>
+<p>The R extension package RMarkdown can be used to create documents that combine
+code and text in a ‘knitted’ document, and it has become a popular tool for
+improving the computational reproducibility and efficiency of the data analysis
+stage of research. This tool can also be used earlier in the research process,
+however, to improve reproducibility of pre-processing steps. In this module, we
+will provide detailed instructions on how to use RMarkdown in RStudio to create
+documents that combine code and text. We will show how an RMarkdown document
+describing a data pre-processing protocol can be used to efficiently apply the
+same data pre-processing steps to different sets of raw data.</p>
+<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
+<ul>
+<li>Define RMarkdown and the documents it can create</li>
+<li>Explain how RMarkdown can be used to improve the reproducibility of research
+projects at the data pre-processing phase</li>
+<li>Create a document in RStudio using</li>
+<li>Apply it to several different datasets with the same format</li>
+</ul>
+<div id="subsection-1-15" class="section level3">
+<h3><span class="header-section-number">4.8.1</span> Subsection 1</h3>
+<blockquote>
+<p>“WordPerfect was always the best word processor. Because it allowed for insight into
+its very structure. You could hit a certain key combination and suddenly the screen
+would split and you’d reveal the codes, the bolds and italics, and so forth,
+that would define your text when it was printed. It was beloved of legal secretaries
+and journalists alike. Because when you work with words, at the practical, everyday
+level, the ability to look under the hood is essential. Words are not simple. And
+WordPerfect acknowledged that. Microsoft Word did not. Microsoft kept insisting that
+what you saw on your screen was the way things <em>were</em>, and if your fonts just kept
+sort of randonmly changing, well, you must have wanted it that way. Then along came
+HTML, and what I remember most was that sense of being back inside the file. Sure,
+HTML was a typographic nightmare, a bunch of unjustified Times New Roman in 12 pt on
+screens with chiclet-size pixels, but under the hood you could see all the pieces.
+Just like WordPerfect. That transparency was a wonderful thing, and it renewed
+computing for me.” <span class="citation">(Ford 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“TeX was created by Donald E. Knuth, a professor at Stanford University who has
+achieved international renown as a mathematician and computer scientist.
+Knuth also has an aesthetic sense uncommon in his field, and his work output is
+truly phenomenal. TeX is a happy byproduct of Knuth’s mammoth enterprise,
+<em>The Art of Computer Programming</em>. This series of reference books, designed
+to cover the whole gamut of programming concepts and techniques, is a
+<em>sine qua non</em> for all computer scientists.” <span class="citation">(Seroul 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“Roughly speaking, text processors fall into two categories:
+(1) WYSIWYG systems: what you see is what you get. You see on the screen at all
+times what the printed document will look like, and what you type has immediate
+effect on the appearance of the document. (2) markup systems, where you type your text
+interspersed with formatting instructions, but don’t see their effect right away. You must run a program to examine the
+resulting image, whether on paper or on the screen. In computer science jargon,
+markup systems must compile the source file you type. WYSIWYG systems have the obvious
+advantage of immediate feedback, but they
+are not very precise: what is acceptable at a resolution of 300 dots per inch, for an
+ephemeral publication such as a newsletter or flier, is no longer so for a book that
+will be phototypeset at high resolution. The human eye is extraordinarily sensitive:
+you can be bothered by the appearance of a text without being able to pinpoint why,
+just as you can tell when someone plays the wrong note in an orchestra, without
+being able to identify the CUlprit. One quickly leams in typesetting that the beauty,
+legibility and comfortable reading of a text depend on minute details: each element
+must be placed exactly right, within thousandths of an inch. For this type of work,
+the advantage of immediate feedback vanishes: fine details of spacing, alignment,
+and so on are much too small to be discernible at the screen’s relatively low
+resolution, and even if it such were not the case, it would still be a monumental chore
+to find the right place for everything by hand. For this reason it is not surprising that in the world of professional typesetting
+markup systems are preferred. They automate the task of finding the right place
+for each character with great precision. Naturally, this approach is less attractive for
+beginners, since one can’t see the results as one types, and must develop a feeling
+for what the system will do. But nowadays, you can have the best of both worlds
+by using a markup system with a WYSIWYG <em>front end</em>; we’ll talk about such front
+ends for TEX later on. TEX was developed in the late seventies and early eighties,
+before WYSIWYG systems were widespread. But were it to be redesigned now, it would
+still be a markup
+language. To give you an idea of the precision with which TEX operates: the internal
+unit it uses for its calculations is about a hundred times smaller than the
+wavelength of visible light! (That’s right, a hundred times.) In other words, any
+round-off error introduced in the calculations is invisible to the naked eye.”
+<span class="citation">(Seroul 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“You should be sure to understand the difference between a text editor and a text
+processor. A text processor is a text editor together with formatting software that
+allows you to switch fonts, do double columns, indent, and so on. A text editor
+puts your text in a file on disk, and displays a portion of it on the screen. It doesn’t
+format your text at all. We insist on the difference because those accustomed to WYSIWYG systems are
+often not aware of it: they only know text processors. Where can you find a text
+editor? Just about everywhere. Every text processor includes a text editor which
+you can use. But if you use your text processor as a text editor, be sure to save your
+file using a ‘save ASCII’ or ‘save text only’ option, so that the text processor’s own
+formatting commands are stripped off. If you give TEX a file created without this
+precaution, you’ll get garbage, because TEX cannot digest your text processor’s
+commands.” <span class="citation">(Seroul 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“TeX enabled authors to encode their precise intent into their manuscripts:
+This block of text is a computer program, while this word is a keyword in that
+program. The language it used, called TeX markup, formalized the slow,
+error-prone communication that is normally carried out with the printer over
+repeated galley proofs.” <span class="citation">(Apte, n.d.)</span></p>
+</blockquote>
+<blockquote>
+<p>“The idea of writing markup inside text wasn’t especially novel; it has been
+used from 1970’s runoff (the UNIX family of printer-preparation utilities) to
+today’s HTML tags. TeX was new in that it captured key concepts necessary for
+realistic typesetting and formalized them.” <span class="citation">(Apte, n.d.)</span></p>
+</blockquote>
+<blockquote>
+<p>“With these higher-level commands, the free TeX engine, and the LaTeX book,
+the use of TeX exploded. The macro file has since evolved and changed names, but
+authors still typically run the program called latex or its variants. Hence,
+most people who write TeX manuscripts know the program as LaTeX and the commands
+they use as LaTeX commands.” <span class="citation">(Apte, n.d.)</span></p>
+</blockquote>
+<blockquote>
+<p>“The effect of LaTeX on scientific and technical publishing has been profound.
+Precise typesetting is critical, particularly for conveying concepts using
+chemical and mathematical formulas, algorithms, and similar constructs. The
+sheer volume of papers, journals, books, and other publications generated in the
+modern world is far beyond the throughput possible via manual typesetting. And
+TeX enables automation without losing precision. Thanks to LaTeX, book authors
+can generate camera-ready copy on their own. Most academic and journal
+publishers accept article manuscripts written in LaTeX, and there’s even an open
+archive maintained by Cornell University where authors of papers in physics,
+chemistry, and other disciplines can directly submit their LaTeX manuscripts for
+open viewing. Over 10,000 manuscripts are submitted to this archive every month
+from all over the world.” <span class="citation">(Apte, n.d.)</span></p>
+</blockquote>
+<blockquote>
+<p>“For many users, a practical difficulty with typesetting using TeX is
+preparing the manuscripts. When TeX was first developed, technical authors were
+accustomed to using plain-text editors like WordStar, vi, or Emacs with a
+computer keyboard. The idea of marking up their text with commands and running
+the manuscript through a typesetting engine felt natural to them. Today’s
+typesetters, particularly desktop publishers, have a different mental model.
+They expect to see the output in graphical form and then to visually make edits
+with a mouse and keyboard, as they would in any WYSIWYG program. They might not
+be too picky about the quality of the output, but they appreciate design
+capabilities, such as the ability to flow text around curved outlines. Many
+print products are now produced with tools like Microsoft Word for this very
+reason. TeX authors cannot do the same work as easily.” <span class="citation">(Apte, n.d.)</span></p>
+</blockquote>
+</div>
+<div id="subsection-2-14" class="section level3">
+<h3><span class="header-section-number">4.8.2</span> Subsection 2</h3>
+</div>
+<div id="applied-exercise-7" class="section level3">
+<h3><span class="header-section-number">4.8.3</span> Applied exercise</h3>
+
+</div>
+</div>
+<p style="text-align: center;">
+<a href="4-7-introduction-to-reproducible-data-pre-processing-protocols.html"><button class="btn btn-default">Previous</button></a>
+<a href="4-9-example-creating-a-reproducible-data-pre-processing-protocol.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+
+</body>
+</html>
