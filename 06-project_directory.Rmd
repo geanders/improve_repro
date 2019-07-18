@@ -27,9 +27,88 @@ not organized in any decent way," and another, "It's not even organized---a file
 computer of protocols that we use, common lab protocols but those are just individual 
 Word files within a folder so it's not searchable per se." [@anderson2007issues]
 
-"In general, data reuse is most possible when: 1) data; 2) metadata (information
+> "In general, data reuse is most possible when: 1) data; 2) metadata (information
 describing the data); and 3) information about the process of generating those data, 
 such as code, are all provided." [@goodman2014ten]
+
+> "So far we have used filenames without ever saying what a legal name is, so it's time for a couple
+of rules. First, filenames are limited to 14 characters. Second, although you can use almost any 
+character in a filename, common sense says you should stick to ones that are visible, and that you 
+should avoid characters that might be used with other meanings. ... To avoid pitfalls, you would
+do well to use only letters, numbers, the period and the underscore until you're familiar with the
+situation [i.e., characters with pitfalls]. (The period and the underscore are conventionally used 
+to divide filenames into chunks...) Finally, don't forget that case distinctions matter---junk, Junk, 
+and JUNK are three different names." [@kernighan1984unix]
+
+> "The [Unix] system distinguishes your file called 'junk' from anyone else's of the same name. The 
+distinction is made by grouping files into *directories*, rather in the way that books are placed om 
+shelves in a library, so files in different directories can have the same name without any conflict.
+Generally, each user haas a personal or *home directory*, sometimes called login directory, that 
+contains only the files that belong to him or her. When you log in, you are 'in' your home directory.
+You may change the directory you are working in---often called your working or *current directory*---but
+your home directory is always the same. Unless you take special action, when you create a new file it is
+made in your current directory. Since this is initially your home directory, the file is unrelated
+to a file of the same name that might exist in someone else's directory. A directory can contain
+other directories as well as ordinary files ... The natural way to picture this organization is as a 
+tree of directories and files. It is possible to move around within this tree, and to find any file in the system
+by starting at the root of the tree and moving along the proper branches. Conversely, you can start where 
+you are and move toward the root." [@kernighan1984unix]
+
+> "The name '/usr/you/junk' is called the *pathname* of the file. 'Pathname' has an intuitive meaning:
+it represents the full name of the path from the root through the tree of directories to a particular 
+file. It is a universal rule in the Unix system that wherever you can use an ordinary filename, you can 
+use a pathname." [@kernighan1984unix]
+
+> "If you work regularly with Mary on information in her directory, you can say 'I want to work on Mary's
+files instead of my own.' This is done by changing your current directory with the `cd` command...
+Now when you use a filename (without the /'s) as an argument to `cat` or `pr`, it refers to the file
+in Mary's directory. Changing directories doesn't affect any permissions associated with a file---if you
+couldn't access a file from your own directory, changing to another directory won't alter that fact." [@kernighan1984unix]
+
+> "It is usually convenient to arrange your own files so that all the files related to one thing are in a
+directory separate from other projects. For example, if you want to write a book, you might want to 
+keep all the text in a directory called 'book'." [@kernighan1984unix]
+
+> "Suppose you're typing a large document like a book. Logically this divides into many small pieces, 
+like chapters and perhaps sections. Physically it should be divided too, because it is cumbersome
+to edit large files. Thus you should type the document as a number of files. You might have separate
+files for each chapter, called 'ch1', 'ch2', etc. ... With a systematic naming convention, you can tell at
+a glance where a particular file fits into the whole. What if you want to print the whole book? You could 
+say `$ pr ch1.1 ch1.2 ch 1.3 ...`, but you would soon get bored typing filenames and start to make mistakes.
+This is where filename shorthand comes in. If you say `$ pr ch*` the shell takes the `*` to mean 'any
+string of characters,' so ch* is a pattern that matches all filenames in the current directory that 
+begin with ch. The shell creates the list, in alphabetical order, and passes the list to `pr`. The
+`pr` command never sees the `*`; the pattern match that the shell does in the current directory 
+generates aa list of strings that are passed to `pr`." [@kernighan1984unix] 
+
+> "The current directory is an attribute of a process, not a person or a program. ... The notion of a 
+current directory is certainly a notational convenience, because it can save a lot of typing, but
+its real purpose is organizational. Related files belong together in the same directory. '/usr' is
+often the top directory of a user file system... '/usr/you' is your login directory, your current
+directory when you first log in. ... Whenever you embark on a new project, or whenever you have 
+a set of related files ... you could create a new directory with `mkdir` and put the files there." [@kernighan1984unix]
+
+> "Despite their fundamental properties inside the kernel, directories sit in the file system as
+ordinary files. They can be read as ordinary files. But they can't be created or written as 
+ordinary files---to preserve its sanity and the users' files, the kernel reserves to itself all 
+control over the contents of directories." [@kernighan1984unix]
+
+> "A file has several components: a name, contents, and administrative information such as 
+permissions and modifications times. The administrative information is stored in the inode
+(over the years, the hyphen fell out of 'i-node'), along with essential system data such as 
+how long it is, where on the disc the contents of the file are stored, and so on. ...
+It is important to understand inodes, not only to appreciate the options on `ls`, but because 
+in a strong sense the inodes *are* the files. All the directory hierarchy does is provide
+convenient names for files. The system's name for a file is its *i-number*: the number of the
+inode holding the file's information. ... It is the i-number that is stored in the first two bytes
+of a directory, before the name. ...
+The first two bytes in each directory entry are the only connection between the name of a file and its
+contents. A filename in a directory is therefore called a *link*, because it links a name in the
+directory hierarchy to the inode, and hence to the data. The same i-number can appear in more than
+one directory. The `rm` command does not actually remove the inodes; it removes directory entries
+or links. Only when the last link to a file disappears does the system remove the inode, and hence
+the file itself. If the i-number in a directory entry is zero, it means that the link has been 
+removed, but not necessarily the contents of the file---there may still be a link somewhere else." [@kernighan1984unix]
 
 ### Subsection 2
 
