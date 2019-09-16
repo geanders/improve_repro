@@ -1,0 +1,140 @@
+---
+title: "Sample report for growth curves"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r message = FALSE}
+library(readxl)
+library(tidyverse)
+library(knitr)
+library(purrr)
+library(hms)
+library(gridExtra)
+```
+
+```{r}
+growth_data <- read_excel("growth curve data_GR.xls",
+                          sheet = "simplified_template") %>% 
+  mutate(exp_time = difftime(sampling_date_time, 
+                             first(sampling_date_time),
+                             units = "hours")) %>% 
+  select(sampling_date_time, exp_time, a1:l3)
+```
+
+## Table summarizing raw data
+
+```{r}
+kable(growth_data)
+```
+
+## Plot of growth curves
+
+```{r}
+growth_data_tidy <- gather(growth_data, -c(sampling_date_time, exp_time),
+                           key = growth_condition, 
+                           value = opt_dens) %>% 
+  mutate(growth_condition = str_to_upper(growth_condition)) %>% 
+  mutate(cond_type = str_extract(growth_condition, "[A-Z]"),
+         cond_number = str_extract(growth_condition, "[0-9]"))
+```
+
+
+```{r message = FALSE, warning = FALSE, fig.width = 7, fig.height = 4.8}
+ggplot(growth_data_tidy, aes(x = exp_time, y = opt_dens, group = growth_condition,
+                             color = cond_type, linetype = cond_number)) + 
+  geom_line() + 
+  geom_point() + 
+  labs(x = "Time (hours)",
+       y = "Optical density\n(Absorbance at 600 nm)",
+       color = "Condition type", 
+       linetype = "Condition number") + 
+  theme_classic() + 
+  theme(legend.position = "bottom") + 
+  ggtitle("Growth curves", subtitle = "Linear scale")
+```
+
+```{r message = FALSE, warning = FALSE, fig.width = 7, fig.height = 4.8}
+ggplot(growth_data_tidy, aes(x = exp_time, y = opt_dens, group = growth_condition,
+                             color = cond_type, linetype = cond_number)) + 
+  geom_line() + 
+  geom_point() + 
+  labs(x = "Time (hours)",
+       y = "Optical density\n(Absorbance at 600 nm)",
+       color = "Condition type", 
+       linetype = "Condition number") + 
+  theme_classic() + 
+  theme(legend.position = "bottom") + 
+  scale_y_log10() + 
+  ggtitle("Growth curves", subtitle = "Log scale")
+```
+
+## Table of growth times---24 to 65 hours
+
+```{r}
+times_for_doubling <- growth_data %>% 
+  mutate(diff_24 = abs(exp_time - 24),
+         diff_65 = abs(exp_time - 65)) %>% 
+  summarize(closest_to_24 = exp_time[diff_24 == min(diff_24)],
+            closest_to_65 = exp_time[diff_65 == min(diff_65)])
+
+doubling_data <- growth_data %>% 
+  filter(exp_time %in% c(times_for_doubling$closest_to_24,
+                         times_for_doubling$closest_to_65)) %>% 
+  select(-sampling_date_time) %>% 
+  gather(-exp_time, key = growth_conditions, value = opt_dens) 
+
+doubling_data <- doubling_data %>% 
+  group_by(growth_conditions) %>% 
+  summarize(start_time = first(exp_time),
+            end_time = last(exp_time),
+            delta_time = last(exp_time) - first(exp_time),
+            delta_opt_dens = log(last(opt_dens)) - log(first(opt_dens)),
+            doubling_time = (log(2) * delta_time) / delta_opt_dens) %>% 
+  select(-c(delta_time, delta_opt_dens))
+```
+
+```{r}
+kable(doubling_data)
+```
+
+```{r message = FALSE, warning = FALSE, fig.width = 7, fig.height = 3}
+doubling_data <- doubling_data %>% 
+  mutate(growth_conditions = str_to_upper(growth_conditions),
+         cond_type = str_extract(growth_conditions, "[A-Z]"),
+         cond_num = str_extract(growth_conditions, "[0-9]"))
+
+a <- ggplot(doubling_data, aes(x = growth_conditions, y = doubling_time, fill = cond_type)) + 
+  geom_col() + 
+  theme_classic() + 
+  labs(y = "Doubling time (hours)", 
+       x = "") + 
+  theme(legend.position = "none") + 
+  ggtitle("Doubling times", subtitle = "24 to 65 hours")
+
+b <- ggplot() + 
+  geom_rect(data = times_for_doubling,
+            aes(xmin = closest_to_24, xmax = closest_to_65),
+            ymin = -Inf, ymax = Inf,
+            color = "beige", fill = "beige") +
+  geom_line(data = growth_data_tidy, aes(x = exp_time, y = opt_dens, group = growth_condition,
+                             color = cond_type, linetype = cond_number)) + 
+  geom_point(data = growth_data_tidy, aes(x = exp_time, y = opt_dens, group = growth_condition,
+                             color = cond_type, linetype = cond_number)) + 
+  labs(x = "Time (hours)",
+       y = "Optical density\n(Absorbance at 600 nm)",
+       color = "Condition type", 
+       linetype = "Condition number") + 
+  theme_classic() + 
+  theme(legend.position = "none") + 
+  scale_y_log10() + 
+  ggtitle("Growth curves", subtitle = "Log scale") 
+
+grid.arrange(a, b, ncol = 2)
+```
+
+
+
