@@ -1908,58 +1908,138 @@ way---if you were writing an essay, how much more can you say when you can mix a
 match words to create your own sentences versus if you were made to combine
 pre-set sentences?
 
-\hypertarget{example-datasets}{%
-\subsection{Example datasets}\label{example-datasets}}
+\hypertarget{creating-the-rules-for-collecting-data-in-the-same-time-each-time}{%
+\subsection{Creating the rules for collecting data in the same time each time}\label{creating-the-rules-for-collecting-data-in-the-same-time-each-time}}
 
-\textbf{Example dataset 1.}
+It is likely that there are certain types of experiments that you conduct
+regularly, and that they're often trying to answer the same type of
+question and generate data of a consistent type and structure. This is
+a perfect chance to lay down rules or a pattern for how members of
+your research group will record that data.
 
-\textbf{Example dataset 2.}
-
-\hypertarget{issues-with-these-data-sets}{%
-\subsection{Issues with these data sets}\label{issues-with-these-data-sets}}
+These rules can include:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Issues related to using a spread sheet program
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Embedded macros
-  \item
-    Use of color to encode information
-  \end{itemize}
+  How many units of observation does the experiment typically have?
+  Say, for example, that you are measuring the influence of two drugs on
+  bactieral load in an animal at
+  three time points. There may be some measurements taken at the unit of the drug
+  (for example, measurements related to its chemical composition) and some
+  taken at the unit of animal and time point (for example, the concentration of drug in
+  an animal's blood at a certain time point). This will help you define how many
+  tables you should use to collect the data---one for each unit of observation.
 \item
-  Issues related to non-structured / non-two-dimensional data
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Added summary row
-  \item
-    Multiple tables in one sheet
-  \item
-    One cell value is meant to represent values for all rows below, until next
-    non-missing row
-  \end{itemize}
+  Which measurements will be recorded for each observation? In tidy data, the measurements
+  taken for an observation are recorded in rows, so you then specify what
+  column names should be used for each measurement (e.g., ``sample\_time'',
+  ``animal\_weight''). If data is being recorded using multiple tables (because there
+  are multiple units of observation), make sure that each table include
+  ``ID'' columns that can be used to link across the tables. For example, each
+  table might have a column with a unique ID for each drug being tests, or tables
+  with measurements on animals might each have a column that uniquely identifies
+  the animal in an observation.
 \item
-  Issues with data being non-``tidy''
+  What units will be used for recording each measurement? For timestamp-type
+  measurments, like the date and time that an experiment started and the time of
+  each sample measurement, what timezone will be used? (Even if it's always the
+  same one, this can come in useful every now and then if you need to figure out
+  something like whether that location's timezone followed Daylight Savings Time,
+  for an experiment that spans the switch between Standard and Daylight Savings).
 \end{enumerate}
 
-\hypertarget{final-tidy-examples}{%
-\subsection{Final ``tidy'' examples}\label{final-tidy-examples}}
+{[}Figure: Three tables---measurements on a drug (chemistry), measurements on an animal (weight),
+measurements on an animal at time points (drug concentration){]}
 
-\hypertarget{options-for-recording-tidy-data}{%
-\subsection{Options for recording tidy data}\label{options-for-recording-tidy-data}}
+You can then take this information and design a \emph{template} for collecting that
+type of data. A template is, in this case, a file that gives the ``skeleton'' of
+the table or tables. You will create this template file and save it somewhere
+easy for lab members to access, with a filename that makes it clear that this is
+a template. For example, you may create a folder with all the templates for
+tables for your experiment, and name a template in it for collecting something
+like animal weights at the start of the experiment something like
+``animal\_wt\_table\_template.csv'' or ``animal\_wt\_table\_template.xlsx''.
+Each time someone starts an experiment collecting that type of data, he or she
+can copy that template file, move it to the directory with files for that
+experiment and rename it. When you open that copy of the file, you can record
+observations directly into it.
 
-\textbf{Spreadsheet program.}
+{[}Figure: Example template file{]}
 
-\textbf{Spreadsheet-like interface in R.}
+\begin{verbatim}
+####################################################################################
+####################################################################################
+#
+# Column names and meanings
+#
+# animal_id:        A unique identifier for each animal. 
+# animal_wt_g:      The weight of the animal, recorded in grams. 
+# date_wt_measured: The date that the animal's weight was measured, recorded as 
+#                   "month day, year", e.g., "Jan 1, 2019"
+# cage_id:          A unique identifier for the case in which the animal was housed
+# 
+# Other table templates for this experiment type: 
+# drug_conc_by_time.csv: A template for recording drug concentrations in the animals
+#                        by time point
+# 
+animal_id, animal_wt_g, date_wt_measured, cage_id
+   "A101",        50.2,   "Jan 1, 2019",      "B"    
+\end{verbatim}
 
-\hypertarget{examples-of-how-tidy-data-can-be-easily-analyzed-visualized}{%
-\subsection{Examples of how ``tidy'' data can be easily analyzed / visualized}\label{examples-of-how-tidy-data-can-be-easily-analyzed-visualized}}
+Adding in one row of sample values, to be deleted each time the template is
+copied and used, can be a very helpful addition. This will help the user remember
+the formats that are expected for each column (for example, the format the
+date should be recorded in), as well as small details like which columns should
+include quotation marks.
+
+These template tables can be created as flat files, like comma-separated value
+files. However, if this is too big of a jump, they can also be created as
+spreadsheet files. Many of the downsides of spreadsheet files are linked to
+the use of embedded macros, integration of raw and processed / calculated data,
+and other factors, rather than related to their use as a method to record data.
+However, do note that plain text files like flat files can be opened in RStudio
+in a spreadsheet-like view in RStudio. Data can be recorded directly here, in
+a format that will feel comfortable for spreadsheet users, but without all the
+bells and whistles that we're aiming to avoid in spreadsheet programs like Excel.
+
+{[}Figure---Opening a csv file with a spreadsheet like view{]}
+
+There are some advantages to shifting to record data in flat files like CSVs,
+rather than Excel files, and using the spreadsheet-style view in RStudio to work
+with those files if you find it easier than working with the files in a text
+editor (which can get tough, since the values in a column don't always visually
+line up, and you have to remember to put in the right number of columns). By
+recording the data in a plain text file, you can later move to tracking changes
+that are made to the data using the version control tool \emph{git}. This is a
+powerful tool that can show who made changes to a file and when, with exact
+details on the changes made and room for comments on why the change was made.
+However, \emph{git} does not provide useful views of changes made to binary files
+(like Excel), only those made in plain text files. Further, plain text files are
+guaranteed to not try to ``outsmart'' you---for example, they will not try to
+convert something that looks like a date into a date. Instead, they will leave
+things exactly as you typed them in. Finally, later in this book we will build
+up to creating templates that do even more---for example, templates for reports
+you need to write and presentations you need to give, as well as templates for
+the whole structure of a project. Plain text files fit very nicely into this
+developing framework, while files in complex binary formats like xlxs don't fit
+as naturally.
+
+Google Sheets is another tool that might come in useful. {[}More about using this
+with R.{]}
+
+This idea of creating template files for data recording isn't
+revolutionary---many laboratory groups have developed spreadsheet template files
+that they share and copy to use across similar experiments that they conduct.
+The difference here is in creating a table for recording data \emph{that follows the
+tidy data principles}, or at least comes close to them (any steps away from
+characteristics like embedded macros and use of color to record information will
+be helpful).
+
+The next chapter will walk through two examples of changing from non-tidy table
+templates to ones that record data in a way that follows the tidy data
+principles.
 
 \hypertarget{subsection-1}{%
 \subsection{Subsection 1}\label{subsection-1}}
@@ -3012,6 +3092,59 @@ visualized using reproducible tools.
 \hypertarget{subsection-2}{%
 \subsection{Subsection 2}\label{subsection-2}}
 
+\hypertarget{example-datasets}{%
+\subsection{Example datasets}\label{example-datasets}}
+
+\textbf{Example dataset 1.}
+
+\textbf{Example dataset 2.}
+
+\hypertarget{issues-with-these-data-sets}{%
+\subsection{Issues with these data sets}\label{issues-with-these-data-sets}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Issues related to using a spread sheet program
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Embedded macros
+  \item
+    Use of color to encode information
+  \end{itemize}
+\item
+  Issues related to non-structured / non-two-dimensional data
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Added summary row
+  \item
+    Multiple tables in one sheet
+  \item
+    One cell value is meant to represent values for all rows below, until next
+    non-missing row
+  \end{itemize}
+\item
+  Issues with data being non-``tidy''
+\end{enumerate}
+
+\hypertarget{final-tidy-examples}{%
+\subsection{Final ``tidy'' examples}\label{final-tidy-examples}}
+
+\hypertarget{options-for-recording-tidy-data}{%
+\subsection{Options for recording tidy data}\label{options-for-recording-tidy-data}}
+
+\textbf{Spreadsheet program.}
+
+\textbf{Spreadsheet-like interface in R.}
+
+\hypertarget{examples-of-how-tidy-data-can-be-easily-analyzed-visualized}{%
+\subsection{Examples of how ``tidy'' data can be easily analyzed / visualized}\label{examples-of-how-tidy-data-can-be-easily-analyzed-visualized}}
+
 \hypertarget{discussion-questions-1}{%
 \subsection{Discussion questions}\label{discussion-questions-1}}
 
@@ -3244,6 +3377,173 @@ recording.
   Explain how version control can be used to improve reproducibility
   for data recording
 \end{itemize}
+
+\hypertarget{what-is-version-control}{%
+\subsection{What is version control?}\label{what-is-version-control}}
+
+Version control developed as a way to coordinate collaborative work on
+software programming projects. The term ``version'' here refers to the current
+state of a document or set of documents, for example the source code for a
+computer program. The idea of ``control'' is to allow for safe changes and updates
+to this version while more than one person is working on it.
+The general term ``version control'' can refer to any method of
+syncing contributions from several people to a file or set of files, and
+very early on it was done by people rather than through a computer program.
+Some software developers have shared their memories of taking their
+code to the ``Source Control'' team, who then integrated it into the main
+source code file by hand \citep{irving2011astonishments}.
+
+As the proverb about too many cooks in the kitchen captures, any time you have
+multiple people working on a project, it introduces the chance for conflicts.
+While higher-level conflicts, like about what you want the final product to
+look like or who should do which jobs, can't be easily managed by a computer
+program, now the complications of integrating everyone's contributions---and letting
+people work in their own space and then bring together their individual work
+into one final joint project---can be. While these programs for version control
+were originally created to help with programmers developing code, they can
+be used now to coordinate group work on numerous types of file-based projects,
+including scientific manuscripts, books, and websites. And although they can
+work with projects that include binary code, they thrive in projects with a
+heavier concentration of text-based files, and so they fit in nicely in a
+scientific research / data analysis workflow that is based on data stored
+in plain text formats and data analysis scripts written in plain text files,
+tools we discuss in other parts of this book.
+
+In early types of version control programs, there was one central ``main''
+version of the file or set of files the team was working on. Very early on,
+this was kept on one computer. A team member who wanted to make a change
+would ``check out'' the file he or she wanted to work on, make changes, and
+then check it back in as the newest main version. While one team member had
+this file checkout out, other members would often be ``locked'' out of making
+any changes to that file---they could look at it, but couldn't make any edits.
+This meant that there was no chance of two people trying to change the same
+part of a file at the same time. In spirit, this early system is pretty similar
+to the idea of sending a file around the team by email, with the understanding
+that only one person works on it at a time. While the ``main'' version is in
+different people's hands at different times, to do work, you all agree that only
+one person will work on it at a time. A slightly more modern analogy is
+the idea of having a single version of a file in Dropbox or Google Docs, and
+avoiding working on the file when you see that another team member is working
+on it. (However, both of these examples other key features of version control,
+which we'll discuss a bit later.)
+
+This system is pretty clunky, though. In particular, it probably usually increases
+the amount of time that it takes the team to finish the project, because only one
+person can work on a file at a time. Later types of version control programs moved
+toward a different style, allowing for \emph{distributed} rather than \emph{centralized}
+collaborative work on a file or a set of files. Under the distributed model, all
+team members can have their own version of all the files, work on them and make
+records of changes they make to the files, and then occassionally sync with everyone
+else to share your changes with them and bring their changes into your copy of the
+files. This idea allowed for the development of other useful features and styles of
+working, including \emph{branching} to try out new ideas that you're not sure you'll
+ultimately want to go with and \emph{forking}, a key tool used in open-source software
+development, which among other things facilitates someone who isn't part of the
+original team getting a copy of the files they can work with and suggesting some
+changes that might be helpful.
+
+So, this is the basic idea of modern version control---for a project that involves a set
+of computer files, everyone on has their own copy of a directory with those files
+on their own computer, makes changes at the time and in the spots in the files that
+they want, and then regularly re-syncs their local directory with everyone else's
+to share changes and updates.
+
+There is one key feature of modern version control that's
+critical to making this work---merging files that started the same but were edited in
+different ways and now need to be put back together, bringing any changes made from the
+original version. This step is called \emph{merging} the files. While this is typically
+described using the plural, ``files'', at a higher-level, you can thing of this as
+just merging the \emph{changes} that two people have made as they edited a single file, a
+file where they both started out with identical copies.
+
+Think of the file broken up into each of its separate lines. There will be some lines
+that neither person changed. Those are easy to handle in the ``merge''---they stay the
+same as in the original copy of the file. Next, there will be some lines that one
+person changed, but that the other person didn't. It turns out that these are pretty
+easy to handle, too. If only one person changed the line, then you use their version---it's
+the most up-to-date, since if both people started out with the same version, it means
+that the other person didn't make any changes to that part of the file.
+Finally, there may be a few lines that both people changed. These are called \emph{merge conflicts}.
+They're places in the file where there's not a clear, easy-to-automate way that
+the computer can know which version to put into the integrated, latest version of the
+file. Different version control programs handle these merge conflicts in different ways.
+For the most common version control program used today, \emph{git}, these spots in the
+file are flagged with a special set of symbols when you try to integrate the two updated
+versions of the file. Along with the special symbols to denote a conflict, there will
+also be \emph{both} versions of the conflicting lines of the file. Whoever is integrating the
+files must go in and pick the version of those lines to use in the integrated version
+of the file, or write in some compromise version of those lines that brings in elements
+from both people's changes, and then delete all the symbols denoting that was a conflict
+and save this latest version of the file.
+
+There are a number of other features of version control that make it useful for
+collaborating on file-based projects with teams. First, these systems allow you to
+explain your changes as you make them---in other words, it allows for \emph{annotation}
+of the developing and editing process. This provides the team with a full history of
+why the files evolved in the way they did across the team. It also provides a way to
+communicate across the team members. For example, if one person is the key person
+working on a certain file, but has run into a problem with one spot and asks another
+team member to take a go, then the second team member isn't limited to just looking at
+the file and then emailing some suggestions. Instead, the second person can make
+sure he or she has the latest version of that file, make the changes they think will
+help, \emph{commit} those changes with a message (a \emph{commit message}) about why they think
+this change will fix the problem, and then push that latest version of the file back
+to the first person. If there are several places where it would help to change the file,
+then these can be fixed through several separate commits, each with their own message.
+The first person, who originally asked for help, can read through the updates in the file
+(most platforms for using version control will now highlight where all these changes
+are in the file) and read the second person's message or messages about why each change
+might help. Even better, days or months later, when team members are trying to figure out
+why a certain change was made in that part of the file, can go back and read these messages
+to get an explanation.
+
+There's another feature of version control that can be demonstrated through this example.
+Because the changes made to the files in the project are regularly \emph{committed}, with a
+message for each commit and a record of what was changed in that commit, the team members can,
+at any point, go back to the \emph{exact} version of the project at any earlier point in time.
+Each of the commits is given its own ID tag ({[}name for this? hash?{]}), and \emph{git} has a number
+of commands that let you ``roll back'' to earlier versions, by going back to the version as it
+was when a certain commit was made.
+
+It turns out that this functionality---of being able to ``roll back'' to earlier versions---has
+a wonderful side benefit when it comes to working on a large project. It means that you
+\textbf{don't} need to save earlier versions of each file. You can maintain one and only one
+version of each project file in the project's directory, with the confidence that you never
+``lose'' old versions of the file. If you're working on a manuscript, for example, when it's
+time to edit, you can cut whole paragraphs, and if you ever need to get them back, they'll
+be right there in the commit history for your project, with their own commit message about
+why they were cut (hopefully a nice clear one that will make it easy to find that commit
+if you ever need those paragraphs again).
+
+\hypertarget{improving-scientific-research-with-version-control}{%
+\subsection{Improving scientific research with version control}\label{improving-scientific-research-with-version-control}}
+
+\hypertarget{how-to-use-version-control}{%
+\subsection{How to use version control}\label{how-to-use-version-control}}
+
+While this method of merging two sets of changes to a file generally works very well in
+integrating what members of the team have typed into the file in their edits (i.e., the
+actual text), it doesn't do \emph{anything} to check the logic. If that text is computer
+code, then the latest version, with code integrated from two people, could be ``broken'',
+even if each person confirmed that the code worked on their own computers before merging,
+because a change in one spot in code could break something somewhere else in the code.
+One way to try to quickly identify this kind of a problem is to create small pieces of
+code that can be run whenever you'd like to check that your code is still behaving like you
+want it to. These pieces of code are called ``unit tests''. They allow you to define how
+you \emph{expect} your code to behave---for example, if you have created a function in your code that
+counts the number of letters in a word, you expect it to always give back ``5'' for ``fever''
+and ``0'' for "``. You can write a bit of code that runs the function, using inputs of''fever" and "``, and then tests to see if what it gets in return is''5" and ``0''. If it does,
+great! You won't hear anything else. If it doesn't though, it will print out a message
+to warn you that one of the functions in your code didn't return what you were expecting
+it to. You can collect all of these unit tests in one part of the project directory, and you
+can even set up a ``hook'' with your version control program to run all of those tests
+every time you merge in new changes from team members. If everything still works fine after
+merging in new changes, it will be a silent success, but if a merge breaks something,
+you'll get a noisy failure which, while certainly worse that a silent success, is much,
+much better than a silent failure. As Mark Twain (supposedly) said, ``What gets us into
+trouble is not what we don't know. It's what we know for sure that just ain't so.''
+
+{[}Odds and ends---.DS\_Store, \$Word\_doc{]}
 
 \hypertarget{subsection-1-5}{%
 \subsection{Subsection 1}\label{subsection-1-5}}
