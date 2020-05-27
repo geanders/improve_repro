@@ -3395,52 +3395,70 @@ source code file by hand \citep{irving2011astonishments}.
 
 As the proverb about too many cooks in the kitchen captures, any time you have
 multiple people working on a project, it introduces the chance for conflicts.
-While higher-level conflicts, like about what you want the final product to
-look like or who should do which jobs, can't be easily managed by a computer
-program, now the complications of integrating everyone's contributions---and letting
+While higher-level conflicts, like about what you want the final product to look
+like or who should do which jobs, can't be easily managed by a computer program,
+now the complications of integrating everyone's contributions---and letting
 people work in their own space and then bring together their individual work
 into one final joint project---can be. While these programs for version control
-were originally created to help with programmers developing code, they can
-be used now to coordinate group work on numerous types of file-based projects,
-including scientific manuscripts, books, and websites. And although they can
-work with projects that include binary code, they thrive in projects with a
-heavier concentration of text-based files, and so they fit in nicely in a
-scientific research / data analysis workflow that is based on data stored
-in plain text formats and data analysis scripts written in plain text files,
-tools we discuss in other parts of this book.
+were originally created to help with programmers developing code, they can be
+used now to coordinate group work on numerous types of file-based projects,
+including scientific manuscripts, books, and websites \citep{raymondunderstanding}.
+And although they can work with projects that include binary code, they thrive
+in projects with a heavier concentration of text-based files, and so they fit in
+nicely in a scientific research / data analysis workflow that is based on data
+stored in plain text formats and data analysis scripts written in plain text
+files, tools we discuss in other parts of this book.
 
-In early types of version control programs, there was one central ``main''
-version of the file or set of files the team was working on. Very early on,
-this was kept on one computer. A team member who wanted to make a change
-would ``check out'' the file he or she wanted to work on, make changes, and
-then check it back in as the newest main version. While one team member had
-this file checkout out, other members would often be ``locked'' out of making
-any changes to that file---they could look at it, but couldn't make any edits.
-This meant that there was no chance of two people trying to change the same
-part of a file at the same time. In spirit, this early system is pretty similar
-to the idea of sending a file around the team by email, with the understanding
-that only one person works on it at a time. While the ``main'' version is in
-different people's hands at different times, to do work, you all agree that only
-one person will work on it at a time. A slightly more modern analogy is
-the idea of having a single version of a file in Dropbox or Google Docs, and
-avoiding working on the file when you see that another team member is working
-on it. (However, both of these examples other key features of version control,
-which we'll discuss a bit later.)
+In earlier types of version control programs, there was one central ``main''
+repository the file or set of files the team was working on
+\citep{raymondunderstanding, target2018version}. Very early on, this was kept on one
+computer \citep{irving2011astonishments}. A team member who wanted to make a change
+would ``check out'' the file he or she wanted to work on, make changes, and then
+check it back in as the newest main version. While one team member had this file
+checkout out, other members would often be ``locked'' out of making any changes to
+that file---they could look at it, but couldn't make any edits
+\citep{raymondunderstanding, target2018version}. This meant that there was no chance
+of two people trying to change the same part of a file at the same time. In
+spirit, this early system is pretty similar to the idea of sending a file around
+the team by email, with the understanding that only one person works on it at a
+time. While the ``main'' version is in different people's hands at different
+times, to do work, you all agree that only one person will work on it at a time.
+A slightly more modern analogy is the idea of having a single version of a file
+in Dropbox or Google Docs, and avoiding working on the file when you see that
+another team member is working on it. (However, both of these examples other key
+features of version control, which we'll discuss a bit later.)
 
-This system is pretty clunky, though. In particular, it probably usually increases
-the amount of time that it takes the team to finish the project, because only one
-person can work on a file at a time. Later types of version control programs moved
-toward a different style, allowing for \emph{distributed} rather than \emph{centralized}
-collaborative work on a file or a set of files. Under the distributed model, all
-team members can have their own version of all the files, work on them and make
-records of changes they make to the files, and then occassionally sync with everyone
-else to share your changes with them and bring their changes into your copy of the
-files. This idea allowed for the development of other useful features and styles of
-working, including \emph{branching} to try out new ideas that you're not sure you'll
-ultimately want to go with and \emph{forking}, a key tool used in open-source software
-development, which among other things facilitates someone who isn't part of the
-original team getting a copy of the files they can work with and suggesting some
-changes that might be helpful.
+\begin{quote}
+``In a medium-sized project, it often happens that a (relatively small) number
+of people work simultaneously on a single set of files, the `program' or the
+`project'. Often these people have additional tasks, causing their working
+speeds to differ greatly. One person may be working a steady ten hours a day on
+the project, a second may have barely time to dabble in the project enough to
+keep current, while a third participant may be sent off on an urgent temporary
+assignment just before finishing a modification. It would be nice if each
+participant could be abstracted from the vicissitudes of the lives of the
+others.'' \citep{grune1986concurrent}
+\end{quote}
+
+This system is pretty clunky, though. In particular, it probably usually
+increases the amount of time that it takes the team to finish the project,
+because only one person can work on a file at a time. Later types of version
+control programs moved toward a different style, allowing for \emph{distributed}
+rather than \emph{centralized} collaborative work on a file or a set of files
+\citep{raymondunderstanding, irving2011astonishments}. Under the distributed model,
+all team members can have their own version of all the files, work on them and
+make records of changes they make to the files, and then occassionally sync with
+everyone else to share your changes with them and bring their changes into your
+copy of the files.
+
+This functionality is called \emph{concurrency}, since it allows team members to
+concurrently work on the same set of files \citep{raymondunderstanding}. This idea
+allowed for the development of other useful features and styles of working,
+including \emph{branching} to try out new ideas that you're not sure you'll
+ultimately want to go with and \emph{forking}, a key tool used in open-source
+software development, which among other things facilitates someone who isn't
+part of the original team getting a copy of the files they can work with and
+suggesting some changes that might be helpful.
 
 So, this is the basic idea of modern version control---for a project that involves a set
 of computer files, everyone on has their own copy of a directory with those files
@@ -3477,73 +3495,145 @@ from both people's changes, and then delete all the symbols denoting that was a 
 and save this latest version of the file.
 
 There are a number of other features of version control that make it useful for
-collaborating on file-based projects with teams. First, these systems allow you to
-explain your changes as you make them---in other words, it allows for \emph{annotation}
-of the developing and editing process. This provides the team with a full history of
-why the files evolved in the way they did across the team. It also provides a way to
-communicate across the team members. For example, if one person is the key person
-working on a certain file, but has run into a problem with one spot and asks another
-team member to take a go, then the second team member isn't limited to just looking at
-the file and then emailing some suggestions. Instead, the second person can make
-sure he or she has the latest version of that file, make the changes they think will
-help, \emph{commit} those changes with a message (a \emph{commit message}) about why they think
-this change will fix the problem, and then push that latest version of the file back
-to the first person. If there are several places where it would help to change the file,
-then these can be fixed through several separate commits, each with their own message.
-The first person, who originally asked for help, can read through the updates in the file
-(most platforms for using version control will now highlight where all these changes
-are in the file) and read the second person's message or messages about why each change
-might help. Even better, days or months later, when team members are trying to figure out
-why a certain change was made in that part of the file, can go back and read these messages
-to get an explanation.
+collaborating on file-based projects with teams. First, these systems allow you
+to explain your changes as you make them---in other words, it allows for
+\emph{annotation} of the developing and editing process \citep{raymondunderstanding}. This
+provides the team with a full history of why the files evolved in the way they
+did across the team. It also provides a way to communicate across the team
+members.
 
-There's another feature of version control that can be demonstrated through this example.
-Because the changes made to the files in the project are regularly \emph{committed}, with a
-message for each commit and a record of what was changed in that commit, the team members can,
-at any point, go back to the \emph{exact} version of the project at any earlier point in time.
-Each of the commits is given its own ID tag ({[}name for this? hash?{]}), and \emph{git} has a number
-of commands that let you ``roll back'' to earlier versions, by going back to the version as it
-was when a certain commit was made.
+For example, if one person is the key person working on a certain file,
+but has run into a problem with one spot and asks another team member to take a
+go, then the second team member isn't limited to just looking at the file and
+then emailing some suggestions. Instead, the second person can make sure he or
+she has the latest version of that file, make the changes they think will help,
+\emph{commit} those changes with a message (a \emph{commit message}) about why they think
+this change will fix the problem, and then push that latest version of the file
+back to the first person. If there are several places where it would help to
+change the file, then these can be fixed through several separate commits, each
+with their own message. The first person, who originally asked for help, can
+read through the updates in the file (most platforms for using version control
+will now highlight where all these changes are in the file) and read the second
+person's message or messages about why each change might help. Even better, days
+or months later, when team members are trying to figure out why a certain change
+was made in that part of the file, can go back and read these messages to get an
+explanation.
 
-It turns out that this functionality---of being able to ``roll back'' to earlier versions---has
-a wonderful side benefit when it comes to working on a large project. It means that you
-\textbf{don't} need to save earlier versions of each file. You can maintain one and only one
-version of each project file in the project's directory, with the confidence that you never
-``lose'' old versions of the file. If you're working on a manuscript, for example, when it's
-time to edit, you can cut whole paragraphs, and if you ever need to get them back, they'll
-be right there in the commit history for your project, with their own commit message about
-why they were cut (hopefully a nice clear one that will make it easy to find that commit
-if you ever need those paragraphs again).
+There's another feature of version control that can be demonstrated through this
+example. Because the changes made to the files in the project are regularly
+\emph{committed}, with a message for each commit and a record of what was changed in
+that commit, the team members can, at any point, go back to the \emph{exact} version
+of the project at any earlier point in time. Each of the commits is given its
+own ID tag ({[}name for this? hash?{]}), and \emph{git} has a number of commands that let
+you ``roll back'' to earlier versions, by going back to the version as it was when
+a certain commit was made, provided \emph{reversability} within the project files
+\citep{raymondunderstanding}.
+
+It turns out that this functionality---of being able to ``roll back'' to earlier
+versions---has a wonderful side benefit when it comes to working on a large
+project. It means that you \textbf{don't} need to save earlier versions of each file.
+You can maintain one and only one version of each project file in the project's
+directory, with the confidence that you never ``lose'' old versions of the file.
+If you're working on a manuscript, for example, when it's time to edit, you can
+cut whole paragraphs, and if you ever need to get them back, they'll be right
+there in the commit history for your project, with their own commit message
+about why they were cut (hopefully a nice clear one that will make it easy to
+find that commit if you ever need those paragraphs again).
+
+\begin{quote}
+``Have a quick look back up at those decades of progress. Yes, some of the advances
+were also enabled by increasing computer power. But, mainly, they were simply
+made by people thinking of cleverer ways of collaborating.'' \citep{irving2011astonishments}
+\end{quote}
+
+The most common version control program currently used for scienctific projects is
+\emph{git}. This program was created by Linus Torvalds, who also created the Linux
+operating system, in 2005 as a way to facilitate the team working on Linux
+development. This program for version control thrives in large collaborative
+projects, for example open-source software development projects that include
+numerous contributors, both regular and occasional \citep{brown2018git}.
+
+\begin{quote}
+``If your software engineering career, like mine, is no older than GitHub, then
+git may be the only version control software you have ever used. While people
+sometimes grouse about its steep learning curve or unintuitive interface, git has
+become everyone's go-to for version control.'' \citep{target2018version}
+\end{quote}
+
+In recent years, some complementary tools have been developed that make the process of
+collaborating together using version control software easier.
+Other tools can helps in collaborating on file-based projects, including \emph{bug trackers}
+or \emph{issue trackers}, which allow the team to keep a running ``to-do'' list of what needs
+to be done to complete the project. Other helpful tools, particularly for compiled
+software projects, include \emph{build systems}. Some of these features come within
+Software Configuration Management (SCM) programs \citep{raymondunderstanding}
+
+GitHub was created in 2008 as a web-based platform to facilitate collaborating
+on projects running under git version control. It can provide an easier entry
+to using git for version control than trying to learn to use git from the
+command line \citep{perez2016ten}. It also plays well with RStudio, making it easy
+to integrate a collaborative workflow through GitHub from the same RStudio
+window on your computer where you are otherwise doing your analysis \citep{perez2016ten}.
+
+\begin{quote}
+``The astonishment was that you might want to make even your tiny hacks to
+other people's code public. Before GitHub, we tended to keep those on our own
+computer. Nowadays, it is so each to make a fork, or even edit the code directly
+in your browser, that potentially anyone can find even your least polished
+bug fixes immediately.'' \citep{irving2011astonishments}
+\end{quote}
+
+On GitHub, you can set the access to a project to be either public or private,
+and can be converted easily from one form to the other over the course of the
+project \citep{metz2015github}. A private project can be viewed only by fellow team
+members, while a public project can be viewed by anyone. What's more, while only
+collaborators on a public project can directly change the code, anyone else can
+\emph{suggest} changes through a process of copying a version of the project
+(\emph{forking} it), making the changes they would like to suggest, and the asking
+the project's owners to consider integrating the changes back into the main
+version of the project through a \emph{pull request}. GitHub therefore creates a
+platform where people can explore, adapt, and add to other people's coding
+projects, enabling a community of coders \citep{perez2016ten}.
+
+\begin{quote}
+``Much more than a code warehouse, GitHub is effectively a social network for
+software development.'' \citep{perkel2018git}
+\end{quote}
+
+\begin{quote}
+GitHub has been described as ``a kind of bazaar that offers just about any
+piece of code you might want---and so much of it free.'' \citep{metz2015github}
+\end{quote}
+
+GitHub can also be used to collaborate on, host, and publish websites and other
+online content \citep{perez2016ten}. It's GitHub Pages functionality, for example, is
+now being used to host a number of books created in R using the \texttt{bookdown}
+package, including the online version of this book.
 
 \hypertarget{improving-scientific-research-with-version-control}{%
 \subsection{Improving scientific research with version control}\label{improving-scientific-research-with-version-control}}
 
-\hypertarget{how-to-use-version-control}{%
-\subsection{How to use version control}\label{how-to-use-version-control}}
+{[}Electronic notebooks? Original lab notebooks? Idea of tracking any changes to
+the recorded data?{]}
 
-While this method of merging two sets of changes to a file generally works very well in
-integrating what members of the team have typed into the file in their edits (i.e., the
-actual text), it doesn't do \emph{anything} to check the logic. If that text is computer
-code, then the latest version, with code integrated from two people, could be ``broken'',
-even if each person confirmed that the code worked on their own computers before merging,
-because a change in one spot in code could break something somewhere else in the code.
-One way to try to quickly identify this kind of a problem is to create small pieces of
-code that can be run whenever you'd like to check that your code is still behaving like you
-want it to. These pieces of code are called ``unit tests''. They allow you to define how
-you \emph{expect} your code to behave---for example, if you have created a function in your code that
-counts the number of letters in a word, you expect it to always give back ``5'' for ``fever''
-and ``0'' for "``. You can write a bit of code that runs the function, using inputs of''fever" and "``, and then tests to see if what it gets in return is''5" and ``0''. If it does,
-great! You won't hear anything else. If it doesn't though, it will print out a message
-to warn you that one of the functions in your code didn't return what you were expecting
-it to. You can collect all of these unit tests in one part of the project directory, and you
-can even set up a ``hook'' with your version control program to run all of those tests
-every time you merge in new changes from team members. If everything still works fine after
-merging in new changes, it will be a silent success, but if a merge breaks something,
-you'll get a noisy failure which, while certainly worse that a silent success, is much,
-much better than a silent failure. As Mark Twain (supposedly) said, ``What gets us into
-trouble is not what we don't know. It's what we know for sure that just ain't so.''
+\ldots{}
 
-{[}Odds and ends---.DS\_Store, \$Word\_doc{]}
+\begin{quote}
+``One reason for GitHub's success is that it offers more than a simple source
+code hosting service. It provides developers and researchers with a dynamic
+and collaborative environment, often referred to as a social coding platform,
+that supports peer review, commenting, and discussion. A diverse range of efforts,
+ranging from individual to large bioinformatics projects, laboratory repositories,
+as well as global collaborations, have found GitHub to be a productive place
+to share code and ideas and collaborate.'' \citep{perez2016ten}
+\end{quote}
+
+Large funding agencies often now require a plan for managing and sharing data. \ldots{}
+For software development projects, they may ask for plans on how to maintain
+access to products if the main package is ``orphaned''.
+
+Some scientists have started using git and GitHub as a way to collaborate on
+writing scientific manuscripts \citep{perez2016ten} and grant proposals {[}examples{]}.
 
 \hypertarget{subsection-1-5}{%
 \subsection{Subsection 1}\label{subsection-1-5}}
@@ -3608,6 +3698,23 @@ control platform to work collaboratively.
   a version control platform (e.g., \emph{GitLab})
 \end{itemize}
 
+\hypertarget{git-and-github-features}{%
+\subsection{git and GitHub features}\label{git-and-github-features}}
+
+\begin{itemize}
+\tightlist
+\item
+  issue trackers
+\item
+  contributions
+\item
+  branching
+\item
+  versioning
+\item
+  READMEs
+\end{itemize}
+
 \hypertarget{subsection-1-6}{%
 \subsection{Subsection 1}\label{subsection-1-6}}
 
@@ -3655,6 +3762,46 @@ RStudio.
   Understand how to connect with \emph{GitLab} through RStudio to collaborate on\\
   research projects while maintaining version control
 \end{itemize}
+
+\hypertarget{how-to-use-version-control}{%
+\subsection{How to use version control}\label{how-to-use-version-control}}
+
+\ldots{}
+
+While this method of merging two sets of changes to a file generally works very well in
+integrating what members of the team have typed into the file in their edits (i.e., the
+actual text), it doesn't do \emph{anything} to check the logic. If that text is computer
+code, then the latest version, with code integrated from two people, could be ``broken'',
+even if each person confirmed that the code worked on their own computers before merging,
+because a change in one spot in code could break something somewhere else in the code.
+One way to try to quickly identify this kind of a problem is to create small pieces of
+code that can be run whenever you'd like to check that your code is still behaving like you
+want it to. These pieces of code are called ``unit tests''. They allow you to define how
+you \emph{expect} your code to behave---for example, if you have created a function in your code that
+counts the number of letters in a word, you expect it to always give back ``5'' for ``fever''
+and ``0'' for "``. You can write a bit of code that runs the function, using inputs of''fever" and "``, and then tests to see if what it gets in return is''5" and ``0''. If it does,
+great! You won't hear anything else. If it doesn't though, it will print out a message
+to warn you that one of the functions in your code didn't return what you were expecting
+it to.
+
+You can collect all of these unit tests in one part of the project directory, and you
+can even set up a ``hook'' with your version control program to run all of those tests
+every time you merge in new changes from team members.
+If everything still works fine after
+merging in new changes, it will be a silent success, but if a merge breaks something,
+you'll get a noisy failure which, while certainly worse that a silent success, is much,
+much better than a silent failure. As Mark Twain (supposedly) said, ``What gets us into
+trouble is not what we don't know. It's what we know for sure that just ain't so.''
+
+\begin{quote}
+``It is possible to put hook scripts in {[}some version control program's{]} repository
+that will fire at various interesting times---notably before each commit, or after.
+Hook scripts can be used for many purposes, including enforcing fine-grained access
+control and sending automated commit notifications to mailing lists, bug trackers,
+or even IRC channels.'' \citep{raymondunderstanding}
+\end{quote}
+
+{[}Odds and ends---.DS\_Store, \$Word\_doc{]}
 
 \hypertarget{subsection-1-7}{%
 \subsection{Subsection 1}\label{subsection-1-7}}
