@@ -19,100 +19,61 @@ for data recording
 
 ### What is version control?
 
-Version control developed as a way to coordinate collaborative work on 
-software programming projects. The term "version" here refers to the current
-state of a document or set of documents, for example the source code for a
-computer program. The idea of "control" is to allow for safe changes and updates
-to this version while more than one person is working on it. 
-The general term "version control" can refer to any method of
-syncing contributions from several people to a file or set of files, and
-very early on it was done by people rather than through a computer program. 
-Some software developers have shared their memories of taking their
-code to the "Source Control" team, who then integrated it into the main
-source code file by hand [@irving2011astonishments]. 
+Version control developed as a way to coordinate collaborative work on software
+programming projects. The term "version" here refers to the current state of a
+document or set of documents, for example the source code for a computer
+program. The idea of "control" is to allow for safe changes and updates to this
+version while more than one person is working on it. The general term "version
+control" can refer to any method of syncing contributions from several people to
+a file or set of files, and very early on it was done by people rather than
+through a computer program. While version control of computer files can be done
+by people, and originally was [@irving2011astonishments], it's much more
+efficient to use a computer program to handle this tracking of the history of a
+set of files as they evolve.
 
 > "Tracking all that detail is just the sort of thing computers
 are good at and humans are not." [@raymond2003art]
 
-In earlier types of version control programs, there was one central "main"
-repository the file or set of files the team was working on
-[@raymondunderstanding; @target2018version]. Very early on, this was kept on one
-computer [@irving2011astonishments]. A team member who wanted to make a change
-would "check out" the file he or she wanted to work on, make changes, and then
-check it back in as the newest main version [@raymond2003art. While one team
-member had this file checkout out, other members would often be "locked" out of
-making any changes to that file---they could look at it, but couldn't make any
-edits [@raymondunderstanding; @target2018version]. This meant that there was no
-chance of two people trying to change the same part of a file at the same time.
-In spirit, this early system is pretty similar to the idea of sending a file
-around the team by email, with the understanding that only one person works on
-it at a time. While the "main" version is in different people's hands at
-different times, to do work, you all agree that only one person will work on it
-at a time. A slightly more modern analogy is the idea of having a single version
-of a file in Dropbox or Google Docs, and avoiding working on the file when you
-see that another team member is working on it. (However, both of these examples
-other key features of version control, which we'll discuss a bit later.)
+While the very earliest version control systems tracked single files, these
+systems quickly moved to tracking sets of files, called *repositories*. You can
+think of a repository as a computer file directory with some extra overhead
+added to record how the files in the directory have changed over time. In a
+repository of files that is under version control, you take regular "snapshots"
+of how the files look during your work on them. Each snapshot is called a
+*commit*, and it provides a record of which lines in each file changed from one
+snapshot to another, as well as exactly how they changed. The idea behind these
+commits---recording the differences, line-by-line, between an older and newer
+version of each file derives from a longstanding Unix command line tool called
+`diff`. This tool, developed early in the history of Unix at AT&T
+[@raymond2003art], is and extremely solid and well-tested tool that did the
+simple but important job of generating a list of all the differences between two
+plain text files.
 
-This system is pretty clunky, though. In particular, it probably usually
-increases the amount of time that it takes the team to finish the project,
-because only one person can work on a file at a time. Later types of version
-control programs moved toward a different style, allowing for *distributed*
-rather than *centralized* collaborative work on a file or a set of files
-[@raymondunderstanding; @irving2011astonishments]. Under the distributed model,
-all team members can have their own version of all the files, work on them and
-make records of changes they make to the files, and then occassionally sync with
-everyone else to share your changes with them and bring their changes into your
-copy of the files. 
-
-So, this is the basic idea of modern version control---for a project that
-involves a set of computer files, everyone on the team (even if that's just one
-person) has their own copy of a directory with those files on their own
-computer, makes changes at the time and in the spots in the files that they
-want, and then regularly re-syncs their local directory with everyone else's to
-share changes and updates. Remote repositories---which may be on a server in 
-a different location---can be added with another copy of the project, which 
-can similarly be synced regularly to update with any changes made to project 
-files.
-
-Add on this distribution of files is the ability to keep track of the changes
-made to the file, as well as messages about why those changes were made. These
-systems allow you to explain your changes as you make them---in other words, it
-allows for *annotation* of the developing and editing process
-[@raymondunderstanding]. The ability in version control software to compare
-differences between two plain text files derives from a longstanding Unix
-command line tool called `diff`. This tool developed early in the history of
-Unix at AT&T [@raymond2003art]. This small, extremely solid and well-tested tool
-serves as a basis for tracking changes in the files is a directory under version
-control as they evolve. Version control systems have added the ability to align
-commit messages and commit tags with each "snapshot" of these differences in
-files, creating a stable system for creating a complete history of how files in
-a project directory have changed over the timecourse of the project and why.
-Each snapshot of changes to the files in a directory is called a *commit*, 
-which is tagged with an identifier so it can be found later, as well as a 
-*commit message* describing why the change was made. The commit messages 
-can serve as a powerful tool for explaining changes to other team members or
-for reminding yourself in the future about why certain changes were made.
-
-Further, because the changes made to the files in the project are regularly
-*committed*, with a message for each commit and a record of what was changed in
-that commit, the team members can, at any point, go back to the *exact* version
-of the project at any earlier point in time. Each of the commits is given its
-own ID tag ([name for this? hash?]), and *git* has a number of commands that let
-you "roll back" to earlier versions, by going back to the version as it was when
-a certain commit was made, provided *reversability* within the project files
-[@raymondunderstanding].
-
-> "If you make a change, and discover it's not viable, how can you revert
-to a code version that is known good? If reversion is difficult or unreliable, 
-it's hard to risk making changes at all (you could trash the whole project, or
-make many hours of painful work for yourself)." [@raymond2003art]
+When you are working with a directory under version control, you can also
+explain your changes as you make them---in other words, it allows for
+*annotation* of the developing and editing process [@raymondunderstanding]. Each
+commit requires you to enter a *commit message* describing why the change was
+made. The commit messages can serve as a powerful tool for explaining changes to
+other team members or for reminding yourself in the future about why certain
+changes were made. As a result, a repository under version control includes a
+complete history of how files in a project directory have changed over the
+timecourse of the project and why. Further, each of the commits is given its own
+ID tag ([name for this? hash?]), and version control systems have a number of
+commands that let you "roll back" to earlier versions, by going back to the
+version as it was when a certain commit was made, provided *reversability*
+within the project files [@raymondunderstanding].
 
 It turns out that this functionality---of being able to "roll back" to earlier
 versions---has a wonderful side benefit when it comes to working on a large
-project. It means that you **don't** need to save earlier versions of each file.
+project. It means that you *don't* need to save earlier versions of each file.
 You can maintain one and only one version of each project file in the project's
 directory, with the confidence that you never "lose" old versions of the file
-[@perkel2018git; @blischak2016quick]. 
+[@perkel2018git; @blischak2016quick]. This allows you to maintain a clean and
+simple version of the project files, with only one copy of each, ensuring it's
+always clear which version of a file is the "current" one (since there's only
+one version). This also provides the reassurance that you can try new directions
+in a project, and always roll back to the old version if that direction doesn't
+work well.
 
 > "Early in his graduate career, John Blischak found himself creating figures
 for his advisor's grant application. Blischak was using the programming language
@@ -127,17 +88,48 @@ changing it and saving the snapshots. And if the professor comes back and says,
 well, I'll just bo back to the March version of my code and I can recreate
 it'.'" [@perkel2018git]
 
-The most common version control program currently used for scienctific projects is
-*git*. This program was created by Linus Torvalds, who also created the Linux 
-operating system, in 2005 as a way to facilitate the team working on Linux 
-development. This program for version control thrives in large collaborative
-projects, for example open-source software development projects that include
-numerous contributors, both regular and occasional [@brown2018git].
+Finally, most current version control systems operate under a *distributed*
+framework. In earlier types of version control programs, there was one central
+("main") repository for the file or set of files the team was working on
+[@raymondunderstanding; @target2018version]. Very early on, this was kept on one
+computer [@irving2011astonishments]. A team member who wanted to make a change
+would "check out" the file he or she wanted to work on, make changes, and then
+check it back in as the newest main version [@raymond2003art]. While one team
+member had this file checked out, other members would often be "locked" out of
+making any changes to that file---they could look at it, but couldn't make any
+edits [@raymondunderstanding; @target2018version]. This meant that there was no
+chance of two people trying to change the same part of a file at the same time.
+In spirit, this early system is pretty similar to the idea of sending a file
+around the team by email, with the understanding that only one person works on
+it at a time. While the "main" version is in different people's hands at
+different times, to do work, you all agree that only one person will work on it
+at a time. A slightly more modern analogy is the idea of having a single version
+of a file in Dropbox or Google Docs, and avoiding working on the file when you
+see that another team member is working on it. 
 
-> "If your software engineering career, like mine, is no older than GitHub, then 
-git may be the only version control software you have ever used. While people 
-sometimes grouse about its steep learning curve or unintuitive interface, git has
-become everyone's go-to for version control." [@target2018version]
+This system is pretty clunky, though. In particular, it usually increases the
+amount of time that it takes the team to finish the project, because only one
+person can work on a file at a time. Later types of version control programs
+moved toward a different style, allowing for *distributed* rather than
+*centralized* collaborative work on a file or a set of files
+[@raymondunderstanding; @irving2011astonishments]. Under the distributed model,
+all team members can have their own version of all the files, work on them and
+make records of changes they make to the files, and then occassionally sync with
+everyone else to share your changes with them and bring their changes into your
+copy of the files. This distributed model also means there is a copy of the full
+repository on every team members computer, which has the side benefit of
+provided natural backup of the project files. Remote repositories---which may be
+on a server in a different location---can be added with another copy of the
+project, which can similarly be synced regularly to update with any changes made
+to project files.
+
+While there are a number of software systems for version control, by far the
+most common currently used for scienctific projects is *git*. This program was
+created by Linus Torvalds, who also created the Linux operating system, in 2005
+as a way to facilitate the team working on Linux development. This program for
+version control thrives in large collaborative projects, for example open-source
+software development projects that include numerous contributors, both regular
+and occasional [@brown2018git].
 
 In recent years, some complementary tools have been developed that make the
 process of collaborating together using version control software easier. Other
@@ -153,6 +145,11 @@ trying to learn to use git from the command line [@perez2016ten]. It also plays
 well with RStudio, making it easy to integrate a collaborative workflow through
 GitHub from the same RStudio window on your computer where you are otherwise
 doing your analysis [@perez2016ten].
+
+> "If your software engineering career, like mine, is no older than GitHub, then 
+git may be the only version control software you have ever used. While people 
+sometimes grouse about its steep learning curve or unintuitive interface, git has
+become everyone's go-to for version control." [@target2018version]
 
 ### Recording data in the laboratory---from paper to computers
 
