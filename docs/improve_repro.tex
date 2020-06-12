@@ -3398,22 +3398,6 @@ source code file by hand \citep{irving2011astonishments}.
 are good at and humans are not.'' \citep{raymond2003art}
 \end{quote}
 
-As the proverb about too many cooks in the kitchen captures, any time you have
-multiple people working on a project, it introduces the chance for conflicts.
-While higher-level conflicts, like about what you want the final product to look
-like or who should do which jobs, can't be easily managed by a computer program,
-now the complications of integrating everyone's contributions---and letting
-people work in their own space and then bring together their individual work
-into one final joint project---can be. While these programs for version control
-were originally created to help with programmers developing code, they can be
-used now to coordinate group work on numerous types of file-based projects,
-including scientific manuscripts, books, and websites \citep{raymondunderstanding}.
-And although they can work with projects that include binary code, they thrive
-in projects with a heavier concentration of text-based files, and so they fit in
-nicely in a scientific research / data analysis workflow that is based on data
-stored in plain text formats and data analysis scripts written in plain text
-files, tools we discuss in other parts of this book.
-
 In earlier types of version control programs, there was one central ``main''
 repository the file or set of files the team was working on
 \citep{raymondunderstanding, target2018version}. Very early on, this was kept on one
@@ -3432,6 +3416,351 @@ at a time. A slightly more modern analogy is the idea of having a single version
 of a file in Dropbox or Google Docs, and avoiding working on the file when you
 see that another team member is working on it. (However, both of these examples
 other key features of version control, which we'll discuss a bit later.)
+
+This system is pretty clunky, though. In particular, it probably usually
+increases the amount of time that it takes the team to finish the project,
+because only one person can work on a file at a time. Later types of version
+control programs moved toward a different style, allowing for \emph{distributed}
+rather than \emph{centralized} collaborative work on a file or a set of files
+\citep{raymondunderstanding, irving2011astonishments}. Under the distributed model,
+all team members can have their own version of all the files, work on them and
+make records of changes they make to the files, and then occassionally sync with
+everyone else to share your changes with them and bring their changes into your
+copy of the files.
+
+So, this is the basic idea of modern version control---for a project that
+involves a set of computer files, everyone on the team (even if that's just one
+person) has their own copy of a directory with those files on their own
+computer, makes changes at the time and in the spots in the files that they
+want, and then regularly re-syncs their local directory with everyone else's to
+share changes and updates. Remote repositories---which may be on a server in
+a different location---can be added with another copy of the project, which
+can similarly be synced regularly to update with any changes made to project
+files.
+
+Add on this distribution of files is the ability to keep track of the changes
+made to the file, as well as messages about why those changes were made. These
+systems allow you to explain your changes as you make them---in other words, it
+allows for \emph{annotation} of the developing and editing process
+\citep{raymondunderstanding}. The ability in version control software to compare
+differences between two plain text files derives from a longstanding Unix
+command line tool called \texttt{diff}. This tool developed early in the history of
+Unix at AT\&T \citep{raymond2003art}. This small, extremely solid and well-tested tool
+serves as a basis for tracking changes in the files is a directory under version
+control as they evolve. Version control systems have added the ability to align
+commit messages and commit tags with each ``snapshot'' of these differences in
+files, creating a stable system for creating a complete history of how files in
+a project directory have changed over the timecourse of the project and why.
+Each snapshot of changes to the files in a directory is called a \emph{commit},
+which is tagged with an identifier so it can be found later, as well as a
+\emph{commit message} describing why the change was made. The commit messages
+can serve as a powerful tool for explaining changes to other team members or
+for reminding yourself in the future about why certain changes were made.
+
+Further, because the changes made to the files in the project are regularly
+\emph{committed}, with a message for each commit and a record of what was changed in
+that commit, the team members can, at any point, go back to the \emph{exact} version
+of the project at any earlier point in time. Each of the commits is given its
+own ID tag ({[}name for this? hash?{]}), and \emph{git} has a number of commands that let
+you ``roll back'' to earlier versions, by going back to the version as it was when
+a certain commit was made, provided \emph{reversability} within the project files
+\citep{raymondunderstanding}.
+
+\begin{quote}
+``If you make a change, and discover it's not viable, how can you revert
+to a code version that is known good? If reversion is difficult or unreliable,
+it's hard to risk making changes at all (you could trash the whole project, or
+make many hours of painful work for yourself).'' \citep{raymond2003art}
+\end{quote}
+
+It turns out that this functionality---of being able to ``roll back'' to earlier
+versions---has a wonderful side benefit when it comes to working on a large
+project. It means that you \textbf{don't} need to save earlier versions of each file.
+You can maintain one and only one version of each project file in the project's
+directory, with the confidence that you never ``lose'' old versions of the file
+\citep{perkel2018git, blischak2016quick}.
+
+\begin{quote}
+``Early in his graduate career, John Blischak found himself creating figures
+for his advisor's grant application. Blischak was using the programming language
+R to generate the figures, and as he iterated and optimized his code, he ran
+into a familiar problem: Determined not to lose his work, he gave each new
+version a different filename---analysis\_1, analysis\_2, and so on, for
+instance---but failed to document how they had evolved. `I had no idea what had
+changed between them,' says Blischak\ldots{} Using Git, Blischak says, he no longer
+needed to maintain multiple copies of his files. `I just keep overwriting it and
+changing it and saving the snapshots. And if the professor comes back and says,
+'oh, you sent me an email back in March with this figure', I can say, `okay,
+well, I'll just bo back to the March version of my code and I can recreate
+it'.''' \citep{perkel2018git}
+\end{quote}
+
+The most common version control program currently used for scienctific projects is
+\emph{git}. This program was created by Linus Torvalds, who also created the Linux
+operating system, in 2005 as a way to facilitate the team working on Linux
+development. This program for version control thrives in large collaborative
+projects, for example open-source software development projects that include
+numerous contributors, both regular and occasional \citep{brown2018git}.
+
+\begin{quote}
+``If your software engineering career, like mine, is no older than GitHub, then
+git may be the only version control software you have ever used. While people
+sometimes grouse about its steep learning curve or unintuitive interface, git has
+become everyone's go-to for version control.'' \citep{target2018version}
+\end{quote}
+
+In recent years, some complementary tools have been developed that make the
+process of collaborating together using version control software easier. Other
+tools can helps in collaborating on file-based projects, including \emph{bug
+trackers} or \emph{issue trackers}, which allow the team to keep a running ``to-do''
+list of what needs to be done to complete the project, all of which are
+discussed in the next chapter as tools that can be used to improve collaboration
+on scientific projects spread across teams. GitHub, a very popular version
+control platform with these additional tools, was created in 2008 as a web-based
+platform to facilitate collaborating on projects running under git version
+control. It can provide an easier entry to using git for version control than
+trying to learn to use git from the command line \citep{perez2016ten}. It also plays
+well with RStudio, making it easy to integrate a collaborative workflow through
+GitHub from the same RStudio window on your computer where you are otherwise
+doing your analysis \citep{perez2016ten}.
+
+\hypertarget{recording-data-in-the-laboratoryfrom-paper-to-computers}{%
+\subsection{Recording data in the laboratory---from paper to computers}\label{recording-data-in-the-laboratoryfrom-paper-to-computers}}
+
+Traditionally, experimental data collected in a laboratory was recorded in a
+paper laboratory notebook. These laboratory notebooks played a role not only as
+the initial recording of data, but also can serve as, for example, a legal
+record of the data recorded in the lab \citep{mascarelli2014research}. They were also
+a resource for collaborating across a team and for passing on a research project
+from one lab member to another \citep{butler2005electronic}.
+
+However, paper laboratory notebooks have a number of limitations. First, they
+can be very inefficient. In a time when almost all data analyses---even simple
+calculations---are done on a computer, recording research data on paper rather
+than directly entering it into a computer is inefficient. Also, any stage of
+copying data from one format to another, especially when done by a human rather
+than a machine, introduces the chance to copying errors. Handwritten laboratory
+notebooks can be hard to read \citep{butler2005electronic, perkel2011coding}, and
+may lack adequate flexibility and expandability to handle the complex
+experiments often conducted. Further, electronic alternatives can also be easier
+to search, allowing for deeper and more comprehensive investigations of the data
+collected across multiple experiments \citep{giles2012digital, butler2005electronic, perkel2011coding}.
+
+\begin{quote}
+``Handwritten lab notebooks are usually chaotic and always unsearchable.''
+\citep{perkel2011coding}
+\end{quote}
+
+Given a widespread recognition of the limitations of paper laboratory notebooks,
+in the past couple of decades, there have been a number of efforts, both formal
+and informal, to move from paper laboratory notebooks to electronic
+alternatives. In some fields that rely heavily on computational analysis, there
+are very few research labs (if any) that use paper laboratory notebooks
+\citep{butler2005electronic}. In other fields, where researchers have traditionally
+used paper lab notebooks, companies have been working for a while to develop
+electronic laboratory notebooks specifically tailored to scientific research
+needs \citep{giles2012digital}. These were adopted more early in pharmaceutical
+industrial labs, where companies had the budgets to get customized versions and
+the authority to require their use, but have taken longer to be adapted in
+academic laboratories \citep{giles2012digital, butler2005electronic}. A widely
+adopted platform for electronic laboratory notebooks has yet to be taken up
+by the scientific community, despite clear advantages of recording data directly
+into a computer rather than first using a paper notebook.
+
+\begin{quote}
+``Since at least the 1990s, articles on technology have predicted the imminent,
+widespread adoption of electronic laboratory notebooks (ELNs) by researchers. It has
+yet to happen---but more and more scientists are taking the plunge.'' \citep{kwok2018lab}
+\end{quote}
+
+Instead of using customized electronic laboratory notebook software, some
+academics are moving their data recording online, but are using more generalized
+electronic alternatives, like Dropbox, Google applications, OneNote, and
+Evernote \citep{perkel2011coding, kwok2018lab, giles2012digital, powell2012lab}.
+Some scientists have started using version control tools, especially the
+combination of git and GitHub, as a way to improve laboratory data recording,
+and in particular to improve transparency and reproducibility standards.
+These pieces of software share the same pattern as Google tools or
+Dropbox---they are generalized tools that have been honed and optimized for ease
+of use through their role outside of scientific research, but can be harnessed
+as a powerful tool in a scientific laboratory, as well. They are also free---at
+least, for GitHub, at the entry and academic levels---and, even better, one
+(git) is open source.
+
+\begin{quote}
+``The purpose of a lab notebook is to provide a lasting record of events in a
+laboratory. In the same way that a chemistry experiment would be nearly
+impossible without a lab notebook, scientific computing would be a nightmare of
+inefficiency and uncertainty without version-control systems.''
+\citep{tippmannmy2014digital}
+\end{quote}
+
+While some generalized tools like Google tools and Dropbox might be simpler to
+initially learn, version control tools offer some key advantages for recording
+scientific data and are worth the effort to adopt. A key advantage is their
+ability to track the full history of files as they evolve, including not only
+the history of changes to each file, but also a record of why each change was
+made. Git excels in tracking changes made to plain text
+files. For these files, whether they record code, data, or text, git can show
+line-by-line differences between two versions of the file. This makes it very
+easy to go through the history of ``commits'' to a plain text file in a
+git-tracked repository and see what change was made at each time point, and then
+read through the commit messages associated with those commits to see why a
+change was made. For example, if a value was entered in the wrong row of a csv,
+and the researcher then made a commit to correct that data entry mistake, the
+researcher could explain the problem and its resolution in the commit message
+for that change.
+
+Platforms for using git often include nice tools for visualizing differences
+between two files, providing a more visual way to look at the ``diffs'' between
+files across time points in the project. For example, GitHub automatically shows
+these using colors to highlight addititions and substractions of plain text for
+one file compared to another version of it when you look through a repository's
+commit history. Similarly, RStudio provides a new ``Commit'' window that can be
+used to compare differences between the original and revised version of plain
+text files at a particular stage in the commit history.
+
+{[}Maybe include a figure with an example of how the difference between two
+text files can be seen, along with a commit message explaining the change?{]}
+
+The use of version control tools and platforms, like git and GitHub, not only
+helps in transparent and trackable recording of data, but it also brings some
+additional advantages in the research project. First, this combination of tools
+aids in collaboration across a research group, as we discuss in depth in the next
+chapter.
+
+Second, if a project uses these tools, it is very easy to share data recorded
+for the project publicly. In a project that uses git and GitHub version control
+tools, it is easy to share the project data online once an associated manuscript
+is published, an increasingly common request or requirement from journals and
+funding agencies \citep{blischak2016quick}. Sharing data allows a more complete
+assessment of the research by reviewers and readers and makes it easier for
+other researchers to build off the published results in their own work,
+extending and adapting the code to explore their own datasets or ask their own
+research questions \citep{perez2016ten}. On GitHub, you can set the access to a
+project to be either public or private, and can be converted easily from one
+form to the other over the course of the project \citep{metz2015github}. A private
+project can be viewed only by fellow team members, while a public project can be
+viewed by anyone. Further, because git tracks the full history of changes to
+these documents, it includes functionality that let's you tag the code and data
+at a specific point (for example, the date when a paper was submitted) so that
+viewers can look at that specific ``version'' of the repository files, even while
+the project team continues to move forward in improving files in the directory.
+At the more advanced end of functionality, there are even ways to assign a DOI
+to a specific version of a GitHub repository \citep{perez2016ten}.
+
+Third, the combination of git and GitHub can help as a way to backup study data
+\citep{blischak2016quick, perez2016ten, perkel2018git}. Together, git and GitHub
+provide a structure where the project directory (repository) is copied on
+multiple computers, both the users' laptop or desktop computers and on a remote
+server hosted by GitHub or a similar organization. This set-up makes it easy to
+bring all the project files onto a new computer---all you have to do is clone
+the project repository. It also ensures that there are copies of the full
+project directory, including all its files, in multiple places
+\citep{blischak2016quick}. Further, not only is the data backed up across multiple
+computers, but so is the full history of all changes made to that data and the
+recorded messages explaining those changes, through the repositories commit
+messages \citep{perez2016ten}.
+
+There are, of course, some limitations to using version control tools when
+recording experimental data. First, while ideally laboratory data is recorded in
+a plain text format (see Chapter {[}x{]} for a deeper discussion of why), some data
+may be recorded in a binary file format. Some version control tools, including
+git, can be used to track changes in binary files. However, git does not take to
+these types of files naturally. In particular, git typically will not be able to
+show users a useful comparison of the differences between two versions of a
+binary file. More problems can arise if the binary file is very large
+\citep{perez2016ten, blischak2016quick}, as some experimental research data files
+are (e.g., if they are the output of 'omics laboratory equipment like a mass
+spectrometer). However, there are emerging tools and strategies for improving
+the ability to include and track large binary files when using git and GitHub
+\citep{blischak2016quick}
+
+\begin{quote}
+``You can version control any file that you put in a Git repository, whether it is
+text-based, an image, or a giant data file. However, just because you \emph{can} version
+control something, does not mean that you \emph{should}.'' \citep{blischak2016quick}
+\end{quote}
+
+{[}Add something about whether version control timestamps would meet legal standards,
+e.g., for patent claims? Mike had a comment about using locks with data that might
+go with that.{]}
+
+Finally, as with other tools and techniques described in this book, there is an
+investment required to learn how to use git and GitHub \citep{perez2016ten}, as well
+as a bit of extra overhead when using version control tools in a project
+\citep{raymond2003art}. However, both can bring dramatic gains to efficiency,
+transparency, and organization of research projects, even if you only use a
+small subset of its basic functionality \citep{perez2016ten}. In Chapter 11 we
+provide guidance on getting started with using git and Github to track a
+scientific research project.
+
+\begin{quote}
+``Although Git has a complex set of commands and can be used for rather complex
+operations, learning to apply the basics requires only a handful of new concepts
+and commands and will provide a solid ground to efficiently track code and related
+content for research projects.'' \citep{perez2016ten}
+\end{quote}
+
+\hypertarget{discussion-questions-3}{%
+\subsection{Discussion questions}\label{discussion-questions-3}}
+
+\hypertarget{enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms}{%
+\section{Enhance the reproducibility of collaborative research with version control platforms}\label{enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms}}
+
+Once a researcher has learned to use \emph{git} on their own computer for
+local version control, they can begin using version control platforms (e.g.,
+\emph{GitLab}, \emph{GitHub}) to collaborate with others under version
+control. We will describe how a research team can benefit from using a version
+control platform to work collaboratively.
+
+\textbf{Objectives.} After this module, the trainee will be able to:
+
+\begin{itemize}
+\tightlist
+\item
+  List benefits of using a version control platform to collaborate
+  on research projects, particularly for reproducibility
+\item
+  Describe the difference between version control (e.g., \emph{git}) and
+  a version control platform (e.g., \emph{GitLab})
+\end{itemize}
+
+\hypertarget{git-and-github-features}{%
+\subsection{git and GitHub features}\label{git-and-github-features}}
+
+\begin{itemize}
+\tightlist
+\item
+  issue trackers
+\item
+  contributions
+\item
+  branching
+\item
+  versioning
+\item
+  READMEs
+\end{itemize}
+
+\hypertarget{subsection-1-5}{%
+\subsection{Subsection 1}\label{subsection-1-5}}
+
+As the proverb about too many cooks in the kitchen captures, any time you have
+multiple people working on a project, it introduces the chance for conflicts.
+While higher-level conflicts, like about what you want the final product to look
+like or who should do which jobs, can't be easily managed by a computer program,
+now the complications of integrating everyone's contributions---and letting
+people work in their own space and then bring together their individual work
+into one final joint project---can be. While these programs for version control
+were originally created to help with programmers developing code, they can be
+used now to coordinate group work on numerous types of file-based projects,
+including scientific manuscripts, books, and websites \citep{raymondunderstanding}.
+And although they can work with projects that include binary code, they thrive
+in projects with a heavier concentration of text-based files, and so they fit in
+nicely in a scientific research / data analysis workflow that is based on data
+stored in plain text formats and data analysis scripts written in plain text
+files, tools we discuss in other parts of this book.
 
 \begin{quote}
 ``The most primitive (but still very common) method {[}of version control{]} is all
@@ -3463,16 +3792,17 @@ participant could be abstracted from the vicissitudes of the lives of the
 others.'' \citep{grune1986concurrent}
 \end{quote}
 
-This system is pretty clunky, though. In particular, it probably usually
-increases the amount of time that it takes the team to finish the project,
-because only one person can work on a file at a time. Later types of version
-control programs moved toward a different style, allowing for \emph{distributed}
-rather than \emph{centralized} collaborative work on a file or a set of files
-\citep{raymondunderstanding, irving2011astonishments}. Under the distributed model,
-all team members can have their own version of all the files, work on them and
-make records of changes they make to the files, and then occassionally sync with
-everyone else to share your changes with them and bring their changes into your
-copy of the files.
+{[}Under the distributed model, all team members can have their own version of all
+the files, work on them and make records of changes they make to the files, and
+then occassionally sync with everyone else to share your changes with them and
+bring their changes into your copy of the files.{]} This functionality is called
+\emph{concurrency}, since it allows team members to concurrently work on the same set
+of files \citep{raymondunderstanding}. This idea allowed for the development of other
+useful features and styles of working, including \emph{branching} to try out new
+ideas that you're not sure you'll ultimately want to go with and \emph{forking}, a
+key tool used in open-source software development, which among other things
+facilitates someone who isn't part of the original team getting a copy of the
+files they can work with and suggesting some changes that might be helpful.
 
 This functionality is called \emph{concurrency}, since it allows team members to
 concurrently work on the same set of files \citep{raymondunderstanding}. This idea
@@ -3482,12 +3812,6 @@ ultimately want to go with and \emph{forking}, a key tool used in open-source
 software development, which among other things facilitates someone who isn't
 part of the original team getting a copy of the files they can work with and
 suggesting some changes that might be helpful.
-
-So, this is the basic idea of modern version control---for a project that involves a set
-of computer files, everyone on has their own copy of a directory with those files
-on their own computer, makes changes at the time and in the spots in the files that
-they want, and then regularly re-syncs their local directory with everyone else's
-to share changes and updates.
 
 \begin{quote}
 ``VCSs are a huge boon to productivity and code quality in many ways, even for small
@@ -3565,58 +3889,52 @@ project, how do you know what they have changed while you weren't looking, and
 who was responsible for each change?'' \citep{raymond2003art}
 \end{quote}
 
-There's another feature of version control that can be demonstrated through this
-example. Because the changes made to the files in the project are regularly
-\emph{committed}, with a message for each commit and a record of what was changed in
-that commit, the team members can, at any point, go back to the \emph{exact} version
-of the project at any earlier point in time. Each of the commits is given its
-own ID tag ({[}name for this? hash?{]}), and \emph{git} has a number of commands that let
-you ``roll back'' to earlier versions, by going back to the version as it was when
-a certain commit was made, provided \emph{reversability} within the project files
-\citep{raymondunderstanding}.
+There are a number of other features of version control that make it useful for
+collaborating on file-based projects with teams. First, these systems allow you
+to explain your changes as you make them---in other words, it allows for
+\emph{annotation} of the developing and editing process \citep{raymondunderstanding}. This
+provides the team with a full history of why the files evolved in the way they
+did across the team. It also provides a way to communicate across the team
+members.
 
 \begin{quote}
-``If you make a change, and discover it's not viable, how can you revert
-to a code version that is known good? If reversion is difficult or unreliable,
-it's hard to risk making changes at all (you could trash the whole project, or
-make many hours of painful work for yourself).'' \citep{raymond2003art}
+``You will likely share your code with multiple lab mates or collaborators,
+and they may have suggestions on how to improve it. If you email the code
+to multiple people, you will have to manually incorporate all the changes
+each of them sends.'' \citep{blischak2016quick}
 \end{quote}
 
-It turns out that this functionality---of being able to ``roll back'' to earlier
-versions---has a wonderful side benefit when it comes to working on a large
-project. It means that you \textbf{don't} need to save earlier versions of each file.
-You can maintain one and only one version of each project file in the project's
-directory, with the confidence that you never ``lose'' old versions of the file
-\citep{perkel2018git, blischak2016quick}. If you're working on a manuscript, for
+{[}\emph{change tracking}{]}
+For example, if one person is the key person working on a certain file,
+but has run into a problem with one spot and asks another team member to take a
+go, then the second team member isn't limited to just looking at the file and
+then emailing some suggestions. Instead, the second person can make sure he or
+she has the latest version of that file, make the changes they think will help,
+\emph{commit} those changes with a message (a \emph{commit message}) about why they think
+this change will fix the problem, and then push that latest version of the file
+back to the first person. If there are several places where it would help to
+change the file, then these can be fixed through several separate commits, each
+with their own message. The first person, who originally asked for help, can
+read through the updates in the file (most platforms for using version control
+will now highlight where all these changes are in the file) and read the second
+person's message or messages about why each change might help. Even better, days
+or months later, when team members are trying to figure out why a certain change
+was made in that part of the file, can go back and read these messages to get an
+explanation.
+
+\begin{quote}
+``You know your code has changed; do you know why? It's easy to forget the
+reasons for changes, and step on them later. If you have collaborators on a
+project, how do you know what they have changed while you weren't looking, and
+who was responsible for each change?'' \citep{raymond2003art}
+\end{quote}
+
+If you're working on a manuscript, for
 example, when it's time to edit, you can cut whole paragraphs, and if you ever
 need to get them back, they'll be right there in the commit history for your
 project, with their own commit message about why they were cut (hopefully a nice
 clear one that will make it easy to find that commit if you ever need those
 paragraphs again).
-
-{[}xkcd / cartoon of this?{]}
-
-\begin{quote}
-``Early in his graduate career, John Blischak found himself creating figures
-for his advisor's grant application. Blischak was using the programming language
-R to generate the figures, and as he iterated and optimized his code, he ran
-into a familiar problem: Determined not to lose his work, he gave each new
-version a different filename---analysis\_1, analysis\_2, and so on, for
-instance---but failed to document how they had evolved. `I had no idea what had
-changed between them,' says Blischak\ldots{} Using Git, Blischak says, he no longer
-needed to maintain multiple copies of his files. `I just keep overwriting it and
-changing it and saving the snapshots. And if the professor comes back and says,
-'oh, you sent me an email back in March with this figure', I can say, `okay,
-well, I'll just bo back to the March version of my code and I can recreate
-it'.''' \citep{perkel2018git}
-\end{quote}
-
-\begin{quote}
-``Have a quick look back up at those decades of progress. Yes, some of the
-advances were also enabled by increasing computer power. But, mainly, they were
-simply made by people thinking of cleverer ways of collaborating.''
-\citep{irving2011astonishments}
-\end{quote}
 
 \begin{quote}
 ``Using GitHub or any similar versioning / tracking system is not a replacement
@@ -3624,25 +3942,13 @@ for good project management; it is an extension, an improvement for good
 project and file management.'' \citep{perez2016ten}
 \end{quote}
 
-The most common version control program currently used for scienctific projects is
-\emph{git}. This program was created by Linus Torvalds, who also created the Linux
-operating system, in 2005 as a way to facilitate the team working on Linux
-development. This program for version control thrives in large collaborative
-projects, for example open-source software development projects that include
-numerous contributors, both regular and occasional \citep{brown2018git}.
-
-\begin{quote}
-``If your software engineering career, like mine, is no older than GitHub, then
-git may be the only version control software you have ever used. While people
-sometimes grouse about its steep learning curve or unintuitive interface, git has
-become everyone's go-to for version control.'' \citep{target2018version}
-\end{quote}
-
 In recent years, some complementary tools have been developed that make the process of
 collaborating together using version control software easier.
 Other tools can helps in collaborating on file-based projects, including \emph{bug trackers}
 or \emph{issue trackers}, which allow the team to keep a running ``to-do'' list of what needs
-to be done to complete the project. Other helpful tools, particularly for compiled
+to be done to complete the project, all of which are discussed in the next chapter.
+
+Other helpful tools, particularly for compiled
 software projects, include \emph{build systems}. Some of these features come within
 Software Configuration Management (SCM) programs \citep{raymondunderstanding}
 
@@ -3667,13 +3973,6 @@ and others used GitHub issues to discuss and comment on changes in manuscripts
 and address reviewers' comments.'' \citep{perez2016ten}
 \end{quote}
 
-GitHub was created in 2008 as a web-based platform to facilitate collaborating
-on projects running under git version control. It can provide an easier entry
-to using git for version control than trying to learn to use git from the
-command line \citep{perez2016ten}. It also plays well with RStudio, making it easy
-to integrate a collaborative workflow through GitHub from the same RStudio
-window on your computer where you are otherwise doing your analysis \citep{perez2016ten}.
-
 \begin{quote}
 ``The astonishment was that you might want to make even your tiny hacks to
 other people's code public. Before GitHub, we tended to keep those on our own
@@ -3688,10 +3987,7 @@ because they enable the organization and sharing of programming tasks between
 different remote contributors.'' \citep{perez2016ten}
 \end{quote}
 
-On GitHub, you can set the access to a project to be either public or private,
-and can be converted easily from one form to the other over the course of the
-project \citep{metz2015github}. A private project can be viewed only by fellow team
-members, while a public project can be viewed by anyone. What's more, while only
+With GitHub, while only
 collaborators on a public project can directly change the code, anyone else can
 \emph{suggest} changes through a process of copying a version of the project
 (\emph{forking} it), making the changes they would like to suggest, and the asking
@@ -3729,246 +4025,6 @@ and websites related to specific projects.'' \citep{perez2016ten}
 book was maintained as a collection of files under RCS while it was being written.''
 \citep{raymond2003art}
 \end{quote}
-
-\hypertarget{recording-data-in-the-laboratoryfrom-paper-to-computers}{%
-\subsection{Recording data in the laboratory---from paper to computers}\label{recording-data-in-the-laboratoryfrom-paper-to-computers}}
-
-Traditionally, experimental data collected in a laboratory was recorded in a
-paper laboratory notebook. These laboratory notebooks played a role not only as
-the initial recording of data, but also can serve as, for example, a legal
-record of the data recorded in the lab \citep{mascarelli2014research}. They were also
-a resource for collaborating across a team and for passing on a research project
-from one lab member to another \citep{butler2005electronic}.
-
-However, paper laboratory notebooks have a number of limitations. First, they
-can be very inefficient. In a time when almost all data analyses---even simple
-calculations---are done on a computer, recording research data on paper rather
-than directly entering it into a computer is inefficient. Also, any stage of
-copying data from one format to another, especially when done by a human rather
-than a machine, introduces the chance to copying errors. Handwritten laboratory
-notebooks can be hard to read \citep{butler2005electronic, perkel2011coding}, and
-may lack adequate flexibility and expandability to handle the complex
-experiments often conducted. Further, electronic alternatives can also be easier
-to search, allowing for deeper and more comprehensive investigations of the data
-collected across multiple experiments \citep{giles2012digital, butler2005electronic, perkel2011coding}.
-
-\begin{quote}
-``Lab notebooks are stuck in a time warp, still handwritten, on paper. Many
-scientists can barely understand their own scribblings from last week, let alone
-five years from now---as anyone who has had to decipher the hieroglyphics of a
-co-worker can testify.'' \citep{butler2005electronic}
-\end{quote}
-
-\begin{quote}
-``Handwritten lab notebooks are usually chaotic and always unsearchable.''
-\citep{perkel2011coding}
-\end{quote}
-
-\begin{quote}
-``But the biggest advantage of going electronic should appeal to both industry and
-academia alike. With paper records, vast amounts of data lie unused and
-effectively hidden, whereas e-notebooks allow results to be instantly shared with
-collaborators.'' \citep{butler2005electronic}
-\end{quote}
-
-Given a widespread recognition of the limitations of paper laboratory notebooks,
-in the past couple of decades, there have been a number of efforts, both formal
-and informal, to move from paper laboratory notebooks to electronic
-alternatives. In some fields that rely heavily on computational analysis, there
-are very few research labs (if any) that use paper laboratory notebooks
-\citep{butler2005electronic}. In other fields, where researchers have traditionally
-used paper lab notebooks, companies have been working for a while to develop
-electronic laboratory notebooks specifically tailored to scientific research
-needs \citep{giles2012digital}. These were adopted more early in pharmaceutical
-industrial labs, where companies had the budgets to get customized versions and
-the authority to require their use, but have taken longer to be adapted in
-academic laboratories \citep{giles2012digital, butler2005electronic}. A widely
-adopted platform for electronic laboratory notebooks has yet to be taken up
-by the scientific community, despite clear advantages of recording data directly
-into a computer rather than first using a paper notebook.
-
-\begin{quote}
-``Since at least the 1990s, articles on technology have predicted the imminent,
-widespread adoption of electronic laboratory notebooks (ELNs) by researchers. It has
-yet to happen---but more and more scientists are taking the plunge.'' \citep{kwok2018lab}
-\end{quote}
-
-Instead of using customized electronic laboratory notebook software, some
-academics are moving their data recording online, but are using more generalized
-electronic alternatives, like Dropbox, Google applications, OneNote, and
-Evernote \citep{perkel2011coding, kwok2018lab, giles2012digital, powell2012lab}.
-Some scientists have started using version control tools, especially the
-combination of git and GitHub, as a way to improve laboratory data recording,
-and in particular to improve transparency and reproducibility standards.
-These pieces of software share the same pattern as Google tools or
-Dropbox---they are generalized tools that have been honed and optimized for ease
-of use through their role outside of scientific research, but can be harnessed
-as a powerful tool in a scientific laboratory, as well. They are also free---at
-least, for GitHub, at the entry and academic levels---and, even better, one
-(git) is open source.
-
-\begin{quote}
-``The purpose of a lab notebook is to provide a lasting record of events in a
-laboratory. In the same way that a chemistry experiment would be nearly
-impossible without a lab notebook, scientific computing would be a nightmare of
-inefficiency and uncertainty without version-control systems.''
-\citep{tippmannmy2014digital}
-\end{quote}
-
-While some generalized tools like Google tools and Dropbox might be simpler to
-initially learn, version control tools offer some key advantages for recording
-scientific data and are worth the effort to adopt. A key advantage is their
-ability to track the full history of files as they evolve, including not only
-the history of changes to each file, but also a record of why each change was
-made. Git excels in tracking changes made to plain text
-files. For these files, whether they record code, data, or text, git can show
-line-by-line differences between two versions of the file. This makes it very
-easy to go through the history of ``commits'' to a plain text file in a
-git-tracked repository and see what change was made at each time point, and then
-read through the commit messages associated with those commits to see why a
-change was made. For example, if a value was entered in the wrong row of a csv,
-and the researcher then made a commit to correct that data entry mistake, the
-researcher could explain the problem and its resolution in the commit message
-for that change.
-
-The ability in git to compare differences between two plain text files derives from
-a longstanding Unix command line tool called \texttt{diff}. This tool developed early in
-the history of Unix at AT\&T \citep{raymond2003art}. This small, extremely solid and
-well-tested tool serves as a basis for tracking changes in the files is a directory
-under version control as they evolve. Version control systems have added the
-ability to align commit messages and commit tags with each ``snapshot'' of these
-differences in files, creating a stable system for creating a complete history of
-how files in a project directory have changed over the timecourse of the project and
-why.
-
-Platforms for using git often include nice tools for visualizing differences
-between two files, providing a more visual way to look at the ``diffs'' between
-files across time points in the project. For example, GitHub automatically shows
-these using colors to highlight addititions and substractions of plain text for
-one file compared to another version of it when you look through a repository's
-commit history. Similarly, RStudio provides a new ``Commit'' window that can be
-used to compare differences between the original and revised version of plain
-text files at a particular stage in the commit history.
-
-{[}Maybe include a figure with an example of how the difference between two
-text files can be seen, along with a commit message explaining the change?{]}
-
-The use of version control tools and platforms, like git and GitHub, not only
-helps in transparent and trackable recording of data, but it also brings some
-additional advantages in the research project. First, this combination of tools
-aids in collaboration across a research group, as we discuss in depth in the next
-chapter.
-
-Second, if a project uses these tools, it is very easy to share data recorded
-for the project publicly. In a project that uses git and GitHub version control
-tools, it is easy to share the project data online once an associated manuscript
-is published, an increasingly common request or requirement from journals and
-funding agencies \citep{blischak2016quick}. Sharing data allows a more
-complete assessment of the research by reviewers and readers and makes it easier
-for other researchers to build off the published results in their own work,
-extending and adapting the code to explore their own datasets or ask their own
-research questions \citep{perez2016ten}. In GitHub, a repository's setting can be
-changed from ``Private'' to ``Public'', allowing anyone to explore the files in the
-repository. Because git tracks the full history of changes to these documents,
-it includes functionality that let's you tag the code and data at a specific
-point (for example, the date when a paper was submitted) so that viewers can
-look at that specific ``version'' of the repository files, even while the project
-team continues to move forward in improving files in the directory. At the more
-advanced end of functionality, there are even ways to assign a DOI to a specific
-version of a GitHub repository \citep{perez2016ten}.
-
-Third, the combination of git and GitHub can help as a way to backup study data
-\citep{blischak2016quick, perez2016ten, perkel2018git}. Together, git and GitHub
-provide a structure where the project directory (repository) is copied on
-multiple computers, both the users' laptop or desktop computers and on a remote
-server hosted by GitHub or a similar organization. This set-up makes it easy to
-bring all the project files onto a new computer---all you have to do is clone
-the project repository. It also ensures that there are copies of the full
-project directory, including all its files, in multiple places
-\citep{blischak2016quick}. Further, not only is the data backed up across multiple
-computers, but so is the full history of all changes made to that data and the
-recorded messages explaining those changes, through the repositories commit
-messages \citep{perez2016ten}.
-
-There are, of course, some limitations to using version control tools when
-recording experimental data. First, while ideally laboratory data is recorded in
-a plain text format (see Chapter {[}x{]} for a deeper discussion of why), some data
-may be recorded in a binary file format. Some version control tools, including
-git, can be used to track changes in binary files. However, git does not take to
-these types of files naturally. In particular, git typically will not be able to
-show users a useful comparison of the differences between two versions of a
-binary file. More problems can arise if the binary file is very large
-\citep{perez2016ten, blischak2016quick}, as some experimental research data files
-are (e.g., if they are the output of 'omics laboratory equipment like a mass
-spectrometer). However, there are emerging tools and strategies for improving
-the ability to include and track large binary files when using git and GitHub
-\citep{blischak2016quick}
-
-\begin{quote}
-``You can version control any file that you put in a Git repository, whether it is
-text-based, an image, or a giant data file. However, just because you \emph{can} version
-control something, does not mean that you \emph{should}.'' \citep{blischak2016quick}
-\end{quote}
-
-Further, as with other tools and techniques described in this book, there is an
-investment required to learn how to use git and GitHub \citep{perez2016ten}, as well
-as a bit of extra overhead when using version control tools in a project
-\citep{raymond2003art}. However, both can bring dramatic gains to efficiency,
-transparency, and organization of research projects, even if you only use a
-small subset of its basic functionality \citep{perez2016ten}. In Chapter 11 we
-provide guidance on getting started with using git and Github to track a
-scientific research project.
-
-\begin{quote}
-``Although Git has a complex set of commands and can be used for rather complex
-operations, learning to apply the basics requires only a handful of new concepts
-and commands and will provide a solid ground to efficiently track code and related
-content for research projects.'' \citep{perez2016ten}
-\end{quote}
-
-\hypertarget{discussion-questions-3}{%
-\subsection{Discussion questions}\label{discussion-questions-3}}
-
-\hypertarget{enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms}{%
-\section{Enhance the reproducibility of collaborative research with version control platforms}\label{enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms}}
-
-Once a researcher has learned to use \emph{git} on their own computer for
-local version control, they can begin using version control platforms (e.g.,
-\emph{GitLab}, \emph{GitHub}) to collaborate with others under version
-control. We will describe how a research team can benefit from using a version
-control platform to work collaboratively.
-
-\textbf{Objectives.} After this module, the trainee will be able to:
-
-\begin{itemize}
-\tightlist
-\item
-  List benefits of using a version control platform to collaborate
-  on research projects, particularly for reproducibility
-\item
-  Describe the difference between version control (e.g., \emph{git}) and
-  a version control platform (e.g., \emph{GitLab})
-\end{itemize}
-
-\hypertarget{git-and-github-features}{%
-\subsection{git and GitHub features}\label{git-and-github-features}}
-
-\begin{itemize}
-\tightlist
-\item
-  issue trackers
-\item
-  contributions
-\item
-  branching
-\item
-  versioning
-\item
-  READMEs
-\end{itemize}
-
-\hypertarget{subsection-1-5}{%
-\subsection{Subsection 1}\label{subsection-1-5}}
 
 \textbf{VC platforms as a form of back-up.}
 

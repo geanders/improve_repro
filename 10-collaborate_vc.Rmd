@@ -23,6 +23,256 @@ a version control platform (e.g., *GitLab*)
 
 ### Subsection 1
 
+
+As the proverb about too many cooks in the kitchen captures, any time you have
+multiple people working on a project, it introduces the chance for conflicts.
+While higher-level conflicts, like about what you want the final product to look
+like or who should do which jobs, can't be easily managed by a computer program,
+now the complications of integrating everyone's contributions---and letting
+people work in their own space and then bring together their individual work
+into one final joint project---can be. While these programs for version control
+were originally created to help with programmers developing code, they can be
+used now to coordinate group work on numerous types of file-based projects,
+including scientific manuscripts, books, and websites [@raymondunderstanding].
+And although they can work with projects that include binary code, they thrive
+in projects with a heavier concentration of text-based files, and so they fit in
+nicely in a scientific research / data analysis workflow that is based on data
+stored in plain text formats and data analysis scripts written in plain text
+files, tools we discuss in other parts of this book.
+
+> "The most primitive (but still very common) method [of version control] is all 
+hand-hacking. You snapshot the project periodically by manually copying everything
+in it to a backup. You include history comments in source files. You make verbal
+or email arrangements with other developers to keep their hands off certain files
+while you hack them." [@raymond2003art]
+
+> "The hidden costs of this hand-hacking method are high, especially when (as 
+frequently happens) it breaks down. The procedures take time and concentration; 
+they're prone to error, and tend to get slipped under pressure or when the project
+is in trouble---that is exactly when they are needed. ... To avoid these problems, 
+you can use a *version-control system* (VCS), a suite of programs that 
+automates away most of the drudgery involved in keeping an annotated history of
+your project and avoiding modification conflicts." [@raymond2003art]
+
+> "In a medium-sized project, it often happens that a (relatively small) number
+of people work simultaneously on a single set of files, the 'program' or the
+'project'. Often these people have additional tasks, causing their working
+speeds to differ greatly. One person may be working a steady ten hours a day on
+the project, a second may have barely time to dabble in the project enough to
+keep current, while a third participant may be sent off on an urgent temporary
+assignment just before finishing a modification. It would be nice if each
+participant could be abstracted from the vicissitudes of the lives of the
+others." [@grune1986concurrent]
+
+[Under the distributed model, all team members can have their own version of all
+the files, work on them and make records of changes they make to the files, and
+then occassionally sync with everyone else to share your changes with them and
+bring their changes into your copy of the files.] This functionality is called
+*concurrency*, since it allows team members to concurrently work on the same set
+of files [@raymondunderstanding]. This idea allowed for the development of other
+useful features and styles of working, including *branching* to try out new
+ideas that you're not sure you'll ultimately want to go with and *forking*, a
+key tool used in open-source software development, which among other things
+facilitates someone who isn't part of the original team getting a copy of the
+files they can work with and suggesting some changes that might be helpful.
+
+This functionality is called *concurrency*, since it allows team members to
+concurrently work on the same set of files [@raymondunderstanding]. This idea
+allowed for the development of other useful features and styles of working,
+including *branching* to try out new ideas that you're not sure you'll
+ultimately want to go with and *forking*, a key tool used in open-source
+software development, which among other things facilitates someone who isn't
+part of the original team getting a copy of the files they can work with and
+suggesting some changes that might be helpful.
+
+
+> "VCSs are a huge boon to productivity and code quality in many ways, even for small 
+single-developer projects. They automate away many procedures that are just tedious
+work. They help a lot in recovering from mistakes. Perhaps most importantly, they 
+free programmers to experiment by guarnateeing that reversion to a known-good
+state will always be easy." [@raymond2003art]
+
+There is one key feature of modern version control that's
+critical to making this work---merging files that started the same but were edited in
+different ways and now need to be put back together, bringing any changes made from the
+original version. This step is called *merging* the files. While this is typically 
+described using the plural, "files", at a higher-level, you can thing of this as 
+just merging the *changes* that two people have made as they edited a single file, a
+file where they both started out with identical copies. 
+
+Think of the file broken up into each of its separate lines. There will be some lines
+that neither person changed. Those are easy to handle in the "merge"---they stay the
+same as in the original copy of the file. Next, there will be some lines that one
+person changed, but that the other person didn't. It turns out that these are pretty
+easy to handle, too. If only one person changed the line, then you use their version---it's
+the most up-to-date, since if both people started out with the same version, it means
+that the other person didn't make any changes to that part of the file. 
+Finally, there may be a few lines that both people changed. These are called *merge conflicts*. 
+They're places in the file where there's not a clear, easy-to-automate way that
+the computer can know which version to put into the integrated, latest version of the
+file. Different version control programs handle these merge conflicts in different ways. 
+For the most common version control program used today, *git*, these spots in the 
+file are flagged with a special set of symbols when you try to integrate the two updated
+versions of the file. Along with the special symbols to denote a conflict, there will 
+also be *both* versions of the conflicting lines of the file. Whoever is integrating the 
+files must go in and pick the version of those lines to use in the integrated version
+of the file, or write in some compromise version of those lines that brings in elements
+from both people's changes, and then delete all the symbols denoting that was a conflict
+and save this latest version of the file. 
+
+There are a number of other features of version control that make it useful for
+collaborating on file-based projects with teams. First, these systems allow you
+to explain your changes as you make them---in other words, it allows for
+*annotation* of the developing and editing process [@raymondunderstanding]. This
+provides the team with a full history of why the files evolved in the way they
+did across the team. It also provides a way to communicate across the team
+members. 
+
+> "You will likely share your code with multiple lab mates or collaborators, 
+and they may have suggestions on how to improve it. If you email the code
+to multiple people, you will have to manually incorporate all the changes 
+each of them sends." [@blischak2016quick]
+
+[*change tracking*]
+For example, if one person is the key person working on a certain file,
+but has run into a problem with one spot and asks another team member to take a
+go, then the second team member isn't limited to just looking at the file and
+then emailing some suggestions. Instead, the second person can make sure he or
+she has the latest version of that file, make the changes they think will help,
+*commit* those changes with a message (a *commit message*) about why they think
+this change will fix the problem, and then push that latest version of the file
+back to the first person. If there are several places where it would help to
+change the file, then these can be fixed through several separate commits, each
+with their own message. The first person, who originally asked for help, can
+read through the updates in the file (most platforms for using version control
+will now highlight where all these changes are in the file) and read the second
+person's message or messages about why each change might help. Even better, days
+or months later, when team members are trying to figure out why a certain change
+was made in that part of the file, can go back and read these messages to get an
+explanation. 
+
+> "You know your code has changed; do you know why? It's easy to forget the 
+reasons for changes, and step on them later. If you have collaborators on a 
+project, how do you know what they have changed while you weren't looking, and
+who was responsible for each change?" [@raymond2003art]
+
+
+There are a number of other features of version control that make it useful for
+collaborating on file-based projects with teams. First, these systems allow you
+to explain your changes as you make them---in other words, it allows for
+*annotation* of the developing and editing process [@raymondunderstanding]. This
+provides the team with a full history of why the files evolved in the way they
+did across the team. It also provides a way to communicate across the team
+members. 
+
+> "You will likely share your code with multiple lab mates or collaborators, 
+and they may have suggestions on how to improve it. If you email the code
+to multiple people, you will have to manually incorporate all the changes 
+each of them sends." [@blischak2016quick]
+
+[*change tracking*]
+For example, if one person is the key person working on a certain file,
+but has run into a problem with one spot and asks another team member to take a
+go, then the second team member isn't limited to just looking at the file and
+then emailing some suggestions. Instead, the second person can make sure he or
+she has the latest version of that file, make the changes they think will help,
+*commit* those changes with a message (a *commit message*) about why they think
+this change will fix the problem, and then push that latest version of the file
+back to the first person. If there are several places where it would help to
+change the file, then these can be fixed through several separate commits, each
+with their own message. The first person, who originally asked for help, can
+read through the updates in the file (most platforms for using version control
+will now highlight where all these changes are in the file) and read the second
+person's message or messages about why each change might help. Even better, days
+or months later, when team members are trying to figure out why a certain change
+was made in that part of the file, can go back and read these messages to get an
+explanation. 
+
+> "You know your code has changed; do you know why? It's easy to forget the 
+reasons for changes, and step on them later. If you have collaborators on a 
+project, how do you know what they have changed while you weren't looking, and
+who was responsible for each change?" [@raymond2003art]
+
+If you're working on a manuscript, for
+example, when it's time to edit, you can cut whole paragraphs, and if you ever
+need to get them back, they'll be right there in the commit history for your
+project, with their own commit message about why they were cut (hopefully a nice
+clear one that will make it easy to find that commit if you ever need those
+paragraphs again).
+
+
+> "Using GitHub or any similar versioning / tracking system is not a replacement
+for good project management; it is an extension, an improvement for good
+project and file management." [@perez2016ten]
+
+In recent years, some complementary tools have been developed that make the process of 
+collaborating together using version control software easier. 
+Other tools can helps in collaborating on file-based projects, including *bug trackers*
+or *issue trackers*, which allow the team to keep a running "to-do" list of what needs
+to be done to complete the project, all of which are discussed in the next chapter. 
+
+Other helpful tools, particularly for compiled
+software projects, include *build systems*. Some of these features come within 
+Software Configuration Management (SCM) programs [@raymondunderstanding]
+
+> "GitHub issues are a great way to keep track of bugs, tasks, feature requests,
+and enhancements. While classical issue trackers are primarily intended to be 
+used as bug trackers, in contrast, GitHub issue trackers follow a different 
+philosophy: each tracker has its own section in every repository and can be used
+to trace bugs, new ideas, and enhancements by using a powerful tagging system.
+The main objective of issues in GitHub is promoting collaboration and providing 
+context using cross-references. Raising an issue does not require lengthy forms
+to be completed. It only requires a title and, preferably, at least a short description.
+Issues have very clear formatting and provide space for anyone with a GitHub account
+to provide feedback. ... Additional elements of issues are (i) color-coded labels
+that help to categorize and filter issues, (ii) milestones, and (iii) one assignee 
+responsible for working on the issue." [@perez2016ten]
+
+> "As another illustration of issues and their generic and wide application, we
+and others used GitHub issues to discuss and comment on changes in manuscripts
+and address reviewers' comments." [@perez2016ten]
+
+> "The astonishment was that you might want to make even your tiny hacks to 
+other people's code public. Before GitHub, we tended to keep those on our own
+computer. Nowadays, it is so each to make a fork, or even edit the code directly 
+in your browser, that potentially anyone can find even your least polished
+bug fixes immediately." [@irving2011astonishments]
+
+> Resources like GitHub are "essential for collaborative software projects
+because they enable the organization and sharing of programming tasks between
+different remote contributors." [@perez2016ten]
+
+With GitHub, while only
+collaborators on a public project can directly change the code, anyone else can
+*suggest* changes through a process of copying a version of the project
+(*forking* it), making the changes they would like to suggest, and the asking
+the project's owners to consider integrating the changes back into the main
+version of the project through a *pull request*. GitHub therefore creates a
+platform where people can explore, adapt, and add to other people's coding
+projects, enabling a community of coders [@perez2016ten].
+
+> "Much more than a code warehouse, GitHub is effectively a social network for
+software development." [@perkel2018git]
+
+> GitHub has been described as "a kind of bazaar that offers just about any 
+piece of code you might want---and so much of it free." [@metz2015github]
+
+GitHub can also be used to collaborate on, host, and publish websites and other
+online content [@perez2016ten]. It's GitHub Pages functionality, for example, is
+now being used to host a number of books created in R using the `bookdown`
+package, including the online version of this book.
+
+> "The traditional way to promote scientific software is by publishing an associated
+paper in the peer-reviewed scientific literature, though, as pointed out by Buckheir and
+Donoho, this is just advertising. Additional steps can boost the visibility of 
+an organization. For example, GitHub Pages are simple websites freely hosted by 
+GitHub. Users can create and host blog websites, help pages, manuals, tutorials, 
+and websites related to specific projects." [@perez2016ten]
+
+> "VCSs, by the way, are not merely good for program code; the manuscript of this 
+book was maintained as a collection of files under RCS while it was being written."
+[@raymond2003art]
+
 **VC platforms as a form of back-up.**
 
 One study surveyed neuroscience researchers at a UK institute. "The backup 'rule

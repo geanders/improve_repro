@@ -205,21 +205,6 @@ source code file by hand <span class="citation">(Irving 2011)</span>.</p>
 <p>“Tracking all that detail is just the sort of thing computers
 are good at and humans are not.” <span class="citation">(Raymond 2003)</span></p>
 </blockquote>
-<p>As the proverb about too many cooks in the kitchen captures, any time you have
-multiple people working on a project, it introduces the chance for conflicts.
-While higher-level conflicts, like about what you want the final product to look
-like or who should do which jobs, can’t be easily managed by a computer program,
-now the complications of integrating everyone’s contributions—and letting
-people work in their own space and then bring together their individual work
-into one final joint project—can be. While these programs for version control
-were originally created to help with programmers developing code, they can be
-used now to coordinate group work on numerous types of file-based projects,
-including scientific manuscripts, books, and websites <span class="citation">(Raymond 2009)</span>.
-And although they can work with projects that include binary code, they thrive
-in projects with a heavier concentration of text-based files, and so they fit in
-nicely in a scientific research / data analysis workflow that is based on data
-stored in plain text formats and data analysis scripts written in plain text
-files, tools we discuss in other parts of this book.</p>
 <p>In earlier types of version control programs, there was one central “main”
 repository the file or set of files the team was working on
 <span class="citation">(Raymond 2009; Target 2018)</span>. Very early on, this was kept on one
@@ -238,33 +223,6 @@ at a time. A slightly more modern analogy is the idea of having a single version
 of a file in Dropbox or Google Docs, and avoiding working on the file when you
 see that another team member is working on it. (However, both of these examples
 other key features of version control, which we’ll discuss a bit later.)</p>
-<blockquote>
-<p>“The most primitive (but still very common) method [of version control] is all
-hand-hacking. You snapshot the project periodically by manually copying everything
-in it to a backup. You include history comments in source files. You make verbal
-or email arrangements with other developers to keep their hands off certain files
-while you hack them.” <span class="citation">(Raymond 2003)</span></p>
-</blockquote>
-<blockquote>
-<p>“The hidden costs of this hand-hacking method are high, especially when (as
-frequently happens) it breaks down. The procedures take time and concentration;
-they’re prone to error, and tend to get slipped under pressure or when the project
-is in trouble—that is exactly when they are needed. … To avoid these problems,
-you can use a <em>version-control system</em> (VCS), a suite of programs that
-automates away most of the drudgery involved in keeping an annotated history of
-your project and avoiding modification conflicts.” <span class="citation">(Raymond 2003)</span></p>
-</blockquote>
-<blockquote>
-<p>“In a medium-sized project, it often happens that a (relatively small) number
-of people work simultaneously on a single set of files, the ‘program’ or the
-‘project’. Often these people have additional tasks, causing their working
-speeds to differ greatly. One person may be working a steady ten hours a day on
-the project, a second may have barely time to dabble in the project enough to
-keep current, while a third participant may be sent off on an urgent temporary
-assignment just before finishing a modification. It would be nice if each
-participant could be abstracted from the vicissitudes of the lives of the
-others.” <span class="citation">(Grune 1986)</span></p>
-</blockquote>
 <p>This system is pretty clunky, though. In particular, it probably usually
 increases the amount of time that it takes the team to finish the project,
 because only one person can work on a file at a time. Later types of version
@@ -275,90 +233,34 @@ all team members can have their own version of all the files, work on them and
 make records of changes they make to the files, and then occassionally sync with
 everyone else to share your changes with them and bring their changes into your
 copy of the files.</p>
-<p>This functionality is called <em>concurrency</em>, since it allows team members to
-concurrently work on the same set of files <span class="citation">(Raymond 2009)</span>. This idea
-allowed for the development of other useful features and styles of working,
-including <em>branching</em> to try out new ideas that you’re not sure you’ll
-ultimately want to go with and <em>forking</em>, a key tool used in open-source
-software development, which among other things facilitates someone who isn’t
-part of the original team getting a copy of the files they can work with and
-suggesting some changes that might be helpful.</p>
-<p>So, this is the basic idea of modern version control—for a project that involves a set
-of computer files, everyone on has their own copy of a directory with those files
-on their own computer, makes changes at the time and in the spots in the files that
-they want, and then regularly re-syncs their local directory with everyone else’s
-to share changes and updates.</p>
-<blockquote>
-<p>“VCSs are a huge boon to productivity and code quality in many ways, even for small
-single-developer projects. They automate away many procedures that are just tedious
-work. They help a lot in recovering from mistakes. Perhaps most importantly, they
-free programmers to experiment by guarnateeing that reversion to a known-good
-state will always be easy.” <span class="citation">(Raymond 2003)</span></p>
-</blockquote>
-<p>There is one key feature of modern version control that’s
-critical to making this work—merging files that started the same but were edited in
-different ways and now need to be put back together, bringing any changes made from the
-original version. This step is called <em>merging</em> the files. While this is typically
-described using the plural, “files”, at a higher-level, you can thing of this as
-just merging the <em>changes</em> that two people have made as they edited a single file, a
-file where they both started out with identical copies.</p>
-<p>Think of the file broken up into each of its separate lines. There will be some lines
-that neither person changed. Those are easy to handle in the “merge”—they stay the
-same as in the original copy of the file. Next, there will be some lines that one
-person changed, but that the other person didn’t. It turns out that these are pretty
-easy to handle, too. If only one person changed the line, then you use their version—it’s
-the most up-to-date, since if both people started out with the same version, it means
-that the other person didn’t make any changes to that part of the file.
-Finally, there may be a few lines that both people changed. These are called <em>merge conflicts</em>.
-They’re places in the file where there’s not a clear, easy-to-automate way that
-the computer can know which version to put into the integrated, latest version of the
-file. Different version control programs handle these merge conflicts in different ways.
-For the most common version control program used today, <em>git</em>, these spots in the
-file are flagged with a special set of symbols when you try to integrate the two updated
-versions of the file. Along with the special symbols to denote a conflict, there will
-also be <em>both</em> versions of the conflicting lines of the file. Whoever is integrating the
-files must go in and pick the version of those lines to use in the integrated version
-of the file, or write in some compromise version of those lines that brings in elements
-from both people’s changes, and then delete all the symbols denoting that was a conflict
-and save this latest version of the file.</p>
-<p>There are a number of other features of version control that make it useful for
-collaborating on file-based projects with teams. First, these systems allow you
-to explain your changes as you make them—in other words, it allows for
-<em>annotation</em> of the developing and editing process <span class="citation">(Raymond 2009)</span>. This
-provides the team with a full history of why the files evolved in the way they
-did across the team. It also provides a way to communicate across the team
-members.</p>
-<blockquote>
-<p>“You will likely share your code with multiple lab mates or collaborators,
-and they may have suggestions on how to improve it. If you email the code
-to multiple people, you will have to manually incorporate all the changes
-each of them sends.” <span class="citation">(Blischak, Davenport, and Wilson 2016)</span></p>
-</blockquote>
-<p>[<em>change tracking</em>]
-For example, if one person is the key person working on a certain file,
-but has run into a problem with one spot and asks another team member to take a
-go, then the second team member isn’t limited to just looking at the file and
-then emailing some suggestions. Instead, the second person can make sure he or
-she has the latest version of that file, make the changes they think will help,
-<em>commit</em> those changes with a message (a <em>commit message</em>) about why they think
-this change will fix the problem, and then push that latest version of the file
-back to the first person. If there are several places where it would help to
-change the file, then these can be fixed through several separate commits, each
-with their own message. The first person, who originally asked for help, can
-read through the updates in the file (most platforms for using version control
-will now highlight where all these changes are in the file) and read the second
-person’s message or messages about why each change might help. Even better, days
-or months later, when team members are trying to figure out why a certain change
-was made in that part of the file, can go back and read these messages to get an
-explanation.</p>
-<blockquote>
-<p>“You know your code has changed; do you know why? It’s easy to forget the
-reasons for changes, and step on them later. If you have collaborators on a
-project, how do you know what they have changed while you weren’t looking, and
-who was responsible for each change?” <span class="citation">(Raymond 2003)</span></p>
-</blockquote>
-<p>There’s another feature of version control that can be demonstrated through this
-example. Because the changes made to the files in the project are regularly
+<p>So, this is the basic idea of modern version control—for a project that
+involves a set of computer files, everyone on the team (even if that’s just one
+person) has their own copy of a directory with those files on their own
+computer, makes changes at the time and in the spots in the files that they
+want, and then regularly re-syncs their local directory with everyone else’s to
+share changes and updates. Remote repositories—which may be on a server in
+a different location—can be added with another copy of the project, which
+can similarly be synced regularly to update with any changes made to project
+files.</p>
+<p>Add on this distribution of files is the ability to keep track of the changes
+made to the file, as well as messages about why those changes were made. These
+systems allow you to explain your changes as you make them—in other words, it
+allows for <em>annotation</em> of the developing and editing process
+<span class="citation">(Raymond 2009)</span>. The ability in version control software to compare
+differences between two plain text files derives from a longstanding Unix
+command line tool called <code>diff</code>. This tool developed early in the history of
+Unix at AT&amp;T <span class="citation">(Raymond 2003)</span>. This small, extremely solid and well-tested tool
+serves as a basis for tracking changes in the files is a directory under version
+control as they evolve. Version control systems have added the ability to align
+commit messages and commit tags with each “snapshot” of these differences in
+files, creating a stable system for creating a complete history of how files in
+a project directory have changed over the timecourse of the project and why.
+Each snapshot of changes to the files in a directory is called a <em>commit</em>,
+which is tagged with an identifier so it can be found later, as well as a
+<em>commit message</em> describing why the change was made. The commit messages
+can serve as a powerful tool for explaining changes to other team members or
+for reminding yourself in the future about why certain changes were made.</p>
+<p>Further, because the changes made to the files in the project are regularly
 <em>committed</em>, with a message for each commit and a record of what was changed in
 that commit, the team members can, at any point, go back to the <em>exact</em> version
 of the project at any earlier point in time. Each of the commits is given its
@@ -377,13 +279,7 @@ versions—has a wonderful side benefit when it comes to working on a large
 project. It means that you <strong>don’t</strong> need to save earlier versions of each file.
 You can maintain one and only one version of each project file in the project’s
 directory, with the confidence that you never “lose” old versions of the file
-<span class="citation">(Perkel 2018; Blischak, Davenport, and Wilson 2016)</span>. If you’re working on a manuscript, for
-example, when it’s time to edit, you can cut whole paragraphs, and if you ever
-need to get them back, they’ll be right there in the commit history for your
-project, with their own commit message about why they were cut (hopefully a nice
-clear one that will make it easy to find that commit if you ever need those
-paragraphs again).</p>
-<p>[xkcd / cartoon of this?]</p>
+<span class="citation">(Perkel 2018; Blischak, Davenport, and Wilson 2016)</span>.</p>
 <blockquote>
 <p>“Early in his graduate career, John Blischak found himself creating figures
 for his advisor’s grant application. Blischak was using the programming language
@@ -398,17 +294,6 @@ changing it and saving the snapshots. And if the professor comes back and says,
 well, I’ll just bo back to the March version of my code and I can recreate
 it’.’” <span class="citation">(Perkel 2018)</span></p>
 </blockquote>
-<blockquote>
-<p>“Have a quick look back up at those decades of progress. Yes, some of the
-advances were also enabled by increasing computer power. But, mainly, they were
-simply made by people thinking of cleverer ways of collaborating.”
-<span class="citation">(Irving 2011)</span></p>
-</blockquote>
-<blockquote>
-<p>“Using GitHub or any similar versioning / tracking system is not a replacement
-for good project management; it is an extension, an improvement for good
-project and file management.” <span class="citation">(Perez-Riverol et al. 2016)</span></p>
-</blockquote>
 <p>The most common version control program currently used for scienctific projects is
 <em>git</em>. This program was created by Linus Torvalds, who also created the Linux
 operating system, in 2005 as a way to facilitate the team working on Linux
@@ -421,86 +306,20 @@ git may be the only version control software you have ever used. While people
 sometimes grouse about its steep learning curve or unintuitive interface, git has
 become everyone’s go-to for version control.” <span class="citation">(Target 2018)</span></p>
 </blockquote>
-<p>In recent years, some complementary tools have been developed that make the process of
-collaborating together using version control software easier.
-Other tools can helps in collaborating on file-based projects, including <em>bug trackers</em>
-or <em>issue trackers</em>, which allow the team to keep a running “to-do” list of what needs
-to be done to complete the project. Other helpful tools, particularly for compiled
-software projects, include <em>build systems</em>. Some of these features come within
-Software Configuration Management (SCM) programs <span class="citation">(Raymond 2009)</span></p>
-<blockquote>
-<p>“GitHub issues are a great way to keep track of bugs, tasks, feature requests,
-and enhancements. While classical issue trackers are primarily intended to be
-used as bug trackers, in contrast, GitHub issue trackers follow a different
-philosophy: each tracker has its own section in every repository and can be used
-to trace bugs, new ideas, and enhancements by using a powerful tagging system.
-The main objective of issues in GitHub is promoting collaboration and providing
-context using cross-references. Raising an issue does not require lengthy forms
-to be completed. It only requires a title and, preferably, at least a short description.
-Issues have very clear formatting and provide space for anyone with a GitHub account
-to provide feedback. … Additional elements of issues are (i) color-coded labels
-that help to categorize and filter issues, (ii) milestones, and (iii) one assignee
-responsible for working on the issue.” <span class="citation">(Perez-Riverol et al. 2016)</span></p>
-</blockquote>
-<blockquote>
-<p>“As another illustration of issues and their generic and wide application, we
-and others used GitHub issues to discuss and comment on changes in manuscripts
-and address reviewers’ comments.” <span class="citation">(Perez-Riverol et al. 2016)</span></p>
-</blockquote>
-<p>GitHub was created in 2008 as a web-based platform to facilitate collaborating
-on projects running under git version control. It can provide an easier entry
-to using git for version control than trying to learn to use git from the
-command line <span class="citation">(Perez-Riverol et al. 2016)</span>. It also plays well with RStudio, making it easy
-to integrate a collaborative workflow through GitHub from the same RStudio
-window on your computer where you are otherwise doing your analysis <span class="citation">(Perez-Riverol et al. 2016)</span>.</p>
-<blockquote>
-<p>“The astonishment was that you might want to make even your tiny hacks to
-other people’s code public. Before GitHub, we tended to keep those on our own
-computer. Nowadays, it is so each to make a fork, or even edit the code directly
-in your browser, that potentially anyone can find even your least polished
-bug fixes immediately.” <span class="citation">(Irving 2011)</span></p>
-</blockquote>
-<blockquote>
-<p>Resources like GitHub are “essential for collaborative software projects
-because they enable the organization and sharing of programming tasks between
-different remote contributors.” <span class="citation">(Perez-Riverol et al. 2016)</span></p>
-</blockquote>
-<p>On GitHub, you can set the access to a project to be either public or private,
-and can be converted easily from one form to the other over the course of the
-project <span class="citation">(Metz 2015)</span>. A private project can be viewed only by fellow team
-members, while a public project can be viewed by anyone. What’s more, while only
-collaborators on a public project can directly change the code, anyone else can
-<em>suggest</em> changes through a process of copying a version of the project
-(<em>forking</em> it), making the changes they would like to suggest, and the asking
-the project’s owners to consider integrating the changes back into the main
-version of the project through a <em>pull request</em>. GitHub therefore creates a
-platform where people can explore, adapt, and add to other people’s coding
-projects, enabling a community of coders <span class="citation">(Perez-Riverol et al. 2016)</span>.</p>
-<blockquote>
-<p>“Much more than a code warehouse, GitHub is effectively a social network for
-software development.” <span class="citation">(Perkel 2018)</span></p>
-</blockquote>
-<blockquote>
-<p>GitHub has been described as “a kind of bazaar that offers just about any
-piece of code you might want—and so much of it free.” <span class="citation">(Metz 2015)</span></p>
-</blockquote>
-<p>GitHub can also be used to collaborate on, host, and publish websites and other
-online content <span class="citation">(Perez-Riverol et al. 2016)</span>. It’s GitHub Pages functionality, for example, is
-now being used to host a number of books created in R using the <code>bookdown</code>
-package, including the online version of this book.</p>
-<blockquote>
-<p>“The traditional way to promote scientific software is by publishing an associated
-paper in the peer-reviewed scientific literature, though, as pointed out by Buckheir and
-Donoho, this is just advertising. Additional steps can boost the visibility of
-an organization. For example, GitHub Pages are simple websites freely hosted by
-GitHub. Users can create and host blog websites, help pages, manuals, tutorials,
-and websites related to specific projects.” <span class="citation">(Perez-Riverol et al. 2016)</span></p>
-</blockquote>
-<blockquote>
-<p>“VCSs, by the way, are not merely good for program code; the manuscript of this
-book was maintained as a collection of files under RCS while it was being written.”
-<span class="citation">(Raymond 2003)</span></p>
-</blockquote>
+<p>In recent years, some complementary tools have been developed that make the
+process of collaborating together using version control software easier. Other
+tools can helps in collaborating on file-based projects, including <em>bug
+trackers</em> or <em>issue trackers</em>, which allow the team to keep a running “to-do”
+list of what needs to be done to complete the project, all of which are
+discussed in the next chapter as tools that can be used to improve collaboration
+on scientific projects spread across teams. GitHub, a very popular version
+control platform with these additional tools, was created in 2008 as a web-based
+platform to facilitate collaborating on projects running under git version
+control. It can provide an easier entry to using git for version control than
+trying to learn to use git from the command line <span class="citation">(Perez-Riverol et al. 2016)</span>. It also plays
+well with RStudio, making it easy to integrate a collaborative workflow through
+GitHub from the same RStudio window on your computer where you are otherwise
+doing your analysis <span class="citation">(Perez-Riverol et al. 2016)</span>.</p>
 </div>
 <div id="recording-data-in-the-laboratoryfrom-paper-to-computers" class="section level3">
 <h3><span class="header-section-number">2.9.2</span> Recording data in the laboratory—from paper to computers</h3>
@@ -522,20 +341,8 @@ experiments often conducted. Further, electronic alternatives can also be easier
 to search, allowing for deeper and more comprehensive investigations of the data
 collected across multiple experiments <span class="citation">(Giles 2012; Butler 2005; Perkel 2011)</span>.</p>
 <blockquote>
-<p>“Lab notebooks are stuck in a time warp, still handwritten, on paper. Many
-scientists can barely understand their own scribblings from last week, let alone
-five years from now—as anyone who has had to decipher the hieroglyphics of a
-co-worker can testify.” <span class="citation">(Butler 2005)</span></p>
-</blockquote>
-<blockquote>
 <p>“Handwritten lab notebooks are usually chaotic and always unsearchable.”
 <span class="citation">(Perkel 2011)</span></p>
-</blockquote>
-<blockquote>
-<p>“But the biggest advantage of going electronic should appeal to both industry and
-academia alike. With paper records, vast amounts of data lie unused and
-effectively hidden, whereas e-notebooks allow results to be instantly shared with
-collaborators.” <span class="citation">(Butler 2005)</span></p>
 </blockquote>
 <p>Given a widespread recognition of the limitations of paper laboratory notebooks,
 in the past couple of decades, there have been a number of efforts, both formal
@@ -592,15 +399,6 @@ change was made. For example, if a value was entered in the wrong row of a csv,
 and the researcher then made a commit to correct that data entry mistake, the
 researcher could explain the problem and its resolution in the commit message
 for that change.</p>
-<p>The ability in git to compare differences between two plain text files derives from
-a longstanding Unix command line tool called <code>diff</code>. This tool developed early in
-the history of Unix at AT&amp;T <span class="citation">(Raymond 2003)</span>. This small, extremely solid and
-well-tested tool serves as a basis for tracking changes in the files is a directory
-under version control as they evolve. Version control systems have added the
-ability to align commit messages and commit tags with each “snapshot” of these
-differences in files, creating a stable system for creating a complete history of
-how files in a project directory have changed over the timecourse of the project and
-why.</p>
 <p>Platforms for using git often include nice tools for visualizing differences
 between two files, providing a more visual way to look at the “diffs” between
 files across time points in the project. For example, GitHub automatically shows
@@ -620,19 +418,21 @@ chapter.</p>
 for the project publicly. In a project that uses git and GitHub version control
 tools, it is easy to share the project data online once an associated manuscript
 is published, an increasingly common request or requirement from journals and
-funding agencies <span class="citation">(Blischak, Davenport, and Wilson 2016)</span>. Sharing data allows a more
-complete assessment of the research by reviewers and readers and makes it easier
-for other researchers to build off the published results in their own work,
+funding agencies <span class="citation">(Blischak, Davenport, and Wilson 2016)</span>. Sharing data allows a more complete
+assessment of the research by reviewers and readers and makes it easier for
+other researchers to build off the published results in their own work,
 extending and adapting the code to explore their own datasets or ask their own
-research questions <span class="citation">(Perez-Riverol et al. 2016)</span>. In GitHub, a repository’s setting can be
-changed from “Private” to “Public”, allowing anyone to explore the files in the
-repository. Because git tracks the full history of changes to these documents,
-it includes functionality that let’s you tag the code and data at a specific
-point (for example, the date when a paper was submitted) so that viewers can
-look at that specific “version” of the repository files, even while the project
-team continues to move forward in improving files in the directory. At the more
-advanced end of functionality, there are even ways to assign a DOI to a specific
-version of a GitHub repository <span class="citation">(Perez-Riverol et al. 2016)</span>.</p>
+research questions <span class="citation">(Perez-Riverol et al. 2016)</span>. On GitHub, you can set the access to a
+project to be either public or private, and can be converted easily from one
+form to the other over the course of the project <span class="citation">(Metz 2015)</span>. A private
+project can be viewed only by fellow team members, while a public project can be
+viewed by anyone. Further, because git tracks the full history of changes to
+these documents, it includes functionality that let’s you tag the code and data
+at a specific point (for example, the date when a paper was submitted) so that
+viewers can look at that specific “version” of the repository files, even while
+the project team continues to move forward in improving files in the directory.
+At the more advanced end of functionality, there are even ways to assign a DOI
+to a specific version of a GitHub repository <span class="citation">(Perez-Riverol et al. 2016)</span>.</p>
 <p>Third, the combination of git and GitHub can help as a way to backup study data
 <span class="citation">(Blischak, Davenport, and Wilson 2016; Perez-Riverol et al. 2016; Perkel 2018)</span>. Together, git and GitHub
 provide a structure where the project directory (repository) is copied on
@@ -663,7 +463,10 @@ the ability to include and track large binary files when using git and GitHub
 text-based, an image, or a giant data file. However, just because you <em>can</em> version
 control something, does not mean that you <em>should</em>.” <span class="citation">(Blischak, Davenport, and Wilson 2016)</span></p>
 </blockquote>
-<p>Further, as with other tools and techniques described in this book, there is an
+<p>[Add something about whether version control timestamps would meet legal standards,
+e.g., for patent claims? Mike had a comment about using locks with data that might
+go with that.]</p>
+<p>Finally, as with other tools and techniques described in this book, there is an
 investment required to learn how to use git and GitHub <span class="citation">(Perez-Riverol et al. 2016)</span>, as well
 as a bit of extra overhead when using version control tools in a project
 <span class="citation">(Raymond 2003)</span>. However, both can bring dramatic gains to efficiency,
