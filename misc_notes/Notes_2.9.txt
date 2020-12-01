@@ -1,0 +1,173 @@
+Notes_2.9.txt 
+Wed Jun 24 08:41:08 MDT 2020
+-- ----------------------------------------------------------------------
+2.9 Harnessing version control for transparent data recording | Improving
+the Reproducibility of Experimental Data Recording and Pre-Processing
+
+Objectives.
+
+* Describe version control
+
+* Explain how version control can be used to improve reproducibility 
+  for data recording
+-- ----------------------------------------------------------------------
+"version" as current state of document
+
+"control" as safe changes to a shared resource 
+
+"version control" as syncronization of distributed changes 
+
+Does "control" apply in a single user context? 
+
+- Things you get with version control:
+
+commit (staging or local version), annotation, reversibility 
+-- ------------------------------------------------------------------
+
+The basic ideas of version, control, and reversibility
+Example: diff and patch
+
+Version
+
+# A file - original version 
+  hat.txt
+
+# Another file - version 2: 
+  hat_v2.txt
+
+
+$ cat hat.txt
+"Do you like my hat?"
+"I do not."
+
+
+$ cat hat_v2.txt
+"Do you like my hat?"
+"I do not like it."
+
+
+# diff - compare files line by line
+$ diff hat.txt hat_v2.txt > diff_hat_original-v2.txt
+
+$ cat diff_hat_original-v2.txt
+2c2
+< "I do not."
+---
+> "I do not like it."
+
+
+Control
+
+# patch - apply a diff file to the original
+
+$ patch hat.txt diff_hat_original-v2.txt
+$ cat hat.txt
+"Do you like my hat?"
+"I do not like it.
+
+$ diff hat.txt hat_v2.txt
+# no difference.
+
+# another version another iteration:
+ cat hat_v3.txt
+"Do you like my hat?"
+"I do not like that hat."
+
+
+$ diff hat.txt hat_v3.txt > diff_hat_original-v3.txt
+$ cat diff_hat_original-v3.txt
+2c2
+< "I do not like it."
+---
+> "I do not like that hat."
+
+$ patch hat.txt diff_hat_original-v3.txt
+$ cat hat.txt
+"Do you like my hat?"
+"I do not like that hat."
+
+# and another
+
+$ diff hat.txt hat_v4.txt > diff_hat_original-v4.txt
+$ cat diff_hat_original-v4.txt
+1,2c1,7
+< "Do you like my hat?"
+< "I do not like that hat."
+---
+> "Hello again.
+> And now do you like my hat?"
+> 
+> "I do.
+> What a hat!
+> I like it!
+> I like that party hat!
+
+
+$ patch hat.txt diff_hat_original-v4.txt
+$ cat hat.txt
+"Hello again.
+And now do you like my hat?"
+
+"I do.
+What a hat!
+I like it!
+I like that party hat!"
+
+Reversibility
+
+$ patch -R hat.txt diff_hat_original-v4.txt
+
+$ patch -R hat.txt diff_hat_original-v4.txt
+$ cat hat.txt
+"Do you like my hat?"
+"I do not like that hat."
+
+
+$ patch -R hat.txt diff_hat_original-v3.txt
+$ cat hat.txt
+"Do you like my hat?"
+"I do not like it."
+$ patch -R hat.txt diff_hat_original-v2.txt
+$ cat hat.txt
+"Do you like my hat?"
+"I do not."
+
+
+-- -----------------------------------------------------------
+References:
+
+[1] P.D. Eastman. Go, Dog. Go! 1961 Random House
+
+[2] Ben Klemens. 21stCentury C. 2013 O'Reilly
+
+[3] Linux manual pages: DIFF(1), PATCH(1)
+
+# --------------------------------------------------------------------
+
+Distributed versus centralized control - a diagram. 
+
+
+Rather than set up your own - already done for us:
+
+git, most popular - explain others? Mercurial, Subversion
+opensource vs proprietary - Microsoft?
+
+complementary tools: bug trackers / issue trackers
+
+Version control for data recording.
+
+What kind of things go under version control?
+
+What kind of things do not go under version control?
+
+Over-reporting / over documenting?
+
+paper lab notebooks <- small data.
+big and small data sets?
+manuscripts and reports, test protocols, 
+structural elements, how a project is organized, directories
+
+paper lab notebooks <- small data.
+numerical, text, images all entered by hand.
+
+Distinction with big data?
