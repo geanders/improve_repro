@@ -22,6 +22,311 @@ structures
 
 ### Subsection 1
 
+When you are writing scripts in R to work with your code, if you are at a 
+point in your pipeline when you can use a "tidyverse" approach, then you will
+"keep" your data in a dataframe, as your data structure, throughout your 
+work. However, at earlier stages in your preprocessing, you may need to use
+tools that use other data structures. It's helpful to understand the 
+basic building blocks of R data structures, so you can find elements of your
+data in these other, more customized data structures. 
+
+Many R data structures are built on a general structure called a "list". This
+data structure is a useful basic general data structure, because it is 
+extraordinarily flexible. The list data structure is flexible in two 
+important ways: it allows you to include data of different *types* in the 
+same data structure, and it allows you to include data with different 
+dimensions---and data stored hierarchically, including various other data
+structures---within the list structure. We'll cover each of these points a bit 
+more below and describe why they're helpful in making the list a very good 
+general purpose data structure.
+
+In R, your data can be stored as different *types* of data: whole numbers can be
+stored as an *integer* data type, continuous [?] numbers through a few types of
+*floating* data types, character strings as a *character* data type, and logical
+data (which can only take the two values of "TRUE" and "FALSE") as a *logical*
+data type. More complex data types can be built using these---for example,
+there's a special data type for storing dates that's based on a combination of
+an [integer?] data type, with added information counting the number of days [?]
+from a set starting date (called the [Unix epoch?]), January 1, 1970. (This
+set-up for storing dates allows them to be printed to look like dates, rather
+than numbers, but at the same time allows them to be manipulated through
+operations like finding out which date comes earliest in a set, determining the
+number of days between two dates, and so on.) R uses these different data types
+for several reasons. First, by using different data types, R can improve its 
+efficiency [?] in storing data. Each piece of data must---as you go deep in the
+heart of how the computer works---as a series of binary digits (0s and 1s). 
+Some types of data can be stored using fewer of these *bits* (*bi*nary dig*its*).
+Each measurement of logical data, for example, can be stored in a single bit, 
+since it only can take one of two values (0 or 1, for FALSE and TRUE, respectively).
+For character strings, these can be divided into each character in the string 
+for storage (for example, "cat" can be stored as "c", "a", "t"). There is a set
+of characters called the ASCII character set that includes the lowercase and 
+uppercase of the letters and punctuation sets that you see on a standard 
+US keyboard [?], and if the character strings only use these characters, they 
+can be stored in [x] bits per character. For numeric data types, integers can 
+typically be stores in [x] bits per number, while continuous [?] numbers, 
+stored in single or double floating point notation [?], are stored in [x] 
+and [x] bits respectively. When R stores data in specific types, it can be
+more memory efficient by packing the types of data that can be stored in less
+space (like logical data) into very compact structures.
+
+The second advantage of the list structure in R is that it has enormous
+flexibility in terms of storing lots of data in lots of possible places. This
+data can have different types and even different substructures. Some data
+structures in R are very constrained in what type of data they can store and
+what structure they use to store it. For example, one of the "building block"
+data structures in R is the vector. This data structure is one dimensional and
+can only contain data that have the same data type---you can think of this as a
+bead string of values, each of the same type. For example, you could have a
+vector that gives a series of names of study sites (each a character string), or
+a vector that gives the dates of time points in a study (each a date data type),
+or a vector that gives the weights of mice in a study (each a numeric data
+type). You cannot, however, have a vector that includes some study site names
+and then some dates and then some weights, since these should be in different
+data types. Further, you can't arrange the data in any structure except a
+straight, one-dimensional series if you are using a vector. The dataframe
+structure provides a bit more flexibility---you can expand into two dimensions, 
+rather than one, and you can have different data types in different columns of
+the dataframe (although each column must itself have a single data type). 
+
+The list data structure is much more flexible. It essentially allows you to 
+create different "slots", and you can store any type of data in each of these
+slots. In each slot you can store any of the other types of data structures in 
+R---for example, vectors, dataframes, or other lists. You can even store unusual
+things like R *environments* [?] or *pointers* that give the directions to where
+data is stored on the computer without reading the data into R (and so saving 
+room in the RAM memory, which is used when data is "ready to go" in R, but which 
+has much more limited space than the mass [?] storage on your computer). 
+
+Since you can put a list into the slot of a list, it allows you to create deep,
+layered structures of data. For example, you could have one slot in a list where
+you store the metadata for your experiment, and this slot might itself be a list
+where you store one dataframe with some information about the settings of the
+laboratory equipement you used to collect the data, and another dataframe that
+provides information about the experimental design variables (e.g., which animal
+received which treatment). Another slot in the larger list then might have
+experimental measurements, and these might either be in a dataframe or, if the
+data are very large, might be represented through pointers to where the data is
+stored in memory, rather than having the data included directly in the data
+structure.
+
+Given all these advantages of the list data structure, then, why not use it all 
+the time? While it is a very helpful building block, it turns out that its flexibility
+can have some disadvantages in some cases. This flexibility means that you can's
+always assume that certain bits of data are in a certain spot in each instance
+of a list in R. Conversely, if you have data stored in a less flexible structure, 
+you can often rely on certain parts of the data always being in a certain part of
+the data structure. In a "tidy" dataframe, for example, you can always assume
+that each row represents the measurements for one observation at the unit of 
+observation for that dataframe, and that each column gives values across all 
+observations for one particular value that was measured for all the observations.
+For example, if you are conducting an experiment with mice, where a certain number
+of mice were sacrificed at certain time points, with their weight and the bacteria
+load in their lungs measured when the mouse was sacrificed, then you could store
+the data in a dataframe, with a row for each mouse, and columns giving the 
+experimental characteristics for each mouse (e.g., treatment status, time point 
+when the mouse was sacrificed), the mouse's weight, and the mouse's bacteria 
+load when sacrificed. You could store all of this information in a list, as
+well, but the defined, two-dimensional structure of the dataframe makes it much 
+more clearly defined where all the data goes in the dataframe structure, while
+you could order the data in many ways within a list.
+
+There is a big advantage to having stricter standards for what parts of data go 
+where when it comes to writing functions that can be used across a lot of data. 
+You can think of this in terms of how cars are set up versus how kitchens are 
+set up. Cars are very standardized in the "interface" that you get when you sit
+down to drive them. The gas and brakes are typically floor pedals, with the gas 
+to the right of the brake. The steering is almost always provided through a wheel 
+centered in front of the driver's torso. The mechanism for shifting gears (e.g., 
+forward, reverse) is typically to the right of the steering wheel, while 
+mecahnisms for features like lights and windshield wipers, are typically to the 
+left of the steering wheel. Because this interface is so standardized, you can 
+get into a car you've never driven before and typically figure out how to 
+drive it very quickly. You don't need a lot of time exploring where everything 
+is or a lot of directions from someone familiar with the car to figure out where
+things are. Think of the last time that you drove a rental car---within five minutes, 
+at most, you were probably able to orient yourself to figure out where everything
+you needed was. This is like a dataframe in R---you can pretty quickly figure out
+where everything you might need is stored in the data structure, and people can 
+write functions to use with these dataframes that work well generally across lots
+of people's data because they can assume that certain pieces of data are in 
+certain places. 
+
+By contrast, think about walking into someone else's kitchen and orienting yourself
+to use that. Kitchen designs do tend to have some general features---most will have
+a few common large elements, like a stove somewhere, a refrigerator somewhere, 
+a pantry somewhere, and storage for pots, pans, and utensils somewhere. However, 
+there is a lot of flexibility in where each of these are in the kitchen design, 
+and further flexibility in how things are organized within each of these structures. 
+If you cook in someone else's kitchen, it is easy to find yourself disoriented in the
+middle of cooking a recipe, where a utensil that you can grab almost without 
+thinking in your own kitchen requires you to stop and search many places in 
+someone else's kitchen. This is like a list in R---there are so many places that
+you can store data in a list, and so much flexibility, that you often find yourself
+having to dig around to find a certain element in a list data structure that someone
+else has created, and you often can't assume that certain pieces are in certain 
+places if you are writing your own functions, so it becomes hard to write 
+functions that are "general purpose" for generic list structures in R. 
+
+There is a way that list structures can be used in R in a way that retains some
+of their flexibility while also leveraging some of the benefits of
+standardization. This is R's system for creating *objects*. These object
+structures are built on the list data structure, but each object is constrained
+to have certain elements of data in certain structures of the data. These
+structures cannot be used as easily as dataframes in a "tidyverse" approach,
+since the tidyverse tools are built based on the assumption that data is stored
+in a tidy dataframe. However, they are used in many of the Bioconductor
+approaches that allow powerful tools for the earlier stages in preprocessing
+biological data. The types of standards that are imposed in the more specialized
+objects include which slots the list can have, the names they have, what order
+they're in (e.g., in a certain object, the metadata about the experiment might
+always be stored in the first slot of the list), and what structures and/or data
+types the data in each slot should have.
+
+R programmers get a lot of advantages from using these classes because they can
+write functions under the assumption that certain pieces of the data will always
+be in the same spot for that type of object. There is still flexibility in the
+object, in that it can store lots of different types of data, in a variety of
+different structures. While this "object oriented" approach in R data structures
+does provide great advantages for programmers, and allow them to create powerful
+tools for you to use in R, it does make it a little trickier in some cases for
+you to explore your data by hand as you work through preprocessing. This is
+because there typically are a variety of these object classes that your data
+will pass through as you go through different stages of preprocessing, because
+different structures are suited to different stages of analysis. Functions often
+can only be used for a single class of objects, and so you have to keep track of
+which functions pair up with which classes of data. Further, it can be a bit
+tricky---at least in comparison to when you have data in a dataframe---to
+explore your data by hand, because you have to navigate through different slots
+in the object. By contrast, a dataframe always has the same two-dimensional,
+rectangular structure, and so it's very easy to navigate and explore data in
+this structure, and there are a large number of functions that are built to be
+used with dataframes, providing enormous flexibility in what you can do with
+data stored in this structure. 
+
+While it is a bit trickier to explore your data when it is stored in a
+list---either a general list you created, or one that forms the base for a
+specialized class structure through functions from a Bioconductor package---you
+can certainly learn how to do this navigation. This is a powerful and critical
+tool for you to learn as you learn to preprocess your data in R, as you should
+*never* feel like you data is stored in a "black box" structure, where you can't
+peek in and explore it. You should *always* feel like you can take a look at any
+part of your data at any step in the process of preprocessing, analyzing, and
+visualizing it.
+
+### Exploring and extracting data from R list data structures
+
+To feel comfortable exploring your data at any stage during the preprocessing
+steps, you should learn how to investigate and explore data that's stored 
+in a list structure in R. Because the list structure is the building block 
+for complex data structures, including Bioconductor class structures, this will
+serve you well throughout your work. You should get in the habit of checking 
+the structure and navigating where each piece of data is stored in the data
+structure at each step in preprocessing your data. Also, by checking your data
+throughout preprocessing, you might find that there are bits of information 
+tucked in your data at early stages that you aren't yet using. For example, 
+many file formats for laboratory equipment include slots for information about
+the equipment and its settings during when running the sample. This information
+might be read in from the file into R, but you might not know it's there for you
+to use if you'd like, to help you in creating reproducible reports that include
+this metadata about the experimental equipment and settings. 
+
+First, you will want to figure out whether your data is stored in a generic
+list, or if it's stored in a specific class-based data structure, which means it
+will have a bit more of a standardized structure. To do this, you can run the
+`class` function on your data object. The output of this might be a single value
+(e.g., "list" [?]) or a short list. If it's a short list, it will include both 
+the specific class of the object and, as you go down the list, the more 
+general data structure types that this class is built on. For example, if the 
+`class` function returns this list: 
+
+```
+[Example list of data types---maybe some specific class, then "list"?]
+```
+
+it means that the data's in a class-based structure called ... which is built on 
+the more general structure of a list. You can apply to this data any of the functions
+that are specifically built for ... data structures, but you can also apply 
+functions built for the more general list data structure. 
+
+There are several tools you can use to explore data structured as lists in R. 
+R lists can sometimes be very large---in terms of the amount of data stored in 
+them---particularly for some types of biomedical data. With some of the tools 
+covered in this subsection, that will mean that your first look might seem 
+overwhelming. We'll also cover some tools, therefore, that will let you peel 
+away levels of the data in a bit more manageable way, which you can use when 
+you encounter list-structured data that at first feels overwhelming. 
+
+First, if your data is stored in a specific class-based data structure, there
+likely will also be help files specifically for the class structure that can
+help you navigate it and figure out where things are. [Example]
+
+[More about exploring data in list structures.]
+
+### Interfacing between object-based and tidyverse workflows
+
+The tidyverse approach in R is based on keeping data in a dataframe structure.
+By keeping this common structure, the tidyverse allows for straightforward but
+powerful work with your data by chaining together simple, single-purpose
+functions. This approach is widely covered in introductory R programming courses
+and books. A great starting point is the book *R Programming for Data Science*,
+which is available both in print and freely online at [site]. Many excellent
+resources exist for learning this approach, and so we won't recover that
+information here. Instead, we will focus on how to interface between this
+approach and the object-based approach that's more common with Bioconductor
+packages. Bioconductor packages often take an object-based approach, and with
+good reason because of the complexity and size of many early versions of
+biomedical data in the preprocessing process. There are also resources for
+learning to use specific Bioconductor packages, as well as some general
+resources on Bioconductor, like *R Programming for Bioinformatics* [ref].
+However, there are fewer resources available online that teach how to coordinate
+between these two approaches in a pipeline of code, so that you can leverage the
+needed power of Bioconductor approaches early in your pipeline, as you
+preprocess large and complex data, and then shift to use a tidyverse approach
+once your data is amenible to this more straightforward approach to analysis and
+visualization.
+
+The heart of making this shift is learning how to convert data, when possible, 
+from a more complex, class-type data structure (built on the flexible list 
+data structure) to the simpler, more standardized two-dimensional dataframe 
+structure that is required for the tidyverse approach. In this subsection, we'll 
+cover approaches for converting your data from Bioconductor data structures to 
+dataframes. 
+
+If you are lucky, this might be very straightforward. A pair of packages called
+`broom` and `biobroom` have been created specifically to facilitate the conversion
+of data from more complex structures to dataframes. The `broom` package was 
+created first, by David Robinson, to convert the data stored in the objects that 
+are created by fitting statistical models into tidy dataframes. Many of the functions
+in R that run statistical tests or fit statistical models output results in a 
+more complex, list-based data structure. These structures have nice "print" methods, 
+so if fitting the model or running the test is the very last step of your pipeline, 
+you can just read the printed output from R. However, often you want to include 
+these results in further code---for example, creating plots or tables that show
+results from several statistical tests or models. The `broom` package includes 
+several functions for pulling out different bits of data that are stored in the 
+complex data structure created by fitting the model or running the test and convert
+those pieces of data into a tidy dataframe. This tidy dataframe can then be 
+easily used in further code using a tidyverse approach. 
+
+The `biobroom` package was created to meet a similar need with data stored in some
+of the complex structures commonly used in Bioconductor packages. [More about 
+`biobroom`.]
+
+[How to convert data if there isn't a `biobroom` method.] If you are unlucky, 
+there may not be a `broom` or `biobroom` method that you can use for the particular
+class-based data structure that your data's in, or it might be in a more general 
+list, rather than a specific class with a `biobroom` method. In this case, you'll 
+need to extract the data "by hand" to move it into a dataframe once your data is 
+simple enough to work with using a tidyverse approach. If you've mastered how to 
+explore data stored in a list (covered in the last subsection), you'll have a headstart
+on how to do this. Once you know where to find each element of the data in the 
+structure of the list, you can assign these specific pieces to their own R objects
+using typical R assignment (e.g., with the *gets arrow*, `<-`, or with `=`, depending
+on your preferred R programming style). ...
+
+### Extras
+
 [Comparison of complexity of biological systems versus complexity of code and 
 algorithms for data pre-processing---for the later, nothing is unknowable or even 
 unknown. Someone somewhere is guaranteed to know exactly how it works, what it's
@@ -275,4 +580,12 @@ usually takes up one byte, an
 
 ### Applied exercise
 
+- [Example data in a basic list]
+- [Example data in a Bioconductor list-based class]
+- [Explore each example dataset. What slots do each have? What are the names of each slot?
+What data structures / data types are in each slot?]
+- [Extract certain elements from each dataset by hand. Assign to its own object name so 
+you can use it by itself.]
+- [Use `biobroom` to extract pieces of data in the Bioconductor dataset as tidy dataframes.
+Try using this with further tidyverse code to create a nice table/visualization.]
 
