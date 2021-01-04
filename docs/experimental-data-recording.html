@@ -180,8 +180,11 @@
 </ul></li>
 <li class="chapter" data-level="3.5" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#complex-data-types-in-r-and-bioconductor"><i class="fa fa-check"></i><b>3.5</b> Complex data types in R and Bioconductor</a><ul>
 <li class="chapter" data-level="3.5.1" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#subsection-1"><i class="fa fa-check"></i><b>3.5.1</b> Subsection 1</a></li>
-<li class="chapter" data-level="3.5.2" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#subsection-2"><i class="fa fa-check"></i><b>3.5.2</b> Subsection 2</a></li>
-<li class="chapter" data-level="3.5.3" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#applied-exercise"><i class="fa fa-check"></i><b>3.5.3</b> Applied exercise</a></li>
+<li class="chapter" data-level="3.5.2" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#exploring-and-extracting-data-from-r-list-data-structures"><i class="fa fa-check"></i><b>3.5.2</b> Exploring and extracting data from R list data structures</a></li>
+<li class="chapter" data-level="3.5.3" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#interfacing-between-object-based-and-tidyverse-workflows"><i class="fa fa-check"></i><b>3.5.3</b> Interfacing between object-based and tidyverse workflows</a></li>
+<li class="chapter" data-level="3.5.4" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#extras"><i class="fa fa-check"></i><b>3.5.4</b> Extras</a></li>
+<li class="chapter" data-level="3.5.5" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#subsection-2"><i class="fa fa-check"></i><b>3.5.5</b> Subsection 2</a></li>
+<li class="chapter" data-level="3.5.6" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#applied-exercise"><i class="fa fa-check"></i><b>3.5.6</b> Applied exercise</a></li>
 </ul></li>
 <li class="chapter" data-level="3.6" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#example-converting-from-complex-to-tidy-data-formats"><i class="fa fa-check"></i><b>3.6</b> Example: Converting from complex to ‘tidy’ data formats</a><ul>
 <li class="chapter" data-level="3.6.1" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#subsection-1"><i class="fa fa-check"></i><b>3.6.1</b> Subsection 1</a></li>
@@ -3883,6 +3886,28 @@ directory as an RStudio Project. The next module gives step-by-step directions
 for making a directory an RStudio Project, and also how to create you own
 RStudio Project template to quickly create a new directory for project files
 each time you start a new research project.</p>
+<p>[Visual—project directory as a <em>mise en place</em> for cooking—everything you
+need for the analysis, plus the recipe for someone to repeat later.]</p>
+<p>[Reference: The Usual Suspects—you’ll typically have the same types of data files,
+analysis, types of figures, etc., come up again and again for different research
+projects. Leverage tools to improve efficiency when working with these “usual
+suspects”. The first time you follow a protocol that is new to you, or the first
+time you cook a recipe, it takes much longer and much more thought than it should
+as you do it over and over—there are some recipes where I only use the cookbook
+now to figure out the oven temperature or the exact measurement of an ingredient.
+These tools will help you streamline your project file organization and move towards
+reuse of modular tools and ideas (e.g., remembering how to make a vinaigrette and
+applying that regardless of the type of salad) across projects.]</p>
+<p>[Analogies for moving to do things more programatically—Tom Sawyer outsourcing the
+fence painting, sorcerer’s apprentice (all the mops, plus some difficulties when you
+first start, before you get the hang of it).]</p>
+<p>[File extensions give an idea of the power of consistent file names. While some
+operating systems don’t require these, by naming all the files that should be
+opened with, for example, Word “.docx”, the operating system can easily do a
+targeted search that looks for files with certain key words in the name while
+limiting the search only to Word files. You can leverage this same power yourself,
+and in a way that’s more customized to your project or typical research approach,
+by using consistent conventions to name your files.]</p>
 </div>
 <div id="subsection-1" class="section level3">
 <h3><span class="header-section-number">2.6.4</span> Subsection 1</h3>
@@ -4077,6 +4102,136 @@ automatically. This provides a simple way of retaining the results of calculatio
 one R session to the next. However, saving the entire R workspace is not the recommended
 approach. It is better to save the original data set and R code and re-create results by
 running the code again.” <span class="citation">(Murrell 2009)</span></p>
+</blockquote>
+<blockquote>
+<p>“Just as a well-organized laboratory makes a scientist’s life easier, a well-organized
+and well-documented project makes a bioinformatician’s life easier. Regardless of the
+particular project you’re working on, your project directory should be laid out in a
+consistent and understandable fashion. Clear project organization makes it easier
+for both you and collaborators to figure out exactly where and what everything is.
+Additionally, it’s much easier to automate tasks when files are organized and
+clearly named. For example, processing 300 gene sequences stored in separate FASTA
+files with a script is trivial if these files are organized in a single directory and
+are consistently named.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Project directory organization isn’t just about being tidy, but is essential to the
+way by which tasks are automated across large numbers of files” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“All files and directories used in your project should live in a single project directory
+with a clear name. During the course of a project, you’ll have amassed data files, notes,
+scripts, and so on—if these were scattered all over your hard drive (or worse, across
+many computers’ hard drives), it would be a nightmare to keep track of everything. Even
+worse, such a disordered project would later make your research nearly impossible to
+reproduce.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Naming files and directories on a computer matters more than you may think. In
+transitioning from a graphical user interface (GUI) based operating system to
+the Unix command line, many folks bring the bad habit of using spaces in
+file and directory names. This isn’t appropriate in a Unix-based environment, because
+spaces are used to separate arguments in commands. … Although Unix doesn’t require
+file extensions, including extensions in file names helps indicate the type of each
+file. For example, a file named <em>osativa-genes.fasta</em> makes it clear that this is
+a file of sequences in FASTA format. In contrast, a file named <em>osativa-genes</em> could
+be a file of gene models, notes on where these <em>Oryza sativa</em> genes came from, or
+sequence data. When in doubt, explicit is always better than implicit when it comes to
+filenames, documentation, and writing code.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Scripts and analyses often need to refer to other files (such as data) in your
+project hierarchy. This may require referring to parent directories in you directory’s
+hierarcy … In these cases, it’s important to always use <em>relative paths</em> … rather
+than <em>absolute paths</em> … As long as your internal project directory structure remains the
+same, these relative paths will always work. In contrast, absolute paths rely on you particular
+user account and directory structures details <em>above</em> the project directory level
+(not good). Using absolute paths leaves your work less portable between collaborators and
+decreases reproducibility.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“<em>Document the origin of all data in your project directory.</em> You need to keep track of
+where data was downloaded from, who gave it to you, and any other relevant information.
+‘Data’ doesn’t just refer to your project’s experimental data—it’s any data that
+programs use to create output. This includes files your collaborators send you from their
+separate analyses, gene annotation tracks, reference genomes, and so on. It’s critical
+to record this important data about you’re data, or <em>metadata</em>. For example, if you downloaded
+a set of genic regions, record the website’s URL. This seems like an obvious recommendation,
+but ocuntless times I’ve encountered an analysis step that couldn’t be easily reproduced
+because someone forgot to record the data’s source.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“<em>Record data version information.</em> Many databases have explicit release numbers,
+version numbers, or names (e.g., TAIR10 version of genome annotation for <em>Arabidopsis
+thaliana</em>, or Wormbase release WS231 for <em>Caenorhabditis elegans</em>). It’s important to
+record all version information in your documentation, including minor version numbers.”
+<span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“<em>Describe how you downloaded the data.</em> For example, did you use MySQL to download a
+set of genes? Or the USCS Genome Browser? THese details can be useful in tracking down
+issues like when data is different between collaborators.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Bioinformatics projects involve many subprojects and subanalyses. For example, the
+quality of raw experimental data should be assessed and poor quality regions removed
+before running it through bioinformatics tools like aligners or assemblers. … Even
+before you get to actually analyzing the sequences, your project directory can get
+cluttered with intermediate files. Creating directories to logically separate subprojects
+(e.g., sequencing data quality improvement, aligning, analyzing alignment results, etc.)
+can simplify complex projects and help keep files organized. It also helps reduce the
+risk of accidentally clobbering a file with a buggy script, as subdirectories help
+isolate mishaps. Breaking a project down into subprojects and keeping these in separate
+subdirectories also makes documenting your work easier; each README pertains to the
+directory it resides in. Ultimately, you’ll arrive at your own project organization
+system that works for you; the take-home point is: leverage directories to help stay
+organized.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Because automating file processing tasks is an integral part of bioinformatics,
+organizing our projects to facilitate this is essential. Organizing data into subdirectories
+and using clear and consistent file naming schemes is imperative—both of these practices
+allow us to <em>programmatically</em> refer to files, the first step to automating a task.
+Doing something programatically means doing it through code rather than manually, using
+a method that can effortlessly scale to multiple objects (e.g., files). Programatically
+referring to multiple files is easier and safer than typing them all out (because it’s
+less error prone.)” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Organizing data files into a single directory with consistent filenames prepares us to
+iterate over <em>all</em> of our data, whether it’s the four example files used in this example,
+or 40,000 files in a real project. Think of it this way: remember when you discovered you
+could select many files with your mouse cursor? With this trick, you could move 60 files
+as easily as six files. You could also select certain file types (e.g., photos) and attach
+them all to an email with one movement. By using consistent file naming and directory
+organization, you can do the same programatically using the Unix shell and other
+programming languages.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Because lots of daily bioinformatics work involves file processing, programmatically
+accessing files makes our job easier and eliminates mistakes from mistyping a filename
+or forgetting a sample. However, our ability to programmatically access files with
+wildcards (or other methods in R or Python) is only possible when our filenames are
+consistent. While wildcards are powerful, they’re useless if files are inconsistently
+named. … Unfortunately, inconsistent naming is widespread across biology, and is
+the source of bioinformaticians everywhere. Collectively, bioinformaticians have
+probably wasted thousands of hours fighting others’ poor naming schemes of files,
+genes, and in code.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Another useful trick is to use leading zeros … when naming files. This is useful
+because lexicographically sorting files (as <code>ls</code> does) leads to correct ordering. …
+Using leading zeros isn’t just useful when naming filenames; this is also the best
+way to name genes, transcripts, and so on. Projects like Ensembl use this naming
+scheme in naming their genes (e.g., ENSG00000164256).” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“In addition to simplifying working with files, consistent naming is an often overlooked
+component of robust bioinformatics. Bad naming schemes can easily lead to switched samples.
+Poorly chosen filenames can also cause serious errors when you or collaborators think you’re
+working with the correct data, but it’s actually outdate or the wrong file. I guarantee
+that out of all the papers published in the past decade, at least a few and likely many
+more contain erroneous results because of a file naming issue.” <span class="citation">(Buffalo 2015)</span></p>
 </blockquote>
 </div>
 <div id="practice-quiz" class="section level3">

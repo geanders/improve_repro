@@ -3338,6 +3338,32 @@ for making a directory an RStudio Project, and also how to create you own
 RStudio Project template to quickly create a new directory for project files
 each time you start a new research project.
 
+{[}Visual---project directory as a \emph{mise en place} for cooking---everything you
+need for the analysis, plus the recipe for someone to repeat later.{]}
+
+{[}Reference: The Usual Suspects---you'll typically have the same types of data files,
+analysis, types of figures, etc., come up again and again for different research
+projects. Leverage tools to improve efficiency when working with these ``usual
+suspects''. The first time you follow a protocol that is new to you, or the first
+time you cook a recipe, it takes much longer and much more thought than it should
+as you do it over and over---there are some recipes where I only use the cookbook
+now to figure out the oven temperature or the exact measurement of an ingredient.
+These tools will help you streamline your project file organization and move towards
+reuse of modular tools and ideas (e.g., remembering how to make a vinaigrette and
+applying that regardless of the type of salad) across projects.{]}
+
+{[}Analogies for moving to do things more programatically---Tom Sawyer outsourcing the
+fence painting, sorcerer's apprentice (all the mops, plus some difficulties when you
+first start, before you get the hang of it).{]}
+
+{[}File extensions give an idea of the power of consistent file names. While some
+operating systems don't require these, by naming all the files that should be
+opened with, for example, Word ``.docx'', the operating system can easily do a
+targeted search that looks for files with certain key words in the name while
+limiting the search only to Word files. You can leverage this same power yourself,
+and in a way that's more customized to your project or typical research approach,
+by using consistent conventions to name your files.{]}
+
 \hypertarget{subsection-1}{%
 \subsection{Subsection 1}\label{subsection-1}}
 
@@ -3551,6 +3577,150 @@ automatically. This provides a simple way of retaining the results of calculatio
 one R session to the next. However, saving the entire R workspace is not the recommended
 approach. It is better to save the original data set and R code and re-create results by
 running the code again.'' \citep{murrell2009introduction}
+\end{quote}
+
+\begin{quote}
+``Just as a well-organized laboratory makes a scientist's life easier, a well-organized
+and well-documented project makes a bioinformatician's life easier. Regardless of the
+particular project you're working on, your project directory should be laid out in a
+consistent and understandable fashion. Clear project organization makes it easier
+for both you and collaborators to figure out exactly where and what everything is.
+Additionally, it's much easier to automate tasks when files are organized and
+clearly named. For example, processing 300 gene sequences stored in separate FASTA
+files with a script is trivial if these files are organized in a single directory and
+are consistently named.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``Project directory organization isn't just about being tidy, but is essential to the
+way by which tasks are automated across large numbers of files'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``All files and directories used in your project should live in a single project directory
+with a clear name. During the course of a project, you'll have amassed data files, notes,
+scripts, and so on---if these were scattered all over your hard drive (or worse, across
+many computers' hard drives), it would be a nightmare to keep track of everything. Even
+worse, such a disordered project would later make your research nearly impossible to
+reproduce.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``Naming files and directories on a computer matters more than you may think. In
+transitioning from a graphical user interface (GUI) based operating system to
+the Unix command line, many folks bring the bad habit of using spaces in
+file and directory names. This isn't appropriate in a Unix-based environment, because
+spaces are used to separate arguments in commands. \ldots{} Although Unix doesn't require
+file extensions, including extensions in file names helps indicate the type of each
+file. For example, a file named \emph{osativa-genes.fasta} makes it clear that this is
+a file of sequences in FASTA format. In contrast, a file named \emph{osativa-genes} could
+be a file of gene models, notes on where these \emph{Oryza sativa} genes came from, or
+sequence data. When in doubt, explicit is always better than implicit when it comes to
+filenames, documentation, and writing code.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``Scripts and analyses often need to refer to other files (such as data) in your
+project hierarchy. This may require referring to parent directories in you directory's
+hierarcy \ldots{} In these cases, it's important to always use \emph{relative paths} \ldots{} rather
+than \emph{absolute paths} \ldots{} As long as your internal project directory structure remains the
+same, these relative paths will always work. In contrast, absolute paths rely on you particular
+user account and directory structures details \emph{above} the project directory level
+(not good). Using absolute paths leaves your work less portable between collaborators and
+decreases reproducibility.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``\emph{Document the origin of all data in your project directory.} You need to keep track of
+where data was downloaded from, who gave it to you, and any other relevant information.
+`Data' doesn't just refer to your project's experimental data---it's any data that
+programs use to create output. This includes files your collaborators send you from their
+separate analyses, gene annotation tracks, reference genomes, and so on. It's critical
+to record this important data about you're data, or \emph{metadata}. For example, if you downloaded
+a set of genic regions, record the website's URL. This seems like an obvious recommendation,
+but ocuntless times I've encountered an analysis step that couldn't be easily reproduced
+because someone forgot to record the data's source.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``\emph{Record data version information.} Many databases have explicit release numbers,
+version numbers, or names (e.g., TAIR10 version of genome annotation for \emph{Arabidopsis
+thaliana}, or Wormbase release WS231 for \emph{Caenorhabditis elegans}). It's important to
+record all version information in your documentation, including minor version numbers.''
+\citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``\emph{Describe how you downloaded the data.} For example, did you use MySQL to download a
+set of genes? Or the USCS Genome Browser? THese details can be useful in tracking down
+issues like when data is different between collaborators.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``Bioinformatics projects involve many subprojects and subanalyses. For example, the
+quality of raw experimental data should be assessed and poor quality regions removed
+before running it through bioinformatics tools like aligners or assemblers. \ldots{} Even
+before you get to actually analyzing the sequences, your project directory can get
+cluttered with intermediate files. Creating directories to logically separate subprojects
+(e.g., sequencing data quality improvement, aligning, analyzing alignment results, etc.)
+can simplify complex projects and help keep files organized. It also helps reduce the
+risk of accidentally clobbering a file with a buggy script, as subdirectories help
+isolate mishaps. Breaking a project down into subprojects and keeping these in separate
+subdirectories also makes documenting your work easier; each README pertains to the
+directory it resides in. Ultimately, you'll arrive at your own project organization
+system that works for you; the take-home point is: leverage directories to help stay
+organized.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``Because automating file processing tasks is an integral part of bioinformatics,
+organizing our projects to facilitate this is essential. Organizing data into subdirectories
+and using clear and consistent file naming schemes is imperative---both of these practices
+allow us to \emph{programmatically} refer to files, the first step to automating a task.
+Doing something programatically means doing it through code rather than manually, using
+a method that can effortlessly scale to multiple objects (e.g., files). Programatically
+referring to multiple files is easier and safer than typing them all out (because it's
+less error prone.)'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``Organizing data files into a single directory with consistent filenames prepares us to
+iterate over \emph{all} of our data, whether it's the four example files used in this example,
+or 40,000 files in a real project. Think of it this way: remember when you discovered you
+could select many files with your mouse cursor? With this trick, you could move 60 files
+as easily as six files. You could also select certain file types (e.g., photos) and attach
+them all to an email with one movement. By using consistent file naming and directory
+organization, you can do the same programatically using the Unix shell and other
+programming languages.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``Because lots of daily bioinformatics work involves file processing, programmatically
+accessing files makes our job easier and eliminates mistakes from mistyping a filename
+or forgetting a sample. However, our ability to programmatically access files with
+wildcards (or other methods in R or Python) is only possible when our filenames are
+consistent. While wildcards are powerful, they're useless if files are inconsistently
+named. \ldots{} Unfortunately, inconsistent naming is widespread across biology, and is
+the source of bioinformaticians everywhere. Collectively, bioinformaticians have
+probably wasted thousands of hours fighting others' poor naming schemes of files,
+genes, and in code.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``Another useful trick is to use leading zeros \ldots{} when naming files. This is useful
+because lexicographically sorting files (as \texttt{ls} does) leads to correct ordering. \ldots{}
+Using leading zeros isn't just useful when naming filenames; this is also the best
+way to name genes, transcripts, and so on. Projects like Ensembl use this naming
+scheme in naming their genes (e.g., ENSG00000164256).'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``In addition to simplifying working with files, consistent naming is an often overlooked
+component of robust bioinformatics. Bad naming schemes can easily lead to switched samples.
+Poorly chosen filenames can also cause serious errors when you or collaborators think you're
+working with the correct data, but it's actually outdate or the wrong file. I guarantee
+that out of all the papers published in the past decade, at least a few and likely many
+more contain erroneous results because of a file naming issue.'' \citep{buffalo2015bioinformatics}
 \end{quote}
 
 \hypertarget{practice-quiz}{%
@@ -4989,6 +5159,39 @@ laboratory equipment like flow cytometers and mass spectrometers.
 Figure {[}x{]} gives an example of a data preprocessing script, highlighting these
 different common areas that often show up in these scripts.
 
+{[}Some data may be incorporated into the preprocessing by downloading it from
+databases or other online sources. These data downloads can be automated and
+recorded by using scripted code for the download in many cases, as long as the
+database or online source offers web services or another API for this type of
+scripted data access. In this case, you can incorporate the script in a
+RMarkdown document to record the date the data was downloaded, as well as the
+code used to download it. R is able to run system calls, and one of these
+will provide the current date, so this can be included in an RMarkdown file
+to record the date the file is run. Further, there may be a call that can
+be made to the online data source's API that returns the working version of
+the database or source, and if so this can also be included in the RMarkdown
+code used to access the data.{]}
+
+RMarkdown files can be used to combine both code and more manual document
+(for example, a record of which collaborator provided each type of data file).
+While traditionally this more manual documentation was recommended to be
+recorded in plain-text README files in a project's directory and subdirectories
+\citep{buffalo2015bioinformatics}, RMarkdown files provide some advantages over
+this traditional approach. First, RMarkdown files are themselves in plain
+text, and so they offer the advantages of simple plain text documentation
+files (e.g., ones never rendered to another format) in terms of being able
+to use script-based tools to search them. Further, they can be rendered into
+attractive formatted documents that may be easier to share with project
+team members who do not code.
+
+{[}Example of a function: recipe for making a vinaigrette. There will be a
+``basic'' way that the function can run, which uses its default parameters.
+However, you can also specify and customize certain inputs (for example,
+using walnut oil instead of olive oil, or adding mustard) to tweak the
+recipe in slight ways each time you use it, and to get customized outputs.{]}
+
+{[}History of the mouse---enable GUIs, before everything was from the terminal.{]}
+
 \hypertarget{potential-quotes}{%
 \subsection{Potential quotes}\label{potential-quotes}}
 
@@ -5220,6 +5423,45 @@ before the relevant features can be used.'' \citep{murrell2009introduction}
 
 \begin{quote}
 ``The R environment is the software used to run R code.'' \citep{murrell2009introduction}
+\end{quote}
+
+\begin{quote}
+``\emph{Document your methods and workflows.} This should include full command lines (copied
+and pasted) that are run through the shell that generate data or intermediate results.
+Even if you use the default values in software, be sure to write these values down;
+later versions of the program may use different default values. Scripts naturally
+document all steps and parameters \ldots, but be sure to document any command-line options
+used to run this script. In general, any command that produces results in your work needs
+to be documented somewhere.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``\emph{Document the version of the software that you ran.} This may seem unimportant, but
+remember the example from `Reproducible Research' on page 6 where my colleagues and I
+traced disagreeing results down to a single piece of software being updated. These
+details matter. Good bioinformatices software usually has a command-line option to
+return the current version. Software managed with a version control system such as
+Git has explicit identifiers to every version, which can be used to document the
+precise version you ran\ldots{} If no version information is available, a release date,
+link to the software, and download date will suffice.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``\emph{Document when you downloaded data.} It's important to include when the data was downloaded,
+as the external data source (such as a website or server) might change in the future. For example,
+a script that downloads data directly from a database might produce different results if
+rerun after the external database is updated. Consequently, it's important to document
+when data came into your repository.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``All of this {[}documentation{]} information is best stored in plain-text README files.
+Plain text can easily be read, searched, and edited directly from the command line,
+making it the perfect choice for portable and accessible README files. It's also available
+on all computer systems, meaning you can document your steps when working directly on
+a server or computer cluster. Plain text also lacks complex formatting, which can create
+issues when copying and pasting commands from your documentation back into the command
+line.'' \citep{buffalo2015bioinformatics}
 \end{quote}
 
 \hypertarget{discussion-questions}{%
@@ -5690,6 +5932,333 @@ data stored in R in this format, including through the \emph{broom} and
 \hypertarget{subsection-1}{%
 \subsection{Subsection 1}\label{subsection-1}}
 
+When you are writing scripts in R to work with your code, if you are at a
+point in your pipeline when you can use a ``tidyverse'' approach, then you will
+``keep'' your data in a dataframe, as your data structure, throughout your
+work. However, at earlier stages in your preprocessing, you may need to use
+tools that use other data structures. It's helpful to understand the
+basic building blocks of R data structures, so you can find elements of your
+data in these other, more customized data structures.
+
+Many R data structures are built on a general structure called a ``list''. This
+data structure is a useful basic general data structure, because it is
+extraordinarily flexible. The list data structure is flexible in two
+important ways: it allows you to include data of different \emph{types} in the
+same data structure, and it allows you to include data with different
+dimensions---and data stored hierarchically, including various other data
+structures---within the list structure. We'll cover each of these points a bit
+more below and describe why they're helpful in making the list a very good
+general purpose data structure.
+
+In R, your data can be stored as different \emph{types} of data: whole numbers can be
+stored as an \emph{integer} data type, continuous {[}?{]} numbers through a few types of
+\emph{floating} data types, character strings as a \emph{character} data type, and logical
+data (which can only take the two values of ``TRUE'' and ``FALSE'') as a \emph{logical}
+data type. More complex data types can be built using these---for example,
+there's a special data type for storing dates that's based on a combination of
+an {[}integer?{]} data type, with added information counting the number of days {[}?{]}
+from a set starting date (called the {[}Unix epoch?{]}), January 1, 1970. (This
+set-up for storing dates allows them to be printed to look like dates, rather
+than numbers, but at the same time allows them to be manipulated through
+operations like finding out which date comes earliest in a set, determining the
+number of days between two dates, and so on.) R uses these different data types
+for several reasons. First, by using different data types, R can improve its
+efficiency {[}?{]} in storing data. Each piece of data must---as you go deep in the
+heart of how the computer works---as a series of binary digits (0s and 1s).
+Some types of data can be stored using fewer of these \emph{bits} (\emph{bi}nary dig\emph{its}).
+Each measurement of logical data, for example, can be stored in a single bit,
+since it only can take one of two values (0 or 1, for FALSE and TRUE, respectively).
+For character strings, these can be divided into each character in the string
+for storage (for example, ``cat'' can be stored as ``c'', ``a'', ``t''). There is a set
+of characters called the ASCII character set that includes the lowercase and
+uppercase of the letters and punctuation sets that you see on a standard
+US keyboard {[}?{]}, and if the character strings only use these characters, they
+can be stored in {[}x{]} bits per character. For numeric data types, integers can
+typically be stores in {[}x{]} bits per number, while continuous {[}?{]} numbers,
+stored in single or double floating point notation {[}?{]}, are stored in {[}x{]}
+and {[}x{]} bits respectively. When R stores data in specific types, it can be
+more memory efficient by packing the types of data that can be stored in less
+space (like logical data) into very compact structures.
+
+The second advantage of the list structure in R is that it has enormous
+flexibility in terms of storing lots of data in lots of possible places. This
+data can have different types and even different substructures. Some data
+structures in R are very constrained in what type of data they can store and
+what structure they use to store it. For example, one of the ``building block''
+data structures in R is the vector. This data structure is one dimensional and
+can only contain data that have the same data type---you can think of this as a
+bead string of values, each of the same type. For example, you could have a
+vector that gives a series of names of study sites (each a character string), or
+a vector that gives the dates of time points in a study (each a date data type),
+or a vector that gives the weights of mice in a study (each a numeric data
+type). You cannot, however, have a vector that includes some study site names
+and then some dates and then some weights, since these should be in different
+data types. Further, you can't arrange the data in any structure except a
+straight, one-dimensional series if you are using a vector. The dataframe
+structure provides a bit more flexibility---you can expand into two dimensions,
+rather than one, and you can have different data types in different columns of
+the dataframe (although each column must itself have a single data type).
+
+The list data structure is much more flexible. It essentially allows you to
+create different ``slots'', and you can store any type of data in each of these
+slots. In each slot you can store any of the other types of data structures in
+R---for example, vectors, dataframes, or other lists. You can even store unusual
+things like R \emph{environments} {[}?{]} or \emph{pointers} that give the directions to where
+data is stored on the computer without reading the data into R (and so saving
+room in the RAM memory, which is used when data is ``ready to go'' in R, but which
+has much more limited space than the mass {[}?{]} storage on your computer).
+
+Since you can put a list into the slot of a list, it allows you to create deep,
+layered structures of data. For example, you could have one slot in a list where
+you store the metadata for your experiment, and this slot might itself be a list
+where you store one dataframe with some information about the settings of the
+laboratory equipement you used to collect the data, and another dataframe that
+provides information about the experimental design variables (e.g., which animal
+received which treatment). Another slot in the larger list then might have
+experimental measurements, and these might either be in a dataframe or, if the
+data are very large, might be represented through pointers to where the data is
+stored in memory, rather than having the data included directly in the data
+structure.
+
+Given all these advantages of the list data structure, then, why not use it all
+the time? While it is a very helpful building block, it turns out that its flexibility
+can have some disadvantages in some cases. This flexibility means that you can's
+always assume that certain bits of data are in a certain spot in each instance
+of a list in R. Conversely, if you have data stored in a less flexible structure,
+you can often rely on certain parts of the data always being in a certain part of
+the data structure. In a ``tidy'' dataframe, for example, you can always assume
+that each row represents the measurements for one observation at the unit of
+observation for that dataframe, and that each column gives values across all
+observations for one particular value that was measured for all the observations.
+For example, if you are conducting an experiment with mice, where a certain number
+of mice were sacrificed at certain time points, with their weight and the bacteria
+load in their lungs measured when the mouse was sacrificed, then you could store
+the data in a dataframe, with a row for each mouse, and columns giving the
+experimental characteristics for each mouse (e.g., treatment status, time point
+when the mouse was sacrificed), the mouse's weight, and the mouse's bacteria
+load when sacrificed. You could store all of this information in a list, as
+well, but the defined, two-dimensional structure of the dataframe makes it much
+more clearly defined where all the data goes in the dataframe structure, while
+you could order the data in many ways within a list.
+
+There is a big advantage to having stricter standards for what parts of data go
+where when it comes to writing functions that can be used across a lot of data.
+You can think of this in terms of how cars are set up versus how kitchens are
+set up. Cars are very standardized in the ``interface'' that you get when you sit
+down to drive them. The gas and brakes are typically floor pedals, with the gas
+to the right of the brake. The steering is almost always provided through a wheel
+centered in front of the driver's torso. The mechanism for shifting gears (e.g.,
+forward, reverse) is typically to the right of the steering wheel, while
+mecahnisms for features like lights and windshield wipers, are typically to the
+left of the steering wheel. Because this interface is so standardized, you can
+get into a car you've never driven before and typically figure out how to
+drive it very quickly. You don't need a lot of time exploring where everything
+is or a lot of directions from someone familiar with the car to figure out where
+things are. Think of the last time that you drove a rental car---within five minutes,
+at most, you were probably able to orient yourself to figure out where everything
+you needed was. This is like a dataframe in R---you can pretty quickly figure out
+where everything you might need is stored in the data structure, and people can
+write functions to use with these dataframes that work well generally across lots
+of people's data because they can assume that certain pieces of data are in
+certain places.
+
+By contrast, think about walking into someone else's kitchen and orienting yourself
+to use that. Kitchen designs do tend to have some general features---most will have
+a few common large elements, like a stove somewhere, a refrigerator somewhere,
+a pantry somewhere, and storage for pots, pans, and utensils somewhere. However,
+there is a lot of flexibility in where each of these are in the kitchen design,
+and further flexibility in how things are organized within each of these structures.
+If you cook in someone else's kitchen, it is easy to find yourself disoriented in the
+middle of cooking a recipe, where a utensil that you can grab almost without
+thinking in your own kitchen requires you to stop and search many places in
+someone else's kitchen. This is like a list in R---there are so many places that
+you can store data in a list, and so much flexibility, that you often find yourself
+having to dig around to find a certain element in a list data structure that someone
+else has created, and you often can't assume that certain pieces are in certain
+places if you are writing your own functions, so it becomes hard to write
+functions that are ``general purpose'' for generic list structures in R.
+
+There is a way that list structures can be used in R in a way that retains some
+of their flexibility while also leveraging some of the benefits of
+standardization. This is R's system for creating \emph{objects}. These object
+structures are built on the list data structure, but each object is constrained
+to have certain elements of data in certain structures of the data. These
+structures cannot be used as easily as dataframes in a ``tidyverse'' approach,
+since the tidyverse tools are built based on the assumption that data is stored
+in a tidy dataframe. However, they are used in many of the Bioconductor
+approaches that allow powerful tools for the earlier stages in preprocessing
+biological data. The types of standards that are imposed in the more specialized
+objects include which slots the list can have, the names they have, what order
+they're in (e.g., in a certain object, the metadata about the experiment might
+always be stored in the first slot of the list), and what structures and/or data
+types the data in each slot should have.
+
+R programmers get a lot of advantages from using these classes because they can
+write functions under the assumption that certain pieces of the data will always
+be in the same spot for that type of object. There is still flexibility in the
+object, in that it can store lots of different types of data, in a variety of
+different structures. While this ``object oriented'' approach in R data structures
+does provide great advantages for programmers, and allow them to create powerful
+tools for you to use in R, it does make it a little trickier in some cases for
+you to explore your data by hand as you work through preprocessing. This is
+because there typically are a variety of these object classes that your data
+will pass through as you go through different stages of preprocessing, because
+different structures are suited to different stages of analysis. Functions often
+can only be used for a single class of objects, and so you have to keep track of
+which functions pair up with which classes of data. Further, it can be a bit
+tricky---at least in comparison to when you have data in a dataframe---to
+explore your data by hand, because you have to navigate through different slots
+in the object. By contrast, a dataframe always has the same two-dimensional,
+rectangular structure, and so it's very easy to navigate and explore data in
+this structure, and there are a large number of functions that are built to be
+used with dataframes, providing enormous flexibility in what you can do with
+data stored in this structure.
+
+While it is a bit trickier to explore your data when it is stored in a
+list---either a general list you created, or one that forms the base for a
+specialized class structure through functions from a Bioconductor package---you
+can certainly learn how to do this navigation. This is a powerful and critical
+tool for you to learn as you learn to preprocess your data in R, as you should
+\emph{never} feel like you data is stored in a ``black box'' structure, where you can't
+peek in and explore it. You should \emph{always} feel like you can take a look at any
+part of your data at any step in the process of preprocessing, analyzing, and
+visualizing it.
+
+\hypertarget{exploring-and-extracting-data-from-r-list-data-structures}{%
+\subsection{Exploring and extracting data from R list data structures}\label{exploring-and-extracting-data-from-r-list-data-structures}}
+
+To feel comfortable exploring your data at any stage during the preprocessing
+steps, you should learn how to investigate and explore data that's stored
+in a list structure in R. Because the list structure is the building block
+for complex data structures, including Bioconductor class structures, this will
+serve you well throughout your work. You should get in the habit of checking
+the structure and navigating where each piece of data is stored in the data
+structure at each step in preprocessing your data. Also, by checking your data
+throughout preprocessing, you might find that there are bits of information
+tucked in your data at early stages that you aren't yet using. For example,
+many file formats for laboratory equipment include slots for information about
+the equipment and its settings during when running the sample. This information
+might be read in from the file into R, but you might not know it's there for you
+to use if you'd like, to help you in creating reproducible reports that include
+this metadata about the experimental equipment and settings.
+
+First, you will want to figure out whether your data is stored in a generic
+list, or if it's stored in a specific class-based data structure, which means it
+will have a bit more of a standardized structure. To do this, you can run the
+\texttt{class} function on your data object. The output of this might be a single value
+(e.g., ``list'' {[}?{]}) or a short list. If it's a short list, it will include both
+the specific class of the object and, as you go down the list, the more
+general data structure types that this class is built on. For example, if the
+\texttt{class} function returns this list:
+
+\begin{verbatim}
+[Example list of data types---maybe some specific class, then "list"?]
+\end{verbatim}
+
+it means that the data's in a class-based structure called \ldots{} which is built on
+the more general structure of a list. You can apply to this data any of the functions
+that are specifically built for \ldots{} data structures, but you can also apply
+functions built for the more general list data structure.
+
+There are several tools you can use to explore data structured as lists in R.
+R lists can sometimes be very large---in terms of the amount of data stored in
+them---particularly for some types of biomedical data. With some of the tools
+covered in this subsection, that will mean that your first look might seem
+overwhelming. We'll also cover some tools, therefore, that will let you peel
+away levels of the data in a bit more manageable way, which you can use when
+you encounter list-structured data that at first feels overwhelming.
+
+First, if your data is stored in a specific class-based data structure, there
+likely will also be help files specifically for the class structure that can
+help you navigate it and figure out where things are. {[}Example{]}
+
+{[}More about exploring data in list structures.{]}
+
+\hypertarget{interfacing-between-object-based-and-tidyverse-workflows}{%
+\subsection{Interfacing between object-based and tidyverse workflows}\label{interfacing-between-object-based-and-tidyverse-workflows}}
+
+The tidyverse approach in R is based on keeping data in a dataframe structure.
+By keeping this common structure, the tidyverse allows for straightforward but
+powerful work with your data by chaining together simple, single-purpose
+functions. This approach is widely covered in introductory R programming courses
+and books. A great starting point is the book \emph{R Programming for Data Science},
+which is available both in print and freely online at {[}site{]}. Many excellent
+resources exist for learning this approach, and so we won't recover that
+information here. Instead, we will focus on how to interface between this
+approach and the object-based approach that's more common with Bioconductor
+packages. Bioconductor packages often take an object-based approach, and with
+good reason because of the complexity and size of many early versions of
+biomedical data in the preprocessing process. There are also resources for
+learning to use specific Bioconductor packages, as well as some general
+resources on Bioconductor, like \emph{R Programming for Bioinformatics} {[}ref{]}.
+However, there are fewer resources available online that teach how to coordinate
+between these two approaches in a pipeline of code, so that you can leverage the
+needed power of Bioconductor approaches early in your pipeline, as you
+preprocess large and complex data, and then shift to use a tidyverse approach
+once your data is amenible to this more straightforward approach to analysis and
+visualization.
+
+The heart of making this shift is learning how to convert data, when possible,
+from a more complex, class-type data structure (built on the flexible list
+data structure) to the simpler, more standardized two-dimensional dataframe
+structure that is required for the tidyverse approach. In this subsection, we'll
+cover approaches for converting your data from Bioconductor data structures to
+dataframes.
+
+If you are lucky, this might be very straightforward. A pair of packages called
+\texttt{broom} and \texttt{biobroom} have been created specifically to facilitate the conversion
+of data from more complex structures to dataframes. The \texttt{broom} package was
+created first, by David Robinson, to convert the data stored in the objects that
+are created by fitting statistical models into tidy dataframes. Many of the functions
+in R that run statistical tests or fit statistical models output results in a
+more complex, list-based data structure. These structures have nice ``print'' methods,
+so if fitting the model or running the test is the very last step of your pipeline,
+you can just read the printed output from R. However, often you want to include
+these results in further code---for example, creating plots or tables that show
+results from several statistical tests or models. The \texttt{broom} package includes
+several functions for pulling out different bits of data that are stored in the
+complex data structure created by fitting the model or running the test and convert
+those pieces of data into a tidy dataframe. This tidy dataframe can then be
+easily used in further code using a tidyverse approach.
+
+The \texttt{biobroom} package was created to meet a similar need with data stored in some
+of the complex structures commonly used in Bioconductor packages. {[}More about
+\texttt{biobroom}.{]}
+
+{[}How to convert data if there isn't a \texttt{biobroom} method.{]} If you are unlucky,
+there may not be a \texttt{broom} or \texttt{biobroom} method that you can use for the particular
+class-based data structure that your data's in, or it might be in a more general
+list, rather than a specific class with a \texttt{biobroom} method. In this case, you'll
+need to extract the data ``by hand'' to move it into a dataframe once your data is
+simple enough to work with using a tidyverse approach. If you've mastered how to
+explore data stored in a list (covered in the last subsection), you'll have a headstart
+on how to do this. Once you know where to find each element of the data in the
+structure of the list, you can assign these specific pieces to their own R objects
+using typical R assignment (e.g., with the \emph{gets arrow}, \texttt{\textless{}-}, or with \texttt{=}, depending
+on your preferred R programming style). \ldots{}
+
+\hypertarget{extras}{%
+\subsection{Extras}\label{extras}}
+
+{[}Comparison of complexity of biological systems versus complexity of code and
+algorithms for data pre-processing---for the later, nothing is unknowable or even
+unknown. Someone somewhere is guaranteed to know exactly how it works, what it's
+doing, and why. By contrast, with biological systems, there are still things
+that noone anywhere completely understands. It's helpful to remember that all
+code and algorithms for data pre-processing is knowable, and that the details
+are all there if and when you want to dig to figure out what's going on.{]}
+
+{[}There are ways to fully package up and save the computer environment used to
+run a pipeline of pre-processing and analysis, including any system settings,
+all different software used in analysis steps, and so on. Some of the approaches
+that are being explored for this include the use of ``containers'', including
+Docker containers. This does allow, typically, for full reproducibility of
+the workflow. However, this approach isn't very proactive in emphasizing the
+robustness of a workflow or its comprehensibility to others---instead, it
+makes the workflow reproducible by putting everything in a black box that must
+be carefully unpackaged and explored if someone wants to understand or adapt
+the pipeline.{]}
+
 \begin{quote}
 ``Object-oriented design doesn't have to be over-complicated design, but we've
 observed that too often it is. Too many OO designs are spaghetti-like tangles of
@@ -5836,6 +6405,125 @@ actions that previously took many steps can be done in just a few steps or just 
 \end{quote}
 
 \begin{quote}
+``Right now, in labs across the world, machines are sequencing the genomes of the life
+on earth. Even with rapidly decreasing costs and huge technological advancements in
+genome sequencing, we're only seeing a glimpse of the biological information contained
+in every cell, tissue, organism, and ecosystem. However, the smidgen of total biological
+information we're gathering amounts to mountains of data biologists need to work with. At
+no other point in human history has our ability to understand life's complexities been so
+dependent on our skills to work with and analyze data.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``Bioinformaticians are concerned with deriving biological understanding from large
+amounts of data with specialized skills and tools. Early in biology's history, the
+datasets were small and manageable. Most biologists could analyze their own data after
+taking a statistics course, using Microsoft Excel on a personal desktop computer.
+However, this is all rapidly changing. Large sequencing datasets are widespread, and will
+only become more common in the future. Analyzing this data takes different tools, new skills,
+and many computers with large amounts of memory, processing power, and disk space.''
+\citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``In a relatively short period of time, sequencing costs dropped drastically, allowing
+researchers to utilize sequencing data to help answer important biological questions.
+Early sequencing was low-throughput and costly. Whole genome sequencing efforts were
+expensive (the human genome cost around \$2.7 billion) and only possible through large
+collaborative efforts. Since the release of the human genome, sequencing costs have
+decreased explonentially until about 2008 \ldots{} With the introduction of next-generation
+sequencing technologies, the cost of sequencing a megabase of DNA dropped even more
+rapidly. At this crucial point, a technology that was only affordable to large collaborative
+sequencing efforts (or individual researchers with very deep pockets) became affordable
+to researchers across all of biology. \ldots{} What was the consequence of this drop in
+sequencing costs due to these new technologies? As you may have guessed, lots and lots
+of data. Biological databases have swelled with data after exponential growth. Whereas once
+small databases shared between collaborators were sufficient, now petabytes of useful
+data are sitting on servers all over the world. Key insights into biological questions are
+stored not just in the unanalyzed experimental data sitting on your hard drive, but also
+spinning around a disk in a data center thousands of miles away.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``To make matters even more complicated, new tools for analyzing biological data are
+continually being created, and their underlying algorithms are advancing. A 2012 review
+listed over 70 short-read mappers \ldots{} Likewise, our approach to genome assembly has
+changed considerably in the past five years, as methods to assemble long sequences
+(such as overlap-layout-consensus algorithms) were abandoned with the emergence of
+short high-throughput sequencing reads. Now, advances in sequencing chemistry are
+leading to longer sequencing read lengths and new algorithms are replacing others that
+were just a few years old. Unfortunately, this abundance and rapid development of
+bioinformatics tools has serious downsides. Often, bioinformatics tools are not adequately
+benchmarked, or if they are, they are only benchmarked in one organism. This makes it
+difficult for new biologists to find and choose the best tool to analyze their data.
+To make matters more difficult, some bioinformatics programs are not actively developed
+so that they lose relevance or carry bugs that could negatively affect results. All of
+this makes choosing an appropriate bioinformatics program in your own research difficult.
+More importantly, it's imperative to critically assess the output of bioinformatics
+programs run on your own data.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``With the nature of biological data changing so rapidly, how are you supposed to
+learn bioinformatics? With all of the tools out there and more continually being
+created, how is a biologist supposed to know whether a program will work appropriately
+on her organism's data? The solution is to approach bioinformatics as a bioinformatician
+does: try stuff, and assess the results. In this way, bioinformatics is just about having
+the skills to experiment with data using a computer and understanding your results.
+The experimental part is easy: this comes naturally to most scientists. The limiting
+factor for most biologists is having the data skills to freely experiment and work with
+large data on a computer.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``Unfortunately, many of the biologist's common computational tools can't scale to the
+size and complexity of modern biological data. Complex data formats, interfacing
+numerous programs, and assessing software and data make large bioinformatics datasets
+difficult to work with.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``In 10 years, bioinformaticians may only be using a few of the bioinformatics
+software programs around today. But we most certainly will be using data skills and
+experimentation to assess data and methods of the future.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``Biology's increasing use of large sequencing datasets is changing more that the tools
+and skills we need: it's also changing how reproducible and robust our scientific
+findings are. As we utilize new tools and skills to analyze genomics data, it's
+necessary to ensure that our approaches are still as reproducible and robust as
+any other experimental approaches. Unfortunately, the size of our data and the complexity
+of our analysis workflows make these goals especially difficult in genomics.''
+\citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``The requisite of reproducibility is that we share our data and methods. In the pre-genomics
+era, this was much easier. Papers coule include detailed method summaries and entire
+datasets---exactly as Kreitman's 1986 paper did with a 4,713bp Adh gene flanking sequence
+(it was embedded in the middle of the paper). Now papers have long supplementary methods,
+code, and data. Sharing data is no longer trivial either, as sequencing projects can include
+terabytes of accompanying data. Reference genomes and annotation datasets used in analyses are
+constantly updated, which can make reproducibility tricky. Links to supplemental materials,
+methods, and data on journal websites break, materials on faculty websites disappear when
+faculty members move or update their sites, and software projects become stale when
+developers leave and don't update code. \ldots{} Additionally, the complexity of bioinformatics
+analyses can lead to findings being susceptible to errors and technical confounding.
+Even fairly routine genomics projects can use dozens of different programs, complicated
+input paramter combinations, and many sample and annotation datasets; in addition, work
+may be spread across servers and workstations. All of these computational data-processing
+steps create results used in higher-level analyses where we draw our biological conclusions.
+The end result is that research findings may rest on a rickety scaffold of numerous
+processing steps. To make matters worse, bioinformatics workflows and analyses are usually
+only run once to produce results for a publication, and then never run or tested again.
+These analyses may rely on very specific versions of all software used, which can make it
+difficult to reproduce on a different system. In learning bioinformatics data skills, it's
+necessary to concurrently learn reproducibility and robust best practices.''
+\citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
 "When we are writing code in a programming language, we work most of the time with RAM,
 combining and restructuring data values to produce new values in RAM. \ldots{} The computer memory
 in RAM is a series of 0's and 1's, just like the computer memory used to store files in mass
@@ -5852,6 +6540,23 @@ usually takes up one byte, an
 
 \hypertarget{applied-exercise}{%
 \subsection{Applied exercise}\label{applied-exercise}}
+
+\begin{itemize}
+\tightlist
+\item
+  {[}Example data in a basic list{]}
+\item
+  {[}Example data in a Bioconductor list-based class{]}
+\item
+  {[}Explore each example dataset. What slots do each have? What are the names of each slot?
+  What data structures / data types are in each slot?{]}
+\item
+  {[}Extract certain elements from each dataset by hand. Assign to its own object name so
+  you can use it by itself.{]}
+\item
+  {[}Use \texttt{biobroom} to extract pieces of data in the Bioconductor dataset as tidy dataframes.
+  Try using this with further tidyverse code to create a nice table/visualization.{]}
+\end{itemize}
 
 \hypertarget{example-converting-from-complex-to-tidy-data-formats}{%
 \section{Example: Converting from complex to `tidy' data formats}\label{example-converting-from-complex-to-tidy-data-formats}}
@@ -5914,8 +6619,54 @@ reproducibility across the research projects conducted by a research team.
 \hypertarget{subsection-1}{%
 \subsection{Subsection 1}\label{subsection-1}}
 
+{[}Markup language visualization---a boss dictating to secretary in old movie, including
+speaking punctuation and formatting, like new paragraphs or bold.{]}
+
+{[}Anecdote---any stories of famous authors trying to retrieve old manuscripts in
+outdated file formats?{]}
+
+{[}Example of old, plain text emails and the beginnings of Markdown-style notation
+there? More on history of Markdown and other markup languages? (Readers minds were the
+first renders for this ancestor of Markdown, but now there are software programs
+that render the plain-text file into other formats, like Word, PDF, or HTML.){]}
+
 \hypertarget{subsection-2}{%
 \subsection{Subsection 2}\label{subsection-2}}
+
+\begin{quote}
+``It's very important to keep a project notebook containing detailed information
+about the chronology of your computational work, steps you've taken, information
+about why you've made decisions, and of course all pertinent information to
+reproduce your work. Some scientists do this in a handwritten notebook, others in
+Microsoft Word documents. As with README files, bioinformaticians usually like keeping
+project notebooks in simple plain-text because these can be read, searched, and
+edited from the command line and across network connections to servers. Plain text
+is also a future-proof format: plain-text files written in the 1960s are still
+readable today, whereas files from word processors only 10 years old can be
+difficult or impossible to open and edit. Additionally, plain text project notebooks can
+also be put under version control \ldots{} While plain-text is easy to write in your
+text editor, it can be inconvenient for collaborators unfamiliar with the command
+line to read. A lightweight markup language called \emph{Markdown} is a plain-text format
+that is easy to read and painlessly incorporated into typed notes, and can also be
+rendered to HTML or PDF.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``Markdown originates from the simple formatting conventions used in plain-text
+emails. Long before HTML crept into email, emails were embellished with simple
+markup for emphasis, lists, and blocks of text. Over time, this became a defacto
+plain-text email formatting scheme. This scheme is very intuitive: underscores or
+asterisks that flank text indicate emphasis, and lists are simply lines of text
+beginning with dashes.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
+\begin{quote}
+``Markdown is just plain-text, which means that it's portable and programs to edit
+and read it will exist. Anyone who's written notes or papers in old versions of
+word processors is likely familiar with the hassle of trying to share or update
+out-of-date proprietary formats. For these reasons, Markdown makes for a simple
+and elegant notebook format.'' \citep{buffalo2015bioinformatics}
+\end{quote}
 
 \hypertarget{discussion-questions}{%
 \subsection{Discussion questions}\label{discussion-questions}}
@@ -6080,6 +6831,16 @@ be too picky about the quality of the output, but they appreciate design
 capabilities, such as the ability to flow text around curved outlines. Many
 print products are now produced with tools like Microsoft Word for this very
 reason. TeX authors cannot do the same work as easily.'' \citep{apte2019lingua}
+\end{quote}
+
+\begin{quote}
+``Poor documentation can lead to irreproducibility and serious errors. There's
+a vast amount of lurking complexity in bioinformatics work: complex workflows,
+multiple files, countless program parameters, and different software versions.
+The best way to prevent this complexity from causing problems is to document
+everything extensively. Documentation also makes your life easier when you need to
+go back and rerun an analysis, write detailed methods about your steps for a
+paper, or find the origin of some data in a directory.'' \citep{buffalo2015bioinformatics}
 \end{quote}
 
 \hypertarget{subsection-2}{%
