@@ -214,6 +214,100 @@ peek in and explore it. You should *always* feel like you can take a look at any
 part of your data at any step in the process of preprocessing, analyzing, and
 visualizing it.
 
+-----------------------------------------------------------------------------
+
+> "There are four primary types of atomic vectors: logical, integer, double, 
+and character (which contains strings). Collectively, integer and double 
+vectors are known as numeric vectors." [@wickham2019advanced]
+
+> "... the most important family of data types in base R [is] vectors. ...
+Vectors come in two flavours: atomic vectors and lists. They differ in terms of 
+their elements' types: for atomic vectors, all elements must have the 
+same type; for lists, elements can have different types. ... 
+Each vector can also have **attributes**, which you can think of as a 
+named list of arbitrary metadata. Two attributes are particularly important. 
+The **dimension** attribute turns vectors into matrices and arrays and 
+the **class** attribute powers the S3 object system." [@wickham2019advanced]
+
+> "A few places in R's documentation call lists generic vectors to emphasise
+their difference from atomic vectors." [@wickham2019advanced]
+
+> "Some of the most important S3 vectors [are] factors, dates and times, 
+data frames, and tibbles." [@wickham2019advanced]
+
+You can use `typeof` to determine the data type and `is.[x]` (`is.logical`,
+`is.character`, `is.double`, and `is.integer`) to test if data has a certain
+type [@wickham2019advanced].
+
+> "You may have noticed that the set of atomic vectors does not include a 
+number of important data structures like matrices, arrays, factors, or 
+date-times. These types are all built on top of atomic vectors by 
+adding attributes." [@wickham2019advanced]
+
+> "Adding a `dim` attribute to a vector allows it to behave like a 2-dimensional 
+**matrix** or a multi-dimensional **array**. Matrices and arrays are primarily
+mathematical and statistical tools, not programming tools..." [@wickham2019advanced]
+
+> "One of the most important vector attributes is `class`, which underlies the 
+S3 object system. Having a class attribute turns an object into a **S3 object**, 
+which means it will behave differently from a regular vector when passed to 
+a **generic** function. Every S3 object is built on top of a base type, and often
+stores additional information in other attributes." [@wickham2019advanced]
+
+> "Lists are a step up in complexity from atomic vectors: each element can be 
+any type, not just vectors." [@wickham2019advanced]
+
+> "Lists are sometimes called **recursive** vectors because a list can contain
+other lists. This makes them fundamentally different from atomic vectors." 
+[@wickham2019advanced]
+
+> "The two most important S3 vectors built on top of lists are data frames and
+tibbles. If you do data analysis in R, you're going to be using data frames. 
+A data frame is a named list of vectors with attributes for (column) `names`, 
+`row.names`, and its class, "data.frame"... In contrast to a regular list, a 
+data frame has an additional constraint: the length of each of its vectors must 
+be the same. This gives data frames their rectangular structure..." [@wickham2019advanced]
+
+
+> "Data frames are one of the biggest and most important ideas in R, and one of the 
+things that makes R different from other programming languages. However, in the 
+over 20 years since their creation, the ways that people use R have changed, and 
+some of the design decisions that made sense at the time data frames were created
+now cause frustration. This frustration led to the creation of the tibble 
+[Muller and Wickham, 2018], a modern reimagining of the data frame. Tibbles are 
+meant to be (as much as possible) drop-in replacements for data frames that fix
+those frustrations. A concise, and fun, way to summarise the main differences is 
+that tibbles are lazy and surly: they do less and complain more." [@wickham2019advanced]
+
+> "Tibbles are provided by the tibble package and share the same structure as data
+frames. The only difference is that the class vector is longer, and includes `tbl_df`. 
+This allows tibbles to behave differentlyin [several] key ways. ... tibbles never 
+coerce their input (this is one feature that makes them lazy)... Additionally, while 
+data frames automatically transform non-syntactic names (unless `check.names = FALSE`),
+tibbles do not... While every element of a data frame (or tibble) must have the 
+same length, both `data.frame()` and `tibble()` will recycle shorter inputs. However, 
+while data frames automatically recycle columns that are an integer multiple of the
+longest column, tibbles will only recycle vectors of length one. ... There is one
+final different: `tibble()` allows you to refer to variables created during 
+construction. ... [Unlike data frames,] tibbles do not support row names. ... One 
+of the most obvious differences between tibbles and data frames is how they 
+print... Tibbles tweak [a data frame's subsetting] behaviours so that a `[` always 
+returns a tibble, and a `$` doesn't do partial matching and warns if it can't find
+a variable (this is what makes tibbles surly). ... List columns are easier to use 
+with tibbles because they can be directly included inside `tibble()` and they 
+will be printed tidily." [@wickham2019advanced]
+
+> "Since the elements of lists are references to values, the size of a list might
+be much smaller than you expect." [@wickham2019advanced]
+
+> "[The] behavior [of environments] is different from that of other objects: 
+environments are always modified in place. This property is sometimes described
+as **reference semantics** because when you modify an environment all existing
+bindings to that environment continue to have the same reference. ... This 
+basic idea can be used to create functions that 'remember' their previous
+state... This property is also used to implement the R6 object-oriented
+programming system..." [@wickham2019advanced]
+
 ### Exploring and extracting data from R list data structures
 
 To feel comfortable exploring your data at any stage during the preprocessing
@@ -262,6 +356,183 @@ likely will also be help files specifically for the class structure that can
 help you navigate it and figure out where things are. [Example]
 
 [More about exploring data in list structures.]
+
+--------------------------------------------------------------------------
+
+> "Use `[` to select any number of elements from a vector. ... **Positive 
+integers** return elements at the specified positions. ... **Negative 
+integers** exclude elements at the specified positions...
+**Logical vectors** select elements where the corresponding logical vector
+is `TRUE`. This is probably the most useful type of subsetting 
+because you can write an expression that uses a logical vector... If the 
+vector is named, you can also use **character vectors** to return elements 
+with matching names." [@wickham2019advanced]
+
+> "Subsetting a list works in the same way as subsetting an atomic vector.
+Using `[` always returns a list; `[[` and `$` ... lets you pull out 
+elements of a list." [@wickham2019advanced]
+
+> "`[[` is most important when working with lists because subsetting a list
+with `[` always returns a smaller list. ... Because `[[` can return only 
+a single item, you must use it with either a single positive integer or
+a single string." [@wickham2019advanced]
+
+> "`$` is a shorthand operator: `x$y` is roughly equivalent to `x[["y"]]`.
+It's often used to access variables in a data frame... The one important
+difference between `$` and `[[` is that `$` does (left-to-right) partial 
+matching [which you likely want to avoid to be safe]." [@wickham2019advanced]
+
+> "There are two additional subsetting operators, which are needed for 
+S4 objects: `@` (equivalent to `$`), and `slot()` (equivalent to `[[`)."
+[@wickham2019advanced]
+
+> "The environment is the data structure that powers scoping. ... Understanding
+environments is not necessary for day-to-day use of R. But they are important to 
+understand because they power many important features like lexical scoping, 
+name spaces, and R6 classes, and interact with evaluation to give you powerful 
+tools for making domain specific languages, like `dplyr` and `ggplot2`." 
+[@wickham2019advanced]
+
+> "The job of an environment is to associate, of **bind**, a set of names to a 
+set of values. You can think of an environment as a bag of names, with no
+implied order (i.e., it doesn't make sense to ask which is the first element
+in an environment)." [@wickham2019advanced]
+
+> "... environments have reference semantics: unlike most R objects, when you 
+modify them, you modify them in place, and don't create a copy." [@wickham2019advanced]
+
+> "As well as powering scoping, environments are also useful data structures in 
+their own right because they have reference semantics. There are three common 
+problems that they can help solve: **Avoiding copies of large data.** Since 
+environments have reference semantics, you'll never accidentally create a copy. 
+But bare environments are painful to work with, so I instead recommend using R6
+objects, which are built on top of environments. ..." [@wickham2019advanced]
+
+> "Generally in R, functional programming is much more important than object-oriented
+programming, because you typically solve complex problems by decomposing them
+into simple functions, not simple objects. Nevertheless, there are important reasons
+to learn each of the three [object-oriented programming] systems [S3, R6, and S4]:
+S3 allows your functions to return rich results with user-friendly display and
+programmer-friendly internals. S3 is used throughout base  R, so it's important to 
+master if you want to extend base R functions to work with new types of input.
+R6 provides a standardised way to escape R's copy-on-modify semantics. This is 
+particularly important if you want to model objects that exist independently 
+of R. Today, a common need for R6 is to model data that comes from a web API, 
+and where changes come from inside or outside R. S4 is a rigorous system that 
+forces you to thing carefully about program design. It's particularly well-suited 
+for building large systems that evolve over time and will receive contributions
+from many programmers. This is why it's used by the Bioconductor project, so another 
+reason to learn S4 is to equip you to contribute to that project." [@wickham2019advanced]
+
+> "The main reason to use OOP is **polymorphism** (literally: many shapes). 
+Polymorphism means that a developer can consider a function's interface
+separately from its implementation, making it possible to use the same function 
+form for different types of input. This is closely related to the idea of
+**encapsulation:** the user doesn't need to worry about details of an object
+because they are encapsulated behind a standard interface. ... To be more precise, 
+**OO** systems call the type of an object its **class**, and an implementation for 
+a specific class is called a **method**. Roughly speaking, a class defines what an 
+object *is* and methods describe what that object can *do*. The class defines
+the **fields**, the data possessed by every instance of that class. Classes
+are organised in a hierarchy so that if a method does not exist for one 
+class, its parent's method is used, and the child is said to **inherit** behaviour.
+... The process of finding the correct method given a class is called 
+**method dispatch**." [@wickham2019advanced]
+
+> "There are two main paradigms of object-oriented programming which differ in how 
+methods and classes are related. In this book, we'll borrow the terminology of 
+*Extending R* [Chambers 2016] and call these paradigms encapsulated and 
+functional: In **encapsulated** OOP, methods belong to objects or classes, and 
+method calls typically look like `object.method(arg1, arg2)`. This is called 
+encapsulated because the object encapsulates both data (with fields) and 
+behaviour (with methods), and is the paradigm found in most popular languages.
+In **functional** OOP, methods belong to **generic** functions, and method calls
+look like ordinary function calls: `generic(object, arg2, arg3)`. This is called 
+functional because from the outside it looks like a regular function call, and 
+internally the components are also functions." [@wickham2019advanced]
+
+> "**S3** is R's first OOP system... S3 is an informal implementation of functional
+OOP and relies on common conventions rather than ironclad guarantees.
+This makes it easy to get started with, providing a low cost way of solving many
+simple problems. ... **S4** is a formal and rigorous rewrite of S3...
+It requires more upfront work than S3, but in return provides more guarantees and greater 
+encapsulation. S4 is implemented in the base **methods** package, which is 
+always installed with R." [@wickham2019advanced]
+
+> "While everything *is* an object, not everything is object-oriented. This confusion
+arises because the base objects come from S, and were developed before anyone
+thought that S might need an OOP system. The tools and nomenclature evolved 
+organically over many years without a single guiding principle. Most of the time, 
+the distinction between objects and object-oriented objects is not important. But 
+here we need to get into the nitty gritty details so we'll use the terms 
+**base objects** and **OO objects** to distinguish them. ... Techinally, the difference
+between base and OO objects is that OO objects have a 'class attribute'."
+[@wickham2019advanced]
+
+> "An S3 object is a base type with at least a `class` attribute (other attributes
+may be used to store other data). ... An S3 object behaves differently from its
+underlying base type whenever it's passed to a **generic** (short for generic 
+function). ... A generic function defines an interface, which uses a different
+implementation depending on the class of an argument (almost always the first 
+argument). Many base R functions are generic, including the important `print`...
+The generic is a middleman: its job is to define the interface (i.e., the arguments)
+then find the right implements for the job. The implementation for a specific class
+is called a **method**, and the generic finds the method by performing **method 
+dispatch**." [@wickham2019advanced]
+
+> "If you have done object-oriented programming in other languages, you may be
+surprised to learn that S3 has no formal definition of a class: to make an object
+an instance of a class, you simply set the **class attribute**. ... You can determine
+the class of an S3 object with `class(x)`, and see if an object is an instance of 
+a class using `inherits(x, "classname")`." [@wickham2019advanced]
+
+> "The job of an S3 generic is to perform method dispatch, i.e., find the specific
+implementation for a class." [@wickham2019advanced]
+
+> "An important new componenet of S4 is the **slot**, a named component of the 
+object that is accessed using the specialised subsetting operator `@` (pronounced
+'at'). The set of slots, and their classes, forms an important part of the 
+definition of an S4 class." [@wickham2019advanced]
+
+> "Given an S4 object you can see its class with `is()` and access slots with `@` 
+(equivalent to `$`) and `slot()` (equivalent to `[[`) ... Generally, you should only
+use `@` in your methods. If you're working with someone else's class, look for 
+**accessor** functions that allow you to safely set and get slot values. ... Accessors 
+are typically S4 generics allowing multiple classes to share the same external 
+interface." [@wickham2019advanced]
+
+> "If you're using an S4 class defined in a package, you can get help on it 
+with `class?Person`. To get help for a method, put `?` in front of a call (e.g., 
+`?age(john)`) and `?` will use the class of the arguments to figure out which help
+file you need." [@wickham2019advanced]
+
+> "Slots [in S4 objects] should be considered an internal implementation detail: 
+they can change without warning and user code should avoid accessing them 
+directly. Instead, all user-accessible slots should be accompanied by a pair 
+of **accessors**. If the slot is unique to the class, this can just be a function...
+Typically, however, you'll define a generic so that multiple classes can used 
+the same interface" [@wickham2019advancedr]
+
+> "The strictness and formality of S4 make it well suited for large teams. Since more
+structure is provided by the system itself, there is less need for convention, and new 
+contributors don't need as much training. S4 tends to require more upfront design 
+than S3, and this investment is more likely to pay off on larger projects where 
+greater resources are available. One large team where S4 is used to good effect is 
+Bioconductor. Bioconductor is similar to CRAN: it's a way of sharing packages 
+amongst a wider audient. Bioconductor is smaller than CRAN (~1,300 versus ~10,000 packages, 
+July 2017) and the packages tend to be more tightly integrated because of the 
+shared domain and because Bioconductor has a stricter review process. Bioconductor
+packages are not required to use S4, but most will because the key data structures 
+(e.g., Summarized Experiment, IRanges, DNAStringSet) are built using S4."
+[@wickham2019advanced]
+
+> "The biggest challenge to using S4 is the combination of increased complexity and 
+absence of a single source of documentation. S4 is a complex system and it can be 
+challenging to use effectively in practice. This wouldn't be such a problem if
+S4 wasn't scattered through R documentation, books, and websites. S4 needs a 
+book length treatment, but that book does not (yet) exist. (The documentation for 
+S3 is no better, but the lack is less painful because S3 is much simpler.)"
+[@wickham2019advanced]
 
 ### Interfacing between object-based and tidyverse workflows
 
@@ -574,7 +845,367 @@ format. At the basic level of representing a single number or a single piece of 
 solution is the same as it was in Chapter 5 [on file formats for mass storage]. Everything
 is represented as a pattern of bits, using various numbers of bytes for different sorts of
 values. In R, in an English locale, and on a 32-bit operating system, a single character
-usually takes up one byte, an 
+usually takes up one byte, an integer takes up four bytes, and a real number 8 bytes.
+Data values are stored in different ways depending on the **data type**---whether the values
+are numbers or texts." [@murrell2009introduction]
+
+> "ALthough we do not often encounter the details of the memory representation, except
+when we need a rough estimate of how much RAM a data set might require, it is 
+important to keep in mind what sort of data type we are working with because the computer
+code that we will produce different results for different data types. For example, 
+we can only calculate an average if we are dealing with values that have been stored 
+as text." [@murrell2009introduction]
+
+> "Another important issue is how *collections* of values are stored in memory. The 
+tasks that we will consider will typically involve working with an entire data set, 
+or an entire variable from a data set, rather than just a single value, so we need 
+to have a way to represent several related values in memory. This is similar to the
+problem of deciding on a storage format for a data set... However, rather than talking 
+about different file formats, [in this case] we will talk about different **data
+structures** for storing a collection of data values in RAM. ... It will be important
+to always keep close in our minds what data type we are working with and what sort
+of data structure we are working with." [@murrell2009introduction]
+
+> "Every individual data value has a data type that tells us what sort of value it 
+is. The most common data types are numbers, which R calls **numeric values**, and 
+text, which R calls **character values**." [@murrell2009introduction]
+
+> "**Vectors:** A collection of values that all have the same data type. The 
+**elements** of a vector are all numbers, giving a **number vector**, or all 
+character values, giving a **character vector.**" [@murrell2009introduction]
+
+> "**Data frames:** A collection of vectors that all have the same length. This is 
+like a matrix, except that each column can contain a different data type." 
+[@murrell2009introduction]
+
+> "**Lists:** A collection of data structures. The **components** of a list can 
+be simply vectors---similar to a data frame, but with each column allowed to have
+a different length. However, a list can also be a much more complicated
+structure. This is a very flexible data structure. Lists can be used to store
+any combination of data values together." [@murrell2009introduction]
+
+> "Notice the way that lists are displayed. The first component of the list
+starts with the component indes, `[[1]]`, followed by the contents of this 
+component...The second component of the list starts with the component 
+index `[[2`]] followed by the contenets of this component..." [@murrell2009introduction]
+
+> "A list is a very flexible data structure. It can have any number of **components**, 
+each of which can be any data structure of any length or size. A simple 
+example is a data-frame-like structure where each column can have a different
+length, but much more complex structures are also possible. For example, it is
+possible for a component of a list to be another list." [@murrell2009introduction]
+
+> "Anyone who has worked with a computer should be familiar with the idea of
+a list containing another list because a directory or folder of files has this sort 
+of structure: a folder contains multiple files of different kinds and sizes and
+a folder can contain other folders, which can contain more files or even more 
+folders, and so on. Lists allow for this kind of hierarchical structure."
+[@murrell2009introduction]
+
+> "One of the most basic ways that we can manipulate data structures is to 
+**subset** them---select a smaller portion from a larger data structure. This
+is analogous to performing a query on a database. ... R has very powerful 
+mechanisms for subsetting... A subset from a vector may be obtained by 
+appending an **index** within square brackets to the end of a symbol name. ...
+The index can be a vector of any length ... The index does not have to be
+a contiguous sequence, and it can include repetitions... As well as using 
+integers for indices, we can use logical values... A data frame can also 
+be indexed using square brackets, though slightly differently because we have
+to specify both which rows *and* which columns we want ... When a data structure
+has named components, a subset may be selected using those names." 
+[@murrell2009introduction]
+
+> "Single square bracket subsetting on a data frame is like taking an egg container
+that contains a dozen eggs and chopping up the *container* so that we are left
+with a smaller egg container that contains just a few eggs. Double square bracket
+subsetting on a data frame is like selecting just one *egg* from an egg container."
+[@murrell2009introduction]
+
+> "We can often get some idea of what sort of data structure we are working with 
+by simply viewing how the data are displayed on screen. However, a more definitive
+answer can be obtained by calling the `class()` function. ... Many R functions 
+return a data structure that is not one of the basic data structures that we have
+already seen [like the 'xtabs' and 'table' classes]. ... We have not seen either
+of these data structures before. However, much of what we know about working with 
+the standard data structures ... will work with any new class that we encounter.
+For example, it is usually possible to subset any class using the standard
+square bracket syntax. ... Where appropriate, arithmetic and comparisons will
+also generally work... Furthermore, if necessary, we can ofter resort to coercing
+a class to something more standard and familiar." [@murrell2009introduction]
+
+> "Dates are an important example of a special data structure. Representing 
+dates as just text is convenient for humans to view, but other representations
+are better for computers to work with. ... Having a special class for dates
+means that we can perform tasks with dates, such as arithmetic and comparisons, 
+in a meaningful way, something we could not do if we stored the date as just 
+a character value." [@murrell2009introduction]
+
+> "The Date class stores date values as integer values, representing the number
+of days since January 1st 1970, and automatically converts the numbers to 
+a readable text value to display the dates on the screen." [@murrell2009introduction]
+
+> "When working with anything but tiny data sets, basic reatures of the data
+set cannot be determined by just viewing the data values. [There are] a number of 
+functions that are useful for obtaining useful summary features from a data structure.
+The `summary()` function produces summary information for a data structure... The 
+`length()` function is useful for determining the number of values in a vector or
+the number of components in a list. ... The `str()` function (short for 'structure')
+is useful when dealing with large objects because it only shows a sample of the values 
+in each part of the object, although the display is very low-level so it may not always
+make things clearer. ... Another function that is useful for inspecting a large 
+object is the `head()` function. This shows just the first few elemeents of an 
+object, so we can see the basic structure without seeing all of the values." 
+[@murrell2009introduction]
+
+> "Generic functions ... will accept many different data structures as 
+arguments. ... a generic function adapts itself to the data structure it is 
+given. Generic functions do different things when given different data structures."
+[@murrell2009introduction]
+
+> "An example of a generic function is the `summary()` function. The result of a 
+call to `summary()` sill depend on what sort of data structure we provide." 
+[@murrell2009introduction]
+
+> "Generic functions are another reason why it is easy to work with data in R; a
+single function will produce a sensible result no matter what data structure 
+we provide. However, generic functions are also another reason why it is so 
+important to be aware of what data structures we are working with. Without 
+knowing what sort of data we are using, we cannot know what sort of result to 
+expect from a generic function." [@murrell2009introduction]
+
+> "R has become very popular and is now being used for projects that require
+substantial software engineering as well as its continued widespread use as 
+an interactive environment for data analysis. This essentially means that
+there are two masters---*reliability* and *ease of use*. S3 is indeed easy to
+use, but can be made unreliable through nothing other than bad luck, or 
+a poor choice of names, and hence is not a suitable paradigm for constructing
+large systems. S4, on the other hand, is better suited for developing large
+software projects but has an increased complexity of use." [@gentleman2008r]
+
+> "Object-oriented programming has become a widely used and valuable tool for
+software engineering. Much of its value derives from the fact that it is often
+easier to design, write, and maintain software when there is some clear 
+separation of the data representation from the operations that are to be
+performed on it. In an OOP system, real physical things ... are generally 
+represented by classes, and methods (functions) are written to handle the 
+different manipulations that need to be performed on the objects." [@gentleman2008r]
+
+> "The views that many people have of OOP have been based largely on 
+exposure to languages like Java, where the system can be described as class-centric. 
+In a a class-centric system, classes define objects and are repositories for
+the methods that act on those objects. In contrast, languages such as ... R
+separate the class specification from the specification of generic functions, 
+and could be described as function-centric systems." [@gentleman2008r]
+
+> "The genome of every organism is encoded in chromosomes that consist of either 
+DNA or RNA. High throughput sequencing technology has made it possible to determine
+the sequence of the genome for virtually any organism, and there are many that are
+currently available. ... However, in many cases, either the exact nucleotide at 
+any location is unknown, or is variable, and the International Union of Pure and 
+Applied Chemistry (IUPAC) has provided a standard nomenclature suitable for 
+representing such sequences. The alphabet for dealing with protein sequences
+is based on the 20 amino acids. ... The basic class used to hold strings [in the
+**Biostrings** package] is the *BString* class, which has been designed to be
+efficient in its handling of large character strings. Subclasses include
+*DNAString*, *RNAString*, and *AAString* (for holding amino acid sequences).
+The *BStringViews* class holds a set of *views* on a single *BString* instance; 
+each view is essentially a substring of the underlying *BString* instance. Alignments
+are stored using the *BStringAlign* class." [@gentleman2008r] [More on functions that
+work with these classes on p. 171]
+
+> "A number of complete genomes, represented as *DNAString* objects, are provided 
+through the Bioconductor project. They rely on the infrastructure in the **BSgenome**
+package, and all such packages have names that begin with `BSgenome`. You can find the
+list of available genomes using the `available.genomes` function." [@gentleman2008r]
+
+> "Atomic vectors are the most basic of all data structures. An atomic vector
+contains some number of values of the same type; that number could be zero. 
+Atomic vectors can contain integers, doubles, logicals or character strings. 
+Both complex numbers and raw (pure bytes) have atomic representations ...
+Character vectors in the S language are vectors of character strings, not the
+vectors of characters. For example, the string 'super' would be represented as
+a character vector of length one, not of lenth five..." [@gentleman2008r]
+
+> "Lists can be used to store items that are not all of the same type. ... 
+Lists are also referred to as generic vectors since they share many of the properties
+of vectors, but the elements are allowed to have different types." [@gentleman2008r]
+
+> "Lists can be of any length, and the elements of a list can be named, or not.
+Any R object can be an element of a list, including another list..." [@gentleman2008r]
+
+> "A `data.frame` is a special kind of list. Data frames were created to provide a
+common structure for storing rectangular data sets and for passing them to 
+different functions for modeling and visualization. In many cases a data set can be 
+thought of as a rectangular structure with rows corresponding to cases and columns
+corresponding to the different variables that were measured on each of the cases. One
+might think that a matrix would be the appropriate representation, but that is only
+true if all of the variables are of the same type, and this is seldom the case."
+[@gentleman2008r]
+
+> "[Data frames] are essentially a list of vectors, with one vector for each variable. 
+It is an error if the vectors are not all of the same length." [@gentleman2008r]
+
+> "Sometimes it will be helpful to find out about an object. Obvious functions to 
+try are `class` and `typeof`. But many find that both `str` and `object.size` are 
+more useful. ... The functions `head` and `tail` are convenience functions that list
+the first few, or the last few, rows of a matrix." [@gentleman2008r]
+
+> "The S langauge has its roots in the Algol family of languages and has adopted some
+of the general vector subsetting and subscripting techniques that were available in 
+languages such as APL. This is perhaps one area wehre programmers more familiar with 
+other languages fail to make appropriate use of the available functionality. ...
+There are slight differents between subsetting of vectors, arrays, lists, data.frames, 
+and enviroments that can sometimes catch the unwary. But there are also many 
+commonalities. ... Subsetting can be carried out by three different operators: 
+the single square bracket `[`, the double square bracket `[[`, and the dollar, `$`.
+We note that each of these three operators are actually generic functions and users
+can write methods that extend and override them... One way of describing the behavior
+of the single bracket operator is that the type of the return value matches the type 
+of the value it is applied to. Thus, a single bracket subset of a list is a list 
+itself. ... Both `[[` and `$` extract a single value. There are some differences
+between the two; `$` does not evaluate its second argument while `[[` does, and hence 
+one can use expressions. The `$` operator uses partial matching when extracting
+named elements but `[` and `[[` do not." [@gentleman2008r]
+
+> "Subsetting plays two roles in the S language. One is an extraction role, where a subset 
+of a vector is identified by a set of supplied indices and the resulting subset is
+returned as a value. Venables and Ripley (2000) refer to this as *indexing*. The
+second purpose is subset assignment, where the goal is to identify a subset of
+values that should have their values changed; we call this subset assignment." 
+[@gentleman2008r]
+
+> "There are four basic types of subscript indices: positive integers, negative 
+integers, logical vectors, and character vectors. These four types cannot be mixed...
+For matrix and array subscripting, one can use different types of subscripts for
+the different dimensions. Not all vectors, or recursive objects, support all types
+of subscripting indices. For example, atomic vectors cannot be subscripted using
+`$`, while environments cannot be subscripted using `[`." [@gentleman2008r]
+
+> "In bioinformatics, the plain-text data we work with is often encoded in *ASCII*. 
+ASCII is a character encoding scheme that uses 7 bits to represent 128 different
+values, including letters (upper- and lowercase), numbers, and special nonvisible
+characters. While ASCII only uses 8 bits, nowadays computers use an 8-bit *byte*
+(a unit representing 8 bits) to store ASCII characters. More information about
+ASCII is available in your terminal through `man ascii`." [@buffalo2015bioinformatics]
+
+> "Some files will have non-ASCII encoding schemes, and may contain special characters.
+The most common character encoding scheme is UTF-8, which is a superset of ASCII 
+but allows for special characters." [@buffalo2015bioinformatics]
+
+> "Bioinformatics data is often text---for example, the As, Cs, Ts, and Gs in 
+sequencing read files or reference genomes, or tab-delimited files fo gene coordinates.
+The text data in bioinformatics is often large, too (gigabytes or more that can't
+fit into your computer's memory at once). This is why Unix's philosophy of 
+handling text streams is useful to bioinformatics: text streams allow us to 
+do processing on a *stream* of data rather than holding it all in memory." 
+[@buffalo2015bioinformatics]
+
+> "Exploratory data analysis plays an integral role throughout an entire bioinformatics
+project. Exploratory data analysis skills are just as applicable in analyzing intermediate
+bioinformatics data (e.g., are fewer reads from this sequencing lane aligning?) as 
+they are in making sense of results from statistical analyses (e.g., what's the distribution
+of these p-values, and do they correlate with possible confounders like gene length?). 
+These exploratory analyses need not be complex or exceedingly detailed (many patterns
+are visible with simple analyses and visualization); it's just about wanting to look
+into the data and having the skill set to do so." [@buffalo2015bioinformatics]
+
+> "Functions like `table()` are generic---they are designed to work with objects of
+all kinds of classes. Generic functions are also designed to do the right thing 
+depending on the class of the object they're called on (in programming lingo, we
+say that the function is *polymorphic*)." [@buffalo2015bioinformatics]
+
+> "It's quite common to encounter genomics datasets that are difficult to load into
+R because they're large files. This is either because it takes too long to load the
+entire dataset into R, or your machine simply doesn't have enough memory. In many 
+cases, the best strategy is to reduce the size of your data somehow: summarizing data
+in earlier processing steps, omitting unnecessary columns, splitting your data into 
+chunks (e.g., working with a chromosome at a tiem), or working on a random subset
+of your data. Many bioinformatics analyses do not require working on an entire 
+genomic dataset at once, so these strategies can work quite well. These approaches
+are also the only way to work with data that is truly too large to fit in your 
+machine's memory (apart from getting a machine with more memory)." [@buffalo2015bioinformatics]
+
+> "If your data is larger than the available memory on your machine, you'll need to 
+use a strategy that keeps the bulk of your data out of memory, but still allows for 
+each access from R. A good solution for moerately large data is to use SQLite and 
+query out subsets for computation using the R package `RSQLite`. ... Finally ...
+many Unix data tools have versions that work on gzipped files: `zless`, `zcat` (`gzcat`
+on BSD-derived systems like Mac OS X), and others. Likewise, R's data-reading 
+functions can also read gzipped files directly---there's some slight performance
+gains in reading in gzipped files, as there are fewer bytes to read off of
+(slow) hard disks." [@buffalo2015bioinformatics]
+
+> "Quite often, data we load in to R will be in the wrong *shape* for what we want to
+do with it. Tabular data can come in two different formats: *long* and *wide*. ...
+In many cases, data is recorded by humans in wide format, but we need data in long 
+format when working with and plotting statistical modeling functions."
+[@buffalo2015bioinformatics]
+
+> "Exploratory data analysis emphasizes visualization as the best tool to understand
+and explore our data---both to learn what the data says and what its limitations are."
+[@buffalo2015bioinformatics]
+
+> "R vectors require all elements to have the same data type (that is, vectors are 
+*homogeneous*). They only support the six data types discussed earlier (integer, double, 
+character, logical, complex, and raw). In contrast, R's lists are more versatile: Lists can 
+contain elements of different types (they are *heterogenesou*); Elements can be *any* 
+object in R (vectors with different types, other lists, environments, dataframes, 
+matrices, functions, etc.); Because lists can store other lists, they allow for storing
+data in a recursive way (in contrast, vectors cannot contain other vectors."
+[@buffalo2015bioinformatics]
+
+> "The versatility of lists make them indispensable in programming and data analysis with 
+R." [@buffalo2015bioinformatics]
+
+> "As with R's vectors, we can extract subsets of a list or change values of 
+specific elements using indexing. However, accessing elements from an R list is 
+slightly different than with vectors. Because R's list can contain objects with 
+different types, a subset containing multiple list elements could contain objects with 
+different types. Consequently, the only way to return a subset of more than one 
+list element is with another list. As a result, there are two indexing operators for lists:
+one for accessing a subset of multiple elements as a list (the single bracket...) and
+one for accessing an element within a list (the double bracket...)."
+[@buffalo2015bioinformatics]
+
+> "Because R's lists can be nested and contain any type of data, list-based data 
+structures can grow to be quite complex. In some cases, it can be difficult to 
+understand the overall structure of some lists. The function `str()` is a convenient
+R function for inspecting complex data structures. `str()` prints a line for each 
+contained data structure, complete with its type, length (or dimensions), and the
+first few elements it contains. ... For deeply nested lists, you can simplify `str()''s
+output by specifying the maximum depth of nested structure to return with `str()`'s 
+second argument, `max.level`. By default, `max.level` is `NA`, which returns all 
+nested structures." [@buffalo2015bioinformatics]
+
+> "Understanding R's data structures and how subsetting works are fundamental to 
+having the freedom in R to explore data any way you like." [@buffalo2015bioinformatics]
+
+> "Some of Bioconductor's core packages: **GenomicRanges:** Used to represent and
+work with genomic ranges; **GenomicFeatures:** used to represent and work with ranges
+that represent gene models and other features of a genome (genes, exons, UTRs, 
+transcripts, etc.); **Biostrings** and **BSgenome:** Used for manipulating genome
+sequence data in R... **rtracklayer:** Used for reading in common bioinformatics formats
+like BED, GTF/GFF, and WIG." [@buffalo2015bioinformatics]
+
+> "The `GenomicRanges` package introduces a new class called `GRanges` for storing 
+genomic ranges. The `GRanges` builds off of `IRanges`. `IRanges` objects are used
+to store ranges of genomic regions on a single sequence, and `GRanges` objects contain 
+the two other pieces of information necessary to specify a genomic location: 
+sequence name (e.g., which chromosome) and strand. `GRanges` objects also have 
+*metadata columns*, which are the data linked to each genomic range."
+[@buffalo2015bioinformatics]
+
+> "All metadata attached to a `GRanges` object are stored in a `DataFrame`, which 
+behaves identically to R's base `data.frame` but supports a wider variety of 
+column types. For example, `DataFrames` allow for run-length encoded vectors
+to save memory ... in practice, we can store any type of data: identifiers
+and names (e.g., for genes, transcripts, SNPs, or exons), annotation data 
+(e.g., conservation scores, GC content, repeat content, etc.), or experimental 
+data (e.g., if ranges correspond to alignments, data like mapping quality and the 
+number of gaps). ... the union of genomic location with any type of data is what makes
+`GRanges` so pwoerful." [@buffalo2015bioinformatics]
+
+---------------------------------------------------------------------------------
 
 ### Subsection 2
 
