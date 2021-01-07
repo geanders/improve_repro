@@ -192,9 +192,12 @@
 <li class="chapter" data-level="3.6.3" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#applied-exercise"><i class="fa fa-check"></i><b>3.6.3</b> Applied exercise</a></li>
 </ul></li>
 <li class="chapter" data-level="3.7" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#introduction-to-reproducible-data-pre-processing-protocols"><i class="fa fa-check"></i><b>3.7</b> Introduction to reproducible data pre-processing protocols</a><ul>
-<li class="chapter" data-level="3.7.1" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#subsection-1"><i class="fa fa-check"></i><b>3.7.1</b> Subsection 1</a></li>
-<li class="chapter" data-level="3.7.2" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#subsection-2"><i class="fa fa-check"></i><b>3.7.2</b> Subsection 2</a></li>
-<li class="chapter" data-level="3.7.3" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#discussion-questions"><i class="fa fa-check"></i><b>3.7.3</b> Discussion questions</a></li>
+<li class="chapter" data-level="3.7.1" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#introducing-reproducible-data-pre-processing-protocols"><i class="fa fa-check"></i><b>3.7.1</b> Introducing reproducible data pre-processing protocols</a></li>
+<li class="chapter" data-level="3.7.2" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#technique-to-create-reproducible-pre-processing-protocols"><i class="fa fa-check"></i><b>3.7.2</b> Technique to create reproducible pre-processing protocols</a></li>
+<li class="chapter" data-level="3.7.3" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#advantages-of-reproducible-pre-processing-protocols"><i class="fa fa-check"></i><b>3.7.3</b> Advantages of reproducible pre-processing protocols</a></li>
+<li class="chapter" data-level="3.7.4" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#subsection-1"><i class="fa fa-check"></i><b>3.7.4</b> Subsection 1</a></li>
+<li class="chapter" data-level="3.7.5" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#subsection-2"><i class="fa fa-check"></i><b>3.7.5</b> Subsection 2</a></li>
+<li class="chapter" data-level="3.7.6" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#discussion-questions"><i class="fa fa-check"></i><b>3.7.6</b> Discussion questions</a></li>
 </ul></li>
 <li class="chapter" data-level="3.8" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#rmarkdown-for-creating-reproducible-data-pre-processing-protocols"><i class="fa fa-check"></i><b>3.8</b> RMarkdown for creating reproducible data pre-processing protocols</a><ul>
 <li class="chapter" data-level="3.8.1" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#subsection-1"><i class="fa fa-check"></i><b>3.8.1</b> Subsection 1</a></li>
@@ -2571,8 +2574,105 @@ phase</li>
 <li>List other benefits, including improving efficiency and consistency of data
 pre-processing</li>
 </ul>
+<div id="introducing-reproducible-data-pre-processing-protocols" class="section level3">
+<h3><span class="header-section-number">3.7.1</span> Introducing reproducible data pre-processing protocols</h3>
+<p>When you use scripted code to pre-process biomedical data, you will find that
+the same script can often be easily adapted and re-used in later projects that
+use the same type of data. You may need to change small elements, like the file
+names of files with data you want to use, or some details about the methods
+used for certain pre-processing steps. However, often almost all of the pre-processing
+steps will repeat over different experiments that you do.</p>
+<p>If you have used open-source software tools, like Bioconductor packages, you
+are likely familiar with the <em>vignettes</em> that come with the packages. These
+provide tutorial guides showing you how to work with the package. They often
+leverage example data that you can download so that you can try all the
+example code yourself, before you move on to adapting the code to use with
+your own data.</p>
+<p>You can create your own version of these types of documents. This can use
+real data from your research group, and you can create customized instructions
+and code examples showing how to use open-source tools to pre-process a
+certain type of biomedical data for experiments in your research group.
+You can use this document the next time you need to pre-process that type
+of data yourself, and you can also share it with others in your research
+group. This can help in teaching new laboratory members how to work with
+this type of data in your research group. It can also help ensure that
+different members of the research group are all using the same steps to
+pre-process data, so that there is greater consistency across results from
+the group.</p>
+<p>You may already create something similar to this, using a general word
+processing program like Google Docs or Word. There are two key differences,
+however, between how vignettes are created compared to a similar tutorial
+created in Word or Google Docs. First, the vignettes are created using
+a document compiling program that ensures that any code uses only ASCII
+characters. This means that you can copy and paste code from the tutorial
+into your R session and it will work. By contrast, programs like Word often
+try to “correct” some of the characters when you paste in or type in code.
+For example, when you have an apostrophe mark in your code (for example,
+when you’re quoting to create a character string), the computer code needs
+to have this character as a very basic ASCII version of an apostrophe. Word,
+by contrast, will often try to convert the character to use an apostrophe
+character that looks smoother—and so is nice for a word processed document
+that humans will read—but that R cannot recognize. Hyphens can have similar
+problems. [Other examples?]</p>
+<p>When you create a reproducible pre-processing protocol using the techniques that
+are used to create vignettes—which we’ll teach you how to do in the next few
+sections—you will avoid this autocorrection of characters, and so someone
+reading the protocol will be able to directly copy and paste example code from
+the protocol into their own scripts. This will avoid hard-to-diagnose errors
+that come from this character conversion in programs like Word.</p>
+<p>The second difference is that the tools that are used to create vignettes
+contain code that is not just copied and pasted from a script, but that is
+actually, in essence, <em>still in a script</em>. The code, in other words, is
+executable and, unless you change the default settings, is re-run every
+time you compile the document. This means that you will quickly determine if
+there are any typos or other errors in the code, because the document will
+not run and render correctly unless the code works. This means that you can
+guarantee, when you first create the document, that the code runs, and also
+that you can regularly check to see if the example code still works at
+later time points. This allows you to, for example, see if changes in the
+version of R or of specific packages that you’re using has created problems
+with the code running correctly over time.</p>
+<p>Finally, these documents can be separated, allowing you to extract solely the
+script part of the document, into a classic R script. You can use this directly
+to run (or adapt) the pre-processing code for further research.</p>
+</div>
+<div id="technique-to-create-reproducible-pre-processing-protocols" class="section level3">
+<h3><span class="header-section-number">3.7.2</span> Technique to create reproducible pre-processing protocols</h3>
+<p>[“Knitted” documents]</p>
+</div>
+<div id="advantages-of-reproducible-pre-processing-protocols" class="section level3">
+<h3><span class="header-section-number">3.7.3</span> Advantages of reproducible pre-processing protocols</h3>
+<p>With point-and-click software, even if you are doing the same process from one
+experiment to another to pre-process your data, you will still have to go through
+each step of preprocessing, re-selecting each choice along the way. For example,
+if you are using software to gate flow cytometry data, someone in your research
+group must typically go through the gating step-by-step, even if they are trying to
+gate the data using the same rules and approach that they’ve applied to gate data
+in previous experiments. This approach therefore has two key limitations.</p>
+<p>First, it takes a lot of time for someone in the research group to go through
+the same series of selection / point-and-click steps over and over each time
+research data needs to be pre-processed. If steps do indeed need to be
+customized extensively from one experiment to the next, there may be no way to
+avoid this time-consuming work. However, if the same choices for pre-processing
+apply from one experiment to the next, then there’s not a good reason for
+someone in the research group to need to spend a lot of time with this process.</p>
+<p>The second issue is that it’s hard to be sure that you’re being completely
+consistent from experiment to experiment if you’re going through the
+pre-processing “by hand”, going through different steps and selections using
+point-and-click software. Even if you’ve written down the choices you plan to
+make from time to time, there may be subtle small choices that you forget to
+write down. Further, there are some choices that might not be as easy to make
+consistent from time to time. For example, when you gate flow cytometry data
+using point and click software, you are often visual adjusting a threshold or a
+box to select certain data points in the sample to gate. These visual choices
+can be subjective from day to day, so you might gate the data slightly different
+from one day to the next. Even if the same person does the preprocessing from
+time to time, there will likely be subtle variations in the process; these are
+likely to expand quite a bit when different people in the research group do the
+pre-processing from one experiment to another.</p>
+</div>
 <div id="subsection-1" class="section level3">
-<h3><span class="header-section-number">3.7.1</span> Subsection 1</h3>
+<h3><span class="header-section-number">3.7.4</span> Subsection 1</h3>
 <p>[Markup language visualization—a boss dictating to secretary in old movie, including
 speaking punctuation and formatting, like new paragraphs or bold.]</p>
 <p>[Anecdote—any stories of famous authors trying to retrieve old manuscripts in
@@ -2583,7 +2683,7 @@ first renders for this ancestor of Markdown, but now there are software programs
 that render the plain-text file into other formats, like Word, PDF, or HTML.)]</p>
 </div>
 <div id="subsection-2" class="section level3">
-<h3><span class="header-section-number">3.7.2</span> Subsection 2</h3>
+<h3><span class="header-section-number">3.7.5</span> Subsection 2</h3>
 <blockquote>
 <p>“It’s very important to keep a project notebook containing detailed information
 about the chronology of your computational work, steps you’ve taken, information
@@ -2622,7 +2722,7 @@ there is only one copy of each important unit of information.” <span class="ci
 </blockquote>
 </div>
 <div id="discussion-questions" class="section level3">
-<h3><span class="header-section-number">3.7.3</span> Discussion questions</h3>
+<h3><span class="header-section-number">3.7.6</span> Discussion questions</h3>
 
 </div>
 </div>
