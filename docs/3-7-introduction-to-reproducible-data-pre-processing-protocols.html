@@ -268,7 +268,98 @@ to run (or adapt) the pre-processing code for further research.</p>
 </div>
 <div id="technique-to-create-reproducible-pre-processing-protocols" class="section level3">
 <h3><span class="header-section-number">3.7.2</span> Technique to create reproducible pre-processing protocols</h3>
-<p>[“Knitted” documents]</p>
+<p>The vignettes that come with Bioconductor packages are created using a system
+for “knitting” documents. These documents “knit” together text with executable
+code. Once you have written the document, you can render it, which executes the
+code, adds to the document results from this execution (figures, tables, and
+code output, for example), and formats all text using the formatting choices
+you’ve specified. The end result is a nicely format document, which can be in
+one of several output formats, including pdf, Word, or HTML. Since the code
+was executed to create the document, you can ensure that all the code
+is worked as intended.</p>
+<p>There are several techniques and principles that come together to make these
+knitteed documents work. First are the tools that allow you to write text
+in plain text, include formatting specifications in that plain text, and
+render this to an attractive output document in pdf, Word, or HTML. This
+part of the process uses a tool from a set of tools called <em>Markup languages</em>.
+[A bit more on history / development of Markup languages.]</p>
+<p>Here, we will use a markup language called <em>Markdown</em>. It is one of the easiest
+markup languages to learn, as it has a fairly small set of formatting indicators
+that can be used to “markup” the formatting in a document. This small set,
+however, covers much of the formatting you might want to do, and so this
+language provides an easy introduction to markup languages while still providing
+adequate functionality for most purposes.</p>
+<p>The Markdown markup languages evolved starting in spaces where people could
+communicate in plain text only, without point-and-click methods for adding
+formatting like bold or italic type <span class="citation">(Buffalo 2015)</span>. For example,
+early versions of email only allowed users to write using plain text. These
+users eventually evolved some conventions for how to “mark-up” this plain text,
+to serve the purposes served by things like italics and bold in formatted text
+(e.g., emphasis, highlighting). For example, to emphasize a word, a user could
+surround it with asterisks, like:</p>
+<pre><code>I just read a *really* interesting article!</code></pre>
+<p>In this early prototype for a markup language, the reader’s mind was doing
+the “rendering”, interpreting these markers as a sign that part of the text
+was emphasized. In Markdown, the text can be rendered into more attractive
+output documents, like pdf, where the rendering process has actually
+changed the words between asterisks to print in italics.</p>
+<p>The Markdown language has developed a set of these types of marks—like
+asterisks—that are used to “mark up” the plain text with the formatting
+that should be applied when the text is rendered. There are marks that you
+can use for a number of formatting specifications, including: italics,
+bold, underline, strike-through, bulleted lists, numbered lists, web links,
+headers of different levels (e.g., to mark off sections and subsections),
+block quotes, horizontal rules, and block quotes. Details and examples of
+the Markdown syntax can be found on the Markdown Guide page at
+<a href="https://www.markdownguide.org/basic-syntax/" class="uri">https://www.markdownguide.org/basic-syntax/</a>. We’ll cover more examples of
+using Markdown in the next two modules, as we move more specifically into
+how RMarkdown can be used to created knitted documents with R and provide
+an example of creating a reproducible protocol with this system.</p>
+<p>The other technique that’s needed to create knitted documents is the ability to
+include executable code within the plain text version of the document, and to
+execute that code and incorporate its results before moving on to render the
+document to its final format.</p>
+<p>The idea here is that you can use special markers to indicate in the document
+where code starts and where it ends. With these markings, a computer program can
+figure out the lines of the document that it should run as code, and the ones it
+should ignore when it’s looking for executable code. With these markings in
+place, the document will be run through two separate programs as it is rendered.
+The first program will look for code to execute and ignore any other lines of
+the file. It will execute this code and then place any results, like figures,
+tables, or code output, into the document right after that piece of code. The
+output from running this program will then be input into a more traditional
+markup renderer, which will format the document based on any of the mark up
+indications and will output an attractive document in a format like pdf,
+Word, or HTML.</p>
+<p>You can visualize this process in the following way. Imagine that you write
+a document by hand on sheets of paper. There are parts where you need a team
+member to add their data or to run a calculation, so you include notes in
+square brackets telling your team member where to do these things. Then, you
+use traditional editing marks to show where text should be italicized or in
+bold and which text should be section and subsection headers:</p>
+<pre><code># Results
+
+We measured the bacterial load of *Mycobacterium tuberculosis* for each sample. 
+
+[Kristina: Calculate bacterial loads for each sample based on dilutions and
+add table with results here.]</code></pre>
+<p>You send the document to your team member first, and she does his calculations
+and adds the results at the indicated spot in the paper. She focuses on the notes to
+her in square brackets and ignores the rest of the document. This is analogous
+to the first stage of rendering a knitted document, where the document is passed
+through software that looks for executable code and ignores everything else,
+executing that code and adding in results in the right place.</p>
+<p>Next, your research team member sends the document, with her additions, to an
+assistant to type up the document. The assistant types the full document, paying
+attention to any indications that are included for formatting. For example, he
+sees that “Results” is meant to be a section heading, since it is on a line that
+starts with “#”, your team’s convention for section headings. He therefore
+types this on a line by itself in larger font. He also sees that “Mycobacterium
+tuberculosis” is surrounded by asterisks, so he types this in italics. This
+step is analogous to the second stage of rendering a formatted document, when
+a software program takes the output of the first stage and formats the full
+document into an attractive, easy-to-read final document, using any markings you
+include to format the document.</p>
 </div>
 <div id="advantages-of-reproducible-pre-processing-protocols" class="section level3">
 <h3><span class="header-section-number">3.7.3</span> Advantages of reproducible pre-processing protocols</h3>
@@ -286,20 +377,53 @@ customized extensively from one experiment to the next, there may be no way to
 avoid this time-consuming work. However, if the same choices for pre-processing
 apply from one experiment to the next, then there’s not a good reason for
 someone in the research group to need to spend a lot of time with this process.</p>
-<p>The second issue is that it’s hard to be sure that you’re being completely
-consistent from experiment to experiment if you’re going through the
-pre-processing “by hand”, going through different steps and selections using
-point-and-click software. Even if you’ve written down the choices you plan to
-make from time to time, there may be subtle small choices that you forget to
-write down. Further, there are some choices that might not be as easy to make
-consistent from time to time. For example, when you gate flow cytometry data
-using point and click software, you are often visual adjusting a threshold or a
-box to select certain data points in the sample to gate. These visual choices
-can be subjective from day to day, so you might gate the data slightly different
-from one day to the next. Even if the same person does the preprocessing from
-time to time, there will likely be subtle variations in the process; these are
-likely to expand quite a bit when different people in the research group do the
-pre-processing from one experiment to another.</p>
+<p>Using a reproducible pre-processing protocol therefore helps make the
+pre-processing more <strong>efficient</strong>. While developing this type of protocol will
+take more time the first time or two that you do the pre-processing, as you
+create, refine, and check the document, this time investment will pay off as you
+continue to re-use the protocol in later experiments. Since the code can be
+extracted as a script, you may find that you can often use that script as a
+direct starting point for later experiments, needing only to change a few areas,
+like the name of the input data files.</p>
+<p>The second issue with a point-and-click approach is that it’s hard to be sure
+that you’re being completely consistent from experiment to experiment if you’re
+going through the pre-processing “by hand”, going through different steps and
+selections using point-and-click software. Even if you’ve written down the
+choices you plan to make from time to time, there may be subtle small choices
+that you forget to write down. Further, there are some choices that might not be
+as easy to make consistent from time to time. For example, when you gate flow
+cytometry data using point and click software, you are often visual adjusting a
+threshold or a box to select certain data points in the sample to gate. These
+visual choices can be subjective from day to day, so you might gate the data
+slightly different from one day to the next. Even if the same person does the
+preprocessing from time to time, there will likely be subtle variations in the
+process; these are likely to expand quite a bit when different people in the
+research group do the pre-processing from one experiment to another.</p>
+<p>By creating a reproducible pre-processing protocol, and starting from the
+embedded code each time you pre-process data from a new experiment, you can
+make your pre-processing more <strong>reproducible</strong> and more <strong>consistent</strong> from
+one experiment to the next. When pre-processing is done using a code script,
+the choices are based on an algorithm that can be reproduced faithfully from
+experiment to experiment. For example, coding tools for gating flow cytometry
+data use consistent algorithms, based on clear rules for fitting gates based
+on the distribution of the data [?], and so remove the subjectivity of
+gating the data by hand, and the differences in gating that can result from
+person to person or even from day to day in gating done by the same person.</p>
+<p>In scientific research, there are numerous factors that can affect the
+measurements that result from an experiment. These include differences across
+experimental animals or subjects, differences in the set-up of different
+laboratories, and so on. We often try to control as many extraneous factors as
+we can, so that we can focus very precisely on how a single element affects an
+outcome. By controlling extraneous factors, we can reduce the noise that might
+obscure a signal in the relationship we care about and are trying to measure.
+Subjectivity in data pre-processing is a potential source of noise in the
+experimental process, especially for more complex biomedical data that requires
+extensive pre-processing. Just as strong control to prevent variation in factors
+like laboratory conditions and experimental animals can add power and clarity to
+detect important signals in biomedical research, so can enforced consistency in
+data pre-processing, including through the explicit use of consistent, objective
+algorithms for pre-processing steps through the use of scripted code for as much
+of the pre-processing as possible.</p>
 </div>
 <div id="subsection-1" class="section level3">
 <h3><span class="header-section-number">3.7.4</span> Subsection 1</h3>
@@ -311,6 +435,11 @@ outdated file formats?]</p>
 there? More on history of Markdown and other markup languages? (Readers minds were the
 first renders for this ancestor of Markdown, but now there are software programs
 that render the plain-text file into other formats, like Word, PDF, or HTML.)]</p>
+<p>[More on the idea of controlling for variation in laboratory experiments to reduce
+noise and focus on the relationship of interest. Could include example of self-controls
+in human research—using one eye as control for other eye in research on
+eye disease, for example.]</p>
+<p>[Typesetting marks as an example of “mark up”?]</p>
 </div>
 <div id="subsection-2" class="section level3">
 <h3><span class="header-section-number">3.7.5</span> Subsection 2</h3>
