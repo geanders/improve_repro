@@ -172,10 +172,11 @@
 <li class="has-sub"><a href="3-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#rmarkdown-for-creating-reproducible-data-pre-processing-protocols"><span class="toc-section-number">3.8</span> RMarkdown for creating reproducible data pre-processing protocols</a><ul>
 <li><a href="3-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#rmarkdown"><span class="toc-section-number">3.8.1</span> RMarkdown</a></li>
 <li><a href="3-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#creating-and-rendering-rmarkdown-documents"><span class="toc-section-number">3.8.2</span> Creating and rendering RMarkdown documents</a></li>
-<li><a href="3-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#using-rmarkdown-to-improve-reproducibility-in-data-pre-processing"><span class="toc-section-number">3.8.3</span> Using RMarkdown to improve reproducibility in data pre-processing</a></li>
-<li><a href="2-4-designing-templates-for-tidy-data-collection.html#subsection-1"><span class="toc-section-number">3.8.4</span> Subsection 1</a></li>
-<li><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#subsection-2"><span class="toc-section-number">3.8.5</span> Subsection 2</a></li>
-<li><a href="2-2-principles-and-power-of-structured-data-formats.html#applied-exercise"><span class="toc-section-number">3.8.6</span> Applied exercise</a></li>
+<li><a href="3-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#some-helpful-additional-features-in-rmarkdown"><span class="toc-section-number">3.8.3</span> Some helpful additional features in RMarkdown</a></li>
+<li><a href="3-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#using-rmarkdown-to-improve-reproducibility-in-data-pre-processing"><span class="toc-section-number">3.8.4</span> Using RMarkdown to improve reproducibility in data pre-processing</a></li>
+<li><a href="2-4-designing-templates-for-tidy-data-collection.html#subsection-1"><span class="toc-section-number">3.8.5</span> Subsection 1</a></li>
+<li><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#subsection-2"><span class="toc-section-number">3.8.6</span> Subsection 2</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#applied-exercise"><span class="toc-section-number">3.8.7</span> Applied exercise</a></li>
 </ul></li>
 <li class="has-sub"><a href="3-9-example-creating-a-reproducible-data-pre-processing-protocol.html#example-creating-a-reproducible-data-pre-processing-protocol"><span class="toc-section-number">3.9</span> Example: Creating a reproducible data pre-processing protocol</a><ul>
 <li><a href="2-4-designing-templates-for-tidy-data-collection.html#subsection-1"><span class="toc-section-number">3.9.1</span> Subsection 1</a></li>
@@ -226,18 +227,121 @@ are new to this IDE.</p>
 </div>
 <div id="creating-and-rendering-rmarkdown-documents" class="section level3">
 <h3><span class="header-section-number">3.8.2</span> Creating and rendering RMarkdown documents</h3>
+<p>In this subsection, we’ll cover some of the basics of writing and rendering
+knitted documents in R using RStudio. We will first provide a quick overview
+of working with RMarkdown. We will not go into depth on all details of the
+system, since there are excellent resources for learning these details. However,
+we will go over several details that are very helpful but that a lot of people
+learning RMarkdown don’t realize are available, so you will know they are
+available when you’re ready to learn and incorporate them.</p>
 <p>[How to create an RMarkdown document]</p>
-<p>[How to include code]</p>
+<p>In the previous module, we described how knitted documents use special markers
+to indicate where sections of executable code start and stop. In RMarkdown,
+the markers you will use to indicate executable code look like this:</p>
+<pre><code>```r{}
+my_object &lt;- c(1, 2, 3)
+```</code></pre>
+<p>The first part of this marker (<code>```r{}</code>) indicates that a section of
+code is starting. Then end part (<code>```</code>) indicates that the file is
+moving back to regular Markdown. In the first marker, you can use the simplest
+form (<code>```r{}</code>) to indicate the start of the code. However, you can also
+include options to customize actions when the code in that section is executed.
+For example, you can specify that the code should be printed in the document,
+but not executed, by setting the <code>eval</code> parameter to <code>FALSE</code> with <code>```{r eval = FALSE}</code> as the marker to start the code section. Among the other
+options that can be included here are options to:</p>
+<ul>
+<li>specify the image size and output size of figures created by the code
+(<code>fig.width</code>, <code>fig.height</code>, <code>out.width</code>, <code>out.height</code>)</li>
+<li>suppress messages, warnings, and errors generated when the code is
+executed (<code>message</code>, <code>warning</code>, <code>error</code>)</li>
+<li>specify whether to print the code or not (for a tutorial, you will want
+others to be able to see the code as an example, while for a report, you
+might want the reader to focus on the output) (<code>echo</code>)</li>
+</ul>
 <p>[How to render to Word]</p>
 <p>[How to render to other formats like HTML and pdf]</p>
+<p>You can easily render the RMarkdown document to HTML instead of Word by
+changing the output format for the document before you knit it. There are
+a couple of ways you can make this change. First, if you are rendering the
+document in RMarkdown, click on the down arrow directly to the right of
+the “Knit” button. In that pull-down menu, you can select the “Knit to
+HTML” option, and the document will render to HTML.</p>
+<p>You can also change the output format to HTML in a special section at the
+top of the RMarkdown document called the “YAML”. [More about the YAML, including
+showing an example.]</p>
+<p>If you’d like to render the output document to pdf, the process is similar, but
+it will require you to download an additional piece of (free) software. RStudio
+uses a program based on a software program called TeX to render RMarkdown
+documents to pdf. You will need to get different software depending on the
+operating system (OS) of your computer. If you are using a Mac OS, then you should
+download [MacTex—more on this], while if you are using a Windows OS, then you
+should download [MicTex—more on this]. [More info on getting this software—don’t
+select the lightweight option, etc.] Once you’ve installed this software, restart
+your RStudio session to help RStudio identify the new program as it starts
+[is this necessary?].</p>
+<p>Once you’ve installed an implementation of TeX, you can use the same process
+to change the output format for an RMarkdown document to pdf as you can to change
+to HTML—either change the selected output format in the pull-down menu accessed
+with the arrow to the right of the “Knit” button, or change the output format
+in the YAML of the RMarkdown document [to …?].</p>
+</div>
+<div id="some-helpful-additional-features-in-rmarkdown" class="section level3">
+<h3><span class="header-section-number">3.8.3</span> Some helpful additional features in RMarkdown</h3>
+<p>The previous subsection gave an overview of the basics of creating and
+rendering a document with RMarkdown. We gave just an overview, as there are
+many resources for learning and practicing RMarkdown that are available, including
+many that are freely available online. In this sections, we’ll point you to
+some of those resources. Since some are very comprehensize, we’ll also point out
+and briefly overview several features that you might not be introduced to in
+introductory RMarkdown tutorials, but we have found can be very useful
+for researchers who are using RMarkdown to document their code for scientific
+projects.</p>
+<p>[Resources for learning more about RMarkdown]</p>
+<p>To learn more about RMarkdown, you can explore a number of excellent resources.
+The most comprehensive are shared by RStudio, where RMarkdown’s developer
+and maintainer, Yihui Xie, works. These resources are all freely available
+online, and some are also available to buy as print books, if you prefer that
+format.</p>
+<p>First, you should check out the online tutorials that are provided by RStudio on
+RMarkdown. These are available at RStudio’s RMarkdown page:
+<a href="https://rmarkdown.rstudio.com/" class="uri">https://rmarkdown.rstudio.com/</a>. [More on this]</p>
+<p>RStudio’s RMarkdown page also includes a “Gallery”
+(<a href="https://rmarkdown.rstudio.com/gallery.html" class="uri">https://rmarkdown.rstudio.com/gallery.html</a>). This resource allows you to browse
+through example documents, so you can get a visual idea of what you might want
+to create and then access the example code for a similar document. This is a
+great resource for exploring the variety of documents that you can create
+using RMarkdown.</p>
+<p>To go more deeply into RMarkdown, there are two online books from some of the
+same team that are available online. The first is <em>R Markdown: The Definitive
+Guide</em> by Yihui Xie, J. J. Allaire, and Garrett Grolemund [ref for this book].
+This book is available at <a href="https://bookdown.org/yihui/rmarkdown/" class="uri">https://bookdown.org/yihui/rmarkdown/</a>. It moves from
+basics through very advanced functionality that you can implement with RMarkdown,
+including several of the topics we highlight later in this subsection.</p>
+<p>The second online book to explore from this team is <em>R Markdown Cookbook</em>,
+by Yihui Xie, Christophe Dervieux, and Emily Riederer. This book is a helpful
+resource for dipping in to a specific section when you want to learn how to
+achieve a specific task. Just like a regular cookbook has recipes that you can
+explore and use one at a time, this book does not require a comprehensive
+end-to-end read, but instead provides “recipes” with advice and instructions
+for doing specific things. For example, if you want to figure out how to
+align a figure that you create in the center of the page, rather than the
+left, you can find a “recipe” in this book to do that.</p>
 <p>[How to extract just the code from the document]</p>
 <p>[How to include references using BibTex as a reference manager]</p>
+<p>[How to include formulas and math]</p>
+<p>[Adding executable code in a different language]</p>
+<p>[Caching results]</p>
+<p>[Using journal article templates]</p>
+<p>[Creating presentations and posters]</p>
+<p>[Making fancy tables]</p>
+<p>[Using RMarkdown to create online books and websites, including blogs and
+flexdashboards]</p>
 </div>
 <div id="using-rmarkdown-to-improve-reproducibility-in-data-pre-processing" class="section level3">
-<h3><span class="header-section-number">3.8.3</span> Using RMarkdown to improve reproducibility in data pre-processing</h3>
+<h3><span class="header-section-number">3.8.4</span> Using RMarkdown to improve reproducibility in data pre-processing</h3>
 </div>
 <div id="subsection-1" class="section level3">
-<h3><span class="header-section-number">3.8.4</span> Subsection 1</h3>
+<h3><span class="header-section-number">3.8.5</span> Subsection 1</h3>
 <blockquote>
 <p>“WordPerfect was always the best word processor. Because it allowed for insight into
 its very structure. You could hit a certain key combination and suddenly the screen
@@ -371,10 +475,10 @@ paper, or find the origin of some data in a directory.” <span class="citation"
 </blockquote>
 </div>
 <div id="subsection-2" class="section level3">
-<h3><span class="header-section-number">3.8.5</span> Subsection 2</h3>
+<h3><span class="header-section-number">3.8.6</span> Subsection 2</h3>
 </div>
 <div id="applied-exercise" class="section level3">
-<h3><span class="header-section-number">3.8.6</span> Applied exercise</h3>
+<h3><span class="header-section-number">3.8.7</span> Applied exercise</h3>
 
 </div>
 </div>
