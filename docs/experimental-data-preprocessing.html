@@ -2958,16 +2958,66 @@ others to be able to see the code as an example, while for a report, you
 might want the reader to focus on the output) (<code>echo</code>)</li>
 </ul>
 <p>[How to render to Word]</p>
-<p>[How to render to other formats like HTML and pdf]</p>
+<p>You can chose to render your document to other formats, as well. The two
+main other formats you may consider are HTML and pdf. You can set up these
+choices when you first create your RMarkdown document. However, even if you
+set up a document to render to Word, you can change its settings later so
+it will render to these other formats. We’ll cover several ways to do this,
+and some other set-up that’s require to render a document to pdf, in the
+next few paragraphs.</p>
 <p>You can easily render the RMarkdown document to HTML instead of Word by
 changing the output format for the document before you knit it. There are
 a couple of ways you can make this change. First, if you are rendering the
 document in RMarkdown, click on the down arrow directly to the right of
 the “Knit” button. In that pull-down menu, you can select the “Knit to
 HTML” option, and the document will render to HTML.</p>
-<p>You can also change the output format to HTML in a special section at the
-top of the RMarkdown document called the “YAML”. [More about the YAML, including
-showing an example.]</p>
+<p>You can also change the output format to HTML in a special section at the top of
+the RMarkdown document called the “YAML”. The YAML is a special section at the
+top of an RMarkdown document (the original, plain text file, not the rendered
+version). It is set off from the rest of the document using a special
+combination of characters, using a process very similar to how executable code
+is set off from other text with a special set of characters so it can be easily
+identified by the software program that renders the document. For the YAML, this
+combination of characters is three hyphens (<code>---</code>) on a line by themselves to
+start the YAML section and then another three on a line by themselves to end it.
+Here is an example of what the YAML might look like at the top of an RMarkdown
+document:</p>
+<pre><code>---
+title: &quot;Laboratory report for example project&quot;
+author: &quot;Brooke Anderson&quot;
+date: &quot;1/12/2020&quot;
+output: word_document
+---</code></pre>
+<p>Within the YAML itself, you can specify different options for your document.
+You can change simple things like the title, author, and date, but you can
+also change more complex things, including how the output document is rendered.
+For each thing that you want to specify, you specify it with a special
+keyword for that option and then a valid choice for that keyword. The idea
+is very similar to setting parameter values in a function call in R. For
+example, the <code>title:</code> keyword is a valid one in RMarkdown YAML. It allows you
+to set the words that will be printed in the title space, using title formatting,
+in your output document. It can take any string of characters, so you can put in
+any text for the title that you’d like, as long as you surround it with quotation
+marks. The <code>author:</code> and <code>date:</code> keywords work in similar ways. The <code>output:</code>
+keyword allows you to specify the output that the document should be rendered to.
+In this case, the keyword can only take one of a few set values, including
+<code>word_document</code> to output a Word document, <code>pdf_document</code> to output a pdf
+document (see later in this section for some more set-up required to make that
+work), and <code>html_document</code> to output an HTML document.</p>
+<p>As you start using RMarkdown, you will be able to do a lot without messing with the
+YAML much. In fact, you can get a long way without ever changing the values
+in the YAML from the default values they are given when you first create an
+RMarkdown document. As you become more familiar with R, you may want to learn
+more about how the YAML works and how you can use it to customize your
+document—it turns out that quite a lot can be set in the YAML to do very
+interesting customizations in your final rendered document. The book
+<em>R Markdown: The Definitive Guide</em> [ref], which is available free online, has
+sections discussing YAML choices for both HTML and pdf output, at
+<a href="https://bookdown.org/yihui/rmarkdown/html-document.html" class="uri">https://bookdown.org/yihui/rmarkdown/html-document.html</a> and
+<a href="https://bookdown.org/yihui/rmarkdown/pdf-document.html" class="uri">https://bookdown.org/yihui/rmarkdown/pdf-document.html</a>, respectively. There is
+also an interesting talk available online that Yihui Xie, the creator of RMarkdown,
+gave on this topic at a past RStudio conference, available at
+<a href="https://rstudio.com/resources/rstudioconf-2017/customizing-extending-r-markdown/" class="uri">https://rstudio.com/resources/rstudioconf-2017/customizing-extending-r-markdown/</a>.</p>
 <p>If you’d like to render the output document to pdf, the process is similar, but
 it will require you to download an additional piece of (free) software. RStudio
 uses a program based on a software program called TeX to render RMarkdown
