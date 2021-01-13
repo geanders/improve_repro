@@ -226,15 +226,83 @@ if you need them and to point you to places where you can find out more.
 
 [How to include formulas and math]
 
-[Adding executable code in a different language]
+In your RMarkdown documents, you include executable code in special sections
+("chunks") that are separated from the regular text using a special combination
+of characters. By default, the code in these chunks are executed using the 
+R programming language. However, you can also include executable code in a 
+number of other programming languages. For example, you could set some code
+chunks to run Python, others to run Julia, and still others to run a 
+shell script [?].
 
-[Caching results]
+This can be very helpful if you have steps in you Python that use code in 
+different languages. For example, there may be a package [?] in Python that
+works well for an early step in your data preprocessing, and then later 
+steps that are easier with general R functions. This presents no problem in 
+creating an RMarkdown data pre-processing protocol, as you can include 
+different steps using different languages. 
+ 
+The program that is used to run the code in a specific chunk is called the 
+"engine" for that chunk [?]. You can change the engine [where in the code
+chunk markup]. [More on this.] When your RMarkdown document is rendered, 
+your computer will use the specified software to run each code chunk. Of course, 
+to run that piece of code, your computer must have that type of software installed
+and available. For example, if you include a chunk of code that you'd like to 
+run with a Python engine, you must have Python on your computer.
+
+While you can use many different software programs as the engine for each code
+chunk, there are a few limitations with some programs. For many open-source 
+software programs, the results from running a chunk of code with that engine
+will be available for later code chunks to use as an input. This is not the case, 
+however, for some proprietary software [?]. For example, if you use the SAS software
+program as the engine for one of your code chunks, the output from running that code
+will not be available to input to later code in the document [?].
+
+Some code can take a while to run, particularly if it is processing very large
+datasets. By default, RMarkdown will re-run all code in the document every time
+you render it. This is usually the best set-up, since it allows you to confirm
+that the code is all executing as desired each time the code is rendered.
+However, if you have steps that take a long time, this can make it so the
+RMarkdown document takes a long time to render each time you render it.
+
+To help with this problem, RMarkdown has a system that allows you to *cache*
+results from some or all code chunks in the document. This is a really nice
+system---it will check the inputs to that part of the code each time the
+document is run. If those inputs have changed, it will take the time to re-run
+that piece of code, to use the updated inputs. However, if the inputs have not
+changed since the last time the document was rendered, then the last results for
+that chunk of code will be pulled from memory and used, without re-running the
+code in that chunk. This saves time most of the times that you render the
+document, while taking the time to re-run the code when necessary, because the
+inputs have changed and so the outputs may be different.
+
+[More on caching from RMarkdown, including things to look out for, like the size
+of the document as it grows to include cached values.]
 
 [Using journal article templates]
 
-[Creating presentations and posters]
 
-[Making fancy tables]
+You can use RMarkdown to create documents other than traditional reports. 
+Scientists might find the outputs of presentations and posters particularly 
+useful. 
+
+RMarkdown has allowed a pdf slide output for a long time. This output leverages
+the "beamer" format from LaTeX. You can create a series of presentation slides
+in RMarkdown, using Markdown to specify formatting, and then the document will
+be rendered to pdf slides. These slides can be shown using a pdf viewer [?],
+like Adobe Acrobat, set either to full screen or to the presentation option [?].
+More recently, capability has been added to RMarkdown that allows you to create
+PowerPoint slides. Again, you will start from an RMarkdown document, using
+Markdown syntax to do thinks like divide content into separate slides.
+Regardless of the output format you choose (pdf slides or PowerPoint), the code
+to generate figures and tables in the presentation can be included directly in
+the RMarkdown, so it is re-run with the latest data each time you render the
+presentation.
+
+[Where to find out more about creating presentations with RMarkdown]
+
+It is also possible to use RMarkdown to create scientific posters, although this
+is a bit less common and there are fewer tutorial resources with instructions on
+doing this. [More on making posters with RMarkdown. Some examples on GitHub.]
 
 It is very easy to add figures and simple tables to RMarkdown documents, and 
 this process is covered thoroughly in basic tutorials on RMarkdown. However, 
@@ -264,9 +332,6 @@ through two vignettes that come with package, one if the output will be in pdf
 and one if it will be in HTML: [websites for these vignettes]. There is also
 information on using `kableExtra` available through [RMarkdown book. doublecheck
 which one. Cookbook?]
-
-[Using RMarkdown to create online books and websites, including blogs and 
-flexdashboards]
 
 You can use RMarkdown to create much larger outputs, compared to simpler reports
 and protocols. RMarkdown can now be used to create very large and dynamic documents, 
