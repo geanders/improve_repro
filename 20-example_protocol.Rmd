@@ -119,7 +119,167 @@ sure to cite the source of the data and include any available information about
 the equipment that was used to collect it and the settings used when the data
 were collected.]
 
-### Subsection 2
+### Writing research protocols
+
+There are some standards that are typically used when writing protocols for
+research. This is a common practice for task that are repeated in a laboratory, 
+including [examples from wet lab].
+
+[Advantages of creating and using a protocol]
+
+Computation tasks, including data pre-processing, can also be standardized 
+through the creation and use of a protocol. 
+
+A protocol, in the sense we use it here, is essentially an annotated 
+recipe for each step in preparing your data from the initial, "raw" state 
+that is output from the laboratory equipment (or collected by hand) to a
+state that is useful for answering important research questions. The 
+exact implementation of each step is given in code that can be re-used and
+adapted with new data of a similar format. However, the code script is 
+often not enough to helpfully understand, share, and collaborate on the
+process. Instead, it's critical to also include descriptions written 
+by humans and for humans. These annotations can include descriptions of the
+code and how certain parameters are standardized the algorithms in the code.
+They can also be used to justify choices, and link them up both with 
+characteristics of the data and equipment for your experiment as well as
+with scientific principles that underlie the choices. Protocols like this
+are critical to allow you to standardize the process you use across many 
+samples from one experiment, across different experiments and projects in 
+your research laboratory, and even across different research laboratories.
+
+[Links with Good Laboratory Practices (GLP), then link in with 
+"Good Enough" computational practice, links with the idea of 
+standard operating procedures]
+
+Clinical studies are organized and guided by a protocol prepared before the 
+study: 
+
+> "Writing a research proposal is probably one of the most challenging and
+difficult task as research is a new area for the majority of postgraduates and
+new researchers." [@al2016protocol]
+
+> "Clinical research is conducted according to a plan (a protocol) or an action plan. The protocol demonstrates the guidelines for conducting the trial. It illustrates what will be made in the study by explaining each essential part of it and how it is carried out. It also describes the eligibility of the participants, the length of the study, the medications and the related tests." [@al2016protocol]
+
+> "Protocol writing allows the researcher to review and critically evaluate the published literature on the interested topic, plan and review the project steps and serves as a guide throughout the investigation."  [@al2016protocol]
+
+A protocol should include some background, the aims of the work, hypotheses
+to be tested, materials and methods, methods of data collection and 
+equipment to analyze samples [@al2016protocol] (This reference is discussing
+full protocols for a study, e.g., a clinicial trial, so includes more steps
+that just pre-processing.)
+
+One characteristic of a good protocol for a clinical study: 
+
+> "It should provide enough detail (methodology) that can allow another investigator to do the study and arrive at comparable conclusions." [@al2016protocol]
+
+Good protocols include not only how, but also why. This includes both 
+higher-level (i.e., what a larger question is being asked) and also at a 
+fine level, for each step in the process. [Analogy---cookbook that covers
+deeper principles for why each step in process is done. *America's Test Kitchen*
+recipes versus back-of-the-package recipes.]
+
+The process of writing a protocol forces you to think about each step in the
+process, why you do it a certain way (include parameters you choose for 
+certain functions in a pipeline of code), and include justifications from 
+the literature for this reasoning. If done well, it should allow you to 
+quickly and thoroughly write the associated sections of Methods in research 
+reports and manuscripts and help you answer questions and challenges from 
+reviewers. 
+
+Writing this will also help you identify steps for which you are uncertain
+how to proceed and what choices to make in customizing an analysis for your
+research data. These are areas where you can search more deeply in the 
+literature to understand implications of certain choices and, if needed, 
+contact the researchers who developed and maintained associated software 
+packages to get advice.
+
+For open-source software, resources to consult extend beyond the traditional
+one. You can often find information on open-source software, including the
+algorithms and principles that underlie the software, through peer-reviewed
+publications in the scientific literature. However, you can also find
+details---and often more thorough details---in *vignettes* that are published in
+conjunction with the package. [More on vignettes and where to find them.]
+Further, software is often presented at conferences and workshops, including the
+yearly BioC [?] conference for the Bioconductor community. These talks and
+workshops are sometimes available after the event as online recordings [some
+examples of these]. You can consult books, as well, although these often 
+quickly become outdated for software that is rapidly evolving; an exception 
+is online books, which are becoming very popular to create through R's
+`bookdown` package and can be rapidly updates. Many of these books are 
+available through [bookdown's gallery page].
+
+An added advantage of data pre-processing protocols, created with knitted
+documents, is that you can include steps and code for data quality 
+assessment. [More on exploratory data analysis] [Examples of how 
+exploratory data analysis could help when pre-processing biomedical 
+data---for example, identify outliers that might indicate equipment 
+was malfunctioning?]
+
+Be sure that, in each step of your pre-processing protocol, you explain 
+*why* you are taking a certain step. For example, if you have a step
+that aligns peaks across samples in metabolomics data [?], be sure to 
+explain that ... [why it's important to do this]. Include references to 
+the literature that justify this explanation; these references also 
+serve as further literature that someone else could read to understand
+the step. This *why* is important even if the step is obvious to you---it
+will allow you to pass along the task to others in your research group 
+without the new person needing to blindly trust each step. 
+
+It is particularly important to clearly explain what you are doing in 
+each step and how you are implementing your choices through code. Yes,
+the code itself allows someone else to replicate what you did. However, 
+only those who are very, very familiar with the software program, including
+any of the extension packages you include, can "read" the code directly 
+to understand what it's doing. Further, even if you understand the code
+very well when you create it, it is unlikely that you will stay at that
+same level of comprehension in the future, as other tasks and challenges
+take over that brain space. Explaining for humans, in text that augments
+and accompanies the code, is also important because function names and
+parameter names in code often are not easy to decipher. While excellent
+programmers can sometimes create functions with clear and transparent
+names, easy to translate to determine the task each is doing, this is 
+difficult in software development and is rare in practice. Human annotations, 
+written by and for humans, are critical to ensure that the steps will 
+be clear to you and others in the future when you revisit what was
+done with this data and what you plan to do with future data. 
+
+You can begin to create this pre-processing protocol before you collect
+any of your own research data. Example datasets exist online, and you 
+can often find an example that aligns with the type of data you will 
+be collecting and the format you will be collecting it in. [Places where
+you could get this data---repositories, R package example datasets.]
+[Characteristics that are important in your example dataset---same file
+format that you will get from your equipment, key characteristics, like 
+number of experimental groups, like treatment categories and single vs 
+multiple time points]
+
+If the format of the initial data is similar to the format you anticipate for
+your data, you can create the code and explanations for key steps in your
+pre-processing for that type of data. Often, you will be able to adapt the
+RMarkdown document to change it from inputting the example data to inputting
+your own experimental data with minimal complications, once your data 
+comes in. By thinking through and researching data pre-processing options
+before the data is collected, you can save time in analyzing and presenting
+your project results once you've completed the experimental data 
+collection for the project. 
+
+Further, with an example dataset, you can get a good approximation of the
+format in which you will output data from the pre-processing steps. 
+This will allow you to begin planning the analysis and visualization 
+that you will use to combine the different types of data from your 
+experiment and use it to investigate important research hypotheses. 
+Again, if data follow standardized formats across steps in your process, 
+it will often be easy to adapt the code in the protocol to input the new
+dataset that you created, without major changes to the code developed with 
+the example dataset. 
+
+For each step of the protocol, you can also include potential problems
+that might come up in specific instances of the data you get from 
+future experiments. This can help you adapt the code in the protocol in 
+thoughtful ways as you apply it in the future to new data collected
+for new studies and projects.
+
+
 
 ### Practice quiz
 
