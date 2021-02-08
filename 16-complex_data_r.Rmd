@@ -1205,7 +1205,514 @@ data (e.g., if ranges correspond to alignments, data like mapping quality and th
 number of gaps). ... the union of genomic location with any type of data is what makes
 `GRanges` so pwoerful." [@buffalo2015bioinformatics]
 
+Some object classes in BioConductor: 
+
+- `eSet` from `Biobase`
+- `Sequence` from `IRanges`
+- `MAlist` from `limma` 
+- `ExpressionSet` from `Biobase`
+
+You can use the `getSlots` function with S4 objects to see all the 
+slots within the object. 
+
+> "Methods and classes in the S language are essentially programming concepts to
+enable good organization of functions and of general objects, respectively."
+[@chambers2006s4]
+
+> "Programming in R starts out usually as writing functions, at least once we
+get past the strict cut-and-paste stage. Functions are the actions of the
+language; calls to them express what the user wants to happen. The arguments to
+the functions and the values returned by function calls are the objects. These
+objects represent everything we deal with. Actions create new objects (such as
+summaries and models) or present the information in the objects (by plots,
+printed summaries, or interfaces to other software). R is a functional,
+object-based system where users program to extend the capacity of the system in
+terms of new functionality and new kinds of objects." [@chambers2006s4]
+
+> "Languages to which the object-oriented programming (OOP) term is typically
+applied mostly support what might better be called *class*-oriented programming,
+well-known examples being C++ and Java. In these languages the essential
+programming unit is the class definition. Objects are generated as instances of
+a class and computations on the objects consist of *invoking methods on* that
+object. Depending on how strict the language is, all or most of the computations
+must be expressed in this form. Method invocation is an operator, operating on
+an instance of a class. Software organization is essentially simple and
+hierarchical, in the sense that all methods are defined as part of a particular
+class. That's not how S works; as mentioned, the first and most important
+programming unit is the function. From the user’s perspective, it's all done by
+calling functions (even if some of the functions are hidden in the form of
+operators). Methods and classes provide not class-oriented programming but
+function- and class-oriented programming. It’s a richer view, but also a more
+complicated one." [@chambers2006s4]
+
+> "A generic function will collect or *cache* all the methods for that function
+belonging to all the R packages that have been loaded in the session. When the
+function is called, the R evaluator then *selects* a method from those available,
+by examining how well different methods match the actual arguments in the call."
+[@chambers2006s4]
+
+> "From the users' view, the generic function has (or at least should have) a
+natural definition in terms of what it is intended to do: `plot()` displays
+graphics to represent an object or the relation between two objects; arithmetic
+operators such as '+' carry out the corresponding intuitive numerical
+computations or extensions of those. Methods should map those intuitive notions
+naturally and reliably into the concepts represented by the class definitions."
+[@chambers2006s4]
+
+> "The class definition contains a definition of the slots in objects from the
+class and other information of various kinds, but the most important information
+for the present discussion defines what other classes this class extends; that
+is, the inheritance or to use the most common term, the *superclasses* of this
+class. In R, the names of the superclasses can be seen as the value of
+`extends(thisClass)`. By definition, an object from any class can be used in a
+computation designed for any of the superclasses of that class. Therefore, it's
+precisely the superclasses of the class of an argument that define candidate
+methods in a particular function call." [@chambers2006s4]
+
+> "Conceptually, a generic function extends the idea of a function in R by
+allowing different methods to be selected corresponding to the classes of the
+objects supplied as arguments in a call to the function." [@chambers2006s4]
+
+The code for different implementations of a method (in other words, different
+ways it will run with new object classes) can come in different R packages.
+This allows a developer to add his or her own applications of methods, suited
+for object classes he or she creates. 
+
+A class defines the structure for a way of storing data. When you create
+an object that follows this structure, it's an instance of that class.
+The `new` function is used to create new instances of a class.  
+
+When a generic function determines what code to run based on the class of the 
+object, it's called method dispatch.
+
+By using the accessor function, instead of `@`, your code will be more robust
+to changes that the developers make. They will be sensitive to insuring that
+the accessor function for a particular part of the data continues to work 
+regardless of changes they make to the structure that is used to store data in 
+objects in that class. They will be less committed, however, to keeping the 
+same slots, and in the same positions, as they develop the software. The 
+"contract" with the user is through the accessor function, in other words, 
+rather than through the slot name in the object. 
+
+> "Bioconductor is an open-source, open-development software project for the
+analysis and comprehension of high-throughput data in genomics and molecular
+biology. The project aims to enable interdisciplinary research, collaboration
+and rapid development of scientific software. Based on the statistical
+programming language R, Bioconductor comprises 934 interoperable packages
+contributed by a large, diverse community of scientists. Packages cover a range
+of bioinformatic and statistical applications. They undergo formal initial
+review and continuous automated testing." [@huber2015orchestrating]
+
+> "Bioconductor provides core data structures and methods that enable
+genome-scale analysis of highthroughput data in the context of the rich
+statistical programming environment offered by the R project. It supports many
+types of high-throughput sequencing data (including DNA, RNA, chromatin
+immunoprecipitation, Hi-C, methylomes and ribosome profiling) and associated
+annotation resources; contains mature facilities for microarray analysis; and
+covers proteomic, metabolomic, flow cytometry, quantitative imaging,
+cheminformatic and other high-throughput data. Bioconductor enables the rapid
+creation of workflows combining multiple data types and tools for statistical
+inference, regression, network analysis, machine learning and visualization at
+all stages of a project from data generation to publication."
+[@huber2015orchestrating]
+
+> "Bioconductor is also a flexible software engineering environment in which to
+develop the tools needed, and it offers users a framework for efficient learning
+and productive work. The foundations of Bioconductor and its rapid coevolution
+with experimental technologies are based on two motivating principles. The first
+is to provide a compelling user experience. Bioconductor documentation comes at
+three levels: workflows that document complete analyses spanning multiple tools;
+package vignettes that provide a narrative of the intended uses of a particular
+package, including detailed executable code examples; and function manual pages
+with precise descriptions of all inputs and outputs together with working
+examples. In many cases, users ultimately become developers, making their own
+algorithms and approaches available to others. The second is to enable and
+support an active and open scientific community developing and distributing
+algorithms and software in bioinformatics and computational biology. The support
+includes guidance and training on software development and documentation, as
+well as the use of appropriate programming paradigms such as unit testing and
+judicious optimization. A primary goal is the distributed development of
+interoperable software components by scientific domain experts. **In part we
+achieve this by urging the use of common data structures that enable workflows
+integrating multiple data types and disciplines.** To facilitate research and
+innovation, we employ a high-level programming language. This choice yields
+rapid prototyping, creativity, flexibility and reproducibility in a way that
+neither point-and-click software nor a general-purpose programming language can.
+We have embraced R for its scientific and statistical computing capabilities,
+for its graphics facilities and for the convenience of an interpreted language.
+R also interfaces with low-level languages including C and C++ for
+computationally intensive operations, Java for integration with enterprise
+software and JavaScript for interactive web-based applications and reports."
+[@huber2015orchestrating]
+
+> "**Case study: high-throughput sequencing data analysis.** Analysis of
+large-scale RNA or DNA sequencing data often begins with aligning reads to a
+reference genome, which is followed by interpretation of the alignment patterns.
+Alignment is handled by a variety of tools, whose output typically is delivered
+as a BAM file. The Bioconductor packages Rsamtools and GenomicAlignments provide
+a flexible interface for importing and manipulating the data in a BAM file, for
+instance for quality assessment, visualization, event detection and
+summarization. The regions of interest in such analyses are genes, transcripts,
+enhancers or many other types of sequence intervals that can be identified by
+their genomic coordinates. Bioconductor supports representation and analysis of
+genomic intervals with a 'Ranges' infrastructure that encompasses data
+structures, algorithms and utilities including arithmetic functions, set
+operations and summarization (Fig. 1). It consists of several packages
+including IRanges, GenomicRanges, GenomicAlignments, GenomicFeatures,
+VariantAnnotation and rtracklayer. The packages are frequently updated for
+functionality, performance and usability. **The Ranges infrastructure was designed
+to provide tools that are convenient for end users analyzing data while
+retaining flexibility to serve as a foundation for the development of more
+complex and specialized software. We have formalized the data structures to the
+point that they enable interoperability, but we have also made them adaptable to
+specific use cases by allowing additional, less formalized userdefined data
+components such as application-defined annotation.** Workflows can differ vastly
+depending on the specific goals of the investigation, but a common pattern is
+reduction of the data to a defined set of ranges in terms of quantitative and
+qualitative summaries of the alignments at each of the sites. Examples include
+detecting coverage peaks or concentrations in chromatin
+immunoprecipitation–sequencing, counting the number of cDNA fragments that match
+each transcript or exon (RNA-seq) and calling DNA sequence variants (DNA-seq).
+Such summaries can be stored in an instance of the class GenomicRanges."
+[@huber2015orchestrating]
+
+> "To facilitate the analysis of experiments and studies with multiple samples,
+Bioconductor defines the SummarizedExperiment class. The computed summaries for
+the ranges are compiled into a rectangular array whose rows correspond to the
+ranges and whose columns correspond to the different samples .. . For a typical
+experiment, there can be tens of thousands to millions of ranges and from a
+handful to hundreds of samples. The array elements do not need to be single
+numbers: the summaries can be multivariate. The SummarizedExperiment class also
+stores metadata on the rows and columns. Metadata on the samples usually include
+experimental or observational covariates as well as technical information such
+as processing dates or batches, file paths, etc. Row metadata comprise the start
+and end coordinates of each feature and the identifier of the containing
+polymer, for example, the chromosome name. Further information can be inserted,
+such as gene or exon identifiers, references to external databases, reagents,
+functional classifications of the region (e.g., from efforts such as the
+Encyclopedia of DNA Elements (ENCODE)) or genetic associations (e.g., from
+genome-wide association studies, the study of rare diseases, or cancer
+genetics). The row metadata aid integrative analysis, for example, when matching
+two experiments according to overlap of genomic regions of interest. Tight
+coupling of metadata with the data reduces opportunities for clerical errors
+during reordering or subsetting operations." [@huber2015orchestrating]
+
+> "The integrative data container SummarizedExperiment. Its assays component is
+one or several rectangular arrays of equivalent row and column dimensions. Rows
+correspond to features, and columns to samples. The component rowData stores
+metadata about the features, including their genomic ranges. The colData
+component keeps track of samplelevel covariate data. The exptData component
+carries experiment-level information, including MIAME (minimum information about
+a microarray experiment)-structured metadata. The R expressions exemplify how to
+access components. For instance, provided that these metadata were recorded,
+rowData(se)$entrezId returns the NCBI Entrez Gene identifiers of the features,
+and se$tissue returns the tissue descriptions for the samples. Range-based
+operations, such as %in%, act on the rowData to return a logical vector that
+selects the features lying within the regions specified by the data object CNVs.
+Together with the bracket operator, such expressions can be used to subset a
+SummarizedExperiment to a focused set of genes and tissues for downstream
+analysis." [@huber2015orchestrating]
+
+> "A genomics-specific visualization type is plots along genomic coordinates.
+There are several packages that create attractive displays of along-genome data
+tracks, including Gviz and ggbio ... **These packages operate directly on common
+Bioconductor data structures and thus integrate with available data manipulation
+and modeling functionality.** A basic operation underlying such visualizations
+is computing with genomic regions, and the biovizBase package provides a bridge
+between the Ranges infrastructure and plotting packages."
+[@huber2015orchestrating]
+
+> "Genomic data set sizes sometimes exceed what can be managed with standard
+in-memory data models, and then tools from high performance computing come into
+play. An example is the use of rhdf5---an interface to the HDF5 large data
+management system (http://www.hdfgroup.org/HDF5)—by the h5vc package to slice
+large, genome-size data cubes into chunks that are amenable for rapid
+interactive computation and visualization. Both ggbio and Gviz issue
+range-restricted queries to file formats including BAM, BGZIP/Tabix and BigWig
+via Rsamtools and rtracklayer to quickly integrate data from multiple files over
+a specific genomic region." [@huber2015orchestrating]
+
+> "Developers are constantly updating their packages to extend capabilities, improve performance, fix bugs and enhance documentation. These changes are introduced into the development branch of
+Bioconductor and released to end users every 6 months; changes are
+tracked using a central, publicly readable Subversion software repository, so details of all changes are fully accessible. Simultaneously,
+R itself is continually changing, typically around performance
+enhancements and increased functionality. Owing to this dynamic
+environment, all packages undergo a daily testing procedure. Testing
+is fully automated and ensures that all code examples in the package documentation, as well as further unit tests, run without error.
+Successful completion of the testing will result in the package being
+built and presented to the community." [@huber2015orchestrating]
+
+> "Interoperability between software components for different stages and types
+of analysis is essential to the success of Bioconductor. Interoperability is
+established through the definition of common data structures that package
+authors are expected to use ... Technically, Bioconductor’s common data
+structures are implemented as classes in the S4 object-oriented system of the R
+language. In this manner, useful software concepts including encapsulation,
+abstraction of interface from implementation, polymorphism, inheritance and
+reflection are directly available. It allows core tasks such as matching of
+sample data and metadata to be adopted across disciplines, and it provides a
+foundation on which community development is based. It is instructive to compare
+such a representation to popular alternatives in bioinformatics: file-based data
+format conventions and primitive data structures of a language such as matrices
+or spreadsheet tables. With file-based formats, operations such as subsetting or
+data transformation can be tedious and error prone, and the serialized nature of
+files discourages operations that require a global view of the data. In either
+case, validity checking and reflection cannot rely on preformed or standardized
+support and need to be programmed from scratch again for every convention—or are
+missing altogether. As soon as the data for a project are distributed in
+multiple tables or files, the alignment of data records or the consistency of
+identifiers is precarious, and interoperability is hampered by having to
+manipulate disperse, loosely coordinated data collections."
+[@huber2015orchestrating]
+
+Some of the most important data structures in Bioconductor are [@huber2015orchestrating] (from Table 2 in this reference):
+
+- `ExpressionSet` (`Biobase` package) 
+- `SummarizedExperiment` (`GenomicRanges` package)
+- `GRanges` (`GenomicRanges` package) 
+- `VCF` (`VariantAnnotation` package)
+- `VRanges` (`VariantAnnotation` package) 
+- `BSgenome` (`BSgenome` package) 
+
+> "For Bioconductor, which provides tools in R for analyzing genomic data,
+interoperability was essential to its success. We defined a handful of data
+structures that we expected people to use. For instance, if everybody puts their
+gene expression data into the same kind of box, it doesn’t matter how the data
+came about, but that box is the same and can be used by analytic tools. Really,
+I think it’s data structures that drive interoperability." --- Robert Gentlemen
+in [@altschul2013anatomy]
+
+> "I have found that real hardcore software engineers tend to worry about
+problems that are just not existent in our space. They keep wanting to write
+clean, shiny software, when you know that the software that you’re using today
+is not the software you’re going to be using this time next year." --- Robert
+Gentlemen in [@altschul2013anatomy]
+
 ---------------------------------------------------------------------------------
+
+Bioconductor is used for many of the R packages for working with genomic and 
+other bioinformatic data. One characteristic of packages on Bioconductor is that
+they make heavy use of a system for object-oriented programming in R. There
+are several systems for object-oriented programming in R. Bioconductor relies 
+heavily on one called S4. 
+
+Object-oriented programming allows developers to create *methods*. These are
+functions in R that first check the class of the object that is input, and then
+run different code for different functions. For example, `summary` is one of these
+method-style functions. If you call the summary function with the input as a 
+numeric vector, one set of code will be run: you will get numeric summaries of 
+the values in that vector, including the minimum, maximum and median. However, 
+if you run the same function, `summary`, on a dataframe with columns of factor 
+data, the output will be a small summary for each column, giving the levels of
+the factor in each column and the number of column values in the most common 
+of those levels. 
+
+With this system of writing methods, the same function call can be used for 
+many different object types. By contrast, other approaches to programming might
+constrain a function to work with a single class of object---for example, a 
+function might work on a dataframe and only a dataframe, not a vector, matrix, 
+or other more complex types of objects. 
+
+These methods often have very names. Examples of these method-style functions
+include `plot`, `summary`, `head` [?], [others]. You can try running these
+method-style functions on just about any object class that you're using to 
+store your data, and chances are good that it will work on the object and 
+output something interesting. 
+
+The S4 system of object-oriented programming in R allows for something 
+called *inheritance*. [More on this.]
+
+As you use R with the Bioconductor packages, you often might not notice
+how much S4 objects are being used "under the hood", as you pre-process
+and analyze data. By contrast, you may have learned the "tidyverse" approach 
+in R, which is a powerful general approach for working with data. The 
+tidyverse approach is centered on the object class is predominated uses, 
+the dataframe, and so a lot of attention is given to thinking about that 
+style of data storage in an object when learning the approach. 
+
+A pre-processing pipeline in Bioconductor might take the data through a 
+number of different object classes over the course of the pipeline. 
+Different functions within a Bioconductor package may manage this 
+progression without you being very aware of it. For example, one function
+may read the data from the file format for the equipment and move the
+data directly into a certain complex object class, which a second function
+might input this object class, do some actions on the data, and then output
+the result in a different class. 
+
+Generally, if the functions in a pipeline handle these object transitions
+gracefully, you may not feel the need to dig more deeply into the object
+types. However, ideally you should feel comfortable taking a peek at your
+data at any step in the process. This can include seeing snippets of the data
+in its object (e.g., the first few elements in each component of the data
+at that stage) and also feel comfortable visualizing parts of the data in 
+simple ways. 
+
+This is certainly possible even when data are stored in complex or unfamiliar
+object classes. However, it's a bit less natural than exploring your data when
+it's stored in an object class that you feel very comfortable with. For 
+example, most R programmers have several go-to strategies for checking any 
+data they have stored in a dataframe. You can develop these same go-to 
+strategies for data in more complex object classes once you understand 
+a few basics about the S4 system and the object classes created using this 
+system. 
+
+First, there are a few methods you can use to figure out what's in a data 
+object. [More on this. `str`, some on interactive ways to look at objects?]
+Further, most S4 objects will have their own helpfiles [doublecheck], and you 
+can use this resource to learn more about what it's storing and where it puts
+each piece of data. [More on accessing these help files. `?ExpressionSet`, 
+for example.]
+
+Once you know what's in your object, there are a few ways that you can pull 
+out different elements of the data. One basic way (it's a bit heavy-handed, 
+and best to save for when you're struggling with other methods) is to 
+extract *slots* from the object using the `@` symbol. If you have worked much 
+with base R, you will be familiar with pulling out elements of more basic object
+classes using `$`. For example, if you wanted to extract a column named `weight`
+from a dataframe object called `experiment_1`, you could do so using 
+the syntax `experiment_1$weight`. The `$` operator does not work in the same
+way with S4 objects. With these, we say that the elements are stored in different
+*slots* of the object, and each slot can be extracted using `@`. So if you had
+an S4 object with data on animal weights stored in a slot called `weight`, you 
+could extract it from an S4 object instanced named `experiment_2` with
+`experiment_2@weight`.
+
+A more elegant approach is to access elements stored in the object using a 
+special type of function called an **accessor** function. 
+
+One important object class in Bioconductor is `ExpressionSet`. This object class
+helps to keep different elements of data from an experiment aligned---for
+example, it helps ensure that higher-level data about each sample is kept
+well-aligned with data on more specific values---like measurements from each
+metabolite feature [? better example? gene expression values for each gene?]
+specific to each sample. The three slots in this object class are `pData`,
+`exprs`, and `fData`. The data in these three slots can be accessed using the
+accessor functions of `pData`, `exprs`, and `fData`.
+
+Often, the contents of the slots within a Bioconductor class will be a more
+generic object type that you're familiar with, like a matrix or vector.
+
+S4 objects can be set to check that the inputs are valid for that object
+class when someone creates a new object of that class. This helps with 
+quality control in creating new objects, where these issues can be caught
+early, before functions are run on the object that assume certain characteristics
+of its data. 
+
+Methods are also referred to as generic functions within the S4 system?
+
+------------------------------------------------------------------------------
+
+> "the whole point of OOP is not to have to worry about what is inside an object.
+Objects made on different machines and with different languages should be able to talk to each other"
+--- Alan Kay
+
+This idea in object-oriented programming may be very helpful for large,
+multi-developer programming, since different people, or even whole teams could
+develop their parts independently. As long as the teams have all agreed on 
+the way that messages will be passed between different objects and parts of the
+code, they could have independence in how they conduct work on their own 
+objects. There are rules for how things connect, and independence in how 
+each part works. If the rules for connecting different objects are set, then 
+this approach allows for immense flexibility in how the code to work with the
+objects on their own can be written and changed, without breaking the whole
+system of code.
+
+However, the idea of not worrying about what's inside an object is at odds with 
+some basic principles for working with experimental data. Exploratory data 
+analysis is a key principle for improving quality control, rigor, and even 
+creativity in working with scientific data sets. [More on EDA, including from 
+Tukey] EDA requires a researcher to be able to explore the data stored inside
+an object, ideally at any stage along a pipeline of pre-processing and then 
+analyzing those data. Therefore, there's a bit of tension in the S4 approach in 
+R, between using a system that allows for powerful development of tools to 
+explore data and the fundamental needs of the researcher to access and explore
+their data as they work with it---to "see inside" the objects storing their 
+data at every step. 
+
+Objects store data. They are data structures, with certain rules for where they
+store different elements of the data. They also are associated with specific
+functions that work with the way they store the data.
+
+> "A programming language serves two related purposes: it provides a vehicle for the programmer to specify actions to be executed and a set of concepts for the programmer to use when thinking about what can be done. The first aspect ideally requires a language that is 'close to the machine', so that all important aspects of a machine are handled simply and efficiently in a way that is reasonably obvious to the programmer. The C language was primarily designed with this in mind. The second aspect ideally requires a language that is 'close to the problem to be solved' so that the concepts of a solution can be expressed directly and concisely. The facilities added to C to create C++ were primarily designed with this in mind."
+--- Bjarne Stroustrup, *The C++ Programming Language*, Addison-Wesley, 1986
+
+> "The basis for OOP started in the early 1960s. A breakthrough involving
+instances and objects was achieved at MIT with the PDP-1, and the first
+programming language to use objects was Simula 67. It was designed for the
+purpose of creating simulations, and was developed by Kristen Nygaard and
+Ole-Johan Dahl in Norway. They were working on simulations that deal with
+exploding ships, and realized they could group the ships into different
+categories. Each ship type would have its own class, and the class would
+generate its unique behavior and data. Simula was not only responsible for
+introducing the concept of a class, but it also introduced the instance of a
+class. The term 'object oriented programming' was first used by Xerox PARC in
+their Smalltalk programming language. The term was used to refer to the process
+of using objects as the foundation for computation. The Smalltalk team was
+inspired by the Simula 67 project, but they designed Smalltalk so that it would
+be dynamic. The objects could be changed, created, or deleted, and this was
+different from the static systems that were commonly used. Smalltalk was also
+the first programming language to introduce the inheritance concept. It is this
+feature that allowed Smalltalk to surpass both Simula 67 and the analog
+programming systems. While these systems were advanced for their time, they did
+not use the inheritance concept." ---
+http://www.exforsys.com/tutorials/oops-concepts/the-history-of-object-oriented-programming.html
+
+> "Object-oriented programming is first and foremost about objects. Initially
+object-oriented languages were geared toward modeling real world objects so the
+objects in a program corresponded to real world objects. Examples might include:
+1. Simulations of a factory floor–objects represent machines and raw materials
+2. Simulations of a planetary system–objects represent celestial bodies such as
+planets, stars, asteroids, and gas clouds 3. A PC desktop–objects represent
+windows, documents, programs, and folders 4. An operating system–objects
+represent system resources such as the CPU, memory, disks, tapes, mice, and
+other I/O devices"
+https://www.ephemeralobjects.org/2014/02/03/a-brief-history-of-object-oriented-programming/
+
+> "The idea with an object is that it advertises the types of data that it will store and the types of operations that it allow to manipulate that data. However, it hides its implementation from the user. For a real world analogy, think of a radio. The purpose of a radio is to play the program content of radio stations (actually translate broadcast signals into sounds that humans can understand). A radio has various dials that allow you to control functions such as the station you are tuned to, the volume, the tone, the bass, the power, and so on. These dials represent the operations that you can use to manipulate the radio. The implementation of the radio is hidden from you. It could be implemented using vacuum tubes or solid state transistors, or some other technology. The point is you do not need to know. The fact that the implementation is hidden from you allows radio manufacturers to upgrade the technology within radios without requiring you to relearn how to use a radio."
+https://www.ephemeralobjects.org/2014/02/03/a-brief-history-of-object-oriented-programming/
+
+> "The set of operations provided by an object is called its **interface**. The
+interface defines both the names of the operations and the behavior of these
+operations. In essence the interface is a contract between the object and the
+program that uses it. The object guarantees that it will provide the advertised
+set of operations and that they will behave in a specified fashion. Any object
+that adheres to this contract can be used interchangeably by the program. Hence
+the implementation of an object can be changed without affecting the behavior of
+a program."
+https://www.ephemeralobjects.org/2014/02/03/a-brief-history-of-object-oriented-programming/
+
+> "An object is not much good if each one must be custom crafted. For example,
+radios would not be nearly as prevalent if each one was handcrafted. What is
+needed is a way to provide a blueprint for an object and a way for a 'factory'
+to use this blueprint to mass produce objects. Classes provide this mechanism in
+object-oriented programming. A **class** is a factory that is able to mass
+produce objects. The programmer provides a class with a blueprint of the desired
+type of object. A 'blueprint' is actually composed of: 1. A declaration of a set
+of variables that the object will possess, 2. A declaration of the set of
+operations that the object will provide, and 3. A set of function definitions
+that implements each of these operations. The set of variables possessed by each
+object are called **instance variables**. The set of operations that the object
+provides are called **methods**. For most practical purposes, a method is like a
+function. When a program wants a new instance of an object, it asks the
+appropriate class to create a new object for it. The class allocates memory to
+hold the object’s instance variables and returns the object to the program. Each
+object knows which class created it so that when an operation is requested for
+that object, it can look up in the class the function that implements that
+operation and call that function."
+https://www.ephemeralobjects.org/2014/02/03/a-brief-history-of-object-oriented-programming/
+
+> "In object-oriented programming, **inheritance** means the inheritance of
+another object’s interface, and possibly its implementation as well. Inheritance
+is accomplished by stating that a new class is a **subclass** of an existing
+class. The class that is inherited from is called the **superclass**. The
+subclass always inherits the superclass’s complete interface. It can extend the
+interface but it cannot delete any operations from the interface. The subclass
+also inherits the superclass’s implementation, or in other words, the functions
+that implement the superclass’s operations. However, the subclass is free to
+define new functions for these operations. This is called **overriding** the
+superclass’s implementation. The subclass can selectively pick and choose which
+functions it overrides. Any functions that are not overridden are inherited."
+https://www.ephemeralobjects.org/2014/02/03/a-brief-history-of-object-oriented-programming/
 
 ### Subsection 2
 

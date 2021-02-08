@@ -15,14 +15,20 @@
 <meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, and Gregory Robertson" />
 
 
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <meta name="description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing.">
 
 <title>3.5 Complex data types in R and Bioconductor | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
 
+<script src="libs/header-attrs-2.6/header-attrs.js"></script>
 <link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
 <link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 
@@ -39,17 +45,21 @@
 <div class="col-sm-12">
 <div id="TOC">
 <ul>
-<li class="has-sub"><a href="index.html#overview"><span class="toc-section-number">1</span> Overview</a><ul>
+<li><a href="index.html#overview"><span class="toc-section-number">1</span> Overview</a>
+<ul>
 <li><a href="1-1-license.html#license"><span class="toc-section-number">1.1</span> License</a></li>
 </ul></li>
-<li class="has-sub"><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a><ul>
-<li class="has-sub"><a href="2-1-separating-data-recording-and-analysis.html#separating-data-recording-and-analysis"><span class="toc-section-number">2.1</span> Separating data recording and analysis</a><ul>
+<li><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a>
+<ul>
+<li><a href="2-1-separating-data-recording-and-analysis.html#separating-data-recording-and-analysis"><span class="toc-section-number">2.1</span> Separating data recording and analysis</a>
+<ul>
 <li><a href="2-1-separating-data-recording-and-analysis.html#data-recording-versus-data-analysis"><span class="toc-section-number">2.1.1</span> Data recording versus data analysis</a></li>
 <li><a href="2-1-separating-data-recording-and-analysis.html#hazards-of-combining-recording-and-analysis"><span class="toc-section-number">2.1.2</span> Hazards of combining recording and analysis</a></li>
 <li><a href="2-1-separating-data-recording-and-analysis.html#approaches-to-separate-recording-and-analysis"><span class="toc-section-number">2.1.3</span> Approaches to separate recording and analysis</a></li>
 <li><a href="2-1-separating-data-recording-and-analysis.html#discussion-questions"><span class="toc-section-number">2.1.4</span> Discussion questions</a></li>
 </ul></li>
-<li class="has-sub"><a href="2-2-principles-and-power-of-structured-data-formats.html#principles-and-power-of-structured-data-formats"><span class="toc-section-number">2.2</span> Principles and power of structured data formats</a><ul>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#principles-and-power-of-structured-data-formats"><span class="toc-section-number">2.2</span> Principles and power of structured data formats</a>
+<ul>
 <li><a href="2-2-principles-and-power-of-structured-data-formats.html#data-recording-standards"><span class="toc-section-number">2.2.1</span> Data recording standards</a></li>
 <li><a href="2-2-principles-and-power-of-structured-data-formats.html#defining-data-standards-for-a-research-group"><span class="toc-section-number">2.2.2</span> Defining data standards for a research group</a></li>
 <li><a href="2-2-principles-and-power-of-structured-data-formats.html#two-dimensional-structured-data-format"><span class="toc-section-number">2.2.3</span> Two-dimensional structured data format</a></li>
@@ -58,13 +68,15 @@
 <li><a href="2-2-principles-and-power-of-structured-data-formats.html#levels-of-standardizationresearch-group-to-research-community"><span class="toc-section-number">2.2.6</span> Levels of standardization—research group to research community</a></li>
 <li><a href="2-2-principles-and-power-of-structured-data-formats.html#applied-exercise"><span class="toc-section-number">2.2.7</span> Applied exercise</a></li>
 </ul></li>
-<li class="has-sub"><a href="2-3-the-tidy-data-format.html#the-tidy-data-format"><span class="toc-section-number">2.3</span> The ‘tidy’ data format</a><ul>
-<li><a href="2-3-the-tidy-data-format.html#what-makes-data-tidy"><span class="toc-section-number">2.3.1</span> What makes data “tidy”?</a></li>
-<li><a href="2-3-the-tidy-data-format.html#why-make-your-data-tidy"><span class="toc-section-number">2.3.2</span> Why make your data “tidy”?</a></li>
+<li><a href="2-3-the-tidy-data-format.html#the-tidy-data-format"><span class="toc-section-number">2.3</span> The ‘tidy’ data format</a>
+<ul>
+<li><a href="2-3-the-tidy-data-format.html#what-makes-data-tidy"><span class="toc-section-number">2.3.1</span> What makes data “tidy?”</a></li>
+<li><a href="2-3-the-tidy-data-format.html#why-make-your-data-tidy"><span class="toc-section-number">2.3.2</span> Why make your data “tidy?”</a></li>
 <li><a href="2-3-the-tidy-data-format.html#using-tidyverse-tools-with-data-in-the-tidy-data-format"><span class="toc-section-number">2.3.3</span> Using tidyverse tools with data in the “tidy data” format</a></li>
 <li><a href="2-3-the-tidy-data-format.html#practice-quiz"><span class="toc-section-number">2.3.4</span> Practice quiz</a></li>
 </ul></li>
-<li class="has-sub"><a href="2-4-designing-templates-for-tidy-data-collection.html#designing-templates-for-tidy-data-collection"><span class="toc-section-number">2.4</span> Designing templates for “tidy” data collection</a><ul>
+<li><a href="2-4-designing-templates-for-tidy-data-collection.html#designing-templates-for-tidy-data-collection"><span class="toc-section-number">2.4</span> Designing templates for “tidy” data collection</a>
+<ul>
 <li><a href="2-4-designing-templates-for-tidy-data-collection.html#creating-the-rules-for-collecting-data-in-the-same-time-each-time"><span class="toc-section-number">2.4.1</span> Creating the rules for collecting data in the same time each time</a></li>
 <li><a href="2-4-designing-templates-for-tidy-data-collection.html#subsection-1"><span class="toc-section-number">2.4.2</span> Subsection 1</a></li>
 <li><a href="2-4-designing-templates-for-tidy-data-collection.html#dont-repeat-yourself"><span class="toc-section-number">2.4.3</span> Don’t Repeat Yourself!</a></li>
@@ -73,7 +85,8 @@
 <li><a href="2-4-designing-templates-for-tidy-data-collection.html#scripts-and-automated-reports-as-simple-pipelines"><span class="toc-section-number">2.4.6</span> Scripts and automated reports as simple pipelines</a></li>
 <li><a href="2-2-principles-and-power-of-structured-data-formats.html#applied-exercise"><span class="toc-section-number">2.4.7</span> Applied exercise</a></li>
 </ul></li>
-<li class="has-sub"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#example-creating-a-template-for-tidy-data-collection"><span class="toc-section-number">2.5</span> Example: Creating a template for “tidy” data collection</a><ul>
+<li><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#example-creating-a-template-for-tidy-data-collection"><span class="toc-section-number">2.5</span> Example: Creating a template for “tidy” data collection</a>
+<ul>
 <li><a href="2-4-designing-templates-for-tidy-data-collection.html#subsection-1"><span class="toc-section-number">2.5.1</span> Subsection 1</a></li>
 <li><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#subsection-2"><span class="toc-section-number">2.5.2</span> Subsection 2</a></li>
 <li><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#example-datasets"><span class="toc-section-number">2.5.3</span> Example datasets</a></li>
@@ -83,7 +96,8 @@
 <li><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#examples-of-how-tidy-data-can-be-easily-analyzed-visualized"><span class="toc-section-number">2.5.7</span> Examples of how “tidy” data can be easily analyzed / visualized</a></li>
 <li><a href="2-1-separating-data-recording-and-analysis.html#discussion-questions"><span class="toc-section-number">2.5.8</span> Discussion questions</a></li>
 </ul></li>
-<li class="has-sub"><a href="2-6-power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files.html#power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files"><span class="toc-section-number">2.6</span> Power of using a single structured ‘Project’ directory for storing and tracking research project files</a><ul>
+<li><a href="2-6-power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files.html#power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files"><span class="toc-section-number">2.6</span> Power of using a single structured ‘Project’ directory for storing and tracking research project files</a>
+<ul>
 <li><a href="2-6-power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files.html#organizing-project-files-through-the-file-system"><span class="toc-section-number">2.6.1</span> Organizing project files through the file system</a></li>
 <li><a href="2-6-power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files.html#organizing-files-within-a-project-directory"><span class="toc-section-number">2.6.2</span> Organizing files within a project directory</a></li>
 <li><a href="2-6-power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files.html#using-rstudio-projects-with-project-file-directories"><span class="toc-section-number">2.6.3</span> Using RStudio Projects with project file directories</a></li>
@@ -91,28 +105,33 @@
 <li><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#subsection-2"><span class="toc-section-number">2.6.5</span> Subsection 2</a></li>
 <li><a href="2-3-the-tidy-data-format.html#practice-quiz"><span class="toc-section-number">2.6.6</span> Practice quiz</a></li>
 </ul></li>
-<li class="has-sub"><a href="2-7-creating-project-templates.html#creating-project-templates"><span class="toc-section-number">2.7</span> Creating ‘Project’ templates</a><ul>
+<li><a href="2-7-creating-project-templates.html#creating-project-templates"><span class="toc-section-number">2.7</span> Creating ‘Project’ templates</a>
+<ul>
 <li><a href="2-7-creating-project-templates.html#making-an-existing-file-directory-an-rstudio-project"><span class="toc-section-number">2.7.1</span> Making an existing file directory an RStudio Project</a></li>
 <li><a href="2-7-creating-project-templates.html#making-an-rstudio-project-template"><span class="toc-section-number">2.7.2</span> Making an RStudio Project Template</a></li>
 <li><a href="2-1-separating-data-recording-and-analysis.html#discussion-questions"><span class="toc-section-number">2.7.3</span> Discussion questions</a></li>
 </ul></li>
-<li class="has-sub"><a href="2-8-example-creating-a-project-template.html#example-creating-a-project-template"><span class="toc-section-number">2.8</span> Example: Creating a ‘Project’ template</a><ul>
+<li><a href="2-8-example-creating-a-project-template.html#example-creating-a-project-template"><span class="toc-section-number">2.8</span> Example: Creating a ‘Project’ template</a>
+<ul>
 <li><a href="2-4-designing-templates-for-tidy-data-collection.html#subsection-1"><span class="toc-section-number">2.8.1</span> Subsection 1</a></li>
 <li><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#subsection-2"><span class="toc-section-number">2.8.2</span> Subsection 2</a></li>
 <li><a href="2-2-principles-and-power-of-structured-data-formats.html#applied-exercise"><span class="toc-section-number">2.8.3</span> Applied exercise</a></li>
 </ul></li>
-<li class="has-sub"><a href="2-9-harnessing-version-control-for-transparent-data-recording.html#harnessing-version-control-for-transparent-data-recording"><span class="toc-section-number">2.9</span> Harnessing version control for transparent data recording</a><ul>
+<li><a href="2-9-harnessing-version-control-for-transparent-data-recording.html#harnessing-version-control-for-transparent-data-recording"><span class="toc-section-number">2.9</span> Harnessing version control for transparent data recording</a>
+<ul>
 <li><a href="2-9-harnessing-version-control-for-transparent-data-recording.html#what-is-version-control"><span class="toc-section-number">2.9.1</span> What is version control?</a></li>
 <li><a href="2-9-harnessing-version-control-for-transparent-data-recording.html#recording-data-in-the-laboratoryfrom-paper-to-computers"><span class="toc-section-number">2.9.2</span> Recording data in the laboratory—from paper to computers</a></li>
 <li><a href="2-1-separating-data-recording-and-analysis.html#discussion-questions"><span class="toc-section-number">2.9.3</span> Discussion questions</a></li>
 </ul></li>
-<li class="has-sub"><a href="2-10-enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms.html#enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms"><span class="toc-section-number">2.10</span> Enhance the reproducibility of collaborative research with version control platforms</a><ul>
+<li><a href="2-10-enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms.html#enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms"><span class="toc-section-number">2.10</span> Enhance the reproducibility of collaborative research with version control platforms</a>
+<ul>
 <li><a href="2-10-enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms.html#git-and-github-features"><span class="toc-section-number">2.10.1</span> git and GitHub features</a></li>
 <li><a href="2-4-designing-templates-for-tidy-data-collection.html#subsection-1"><span class="toc-section-number">2.10.2</span> Subsection 1</a></li>
 <li><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#subsection-2"><span class="toc-section-number">2.10.3</span> Subsection 2</a></li>
 <li><a href="2-1-separating-data-recording-and-analysis.html#discussion-questions"><span class="toc-section-number">2.10.4</span> Discussion questions</a></li>
 </ul></li>
-<li class="has-sub"><a href="2-11-using-git-and-gitlab-to-implement-version-control.html#using-git-and-gitlab-to-implement-version-control"><span class="toc-section-number">2.11</span> Using git and GitLab to implement version control</a><ul>
+<li><a href="2-11-using-git-and-gitlab-to-implement-version-control.html#using-git-and-gitlab-to-implement-version-control"><span class="toc-section-number">2.11</span> Using git and GitLab to implement version control</a>
+<ul>
 <li><a href="2-11-using-git-and-gitlab-to-implement-version-control.html#how-to-use-version-control"><span class="toc-section-number">2.11.1</span> How to use version control</a></li>
 <li><a href="2-11-using-git-and-gitlab-to-implement-version-control.html#leveraging-git-and-github-as-a-project-director"><span class="toc-section-number">2.11.2</span> Leveraging git and GitHub as a project director</a></li>
 <li><a href="2-11-using-git-and-gitlab-to-implement-version-control.html#leveraging-git-and-github-as-a-scientist-who-programs"><span class="toc-section-number">2.11.3</span> Leveraging git and GitHub as a scientist who programs</a></li>
@@ -120,8 +139,10 @@
 <li><a href="2-2-principles-and-power-of-structured-data-formats.html#applied-exercise"><span class="toc-section-number">2.11.5</span> Applied exercise</a></li>
 </ul></li>
 </ul></li>
-<li class="has-sub"><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a><ul>
-<li class="has-sub"><a href="3-1-principles-and-benefits-of-scripted-pre-processing-of-experimental-data.html#principles-and-benefits-of-scripted-pre-processing-of-experimental-data"><span class="toc-section-number">3.1</span> Principles and benefits of scripted pre-processing of experimental data</a><ul>
+<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a>
+<ul>
+<li><a href="3-1-principles-and-benefits-of-scripted-pre-processing-of-experimental-data.html#principles-and-benefits-of-scripted-pre-processing-of-experimental-data"><span class="toc-section-number">3.1</span> Principles and benefits of scripted pre-processing of experimental data</a>
+<ul>
 <li><a href="3-1-principles-and-benefits-of-scripted-pre-processing-of-experimental-data.html#what-is-pre-processing"><span class="toc-section-number">3.1.1</span> What is pre-processing?</a></li>
 <li><a href="3-1-principles-and-benefits-of-scripted-pre-processing-of-experimental-data.html#approaches-to-simple-preprocessing-tasks"><span class="toc-section-number">3.1.2</span> Approaches to simple preprocessing tasks</a></li>
 <li><a href="3-1-principles-and-benefits-of-scripted-pre-processing-of-experimental-data.html#approaches-to-more-complex-preprocessing-tasks"><span class="toc-section-number">3.1.3</span> Approaches to more complex preprocessing tasks</a></li>
@@ -129,12 +150,14 @@
 <li><a href="3-1-principles-and-benefits-of-scripted-pre-processing-of-experimental-data.html#potential-quotes"><span class="toc-section-number">3.1.5</span> Potential quotes</a></li>
 <li><a href="2-1-separating-data-recording-and-analysis.html#discussion-questions"><span class="toc-section-number">3.1.6</span> Discussion questions</a></li>
 </ul></li>
-<li class="has-sub"><a href="3-2-introduction-to-scripted-data-pre-processing-in-r.html#introduction-to-scripted-data-pre-processing-in-r"><span class="toc-section-number">3.2</span> Introduction to scripted data pre-processing in R</a><ul>
+<li><a href="3-2-introduction-to-scripted-data-pre-processing-in-r.html#introduction-to-scripted-data-pre-processing-in-r"><span class="toc-section-number">3.2</span> Introduction to scripted data pre-processing in R</a>
+<ul>
 <li><a href="2-4-designing-templates-for-tidy-data-collection.html#subsection-1"><span class="toc-section-number">3.2.1</span> Subsection 1</a></li>
 <li><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#subsection-2"><span class="toc-section-number">3.2.2</span> Subsection 2</a></li>
 <li><a href="2-2-principles-and-power-of-structured-data-formats.html#applied-exercise"><span class="toc-section-number">3.2.3</span> Applied exercise</a></li>
 </ul></li>
-<li class="has-sub"><a href="3-3-simplify-scripted-pre-processing-through-rs-tidyverse-tools.html#simplify-scripted-pre-processing-through-rs-tidyverse-tools"><span class="toc-section-number">3.3</span> Simplify scripted pre-processing through R’s ‘tidyverse’ tools</a><ul>
+<li><a href="3-3-simplify-scripted-pre-processing-through-rs-tidyverse-tools.html#simplify-scripted-pre-processing-through-rs-tidyverse-tools"><span class="toc-section-number">3.3</span> Simplify scripted pre-processing through R’s ‘tidyverse’ tools</a>
+<ul>
 <li><a href="3-3-simplify-scripted-pre-processing-through-rs-tidyverse-tools.html#limitations-of-object-oriented-programming"><span class="toc-section-number">3.3.1</span> Limitations of object-oriented programming</a></li>
 <li><a href="3-3-simplify-scripted-pre-processing-through-rs-tidyverse-tools.html#the-tidyverse-approach"><span class="toc-section-number">3.3.2</span> The “tidyverse” approach</a></li>
 <li><a href="3-3-simplify-scripted-pre-processing-through-rs-tidyverse-tools.html#how-to-tidyverse"><span class="toc-section-number">3.3.3</span> How to “tidyverse”</a></li>
@@ -142,13 +165,15 @@
 <li><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#subsection-2"><span class="toc-section-number">3.3.5</span> Subsection 2</a></li>
 <li><a href="2-3-the-tidy-data-format.html#practice-quiz"><span class="toc-section-number">3.3.6</span> Practice quiz</a></li>
 </ul></li>
-<li class="has-sub"><a href="3-4-complex-data-types-in-experimental-data-pre-processing.html#complex-data-types-in-experimental-data-pre-processing"><span class="toc-section-number">3.4</span> Complex data types in experimental data pre-processing</a><ul>
+<li><a href="3-4-complex-data-types-in-experimental-data-pre-processing.html#complex-data-types-in-experimental-data-pre-processing"><span class="toc-section-number">3.4</span> Complex data types in experimental data pre-processing</a>
+<ul>
 <li><a href="2-4-designing-templates-for-tidy-data-collection.html#subsection-1"><span class="toc-section-number">3.4.1</span> Subsection 1</a></li>
 <li><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#subsection-2"><span class="toc-section-number">3.4.2</span> Subsection 2</a></li>
 <li><a href="3-4-complex-data-types-in-experimental-data-pre-processing.html#subsection-3"><span class="toc-section-number">3.4.3</span> Subsection 3</a></li>
 <li><a href="2-3-the-tidy-data-format.html#practice-quiz"><span class="toc-section-number">3.4.4</span> Practice quiz</a></li>
 </ul></li>
-<li class="has-sub"><a href="3-5-complex-data-types-in-r-and-bioconductor.html#complex-data-types-in-r-and-bioconductor"><span class="toc-section-number">3.5</span> Complex data types in R and Bioconductor</a><ul>
+<li><a href="3-5-complex-data-types-in-r-and-bioconductor.html#complex-data-types-in-r-and-bioconductor"><span class="toc-section-number">3.5</span> Complex data types in R and Bioconductor</a>
+<ul>
 <li><a href="2-4-designing-templates-for-tidy-data-collection.html#subsection-1"><span class="toc-section-number">3.5.1</span> Subsection 1</a></li>
 <li><a href="3-5-complex-data-types-in-r-and-bioconductor.html#exploring-and-extracting-data-from-r-list-data-structures"><span class="toc-section-number">3.5.2</span> Exploring and extracting data from R list data structures</a></li>
 <li><a href="3-5-complex-data-types-in-r-and-bioconductor.html#interfacing-between-object-based-and-tidyverse-workflows"><span class="toc-section-number">3.5.3</span> Interfacing between object-based and tidyverse workflows</a></li>
@@ -156,12 +181,14 @@
 <li><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#subsection-2"><span class="toc-section-number">3.5.5</span> Subsection 2</a></li>
 <li><a href="2-2-principles-and-power-of-structured-data-formats.html#applied-exercise"><span class="toc-section-number">3.5.6</span> Applied exercise</a></li>
 </ul></li>
-<li class="has-sub"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#example-converting-from-complex-to-tidy-data-formats"><span class="toc-section-number">3.6</span> Example: Converting from complex to ‘tidy’ data formats</a><ul>
+<li><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#example-converting-from-complex-to-tidy-data-formats"><span class="toc-section-number">3.6</span> Example: Converting from complex to ‘tidy’ data formats</a>
+<ul>
 <li><a href="2-4-designing-templates-for-tidy-data-collection.html#subsection-1"><span class="toc-section-number">3.6.1</span> Subsection 1</a></li>
 <li><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#subsection-2"><span class="toc-section-number">3.6.2</span> Subsection 2</a></li>
 <li><a href="2-2-principles-and-power-of-structured-data-formats.html#applied-exercise"><span class="toc-section-number">3.6.3</span> Applied exercise</a></li>
 </ul></li>
-<li class="has-sub"><a href="3-7-introduction-to-reproducible-data-pre-processing-protocols.html#introduction-to-reproducible-data-pre-processing-protocols"><span class="toc-section-number">3.7</span> Introduction to reproducible data pre-processing protocols</a><ul>
+<li><a href="3-7-introduction-to-reproducible-data-pre-processing-protocols.html#introduction-to-reproducible-data-pre-processing-protocols"><span class="toc-section-number">3.7</span> Introduction to reproducible data pre-processing protocols</a>
+<ul>
 <li><a href="3-7-introduction-to-reproducible-data-pre-processing-protocols.html#introducing-reproducible-data-pre-processing-protocols"><span class="toc-section-number">3.7.1</span> Introducing reproducible data pre-processing protocols</a></li>
 <li><a href="3-7-introduction-to-reproducible-data-pre-processing-protocols.html#technique-to-create-reproducible-pre-processing-protocols"><span class="toc-section-number">3.7.2</span> Technique to create reproducible pre-processing protocols</a></li>
 <li><a href="3-7-introduction-to-reproducible-data-pre-processing-protocols.html#advantages-of-reproducible-pre-processing-protocols"><span class="toc-section-number">3.7.3</span> Advantages of reproducible pre-processing protocols</a></li>
@@ -169,7 +196,8 @@
 <li><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#subsection-2"><span class="toc-section-number">3.7.5</span> Subsection 2</a></li>
 <li><a href="2-1-separating-data-recording-and-analysis.html#discussion-questions"><span class="toc-section-number">3.7.6</span> Discussion questions</a></li>
 </ul></li>
-<li class="has-sub"><a href="3-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#rmarkdown-for-creating-reproducible-data-pre-processing-protocols"><span class="toc-section-number">3.8</span> RMarkdown for creating reproducible data pre-processing protocols</a><ul>
+<li><a href="3-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#rmarkdown-for-creating-reproducible-data-pre-processing-protocols"><span class="toc-section-number">3.8</span> RMarkdown for creating reproducible data pre-processing protocols</a>
+<ul>
 <li><a href="3-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#rmarkdown"><span class="toc-section-number">3.8.1</span> RMarkdown</a></li>
 <li><a href="3-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#creating-and-rendering-rmarkdown-documents"><span class="toc-section-number">3.8.2</span> Creating and rendering RMarkdown documents</a></li>
 <li><a href="3-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#some-helpful-additional-features-in-rmarkdown"><span class="toc-section-number">3.8.3</span> Some helpful additional features in RMarkdown</a></li>
@@ -179,10 +207,11 @@
 <li><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#subsection-2"><span class="toc-section-number">3.8.7</span> Subsection 2</a></li>
 <li><a href="2-2-principles-and-power-of-structured-data-formats.html#applied-exercise"><span class="toc-section-number">3.8.8</span> Applied exercise</a></li>
 </ul></li>
-<li class="has-sub"><a href="3-9-example-creating-a-reproducible-data-pre-processing-protocol.html#example-creating-a-reproducible-data-pre-processing-protocol"><span class="toc-section-number">3.9</span> Example: Creating a reproducible data pre-processing protocol</a><ul>
+<li><a href="3-9-example-creating-a-reproducible-data-pre-processing-protocol.html#example-creating-a-reproducible-data-pre-processing-protocol"><span class="toc-section-number">3.9</span> Example: Creating a reproducible data pre-processing protocol</a>
+<ul>
 <li><a href="2-4-designing-templates-for-tidy-data-collection.html#subsection-1"><span class="toc-section-number">3.9.1</span> Subsection 1</a></li>
 <li><a href="3-9-example-creating-a-reproducible-data-pre-processing-protocol.html#advice-on-designing-a-pre-processing-protocol"><span class="toc-section-number">3.9.2</span> Advice on designing a pre-processing protocol</a></li>
-<li><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#subsection-2"><span class="toc-section-number">3.9.3</span> Subsection 2</a></li>
+<li><a href="3-9-example-creating-a-reproducible-data-pre-processing-protocol.html#writing-research-protocols"><span class="toc-section-number">3.9.3</span> Writing research protocols</a></li>
 <li><a href="2-3-the-tidy-data-format.html#practice-quiz"><span class="toc-section-number">3.9.4</span> Practice quiz</a></li>
 </ul></li>
 </ul></li>
@@ -193,7 +222,7 @@
 </div>
 <div class="row">
 <div class="col-sm-12">
-<div id="complex-data-types-in-r-and-bioconductor" class="section level2">
+<div id="complex-data-types-in-r-and-bioconductor" class="section level2" number="3.5">
 <h2><span class="header-section-number">3.5</span> Complex data types in R and Bioconductor</h2>
 <p>Many R extension packages for pre-processing experimental data use complex
 (rather than ‘tidy’) data formats within their code, and many output data in
@@ -214,7 +243,7 @@ structures</li>
 <li>Describe what the <em>broom</em> and <em>biobroom</em> R packages can do</li>
 <li>Explain how converting data to a ‘tidy’ format can improve reproducibility</li>
 </ul>
-<div id="subsection-1" class="section level3">
+<div id="subsection-1" class="section level3" number="3.5.1">
 <h3><span class="header-section-number">3.5.1</span> Subsection 1</h3>
 <p>When you are writing scripts in R to work with your code, if you are at a
 point in your pipeline when you can use a “tidyverse” approach, then you will
@@ -223,7 +252,7 @@ work. However, at earlier stages in your preprocessing, you may need to use
 tools that use other data structures. It’s helpful to understand the
 basic building blocks of R data structures, so you can find elements of your
 data in these other, more customized data structures.</p>
-<p>Many R data structures are built on a general structure called a “list”. This
+<p>Many R data structures are built on a general structure called a “list.” This
 data structure is a useful basic general data structure, because it is
 extraordinarily flexible. The list data structure is flexible in two
 important ways: it allows you to include data of different <em>types</em> in the
@@ -251,7 +280,7 @@ Some types of data can be stored using fewer of these <em>bits</em> (<em>bi</em>
 Each measurement of logical data, for example, can be stored in a single bit,
 since it only can take one of two values (0 or 1, for FALSE and TRUE, respectively).
 For character strings, these can be divided into each character in the string
-for storage (for example, “cat” can be stored as “c”, “a”, “t”). There is a set
+for storage (for example, “cat” can be stored as “c,” “a,” “t”). There is a set
 of characters called the ASCII character set that includes the lowercase and
 uppercase of the letters and punctuation sets that you see on a standard
 US keyboard [?], and if the character strings only use these characters, they
@@ -280,7 +309,7 @@ structure provides a bit more flexibility—you can expand into two dimensions,
 rather than one, and you can have different data types in different columns of
 the dataframe (although each column must itself have a single data type).</p>
 <p>The list data structure is much more flexible. It essentially allows you to
-create different “slots”, and you can store any type of data in each of these
+create different “slots,” and you can store any type of data in each of these
 slots. In each slot you can store any of the other types of data structures in
 R—for example, vectors, dataframes, or other lists. You can even store unusual
 things like R <em>environments</em> [?] or <em>pointers</em> that give the directions to where
@@ -502,7 +531,7 @@ state… This property is also used to implement the R6 object-oriented
 programming system…” <span class="citation">(Wickham 2019)</span></p>
 </blockquote>
 </div>
-<div id="exploring-and-extracting-data-from-r-list-data-structures" class="section level3">
+<div id="exploring-and-extracting-data-from-r-list-data-structures" class="section level3" number="3.5.2">
 <h3><span class="header-section-number">3.5.2</span> Exploring and extracting data from R list data structures</h3>
 <p>To feel comfortable exploring your data at any stage during the preprocessing
 steps, you should learn how to investigate and explore data that’s stored
@@ -664,7 +693,7 @@ organically over many years without a single guiding principle. Most of the time
 the distinction between objects and object-oriented objects is not important. But
 here we need to get into the nitty gritty details so we’ll use the terms
 <strong>base objects</strong> and <strong>OO objects</strong> to distinguish them. … Techinally, the difference
-between base and OO objects is that OO objects have a ‘class attribute’.”
+between base and OO objects is that OO objects have a ‘class attribute.’”
 <span class="citation">(Wickham 2019)</span></p>
 </blockquote>
 <blockquote>
@@ -716,7 +745,7 @@ they can change without warning and user code should avoid accessing them
 directly. Instead, all user-accessible slots should be accompanied by a pair
 of <strong>accessors</strong>. If the slot is unique to the class, this can just be a function…
 Typically, however, you’ll define a generic so that multiple classes can used
-the same interface” <span class="citation">(<span class="citeproc-not-found" data-reference-id="wickham2019advancedr"><strong>???</strong></span>)</span></p>
+the same interface” <span class="citation">(<strong>wickham2019advancedr?</strong>)</span></p>
 </blockquote>
 <blockquote>
 <p>“The strictness and formality of S4 make it well suited for large teams. Since more
@@ -742,7 +771,7 @@ S3 is no better, but the lack is less painful because S3 is much simpler.)”
 <span class="citation">(Wickham 2019)</span></p>
 </blockquote>
 </div>
-<div id="interfacing-between-object-based-and-tidyverse-workflows" class="section level3">
+<div id="interfacing-between-object-based-and-tidyverse-workflows" class="section level3" number="3.5.3">
 <h3><span class="header-section-number">3.5.3</span> Interfacing between object-based and tidyverse workflows</h3>
 <p>The tidyverse approach in R is based on keeping data in a dataframe structure.
 By keeping this common structure, the tidyverse allows for straightforward but
@@ -800,7 +829,7 @@ structure of the list, you can assign these specific pieces to their own R objec
 using typical R assignment (e.g., with the <em>gets arrow</em>, <code>&lt;-</code>, or with <code>=</code>, depending
 on your preferred R programming style). …</p>
 </div>
-<div id="extras" class="section level3">
+<div id="extras" class="section level3" number="3.5.4">
 <h3><span class="header-section-number">3.5.4</span> Extras</h3>
 <p>[Comparison of complexity of biological systems versus complexity of code and
 algorithms for data pre-processing—for the later, nothing is unknowable or even
@@ -812,7 +841,7 @@ are all there if and when you want to dig to figure out what’s going on.]</p>
 <p>[There are ways to fully package up and save the computer environment used to
 run a pipeline of pre-processing and analysis, including any system settings,
 all different software used in analysis steps, and so on. Some of the approaches
-that are being explored for this include the use of “containers”, including
+that are being explored for this include the use of “containers,” including
 Docker containers. This does allow, typically, for full reproducibility of
 the workflow. However, this approach isn’t very proactive in emphasizing the
 robustness of a workflow or its comprehensibility to others—instead, it
@@ -825,13 +854,13 @@ observed that too often it is. Too many OO designs are spaghetti-like tangles of
 is-a and has-a relationships, or feature thick layers of glue in which many of the
 objects seem to exist simply to hold places in a steep-sided pyramid of abstractions.
 Such designs are the opposite of transparent; they are (notoriously) opaque and
-difficult to debug.” <span class="citation">(Raymond 2003)</span></p>
+difficult to debug.” <span class="citation">(E. S. Raymond 2003)</span></p>
 </blockquote>
 <blockquote>
 <p>“Unix programmers are the original zealots about modularity, but tend to go about it
 in a quiter way [that with OOP]. Keeping glue layers thin is part of it; more generally,
 our tradition teaches us to build lower, hugging the ground with algorithms and structures
-that are designed to be simple and transparent.” <span class="citation">(Raymond 2003)</span></p>
+that are designed to be simple and transparent.” <span class="citation">(E. S. Raymond 2003)</span></p>
 </blockquote>
 <blockquote>
 <p>“A <em>standard</em> is a precise and detailed description of how some artifact is built
@@ -1477,12 +1506,520 @@ data (e.g., if ranges correspond to alignments, data like mapping quality and th
 number of gaps). … the union of genomic location with any type of data is what makes
 <code>GRanges</code> so pwoerful.” <span class="citation">(Buffalo 2015)</span></p>
 </blockquote>
+<p>Some object classes in BioConductor:</p>
+<ul>
+<li><code>eSet</code> from <code>Biobase</code></li>
+<li><code>Sequence</code> from <code>IRanges</code></li>
+<li><code>MAlist</code> from <code>limma</code></li>
+<li><code>ExpressionSet</code> from <code>Biobase</code></li>
+</ul>
+<p>You can use the <code>getSlots</code> function with S4 objects to see all the
+slots within the object.</p>
+<blockquote>
+<p>“Methods and classes in the S language are essentially programming concepts to
+enable good organization of functions and of general objects, respectively.”
+<span class="citation">(Chambers 2006)</span></p>
+</blockquote>
+<blockquote>
+<p>“Programming in R starts out usually as writing functions, at least once we
+get past the strict cut-and-paste stage. Functions are the actions of the
+language; calls to them express what the user wants to happen. The arguments to
+the functions and the values returned by function calls are the objects. These
+objects represent everything we deal with. Actions create new objects (such as
+summaries and models) or present the information in the objects (by plots,
+printed summaries, or interfaces to other software). R is a functional,
+object-based system where users program to extend the capacity of the system in
+terms of new functionality and new kinds of objects.” <span class="citation">(Chambers 2006)</span></p>
+</blockquote>
+<blockquote>
+<p>“Languages to which the object-oriented programming (OOP) term is typically
+applied mostly support what might better be called <em>class</em>-oriented programming,
+well-known examples being C++ and Java. In these languages the essential
+programming unit is the class definition. Objects are generated as instances of
+a class and computations on the objects consist of <em>invoking methods on</em> that
+object. Depending on how strict the language is, all or most of the computations
+must be expressed in this form. Method invocation is an operator, operating on
+an instance of a class. Software organization is essentially simple and
+hierarchical, in the sense that all methods are defined as part of a particular
+class. That’s not how S works; as mentioned, the first and most important
+programming unit is the function. From the user’s perspective, it’s all done by
+calling functions (even if some of the functions are hidden in the form of
+operators). Methods and classes provide not class-oriented programming but
+function- and class-oriented programming. It’s a richer view, but also a more
+complicated one.” <span class="citation">(Chambers 2006)</span></p>
+</blockquote>
+<blockquote>
+<p>“A generic function will collect or <em>cache</em> all the methods for that function
+belonging to all the R packages that have been loaded in the session. When the
+function is called, the R evaluator then <em>selects</em> a method from those available,
+by examining how well different methods match the actual arguments in the call.”
+<span class="citation">(Chambers 2006)</span></p>
+</blockquote>
+<blockquote>
+<p>“From the users’ view, the generic function has (or at least should have) a
+natural definition in terms of what it is intended to do: <code>plot()</code> displays
+graphics to represent an object or the relation between two objects; arithmetic
+operators such as ‘+’ carry out the corresponding intuitive numerical
+computations or extensions of those. Methods should map those intuitive notions
+naturally and reliably into the concepts represented by the class definitions.”
+<span class="citation">(Chambers 2006)</span></p>
+</blockquote>
+<blockquote>
+<p>“The class definition contains a definition of the slots in objects from the
+class and other information of various kinds, but the most important information
+for the present discussion defines what other classes this class extends; that
+is, the inheritance or to use the most common term, the <em>superclasses</em> of this
+class. In R, the names of the superclasses can be seen as the value of
+<code>extends(thisClass)</code>. By definition, an object from any class can be used in a
+computation designed for any of the superclasses of that class. Therefore, it’s
+precisely the superclasses of the class of an argument that define candidate
+methods in a particular function call.” <span class="citation">(Chambers 2006)</span></p>
+</blockquote>
+<blockquote>
+<p>“Conceptually, a generic function extends the idea of a function in R by
+allowing different methods to be selected corresponding to the classes of the
+objects supplied as arguments in a call to the function.” <span class="citation">(Chambers 2006)</span></p>
+</blockquote>
+<p>The code for different implementations of a method (in other words, different
+ways it will run with new object classes) can come in different R packages.
+This allows a developer to add his or her own applications of methods, suited
+for object classes he or she creates.</p>
+<p>A class defines the structure for a way of storing data. When you create
+an object that follows this structure, it’s an instance of that class.
+The <code>new</code> function is used to create new instances of a class.</p>
+<p>When a generic function determines what code to run based on the class of the
+object, it’s called method dispatch.</p>
+<p>By using the accessor function, instead of <code>@</code>, your code will be more robust
+to changes that the developers make. They will be sensitive to insuring that
+the accessor function for a particular part of the data continues to work
+regardless of changes they make to the structure that is used to store data in
+objects in that class. They will be less committed, however, to keeping the
+same slots, and in the same positions, as they develop the software. The
+“contract” with the user is through the accessor function, in other words,
+rather than through the slot name in the object.</p>
+<blockquote>
+<p>“Bioconductor is an open-source, open-development software project for the
+analysis and comprehension of high-throughput data in genomics and molecular
+biology. The project aims to enable interdisciplinary research, collaboration
+and rapid development of scientific software. Based on the statistical
+programming language R, Bioconductor comprises 934 interoperable packages
+contributed by a large, diverse community of scientists. Packages cover a range
+of bioinformatic and statistical applications. They undergo formal initial
+review and continuous automated testing.” <span class="citation">(Huber et al. 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Bioconductor provides core data structures and methods that enable
+genome-scale analysis of highthroughput data in the context of the rich
+statistical programming environment offered by the R project. It supports many
+types of high-throughput sequencing data (including DNA, RNA, chromatin
+immunoprecipitation, Hi-C, methylomes and ribosome profiling) and associated
+annotation resources; contains mature facilities for microarray analysis; and
+covers proteomic, metabolomic, flow cytometry, quantitative imaging,
+cheminformatic and other high-throughput data. Bioconductor enables the rapid
+creation of workflows combining multiple data types and tools for statistical
+inference, regression, network analysis, machine learning and visualization at
+all stages of a project from data generation to publication.”
+<span class="citation">(Huber et al. 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Bioconductor is also a flexible software engineering environment in which to
+develop the tools needed, and it offers users a framework for efficient learning
+and productive work. The foundations of Bioconductor and its rapid coevolution
+with experimental technologies are based on two motivating principles. The first
+is to provide a compelling user experience. Bioconductor documentation comes at
+three levels: workflows that document complete analyses spanning multiple tools;
+package vignettes that provide a narrative of the intended uses of a particular
+package, including detailed executable code examples; and function manual pages
+with precise descriptions of all inputs and outputs together with working
+examples. In many cases, users ultimately become developers, making their own
+algorithms and approaches available to others. The second is to enable and
+support an active and open scientific community developing and distributing
+algorithms and software in bioinformatics and computational biology. The support
+includes guidance and training on software development and documentation, as
+well as the use of appropriate programming paradigms such as unit testing and
+judicious optimization. A primary goal is the distributed development of
+interoperable software components by scientific domain experts. <strong>In part we
+achieve this by urging the use of common data structures that enable workflows
+integrating multiple data types and disciplines.</strong> To facilitate research and
+innovation, we employ a high-level programming language. This choice yields
+rapid prototyping, creativity, flexibility and reproducibility in a way that
+neither point-and-click software nor a general-purpose programming language can.
+We have embraced R for its scientific and statistical computing capabilities,
+for its graphics facilities and for the convenience of an interpreted language.
+R also interfaces with low-level languages including C and C++ for
+computationally intensive operations, Java for integration with enterprise
+software and JavaScript for interactive web-based applications and reports.”
+<span class="citation">(Huber et al. 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“<strong>Case study: high-throughput sequencing data analysis.</strong> Analysis of
+large-scale RNA or DNA sequencing data often begins with aligning reads to a
+reference genome, which is followed by interpretation of the alignment patterns.
+Alignment is handled by a variety of tools, whose output typically is delivered
+as a BAM file. The Bioconductor packages Rsamtools and GenomicAlignments provide
+a flexible interface for importing and manipulating the data in a BAM file, for
+instance for quality assessment, visualization, event detection and
+summarization. The regions of interest in such analyses are genes, transcripts,
+enhancers or many other types of sequence intervals that can be identified by
+their genomic coordinates. Bioconductor supports representation and analysis of
+genomic intervals with a ‘Ranges’ infrastructure that encompasses data
+structures, algorithms and utilities including arithmetic functions, set
+operations and summarization (Fig. 1). It consists of several packages
+including IRanges, GenomicRanges, GenomicAlignments, GenomicFeatures,
+VariantAnnotation and rtracklayer. The packages are frequently updated for
+functionality, performance and usability. <strong>The Ranges infrastructure was designed
+to provide tools that are convenient for end users analyzing data while
+retaining flexibility to serve as a foundation for the development of more
+complex and specialized software. We have formalized the data structures to the
+point that they enable interoperability, but we have also made them adaptable to
+specific use cases by allowing additional, less formalized userdefined data
+components such as application-defined annotation.</strong> Workflows can differ vastly
+depending on the specific goals of the investigation, but a common pattern is
+reduction of the data to a defined set of ranges in terms of quantitative and
+qualitative summaries of the alignments at each of the sites. Examples include
+detecting coverage peaks or concentrations in chromatin
+immunoprecipitation–sequencing, counting the number of cDNA fragments that match
+each transcript or exon (RNA-seq) and calling DNA sequence variants (DNA-seq).
+Such summaries can be stored in an instance of the class GenomicRanges.”
+<span class="citation">(Huber et al. 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“To facilitate the analysis of experiments and studies with multiple samples,
+Bioconductor defines the SummarizedExperiment class. The computed summaries for
+the ranges are compiled into a rectangular array whose rows correspond to the
+ranges and whose columns correspond to the different samples .. . For a typical
+experiment, there can be tens of thousands to millions of ranges and from a
+handful to hundreds of samples. The array elements do not need to be single
+numbers: the summaries can be multivariate. The SummarizedExperiment class also
+stores metadata on the rows and columns. Metadata on the samples usually include
+experimental or observational covariates as well as technical information such
+as processing dates or batches, file paths, etc. Row metadata comprise the start
+and end coordinates of each feature and the identifier of the containing
+polymer, for example, the chromosome name. Further information can be inserted,
+such as gene or exon identifiers, references to external databases, reagents,
+functional classifications of the region (e.g., from efforts such as the
+Encyclopedia of DNA Elements (ENCODE)) or genetic associations (e.g., from
+genome-wide association studies, the study of rare diseases, or cancer
+genetics). The row metadata aid integrative analysis, for example, when matching
+two experiments according to overlap of genomic regions of interest. Tight
+coupling of metadata with the data reduces opportunities for clerical errors
+during reordering or subsetting operations.” <span class="citation">(Huber et al. 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“The integrative data container SummarizedExperiment. Its assays component is
+one or several rectangular arrays of equivalent row and column dimensions. Rows
+correspond to features, and columns to samples. The component rowData stores
+metadata about the features, including their genomic ranges. The colData
+component keeps track of samplelevel covariate data. The exptData component
+carries experiment-level information, including MIAME (minimum information about
+a microarray experiment)-structured metadata. The R expressions exemplify how to
+access components. For instance, provided that these metadata were recorded,
+rowData(se)<span class="math inline">\(entrezId returns the NCBI Entrez Gene identifiers of the features, and se\)</span>tissue returns the tissue descriptions for the samples. Range-based
+operations, such as %in%, act on the rowData to return a logical vector that
+selects the features lying within the regions specified by the data object CNVs.
+Together with the bracket operator, such expressions can be used to subset a
+SummarizedExperiment to a focused set of genes and tissues for downstream
+analysis.” <span class="citation">(Huber et al. 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“A genomics-specific visualization type is plots along genomic coordinates.
+There are several packages that create attractive displays of along-genome data
+tracks, including Gviz and ggbio … <strong>These packages operate directly on common
+Bioconductor data structures and thus integrate with available data manipulation
+and modeling functionality.</strong> A basic operation underlying such visualizations
+is computing with genomic regions, and the biovizBase package provides a bridge
+between the Ranges infrastructure and plotting packages.”
+<span class="citation">(Huber et al. 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Genomic data set sizes sometimes exceed what can be managed with standard
+in-memory data models, and then tools from high performance computing come into
+play. An example is the use of rhdf5—an interface to the HDF5 large data
+management system (<a href="http://www.hdfgroup.org/HDF5" class="uri">http://www.hdfgroup.org/HDF5</a>)—by the h5vc package to slice
+large, genome-size data cubes into chunks that are amenable for rapid
+interactive computation and visualization. Both ggbio and Gviz issue
+range-restricted queries to file formats including BAM, BGZIP/Tabix and BigWig
+via Rsamtools and rtracklayer to quickly integrate data from multiple files over
+a specific genomic region.” <span class="citation">(Huber et al. 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Developers are constantly updating their packages to extend capabilities, improve performance, fix bugs and enhance documentation. These changes are introduced into the development branch of
+Bioconductor and released to end users every 6 months; changes are
+tracked using a central, publicly readable Subversion software repository, so details of all changes are fully accessible. Simultaneously,
+R itself is continually changing, typically around performance
+enhancements and increased functionality. Owing to this dynamic
+environment, all packages undergo a daily testing procedure. Testing
+is fully automated and ensures that all code examples in the package documentation, as well as further unit tests, run without error.
+Successful completion of the testing will result in the package being
+built and presented to the community.” <span class="citation">(Huber et al. 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Interoperability between software components for different stages and types
+of analysis is essential to the success of Bioconductor. Interoperability is
+established through the definition of common data structures that package
+authors are expected to use … Technically, Bioconductor’s common data
+structures are implemented as classes in the S4 object-oriented system of the R
+language. In this manner, useful software concepts including encapsulation,
+abstraction of interface from implementation, polymorphism, inheritance and
+reflection are directly available. It allows core tasks such as matching of
+sample data and metadata to be adopted across disciplines, and it provides a
+foundation on which community development is based. It is instructive to compare
+such a representation to popular alternatives in bioinformatics: file-based data
+format conventions and primitive data structures of a language such as matrices
+or spreadsheet tables. With file-based formats, operations such as subsetting or
+data transformation can be tedious and error prone, and the serialized nature of
+files discourages operations that require a global view of the data. In either
+case, validity checking and reflection cannot rely on preformed or standardized
+support and need to be programmed from scratch again for every convention—or are
+missing altogether. As soon as the data for a project are distributed in
+multiple tables or files, the alignment of data records or the consistency of
+identifiers is precarious, and interoperability is hampered by having to
+manipulate disperse, loosely coordinated data collections.”
+<span class="citation">(Huber et al. 2015)</span></p>
+</blockquote>
+<p>Some of the most important data structures in Bioconductor are <span class="citation">(Huber et al. 2015)</span> (from Table 2 in this reference):</p>
+<ul>
+<li><code>ExpressionSet</code> (<code>Biobase</code> package)</li>
+<li><code>SummarizedExperiment</code> (<code>GenomicRanges</code> package)</li>
+<li><code>GRanges</code> (<code>GenomicRanges</code> package)</li>
+<li><code>VCF</code> (<code>VariantAnnotation</code> package)</li>
+<li><code>VRanges</code> (<code>VariantAnnotation</code> package)</li>
+<li><code>BSgenome</code> (<code>BSgenome</code> package)</li>
+</ul>
+<blockquote>
+<p>“For Bioconductor, which provides tools in R for analyzing genomic data,
+interoperability was essential to its success. We defined a handful of data
+structures that we expected people to use. For instance, if everybody puts their
+gene expression data into the same kind of box, it doesn’t matter how the data
+came about, but that box is the same and can be used by analytic tools. Really,
+I think it’s data structures that drive interoperability.” — Robert Gentlemen
+in <span class="citation">(Altschul et al. 2013)</span></p>
+</blockquote>
+<blockquote>
+<p>“I have found that real hardcore software engineers tend to worry about
+problems that are just not existent in our space. They keep wanting to write
+clean, shiny software, when you know that the software that you’re using today
+is not the software you’re going to be using this time next year.” — Robert
+Gentlemen in <span class="citation">(Altschul et al. 2013)</span></p>
+</blockquote>
 <hr />
+<p>Bioconductor is used for many of the R packages for working with genomic and
+other bioinformatic data. One characteristic of packages on Bioconductor is that
+they make heavy use of a system for object-oriented programming in R. There
+are several systems for object-oriented programming in R. Bioconductor relies
+heavily on one called S4.</p>
+<p>Object-oriented programming allows developers to create <em>methods</em>. These are
+functions in R that first check the class of the object that is input, and then
+run different code for different functions. For example, <code>summary</code> is one of these
+method-style functions. If you call the summary function with the input as a
+numeric vector, one set of code will be run: you will get numeric summaries of
+the values in that vector, including the minimum, maximum and median. However,
+if you run the same function, <code>summary</code>, on a dataframe with columns of factor
+data, the output will be a small summary for each column, giving the levels of
+the factor in each column and the number of column values in the most common
+of those levels.</p>
+<p>With this system of writing methods, the same function call can be used for
+many different object types. By contrast, other approaches to programming might
+constrain a function to work with a single class of object—for example, a
+function might work on a dataframe and only a dataframe, not a vector, matrix,
+or other more complex types of objects.</p>
+<p>These methods often have very names. Examples of these method-style functions
+include <code>plot</code>, <code>summary</code>, <code>head</code> [?], [others]. You can try running these
+method-style functions on just about any object class that you’re using to
+store your data, and chances are good that it will work on the object and
+output something interesting.</p>
+<p>The S4 system of object-oriented programming in R allows for something
+called <em>inheritance</em>. [More on this.]</p>
+<p>As you use R with the Bioconductor packages, you often might not notice
+how much S4 objects are being used “under the hood,” as you pre-process
+and analyze data. By contrast, you may have learned the “tidyverse” approach
+in R, which is a powerful general approach for working with data. The
+tidyverse approach is centered on the object class is predominated uses,
+the dataframe, and so a lot of attention is given to thinking about that
+style of data storage in an object when learning the approach.</p>
+<p>A pre-processing pipeline in Bioconductor might take the data through a
+number of different object classes over the course of the pipeline.
+Different functions within a Bioconductor package may manage this
+progression without you being very aware of it. For example, one function
+may read the data from the file format for the equipment and move the
+data directly into a certain complex object class, which a second function
+might input this object class, do some actions on the data, and then output
+the result in a different class.</p>
+<p>Generally, if the functions in a pipeline handle these object transitions
+gracefully, you may not feel the need to dig more deeply into the object
+types. However, ideally you should feel comfortable taking a peek at your
+data at any step in the process. This can include seeing snippets of the data
+in its object (e.g., the first few elements in each component of the data
+at that stage) and also feel comfortable visualizing parts of the data in
+simple ways.</p>
+<p>This is certainly possible even when data are stored in complex or unfamiliar
+object classes. However, it’s a bit less natural than exploring your data when
+it’s stored in an object class that you feel very comfortable with. For
+example, most R programmers have several go-to strategies for checking any
+data they have stored in a dataframe. You can develop these same go-to
+strategies for data in more complex object classes once you understand
+a few basics about the S4 system and the object classes created using this
+system.</p>
+<p>First, there are a few methods you can use to figure out what’s in a data
+object. [More on this. <code>str</code>, some on interactive ways to look at objects?]
+Further, most S4 objects will have their own helpfiles [doublecheck], and you
+can use this resource to learn more about what it’s storing and where it puts
+each piece of data. [More on accessing these help files. <code>?ExpressionSet</code>,
+for example.]</p>
+<p>Once you know what’s in your object, there are a few ways that you can pull
+out different elements of the data. One basic way (it’s a bit heavy-handed,
+and best to save for when you’re struggling with other methods) is to
+extract <em>slots</em> from the object using the <code>@</code> symbol. If you have worked much
+with base R, you will be familiar with pulling out elements of more basic object
+classes using <code>$</code>. For example, if you wanted to extract a column named <code>weight</code>
+from a dataframe object called <code>experiment_1</code>, you could do so using
+the syntax <code>experiment_1$weight</code>. The <code>$</code> operator does not work in the same
+way with S4 objects. With these, we say that the elements are stored in different
+<em>slots</em> of the object, and each slot can be extracted using <code>@</code>. So if you had
+an S4 object with data on animal weights stored in a slot called <code>weight</code>, you
+could extract it from an S4 object instanced named <code>experiment_2</code> with
+<code>experiment_2@weight</code>.</p>
+<p>A more elegant approach is to access elements stored in the object using a
+special type of function called an <strong>accessor</strong> function.</p>
+<p>One important object class in Bioconductor is <code>ExpressionSet</code>. This object class
+helps to keep different elements of data from an experiment aligned—for
+example, it helps ensure that higher-level data about each sample is kept
+well-aligned with data on more specific values—like measurements from each
+metabolite feature [? better example? gene expression values for each gene?]
+specific to each sample. The three slots in this object class are <code>pData</code>,
+<code>exprs</code>, and <code>fData</code>. The data in these three slots can be accessed using the
+accessor functions of <code>pData</code>, <code>exprs</code>, and <code>fData</code>.</p>
+<p>Often, the contents of the slots within a Bioconductor class will be a more
+generic object type that you’re familiar with, like a matrix or vector.</p>
+<p>S4 objects can be set to check that the inputs are valid for that object
+class when someone creates a new object of that class. This helps with
+quality control in creating new objects, where these issues can be caught
+early, before functions are run on the object that assume certain characteristics
+of its data.</p>
+<p>Methods are also referred to as generic functions within the S4 system?</p>
+<hr />
+<blockquote>
+<p>“the whole point of OOP is not to have to worry about what is inside an object.
+Objects made on different machines and with different languages should be able to talk to each other”
+— Alan Kay</p>
+</blockquote>
+<p>This idea in object-oriented programming may be very helpful for large,
+multi-developer programming, since different people, or even whole teams could
+develop their parts independently. As long as the teams have all agreed on
+the way that messages will be passed between different objects and parts of the
+code, they could have independence in how they conduct work on their own
+objects. There are rules for how things connect, and independence in how
+each part works. If the rules for connecting different objects are set, then
+this approach allows for immense flexibility in how the code to work with the
+objects on their own can be written and changed, without breaking the whole
+system of code.</p>
+<p>However, the idea of not worrying about what’s inside an object is at odds with
+some basic principles for working with experimental data. Exploratory data
+analysis is a key principle for improving quality control, rigor, and even
+creativity in working with scientific data sets. [More on EDA, including from
+Tukey] EDA requires a researcher to be able to explore the data stored inside
+an object, ideally at any stage along a pipeline of pre-processing and then
+analyzing those data. Therefore, there’s a bit of tension in the S4 approach in
+R, between using a system that allows for powerful development of tools to
+explore data and the fundamental needs of the researcher to access and explore
+their data as they work with it—to “see inside” the objects storing their
+data at every step.</p>
+<p>Objects store data. They are data structures, with certain rules for where they
+store different elements of the data. They also are associated with specific
+functions that work with the way they store the data.</p>
+<blockquote>
+<p>“A programming language serves two related purposes: it provides a vehicle for the programmer to specify actions to be executed and a set of concepts for the programmer to use when thinking about what can be done. The first aspect ideally requires a language that is ‘close to the machine,’ so that all important aspects of a machine are handled simply and efficiently in a way that is reasonably obvious to the programmer. The C language was primarily designed with this in mind. The second aspect ideally requires a language that is ‘close to the problem to be solved’ so that the concepts of a solution can be expressed directly and concisely. The facilities added to C to create C++ were primarily designed with this in mind.”
+— Bjarne Stroustrup, <em>The C++ Programming Language</em>, Addison-Wesley, 1986</p>
+</blockquote>
+<blockquote>
+<p>“The basis for OOP started in the early 1960s. A breakthrough involving
+instances and objects was achieved at MIT with the PDP-1, and the first
+programming language to use objects was Simula 67. It was designed for the
+purpose of creating simulations, and was developed by Kristen Nygaard and
+Ole-Johan Dahl in Norway. They were working on simulations that deal with
+exploding ships, and realized they could group the ships into different
+categories. Each ship type would have its own class, and the class would
+generate its unique behavior and data. Simula was not only responsible for
+introducing the concept of a class, but it also introduced the instance of a
+class. The term ‘object oriented programming’ was first used by Xerox PARC in
+their Smalltalk programming language. The term was used to refer to the process
+of using objects as the foundation for computation. The Smalltalk team was
+inspired by the Simula 67 project, but they designed Smalltalk so that it would
+be dynamic. The objects could be changed, created, or deleted, and this was
+different from the static systems that were commonly used. Smalltalk was also
+the first programming language to introduce the inheritance concept. It is this
+feature that allowed Smalltalk to surpass both Simula 67 and the analog
+programming systems. While these systems were advanced for their time, they did
+not use the inheritance concept.” —
+<a href="http://www.exforsys.com/tutorials/oops-concepts/the-history-of-object-oriented-programming.html" class="uri">http://www.exforsys.com/tutorials/oops-concepts/the-history-of-object-oriented-programming.html</a></p>
+</blockquote>
+<blockquote>
+<p>“Object-oriented programming is first and foremost about objects. Initially
+object-oriented languages were geared toward modeling real world objects so the
+objects in a program corresponded to real world objects. Examples might include:
+1. Simulations of a factory floor–objects represent machines and raw materials
+2. Simulations of a planetary system–objects represent celestial bodies such as
+planets, stars, asteroids, and gas clouds 3. A PC desktop–objects represent
+windows, documents, programs, and folders 4. An operating system–objects
+represent system resources such as the CPU, memory, disks, tapes, mice, and
+other I/O devices”
+<a href="https://www.ephemeralobjects.org/2014/02/03/a-brief-history-of-object-oriented-programming/" class="uri">https://www.ephemeralobjects.org/2014/02/03/a-brief-history-of-object-oriented-programming/</a></p>
+</blockquote>
+<blockquote>
+<p>“The idea with an object is that it advertises the types of data that it will store and the types of operations that it allow to manipulate that data. However, it hides its implementation from the user. For a real world analogy, think of a radio. The purpose of a radio is to play the program content of radio stations (actually translate broadcast signals into sounds that humans can understand). A radio has various dials that allow you to control functions such as the station you are tuned to, the volume, the tone, the bass, the power, and so on. These dials represent the operations that you can use to manipulate the radio. The implementation of the radio is hidden from you. It could be implemented using vacuum tubes or solid state transistors, or some other technology. The point is you do not need to know. The fact that the implementation is hidden from you allows radio manufacturers to upgrade the technology within radios without requiring you to relearn how to use a radio.”
+<a href="https://www.ephemeralobjects.org/2014/02/03/a-brief-history-of-object-oriented-programming/" class="uri">https://www.ephemeralobjects.org/2014/02/03/a-brief-history-of-object-oriented-programming/</a></p>
+</blockquote>
+<blockquote>
+<p>“The set of operations provided by an object is called its <strong>interface</strong>. The
+interface defines both the names of the operations and the behavior of these
+operations. In essence the interface is a contract between the object and the
+program that uses it. The object guarantees that it will provide the advertised
+set of operations and that they will behave in a specified fashion. Any object
+that adheres to this contract can be used interchangeably by the program. Hence
+the implementation of an object can be changed without affecting the behavior of
+a program.”
+<a href="https://www.ephemeralobjects.org/2014/02/03/a-brief-history-of-object-oriented-programming/" class="uri">https://www.ephemeralobjects.org/2014/02/03/a-brief-history-of-object-oriented-programming/</a></p>
+</blockquote>
+<blockquote>
+<p>“An object is not much good if each one must be custom crafted. For example,
+radios would not be nearly as prevalent if each one was handcrafted. What is
+needed is a way to provide a blueprint for an object and a way for a ‘factory’
+to use this blueprint to mass produce objects. Classes provide this mechanism in
+object-oriented programming. A <strong>class</strong> is a factory that is able to mass
+produce objects. The programmer provides a class with a blueprint of the desired
+type of object. A ‘blueprint’ is actually composed of: 1. A declaration of a set
+of variables that the object will possess, 2. A declaration of the set of
+operations that the object will provide, and 3. A set of function definitions
+that implements each of these operations. The set of variables possessed by each
+object are called <strong>instance variables</strong>. The set of operations that the object
+provides are called <strong>methods</strong>. For most practical purposes, a method is like a
+function. When a program wants a new instance of an object, it asks the
+appropriate class to create a new object for it. The class allocates memory to
+hold the object’s instance variables and returns the object to the program. Each
+object knows which class created it so that when an operation is requested for
+that object, it can look up in the class the function that implements that
+operation and call that function.”
+<a href="https://www.ephemeralobjects.org/2014/02/03/a-brief-history-of-object-oriented-programming/" class="uri">https://www.ephemeralobjects.org/2014/02/03/a-brief-history-of-object-oriented-programming/</a></p>
+</blockquote>
+<blockquote>
+<p>“In object-oriented programming, <strong>inheritance</strong> means the inheritance of
+another object’s interface, and possibly its implementation as well. Inheritance
+is accomplished by stating that a new class is a <strong>subclass</strong> of an existing
+class. The class that is inherited from is called the <strong>superclass</strong>. The
+subclass always inherits the superclass’s complete interface. It can extend the
+interface but it cannot delete any operations from the interface. The subclass
+also inherits the superclass’s implementation, or in other words, the functions
+that implement the superclass’s operations. However, the subclass is free to
+define new functions for these operations. This is called <strong>overriding</strong> the
+superclass’s implementation. The subclass can selectively pick and choose which
+functions it overrides. Any functions that are not overridden are inherited.”
+<a href="https://www.ephemeralobjects.org/2014/02/03/a-brief-history-of-object-oriented-programming/" class="uri">https://www.ephemeralobjects.org/2014/02/03/a-brief-history-of-object-oriented-programming/</a></p>
+</blockquote>
 </div>
-<div id="subsection-2" class="section level3">
+<div id="subsection-2" class="section level3" number="3.5.5">
 <h3><span class="header-section-number">3.5.5</span> Subsection 2</h3>
 </div>
-<div id="applied-exercise" class="section level3">
+<div id="applied-exercise" class="section level3" number="3.5.6">
 <h3><span class="header-section-number">3.5.6</span> Applied exercise</h3>
 <ul>
 <li>[Example data in a basic list]</li>
