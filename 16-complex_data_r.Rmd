@@ -1564,6 +1564,233 @@ being 'CD4+'. Note, however, that some cells express CD4 (thus are CD4+)
 but are not actually helper T cells. We start by loading some useful Bioconductor
 packages for flow cytometry, `flowCore` and `flowViz`." [@holmes2018modern]
 
+> "Many datasets consist of several variables measured on the same set of 
+subjects: patients, samples or organisms. For instance, we may have biometric
+characteristics such as height, weight, age as well as clinical variables such 
+as blood pressure, blood sugar, heart rate and genetic data for, say, a 
+thousand patients. The raison d'etre for multivariate analysis is the 
+investigation of connections or associations between the different variables
+measured. Usually the data are reported in a tabular data structure, with one
+row for each subject and one column for each variable. ... in the special 
+case where each of the variables is numeric, ... we can represent the data
+structure as a matrix in R. If the columns of the matrix are independent of 
+each other (unrelated), we can simply study each column separately and do 
+standard 'univariate' statistics on them one by one; there would be no 
+benefit in studying them as a matrix. More often, there will be patterns and
+dependencies. For instance, in the biology of cells, we know that the 
+proliferation rate will influence the expression of many genes simultaneously.
+Studying the expression of 25,000 genes (columns) on many samples (rows) of 
+patient-derived cells, we notice that many of the genes act together; either
+they are positively correlated or they are anti-correlated. We would miss a 
+lot of important information if we were to only study each gene separately. 
+Important connections between genes are detectable only if we consider the 
+data as a whole, each row representing the many measurements made on the 
+same observational unit. However, having 25,000 dimensions of variation to
+consider at once is daunting; [you can] reduce our data to a smaller number
+of the most important dimensions without losing too much information." [@holmes2018modern]
+
+> "RNA-Seq transcriptome data report the number of sequence reads matching 
+each gene [or sub-gene structure, such as exons] in each of several biological
+samples... It is customary in the RNA-Seq field ... to report genes in rows and
+samples in columns. Compared with the other matrices we look at here, this 
+is transposed: rows and columns swapped. Such different conventions easily
+lead to errors, so they are worth paying attention to. [Footnote: 'The
+Bioconductor project tries to help users and developers to avoid such 
+ambiguities by defining data containers in which such conventions are 
+explicitly fixed...']" [@holmes2018modern]
+
+> "**Proteomic profiles:** Here the columns are aligned mass spectroscopy peaks
+or molecules identified through their m/z ratios; the entries in the matrix
+are measured intensities." [@holmes2018modern]
+
+> "... unlike regression, PCA treats all variables equally (to the extent that
+they were preprocessed to have equivalent standard deviations). However, it is 
+still possible to map other continuous variables or categorical factors onto
+plots in order to help interpret the results. Often we have supplementary 
+information on the samples, for example diagnostic lables in the diabetes 
+data or cell types in the T-cell gene expression data. Here we see how we 
+can use such extra variables to inform our interpretation. The best place to 
+store such so-called **metadata** is in approapriate slots of the data object
+(such as in the Bioconductor `SummarizedExperiment` class); the second best
+is in additional columns of the data frame that also contains the numeric 
+data. In practice, such information is often stored in a more or less 
+cryptic manner in the row names of the matrix." [@holmes2018modern]
+
+> "Multivariate data anlayses require 'conscious' preprocessing. After 
+consulting all the means, variances, and one-dimensional histograms, we 
+saw how to rescale and center the data." [@holmes2018modern]
+
+> "Many measurement devices in biotechnology are based on massively parallel
+sampling and counting of molecules. One example is high-throughput DNA sequencing. 
+It's applications fall broadly into two main classes of data output. In the 
+first case, the outputs of interest are the sequences themselves, perhaps
+also their polymorphisms or differences from other sequences seen before. In
+the second case, the sequences themselves are more or less well understood
+(if, say, we have a well-assembled and annotated genome) and our interest 
+is the abundance of different sequence regions in our sample. For instance, 
+in RNA-Seq..., we sequence the RNA molecules found in a population of cells
+or in a tissue. In ChIP-Seq, we sequence DNA regions that are bound to a particular
+RNA-binding protein. In DNA-Seq, we sequence genomic DNA and are interested in 
+the prevalence of genetic variants in heterogeneous populations of cells, for 
+instance the clonal composition of a tumor. In high-throughput chromatin
+conformation capture (HiC) we aim to map the 3D spatial arrangement of 
+DNA. In genetic screens (using, say, RNAi or CRISPR-Cas9 libraries for 
+perturbation and high-throughput sequencing for readout), we're interested
+in the proliferation or survival of cells upon gene knockdown, 
+knockout, or modification. In microbiome analysis, we study the abundance of 
+different microbial species in complex microbial habitats. Ideally, we 
+might want to sequence and count *all* molecules of interest in the sample. 
+Generally this is not possible; the biochemical protocols are not 100%
+efficient, and some molecules or intermediates get lost along the way. 
+Moreover, it's often also not even necessary. Instead, we sequence and
+count a *statistical sample*. The sample size will depend on the complexity of the
+sequence pool assayed; it can go from tens of thousands to billions. This 
+*sampling* nature of the data is important when it comes to analyzing
+them. We hope that the sampling is sufficiently representative for us
+to identify interesting trends and patterns." [@holmes2018modern] 
+
+> "`DESeq2` uses a specialized data container, called `DESeqDataSet`, to 
+store the datasets it works with. Such use of specialized containers---or, 
+in R terminology, classes---is a common principle of the Bioconductor 
+project, as it helps users keep related data together. While this way of 
+doing things requires users to invest a little more time up front to 
+understand the classes, compared with just using basic R data types like 
+matrix and dataframe, it helps in avoiding bugs due to loss of 
+synchronization between related parts of the data. It also enables the 
+abstraction and encapsulation of common operations that could be quite 
+wordy if always expressed in basic terms [footnote: Another advantage is that
+classes can contain validity methods, which make sure that the data always
+fulfill certain expectations, for instance, that the counts are positive
+integers, or that the columns of the counts matrix align with the rows
+of the sample annotation dataframe.] `DESeqDataSet` is an extension of the
+class `SummarizedExperiment` in Bioconductor. The `SummarizedExperiment` class
+is also used by many other packages, so learning to work with it will 
+enable you to use a large range of tools. We will use the constructor function
+`DESeqDataSetFromMatrix` to create a `DESeqDataSet` from the count data matrix 
+... and the sample annotation dataframe ... The `SummarizedExperiment` class---and
+therefore `DESeqDataSet`---also contains facilities for storing annotations
+of the rows of the count matrix." [@holmes2018modern]
+
+> "We introduced the R data.frame class, which allows us to combine 
+heterogeneous data types: categorical factors and continuous measurements. 
+Each row of the dataframe corresponds to an object, or a record, and the 
+columns are the different variables or features. Extra information about
+sample batches, dates of measurement and different protocols is often 
+misnamed metadata. This information is actually real data that needs to 
+be integrated into analyses. Here we show an example of an analysis that was
+done by Holmes et al. (2011) on bacterial abundance data from Phylochip microarrays.
+The experiment was designed to detect differences between a group of healthy
+rats and a group that had irritable bowel disease. This example shows how
+nuisance batch effects can become apparent in the analysis of experimental
+data. It illustrates why best practices in data analysis are sequential and
+why it is better to analyze data as they are collected---to adjust for severe
+problems in the experimental design as they occur---instead of trying to deal
+with deficiencies post mortem. When data collection started on this project, data
+for days 1 and 2 were delivered and we made the plot ... This shows a definite
+day effect. When investigating the source of this effect, we found that both the 
+protocol and the array were different on days 1 and 2. This leads to uncertainty
+about the source of variation; we call this confounding of effects."
+[@holmes2018modern]
+
+> "Many programs and workflows in biological sequence analysis or assays 
+separate the environmental and contextual information they call metadata
+from the assays or sequence read numbers; we discourage this practice, as the 
+exact connections between the samples and covariates are important. The lost
+connections between the assays and covariates makes later analyses impossible. 
+Covariates such as clinical history, time, batch and location are important
+and should be considered components of the data." [@holmes2018modern]
+
+> "The data provide and example of an awkward way of combining bach information 
+from the actual data. The day information has been combined with the array 
+data and encoded as a number and could be confused with a continuous variable. 
+We will see in the next section a better practice for storing and manipulating
+heterogeneous data using a Bioconductor container called `SummarizedExperiment`"
+[@holmes2018modern]
+
+> "A more rational way of combining the batch and treatment information into
+compartments of a composite object is to use `SummarizedExperiment` classes. 
+These include special slots for the assay(s) where rows represent features
+of interest (e.g., genes, transcripts, exons, etc.) and columns represent samples.
+Supplementary information about the features can be stored in a `DataFrame`
+object, accessible using the function `rowData`. Each row of the `DataFrame` 
+provides informaiton on the feature in the corresponding row of the 
+`SummarizedExperiment` object. ... This is the best way to keep all the
+relevant data together. It will also enable you to quickly filter the 
+data while keeping all the information aligned properly. ...
+Columns of the `DataFrame` represent different attributes of the features
+of interest, e.g., gene or transcript IDs. This is an example of a hybrid
+data container from a single-cell experiment..." [@holmes2018modern]
+
+> "The success of the tidyverse attests to the power of its underlying ideas and
+the quality of its implementation. ... Nevertheless, dataframes in the long
+format are not a panacea. ... When we write a function that expects to work on
+an object like `xldf`, we have no guarantee that the column `probe` does indeed
+contain valid probe identifiers, or that such a column even exists. There is not
+even a proper way to express programmatically what 'an object like `xldf` means
+in the tidyverse. Object-oriented (OO) programming, and its incarnation S4 in R,
+solves such questions. For instance, the above-mentioned checks could be
+performed by a `validObject` method for a suitably defined class, and the class
+definition would formalize the notion of 'an object like `xldf`'. Addressing
+such issues is behind the object-oriented design of the data structures in
+Bioconductor, such as the `SummarizedExperiment` class. Other potentially useful
+features of OO data representations include: 1. Abstraction of interface from
+implementation and encapsulation: the user accesses the data only through
+defined channels and does not need to see how the data are stored
+'inside'---which means that inside can be changed and optimized without breaking
+user-level code. 2. Polymorphism: you can have different functions with the same
+name, such as plot or filter, for different classes of objects, and R figures
+out for you which to call. 3. Inheritance: you can build up more complex data
+representations from simpler ones. 4. Reflection and self-documentation: you can
+send programmatic queries to an object to ask for more information about itself.
+All of these make it easier to write high-level code that focuses on the 'big
+picture' functionality rather than on implementation details of the building
+blocks---albeit at the cost of more initial investment in infrastructure and
+'bureaucracy'." [@holmes2018modern]
+
+> "**Data provenance and metadata.** THere is no obvious place in an object like
+`xldf` to add information about data provenance: e.g., who performed the
+experiment, where it was published, where the data were downloaded from, or
+which version of the data we're looking at (data bugs exist ...). Neither are
+there any explanations of the columns, such as units and assay type. Again, the
+data classes in Bioconductor try to address this." [@holmes2018modern]
+
+> **Matrix-like data.** Many datasets in biology have a natural matrix-like
+structure, since a number of features (e.g., genes: conventionally, the rows of
+the matrix) are assayed on several samples (conventionally, the columns of the
+matrix). Unrolling the matrix into a long form like `xldf` makes some operations
+(say, PCA, SVD, clustering of features or samples) more awkward."
+[@holmes2018modern]
+
+> "**Out-of memory data and chunking.** Some datasets are too big to load 
+into random access memory (RAM) and manipulate all at once. Chunking means
+splitting the data into manageable portions ('chunks') and then sequentially 
+loading each portion, computing on it, storing the results and removing it
+from memory before loading the next portion. R also offers infrastructure
+for working with large datasets that are stored on disk in a relational 
+database management systems (the DBI package) or in HDF5 (the rhdf5 package).
+The Bioconductor project provides the class `SummarizedExperiment`, which 
+can store big data matrices either in RAM or in an HDF5 backend in a manner 
+that is transparent to the user of objects of this class." [@holmes2018modern]
+
+Many of the statistical algorithms rely on matrices---these store data all of 
+the same data type (e.g., numeric or counts). If you store extra variables, like
+binary outcome classifications (sick/well; alive/dead) or categorical variables, 
+it will complicate these operations. Further, if these aren't to be used in things
+like dimension reduction and clustering, then you will continuously need to 
+subset as you perform those matrix-based processes. Conversely, once you move
+to using ggplot to visualize your data and other tidy tools to create summary 
+tables and other output for reports, it's handy to have all the information 
+revlevant to each of your observations handy within a dataframe---a structure
+than can hold and align data of many different types in its different columns. 
+It therefore makes sense to evolve from more complex object types, in which 
+different types of variables for each observation are stored in their own places, 
+and where variables with similar types can be collected in a matrix that is 
+ready for statistical processing, to the simpler dataframe at later stages in 
+the pipeline, when working on publication-ready tables and figures. This requires
+a switch as some point in the pipeline from a coding approach that stores data
+in more complex Bioconductor S4 objects to one that stores data in a simple
+and straightforward tidy dataframe.
+
 One file format called a *fasta* file is used to store DNA sequence data. The
 `Biostrings` package has a function for reading these data in from a fasta file.
 It stores the data in an instance of the `DNAStringSet` class from that package.
