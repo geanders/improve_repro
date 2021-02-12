@@ -985,5 +985,39 @@ spectrum-spotting, another iteration allows us to borrow strength from the
 other samples to spot spectra that may have been overlooked (or looked like
 noise) before." [@holmes2018modern]
 
+Try to avoid adding in supplementary / meta data "by hand". For example, if you 
+need to add information about the ID of each sample, and this information is
+included somewhere in the filename, it will be more robust to use regular
+expressions to extract this information from the file names, rather than 
+entering it by hand. If you later add new files, the automated approach will 
+be robust to this update, while errors might be introduced for information
+added by hand. 
+
+Example of quality control functionality in `xcms`: 
+"Below we create boxplots representing the distribution of total ion currents per file. Such plots can be very useful to spot problematic or failing MS runs.
+... Also, we can cluster the samples based on similarity of their base peak chromatogram. This can also be helpful to spot potentially problematic samples in an experiment or generally get an initial overview of the sample grouping in the experiment. Since the retention times between samples are not exactly identical, we use the bin function to group intensities in fixed time ranges (bins) along the retention time axis. In the present example we use a bin size of 1 second, the default is 0.5 seconds. The clustering is performed using complete linkage hierarchical clustering on the pairwise correlations of the binned base peak chromatograms."
+[@smith2013lc]
+
+After some quality checks on the data from LCMS, the next step is to 
+detect the chromatographic peaks in the samples. This requires some 
+specifications to the algorithm that will depend on the settings used
+on the equipment when the samples were run. 
+"Next we perform the chromatographic peak detection using the centWave algorithm [2]. Before running the peak detection it is however strongly suggested to visually inspect e.g. the extracted ion chromatogram of internal standards or known compounds to evaluate and adapt the peak detection settings since the default settings will not be appropriate for most LCMS experiments. The two most critical parameters for centWave are the peakwidth (expected range of chromatographic peak widths) and ppm (maximum expected deviation of m/z values of centroids corresponding to one chromatographic peak; this is usually much larger than the ppm specified by the manufacturer) parameters. To evaluate the typical chromatographic peak width we plot the EIC for one peak."
+[@smith2013lc]
+
+> "Peak detection will not always work perfectly leading to peak detection artifacts, such as overlapping peaks or artificially split peaks. The refineChromPeaks function allows to refine peak detection results by either removing identified peaks not passing a certain criteria or by merging artificially split chromatographic peaks." [@smith2013lc]
+
+> "The time at which analytes elute in the chromatography can vary between samples (and even compounds). Such a difference was already observable in the extracted ion chromatogram plot shown as an example in the previous section. The alignment step, also referred to as retention time correction, aims at adjusting this by shifting signals along the retention time axis to align the signals between different samples within an experiment. A plethora of alignment algorithms exist (see [3]), with some of them being implemented also in xcms. The method to perform the alignment/retention time correction in xcms is adjustRtime which uses different alignment algorithms depending on the provided parameter class. ... In some experiments it might be helpful to perform the alignment based on only a subset of the samples, e.g. if QC samples were injected at regular intervals or if the experiment contains blanks. Alignment method in xcms allow to estimate retention time drifts on a subset of samples (either all samples excluding blanks or QC samples injected at regular intervals during a measurement run) and use these to adjust the full data set." [@smith2013lc]
+
+> "The final step in the metabolomics preprocessing is the correspondence that matches detected chromatographic peaks between samples (and depending on the settings, also within samples if they are adjacent). The method to perform the correspondence in xcms is groupChromPeaks. We will use the peak density method [5] to group chromatographic peaks. The algorithm combines chromatographic peaks depending on the density of peaks along the retention time axis within small slices along the mz dimension." [@smith2013lc]
+
+> "The performance of peak detection, alignment and correspondence should always be evaluated by inspecting extracted ion chromatograms e.g. of known compounds, internal standards or identified features in general." [@smith2013lc]
+
+Normalization can help adjust for technical bias across the samples: 
+
+> "At last we perform a principal component analysis to evaluate the grouping of the samples in this experiment. Note that we did not perform any data normalization hence the grouping might (and will) also be influenced by technical biases. ... We can see the expected separation between the KO and WT samples on PC2. On PC1 samples separate based on their ID, samples with an ID <= 18 from samples with an ID > 18. This separation might be caused by a technical bias (e.g. measurements performed on different days/weeks) or due to biological properties of the mice analyzed (sex, age, litter mates etc)." [@smith2013lc]
+
+> "Normalizing features’ signal intensities is required, but at present not (yet) supported in xcms (some methods might be added in near future). It is advised to use the SummarizedExperiment returned by the quantify method for any further data processing, as this type of object stores feature definitions, sample annotations as well as feature abundances in the same object. For the identification of e.g. features with significant different intensities/abundances it is suggested to use functionality provided in other R packages, such as Bioconductor’s excellent limma package." [@smith2013lc]
+
 ### Discussion questions
 

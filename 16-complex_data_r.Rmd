@@ -2022,6 +2022,78 @@ superclass’s implementation. The subclass can selectively pick and choose whic
 functions it overrides. Any functions that are not overridden are inherited."
 https://www.ephemeralobjects.org/2014/02/03/a-brief-history-of-object-oriented-programming/
 
+For `xcms`, basic object class is now `SCMSnExp`. [@holmes2018modern]
+This is the container the data is stored in while pre-processing
+LCMS data with the `xcms` package. 
+
+> "xcms supports analysis of LC/MS data from files in (AIA/ANDI) NetCDF,
+mzML/mzXML and mzData format. For the actual data import Bioconductor’s mzR is used." [@smith2013lc]
+
+> "Subsequently we load the raw data as an OnDiskMSnExp object using the readMSData method from the MSnbase package. The MSnbase provides based structures and infrastructure for the processing of mass spectrometry data.
+... The resulting OnDiskMSnExp object contains general information about the number of spectra, retention times, the measured total ion current etc, but does not contain the full raw data (i.e. the m/z and intensity values from each measured spectrum). Its memory footprint is thus rather small making it an ideal object to represent large metabolomics experiments while allowing to perform simple quality controls, data inspection and exploration as well as data sub-setting operations. The m/z and intensity values are imported from the raw data files on demand, hence the location of the raw data files should not be changed after initial data import."
+[@smith2013lc]
+
+Important skills for working with data in Bioconductor classes: 
+
+- How to get to the help file specific for that type of class for 
+generic functions. For example, how to see specific parameters that 
+can be included in a plot call.
+- How to find/list all the functions / methods available for that 
+class of object. 
+- How to access a help file that explains the structure of that object
+class. What slots are included? What's in each slot? How can you 
+create a new instance of the class? `` ?`Chromatogram-class` ``
+accesses the helpfile that describes the Chromatogram class in the
+MSnbase package. It includes info on what is typically stored in 
+objects of this class (renetion time-intensity value pairs for chromatographic
+mass spectroscopy data). It tells how to create a new object of that
+class using its constructor function. It lists accessor functions for 
+objects in that class: `rtime` to get retention times, `intensity` to 
+get the intensities, `mz` to get the range of the chromatogram, etc.
+It also lists some functions, including generic functions like `length`, 
+that can be used with objects in that class, as well as some details on
+how the class's method for that generic function works (in terms of 
+what it will return). It provides the usage, and defines the parameters, 
+for functions that work with this object class. 
+- How to figure out and use accessor functions to access specific 
+pieces of data from objects of that class.
+
+Often, you'll have a class that stores data for one sample (e.g., 
+`Chromatogram` from the `MSnbase` package, which stores chromatographic
+mass spectrometry data), and then another class that will collectively 
+store these sample-specific data in a larger object (e.g., 
+`Chromatograms` class, also from the `MSnbase` package, which stores
+multiple `Chromatogram` objects, from different samples, in a 
+structure derived from the matrix structure). j
+
+You can use the pipe operator from `magrittr` in Bioconductor workflows, 
+too. It works by "piping" the output from one function call as the
+input into the next function call (typically, the parameter in the 
+first position among parameters to that function call). 
+
+Calling the object name at the R console will run the print method for
+that object's class on the object. Often, this will provide a print out of
+useful metadata, descriptions, and summaries for the data stored in that
+object. If you want a more granular look at what's contained in the 
+object, you can use the `str` function. 
+
+Object classes are often set up to inherit from another class. This means
+that a method that works for one class might also work for a similar
+class, if the second inherits from the first. 
+"The results are returned as an XCMSnExp object which extends the OnDiskMSnExp object by storing also LC/GC-MS preprocessing results. This means also that all methods to sub-set and filter the data or to access the (raw) data are inherited from the OnDiskMSnExp object and can thus be re-used. Note also that it is possible to perform additional rounds of peak detection (e.g. on MS level > 1 data) on the xdata object by calling findChromPeaks with the parameter add = TRUE." [@smith2013lc]
+
+Sometimes there will be a class just for storing the parameters for 
+running an algorithm, for example, the "CentWaveParam" and 
+"MergeNeighboringPeaksParam" classes in the `xcms` package. 
+Presumably this is to allow validity checking before using them 
+in the algorithm?
+
+Moving into a more general object class after pre-processing: 
+
+> "Results from the xcms-based preprocessing can be summarized into a SummarizedExperiment object from the SummarizedExperiment package with the quantify method. This object will contain the feature abundances as the assay matrix, the feature definition (their m/z, retention time and other metadata) as rowData (i.e. row annotations) and the sample/phenotype information as colData (i.e. column annotations). All the processing history will be put into the object’s metadata. This object can then be used for any further (xcms-independent) processing and analysis." [@smith2013lc]
+
+
+
 ### Subsection 2
 
 ### Applied exercise
