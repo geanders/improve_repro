@@ -16,6 +16,343 @@ phase
 - List other benefits, including improving efficiency and consistency of data
 pre-processing
 
+### What knitted documents are and why to use them
+
+If you have coded using a scripting language like R or Python, you likely have
+already seen many examples of knitted documents. For both these languages, there
+are many tutorials available that are created as knitted documents. Figure
+\@ref(fig:xcmsexample) shows an example from the start of a vignette for the
+`xcms` package in R. This is a package that helps with pre-processing and
+analyzing data from LC-MS experiments. You can see that this document includes
+text to explain the package and also example code and the output from that code.
+
+```{r xcmsexample, echo = FALSE, out.width = "\\textwidth", fig.cap = "An example of a knitted document. This shows a section of the online vignette for the `xcms` package from Bioconductor. The two types of content are highlighted: formatted text for humans to read, and executable computer code."}
+knitr::include_graphics("figures/vignette_example_annotated.png")
+```
+
+As a larger example, all the modules in this online book were written as knitted
+documents. In this module we will describe the characteristics of knitted
+documents and how the technology behind them works. We will then talk about how
+you can create them using Rmarkdown. In the next module, we'll provide an
+example of doing this for a set of research data from a common laboratory
+experiment.
+
+The defining characteristic of a knitted document is that it interweaves two
+types of content: first, executable code, and, second, documentation that is
+formatted in a way that is easy to read. In the figure with the example from the
+`xcms` vignette, we have highlighted the areas that demonstrate these two types
+of content (Figure \@ref(fig:xcmsexample)). Later in this module we will
+describe how a knitted document can incorporate these two elements. First,
+however, we will explain why you might want to use knitted documents to
+document your own research code, especially for pre-processing protocols.
+
+There are several advantages to using knitted documents when writing code to
+pre-process or analyze research data. These include improvements in terms of
+reliability, efficiency, transparency, and reproducibility.
+
+First, when you have written your code within a knitted document, this code is
+checked every time you render the document. In other words, you are checking
+your code to ensure it operates as you intend throughout the process of writing
+and editing your document, checking the code each time you render the document
+to its formatted version. This helps to increase the **reliability** of the code
+that you have written. Open-source software evolves over time, and by continuing
+to check code as you work on protocols and reports with your data, you can
+ensure that you will quickly identify and adapt to any such changes. Further,
+you can quickly identify if updates to your research data introduce any issues
+with the code. Again, by checking the code frequently, you can identify any
+issues quickly, and this often will allow you to easily pinpoint and fix these
+issues. By contrast, if you only identify a problem after writing a lot of code,
+it is often difficult to identify the source of the issue. By including code
+that is checked each time of document is rendered, you can quickly identify when
+a change an open source software effects the analysis that you were conducting
+or the pre-processing and work 2 adapt to any changes quickly.
+
+Second, when you write a document that includes executable code, it allows you
+to easily rerun the code as you update your research data set, or adopt the code
+to work with a new data set. If you are not using a knitted document to write
+pre-processing protocols and research reports, then your workflow is probably to
+run all your code---either from a script or the command line---and copy the
+results into a document in a word processing program like Word or Google Docs.
+If you do that, you must recopy all your results every time you adapt any part
+of the code or add new data. By contrast, when you use a knitted document, the
+rendering process executes the code and incorporates the results directly and
+automatically into a nicely formatted final document. The use of knitted
+documents therefore can substantially improve the **efficiency** of
+pre-processing and analyzing your data and generating the reports that summarize
+this process.
+
+Third, documents that are created in knitted format are created using plain
+text. Plain text files can easily be tracked well and clearly using version
+control tools like *git*, and associated collaboration tools like GitHub, as
+discussed in earlier modules. This substantially increases the **transparency**
+of the data pre-processing and analysis. It allows you to clearly document
+changes you or others make in the document, step-by-step. You can document who
+made the change, and that person can include a message about why they made the
+change. This full history of changes is recorded and can be searched to explore
+how the document has evolved and why.
+
+The final advantage of using knitted documents, especially for pre-processing
+research data, is that it allows the code to be clearly and thoroughly
+documented. This can help increase the **reproducibility** of the process. In
+other words, it can help ensure that another researcher could repeat the same
+process, making adaptations as appropriate for their own data set, or ensuring
+they arrive at the same results if using the original data. It also ensures that
+you can remember exactly what you did, which is especially useful if you plan to
+reuse or adopt the code to work with other data sets, as will often be the case
+for a pre-processing protocol. If you are not using a knitted document, but are
+using code for preprocessing, then as an alternative you may be documenting your
+code through comments in a code script. A code script does allow you to include
+documentation about the code through these code comments, which are demarcated
+from code in the script through a special symbol (`#` in R). However these code
+comments are much less expressive and harder to read than nicely formatted text,
+and it is hard to include elements like mathematical equations and literature
+citations in code comments. A knitted document allows you to write the
+documentation in a format that is clear and attractive for humans to read, while
+including code that is clear and easy for a computer to execute.
+
+### How knitted documents work
+
+Next, we will describe how knitted documents work. There are seven components of
+how these documents work. It is helpful to understand these to understand these
+to begin creating and adapting knitted documents. Knitted documents can be
+created through a number of programs, and while we will later focus on
+Rmarkdown, these seven components are in play regardless of the exact system
+used to create a knitted document, and therefore help in gaining a general
+understanding of this type of document. We have listed the seven components here
+and in the following paragraphs will describe each more fully:
+
+1. Knitted documents start as plain text;
+2. A special section at the start of the document (**preamble**) gives some
+overall directions about the document;
+3. Special combinations of characters indicate where the executable code starts;
+4. Other special combinations show where the regular text starts (and the
+executable code section ends);
+5. Formatting for the rest of the document is specified with a **markup
+language**;
+6. You create the final document by **rendering** the plain text document. This
+process runs through two software programs; and
+7. The final document is attractive and **read-only**---you should never make
+edits to this output, only to your initial plain text document.
+
+First, a knitted document should be written in plain text. In an earlier module,
+we described some of the advantages of using plain text file formats, rather
+than proprietary and/or binary file formats, especially in the context of saving
+research data (e.g., using csv file formats rather than Excel file formats).
+Plain text can also be used to write documentation, including through knitted
+documents. Figure \@ref(fig:xcmsexampleplain) shows an example of what the plan text might look like for the
+start of the `xcms` tutorial shown in Figure \@ref(fig:xcmsexample).
+
+```{r xcmsexampleplain, echo = FALSE, out.width = "\\textwidth", fig.cap = "An example of a the plain text used to write a knitted document. This shows a section of the plain text used to write the online vignette for the `xcms` package from Bioconductor. The full plain text file used for the vignette can be viewed on GitHub [here](https://github.com/sneumann/xcms/blob/master/vignettes/xcms.Rmd)."}
+knitr::include_graphics("figures/plaintext_vignette_example.png")
+```
+
+There are a few things to keep in mind when writing plain text. First, you
+should always use a text editor rather than a word processor when you are
+writing a document in plain text. Text editors can include software programs
+like Notepad on Microsoft operating systems and TextEdit on Mac operating
+systems.  You can also use a more advanced text editor, like vi/vim or emacs.
+Rstudio can also serve as a text editor, and if you are doing other work in
+Rstudio, this is often the most obvious option as a text editor to use to write
+knitted documents.
+
+You must use a text editor to write plain text for knitted documents for the
+same reasons that you must use one to write code scripts. Word processors often
+introduce formatting that is saved through underlying code rather than clearly
+evident on the document that you see as you type. This hidden formatting can
+complicate the written text. Conversely, text written in a text editor will not
+introduce such hard-to-see formatting. Word processing programs also tend to
+automatically convert some symbols into slightly fancier versions of the symbol.
+For example, they may change a basic quotation symbol into one with shaping,
+depending on whether the mark comes at the beginning or end of a quotation. This
+subtle change in formatting can cause issues in both the code and the formatting
+specifications that you include in a knitted document.
+
+Further, when are writing plain text, typically you should only use characters
+from the American Standard Code for Information Interchange, or ASCII. This is a
+character set from early in computing that includes 128 characters. Such a small
+character set enforces simplicity: this character set mostly includes what you
+can see on your keyboard, like the digits 0 to 9, the lowercase and uppercase
+alphabet, some symbols, including punctuation symbols like the exclamation point
+and quotation marks, some mathematical symbols like plus, minus, and division,
+and some control codes, including ones for a new line, a tab, and even ringing a
+bell. The full set of characters included in ASCII can be found in a number of
+sources including a very thorough Wikipedia page on this character set (https://en.wikipedia.org/wiki/ASCII).  
+
+Because the character set available for plain text files is so small, you will
+find that it becomes important to leverage the limited characters that are
+available. One example is **white space**. White space can be created in ASCII
+with both the space character and with the new line command. It is an important
+component that can be used to make plain text files clear for humans to read. As
+we begin discussing the convention for markdown languages, we will find that
+white space is often used to help specify formatting as well.
+
+The second component of how knitted documents work is that each knitted document
+will have a special section at its start called the **preamble**. This preamble
+will give some overall directions regarding the document, like its title and
+authors and the format to which is should be rendered. Knitted documents are
+created using a **markup language** to specify formatting for the document, and
+there are a number of different markup languages including HTML, LaTeX, and
+Markdown. The specifications for the document's preamble will depend on the
+markup language being used. 
+
+In Rmarkdown, we will be focusing on Markdown, for which the preamble is
+specified using something called YAML (short for YAML Ain’t Markup Language).
+Here is an example of the YAML for a sample pre-processing protocol created
+using RMarkdown:
+
+```
+  ---
+  title: "Preprocessing Protocol for LC-MS Data"
+  author: "Jane Doe"
+  date: "1/25/2021"
+  output: pdf_document
+  ---
+```
+
+This YAML preamble specifies information about the document with **keys** and
+**values**. For example, the title is specified using the YAML key `title`, 
+followed by a colon and a space, and then the desired value for that 
+component of the document, `"Preprocessing Protocol for LC-MS Data"`. 
+Similarly, the author is specified with the `author` key and the desired
+value for that component, and the date with the `date` key and associated
+component. 
+
+Different keys can take different types of values in the YAML
+(this is similar to how different parameters in a function can take different values). For example, the keys of `author`, `title`, and `date` all take
+a character string with any desired character combination, and the quotation
+marks surrounding the values for each of these keys denote those character strings. By contrast, the `output` key---which specifies the format that
+that the knitted document should be rendered to---can only take one of a 
+few set values, each of which is specified without surrounding 
+quotation marks (`pdf_document` in this case, to render the document 
+as a PDF report). 
+
+The rules for which keys can be included in the preamble will depend on the
+markup language being used. Here, we are showing an example in Markdown, but you
+can also use other markup languages like LaTeX and HTML, and these will have
+their own convention for specifying the preamble. Later in this module, when we
+talk more specifically about Rmarkdown, we will give some resources where you
+can find more about how to customize the preamble in Rmarkdown specifically. If
+you are using a different markup language, there are numerous websites,
+cheatsheets, and other resources you can use to find which keywords are
+available for the preamble in that markup language, as well as the possible
+values those keywords can take.
+
+The next characteristic of knitted documents is that they need to clearly
+demarcate where executable code starts and where regular formatted text starts
+(in other words, where the executable code section ends). To do this, knitted
+documents have two special combination of characters, one that can be used in
+the plain text to indicate where executable code starts and and one to indicate
+where it ends. For example, Figure \@ref(fig:demarcatecode) shows the plain text
+that could be used in an Rmarkdown document to write some regular text, then
+some executable code, and then indicate the start of more regular text:
+
+```{r demarcatecode, echo = FALSE, out.width = "\\textwidth", fig.cap = "An example of how special combinations of characters are used to demarcate code in an RMarkdown file. The color formatting here is applied automatically by RStudio; all the text in this example is written in plain text."}
+knitr::include_graphics("figures/demarcating_code.png")
+```
+
+The combination that indicates the start of executable code will vary depending
+on the markup language being. In Rmarkdown, the following combination indicates
+the start of executable  code:
+ 
+```` ```{r} ````
+
+\noindent while this combination indicates the end of executable code (in other
+words the start of regular text):
+  
+```` ``` ````
+
+In Figure \@ref(fig:demarcatecode) and above, we have shown the most basic
+version of the markup character combination used to specify the start of
+executable code (```` ```{r} ````). This character combination can be expanded,
+however, to include some specifications for how you want the code in the section
+following it to be run, as well as how you want output to be shown. For example,
+you could use the following indications to specify that the code should be run,
+but the code itself should not be printed in the final document, by specifying
+`echo = FALSE`, as well as that the created figure should be centered on the
+page, by specifying `fig.align = "center"`:
+
+```` ```{r echo = FALSE, fig.align = "center"} ````
+
+There are numerous options that can be used to specify how the code will be run,
+and later when we talk specifically about Rmarkdown, we will point toward
+resources that clarify and outline all the possible choices that can be used for
+these specifications.
+
+You may have noticed that these markers, which indicate the beginning and end of
+executable code, seem like very odd character combination. There is a good
+reason for this. By making this character combination unusual, there will be
+less of a chance that it shows up in regular text. This way there are fewer
+cases where the writer unintentionally indicate the start of a new section of
+executable code when trying to write regular text in the knitted document.
+
+The next characteristic of knitted documents is that formatting for the regular
+text in the document---that is, everything that is not executable code---is
+specified using what is called a **markup language**. When you were writing in
+plain text, you do not have buttons to click on for formatting, for example, to
+specify words or phrases that should be in bold or italics, font size, headings,
+and so on. Instead you use special characters or character combinations to
+specify formatting in the final document. These character combinations are
+defined based on the markup language you use. As mentioned earlier, Rmarkdown
+uses the Markdown language; other knitted documents can be created using LaTeX
+or HTML. As an example of how these special character combinations work, in
+Markdown, you place two asterisks around a word or phrase to make it bold. To
+write "**this**" in the final document, in other words, you'll write
+`"**this**"` in the plain text in the initial document.
+
+You can start to see how this works by looking at the example of the `xcms`
+vignette shown earlier in Figures \@ref(fig:xcmsexample) and
+\@ref(fig:xcmsexampleplain). In Figure \@ref(fig:xcmsbothversions), we've
+recreated these two parts side-by-side, so they're easier to compare.
+
+```{r xcmsbothversions, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "The original plain text for a knitted document and the final output, side by side. These examples are from the `xcms` package vignette, a package available on Bioconductor. The left part of the figure shows the plain text that was written to create the output, which is shown in the left part of the figure. You can see how elements like sections headers and different font styles are indicated in the original plain text through special characters or combinations of charaters, using the Markdown language syntax."}
+knitr::include_graphics("figures/originalandfinal.png")
+```
+
+You can look for several formatting elements here. First, the section is headed
+"Initial data inspection". You can that in the original plain text document,
+this is marked using a `#` to start the line with the text for the header. You
+can also see that words or phrases that are formatted in a computer-style font
+in the final document---to indicate that they are values from computer code,
+rather than regular English words---are surrounded by backticks in the plain
+text file.
+
+The process of writing your document in this way can feel a little like the
+old-fashioned style of dictating to a secretary. You can imagine yourself
+dictating to the computer through the plain text. You have to say not just the
+words, but also specify in the plain text the formatting that you want at each
+spot. For example, when you get to a word that you want in italics, you must
+tell the computer, "Start italics," then say the word, then "End italics". You
+do this using the special formatting characters that are specified by the markup
+language that you use. Later in this module we will point to resources for
+discovering all of these formatting specifications for Markdown, the markup
+language used by RMarkdown.
+ 
+The final characteristics of knitted documents is that, to create the final
+document, you will render the plain text document. That is the process that will
+create an attractive final document. To visualize this, **rendering** is the
+process that takes the document from the plain text format, as shown in the left
+of Figure \@ref(fig:xcmsbothversions), to the final format, shown in the right
+of that figure.
+
+When you render the document, it will be run through two software programs. The
+first will look only for sections with executable code, based on the character
+combination that is used to mark these executable code sections. This first
+software will execute that code and take any output---including data results,
+figures, and tables---and insert those at the relevant spot in the document's
+file. Next, these output file from this software run will be run through another
+software program. This second program will look for all the formatting
+instructions and render the final document in an attractive format. This final
+output can be in a number of file formats, depending what you specify in the
+preamble, including a PDF document, an HTML file, or a Word document.
+
+You should consider the final document, regardless of the output format, as
+read-only. This means that you should never make edits or changes to the final
+version of the document. Instead you should make any changes to your initial
+plain text file. This is because the rendering process will overwrite any
+previous versions of the final document. Therefore any changes that you have
+made to your final document will be overwritten anytime you re-render from the
+original plain text document.
+
 ### Introducing reproducible data pre-processing protocols
 
 When we take measurements we are doing it with the goal of using the data we collect to gain scientific knowledge. The data are direct measurement of something. Sometimes direct measurements line up very closely with a research question. For example if you are conducting a study that investigates the mortality status of each test subject then whether or not each subject to dies is a data point that is directly related to the research question you are aiming to answer. In this case these data may go directly into a statistical analysis model without extensive pre-processing.
@@ -448,6 +785,20 @@ provides an attractive interactive workbook environment. Although its origins
 are with the Python programming language, it now supports many languages,
 including R. In practice, many users will find a combination of platforms most
 productive for them." [@huber2015orchestrating]
+
+> "A lab manual is perhaps the best way to inform new lab members of the ins
+and outs of the lab and to keep all members updated on protocols and 
+regulations. What could be included in a lab manual? Anything you do not 
+want to explain over and over, anything that will make the lab more 
+functional and that can make life easier for yourself and lab members." [@leips2010helm]
+
+> "Most PIs wish the labs were more organized, but it is not a huge priority, 
+that is, until the first student leaves and no one can find a particular
+cell line in the freezer boxes. Resolutions are made, the crisis passes, 
+and all goes on as before until the next person leaves. Although it is 
+probably inevitable that there will be some confusion when a long-time
+lab member moves on, an organized lab will not be as affected as an unorganized
+one." [@leips2010helm]
 
 ### Discussion questions
 

@@ -2092,6 +2092,86 @@ Moving into a more general object class after pre-processing:
 
 > "Results from the xcms-based preprocessing can be summarized into a SummarizedExperiment object from the SummarizedExperiment package with the quantify method. This object will contain the feature abundances as the assay matrix, the feature definition (their m/z, retention time and other metadata) as rowData (i.e. row annotations) and the sample/phenotype information as colData (i.e. column annotations). All the processing history will be put into the object’s metadata. This object can then be used for any further (xcms-independent) processing and analysis." [@smith2013lc]
 
+> "The concept in R of attributes of an object allows an exceptionally rich
+set of data objects. S3 methods make the class attribute the driver of an
+object-oriented system. It is an optional system. Only if an object has a class
+attribute do S3 methods really come into effect." [@burns2011r]
+
+> "There are some functions that are generic. Examples include print, plot,
+summary. These functions look at the class attribute of their first argument. If
+that argument does have a class attribute, then the generic function looks for a
+method of the generic function that matches the class of the argument. If such a
+match exists, then the method function is used. If there is no matching method
+or if the argument does not have a class, then the default method is used.
+Let’s get specific. The lm (linear model) function returns an object of class
+'lm'. Among the methods for print are print.lm and print.default. The
+result of a call to lm is printed with print.lm. The result of 1:10 is printed
+with print.default." 
+[@burns2011r]
+
+> "S3 methods are simple and powerful. Objects are printed and plotted and
+summarized appropriately, with no effort from the user. The user only needs to
+know print, plot and summary." [@burns2011r]
+
+> "If your mystery number is in obj, then there are a few
+ways to look for it:
+`print.default(obj)`
+`print(unclass(obj))`
+`str(obj)`
+The first two print the object as if it had no class, the last prints an outline of
+the structure of the object. You can also do:
+`names(obj)`
+to see what components the object has---this can give you an overview of the
+object." [@burns2011r]
+
+> "median is a generic
+function as evidenced by the appearance of UseMethod. What the new user
+meant to ask was, 'How can I find the default method for median?'
+The most sure-fire way of getting the method is to use getS3method:
+getS3method(’median’, ’default’)." [@burns2011r]
+
+> "The methods function lists the methods of a generic function [for classes loaded in the current session]. Alternatively
+given a class it returns the generic functions that have methods for the class." [@burns2011r]
+
+```{r message = FALSE, warning = FALSE}
+head(methods(print))
+
+library(Biobase)
+methods("ExpressionSet")
+```
+
+> "Inheritance should be based on similarity of the structure of the objects,
+not similarity of the concepts for the objects. Matrices and data frames have
+similar concepts. Matrices are a specialization of data frames (all columns of the
+same type), so conceptually inheritance makes sense. However, matrices and
+data frames have completely different implementations, so inheritance makes
+no practical sense. The power of inheritance is the ability to (essentially) reuse
+code." [@burns2011r]
+
+> "S3 methods are simple and powerful, and a bit ad hoc. S4 methods remove
+the ad hoc—they are more strict and more general. The S4 methods technology
+is a stiffer rope—when you hang yourself with it, it surely will not break. But
+that is basically the point of it---the programmer is restricted in order to make
+the results more dependable for the user. That’s the plan anyway, and it often
+works." [@burns2011r]
+
+> "S4 is quite strict about what an object of a specific class looks like. In contrast
+S3 methods allow you to merely add a class attribute to any object—as long
+as a method doesn’t run into anything untoward, there is no penalty. A key
+advantage in strictly regulating the structure of objects in a particular class is
+that those objects can be used in C code (via the .Call function) without a
+copious amount of checking." [@burns2011r]
+
+> "Along with the strictures on S4 objects comes some new vocabulary. The
+pieces (components) of the object are called slots. Slots are accessed by the `@`
+operator." [@burns2011r]
+
+> "By now you will have noticed that S4 methods are driven by the class
+attribute just as S3 methods are. This commonality perhaps makes the two
+systems appear more similar than they are. In S3 the decision of what method
+to use is made in real-time when the function is called. In S4 the decision is
+made when the code is loaded into the R session—there is a table that charts
+the relation. [@burns2011r]
 
 
 ### Subsection 2

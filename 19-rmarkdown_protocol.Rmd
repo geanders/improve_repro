@@ -18,108 +18,287 @@ projects at the data pre-processing phase
 - Create a document in RStudio using RMarkdown
 - Apply it to several different datasets with the same format
 
-## Knitted documents
+### Creating knitted documents in R
 
-If you have coded using a scripting language like R or Python, you likely have
-already seen many examples of knitted documents. For both these languages, there
-are many tutorials available that are created as knitted documents. Figure [x]
-shows an example from the start of a vignette for the `xcms` package in R. This
-is a package that helps with pre-processing and analyzing data from LC-MS
-experiments. You can see that this document includes text to explain the package
-and also example code and the output from that code.
+R has a special format for creating knitted documents called **Rmarkdown**.  As
+with other knitted documents, Rmarkdown documents are markdown files, and the
+original file is written in plain text. RMarkdown files, since they are based on
+the Markdown language, use YAML for their preambles. By default, executable code
+will be in R, but there are also options to include executable code in the
+document in a number of other programming languages.
 
-[Add figure]
+Like other plain text documents, an Rmarkdown file should be edited using a text
+editor, rather than a word processor like Word or Google Docs. It is easiest to
+use the Rstudio IDE as the text editor when creating and editing an R markdown
+document, as this IDE has incorporated some helpful functionality for working
+with plain text documents for Rmarkdown. The RStudio IDE can be downloaded and
+installed as a free software, as long as you use the personal version (RStudio
+creates higher-powered versions for corporate use). Since RStudio is free and
+has many helpful tools for working with Rmarkdown, we will focus on using this
+interface in our advice in this module.
 
-In this module we will describe the characteristics of knitted documents and how
-the technology behind them works. We will then talk about how you can create
-them specifically using R markdown.
+### Creating and exploring an Rmarkdown file
 
-The defining characteristic of a knitted document is that it interweaves two
-elements: first, executable code, and, second, formatted documentation that is
-meant for humans to read. In the figure with the example from the `xcms`
-vignette, we have highlighted the areas that demonstrate these two pieces
-(Figure [x]). Later in this module we will describe how a knitted document can
-incorporate these two elements. First we want to highlight why you might want to
-use knitted documents to document your own research code, especially for
-pre-processing protocols.
+First, we will explain how you can create a new Rmarkdown document using
+RStudio. In RStudio, you can create a number of types of new files through the
+"File" menu. To create a new R markdown file, choose "New File" and then choose
+"Rmarkdown" from the choices in that menu. Figure \@ref(fig:rmarkdownnewfile)
+shows an example of what this menu option looks like.
 
- There are several advantages to using knitted documents when writing code to pre-process or analyze research data. First when you have written your code inside a knitted document the code itself is checked every time you render the document. In other words you are checking your code to ensure it operates as you like as you build your document. This helps to increase the reliability of the code that you have written, especially as you work to reapply it to new data set. As you work with open source code, you will find that the packages can change some overtime, as the developers continue to develop them. By including code that is checked each time of document is rendered, you can quickly identify when a change an open source software effects the analysis that you were conducting or the pre-processing and work 2 adapt to any changes quickly.
-
-Second, when you write a pre-processing protocol or other document that includes executable code allows you to easily rerun the code as you update the data set or adopt the code to work with a new data set. Another approach would be to run all your code and copy the results into a document in a word processing program like word or Google Docs. If you did that, you would need to recopy all results every time you shipped the code or add new data. By contrast, when you are working with a knitted document the rendering process don't executes the code and incorporates the results into a nicely formatted final document. The use of knitted documents therefore can substantially improve the efficiency of pre-processing and analyzing your data and generating the reports that summarize this process.
-
-3rd documents that are created in knitted format are created using plain text. Plain text files can easily be tracked well and clearly using Version Control tools like git. This substantially increases the transparency of the process. It allows you to clearly document changes you make in the document, step by step. You can document who made the change, and that person can include a message about why they made the change. The full history of changes is documented and can be searched to explore how the document evolved and why.
-
-The final advantage of using knitted documents, especially for pre-process research data, is that it allows the code to be clearly and thoroughly documented. This can help increase the reproducibility of the process. In other words it can help ensure that another researcher could repeat the process that you did, making adaptations as appropriate for different data sets. It also means that you can remember exactly what you did and reuse are adopt the code as you work with other data sets. An alternative way of creating code to pre-process data would be through a code script. A code script does allow you to include documentation about the code through code comments. However these are much less expressive and harder to read the nicely formatted text. A knitted document allows you to write the documentation in a format that is clear and attractive for humans to read, well including code that is clear an easy for a computer to execute.
-
-Next We will describe how needed documents work. there are seven components for how did it documents work. We have listed them here and in the following paragraphs will describe each more fully: 
-
-1. Knitted documents start as plain text
-2. A special section at the start of the document (**preamble**) gives some
-overall directions about the document
-3. Special combinations of characters indicate where the executable code starts
-4. Other special combinations show where the regular text starts (and the
-executable code section ends)
-5. Formatting for the rest of the document is specified with a **markup language**
-6. You create the final document by **rendering** the plain text document. This
-process runs through two software programs.
-7. The final document is attractive and **read-only**---you should never make
-edits to this output, only to your initial plain text document.
-
-First a knitted document starts as plain text. When you write in a document in other words you were writing it in plain text. Here is an example of what the plan text might look like for the start of the xcms tutorial shown in an earlier figure:
-[Example of that]
-There are a few things that you should keep in mind when you were writing plain text. First you should always use a text editor rather than a word processor when you were writing a document in plain text. Text editors can include things like notepad, textedit, Nano.  you can also use a more advanced text editor like VI them or Emax. rstudio can also serve as a text editor, and if you were doing other work in rstudio this might be the most obvious option to use to write knitted documents. The reason to use a text editor rather than a word processor is the same as why you must use a text editor to write code Scripts. Word processors often include formatting but is saved through underlying code rather than clearly evident on the initial document. They also automatically convert some symbols into slightly fancier versions, which can cause issues in either the code or in the formatting specifications that you give for the text documenting the code. 	
-Another thing to consider when you are writing plain text is it typically you should only use characters from the American Standard code for information interchange or ASCII.  this is a fairly simple character set that includes 128 characters it mostly includes what you can clearly see on your keyboard including the digit 0 to 9 lowercase and uppercase alphabet some symbols like punctuation symbols the! Quotation marks some mathematical symbols like plus minus division some control codes like a new line a tab even ringing a bell. The full set of characters included in a ski can be found in a number of sources including a very thorough Wikipedia page on this character set.  Because the character set available for plain text files is so small, you will find that it becomes important to leverage those characters that are available. One example is with white space.  white space is an important component that can be used to make plain text files clear for humans to read. As we begin discussing the convention for markdown languages, we will find that white space is often used to help specify formatting as well.
-The Second component of a knitted document is that it will have a special section at the start of the document called The Preamble. This Preamble will give some overall directions about the document. There are a number of different markup languages including HTML, latek, and Markdown.  In Rmarkdown, we will be focusing on Markdown. In markdown, the Preamble is specified using something called YAML. This is short for YAML Ain’t markup language. for example here is the YAML for a sample report on pre-processing data: 
-[Include sample YAML]
-In this Preamble using YAML you can specify things using keys and valleys. For example you specify the title by including the key value of title in the YAML, a colon, a space, and then the value you would like to use for the title which in this case is [example title].  as another example this year, specify the type of output for the document using the output key a colon and then the choice of pdf_document.  the rules for which keys can be included in the Preamble will depend on the type of markup language. Here we are using examples in markdown but you can also use other markup languages likely attack an HTML, and these will have their own convention for specifying the preamble. When we talk more specifically about rmarkdown we will give some resources where you can find more about how you can customize the Preamble in R markdown specifically. If you are using a different R markdown language there are numerous websites cheat sheets and other resources you can use to find out the keywords that are available for the Preamble and the type of document you're creating, as well as the possible choices for those keywords in terms of the values that they can take.
-
-The Next characteristic of knitted documents is that they need to clearly demarcate where executable code starts and wear regular formatted text start in other words where the executable code section is. To Jesus, knitted documents will have a special combination of characters in the plain text that can be used to indicate where executable code starts. They will have a different set of combinations that show where the regular text starts and so we're executable code sections it. For example here is a set of plain text that could be used in an R markdown document to specify some texts that will be formatted then some executable code and then the start of more regular text:
-[Example RMarkdown code]
- the combination that indicates the start of executable code will vary based on the language being used in the type of knitted document that you were building in R markdown the following combination indicates the start of executable  code: 
-```{r}
-Conversely, this combination indicates the end of executable code in other words the start of regular text:
+```{r rmarkdownnewfile, echo = FALSE, out.width = "\\textwidth", fig.cap = "RStudio pull-down menus to help you navigate to open a new Rmarkdown file."}
+knitr::include_graphics("figures/rmarkdown_newfile.png")
 ```
-Above, we have shown the most basic version of the markup used to specify the start of executable code. This can be expanded however to include some specifications for how you want the code in the following section to be run and how you want output to be shown. For example you could use the following indications to specify that the code should be run but should not be printed by specifying Echo equals false and that the created figure should be centered on the Page by using fig.align equals Center: 
-```{r echo = FALSE, fig.align = “center”}
-There are numerous options that can be used to specify how the code will be run, and later when we talk specifically about rmarkdown we will Point toward some resources that clarify and outline all the possible choices that can be used for these specifications. 
-You may have noticed that these seem like very odd character combination. There is a good reason for this. we want the knitted document to specify the start and end of sections of executable code by using a character combination that is very unlikely to come up in the regular text that we are typing. This way there will be very few cases where we unintentionally indicate the start of a new section of executable code.
-The next characteristic of knitted documents is that formatting for the rest of the document, other than executable code, is specified using what is called a markup language. When you were writing in plain text, you do not have buttons to click on for formatting like bold, italic, font size, and so on. Instead you use special characters or character combinations to specify formatting in the final document. For example in marked down, you'll see around a word or phrase into asterisks to make it bold. To write this [in bold]  in the final document, you'll write “**this**”  in the plain text initial document.
-Here is an example based on the xcms vignette highlighted in an earlier figure. The start of the texts shown in Figure 1 is written like that: 
-[Example Markdown]
- you might notice that in this text things like the section header, which is quotation initial data inspection quotation, is marked with a hash to indicate that it is a section header. Other formatting like the use of a computer code style font to indicate code is marked by surrounding that word in backticks.  the process of writing your document in this way can feel a little like the old fashion style of dictating to a secretary. You can imagine yourself dictate to the computer through the plain text. You have to say not just the words, but you have to specify in that same format in the plain text the formatting that you want at each spot. For example when you get to a word that you want in italics, you essentially need to tell the computer start italics, then say the word, then say to end the italics. You do this using the special formatting characters that are specified by the markup language that you use.  Later in this module we will point to resources for discovering all of these formatting specifications for Markdown, which is again the markup language used by RMarkdown.
-The final characteristics of knitted documents is that to create the final document you will render the plain text document and that this will create an attractive document that is read-only. When you render the document it will be run through to software program the first will look only four sections with executable code. It will execute that code and take any output, including numeric results, other data results, figures, and tables, and insert those at the relevant spot in the document. Next these output files will be run through another software program that will look for all the formatting instruction and render the final document in an  attractive format for humans to read.  this output can be in a number of file format, depending on your specifications, including a PDF document, an HTML file, or a Word document. You should consider the final document, regardless of the output format, as read-only. This means that you should never make edits or changes to the final version of the document. Instead you should make any changes to your initial plain text file.  this is because the rendering process will overwrite any previous versions of the final document. Therefore any changes that you have made to your final document will be overwritten anytime you re-render from the initial plain text document. 
 
+This will open a window with some options you can specify some of the overall
+information about the document (Figure \@ref(fig:rmarkdownchoices)), including
+the title and the author and you can specify the output format that you would
+like. Possible output formats include HTML, Word, and PDF. You should be able to
+use the HTML and Word output formats without any additional software. If you
+would like to use the PDF output you will need to install one other piece of
+software: Miktex for Windows, MacTex for Mac, or TeX Live for Linux. These are
+all pieces of software with an underlying TeX engine and all are open-source and
+free.
 
-## Creating knitted documents in R
+```{r rmarkdownchoices, echo = FALSE, out.width = "\\textwidth", fig.cap = "Options available when you create a new Rmarkdown file in RStudio. You can specify information that will go into the document's preamble, including the title and authors and the format that the document will be output to (HTML, Word, or PDF)."}
+knitr::include_graphics("figures/rmarkdown_choices.png")
+```
 
-R has a special format for creating the documents called rmarkdown.  as with other knitted documents are marked on file or written in plain text. For the Preamble they use YAMLand for the primary markup language they use Markdown.  By default executable code will be in R, but there are also options to write executable code  in the document in a number of other languages.
- It is easiest to create an R markdown document and edit it using the rstudio IDE for r. This is a free software installation if you are using the desktop personal version. In Rstudio you can create a number of types of new files through the file menu. To create a new R markdown file choose new file and then choose R markdown the following figure shows an example of what this menu option looks like.
-[RMarkdown menus figure]
- This will open a window with some options you can specify some of the overall information about the document including the title and the author and you can specify the output format that you would like. possible output  format include HTML, word, and PDF. You should be able to use the HTML and Word  format without any additional work. If you would like to use the PDF output you will need to install one other piece of software: either miktex for Windows, MacTex for Mac, or TeX Live for Linux. These are all pieces of software with an underlying TeX engine and all are open source and free. 
-[Figure with RMarkdown options]
-Once you have selected the options in this menu you can choose okay and this will open a new document. This document, however, won't be blank.  Instead it actually includes an example document written in R markdown. This helps you see how this process works and gives you a starting point. If you have not used our mark down before it is very helpful to try knitting this document and then explore how pieces in the document align with elements in the rendered output document. once you are familiar with the lineup between elements in this file in the output document, you can go through and delete the examples to change them for your own text and code.
-[Example of template]
- We will walk you through exploring  this example document. First to render this or any rmarkdown document, if you are in our studio, there will be a knit button, as shown in the figure. You can click on this knit button to render the entire document. The final output will pop up in a new window, and you will also notice that your working directory as a new file with this output document. For example, if you are working to create an HTML document, once you knit your rmarkdown file, a new document will open showing the output, and you will also notice a new file with the same start of the filename as you are marked on document, but with the file extension. HTML. this new file is your output file, the one you should consider read only, and the one that you would share with colleagues as a report.
+Once you have selected the options in this menu you can choose the "Okay" button
+(Figure \@ref(fig:rmarkdownchoices)). This will open a new document. This
+document, however, won't be blank. Instead it will include an example document
+written in Rmarkdown (Figure \@ref(fig:rmarkdowntemplate)). This example
+document helps you navigate how the Rmarkdown process works, by letting you test
+out a sample document. It also gives you a starting point---once you understand
+how the example document works, you can edits it and change it to convert it
+into the document you would like to create.
 
-[Figure highlighting knit button]
- if you look at the Outpost document from the example you get when you first open an R markdown document you can notice how different elements align with pieces in the rmarkdown file. For example you can see BetOnline 12 of the example the two hash fine are indicating that this should be a second level header. In the output document, you can see that rmarkdown is indeed specified as a Hatter, with larger font and in a different color than other text. You can also see that elements like the web link, which is in Brackets? In the rmarkdown file shows up as a clickable link in the output document. Finally, you can see that the word net in line 16 of the r markdown file is surrounded by to asterisk. In the output document this word shows up in bold.
-You can also notice the areas in the rmarkdown file that are code for example line 18 indicates the start of executable code and my 19 gives the code. In this case it is running a summary of a data set that comes with are called cars. in the alpha document you can see that this code is repeated, and the output from running the code is inserted in the final document. Line 20 of the example R markdown file give three back text indicating the end of that executable chunk of code. 
-[Figure aligning example with output---header with header, weblink with weblink, bold with bold, code with code]
- R markdown has some other functionality that is useful when you are working with this document. Within each Co Chuck are some buttons that can be used to test out code in that junk. A key 1/2 youth is the execute button this is highlighted in the figure and it is a right pointing Green Arrow. this button will run all of the code in that chunk and show you the output directly below it. This allows you to explore the code in your document as you build it, rather than needing to wait until you execute or render the entire document to check on how the code is running. the button directly to the left of Beth will execute all code that comes before this junk in the document. This can be very helpful in making sure that you have set up your environment to run this particular chunk of code.
-for the main text in an R markdown document, all formatting is done using markdown syntex.  markdown is a popular markup language that is a good bit simpler than other options like HTML or latek. This Simplicity means that it is not quite as expressive as the other languages, however it typically provides the formatting for almost everything you would want to do, am I staying simpler, it is much easier to learn this quickly and to get the hang of using a markup Language.
-As with other markup languages, markdown uses special characters or symbols or conventions to indicate formatting within the plain text. When the document is rendered these markings are used by the software to convert into the formatting that you have specified. Some example formatting symbols and conventions for markdown include for bold to* are used to surround the word or phrase, for italics a single Asterix is used to surround the word or phrase, first level headers or specified on a new line that starts with a hash symbol and then a space, second level headers are similar but used to hashes and so on for lower-level Hatter's, a blank line indicates a
+```{r rmarkdowntemplate, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of the template Rmarkdown document that you will see when you create a new Rmarkdown file in RStudio. You can explore this template and try rendering (knitting) it. Once you are familiar with how this example works, you can edit the text and code to adapt it for your own document."}
+knitr::include_graphics("figures/rmarkdown_template.png")
+```
 
-In other words there will be to return used to set up a new paragraph, and hyphens on new lines can be used to specify itemized list. One thing to keep in mind when using markdown is that white space can be very important in specifying the formatting. For example when you specify a new paragraph, you must leave a blank line  from your previous text. Similarly when you're using a hash to indicate a header you must leave a blank face after the house before the wording that you want to be used in that head.
-[Examples of this]
- The markdown syntax is fairly simple and can be learned fairly quickly. firm or you can see the rmarkdown reference guide at https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf. The basic formatting rules for marked down are also covered any number of more extensive resources for R markdown that we will point you to later in this module.
-The next element of R markdown is that there are many options that you can set for each Co chunk. These options will specify how the code in that section is run and how output is presented.  these are called chunk options and they are specified in the area where you mark the start of executable code. Some of these options include eval which specifies whether to evaluate the code in that option. This can be useful if you wanted to show some code but not to run it in that section. The echo option can be used to specify whether to print the code. For a pre-processing protocol it can be very helpful to print out all of the code so that future researchers who read that protocol can clearly see each step you took. By contrast if you are using R markdown to create a report or an article that is focused on the results of urinalysis, it may make more sense two instead include no code. You can also specify whether messages and warnings created when running the code should be included in the document output, and there are number of code chunk options that specify how tables and figures rendered by the code should be shown. For more details on the possible options that can be specified for how code is evaluated with an H on you can see the r markdown cheat sheet available at https://rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf
-The resources that we have pointed she's so far cover the basics of using R markdown. You can get quite a lot done just with these Basics. However the rmarkdown system is also very rich and allows quite complex operation. Here we will highlight just a few of the ways did armor down can be used in a more advanced method, and we will focus on some of the elements that we have found to be particularly useful for biomedical researchers to you. We will not go into great job about how to use these but instead point to resources where you can learn more. If you are just learning rmarkdown produce more advanced features at this point it may mostly just be helpful to know that they're out there and that you can check them out once you become more familiar with using the basics of R markdown.
-First you can use R markdown, in contact with something called bib tag, as a referencing system. This allows you to include bibliographical references in the documents that you create, and R markdown will handle the creation of the references section and the numbering of the documents Within your text.
-Second you can include math and mathematical equations with in your rmarkdown document. this allows you to use Clean and Clear formatting anytime you are testifying an equation within your document.
-With r markdown the default is to include code that is executed in our. However especially in workflows for biological data, you may need to use different languages for different parts of your workflow. Rmarkdown will allow you to specify that code and specific chunks of code should be run using different languages. You can include specifications to run code in languages like Python and other options.
-As mentioned earlier markdown is a fairly simple markup language. It can do a lot but occasionally the Simplicity means that you might not be able to create fancier formatting that you might desire. For R markdown it will allow you to shift into a more complex markup language in those cases. This does restrict you with that because it will depend on what output format you are using and as a result at that point you will only be able to render to a single output format typically. However this functionality allows you to incorporate specifications for me there lay Tech if you are rendering to PDF or HTML if you are rendering in that format. This allows for very complex formatting within an R markdown document.
-Here we have focused on creating report documents as a basic type of document output. However rmarkdown will allow you to Output to a number of different formats. For example the Articles package includes templates for a number of different Journal and allows you to use R markdown to directly write your Journal article into the journals desired format. You can also create presentations either as PDF slideshow, as PowerPoint, where is HTML slides using different options under the presentation Tab 4 armor John. R markdown is also now able to be used to create larger projects that are pulling together multiple documents created in an R markdown format these include online books that can be also render to PDF through the package book down. It also includes websites with a Blog section through the block down package and online dashboards through the flex dashboard package.
-There's some excellent and free resources for learning both basics and advanced features of R markdown. The team developing rmarkdown is largely based out of our studio, and so many of the resources are available through our studios website they have a specific section on R markdown available at https://rmarkdown.rstudio.com/. This way webpage includes tutorial both for Basics and more advanced topics, a gallery where you can see examples of hell are marked down as used and find the code to try it's acting it for your own use, and it fence articles. Members of this development team have also created two excellent free online books these are available online and also in print. the first is R markdown the definitive guide and the second is the rmarkdown cookbook. The first book provides an ordered look through different topics in R markdown, while the second is excellent first searching for a particular thing that you want to do with r markdown and then get it going directly to a section that describes how to do that using a cookbook approach. 
+If you have not used Rmarkdown before, it is very helpful to try knitting this
+example document, before making your own changes to it, to explore how pieces in
+the document align with elements in the rendered output document (Figure
+\@ref(fig:rmarkdownoriginalfinal)). Once you are familiar with the line-up
+between elements in this file in the output document, you delete parts of the
+example file and insert your own text and code.
+
+```{r rmarkdownoriginalfinal, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of the template Rmarkdown document that you will see when you create a new Rmarkdown file in RStudio. You can explore this template and try rendering (knitting) it. Once you are familiar with how this example works, you can edit the text and code to adapt it for your own document."}
+knitr::include_graphics("figures/rmarkdownoriginalfinal.png")
+```
+
+We will walk you through exploring this example document, as well as aligning it
+with the formatted output document (Figure \@ref(fig:rmarkdownoriginalfinal)).
+First, to render this or any Rmarkdown document, if you are in RStudio you can
+use the "Knit" button at the top of the file, as shown in Figure
+\@ref(fig:rmarkdowntemplate2). When you click on this button, it will render the
+entire document to the output format you've selected (HTML, PDF, or Word). This
+rendering process will both run the executable code and apply all formatting.
+
+The final output (Figure \@ref(fig:rmarkdownoriginalfinal), right) will pop up
+in a new window. As you start with Rmarkdown, it is useful to look at this
+output to see how it compares with the plain text Rmarkdown file (Figure
+\@ref(fig:rmarkdownoriginalfinal), left).
+
+You will also notice, after you first render the document, that your working
+directory has a new file with this output document. For example, if you are
+working to create an HTML document using an Rmarkdown file called
+"my_report.Rmd", once you knit your Rmarkdown file, you will notice a new file
+in your working directory called "my_report.html". This new file is your output
+file, the one that you would share with colleagues as a report. You should
+consider this output document to be read only---in other words, you can read and
+share this document, but you should not make any changes directly to this
+document, since they will be overwritten anytime you re-render the original
+Rmarkdown document.
+
+```{r rmarkdowntemplate2, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of the template Rmarkdown document, highlighting buttons in RStudio that you can use to facilitate working with the document. The 'knit' button, highlighted at the top of the figure, will render the entire document. The green arrow, highlighted lower in the figure within a code chunk, can be used to run the code in that specific code chunk."}
+knitr::include_graphics("figures/rmarkdown_template2.png")
+```
+
+Next, let's compare the example Rmarkdown document (the one that is given when
+you first open an Rmarkdown file in RStudio) with the output file that is
+created when you render this example document (Figure
+\@ref(rmarkdownoriginalfinal)). If you look at the output document (Figure
+\@ref(fig:rmarkdownoriginalfinal), right), you can notice how different elements
+align with pieces in the original Rmarkdown file (Figure
+\@ref(fig:rmarkdownoriginalfinal)). For example, the output document includes a
+header with the text "R Markdown". This second-level header is created by the
+Markdown notation `## R Markdown` in the original file. The header is formatted
+in a larger font than other text, and on a separate line---the exact formatting
+is specified within the style file for the Rmarkdown document, and will be
+applied to all second-level headers in the document. You can also see formatting
+specified through things like bold font for the word "Knit", through the
+Markdown syntax `**Knit**`, and a clickable link specified through the syntax
+`<http://rmarkdown.rstudio.com>`. At the beginning of the original document, you
+can see how elements like the title, author, date, and output format are
+specified in the YAML. Finally, you can see that special character combinations
+demarcate sections of executable code.
+
+RStudio has some other functionality that is useful when you are working with
+Rmarkdown documents. Within each code chuck are some buttons that can be used to
+test out the code in that chunk of executable code. One is the green right arrow
+key to the right at the top of the code chunk, highlighted in Figure
+\@ref(fig:rmarkdowntemplate2). This button will run all of the code in that
+chunk and show you the output in an output field that will open directly below
+the code chunk. This functionality allows you to explore the code in your
+document as you build it, rather than waiting until you are ready to render the
+entire document. The button directly to the left of that button, which looks
+like an upward-pointing arrow over a rectangle, will execute all code that comes
+before this chunk in the document. This can be very helpful in making sure that
+you have set up your environment to run this particular chunk of code.
+
+For the main text in an Rmarkdown document, all formatting is done using
+Markdown as the markup language. Markdown is a popular markup language, in part
+because it is a good bit simpler than other markup languages like HTML or LaTeX.
+This simplicity means that it is not quite as expressive as other markup
+languages. However, Markdown provides adequate formatting for 90% of the
+formatting you will typically want to do for a research report or
+pre-processeing protocol, and by staying simpler, it is much easier to learn the
+Markdown syntax quickly compared to other markup languages.
+
+As with other markup languages, Markdown uses special characters or combinations of characters to indicate formatting within the plain text of the original document. When the document is rendered, these markings are used by the software to create the formatting that you have specified in the final output document. Some example formatting symbols and conventions for Markdown include: 
+
+- to format a word or phrase in bold, surround it with two asterisks (`**`) 
+- to format a word or phrase in italics, surround it with one asterisk (`*`) 
+- to create a first-level header, put the header text on its own line, starting the line with `# `
+- to create a second-level header, put the header text on its own line, starting the line with `## `
+- separate paragraphs with empty lines
+- use hyphens to create bulleted lists
+
+One thing to keep in mind when using Markdown, in terms of formatting, is that
+white space can be very important in specifying the formatting. For example when
+you specify a new paragraph, you must leave a blank line  from your previous
+text. Similarly when you use a hash (`#`) to indicate a header, you must leave a
+blank space after the hash before the word or phrase that you want to be used in
+that header. To create a section header, you would write:
+
+```
+# Initial Data Inspection
+```
+
+Meanwhile this: 
+
+```
+#Initial Data Inspection
+```
+
+Would render to: 
+
+#Initial Data Inspection
+
+Similarly, white space is needed to separate paragraphs. For example, this would create two paragraphs: 
+
+```
+This is a first paragraph. 
+
+This is a second.
+```
+
+Meanwhile this would create one: 
+
+```
+This is a first paragraph.
+This is still part of the first paragraph.
+```
+
+The syntax of Markdown is fairly simple and can be learned quickly. For more
+details on this syntax, you can refer to the Rmarkdown reference guide at
+https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf. The
+basic formatting rules for Markdown are also covered any number of more
+extensive resources for Rmarkdown that we will point you to later in this
+module.
+
+The next element of R markdown is that there are many options that you can set
+for each code chunk. These options will specify how the code in that section of
+executable code will be run and how the output from running the code will be
+presented. These specifications are called **chunk options**, and you specify
+them in the special character combination where you mark the start of executable
+code.
+
+These chunk options include `eval`, which specifies whether to evaluate the code
+in that code chunk when the document is rendered. This can be useful if you
+wanted to show some code but not run it.
+
+The chunk options also include `echo`, which can be used to specify whether to
+print the code in that code chunk when the document is rendered. For some
+documents, it is useful to print out the code that is executed, where for other
+documents you may not want that printed. For example, for a pre-processing
+protocol, you are aiming to show yourself and others how the pre-processing was
+done. In this case, it is very helpful to print out all of the code, so that
+future researchers who read that protocol can clearly see each step. By
+contrast, if you are using Rmarkdown to create a report or an article that is
+focused on the results of your analysis, it may make more sense to instead hide
+the code in the final document.
+
+As part of the code options, you can also specify whether messages and warnings
+created when running the code should be included in the document output, and
+there are number of code chunk options that specify how tables and figures
+rendered by the code should be shown. For more details on the possible options
+that can be specified for how code is evaluated within an executable chunk of
+code, you refer to the Rmarkdown cheat sheet available at
+https://rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf
+
+### More advanced Rmarkdown functionality
+
+The details and resources that we have covered so far focus on the basics of
+Rmarkdown. You can get quite a lot done just with these basics. However,
+the Rmarkdown system is very rich and allows complex functionality beyond
+these basics. In this section, we will highlight just a few of the ways
+Rmarkdown can be used in a more advanced way. Since this topic is so broad, we
+will focus on elements that we have found to be particularly useful for
+biomedical researchers as they become more advanced with Rmarkdown. We will not
+go into extensive detail about how to use these more advanced features in this
+module, but instead point to resources where you can learn more as you are
+ready. If you are just learning Rmarkdown, at this point it will be helpful to
+just know that some of these advanced features are available, so you can come
+back and explore them when you become familiar with the basics.
+
+First you can use R markdown, in contact with something called bib
+tag, as a referencing system. This allows you to include bibliographical
+references in the documents that you create, and R markdown will handle the
+creation of the references section and the numbering of the documents Within
+your text. Second you can include math and mathematical equations with in your
+rmarkdown document. this allows you to use Clean and Clear formatting anytime
+you are testifying an equation within your document. With r markdown the default
+is to include code that is executed in our. However especially in workflows for
+biological data, you may need to use different languages for different parts of
+your workflow. Rmarkdown will allow you to specify that code and specific chunks
+of code should be run using different languages. You can include specifications
+to run code in languages like Python and other options. As mentioned earlier
+markdown is a fairly simple markup language. It can do a lot but occasionally
+the Simplicity means that you might not be able to create fancier formatting
+that you might desire. For R markdown it will allow you to shift into a more
+complex markup language in those cases. This does restrict you with that because
+it will depend on what output format you are using and as a result at that point
+you will only be able to render to a single output format typically. However
+this functionality allows you to incorporate specifications for me there lay
+Tech if you are rendering to PDF or HTML if you are rendering in that format.
+This allows for very complex formatting within an R markdown document. Here we
+have focused on creating report documents as a basic type of document output.
+However rmarkdown will allow you to Output to a number of different formats. For
+example the Articles package includes templates for a number of different
+Journal and allows you to use R markdown to directly write your Journal article
+into the journals desired format. You can also create presentations either as
+PDF slideshow, as PowerPoint, where is HTML slides using different options under
+the presentation Tab 4 armor John. R markdown is also now able to be used to
+create larger projects that are pulling together multiple documents created in
+an R markdown format these include online books that can be also render to PDF
+through the package book down. It also includes websites with a Blog section
+through the block down package and online dashboards through the flex dashboard
+package. There's some excellent and free resources for learning both basics and
+advanced features of R markdown. The team developing rmarkdown is largely based
+out of our studio, and so many of the resources are available through our
+studios website they have a specific section on R markdown available at
+https://rmarkdown.rstudio.com/. This way webpage includes tutorial both for
+Basics and more advanced topics, a gallery where you can see examples of hell
+are marked down as used and find the code to try it's acting it for your own
+use, and it fence articles. Members of this development team have also created
+two excellent free online books these are available online and also in print.
+the first is R markdown the definitive guide and the second is the rmarkdown
+cookbook. The first book provides an ordered look through different topics in R
+markdown, while the second is excellent first searching for a particular thing
+that you want to do with r markdown and then get it going directly to a section
+that describes how to do that using a cookbook approach.
 
 
 

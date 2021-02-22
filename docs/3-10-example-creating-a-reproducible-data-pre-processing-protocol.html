@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="3.10 Example: Creating a reproducible data pre-processing protocol | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
+<meta property="og:type" content="book" />
+
+
+<meta property="og:description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
+<meta name="github-repo" content="rstudio/bookdown-demo" />
+
+<meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, and Gregory Robertson" />
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<meta name="description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing.">
+
+<title>3.10 Example: Creating a reproducible data pre-processing protocol | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
+
+<script src="libs/header-attrs-2.6/header-attrs.js"></script>
+<link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
+
+
+
+
+<link rel="stylesheet" href="toc.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li><a href="index.html#overview"><span class="toc-section-number">1</span> Overview</a>
+<ul>
+<li><a href="1-1-license.html#license"><span class="toc-section-number">1.1</span> License</a></li>
+</ul></li>
+<li><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a>
+<ul>
+<li><a href="2-1-separating-data-recording-and-analysis.html#separating-data-recording-and-analysis"><span class="toc-section-number">2.1</span> Separating data recording and analysis</a></li>
+<li><a href="2-2-principles-and-power-of-structured-data-formats.html#principles-and-power-of-structured-data-formats"><span class="toc-section-number">2.2</span> Principles and power of structured data formats</a></li>
+<li><a href="2-3-the-tidy-data-format.html#the-tidy-data-format"><span class="toc-section-number">2.3</span> The ‘tidy’ data format</a></li>
+<li><a href="2-4-designing-templates-for-tidy-data-collection.html#designing-templates-for-tidy-data-collection"><span class="toc-section-number">2.4</span> Designing templates for “tidy” data collection</a></li>
+<li><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#example-creating-a-template-for-tidy-data-collection"><span class="toc-section-number">2.5</span> Example: Creating a template for “tidy” data collection</a></li>
+<li><a href="2-6-power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files.html#power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files"><span class="toc-section-number">2.6</span> Power of using a single structured ‘Project’ directory for storing and tracking research project files</a></li>
+<li><a href="2-7-creating-project-templates.html#creating-project-templates"><span class="toc-section-number">2.7</span> Creating ‘Project’ templates</a></li>
+<li><a href="2-8-example-creating-a-project-template.html#example-creating-a-project-template"><span class="toc-section-number">2.8</span> Example: Creating a ‘Project’ template</a></li>
+<li><a href="2-9-harnessing-version-control-for-transparent-data-recording.html#harnessing-version-control-for-transparent-data-recording"><span class="toc-section-number">2.9</span> Harnessing version control for transparent data recording</a></li>
+<li><a href="2-10-enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms.html#enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms"><span class="toc-section-number">2.10</span> Enhance the reproducibility of collaborative research with version control platforms</a></li>
+<li><a href="2-11-using-git-and-gitlab-to-implement-version-control.html#using-git-and-gitlab-to-implement-version-control"><span class="toc-section-number">2.11</span> Using git and GitLab to implement version control</a></li>
+</ul></li>
+<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a>
+<ul>
+<li><a href="3-1-principles-and-benefits-of-scripted-pre-processing-of-experimental-data.html#principles-and-benefits-of-scripted-pre-processing-of-experimental-data"><span class="toc-section-number">3.1</span> Principles and benefits of scripted pre-processing of experimental data</a></li>
+<li><a href="3-2-introduction-to-scripted-data-pre-processing-in-r.html#introduction-to-scripted-data-pre-processing-in-r"><span class="toc-section-number">3.2</span> Introduction to scripted data pre-processing in R</a></li>
+<li><a href="3-3-simplify-scripted-pre-processing-through-rs-tidyverse-tools.html#simplify-scripted-pre-processing-through-rs-tidyverse-tools"><span class="toc-section-number">3.3</span> Simplify scripted pre-processing through R’s ‘tidyverse’ tools</a></li>
+<li><a href="3-4-complex-data-types-in-experimental-data-pre-processing.html#complex-data-types-in-experimental-data-pre-processing"><span class="toc-section-number">3.4</span> Complex data types in experimental data pre-processing</a></li>
+<li><a href="3-5-complex-data-types-in-r-and-bioconductor.html#complex-data-types-in-r-and-bioconductor"><span class="toc-section-number">3.5</span> Complex data types in R and Bioconductor</a></li>
+<li><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#example-converting-from-complex-to-tidy-data-formats"><span class="toc-section-number">3.6</span> Example: Converting from complex to ‘tidy’ data formats</a></li>
+<li><a href="3-7-introduction-to-reproducible-data-pre-processing-protocols.html#introduction-to-reproducible-data-pre-processing-protocols"><span class="toc-section-number">3.7</span> Introduction to reproducible data pre-processing protocols</a></li>
+<li><a href="3-8-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#rmarkdown-for-creating-reproducible-data-pre-processing-protocols"><span class="toc-section-number">3.8</span> RMarkdown for creating reproducible data pre-processing protocols</a></li>
+<li><a href="3-9-creating-and-exploring-an-rmarkdown-file.html#creating-and-exploring-an-rmarkdown-file"><span class="toc-section-number">3.9</span> Creating and exploring an Rmarkdown file</a></li>
+<li><a href="3-10-example-creating-a-reproducible-data-pre-processing-protocol.html#example-creating-a-reproducible-data-pre-processing-protocol"><span class="toc-section-number">3.10</span> Example: Creating a reproducible data pre-processing protocol</a></li>
+</ul></li>
+<li><a href="4-references.html#references"><span class="toc-section-number">4</span> References</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="example-creating-a-reproducible-data-pre-processing-protocol" class="section level2" number="3.10">
+<h2><span class="header-section-number">3.10</span> Example: Creating a reproducible data pre-processing protocol</h2>
+<p>We will walk through an example of creating a reproducible protocol for the
+automated gating of flow cytometry data for a project on the immunology of
+tuberculosis lead by one of our Co-Is. This data pre-processing protocol was
+created using RMarkdown and allows the efficient, transparent, and reproducible
+gating of flow cytometry data for all experiments in the research group. We will
+walk the trainees through how we developed the protocol initially, the final
+pre-processing protocol, how we apply this protocol to new experimental data.</p>
+<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
+<ul>
+<li>Explain how a reproducible data pre-processing protocol can be integrated into
+a real research project</li>
+<li>Understand how to design and implement a data pre-processing protocol to
+replace manual or point-and-click data pre-processing tools</li>
+</ul>
+<div id="subsection-1-12" class="section level3" number="3.10.1">
+<h3><span class="header-section-number">3.10.1</span> Subsection 1</h3>
+<p>In this module, we’ll provide advice and an example of how you can use the
+tools for knitted documents to create a reproducible data preprocessing
+protocol. This module builds on ideas and techniques that were introduced
+in the last two modules, to help you put them into practical use for
+data preprocessing that you do repeatedly for research data in your
+laboratory.</p>
+</div>
+<div id="advice-on-designing-a-pre-processing-protocol" class="section level3" number="3.10.2">
+<h3><span class="header-section-number">3.10.2</span> Advice on designing a pre-processing protocol</h3>
+<p>Before you write your protocol in a knitted document, you should decide on
+the content to include in the protocol.</p>
+<p>[More on laboratory protocols?]</p>
+<p>The first thing to decide on are what the starting point will be for the
+protocol (the data input) and what will be the ending point (the data output).
+It may make sense to design a separate protocol for each major type of
+data that you collect in your research laboratory. Your input data for the
+protocol, under this design, might be the data that is output from a
+specific type of equipment (e.g., flow cytometer) or from a certain
+type of sample or measurement (e.g., metabolomics run on a mass spectrometer),
+even if it is a fairly simple type of data (e.g., CFUs from plating data).
+For the data output, it often makes sense to plan for data in a format
+that is appropriate for data analysis and for merging with other types of
+data collected from the experiment.</p>
+<p>For example, say you are working with data from a flow cytometer, metabolomics
+data measuremd with a mass spectrometer, and bacterial load data measured by
+plating data and counting colony forming units (CFUs). In this case, you may
+want to create three pre-processing protocols: one for the flow data, one for
+the metabolomics data, and one for the CFU data.</p>
+<p>The pre-processing protocol may be very simple for the CFU data. This protocol
+would input data collected in a plain-text delimited file (a csv file, for
+example). Within the protocol, there would be steps to convert initial
+measurements from plating at different dilutions into estimates of the bacterial
+load in each original sample. There may also be sections in the protocol for
+exploratory data analysis, to allow for quality assessment and control of the
+collected data as part of the preprocessing. The output would be a simple data
+object (a dataframe, for example) with the bacterial load for each sample. This
+data could then be used in tables and figures in the research report or
+manuscript, as well as merged with other data from each experimental animal to
+explore associations with the experimental design details (e.g., comparing
+bacterial load in treated versus untreated animals) or with other types of data
+(e.g., comparing immune cell populations, as measured with flow cytometry data,
+with bacterial loads, as measured from plating and counting CFUs).</p>
+<p>The preprocessing protocols would be more extensive for the flow cytometry and
+metabolomics data. For example, the flow cytometry data might need to be
+preprocessed through a number of steps. First, the raw data from the flow
+cytometer will need to be input to R. [Common file format for flow data? R
+packages to read in this data?]. Once the data is input, it will need to be
+gated, to [identify and count the immune cell populations that you’re interested
+in?]. [Tools for automated gating in R.] [Other pre-processing steps?
+Normalizations? Transformations? Others?]</p>
+<p>For the metabolomics data, there will similarly be an extensive set of steps to
+preprocess the data, to convert it from the format output by the laboratory
+equipment into a format that can be used for data analysis and to merge with
+other types of data from the experiment. [More on pre-processing steps for
+metabolomics data.]</p>
+<p>[Splitting pre-processing into “modules” of processes that need to happen—for
+example, standardizing across samples, transforming data to satisfy distribution
+requirements for statistical models / tests, removing extraneous data (dead
+cells in flow cytometry, for example), …]</p>
+<p>[For each module, consider the options you could take in pre-processing. For
+open-source software, like Bioconductor packages, these options are likely
+embedded either in your choice of functions (across a package), or even choice
+of packages in some cases, and then at a finer level through the parameters in a
+package. You can use vigettes and package manuals to identify the different
+functions you can choose and then use the helpfile for a function to determine
+all of its parameters and the choices you can select for each. In the protocol,
+show the code that you use to implement this choice and also explain clearly in
+the text why you made this choice and what alternatives should be considered if
+data characteristics are different. Write this as if you are explaining to a new
+research group member (or your future self) how to think about this step in the
+pre-processing, why you’re doing it the way your doing it, and what code is used
+to do it that way. You should also include references that justify choices when
+they are available—include these using BibTex. By doing this, you will make it
+much easier on yourself when you write the Methods section of papers that report
+on the data you have pre-processed, as you’ll already have draft information on
+your pre-processing methods in your protocol.]</p>
+<p>[Throughout, use an example dataset, preferably from your own research lab. You
+likely want to select one for project that you have already published or are
+getting ready to publish, so you won’t feel awkard about making the data
+available for people to practice with. You can include the data and the
+RMarkdown in its own RStudio Project and post this either publicly or privately
+on GitHub. This creates a “packet” of everything that a reader needs to use to
+recreate what you did—they can download the whole GitHub repository and will
+have a nice project directory on their computer with everything they need to try
+out the protocol. If you don’t have an example dataset from your own laboratory,
+you can explore example datasets that are already available, either as data
+included with existing R packages or through open repositories, included those
+hosted through national research institutions like the NIH. In this case, be
+sure to cite the source of the data and include any available information about
+the equipment that was used to collect it and the settings used when the data
+were collected.]</p>
+</div>
+<div id="writing-research-protocols" class="section level3" number="3.10.3">
+<h3><span class="header-section-number">3.10.3</span> Writing research protocols</h3>
+<p>There are some standards that are typically used when writing protocols for
+research. This is a common practice for task that are repeated in a laboratory,
+including [examples from wet lab].</p>
+<p>[Advantages of creating and using a protocol]</p>
+<p>Computation tasks, including data pre-processing, can also be standardized
+through the creation and use of a protocol.</p>
+<p>A protocol, in the sense we use it here, is essentially an annotated
+recipe for each step in preparing your data from the initial, “raw” state
+that is output from the laboratory equipment (or collected by hand) to a
+state that is useful for answering important research questions. The
+exact implementation of each step is given in code that can be re-used and
+adapted with new data of a similar format. However, the code script is
+often not enough to helpfully understand, share, and collaborate on the
+process. Instead, it’s critical to also include descriptions written
+by humans and for humans. These annotations can include descriptions of the
+code and how certain parameters are standardized the algorithms in the code.
+They can also be used to justify choices, and link them up both with
+characteristics of the data and equipment for your experiment as well as
+with scientific principles that underlie the choices. Protocols like this
+are critical to allow you to standardize the process you use across many
+samples from one experiment, across different experiments and projects in
+your research laboratory, and even across different research laboratories.</p>
+<p>[Links with Good Laboratory Practices (GLP), then link in with
+“Good Enough” computational practice, links with the idea of
+standard operating procedures]</p>
+<p>Clinical studies are organized and guided by a protocol prepared before the
+study:</p>
+<blockquote>
+<p>“Writing a research proposal is probably one of the most challenging and
+difficult task as research is a new area for the majority of postgraduates and
+new researchers.” <span class="citation">(Al-JunDi and SAkkA 2016)</span></p>
+</blockquote>
+<blockquote>
+<p>“Clinical research is conducted according to a plan (a protocol) or an action plan. The protocol demonstrates the guidelines for conducting the trial. It illustrates what will be made in the study by explaining each essential part of it and how it is carried out. It also describes the eligibility of the participants, the length of the study, the medications and the related tests.” <span class="citation">(Al-JunDi and SAkkA 2016)</span></p>
+</blockquote>
+<blockquote>
+<p>“Protocol writing allows the researcher to review and critically evaluate the published literature on the interested topic, plan and review the project steps and serves as a guide throughout the investigation.” <span class="citation">(Al-JunDi and SAkkA 2016)</span></p>
+</blockquote>
+<p>A protocol should include some background, the aims of the work, hypotheses
+to be tested, materials and methods, methods of data collection and
+equipment to analyze samples <span class="citation">(Al-JunDi and SAkkA 2016)</span> (This reference is discussing
+full protocols for a study, e.g., a clinicial trial, so includes more steps
+that just pre-processing.)</p>
+<p>One characteristic of a good protocol for a clinical study:</p>
+<blockquote>
+<p>“It should provide enough detail (methodology) that can allow another investigator to do the study and arrive at comparable conclusions.” <span class="citation">(Al-JunDi and SAkkA 2016)</span></p>
+</blockquote>
+<p>Good protocols include not only how, but also why. This includes both
+higher-level (i.e., what a larger question is being asked) and also at a
+fine level, for each step in the process. [Analogy—cookbook that covers
+deeper principles for why each step in process is done. <em>America’s Test Kitchen</em>
+recipes versus back-of-the-package recipes.]</p>
+<p>The process of writing a protocol forces you to think about each step in the
+process, why you do it a certain way (include parameters you choose for
+certain functions in a pipeline of code), and include justifications from
+the literature for this reasoning. If done well, it should allow you to
+quickly and thoroughly write the associated sections of Methods in research
+reports and manuscripts and help you answer questions and challenges from
+reviewers.</p>
+<p>Writing this will also help you identify steps for which you are uncertain
+how to proceed and what choices to make in customizing an analysis for your
+research data. These are areas where you can search more deeply in the
+literature to understand implications of certain choices and, if needed,
+contact the researchers who developed and maintained associated software
+packages to get advice.</p>
+<p>For open-source software, resources to consult extend beyond the traditional
+one. You can often find information on open-source software, including the
+algorithms and principles that underlie the software, through peer-reviewed
+publications in the scientific literature. However, you can also find
+details—and often more thorough details—in <em>vignettes</em> that are published in
+conjunction with the package. [More on vignettes and where to find them.]
+Further, software is often presented at conferences and workshops, including the
+yearly BioC [?] conference for the Bioconductor community. These talks and
+workshops are sometimes available after the event as online recordings [some
+examples of these]. You can consult books, as well, although these often
+quickly become outdated for software that is rapidly evolving; an exception
+is online books, which are becoming very popular to create through R’s
+<code>bookdown</code> package and can be rapidly updates. Many of these books are
+available through [bookdown’s gallery page].</p>
+<p>An added advantage of data pre-processing protocols, created with knitted
+documents, is that you can include steps and code for data quality
+assessment. [More on exploratory data analysis] [Examples of how
+exploratory data analysis could help when pre-processing biomedical
+data—for example, identify outliers that might indicate equipment
+was malfunctioning?]</p>
+<p>Be sure that, in each step of your pre-processing protocol, you explain
+<em>why</em> you are taking a certain step. For example, if you have a step
+that aligns peaks across samples in metabolomics data [?], be sure to
+explain that … [why it’s important to do this]. Include references to
+the literature that justify this explanation; these references also
+serve as further literature that someone else could read to understand
+the step. This <em>why</em> is important even if the step is obvious to you—it
+will allow you to pass along the task to others in your research group
+without the new person needing to blindly trust each step.</p>
+<p>It is particularly important to clearly explain what you are doing in
+each step and how you are implementing your choices through code. Yes,
+the code itself allows someone else to replicate what you did. However,
+only those who are very, very familiar with the software program, including
+any of the extension packages you include, can “read” the code directly
+to understand what it’s doing. Further, even if you understand the code
+very well when you create it, it is unlikely that you will stay at that
+same level of comprehension in the future, as other tasks and challenges
+take over that brain space. Explaining for humans, in text that augments
+and accompanies the code, is also important because function names and
+parameter names in code often are not easy to decipher. While excellent
+programmers can sometimes create functions with clear and transparent
+names, easy to translate to determine the task each is doing, this is
+difficult in software development and is rare in practice. Human annotations,
+written by and for humans, are critical to ensure that the steps will
+be clear to you and others in the future when you revisit what was
+done with this data and what you plan to do with future data.</p>
+<p>You can begin to create this pre-processing protocol before you collect
+any of your own research data. Example datasets exist online, and you
+can often find an example that aligns with the type of data you will
+be collecting and the format you will be collecting it in. [Places where
+you could get this data—repositories, R package example datasets.]
+[Characteristics that are important in your example dataset—same file
+format that you will get from your equipment, key characteristics, like
+number of experimental groups, like treatment categories and single vs
+multiple time points]</p>
+<p>If the format of the initial data is similar to the format you anticipate for
+your data, you can create the code and explanations for key steps in your
+pre-processing for that type of data. Often, you will be able to adapt the
+RMarkdown document to change it from inputting the example data to inputting
+your own experimental data with minimal complications, once your data
+comes in. By thinking through and researching data pre-processing options
+before the data is collected, you can save time in analyzing and presenting
+your project results once you’ve completed the experimental data
+collection for the project.</p>
+<p>Further, with an example dataset, you can get a good approximation of the
+format in which you will output data from the pre-processing steps.
+This will allow you to begin planning the analysis and visualization
+that you will use to combine the different types of data from your
+experiment and use it to investigate important research hypotheses.
+Again, if data follow standardized formats across steps in your process,
+it will often be easy to adapt the code in the protocol to input the new
+dataset that you created, without major changes to the code developed with
+the example dataset.</p>
+<p>For each step of the protocol, you can also include potential problems
+that might come up in specific instances of the data you get from
+future experiments. This can help you adapt the code in the protocol in
+thoughtful ways as you apply it in the future to new data collected
+for new studies and projects.</p>
+</div>
+<div id="practice-quiz-4" class="section level3" number="3.10.4">
+<h3><span class="header-section-number">3.10.4</span> Practice quiz</h3>
+</div>
+</div>
+<!-- </div> -->
+<p style="text-align: center;">
+<a href="3-9-creating-and-exploring-an-rmarkdown-file.html"><button class="btn btn-default">Previous</button></a>
+<a href="4-references.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+
+</body>
+</html>
