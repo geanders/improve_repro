@@ -164,6 +164,18 @@ example to convert from the complex data format from pre-processing to a format
 better for further data analysis and visualization</li>
 <li>Understand how these tools would fit in their own research pipelines</li>
 </ul>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.3     ✓ purrr   0.3.4
+## ✓ tibble  3.0.6     ✓ dplyr   1.0.4
+## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
+## ✓ readr   1.4.0     ✓ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::combine()    masks Biobase::combine(), BiocGenerics::combine()
+## x tidyr::extract()    masks magrittr::extract()
+## x dplyr::filter()     masks stats::filter()
+## x dplyr::lag()        masks stats::lag()
+## x ggplot2::Position() masks BiocGenerics::Position(), base::Position()
+## x purrr::set_names()  masks magrittr::set_names()</code></pre>
 <div id="subsection-1-9" class="section level3" number="3.6.1">
 <h3><span class="header-section-number">3.6.1</span> Subsection 1</h3>
 <p>In the previous modules, we have talked about two topics. First we have talked about the convenience and power of tidyverse tools. These tools can be used at points in your workflow when the data can be stored in a simple standard format: the Tidy dataframe format. We have also talked about reasons why there are advantages to using more complex data storage formats earlier in the process. In discussing this, we explained why this leads to early steps of the data preprocessing often being conducted outside of the tidyverse approach, instead using tools available through the bioconductor collection of packages. Once your workflow has advanced to a stage where it is straightforward to store the data in a simpler form at like a dataframe there are a large advantages to shifting into the tidyverse approach as compared to using more complex object-oriented classes for storing the DOT. In this module we will talk through approaches to make the shift from having data stored in bioconductor classes, including very specific classes for some data, into a tidy data format. This will allow an easy transition into using the tiny verse approach for data analysis and visualization at later stages in your workflow.</p>
@@ -256,17 +268,17 @@ the right container for operations from <code>edgeR</code>. Then functions from 
 data. The result is an object in the <code>DGEExact</code> class, which is defined
 by the <code>edgeR</code> package. To extract data from this class in a tidy format,
 you can use the <code>tidy</code> and <code>glance</code> functions from <code>biobroom</code>.]</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biobroom)</span>
-<span id="cb5-2"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Biobase)</span>
-<span id="cb5-3"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(edgeR)</span>
-<span id="cb5-4"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(hammer)</span>
-<span id="cb5-6"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(hammer)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biobroom)</span>
+<span id="cb8-2"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Biobase)</span>
+<span id="cb8-3"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(edgeR)</span>
+<span id="cb8-4"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(hammer)</span>
+<span id="cb8-6"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(hammer)</span></code></pre></div>
 <pre><code>## [1] &quot;ExpressionSet&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;Biobase&quot;</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(hammer)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(hammer)</span></code></pre></div>
 <pre><code>## # A tibble: 236,128 x 3
 ##    gene               sample    value
 ##    &lt;chr&gt;              &lt;chr&gt;     &lt;int&gt;
@@ -281,21 +293,21 @@ you can use the <code>tidy</code> and <code>glance</code> functions from <code>b
 ##  9 ENSRNOG00000000021 SRX020102     7
 ## 10 ENSRNOG00000000024 SRX020102    86
 ## # … with 236,118 more rows</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Example from `biobroom` help documentation</span></span>
-<span id="cb9-2"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb9-2" aria-hidden="true" tabindex="-1"></a>hammer.counts <span class="ot">&lt;-</span> <span class="fu">exprs</span>(hammer)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb9-3"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb9-3" aria-hidden="true" tabindex="-1"></a>hammer.treatment <span class="ot">&lt;-</span> <span class="fu">phenoData</span>(hammer)<span class="sc">$</span>protocol[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb9-4"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb9-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(<span class="at">counts=</span>hammer.counts,<span class="at">group=</span>hammer.treatment)</span>
-<span id="cb9-6"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb9-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(y)</span>
-<span id="cb9-7"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb9-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateCommonDisp</span>(y)</span>
-<span id="cb9-8"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb9-8" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateTagwiseDisp</span>(y)</span>
-<span id="cb9-9"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb9-9" aria-hidden="true" tabindex="-1"></a>et <span class="ot">&lt;-</span> <span class="fu">exactTest</span>(y)</span>
-<span id="cb9-10"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(et)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Example from `biobroom` help documentation</span></span>
+<span id="cb12-2"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb12-2" aria-hidden="true" tabindex="-1"></a>hammer.counts <span class="ot">&lt;-</span> <span class="fu">exprs</span>(hammer)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb12-3"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb12-3" aria-hidden="true" tabindex="-1"></a>hammer.treatment <span class="ot">&lt;-</span> <span class="fu">phenoData</span>(hammer)<span class="sc">$</span>protocol[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb12-4"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb12-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(<span class="at">counts=</span>hammer.counts,<span class="at">group=</span>hammer.treatment)</span>
+<span id="cb12-6"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb12-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(y)</span>
+<span id="cb12-7"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb12-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateCommonDisp</span>(y)</span>
+<span id="cb12-8"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb12-8" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateTagwiseDisp</span>(y)</span>
+<span id="cb12-9"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb12-9" aria-hidden="true" tabindex="-1"></a>et <span class="ot">&lt;-</span> <span class="fu">exactTest</span>(y)</span>
+<span id="cb12-10"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(et)</span></code></pre></div>
 <pre><code>## [1] &quot;DGEExact&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;edgeR&quot;</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(et)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(et)</span></code></pre></div>
 <pre><code>## # A tibble: 29,516 x 4
 ##    gene               estimate  logCPM    p.value
 ##    &lt;chr&gt;                 &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;
@@ -310,9 +322,227 @@ you can use the <code>tidy</code> and <code>glance</code> functions from <code>b
 ##  9 ENSRNOG00000000021  -2.02    0.211  0.0373    
 ## 10 ENSRNOG00000000024   0.133   3.97   0.508     
 ## # … with 29,506 more rows</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(et)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="3-6-example-converting-from-complex-to-tidy-data-formats.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(et)</span></code></pre></div>
 <pre><code>##   significant     comparison
 ## 1        6341 control/L5 SNL</code></pre>
+<p>The creator of the <code>broom</code> package listed some of the common ways that
+statistical model output objects—the focus on ‘tidying’ in <code>broom</code>—tend to
+be untidy. These include that important information is stored in the row names,
+where it is harder to access, that the names of some columns can be tricky to
+work with because they use non-standard conventions (i.e., they don’t follow the
+rules for naming objects in R), that some desired information is not available
+in the object, but rather is typically computed with later methods for the
+object, like when <code>summary</code> is run on the object, or are only available as the
+result of a <code>print</code> method run on the object, and vectors that a user may want
+to explore in tandem are stored in different places in the object.
+<span class="citation">(D. Robinson 2014)</span></p>
+<p>[Examples of these in Bioconductor objects?]</p>
+<p>These ‘messy’ characteristics show up in the data stored in Bioconductor
+objects, as well, in terms of characteristics that impede working with
+data stored in these formats easily using tools from the tidyverse.
+As an example, one common class for storing data in Bioconductor work is
+the <code>ExpressionSet</code> object class, defined in the <code>Biobase</code> package <span class="citation">(W. Huber et al. 2015)</span>.
+This object class can be used to store the data from high-throughput
+assays. It includes slots for the assay data, as well as slots
+for storing metadata about the experiment, which could include information
+like sampling time points or sample strains, as well as the experimental
+group of each sample (control versus treated, for example).</p>
+<p>Data from the assay for the experiment—for example, gene expression
+or intensity [?] measurements for each gene and each sample [?]—can be
+extracted from an <code>ExpressionSet</code> object using an extractor function
+called <code>exprs</code>. Here is an example using the <code>hammer</code> example dataset
+available with the <code>biobroom</code> package. The code call here extracts the
+assay data from the <code>hammer</code> R object, which is an instance of the
+<code>ExpressionSet</code> object class. It uses indexing (<code>[1:10, 1:3]</code>) to limit
+printing to the first ten rows and first three columns of the output, so
+we can investigate a small snapshot of the data:</p>
+<pre><code>##                    SRX020102 SRX020103 SRX020104
+## ENSRNOG00000000001         2         4        18
+## ENSRNOG00000000007         4         1         3
+## ENSRNOG00000000008         0         1         4
+## ENSRNOG00000000009         0         0         0
+## ENSRNOG00000000010        19        10        19
+## ENSRNOG00000000012         7         5         1
+## ENSRNOG00000000014         0         0         2
+## ENSRNOG00000000017         4         1        12
+## ENSRNOG00000000021         7         5         2
+## ENSRNOG00000000024        86        53        86</code></pre>
+<p>These data are stored in a matrix format. The gene identifiers [?] are given in
+the rownames and the samples in the column names. Each cell of the matrix
+provides the expression level (number of reads [?]) of a specific gene in a
+specific sample.</p>
+<p>These data are structured and stored in such a way that they have some of the
+characteristics that can make data difficult to work with the data using
+tidyverse tools. For example, they store gene identifiers in the rownames,
+rather than in a separate column where they can be easily accessed when using
+tidyverse functions. Also, there are phenotype / meta data that are stored
+in other parts of the <code>ExpressionSet</code> data but that may be interesting to
+explore in conjunction with these assay data, including the experimental
+group of each sample (control versus animals in which chronic neuropathic
+pain was induced, in these example data).</p>
+<p>The <code>tidy</code> function from the <code>biobroom</code> package extracts these data and
+restructures them into a ‘tidy’ format, ready to use easily with tidyverse
+tools.</p>
+<pre><code>## # A tibble: 236,128 x 3
+##    gene               sample    value
+##    &lt;chr&gt;              &lt;chr&gt;     &lt;int&gt;
+##  1 ENSRNOG00000000001 SRX020102     2
+##  2 ENSRNOG00000000007 SRX020102     4
+##  3 ENSRNOG00000000008 SRX020102     0
+##  4 ENSRNOG00000000009 SRX020102     0
+##  5 ENSRNOG00000000010 SRX020102    19
+##  6 ENSRNOG00000000012 SRX020102     7
+##  7 ENSRNOG00000000014 SRX020102     0
+##  8 ENSRNOG00000000017 SRX020102     4
+##  9 ENSRNOG00000000021 SRX020102     7
+## 10 ENSRNOG00000000024 SRX020102    86
+## # … with 236,118 more rows</code></pre>
+<p>This output is a tidy dataframe object, with three columns providing the
+gene name, the sample identifier, and the expression level. In this format,
+the data can easily be explored and visualized with tidyverse tools. For example,
+you could easily create a set of histograms, one per sample, showing the
+distribution of expression levels across all genes in each sample:
+[better example visualization here?]</p>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-10-1.png" width="672"  /></p>
+<p>You can also incorporate data that are stored in the <code>phenoData</code> slot of
+the <code>ExpressionSet</code> object by specifying <code>addPheno = TRUE</code>:</p>
+<pre><code>## # A tibble: 236,128 x 8
+##    gene         sample   sample.id num.tech.reps protocol strain    Time   value
+##    &lt;chr&gt;        &lt;chr&gt;    &lt;fct&gt;             &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;     &lt;fct&gt;  &lt;int&gt;
+##  1 ENSRNOG0000… SRX0201… SRX020102             1 control  Sprague … 2 mon…     2
+##  2 ENSRNOG0000… SRX0201… SRX020102             1 control  Sprague … 2 mon…     4
+##  3 ENSRNOG0000… SRX0201… SRX020102             1 control  Sprague … 2 mon…     0
+##  4 ENSRNOG0000… SRX0201… SRX020102             1 control  Sprague … 2 mon…     0
+##  5 ENSRNOG0000… SRX0201… SRX020102             1 control  Sprague … 2 mon…    19
+##  6 ENSRNOG0000… SRX0201… SRX020102             1 control  Sprague … 2 mon…     7
+##  7 ENSRNOG0000… SRX0201… SRX020102             1 control  Sprague … 2 mon…     0
+##  8 ENSRNOG0000… SRX0201… SRX020102             1 control  Sprague … 2 mon…     4
+##  9 ENSRNOG0000… SRX0201… SRX020102             1 control  Sprague … 2 mon…     7
+## 10 ENSRNOG0000… SRX0201… SRX020102             1 control  Sprague … 2 mon…    86
+## # … with 236,118 more rows</code></pre>
+<p>With this addition, visualizations can easily be changed to also show the
+experimental group of each sample:</p>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-12-1.png" width="672"  />
+You can also do things like look at differences in values for
+specific genes, pairing tools for exploring data with tools for
+visualization, both from the tidyverse:</p>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-13-1.png" width="672"  /></p>
+<p>The data for a subset of the sample can be analyzed using functions from the
+<code>edgeR</code> package, to complete needed pre-processing (for example, calculating
+normalizing factors with <code>calcNormFactors</code>, to reduce impacts from technical
+bias [?]), estimate dispersion using conditional maximum likelihood and
+empirical Bayesian methods (<code>estimateCommonDisp</code> and <code>estimateTagwiseDisp</code>), and
+then perform a statistical analysis, conducting a differential expression
+analysis (<code>exactTest</code>) <span class="citation">(Chen et al. 2014)</span>.</p>
+<p>The data are stored in a special Bioconductor class, as an instance of
+<code>DGEList</code>, throughout most of this process. This special class can be initialized
+with data from the original <code>ExpressionSet</code> object, specifically, assay
+data with the counts per gene in each sample and data on the experimental
+phenotypes for the experiment—specifically, the protocol for each sample,
+in terms of whether it was a control or if the sample was from an animal
+in which chronic neuropathic pain was induced <span class="citation">(Hammer et al. 2010)</span>.</p>
+<pre><code>## [1] &quot;DGEList&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;edgeR&quot;</code></pre>
+<p>Once the data are stored in this special <code>DGEList</code> class, different
+steps of the preprocessing can be conducted. In each case, the results are
+stored in special slots of the <code>DGEList</code> object. In this way, the original
+data and results from preprocessing are all kept together in a single
+object, each in a special slot within the object’s structure.</p>
+<pre><code>## [1] &quot;DGEList&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;edgeR&quot;</code></pre>
+<pre><code>## [1] &quot;DGEList&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;edgeR&quot;</code></pre>
+<pre><code>## [1] &quot;DGEList&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;edgeR&quot;</code></pre>
+<p>After the preprocessing, the data can be analyzed using the <code>exactText</code> function.
+This inputs the data stored in a <code>DGEList</code> object and outputs results into
+a different object class, a <code>DGEExact</code> class.</p>
+<pre><code>## [1] &quot;DGEExact&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;edgeR&quot;</code></pre>
+<p>The <code>DGEExact</code> class is defined by the <code>edgeR</code> package and was created
+specifically to store the results from a differential expression analysis
+<span class="citation">(Chen et al. 2014)</span>. It has slots for a dataframe giving the estimates of
+differential change in expression across the experimental groups for each
+gene, within a <code>table</code> slot. Again, in this output, gene identifiers are
+stored as rownames—which makes them hard to access with tidyverse tools—rather
+than in their own column:</p>
+<pre><code>##                          logFC      logCPM       PValue
+## ENSRNOG00000000001  2.64635814  1.49216267 1.309933e-06
+## ENSRNOG00000000007 -0.40869816 -0.22616605 1.000000e+00
+## ENSRNOG00000000008  2.22296029 -0.40665547 1.288756e-01
+## ENSRNOG00000000009  0.00000000 -1.31347471 1.000000e+00
+## ENSRNOG00000000010  0.03307909  1.79448965 1.000000e+00
+## ENSRNOG00000000012 -3.39210151  0.07939132 3.745676e-03</code></pre>
+<p>The <code>DGEExact</code> object also has a slot that contains a vector with identifiers
+for the two experimental groups that are being compared in the
+differential expression analysis, under the slot <code>comparison</code>:</p>
+<pre><code>## [1] &quot;control&quot; &quot;L5 SNL&quot;</code></pre>
+<p>There is also a space in this object class where information about each
+gene can be stored, if desired.</p>
+<p>Two <code>biobroom</code> methods are defined for the <code>DGEExact</code> object class, <code>glance</code>
+and <code>tidy</code>. The <code>tidy</code> method extracts the results from the differential
+experssion analysis, but moves these results into a dataframe where the
+gene names are given their own column, rather than being stored in the
+hard-to-access rownames:</p>
+<pre><code>## # A tibble: 29,516 x 4
+##    gene               estimate  logCPM    p.value
+##    &lt;chr&gt;                 &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;
+##  1 ENSRNOG00000000001   2.65    1.49   0.00000131
+##  2 ENSRNOG00000000007  -0.409  -0.226  1         
+##  3 ENSRNOG00000000008   2.22   -0.407  0.129     
+##  4 ENSRNOG00000000009   0      -1.31   1         
+##  5 ENSRNOG00000000010   0.0331  1.79   1         
+##  6 ENSRNOG00000000012  -3.39    0.0794 0.00375   
+##  7 ENSRNOG00000000014   3.65   -0.854  0.252     
+##  8 ENSRNOG00000000017   2.42    1.11   0.0000638 
+##  9 ENSRNOG00000000021  -2.02    0.211  0.0373    
+## 10 ENSRNOG00000000024   0.133   3.97   0.508     
+## # … with 29,506 more rows</code></pre>
+<p>Now that the data are in this tidy format, tools from the tidyverse can
+be easily applied. For example, you could use functions from the <code>dplyr</code>
+package to see the genes for which the differential expression analysis
+resulted in both a very low p-value and a large difference in expression
+across the experimental groups:</p>
+<pre><code>## # A tibble: 803 x 4
+##    gene               estimate logCPM   p.value
+##    &lt;chr&gt;                 &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;
+##  1 ENSRNOG00000013496     6.39   3.41 5.95e- 46
+##  2 ENSRNOG00000001338     6.01   2.25 1.37e- 22
+##  3 ENSRNOG00000020136     5.17   3.89 3.19e- 52
+##  4 ENSRNOG00000018808     4.78   6.46 1.75e-169
+##  5 ENSRNOG00000006151     4.43   2.99 2.39e- 30
+##  6 ENSRNOG00000009768     4.40   7.83 5.57e-293
+##  7 ENSRNOG00000030927    -4.29   2.45 6.32e- 23
+##  8 ENSRNOG00000001476     4.25   3.76 1.45e- 47
+##  9 ENSRNOG00000004805     4.05   6.64 2.51e-185
+## 10 ENSRNOG00000014327     3.85   4.51 5.39e- 63
+## # … with 793 more rows</code></pre>
+<p>Other exploratory analysis will also be straightforward with the data
+using tidyverse tools, now that they are in a “tidy” format.</p>
+<p>The <code>glance</code> method can also be applied to data that are stored in a
+<code>DGEExact</code> class. In this case, the method will extract the names of the
+experimental groups being compared (from the <code>comparison</code> slot of the
+object) as well as count the number of genes with statistically
+significant differences in expression level, based on the values in the
+<code>table</code> slot of the object.</p>
+<pre><code>##   significant     comparison
+## 1        6341 control/L5 SNL</code></pre>
+<pre><code>##   significant     comparison
+## 1        4225 control/L5 SNL</code></pre>
+<p>As another example, you can now use tools from <code>ggplot2</code>, as well as
+extensions built on this package, to do things like create a volcano
+plot of the data with highlighting of noteworthy genes on the plot:</p>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-22-1.png" width="672"  /></p>
+<p>If you wanted to access the help files for these <code>biobroom</code> methods for this
+object class, you could do so by calling help in R (<code>?</code>) using the name of the
+method, a dot, and then the name of the object class, e.g., <code>?tidy.DGEExact</code>.</p>
 </div>
 <div id="the-ggbio-package" class="section level3" number="3.6.3">
 <h3><span class="header-section-number">3.6.3</span> The <code>ggbio</code> package</h3>

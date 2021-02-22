@@ -3154,6 +3154,66 @@ involving some trained machine learning; but it's ultimately still just a list
 of rules.'' {[}Coders, p.~10{]}
 \end{quote}
 
+\begin{quote}
+``One of your nonnegotiable rules should be that every person in the lab must
+keep a clear and detailed laboratory notebook. The business of the lab is
+results and the communication of those results, and the lab notebook is the
+all-important documentation of each person's research. There are dozens of
+reasons to keep a clear and detailed lab notebook and only one---laziness---for
+not. Whether the work is on an esoteric branch of clam biology or is heading
+toward a potentially lucrative patent, it makes sense to keep data clear and retrievable for both present and future lab members.'' \citep{leips2010helm}
+\end{quote}
+
+\begin{quote}
+``Paper lab notebooks are most commonly seen, valued for their versatility,
+low expense, and ease of use. The paper notebook type may be determined
+by the department or institution. Especially at latge companies, there may
+also be a policy that dictates format, daily signatures by supervisors, and
+lock-up at night. If there is no requirement, everyone in your lab should
+use the same kind of bound lab notebook, as determined by you. It should have
+numbered pages, gridlines, and a tough enough binding that it does not fall
+apart after a few months of rigorous use on the bench.'' \citep{leips2010helm}
+\end{quote}
+
+\begin{quote}
+``Electronic lab notebooks (ELNs) may be used to enter, store, and analyze
+data. Coupled with a sturdy notebook computer, they can be used at the bench
+for notes and alterations to the protocol. Lab members and collaborators can
+share data and drawings. Reagents can be organized. Shareware versions are
+available as well as many stand-alone programs that can be tweaked for your
+needs by the company. A lab that generates high-throughput, automated, or
+visual data; collaborates with other labs; or has a high personnel turnover
+should consider using an ELN (Phillips 2006).'' \citep{leips2010helm}
+\end{quote}
+
+\begin{quote}
+``Laboratory Information Management Systems (LIMSs) are programs that are
+coupled to a database as well as to lab equipment and facilitate the entry
+and storage of laboratory data. These systems are expensive and are designed
+for more large-scale testing and production than for basic research labs. They
+can be very useful tools: Some can manage protocols, schedule maintenance of
+lab instruments, receive and process data from multiple instruments, track
+reagents and samples, print sample labels, do statistical analyses, and be
+customized to your needs. But although LIMSs can handle a great deal of
+data analysis, they cannot yet substitute for a lab notebook.'' \citep{leips2010helm}
+\end{quote}
+
+\begin{quote}
+``You should demand a level of care with lab notebooks. Everything in it should
+be understandable not only to the owner, but to you.'' \citep{leips2010helm}
+\end{quote}
+
+\begin{quote}
+``Whether you check notebooks, or have a lab member present to you with
+raw data, or stop at everyone's lab bench a few times a week, you must
+have a feeling for the quality and results of each person's raw data. It is
+very easy to make assumptions on the basis of the polished data you
+see at a research meeting, but many a lab member has gone astray with over-
+or misinterpreted data. By keeping an eye on the raw data, you can be
+ready to comment on the number of repetitions, alternative experiments,
+or the implications of a minor result.'' \citep{leips2010helm}
+\end{quote}
+
 \hypertarget{applied-exercise-1}{%
 \subsection{Applied exercise}\label{applied-exercise-1}}
 
@@ -4744,6 +4804,25 @@ and review system. Such tools are a start toward this but more robust version co
 systems are required particularly in the context of increasingly online and
 collaborative method of working where large teams interact with a single document
 concurrently.'' \citep{birch2018future}
+
+\begin{quote}
+``Backup, backup, backup---this is the main action you can take to care for your
+computers and your data. Many PIs assume that backup systems are inherently
+permanent and foolproof, and it often takes a loss to remind one that
+materials break, systems fail, and humans make mistakes. Even if your data
+are backed up at work, have at least one other backup system. Keep at least
+one backup off site, in case of a diaster in the lab (yes, fires and floods
+do happen). It doesn't make much sense to have two separate backup systems stored
+next to each other in a drawer.'' \citep{leips2010helm}
+\end{quote}
+
+\begin{quote}
+``Departmental or institutional servers provide an area to store large files
+such as graphics files as well as e-mail and documents. Such systems will
+usually have frequent routine backups of all data, often onto optical
+disks. They might also encrypt the data, which makes it less able to be
+hacked. This is the most dependable form of long-term storage.'' \citep{leips2010helm}
+\end{quote}
 
 \hypertarget{subsection-2-3}{%
 \subsection{Subsection 2}\label{subsection-2-3}}
@@ -9844,6 +9923,27 @@ tuberculosis.
   Understand how these tools would fit in their own research pipelines
 \end{itemize}
 
+\begin{verbatim}
+## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
+\end{verbatim}
+
+\begin{verbatim}
+## v ggplot2 3.3.3     v purrr   0.3.4
+## v tibble  3.0.6     v dplyr   1.0.4
+## v tidyr   1.1.2     v stringr 1.4.0
+## v readr   1.4.0     v forcats 0.5.1
+\end{verbatim}
+
+\begin{verbatim}
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::combine()    masks Biobase::combine(), BiocGenerics::combine()
+## x tidyr::extract()    masks magrittr::extract()
+## x dplyr::filter()     masks stats::filter()
+## x dplyr::lag()        masks stats::lag()
+## x ggplot2::Position() masks BiocGenerics::Position(), base::Position()
+## x purrr::set_names()  masks magrittr::set_names()
+\end{verbatim}
+
 \hypertarget{subsection-1-9}{%
 \subsection{Subsection 1}\label{subsection-1-9}}
 
@@ -10053,6 +10153,299 @@ you can use the \texttt{tidy} and \texttt{glance} functions from \texttt{biobroo
 ##   significant     comparison
 ## 1        6341 control/L5 SNL
 \end{verbatim}
+
+The creator of the \texttt{broom} package listed some of the common ways that
+statistical model output objects---the focus on `tidying' in \texttt{broom}---tend to
+be untidy. These include that important information is stored in the row names,
+where it is harder to access, that the names of some columns can be tricky to
+work with because they use non-standard conventions (i.e., they don't follow the
+rules for naming objects in R), that some desired information is not available
+in the object, but rather is typically computed with later methods for the
+object, like when \texttt{summary} is run on the object, or are only available as the
+result of a \texttt{print} method run on the object, and vectors that a user may want
+to explore in tandem are stored in different places in the object.
+\citep{robinson2014broom}
+
+{[}Examples of these in Bioconductor objects?{]}
+
+These `messy' characteristics show up in the data stored in Bioconductor
+objects, as well, in terms of characteristics that impede working with
+data stored in these formats easily using tools from the tidyverse.
+As an example, one common class for storing data in Bioconductor work is
+the \texttt{ExpressionSet} object class, defined in the \texttt{Biobase} package \citep{biobase}.
+This object class can be used to store the data from high-throughput
+assays. It includes slots for the assay data, as well as slots
+for storing metadata about the experiment, which could include information
+like sampling time points or sample strains, as well as the experimental
+group of each sample (control versus treated, for example).
+
+Data from the assay for the experiment---for example, gene expression
+or intensity {[}?{]} measurements for each gene and each sample {[}?{]}---can be
+extracted from an \texttt{ExpressionSet} object using an extractor function
+called \texttt{exprs}. Here is an example using the \texttt{hammer} example dataset
+available with the \texttt{biobroom} package. The code call here extracts the
+assay data from the \texttt{hammer} R object, which is an instance of the
+\texttt{ExpressionSet} object class. It uses indexing (\texttt{{[}1:10,\ 1:3{]}}) to limit
+printing to the first ten rows and first three columns of the output, so
+we can investigate a small snapshot of the data:
+
+\begin{verbatim}
+##                    SRX020102 SRX020103 SRX020104
+## ENSRNOG00000000001         2         4        18
+## ENSRNOG00000000007         4         1         3
+## ENSRNOG00000000008         0         1         4
+## ENSRNOG00000000009         0         0         0
+## ENSRNOG00000000010        19        10        19
+## ENSRNOG00000000012         7         5         1
+## ENSRNOG00000000014         0         0         2
+## ENSRNOG00000000017         4         1        12
+## ENSRNOG00000000021         7         5         2
+## ENSRNOG00000000024        86        53        86
+\end{verbatim}
+
+These data are stored in a matrix format. The gene identifiers {[}?{]} are given in
+the rownames and the samples in the column names. Each cell of the matrix
+provides the expression level (number of reads {[}?{]}) of a specific gene in a
+specific sample.
+
+These data are structured and stored in such a way that they have some of the
+characteristics that can make data difficult to work with the data using
+tidyverse tools. For example, they store gene identifiers in the rownames,
+rather than in a separate column where they can be easily accessed when using
+tidyverse functions. Also, there are phenotype / meta data that are stored
+in other parts of the \texttt{ExpressionSet} data but that may be interesting to
+explore in conjunction with these assay data, including the experimental
+group of each sample (control versus animals in which chronic neuropathic
+pain was induced, in these example data).
+
+The \texttt{tidy} function from the \texttt{biobroom} package extracts these data and
+restructures them into a `tidy' format, ready to use easily with tidyverse
+tools.
+
+\begin{verbatim}
+## # A tibble: 236,128 x 3
+##    gene               sample    value
+##    <chr>              <chr>     <int>
+##  1 ENSRNOG00000000001 SRX020102     2
+##  2 ENSRNOG00000000007 SRX020102     4
+##  3 ENSRNOG00000000008 SRX020102     0
+##  4 ENSRNOG00000000009 SRX020102     0
+##  5 ENSRNOG00000000010 SRX020102    19
+##  6 ENSRNOG00000000012 SRX020102     7
+##  7 ENSRNOG00000000014 SRX020102     0
+##  8 ENSRNOG00000000017 SRX020102     4
+##  9 ENSRNOG00000000021 SRX020102     7
+## 10 ENSRNOG00000000024 SRX020102    86
+## # ... with 236,118 more rows
+\end{verbatim}
+
+This output is a tidy dataframe object, with three columns providing the
+gene name, the sample identifier, and the expression level. In this format,
+the data can easily be explored and visualized with tidyverse tools. For example,
+you could easily create a set of histograms, one per sample, showing the
+distribution of expression levels across all genes in each sample:
+{[}better example visualization here?{]}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-10-1}
+
+You can also incorporate data that are stored in the \texttt{phenoData} slot of
+the \texttt{ExpressionSet} object by specifying \texttt{addPheno\ =\ TRUE}:
+
+\begin{verbatim}
+## # A tibble: 236,128 x 8
+##    gene         sample   sample.id num.tech.reps protocol strain    Time   value
+##    <chr>        <chr>    <fct>             <dbl> <fct>    <fct>     <fct>  <int>
+##  1 ENSRNOG0000~ SRX0201~ SRX020102             1 control  Sprague ~ 2 mon~     2
+##  2 ENSRNOG0000~ SRX0201~ SRX020102             1 control  Sprague ~ 2 mon~     4
+##  3 ENSRNOG0000~ SRX0201~ SRX020102             1 control  Sprague ~ 2 mon~     0
+##  4 ENSRNOG0000~ SRX0201~ SRX020102             1 control  Sprague ~ 2 mon~     0
+##  5 ENSRNOG0000~ SRX0201~ SRX020102             1 control  Sprague ~ 2 mon~    19
+##  6 ENSRNOG0000~ SRX0201~ SRX020102             1 control  Sprague ~ 2 mon~     7
+##  7 ENSRNOG0000~ SRX0201~ SRX020102             1 control  Sprague ~ 2 mon~     0
+##  8 ENSRNOG0000~ SRX0201~ SRX020102             1 control  Sprague ~ 2 mon~     4
+##  9 ENSRNOG0000~ SRX0201~ SRX020102             1 control  Sprague ~ 2 mon~     7
+## 10 ENSRNOG0000~ SRX0201~ SRX020102             1 control  Sprague ~ 2 mon~    86
+## # ... with 236,118 more rows
+\end{verbatim}
+
+With this addition, visualizations can easily be changed to also show the
+experimental group of each sample:
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-12-1}
+You can also do things like look at differences in values for
+specific genes, pairing tools for exploring data with tools for
+visualization, both from the tidyverse:
+
+\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-13-1}
+
+The data for a subset of the sample can be analyzed using functions from the
+\texttt{edgeR} package, to complete needed pre-processing (for example, calculating
+normalizing factors with \texttt{calcNormFactors}, to reduce impacts from technical
+bias {[}?{]}), estimate dispersion using conditional maximum likelihood and
+empirical Bayesian methods (\texttt{estimateCommonDisp} and \texttt{estimateTagwiseDisp}), and
+then perform a statistical analysis, conducting a differential expression
+analysis (\texttt{exactTest}) \citep{chen2014edger}.
+
+The data are stored in a special Bioconductor class, as an instance of
+\texttt{DGEList}, throughout most of this process. This special class can be initialized
+with data from the original \texttt{ExpressionSet} object, specifically, assay
+data with the counts per gene in each sample and data on the experimental
+phenotypes for the experiment---specifically, the protocol for each sample,
+in terms of whether it was a control or if the sample was from an animal
+in which chronic neuropathic pain was induced \citep{hammer2010mrna}.
+
+\begin{verbatim}
+## [1] "DGEList"
+## attr(,"package")
+## [1] "edgeR"
+\end{verbatim}
+
+Once the data are stored in this special \texttt{DGEList} class, different
+steps of the preprocessing can be conducted. In each case, the results are
+stored in special slots of the \texttt{DGEList} object. In this way, the original
+data and results from preprocessing are all kept together in a single
+object, each in a special slot within the object's structure.
+
+\begin{verbatim}
+## [1] "DGEList"
+## attr(,"package")
+## [1] "edgeR"
+\end{verbatim}
+
+\begin{verbatim}
+## [1] "DGEList"
+## attr(,"package")
+## [1] "edgeR"
+\end{verbatim}
+
+\begin{verbatim}
+## [1] "DGEList"
+## attr(,"package")
+## [1] "edgeR"
+\end{verbatim}
+
+After the preprocessing, the data can be analyzed using the \texttt{exactText} function.
+This inputs the data stored in a \texttt{DGEList} object and outputs results into
+a different object class, a \texttt{DGEExact} class.
+
+\begin{verbatim}
+## [1] "DGEExact"
+## attr(,"package")
+## [1] "edgeR"
+\end{verbatim}
+
+The \texttt{DGEExact} class is defined by the \texttt{edgeR} package and was created
+specifically to store the results from a differential expression analysis
+\citep{chen2014edger}. It has slots for a dataframe giving the estimates of
+differential change in expression across the experimental groups for each
+gene, within a \texttt{table} slot. Again, in this output, gene identifiers are
+stored as rownames---which makes them hard to access with tidyverse tools---rather
+than in their own column:
+
+\begin{verbatim}
+##                          logFC      logCPM       PValue
+## ENSRNOG00000000001  2.64635814  1.49216267 1.309933e-06
+## ENSRNOG00000000007 -0.40869816 -0.22616605 1.000000e+00
+## ENSRNOG00000000008  2.22296029 -0.40665547 1.288756e-01
+## ENSRNOG00000000009  0.00000000 -1.31347471 1.000000e+00
+## ENSRNOG00000000010  0.03307909  1.79448965 1.000000e+00
+## ENSRNOG00000000012 -3.39210151  0.07939132 3.745676e-03
+\end{verbatim}
+
+The \texttt{DGEExact} object also has a slot that contains a vector with identifiers
+for the two experimental groups that are being compared in the
+differential expression analysis, under the slot \texttt{comparison}:
+
+\begin{verbatim}
+## [1] "control" "L5 SNL"
+\end{verbatim}
+
+There is also a space in this object class where information about each
+gene can be stored, if desired.
+
+Two \texttt{biobroom} methods are defined for the \texttt{DGEExact} object class, \texttt{glance}
+and \texttt{tidy}. The \texttt{tidy} method extracts the results from the differential
+experssion analysis, but moves these results into a dataframe where the
+gene names are given their own column, rather than being stored in the
+hard-to-access rownames:
+
+\begin{verbatim}
+## # A tibble: 29,516 x 4
+##    gene               estimate  logCPM    p.value
+##    <chr>                 <dbl>   <dbl>      <dbl>
+##  1 ENSRNOG00000000001   2.65    1.49   0.00000131
+##  2 ENSRNOG00000000007  -0.409  -0.226  1         
+##  3 ENSRNOG00000000008   2.22   -0.407  0.129     
+##  4 ENSRNOG00000000009   0      -1.31   1         
+##  5 ENSRNOG00000000010   0.0331  1.79   1         
+##  6 ENSRNOG00000000012  -3.39    0.0794 0.00375   
+##  7 ENSRNOG00000000014   3.65   -0.854  0.252     
+##  8 ENSRNOG00000000017   2.42    1.11   0.0000638 
+##  9 ENSRNOG00000000021  -2.02    0.211  0.0373    
+## 10 ENSRNOG00000000024   0.133   3.97   0.508     
+## # ... with 29,506 more rows
+\end{verbatim}
+
+Now that the data are in this tidy format, tools from the tidyverse can
+be easily applied. For example, you could use functions from the \texttt{dplyr}
+package to see the genes for which the differential expression analysis
+resulted in both a very low p-value and a large difference in expression
+across the experimental groups:
+
+\begin{verbatim}
+## # A tibble: 803 x 4
+##    gene               estimate logCPM   p.value
+##    <chr>                 <dbl>  <dbl>     <dbl>
+##  1 ENSRNOG00000013496     6.39   3.41 5.95e- 46
+##  2 ENSRNOG00000001338     6.01   2.25 1.37e- 22
+##  3 ENSRNOG00000020136     5.17   3.89 3.19e- 52
+##  4 ENSRNOG00000018808     4.78   6.46 1.75e-169
+##  5 ENSRNOG00000006151     4.43   2.99 2.39e- 30
+##  6 ENSRNOG00000009768     4.40   7.83 5.57e-293
+##  7 ENSRNOG00000030927    -4.29   2.45 6.32e- 23
+##  8 ENSRNOG00000001476     4.25   3.76 1.45e- 47
+##  9 ENSRNOG00000004805     4.05   6.64 2.51e-185
+## 10 ENSRNOG00000014327     3.85   4.51 5.39e- 63
+## # ... with 793 more rows
+\end{verbatim}
+
+Other exploratory analysis will also be straightforward with the data
+using tidyverse tools, now that they are in a ``tidy'' format.
+
+The \texttt{glance} method can also be applied to data that are stored in a
+\texttt{DGEExact} class. In this case, the method will extract the names of the
+experimental groups being compared (from the \texttt{comparison} slot of the
+object) as well as count the number of genes with statistically
+significant differences in expression level, based on the values in the
+\texttt{table} slot of the object.
+
+\begin{verbatim}
+##   significant     comparison
+## 1        6341 control/L5 SNL
+\end{verbatim}
+
+\begin{verbatim}
+##   significant     comparison
+## 1        4225 control/L5 SNL
+\end{verbatim}
+
+As another example, you can now use tools from \texttt{ggplot2}, as well as
+extensions built on this package, to do things like create a volcano
+plot of the data with highlighting of noteworthy genes on the plot:
+
+\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-22-1}
+
+If you wanted to access the help files for these \texttt{biobroom} methods for this
+object class, you could do so by calling help in R (\texttt{?}) using the name of the
+method, a dot, and then the name of the object class, e.g., \texttt{?tidy.DGEExact}.
 
 \hypertarget{the-ggbio-package}{%
 \subsection{\texorpdfstring{The \texttt{ggbio} package}{The ggbio package}}\label{the-ggbio-package}}
@@ -11071,6 +11464,24 @@ provides an attractive interactive workbook environment. Although its origins
 are with the Python programming language, it now supports many languages,
 including R. In practice, many users will find a combination of platforms most
 productive for them.'' \citep{huber2015orchestrating}
+\end{quote}
+
+\begin{quote}
+``A lab manual is perhaps the best way to inform new lab members of the ins
+and outs of the lab and to keep all members updated on protocols and
+regulations. What could be included in a lab manual? Anything you do not
+want to explain over and over, anything that will make the lab more
+functional and that can make life easier for yourself and lab members.'' \citep{leips2010helm}
+\end{quote}
+
+\begin{quote}
+``Most PIs wish the labs were more organized, but it is not a huge priority,
+that is, until the first student leaves and no one can find a particular
+cell line in the freezer boxes. Resolutions are made, the crisis passes,
+and all goes on as before until the next person leaves. Although it is
+probably inevitable that there will be some confusion when a long-time
+lab member moves on, an organized lab will not be as affected as an unorganized
+one.'' \citep{leips2010helm}
 \end{quote}
 
 \hypertarget{discussion-questions-6}{%
