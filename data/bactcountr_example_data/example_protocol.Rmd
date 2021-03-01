@@ -55,13 +55,21 @@ experimental group. The experimental groups in this case were:
 ## Data description
 
 Data are collected for this process into a spreadsheet that is set up in a
-"tidy" format. Here are the first few rows of the data: 
+"tidy" format used by our laboratory to collect this type of data. Here are the
+first few rows of the data:
 
 ```{r echo = FALSE}
 library(tidyverse)
 cfu_data <- read_csv("cfu_data.csv")
 head(cfu_data)
 ```
+
+Each row represents the number of bacterial colonies counted after plating a
+certain sample at a certain dilution. Columns are included with values for the
+experimental group of the sample (`group`), the specific ID of the sample within
+that experimental group (`replicate`, e.g., `2-A` is mouse A in experimental
+group 2), the dilution level for that plating (`dilution`), and the number of
+bacterial colonies counted in that sample (`CFUs`).
 
 ## Reading data into R
 
@@ -101,7 +109,31 @@ It is helpful to explore the data once you read it in, to check for quality
 control issues and other characteristics of the data from a particular
 experiment. This section provides code examples for this quality control.
 
+First, it can be helpful to ensure that the data includes the number of
+experimental groups, and the number of replicates within each group, that
+you are expecting. First, we can determine that there are eight experimental 
+groups, with between eight and twelve samples (replicates) in each group: 
 
+```{r}
+cfu_data %>% 
+  group_by(group) %>% 
+  count()
+```
+
+It is also helpful to see the distribution of CFUs at each dilution level, which 
+can be plotted with the following code: 
+
+```{r out.width = "0.8\\textwidth", fig.align = "center"}
+cfu_data %>% 
+  ggplot(aes(x = CFUs)) + 
+  geom_histogram() + 
+  facet_wrap(~ dilution)
+```
+In this case, most bacterial counts are zero at all dilution levels. However, 
+there are more non-zero CFUs at dilution level 0 and more as you move to higher
+dilution levels. The highest CFU count at any dilution level is a little over
+50, for dilution level 1. Most non-zero CFU counts are at or below 30, 
+regardless of dilution level.
 
 ## Identifying a good dilution for each sample
 
