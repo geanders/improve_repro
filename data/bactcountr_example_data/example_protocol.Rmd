@@ -1,0 +1,110 @@
+---
+title: "Protocol: Estimating bacterial loads from plating samples at different dilutions"
+date: "3/1/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Overview
+
+This protocol provides details on how you can estimate the bacterial load in
+samples based on data from plating those samples at different dilutions. The
+question being answered through this protocol of data analysis is: How much
+viable (i.e., replicating) bacteria are in each of your samples?
+
+You can find out by **plating** the sample at different **dilutions** and
+counting the **colony-forming units (CFUs)** that are cultured on each plate.
+You put a sample on a plate with a medium they can grow on and then give them
+time to grow. The idea is that individual bacteria from the original sample end
+up randomly around the surface of the plate, and any that are viable (able to
+reproduce) will form a new colony that, after a while, you'll be able to see.
+
+To count the number of colonies, you need **a "just right" dilution** (likely
+won't know what this is until after plating) to have a **countable plate**. If
+you have **too high** of a dilution (i.e., one with very few viable bacteria),
+randomness will play a big role in the CFU count, and you'll estimate the
+original with more variability. If you have **too low** of a dilution (i.e., one
+with lots of viable bacteria), it will be difficult to identify separate
+colonies, and they may complete for resources. (The pattern you see when the
+dilution is too low (i.e., too concentrated with bacteria) is called a
+*lawn*---colonies merge together). To translate from diluted concentration to
+original concentration, you can then do a back-calculation, incorporating both
+the number of colonies counted at that dilution and how dilute the sample was.
+
+## Laboratory description
+
+These data result from plating each sample at several different dilutions and
+counting the colony-forming units (CFUs) that are cultured on each plate. Each
+sample was on a plate with a medium they can grow on and then given [time] to
+grow. On each plate, the individual bacteria from the original sample should
+have ended up spread randomly around the surface of the plate, and any that are
+viable (able to reproduce) formed a colony that, by the end of the procedure,
+can be counted.
+
+[Image of plating]
+
+Each sample was taken from a single mouse from the experiment. These mice came
+from different experimental groups, with several replicates (mice) per 
+experimental group. The experimental groups in this case were: 
+
+[table of experimental groups]
+
+## Data description
+
+Data are collected for this process into a spreadsheet that is set up in a
+"tidy" format. Here are the first few rows of the data: 
+
+```{r echo = FALSE}
+library(tidyverse)
+cfu_data <- read_csv("cfu_data.csv")
+head(cfu_data)
+```
+
+## Reading data into R
+
+The data are stored in a comma-separated plain text file called "cfu_data.csv". 
+They can be read into R using the following code: 
+
+```{r}
+library(tidyverse)
+cfu_data <- read_csv("cfu_data.csv")
+head(cfu_data)
+```
+
+You will need to be sure that the data file ("cfu_data.csv" in this case) is
+in the working directory of your R session. You can check the current working
+directory in R with the call `getwd()`, and you can list all files in the 
+current working directory with the call `list.files()`. These function calls
+can be useful to check to make sure that this file is in your working directory
+and, if not, to identify which directory on your computer file system you 
+should move it to.
+
+Once you run this command, the data will be available in your R session in the
+object `cfu_data`. You can see the first few rows by running: 
+
+```{r}
+head(cfu_data)
+```
+
+You can get a summary of the data by running: 
+
+```{r}
+summary(cfu_data)
+```
+
+## Exploring the data and quality checks
+
+It is helpful to explore the data once you read it in, to check for quality
+control issues and other characteristics of the data from a particular
+experiment. This section provides code examples for this quality control.
+
+
+
+## Identifying a good dilution for each sample
+
+## Estimating bacterial load for each sample
+
+## Outputing final estimates
