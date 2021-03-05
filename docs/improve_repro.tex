@@ -702,8 +702,6 @@ with a recorded history.
 \hypertarget{discussion-questions}{%
 \subsection{Discussion questions}\label{discussion-questions}}
 
-:w
-
 \hypertarget{principles-and-power-of-structured-data-formats}{%
 \section{Principles and power of structured data formats}\label{principles-and-power-of-structured-data-formats}}
 
@@ -10852,6 +10850,377 @@ reproducibility across the research projects conducted by a research team.
   pre-processing
 \end{itemize}
 
+\hypertarget{introducing-reproducible-data-pre-processing-protocols}{%
+\section{Introducing reproducible data pre-processing protocols}\label{introducing-reproducible-data-pre-processing-protocols}}
+
+\textbf{Data pre-processing}
+
+When we take measurements of experimental samples, we do so with the goal of
+using the data we collect to gain scientific knowledge. The data are direct
+measurement of something, but need to be interpreted to gain knowledge.
+Sometimes direct measurements line up very closely with a research
+question---for example if you are conducting a study that investigates the
+mortality status of each test subject then whether or not each subject to dies
+is a data point that is directly related to the research question you are aiming
+to answer. In this case these data may go directly into a statistical analysis
+model without extensive pre-processing. However, there are often cases where we
+collect data that are not as immediately linked to the scientific question.
+Instead, these data may require pre-processing before they can be used to test
+meaningful scientific hypotheses. This is often the case for data extracted
+using complex equipment. Equipment like mass spectrometers and flow cytometers
+leverage physics, chemistry, and biology in clever ways to help us derive more
+information from samples, but one tradeoff is that the data from such equipment
+often require a bit of work to move into a format that is useful for answering
+scientific questions.
+
+One example if the data collected through liquid chromatography-mass
+spectrometry (LC-MS). This is a powerful and useful technique for chemical
+analysis, including analysis of biochemical molecules like metabolites and
+proteins. However, when using this technique, the raw data require extensive
+pre-processing before they can be used to answer scientific questions.
+
+First, the data that are output by the mass spectrometer are often stored in a
+specialized file format, like a netCDF or mzML file format. While these file
+formats are standardized, they are likely formats you don't regularly use in
+other contexts, and so you may need to find special tools to read the data into
+programs to analyze it. In some cases, the data are very large, and so it may be
+necessary to use analysis tools that allow most of the data to stay ``on disk''
+while you analyze it, bringing only small parts into your analysis software at a
+time.
+
+Once the data are read in, they must be pre-processed in a number of ways. For
+example, these data can be translated into features that are linked to the
+chemical composition of the sample, with each feature showing up as a ``peak'' in
+the data that are output from the mass spectrometer. A peak can be linked to a
+specific metabolite feature based on its mass-to-charge ratio (m/z) and its
+retention time. However, the exact retention time for a metabolite feature may
+vary a bit from sample to sample. Pre-processing is required both to identify
+peaks in the data and also to align the peaks from the same metabolite feature
+across all samples from your experiment. There may also be technical bias across
+samples, resulting in differences in the typical expression levels of all peaks
+from one sample to the next. For example it may be the case that all intensities
+measured for one sample tend to be higher than for another sample because of
+technical bias in terms of the settings used for the equipment when the two
+samples were run. These biases must also be corrected through pre-processing
+before you can use the data within statistical tests or models to explore scientific hypotheses.
+
+{[}Image of identifying and aligning peaks in LC-MS data{]}
+
+In the research process, these pre-processing steps should be done before
+the data are used for further analysis. There are the first step in working
+with the data after they are collected by the equipment (or by laboratory
+personal, in the case of data from simpler process, like plating samples
+and counting colony-forming units). After the data are appropriately
+pre-processed, you can use them for statistical tests---for example, to
+determine if metabolite profiles are different between experimental groups---and
+also combine them with other data collected from the experiment---for example,
+to see whether certain metabolite levels are correlated with the bacterial
+load in a sample.
+
+\textbf{Approaches for pre-processing data.}
+
+There are two main approaches for pre-processing experimental data in this
+way. First, when data are the output of complex laboratory equipment, there
+will often be proprietary software that is available for this pre-processing.
+This software may be created by the same company that made the equipment, or
+it may be created and sold by other companies. The interface will typically
+be a graphical-user interface (GUI), where you will use pull-down menus and
+point-and-click interfaces to work through the pre-processing steps. You
+often will be able to export a pre-processed version of the data in a
+common file format, like a delimited file or an Excel file, and that version
+of the data can then be read into more general data analysis software, like
+Excel or R.
+
+The second approach is to conduct the pre-processing directly within general
+data analysis software like R or Python. These programs are both open-source,
+and include extensions that were created and shared by users around the world.
+Through these extensions, there are often powerful tools that enable
+pre-processing of complex data, and in fact, the algorithms used in proprietary
+software are sometimes extended from algorithms first shared through R or
+Python.
+
+Often complex laboratory experiment equipment will have available proprietary software that can be used for many of these pre-processing steps. This software May either be shared in conjunction with the equipment or it may be available through other companies. Often the software is based on the graphical user interface or GUI. This type of software is managed by pointing and clicking. For example there might be buttons that can be selected to automate different steps of the process or pull-down menus that are used to select options in the workflow. You can use this kind of equipment for the pre-processing, but there are number of clear advantages to instead using Code scripts and open source software to do this process of data preprocessing when the data comes from complex experimental equipment. First the use of codes grips insurers that the steps of pre-processing are reproducible, both by you in the future and also by others either in your laboratory group or the readers of the final manuscript describing the paper. Further the use of coats Crepes encourages you to document this code and this process. Well-documented code makes it much easier to write up the method section later in manuscripts that leveraged the data collected in the experiment.
+
+When you use scripted code to pre-process biomedical data, you will find that
+the same script can often be easily adapted and re-used in later projects that
+use the same type of data. You may need to change small elements, like the file
+names of files with data you want to use, or some details about the methods
+used for certain pre-processing steps. However, often almost all of the pre-processing
+steps will repeat over different experiments that you do.
+
+If you have used open-source software tools, like Bioconductor packages, you
+are likely familiar with the \emph{vignettes} that come with the packages. These
+provide tutorial guides showing you how to work with the package. They often
+leverage example data that you can download so that you can try all the
+example code yourself, before you move on to adapting the code to use with
+your own data.
+
+You can create your own version of these types of documents. This can use
+real data from your research group, and you can create customized instructions
+and code examples showing how to use open-source tools to pre-process a
+certain type of biomedical data for experiments in your research group.
+You can use this document the next time you need to pre-process that type
+of data yourself, and you can also share it with others in your research
+group. This can help in teaching new laboratory members how to work with
+this type of data in your research group. It can also help ensure that
+different members of the research group are all using the same steps to
+pre-process data, so that there is greater consistency across results from
+the group.
+
+You may already create something similar to this, using a general word
+processing program like Google Docs or Word. There are two key differences,
+however, between how vignettes are created compared to a similar tutorial
+created in Word or Google Docs. First, the vignettes are created using
+a document compiling program that ensures that any code uses only ASCII
+characters. This means that you can copy and paste code from the tutorial
+into your R session and it will work. By contrast, programs like Word often
+try to ``correct'' some of the characters when you paste in or type in code.
+For example, when you have an apostrophe mark in your code (for example,
+when you're quoting to create a character string), the computer code needs
+to have this character as a very basic ASCII version of an apostrophe. Word,
+by contrast, will often try to convert the character to use an apostrophe
+character that looks smoother---and so is nice for a word processed document
+that humans will read---but that R cannot recognize. Hyphens can have similar
+problems. {[}Other examples?{]}
+
+When you create a reproducible pre-processing protocol using the techniques that
+are used to create vignettes---which we'll teach you how to do in the next few
+sections---you will avoid this autocorrection of characters, and so someone
+reading the protocol will be able to directly copy and paste example code from
+the protocol into their own scripts. This will avoid hard-to-diagnose errors
+that come from this character conversion in programs like Word.
+
+The second difference is that the tools that are used to create vignettes
+contain code that is not just copied and pasted from a script, but that is
+actually, in essence, \emph{still in a script}. The code, in other words, is
+executable and, unless you change the default settings, is re-run every
+time you compile the document. This means that you will quickly determine if
+there are any typos or other errors in the code, because the document will
+not run and render correctly unless the code works. This means that you can
+guarantee, when you first create the document, that the code runs, and also
+that you can regularly check to see if the example code still works at
+later time points. This allows you to, for example, see if changes in the
+version of R or of specific packages that you're using has created problems
+with the code running correctly over time.
+
+Finally, these documents can be separated, allowing you to extract solely the
+script part of the document, into a classic R script. You can use this directly
+to run (or adapt) the pre-processing code for further research.
+
+\hypertarget{technique-to-create-reproducible-pre-processing-protocols}{%
+\subsection{Technique to create reproducible pre-processing protocols}\label{technique-to-create-reproducible-pre-processing-protocols}}
+
+The vignettes that come with Bioconductor packages are created using a system
+for ``knitting'' documents. These documents ``knit'' together text with executable
+code. Once you have written the document, you can render it, which executes the
+code, adds to the document results from this execution (figures, tables, and
+code output, for example), and formats all text using the formatting choices
+you've specified. The end result is a nicely format document, which can be in
+one of several output formats, including pdf, Word, or HTML. Since the code
+was executed to create the document, you can ensure that all the code
+is worked as intended.
+
+There are several techniques and principles that come together to make these
+knitteed documents work. First are the tools that allow you to write text
+in plain text, include formatting specifications in that plain text, and
+render this to an attractive output document in pdf, Word, or HTML. This
+part of the process uses a tool from a set of tools called \emph{Markup languages}.
+{[}A bit more on history / development of Markup languages.{]}
+
+Here, we will use a markup language called \emph{Markdown}. It is one of the easiest
+markup languages to learn, as it has a fairly small set of formatting indicators
+that can be used to ``markup'' the formatting in a document. This small set,
+however, covers much of the formatting you might want to do, and so this
+language provides an easy introduction to markup languages while still providing
+adequate functionality for most purposes.
+
+The Markdown markup languages evolved starting in spaces where people could
+communicate in plain text only, without point-and-click methods for adding
+formatting like bold or italic type \citep{buffalo2015bioinformatics}. For example,
+early versions of email only allowed users to write using plain text. These
+users eventually evolved some conventions for how to ``mark-up'' this plain text,
+to serve the purposes served by things like italics and bold in formatted text
+(e.g., emphasis, highlighting). For example, to emphasize a word, a user could
+surround it with asterisks, like:
+
+\begin{verbatim}
+I just read a *really* interesting article!
+\end{verbatim}
+
+In this early prototype for a markup language, the reader's mind was doing
+the ``rendering'', interpreting these markers as a sign that part of the text
+was emphasized. In Markdown, the text can be rendered into more attractive
+output documents, like pdf, where the rendering process has actually
+changed the words between asterisks to print in italics.
+
+The Markdown language has developed a set of these types of marks---like
+asterisks---that are used to ``mark up'' the plain text with the formatting
+that should be applied when the text is rendered. There are marks that you
+can use for a number of formatting specifications, including: italics,
+bold, underline, strike-through, bulleted lists, numbered lists, web links,
+headers of different levels (e.g., to mark off sections and subsections),
+block quotes, horizontal rules, and block quotes. Details and examples of
+the Markdown syntax can be found on the Markdown Guide page at
+\url{https://www.markdownguide.org/basic-syntax/}. We'll cover more examples of
+using Markdown in the next two modules, as we move more specifically into
+how RMarkdown can be used to created knitted documents with R and provide
+an example of creating a reproducible protocol with this system.
+
+The other technique that's needed to create knitted documents is the ability to
+include executable code within the plain text version of the document, and to
+execute that code and incorporate its results before moving on to render the
+document to its final format.
+
+The idea here is that you can use special markers to indicate in the document
+where code starts and where it ends. With these markings, a computer program can
+figure out the lines of the document that it should run as code, and the ones it
+should ignore when it's looking for executable code. With these markings in
+place, the document will be run through two separate programs as it is rendered.
+The first program will look for code to execute and ignore any other lines of
+the file. It will execute this code and then place any results, like figures,
+tables, or code output, into the document right after that piece of code. The
+output from running this program will then be input into a more traditional
+markup renderer, which will format the document based on any of the mark up
+indications and will output an attractive document in a format like pdf,
+Word, or HTML.
+
+This technique comes from an idea that you could include code to be executed in
+a document that is otherwise easy for humans to read. This is an incrediably
+powerful idea. It originated with a famous computer scientist named Donald
+Knuth, who realized that one key to making computer code sound is to make sure
+that it is clear to humans what the code is doing. Computers will faithfully do
+exactly what you tell them to do, so they will do what you're hoping they will
+as long as you provide the correct instructions. The greatest room for error,
+then, comes from humans not giving the right instructions to computers. To
+write sound code, and code that is easy for yourself and others to maintain and
+extend, you must make sure that you and other humans understand what it is
+asking the computer to do. Donald Knuth came up with a system called \emph{literate
+programming} that allows programmers to write code in a way that focuses on
+documenting the code for humans, while also allowing the computer to easily
+pull out just the parts that it needs to execute, while ignoring all the text
+meant for humans. This process flips the idea of documenting code by including
+plain text comments in the code---instead of the code being the heart of the
+document, the documentation of the code is the heart, with the code provided
+to illustrate the implementation. When used well, this technique results in
+beautiful documents that clearly and comprehensively document the intent and
+the implementation of computer code. The knitted documents that we can build
+with R or Python through systems like RMarkdown and Jupyter Notebooks build
+on these literate programming ideas, applying them in ways that complement
+programming languages that can be run interactively, rather than needing to
+be compiled before they're run.
+
+You can visualize the full process of creating and rendering a knitted document
+in the following way. Imagine that you write a document by hand on sheets of
+paper. There are parts where you need a team member to add their data or to run
+a calculation, so you include notes in square brackets telling your team member
+where to do these things. Then, you use traditional editing marks to show where
+text should be italicized and which text should be section a header:
+
+\begin{verbatim}
+# Results
+
+We measured the bacterial load of 
+*Mycobacterium tuberculosis* for each 
+sample. 
+
+[Kristina: Calculate bacterial loads for 
+each sample based on dilutions and
+add table with results here.]
+\end{verbatim}
+
+This is analogous to writting up a knitted document in plain text with appropriate
+``executable'' sections, designated with special markings, and with other markings
+used to show how the text should be formatted in its final version.
+
+You send the document to your team member first, and she does his calculations
+and adds the results at the indicated spot in the paper. She focuses on the notes to
+her in square brackets and ignores the rest of the document. This is analogous
+to the first stage of rendering a knitted document, where the document is passed
+through software that looks for executable code and ignores everything else,
+executing that code and adding in results in the right place.
+
+Next, your research team member sends the document, with her additions, to an
+assistant to type up the document. The assistant types the full document, paying
+attention to any indications that are included for formatting. For example, he
+sees that ``Results'' is meant to be a section heading, since it is on a line that
+starts with ``\#'', your team's convention for section headings. He therefore
+types this on a line by itself in larger font. He also sees that ``Mycobacterium
+tuberculosis'' is surrounded by asterisks, so he types this in italics. This
+step is analogous to the second stage of rendering a formatted document, when
+a software program takes the output of the first stage and formats the full
+document into an attractive, easy-to-read final document, using any markings you
+include to format the document.
+
+\hypertarget{advantages-of-reproducible-pre-processing-protocols}{%
+\subsection{Advantages of reproducible pre-processing protocols}\label{advantages-of-reproducible-pre-processing-protocols}}
+
+With point-and-click software, even if you are doing the same process from one
+experiment to another to pre-process your data, you will still have to go through
+each step of preprocessing, re-selecting each choice along the way. For example,
+if you are using software to gate flow cytometry data, someone in your research
+group must typically go through the gating step-by-step, even if they are trying to
+gate the data using the same rules and approach that they've applied to gate data
+in previous experiments. This approach therefore has two key limitations.
+
+First, it takes a lot of time for someone in the research group to go through
+the same series of selection / point-and-click steps over and over each time
+research data needs to be pre-processed. If steps do indeed need to be
+customized extensively from one experiment to the next, there may be no way to
+avoid this time-consuming work. However, if the same choices for pre-processing
+apply from one experiment to the next, then there's not a good reason for
+someone in the research group to need to spend a lot of time with this process.
+
+Using a reproducible pre-processing protocol therefore helps make the
+pre-processing more \textbf{efficient}. While developing this type of protocol will
+take more time the first time or two that you do the pre-processing, as you
+create, refine, and check the document, this time investment will pay off as you
+continue to re-use the protocol in later experiments. Since the code can be
+extracted as a script, you may find that you can often use that script as a
+direct starting point for later experiments, needing only to change a few areas,
+like the name of the input data files.
+
+The second issue with a point-and-click approach is that it's hard to be sure
+that you're being completely consistent from experiment to experiment if you're
+going through the pre-processing ``by hand'', going through different steps and
+selections using point-and-click software. Even if you've written down the
+choices you plan to make from time to time, there may be subtle small choices
+that you forget to write down. Further, there are some choices that might not be
+as easy to make consistent from time to time. For example, when you gate flow
+cytometry data using point and click software, you are often visual adjusting a
+threshold or a box to select certain data points in the sample to gate. These
+visual choices can be subjective from day to day, so you might gate the data
+slightly different from one day to the next. Even if the same person does the
+preprocessing from time to time, there will likely be subtle variations in the
+process; these are likely to expand quite a bit when different people in the
+research group do the pre-processing from one experiment to another.
+
+By creating a reproducible pre-processing protocol, and starting from the
+embedded code each time you pre-process data from a new experiment, you can
+make your pre-processing more \textbf{reproducible} and more \textbf{consistent} from
+one experiment to the next. When pre-processing is done using a code script,
+the choices are based on an algorithm that can be reproduced faithfully from
+experiment to experiment. For example, coding tools for gating flow cytometry
+data use consistent algorithms, based on clear rules for fitting gates based
+on the distribution of the data {[}?{]}, and so remove the subjectivity of
+gating the data by hand, and the differences in gating that can result from
+person to person or even from day to day in gating done by the same person.
+
+In scientific research, there are numerous factors that can affect the
+measurements that result from an experiment. These include differences across
+experimental animals or subjects, differences in the set-up of different
+laboratories, and so on. We often try to control as many extraneous factors as
+we can, so that we can focus very precisely on how a single element affects an
+outcome. By controlling extraneous factors, we can reduce the noise that might
+obscure a signal in the relationship we care about and are trying to measure.
+Subjectivity in data pre-processing is a potential source of noise in the
+experimental process, especially for more complex biomedical data that requires
+extensive pre-processing. Just as strong control to prevent variation in factors
+like laboratory conditions and experimental animals can add power and clarity to
+detect important signals in biomedical research, so can enforced consistency in
+data pre-processing, including through the explicit use of consistent, objective
+algorithms for pre-processing steps through the use of scripted code for as much
+of the pre-processing as possible.
+
 \hypertarget{what-knitted-documents-are-and-why-to-use-them}{%
 \subsection{What knitted documents are and why to use them}\label{what-knitted-documents-are-and-why-to-use-them}}
 
@@ -11202,324 +11571,8 @@ previous versions of the final document. Therefore any changes that you have
 made to your final document will be overwritten anytime you re-render from the
 original plain text document.
 
-\hypertarget{introducing-reproducible-data-pre-processing-protocols}{%
-\subsection{Introducing reproducible data pre-processing protocols}\label{introducing-reproducible-data-pre-processing-protocols}}
-
-When we take measurements we are doing it with the goal of using the data we collect to gain scientific knowledge. The data are direct measurement of something. Sometimes direct measurements line up very closely with a research question. For example if you are conducting a study that investigates the mortality status of each test subject then whether or not each subject to dies is a data point that is directly related to the research question you are aiming to answer. In this case these data may go directly into a statistical analysis model without extensive pre-processing.
-
-however, there are often cases where we collect data that cannot be directly used to answer the scientific question. Instead these data require pre-processing to move from the measurements collected by equipment to data that can be used more easily to gain knowledge and test meaningful hypotheses through to tistical analysis and testing. Often lots of pre-processing is required typically for data that is extracted using complex equipment. There are a number of ways of collecting data for scientific research now that leverage complex equipment. These equipment are using very clever methods that derive from physics or chemistry to see a new engl in a measurement. They can be very powerful for exploring data. However data from such equipment often require more work to interpret the data and pre-processing to move the data into a format that is useful for answering scientific questions.
-
-One example if the data collected through liquid chromatography Mass spectrometry this type of equipment is often used for chemical analysis including the analysis of biochemical molecules. For example this type of equipment is often used to process samples for data relevant for metabolomics and proteomics Analysis. These equipment are you it's an academic research but also an Industrial Research in context has like pharmaceutical research. Broadly this equipment leverages principles from chemistry and physics to identify the components in a sample and to measure the amount of each component identify. It can be used to compare different compositions across experimental groups. For example you could use this equipment to investigate if the metabolites features are different between a group of control animals compared to a group of animals given a specific drug to test or control for an infectious disease of Interest.
-
-When You run an experiment using liquid chromatography-mass spectrometry, the raw data that is output requires extensive pre-processing before can use it to answer scientific question. First the raw data collected by the equipment is often saved in non-standard format. To be clear these are not non-standard for the equipment, but rather file formats that you rarely see outside of using equipment of that type. Some examples include netCDF and mzML file formats. therefore part of the pre-processing for these type of data include special functions that can read data in from these file formats or in cases for the data will stay on disc during analysis Direct the software to identify where on file the data are stored.
-
-These data can be translated into features that are linked to the chemical composition of the sample. This requires identification based on the retention time of different elements in the sample. These retention times are similar from sample to sample, but may not be identical. Therefore there required pre-processing stats 2 Ensure that the features identified from one sample to another are comprable. There may also be technical bias from one sample to another. For example it may be the case that all intensities measured for one sample tend to be higher than for another sample because of technical bias in terms of the settings used for the equipment when the two samples were run or other external characteristics. It is important to process the data whenever possible to remove any of these relics that otherwise complicate comparisons across different samples. Other important pre-processing steps for data from this equipment include running algorithms to identify peaks in the data and then refining results from that process for example to combine a remove overlapping Peaks Four Peaks that were incorrectly split in two separate features in the dad.
-
-These Pre-processing steps a run before the data from this equipment are combined with other data from the experiment and also before the data are used in any data analysis R visualization other than exploratory data analysis. Often complex laboratory experiment equipment will have available proprietary software that can be used for many of these pre-processing steps. This software May either be shared in conjunction with the equipment or it may be available through other companies. Often the software is based on the graphical user interface or GUI. This type of software is managed by pointing and clicking. For example there might be buttons that can be selected to automate different steps of the process or pull-down menus that are used to select options in the workflow. You can use this kind of equipment for the pre-processing, but there are number of clear advantages to instead using Code scripts and open source software to do this process of data preprocessing when the data comes from complex experimental equipment. First the use of codes grips insurers that the steps of pre-processing are reproducible, both by you in the future and also by others either in your laboratory group or the readers of the final manuscript describing the paper. Further the use of coats Crepes encourages you to document this code and this process. Well-documented code makes it much easier to write up the method section later in manuscripts that leveraged the data collected in the experiment.
-
-When you use scripted code to pre-process biomedical data, you will find that
-the same script can often be easily adapted and re-used in later projects that
-use the same type of data. You may need to change small elements, like the file
-names of files with data you want to use, or some details about the methods
-used for certain pre-processing steps. However, often almost all of the pre-processing
-steps will repeat over different experiments that you do.
-
-If you have used open-source software tools, like Bioconductor packages, you
-are likely familiar with the \emph{vignettes} that come with the packages. These
-provide tutorial guides showing you how to work with the package. They often
-leverage example data that you can download so that you can try all the
-example code yourself, before you move on to adapting the code to use with
-your own data.
-
-You can create your own version of these types of documents. This can use
-real data from your research group, and you can create customized instructions
-and code examples showing how to use open-source tools to pre-process a
-certain type of biomedical data for experiments in your research group.
-You can use this document the next time you need to pre-process that type
-of data yourself, and you can also share it with others in your research
-group. This can help in teaching new laboratory members how to work with
-this type of data in your research group. It can also help ensure that
-different members of the research group are all using the same steps to
-pre-process data, so that there is greater consistency across results from
-the group.
-
-You may already create something similar to this, using a general word
-processing program like Google Docs or Word. There are two key differences,
-however, between how vignettes are created compared to a similar tutorial
-created in Word or Google Docs. First, the vignettes are created using
-a document compiling program that ensures that any code uses only ASCII
-characters. This means that you can copy and paste code from the tutorial
-into your R session and it will work. By contrast, programs like Word often
-try to ``correct'' some of the characters when you paste in or type in code.
-For example, when you have an apostrophe mark in your code (for example,
-when you're quoting to create a character string), the computer code needs
-to have this character as a very basic ASCII version of an apostrophe. Word,
-by contrast, will often try to convert the character to use an apostrophe
-character that looks smoother---and so is nice for a word processed document
-that humans will read---but that R cannot recognize. Hyphens can have similar
-problems. {[}Other examples?{]}
-
-When you create a reproducible pre-processing protocol using the techniques that
-are used to create vignettes---which we'll teach you how to do in the next few
-sections---you will avoid this autocorrection of characters, and so someone
-reading the protocol will be able to directly copy and paste example code from
-the protocol into their own scripts. This will avoid hard-to-diagnose errors
-that come from this character conversion in programs like Word.
-
-The second difference is that the tools that are used to create vignettes
-contain code that is not just copied and pasted from a script, but that is
-actually, in essence, \emph{still in a script}. The code, in other words, is
-executable and, unless you change the default settings, is re-run every
-time you compile the document. This means that you will quickly determine if
-there are any typos or other errors in the code, because the document will
-not run and render correctly unless the code works. This means that you can
-guarantee, when you first create the document, that the code runs, and also
-that you can regularly check to see if the example code still works at
-later time points. This allows you to, for example, see if changes in the
-version of R or of specific packages that you're using has created problems
-with the code running correctly over time.
-
-Finally, these documents can be separated, allowing you to extract solely the
-script part of the document, into a classic R script. You can use this directly
-to run (or adapt) the pre-processing code for further research.
-
-\hypertarget{technique-to-create-reproducible-pre-processing-protocols}{%
-\subsection{Technique to create reproducible pre-processing protocols}\label{technique-to-create-reproducible-pre-processing-protocols}}
-
-The vignettes that come with Bioconductor packages are created using a system
-for ``knitting'' documents. These documents ``knit'' together text with executable
-code. Once you have written the document, you can render it, which executes the
-code, adds to the document results from this execution (figures, tables, and
-code output, for example), and formats all text using the formatting choices
-you've specified. The end result is a nicely format document, which can be in
-one of several output formats, including pdf, Word, or HTML. Since the code
-was executed to create the document, you can ensure that all the code
-is worked as intended.
-
-There are several techniques and principles that come together to make these
-knitteed documents work. First are the tools that allow you to write text
-in plain text, include formatting specifications in that plain text, and
-render this to an attractive output document in pdf, Word, or HTML. This
-part of the process uses a tool from a set of tools called \emph{Markup languages}.
-{[}A bit more on history / development of Markup languages.{]}
-
-Here, we will use a markup language called \emph{Markdown}. It is one of the easiest
-markup languages to learn, as it has a fairly small set of formatting indicators
-that can be used to ``markup'' the formatting in a document. This small set,
-however, covers much of the formatting you might want to do, and so this
-language provides an easy introduction to markup languages while still providing
-adequate functionality for most purposes.
-
-The Markdown markup languages evolved starting in spaces where people could
-communicate in plain text only, without point-and-click methods for adding
-formatting like bold or italic type \citep{buffalo2015bioinformatics}. For example,
-early versions of email only allowed users to write using plain text. These
-users eventually evolved some conventions for how to ``mark-up'' this plain text,
-to serve the purposes served by things like italics and bold in formatted text
-(e.g., emphasis, highlighting). For example, to emphasize a word, a user could
-surround it with asterisks, like:
-
-\begin{verbatim}
-I just read a *really* interesting article!
-\end{verbatim}
-
-In this early prototype for a markup language, the reader's mind was doing
-the ``rendering'', interpreting these markers as a sign that part of the text
-was emphasized. In Markdown, the text can be rendered into more attractive
-output documents, like pdf, where the rendering process has actually
-changed the words between asterisks to print in italics.
-
-The Markdown language has developed a set of these types of marks---like
-asterisks---that are used to ``mark up'' the plain text with the formatting
-that should be applied when the text is rendered. There are marks that you
-can use for a number of formatting specifications, including: italics,
-bold, underline, strike-through, bulleted lists, numbered lists, web links,
-headers of different levels (e.g., to mark off sections and subsections),
-block quotes, horizontal rules, and block quotes. Details and examples of
-the Markdown syntax can be found on the Markdown Guide page at
-\url{https://www.markdownguide.org/basic-syntax/}. We'll cover more examples of
-using Markdown in the next two modules, as we move more specifically into
-how RMarkdown can be used to created knitted documents with R and provide
-an example of creating a reproducible protocol with this system.
-
-The other technique that's needed to create knitted documents is the ability to
-include executable code within the plain text version of the document, and to
-execute that code and incorporate its results before moving on to render the
-document to its final format.
-
-The idea here is that you can use special markers to indicate in the document
-where code starts and where it ends. With these markings, a computer program can
-figure out the lines of the document that it should run as code, and the ones it
-should ignore when it's looking for executable code. With these markings in
-place, the document will be run through two separate programs as it is rendered.
-The first program will look for code to execute and ignore any other lines of
-the file. It will execute this code and then place any results, like figures,
-tables, or code output, into the document right after that piece of code. The
-output from running this program will then be input into a more traditional
-markup renderer, which will format the document based on any of the mark up
-indications and will output an attractive document in a format like pdf,
-Word, or HTML.
-
-This technique comes from an idea that you could include code to be executed in
-a document that is otherwise easy for humans to read. This is an incrediably
-powerful idea. It originated with a famous computer scientist named Donald
-Knuth, who realized that one key to making computer code sound is to make sure
-that it is clear to humans what the code is doing. Computers will faithfully do
-exactly what you tell them to do, so they will do what you're hoping they will
-as long as you provide the correct instructions. The greatest room for error,
-then, comes from humans not giving the right instructions to computers. To
-write sound code, and code that is easy for yourself and others to maintain and
-extend, you must make sure that you and other humans understand what it is
-asking the computer to do. Donald Knuth came up with a system called \emph{literate
-programming} that allows programmers to write code in a way that focuses on
-documenting the code for humans, while also allowing the computer to easily
-pull out just the parts that it needs to execute, while ignoring all the text
-meant for humans. This process flips the idea of documenting code by including
-plain text comments in the code---instead of the code being the heart of the
-document, the documentation of the code is the heart, with the code provided
-to illustrate the implementation. When used well, this technique results in
-beautiful documents that clearly and comprehensively document the intent and
-the implementation of computer code. The knitted documents that we can build
-with R or Python through systems like RMarkdown and Jupyter Notebooks build
-on these literate programming ideas, applying them in ways that complement
-programming languages that can be run interactively, rather than needing to
-be compiled before they're run.
-
-You can visualize the full process of creating and rendering a knitted document
-in the following way. Imagine that you write a document by hand on sheets of
-paper. There are parts where you need a team member to add their data or to run
-a calculation, so you include notes in square brackets telling your team member
-where to do these things. Then, you use traditional editing marks to show where
-text should be italicized and which text should be section a header:
-
-\begin{verbatim}
-# Results
-
-We measured the bacterial load of 
-*Mycobacterium tuberculosis* for each 
-sample. 
-
-[Kristina: Calculate bacterial loads for 
-each sample based on dilutions and
-add table with results here.]
-\end{verbatim}
-
-This is analogous to writting up a knitted document in plain text with appropriate
-``executable'' sections, designated with special markings, and with other markings
-used to show how the text should be formatted in its final version.
-
-You send the document to your team member first, and she does his calculations
-and adds the results at the indicated spot in the paper. She focuses on the notes to
-her in square brackets and ignores the rest of the document. This is analogous
-to the first stage of rendering a knitted document, where the document is passed
-through software that looks for executable code and ignores everything else,
-executing that code and adding in results in the right place.
-
-Next, your research team member sends the document, with her additions, to an
-assistant to type up the document. The assistant types the full document, paying
-attention to any indications that are included for formatting. For example, he
-sees that ``Results'' is meant to be a section heading, since it is on a line that
-starts with ``\#'', your team's convention for section headings. He therefore
-types this on a line by itself in larger font. He also sees that ``Mycobacterium
-tuberculosis'' is surrounded by asterisks, so he types this in italics. This
-step is analogous to the second stage of rendering a formatted document, when
-a software program takes the output of the first stage and formats the full
-document into an attractive, easy-to-read final document, using any markings you
-include to format the document.
-
-\hypertarget{advantages-of-reproducible-pre-processing-protocols}{%
-\subsection{Advantages of reproducible pre-processing protocols}\label{advantages-of-reproducible-pre-processing-protocols}}
-
-With point-and-click software, even if you are doing the same process from one
-experiment to another to pre-process your data, you will still have to go through
-each step of preprocessing, re-selecting each choice along the way. For example,
-if you are using software to gate flow cytometry data, someone in your research
-group must typically go through the gating step-by-step, even if they are trying to
-gate the data using the same rules and approach that they've applied to gate data
-in previous experiments. This approach therefore has two key limitations.
-
-First, it takes a lot of time for someone in the research group to go through
-the same series of selection / point-and-click steps over and over each time
-research data needs to be pre-processed. If steps do indeed need to be
-customized extensively from one experiment to the next, there may be no way to
-avoid this time-consuming work. However, if the same choices for pre-processing
-apply from one experiment to the next, then there's not a good reason for
-someone in the research group to need to spend a lot of time with this process.
-
-Using a reproducible pre-processing protocol therefore helps make the
-pre-processing more \textbf{efficient}. While developing this type of protocol will
-take more time the first time or two that you do the pre-processing, as you
-create, refine, and check the document, this time investment will pay off as you
-continue to re-use the protocol in later experiments. Since the code can be
-extracted as a script, you may find that you can often use that script as a
-direct starting point for later experiments, needing only to change a few areas,
-like the name of the input data files.
-
-The second issue with a point-and-click approach is that it's hard to be sure
-that you're being completely consistent from experiment to experiment if you're
-going through the pre-processing ``by hand'', going through different steps and
-selections using point-and-click software. Even if you've written down the
-choices you plan to make from time to time, there may be subtle small choices
-that you forget to write down. Further, there are some choices that might not be
-as easy to make consistent from time to time. For example, when you gate flow
-cytometry data using point and click software, you are often visual adjusting a
-threshold or a box to select certain data points in the sample to gate. These
-visual choices can be subjective from day to day, so you might gate the data
-slightly different from one day to the next. Even if the same person does the
-preprocessing from time to time, there will likely be subtle variations in the
-process; these are likely to expand quite a bit when different people in the
-research group do the pre-processing from one experiment to another.
-
-By creating a reproducible pre-processing protocol, and starting from the
-embedded code each time you pre-process data from a new experiment, you can
-make your pre-processing more \textbf{reproducible} and more \textbf{consistent} from
-one experiment to the next. When pre-processing is done using a code script,
-the choices are based on an algorithm that can be reproduced faithfully from
-experiment to experiment. For example, coding tools for gating flow cytometry
-data use consistent algorithms, based on clear rules for fitting gates based
-on the distribution of the data {[}?{]}, and so remove the subjectivity of
-gating the data by hand, and the differences in gating that can result from
-person to person or even from day to day in gating done by the same person.
-
-In scientific research, there are numerous factors that can affect the
-measurements that result from an experiment. These include differences across
-experimental animals or subjects, differences in the set-up of different
-laboratories, and so on. We often try to control as many extraneous factors as
-we can, so that we can focus very precisely on how a single element affects an
-outcome. By controlling extraneous factors, we can reduce the noise that might
-obscure a signal in the relationship we care about and are trying to measure.
-Subjectivity in data pre-processing is a potential source of noise in the
-experimental process, especially for more complex biomedical data that requires
-extensive pre-processing. Just as strong control to prevent variation in factors
-like laboratory conditions and experimental animals can add power and clarity to
-detect important signals in biomedical research, so can enforced consistency in
-data pre-processing, including through the explicit use of consistent, objective
-algorithms for pre-processing steps through the use of scripted code for as much
-of the pre-processing as possible.
-
-\hypertarget{subsection-1-9}{%
-\subsection{Subsection 1}\label{subsection-1-9}}
-
-{[}Markup language visualization---a boss dictating to secretary in old movie, including
-speaking punctuation and formatting, like new paragraphs or bold.{]}
-
-{[}Anecdote---any stories of famous authors trying to retrieve old manuscripts in
-outdated file formats?{]}
-
-{[}Example of old, plain text emails and the beginnings of Markdown-style notation
-there? More on history of Markdown and other markup languages? (Readers minds were the
-first renders for this ancestor of Markdown, but now there are software programs
-that render the plain-text file into other formats, like Word, PDF, or HTML.){]}
-
-{[}More on the idea of controlling for variation in laboratory experiments to reduce
-noise and focus on the relationship of interest. Could include example of self-controls
-in human research---using one eye as control for other eye in research on
-eye disease, for example.{]}
-
-{[}Typesetting marks as an example of ``mark up''?{]}
-
-\hypertarget{subsection-2-8}{%
-\subsection{Subsection 2}\label{subsection-2-8}}
+\hypertarget{quotes}{%
+\subsection{Quotes}\label{quotes}}
 
 \begin{quote}
 ``It's very important to keep a project notebook containing detailed information
@@ -12372,8 +12425,8 @@ for a group study or other course {[}link to our course website for the group st
 \hypertarget{using-rmarkdown-to-improve-reproducibility-in-data-pre-processing}{%
 \subsection{Using RMarkdown to improve reproducibility in data pre-processing}\label{using-rmarkdown-to-improve-reproducibility-in-data-pre-processing}}
 
-\hypertarget{subsection-1-10}{%
-\subsection{Subsection 1}\label{subsection-1-10}}
+\hypertarget{subsection-1-9}{%
+\subsection{Subsection 1}\label{subsection-1-9}}
 
 \begin{quote}
 ``WordPerfect was always the best word processor. Because it allowed for insight into
@@ -12593,8 +12646,8 @@ choices you could make to create powerful and aesthetically attractive data
 visualizations.'' \citep{holmes2018modern}
 \end{quote}
 
-\hypertarget{subsection-2-9}{%
-\subsection{Subsection 2}\label{subsection-2-9}}
+\hypertarget{subsection-2-8}{%
+\subsection{Subsection 2}\label{subsection-2-8}}
 
 \hypertarget{applied-exercise-7}{%
 \subsection{Applied exercise}\label{applied-exercise-7}}
