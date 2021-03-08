@@ -43,7 +43,7 @@ visualize the data, and to integrate the data with other datasets, using a
 series of open-source tools on the R platform called the "tidyverse". These
 characteristics mean that, if you are planning to use a standardized data format
 for recording experimental data in your research group, you may want to consider
-creating on that adheres to the "tidy data" rules.
+creating one that adheres to the "tidy data" rules.
 
 We'll start by describing what rules a dataset's format must follow for it to be
 "tidy", and try to clarify how you can set up your data recording to follow
@@ -99,7 +99,12 @@ There are some additional criteria for the "tidy" data format, though, and so
 not every structured, tabular dataset is in a "tidy" format. The first of these
 rules are that each row of a "tidy" dataset records the values for a single
 observation, and that each column provides characteristics or measurements of a
-certain type, in the order of the observations given by the rows [@wickham2014tidy].
+certain type, in the order of the observations given by the rows
+[@wickham2014tidy]. For example, if you have collected data from several 
+experimental samples and plated each sample at several dilutions to count
+viable bacteria, then you could record the results using one row per 
+dilution---specifying each dilution for each sample as your level of 
+observation for the data---to save the data in a tidy format.
 
 > "Most statistical datasets are rectangular tables made up of rows and columns
 ... [but] there are many ways to structure the same underlying data. ... 
@@ -107,13 +112,16 @@ Real datasets can, and often do, violate the three precepts of tidy data in
 almost every way imaginable." [@wickham2014tidy]
 
 To be able to decide if your data is tidy, then, you need to know what forms a
-single observation in data you're collecting. The *unit of observation* of a
+single observation in the data you're collecting. The *unit of observation* of a
 dataset is the unit at which you take measurements [@sedgwick2014unit]. This
 idea is different than the *unit of analysis*, which is the unit that you're
 focusing on in your study hypotheses and conclusions (this is sometimes also
 called the "sampling unit" or "unit of investigation") [@altman1997units]. In
 some cases, these two might be equivalent (the same unit is both the unit of
-observation and the unit of measurement), but often they are not [@sedgwick2014unit]. 
+observation and the unit of measurement), but often they are not [@sedgwick2014unit]. Again, in the example of plating samples at several 
+dilutions each, the unit of observation for the resulting data might be
+at the level of each dilution for each sample, where the unit of analysis
+that you are ultimately interested in is simply each sample.
 
 > "The unit of observation and unit of analysis are often confused.
 The unit of observation, sometimes referred to as the unit of
@@ -122,8 +130,8 @@ for which data are measured or collected. The unit of analysis
 is defined statistically as the 'who' or 'what' for which
 information is analysed and conclusions are made." [@sedgwick2014unit]
 
-For example, say you are testing how the immune system of mice responds to a
-certain drug over time. You may have several replicates of mice measured at
+As another example, say you are testing how the immune system of mice responds
+to a certain drug over time. You may have several replicates of mice measured at
 several time points, and those mice might be in separate groups (for example,
 infected with a disease versus uninfected).  In this case, if a separate mouse
 (replicate) is used to collect each observation, and a mouse is never measured
@@ -135,12 +143,12 @@ point, whether the mouse was infected, and a unique mouse identifier) and,
 second, the results of that measurement (e.g., the weight of the mouse when it
 was sacrificed, the levels of different immune cell populations in the mouse, a
 measure of the extent of infection in the mouse if it was infected, and perhaps
-some notes about anything of note for the mouse, like if it appeared noticably
+some notes about anything of note for the mouse, like if it appeared noticeably
 sick). In this case, the *unit of analysis* might be the drug, or a combination
-of drug and dose---ultimately, you may want to test something like if one
-drug is more effective than another. However, the *unit of observation*, the
-level at which each data point is collected, is the mouse, with each mouse
-providing a single observation to help answer the larger research question.
+of drug and dose---ultimately, you may want to test something like if one drug
+is more effective than another. However, the *unit of observation*, the level at
+which each data point is collected, is the mouse, with each mouse providing a
+single observation to help answer the larger research question.
 
 As another example, say you conducted a trial on human subjects, to see how the
 use of a certain treatment affects the speed of recovery, where each study
