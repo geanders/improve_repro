@@ -169,9 +169,15 @@ method, and adhesive sheet method." [@goldman2015practical]
 ## Laboratory description
 
 These data result from plating each sample at several different dilutions and
-counting the colony-forming units (CFUs) that are cultured on each plate. Each
-sample was on a plate with a medium they can grow on and then given [time] to
-grow. On each plate, the individual bacteria from the original sample should
+counting the colony-forming units (CFUs) that are cultured on each plate. For
+each animal, the spleen was homogenized in phosphate buffer saline (PBS). This
+homogenate was plated on 7H11 agar plates at four serial dilutions, from
+undiluted to a dilution of $10^{-2}$. The plates were incubated for 3--5 
+weeks at $37^{o}C$, and then colony-forming units (CFUs) were counted on each
+plate. [?]
+
+Each sample was on a plate with a medium they can grow on and then given [time]
+to grow. On each plate, the individual bacteria from the original sample should
 have ended up spread randomly around the surface of the plate, and any that are
 viable (able to reproduce) formed a colony that, by the end of the procedure,
 can be counted.
@@ -183,6 +189,15 @@ from different experimental groups, with several replicates (mice) per
 experimental group. The experimental groups in this case were: 
 
 [table of experimental groups]
+
+The CFU solution, in each case, was resuspended in 0.5 milliliters [of ...]. 
+For each plate, 100 microliters were plated. Half of the spleen was used 
+for each sample.
+
+The dilution factor in this experiment is 5 (i.e., a five-fold dilution 
+from each dilution level to the next).
+
+[Plating in quarters?]
 
 > [Different type of mycobacteria] "The number of viable mycobacterial cells in
 each single-cell suspension was determined by standard plate counting as a
@@ -228,6 +243,9 @@ that experimental group (`replicate`, e.g., `2-A` is mouse A in experimental
 group 2), the dilution level for that plating (`dilution`), and the number of
 bacterial colonies counted in that sample (`CFUs`).
 
+In cases where the bacteria were too numerous to count, that dilution level
+is excluded from the data.
+
 ## Reading data into R
 
 The data are stored in a comma-separated plain text file called "cfu_data.csv". 
@@ -269,12 +287,12 @@ experiment. This section provides code examples for this quality control.
 First, it can be helpful to ensure that the data includes the number of
 experimental groups, and the number of replicates within each group, that
 you are expecting. First, we can determine that there are eight experimental 
-groups, with between eight and twelve samples (replicates) in each group: 
+groups, with between two and three samples (replicates) in each group: 
 
 ```{r}
 cfu_data %>% 
   group_by(group) %>% 
-  count()
+  summarize(n_replicates = length(unique(replicate)))
 ```
 
 It is also helpful to see the distribution of CFUs at each dilution level, which 
@@ -293,6 +311,17 @@ dilution levels. The highest CFU count at any dilution level is a little over
 regardless of dilution level.
 
 ## Identifying a good dilution for each sample
+
+In this experiment, we plated at dilution levels of 0, 1, 3, and 3, with a
+dilution factor of 5. In other words, we have the following dilutions for 
+each dilution level: 
+
+| Dilution level  | Dilution at that level |
+| ------------- | ------------- |
+| 0  | $10^0$  |
+| 1  | $10^{-0.5}$  |
+| 2  | $10^{-1}$  |
+| 3  | $10^{-1.5}$  |
 
 To count the number of colonies, you need a "good" dilution to have a
 **countable plate**. You won't be able to pick a "good" dilution for each sample
@@ -330,7 +359,98 @@ more variability in our bacterial load estimates, since they tend to be based on
 plates with lower average counts. However, we balance this limitation with the
 practical limitation of how long it takes for this type of bacteria to grow, and
 so need to settle for using lower CFUs in some cases than might be ideal if
-working with faster-growing bacteria.
+working with faster-growing bacteria. 
+
+[Quadrant plating also resulting in a lower ideal count?]
+
+We used the following criteria to pick the best dilution in each sample 
+to use to back-calculate the bacterial load in the original sample: 
+
+1. If CFU counts at all dilutions were 0, use the lowest dilution (level 0
+dilution); and
+2. If some of the dilutions gave non-zero CFU counts, use the dilution with 
+a CFU count closest to 25; and
+3. If there are ties in terms of which dilution gave a CFU closest to 25, take
+the plate with the lowest dilution level of those tied.
+
+Here is the code we used to identify the best dilution level for each sample, 
+based on these criteria: 
+
+```{r}
+cfu_data <- cfu_data %>% 
+  # For each dilution, calculate how far the CFUs counted on the plate are 
+  # from 25.
+  mutate(diff_from_25 = abs(CFUs - 25)) %>% 
+  # For each original sample (ID-ed by the 'replicate' column), determine
+  # first if CFUs are 0 at all dilutions and second which dilution 
+  # had a CFU count closes to 25. Finally, include a check to see if there
+  # are non-zero ties for the sample, in terms of plates with non-zero CFU counts
+  # equally close to 25.
+  group_by(replicate) %>% 
+  mutate(all_zeros = all(CFUs == 0),
+         closest_to_25 = dilution[which.min(diff_from_25)], 
+         ties_closest_to_25 = sum(diff_from_25 == min(diff_from_25)) > 1)
+```
+
+You can check some samples in these data to make sure it's identifying the right
+dilution level. First, here is a sample where all CFUs are zero (replicate 3-A).
+The code has correctly identified that the CFUs for these samples are all zeros,
+marking `TRUE` in the `all_zeros` column.
+
+```{r}
+cfu_data %>% 
+  filter(replicate == "3-A")
+```
+
+Here is an example where some dilutions resulted in non-zero CFU counts, from
+replicate 2-B. In this case, there were non-zero CFU counts at dilution levels
+1, 2, and 3. The closest to 25 was for dilution level 2, since $\lvert 25-10 \rvert = 15$, which is lower than $\lvert 25-52 \rvert = 27$ or $\lvert 25-5 \rvert = 20$.
+
+```{r}
+cfu_data %>% 
+  filter(replicate == "2-B")
+```
+
+As a quality check, we can see if there are any samples where there were non-zero
+ties in terms of which dilution level gave a CFU count closest to 25: 
+
+```{r}
+cfu_data %>% 
+  filter(ties_closest_to_25 & !all_zeros)
+```
+
+These results show that there are no samples where there are non-zero ties in 
+terms of which dilutions gave CFU counts closest to 25, so in this case, that
+is not a criteria we need to consider further in identifying the best dilution 
+level for each sample.
+
+Now that we've identified the best dilution level for each replicate, we can
+reduce the data, creating a new dataset with only a single row for each sample. 
+Each sample will have a row that provides the best dilution level for that 
+sample and the CFU count at that dilution level: 
+
+```{r}
+cfu_data_reduced <- cfu_data %>% 
+  # Limit to the row with the best dilution for each sample
+  filter(dilution == closest_to_25) %>% 
+  # Remove the grouping tag applied in the code earlier
+  ungroup() %>% 
+  # Limit to just the columns of data we need for further steps
+  select(group:CFUs)
+
+# Print this reduced data out as a table
+cfu_data_reduced %>% 
+  knitr::kable()
+```
+
+For this experiment, many of the samples had 0 CFUs at all dilution levels. For
+the samples with non-zero CFU counts, the best dilutions were often at dilution
+level 0 (i.e., undiluted sample), although in a few cases the best dilutions for
+samples were at dilution levels of 1 ($10{-0.5}$ dilution) or 2 ($10^{-1}$
+dilution). The CFU counts at the best dilution levels were, for non-zero CFU
+samples, between 1 and 30. We may want to keep in mind that the sampling error
+is likely pretty high for the CFU counts that are lower than about 10 in these
+samples.
 
 > "Due to the slow growth rate and pathogenicity of mycobacteria, enumeration by
 traditional reference methods like colony counting is notoriously
@@ -533,6 +653,82 @@ plate have been suggested (17). Coliform analyses demand another range (24)."
 
 ## Estimating bacterial load for each sample
 
+As a reminder, here are some of the experimental parameters used in this
+experimental that will be needed to back-calculate estimates of bacterial load
+in the original samples:
+
+| Experimental parameter  | Value in this experiment |
+| ------------- | ------------- |
+| Dilution factor  | $0.5$  |
+| Volume used to resuspend CFU solution  | $0.5$ $mL$  |
+| Volume plated  | $100$ $\mu L$  |
+| Proportion of organ used in sample | $0.5$ |
+
+We can load these parameter values into R so they're available in 
+the following calculations: 
+
+```{r}
+dilution_factor <- 0.5      # So a dilution level of 2 corresponds to a 10^-1 dilution
+volume_resuspend <- 0.5     # in milliliters
+volume_plated <- 100        # in microliters
+prop_organ_in_sample <- 0.5 # Half the spleen was included in the sample
+```
+
+First, we can calculate the actual dilution for each sample by taking the 
+dilution factor and raising it to the power of the dilution level. For example, 
+the dilution at level 2 should be $0.5^2 = 0.25$, while the dilution at level 0
+(undiluted) should be $0.5^0 = 1$). 
+
+```{r}
+cfu_data_reduced <- cfu_data_reduced %>% 
+  mutate(dilution_value = dilution_factor^dilution)
+
+cfu_data_reduced
+```
+
+[bacterial load per mL]
+
+Next, we calculated the bacterial load in the original sample. To do this, we
+multiplied the dilution value, calculated in the previous step, by the CFU count
+at that dilution, as well as by the resuspension volume and divided by the
+volume plated, adding a multiplicative factor of 1000 to account for the
+difference in units between those experimental parameters (milliliters and
+microliters, respectively):
+
+```{r}
+cfu_data_reduced <- cfu_data_reduced %>% 
+  mutate(bact_load_in_sample = CFUs * 
+           dilution_value * volume_resuspend * 1000 / 
+           volume_plated)
+cfu_data_reduced
+```
+
+Finally, to get an estimate of the bacterial load in the full organ, we can 
+back-calculate based on the proportion of the organ that was included in the
+original sample. In this experiment, we used half of the spleen, so the 
+estimated bacterial load in the full organ should be approximately twice
+that estimated in the sample (since $1/0.5 = 2$). We calculated this in R: 
+
+```{r}
+cfu_data_reduced <- cfu_data_reduced %>% 
+  mutate(bact_load_in_organ = bact_load_in_sample * 
+           (1 / prop_organ_in_sample))
+cfu_data_reduced
+```
+
+We have also included a column with log(CFUs), since these are often used in
+further data analysis for this type of experiment. This is because ... . We used
+$log_{10}$, to be consistent with conventions in the field (the default `log`
+function in R takes the natural log, so this required using the `log10`
+function).
+
+```{r}
+cfu_data_reduced <- cfu_data_reduced %>% 
+  mutate(log_cfus_in_organ = log10(bact_load_in_organ))
+
+cfu_data_reduced
+```
+
 > "Given an unknown sample which contains $n_0$ colony forming units (CFUs), a
 series of $J$ dilutions are made sequentially each with a dilution factor
 $\alpha$. From each of the J dilutions a fraction $\alpha_p^{-1}$ is taken and
@@ -560,6 +756,26 @@ single plate) with which $n_0$ is estimated. There are only a few inputs needed:
 the incubation plate size, the microbial colony size, and the dilution factors
 ($\alpha$ and $\alpha_p$)." [@ben2014estimation]
 
-## Outputing final estimates
+Some of the colony-forming units may have resulted from more than one bacterial
+cell (e.g., a clump of bacteria) being plated at that spot on the plate.
+
+This technique tends to be more suitable for estimating the relative size of 
+bacterial loads, for example, to compare across several samples, rather than 
+the absolute bacterial load in a sample. 
+
+## Final output
+
+This protocol describes the pre-processing of data collected through a serial
+dilution viable plate count for each sample from our experiment. Our input
+was the CFUs counted for each plate at each of four dilution levels. Our output
+is an estimate of the bacterial load in the spleen from each sample in the 
+experiment. 
+
+Our final data includes a row for each of the samples in the experiment---in
+this case, each sample represents one animal, and there were several [two or
+more?] animals (replicates) for each of [x] experimental groups. For each 
+sample, our final data provides a single CFU estimate, representing our 
+best estimate of the bacterial load in the whole spleen of that animal. 
+
 
 ## References
