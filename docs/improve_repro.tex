@@ -1511,7 +1511,7 @@ visualize the data, and to integrate the data with other datasets, using a
 series of open-source tools on the R platform called the ``tidyverse''. These
 characteristics mean that, if you are planning to use a standardized data format
 for recording experimental data in your research group, you may want to consider
-creating on that adheres to the ``tidy data'' rules.
+creating one that adheres to the ``tidy data'' rules.
 
 We'll start by describing what rules a dataset's format must follow for it to be
 ``tidy'', and try to clarify how you can set up your data recording to follow
@@ -1570,7 +1570,12 @@ There are some additional criteria for the ``tidy'' data format, though, and so
 not every structured, tabular dataset is in a ``tidy'' format. The first of these
 rules are that each row of a ``tidy'' dataset records the values for a single
 observation, and that each column provides characteristics or measurements of a
-certain type, in the order of the observations given by the rows \citep{wickham2014tidy}.
+certain type, in the order of the observations given by the rows
+\citep{wickham2014tidy}. For example, if you have collected data from several
+experimental samples and plated each sample at several dilutions to count
+viable bacteria, then you could record the results using one row per
+dilution---specifying each dilution for each sample as your level of
+observation for the data---to save the data in a tidy format.
 
 \begin{quote}
 ``Most statistical datasets are rectangular tables made up of rows and columns
@@ -1580,13 +1585,16 @@ almost every way imaginable.'' \citep{wickham2014tidy}
 \end{quote}
 
 To be able to decide if your data is tidy, then, you need to know what forms a
-single observation in data you're collecting. The \emph{unit of observation} of a
+single observation in the data you're collecting. The \emph{unit of observation} of a
 dataset is the unit at which you take measurements \citep{sedgwick2014unit}. This
 idea is different than the \emph{unit of analysis}, which is the unit that you're
 focusing on in your study hypotheses and conclusions (this is sometimes also
 called the ``sampling unit'' or ``unit of investigation'') \citep{altman1997units}. In
 some cases, these two might be equivalent (the same unit is both the unit of
-observation and the unit of measurement), but often they are not \citep{sedgwick2014unit}.
+observation and the unit of measurement), but often they are not \citep{sedgwick2014unit}. Again, in the example of plating samples at several
+dilutions each, the unit of observation for the resulting data might be
+at the level of each dilution for each sample, where the unit of analysis
+that you are ultimately interested in is simply each sample.
 
 \begin{quote}
 ``The unit of observation and unit of analysis are often confused.
@@ -1597,8 +1605,8 @@ is defined statistically as the `who' or `what' for which
 information is analysed and conclusions are made.'' \citep{sedgwick2014unit}
 \end{quote}
 
-For example, say you are testing how the immune system of mice responds to a
-certain drug over time. You may have several replicates of mice measured at
+As another example, say you are testing how the immune system of mice responds
+to a certain drug over time. You may have several replicates of mice measured at
 several time points, and those mice might be in separate groups (for example,
 infected with a disease versus uninfected). In this case, if a separate mouse
 (replicate) is used to collect each observation, and a mouse is never measured
@@ -1610,12 +1618,12 @@ point, whether the mouse was infected, and a unique mouse identifier) and,
 second, the results of that measurement (e.g., the weight of the mouse when it
 was sacrificed, the levels of different immune cell populations in the mouse, a
 measure of the extent of infection in the mouse if it was infected, and perhaps
-some notes about anything of note for the mouse, like if it appeared noticably
+some notes about anything of note for the mouse, like if it appeared noticeably
 sick). In this case, the \emph{unit of analysis} might be the drug, or a combination
-of drug and dose---ultimately, you may want to test something like if one
-drug is more effective than another. However, the \emph{unit of observation}, the
-level at which each data point is collected, is the mouse, with each mouse
-providing a single observation to help answer the larger research question.
+of drug and dose---ultimately, you may want to test something like if one drug
+is more effective than another. However, the \emph{unit of observation}, the level at
+which each data point is collected, is the mouse, with each mouse providing a
+single observation to help answer the larger research question.
 
 As another example, say you conducted a trial on human subjects, to see how the
 use of a certain treatment affects the speed of recovery, where each study
@@ -10983,6 +10991,19 @@ experiment when you run later experiments that are similar.
 \hypertarget{from-pre-processing-scripts-to-pre-processing-protocols}{%
 \section{From pre-processing scripts to pre-processing protocols}\label{from-pre-processing-scripts-to-pre-processing-protocols}}
 
+In the previous subsection, we mentioned that you can move a step beyond scripts
+when pre-processing, and instead create a pre-processing protocol that includes
+formatted text and executable code. This type of protocol can be easily created
+using R, and it can serve as a reference for your laboratory group both of what
+you did to pre-process data for the current experiment, but also as a starting
+point for how to do similar analyses in the future. In module 3.9, we will walk
+in detail through an example of this type of pre-processing protocol---you can
+take a look now to get an idea by downloading the example
+\href{https://github.com/geanders/improve_repro/raw/master/data/bactcountr_example_data/example_protocol.pdf}{here}.
+
+This protocol includes all the code that was used for pre-processing, but it
+isn't as limited as a simple code script with comments. Instead,
+
 If you have used open-source software tools, like Bioconductor packages, you
 are likely familiar with the \emph{vignettes} that come with the packages. These
 provide tutorial guides showing you how to work with the package. They often
@@ -12795,25 +12816,6 @@ scientists and easy to explain to anyone who has not used plating experimental
 work. However, the same general process can also be used to create
 pre-processing protocols for data that are much larger or more complex or for
 pre-processing pipelines that are much more involved.
-
-\begin{quote}
-``Quantitative estimation of the number of viable microorganisms in
-bacteriological samples has been a mainstay of the microbiological laboratory
-for more than one-hundred years, since Koch first described the technique (Koch,
-1883). Serial dilution techniques are routinely used in hospitals, public
-health, virology, immunology, microbiology, pharmaceutical industry, and food
-protection (American Public Health Association, 2005, Hollinger, 1993, Taswell,
-1984, Lin and Stephenson, 1998) for microorganisms that can grow on
-bacteriological media and develop into colonies.'' \citep{ben2014estimation}
-\end{quote}
-
-\begin{quote}
-``The objective of the serial dilution method is to estimate the concentration
-(number of colonies, organisms, bacteria, or viruses) of an unknown sample by
-counting the number of colonies cultured from serial dilutions of the sample,
-and then back track the measured counts to the unknown concentration.''
-\citep{ben2014estimation}
-\end{quote}
 
 \hypertarget{advice-on-designing-a-pre-processing-protocol}{%
 \subsection{Advice on designing a pre-processing protocol}\label{advice-on-designing-a-pre-processing-protocol}}
