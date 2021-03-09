@@ -1,6 +1,5 @@
 ---
 title: "Protocol: Estimating bacterial loads from plating samples at different dilutions"
-date: "3/1/2021"
 output: pdf_document
 bibliography: ../../book.bib
 ---
@@ -770,19 +769,29 @@ volume_plated <- 100        # in microliters
 prop_organ_in_sample <- 0.5 # Half the spleen was included in the sample
 ```
 
-First, we can calculate the actual dilution for each sample by taking the 
-dilution factor and raising it to the power of the dilution level. For example, 
-the dilution at level 2 should be $0.5^2 = 0.25$, while the dilution at level 0
-(undiluted) should be $0.5^0 = 1$). 
+First, we can calculate the actual dilution for each test tube used in the
+dilutions by taking the dilution factor (`dilution_factor`) and raising it to
+the power of the dilution level (`dilution`). For example, the dilution at level
+2 should be $0.5^2 = 0.25$, while the dilution at level 0 (undiluted) should be
+$0.5^0 = 1$).
 
 ```{r}
 cfu_data_reduced <- cfu_data_reduced %>% 
-  mutate(dilution_value = dilution_factor^dilution)
+  mutate(dilution_in_tube = dilution_factor^dilution)
 
 cfu_data_reduced
 ```
 
-[bacterial load per mL]
+Next, we can determine the dilution on each of the *plates* by combining
+information about the dilution in the test tube used for that plate and the 
+volume taken from that test tube for plating: 
+
+```{r}
+cfu_data_reduced <- cfu_data_reduced %>% 
+  mutate(dilution_on_plate = dilution_in_tube / (volume_plated / 1000))
+
+cfu_data_reduced
+```
 
 Next, we calculated the bacterial load in the original sample. To do this, we
 multiplied the dilution value, calculated in the previous step, by the CFU count
@@ -794,8 +803,7 @@ microliters, respectively):
 ```{r}
 cfu_data_reduced <- cfu_data_reduced %>% 
   mutate(bact_load_in_sample = CFUs * 
-           dilution_value * volume_resuspend * 1000 / 
-           volume_plated)
+           dilution_on_plate * volume_resuspend)
 cfu_data_reduced
 ```
 
