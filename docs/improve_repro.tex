@@ -12742,12 +12742,15 @@ data preprocessing that you do repeatedly for research data in your
 laboratory.
 
 In this module, we will use an example of a common pre-processing task in
-immunological research: estimating the bacterial load in samples by plating
-at different dilutions, identifying a good dilution for counting colony-forming
+immunological research: estimating the bacterial load in samples by plating at
+different dilutions, identifying a good dilution for counting colony-forming
 units (CFUs), and then back-calculating the estimated bacterial load in the
-original sample based on the colonies counted at this dilution. These data
-are originally from example data for an R package called \texttt{bactcountr},
-currently under development at \url{https://github.com/aef1004/bactcountr/tree/master/data}.
+original sample based on the colonies counted at this dilution. This
+experimental technique dates back to the late 1800s, with Koch, and continues to
+be widely used in microbiology research and applications today
+\citep{ben2014estimation}. These data are originally from example data for an R
+package called \texttt{bactcountr}, currently under development at
+\url{https://github.com/aef1004/bactcountr/tree/master/data}.
 
 These data represent data from a common laboratory task in immunological
 research: estimating the bacterial load in samples by plating each sample at
@@ -12758,48 +12761,34 @@ limiting bacterial load. You run an experiment and have samples from animals
 treated with different drugs or under control. You want to know: How much viable
 (i.e., replicating) bacteria are in each of your samples?
 
-You can find out by \textbf{plating} the sample at different \textbf{dilutions} and
-counting the \textbf{colony-forming units (CFUs)} that are cultured on each plate.
+You can find out by plating the sample at different dilutions and
+counting the colony-forming units (CFUs) that are cultured on each plate.
 You put a sample on a plate with a medium they can grow on and then give them
 time to grow. The idea is that individual bacteria from the original sample end
 up randomly around the surface of the plate, and any that are viable (able to
 reproduce) will form a new colony that, after a while, you'll be able to see.
 
-To count the number of colonies, you need \textbf{a ``just right'' dilution} (likely
-won't know what this is until after plating) to have a \textbf{countable plate}. If
-you have \textbf{too high} of a dilution (i.e., one with very few viable bacteria),
-randomness will play a big role in the CFU count, and you'll estimate the
-original with more variability. If you have \textbf{too low} of a dilution (i.e., one
-with lots of viable bacteria), it will be difficult to identify separate
-colonies, and they may complete for resources. (The pattern you see when the
-dilution is too low (i.e., too concentrated with bacteria) is called a
-\emph{lawn}---colonies merge together). To translate from diluted concentration to
-original concentration, you can then do a back-calculation, incorporating both
-the number of colonies counted at that dilution and how dilute the sample was.
+To count the number of colonies, you need a ``just right'' dilution (and you
+typically won't know which dilution this is for a sample until after plating) to
+have a countable plate. If you have too high of a dilution (i.e., one with very
+few viable bacteria), randomness will play a big role in the CFU count, and
+you'll estimate the original with more variability. If you have too low of a
+dilution (i.e., one with lots of viable bacteria), it will be difficult to
+identify separate colonies, and they may complete for resources. To translate
+from diluted concentration to original concentration, you can then do a
+back-calculation, incorporating both the number of colonies counted at that
+dilution and how dilute the sample was. There is therefore some pre-processing
+required (although it is fairly simple) to prepare the data collected by
+counting the CFUs on each plate for use in statistical testings and to
+combine with other experimental data.
 
-The example data are available as a csv file, downloadable \href{https://raw.githubusercontent.com/geanders/improve_repro/master/data/bactcountr_example_data/cfu_data.csv}{here}.
+We will use this example pre-processing protocol as an illustration in this
+module. If you would like, you can access all the components and follow along
+with the example, re-rendering it yourself on your own computer. The example
+data are available as a csv file, downloadable
+\href{https://raw.githubusercontent.com/geanders/improve_repro/master/data/bactcountr_example_data/cfu_data.csv}{here}.
 You can open this file using spreadsheet software, or look at it directly in
-RStudio. Here are what the first few rows look like:
-
-\begin{verbatim}
-## # A tibble: 6 x 4
-##   group replicate dilution  CFUs
-##   <dbl> <chr>        <dbl> <dbl>
-## 1     2 2-A              0    26
-## 2     2 2-C              0     0
-## 3     3 3-A              0     0
-## 4     3 3-C              0     0
-## 5     4 4-A              0     0
-## 6     4 4-B              0     0
-\end{verbatim}
-
-The data are already in a ``tidy'' data format, as described in module 2.3. Each
-row represents the number of bacterial colonies counted after plating a certain
-sample at a certain dilution. Columns are included with values for the
-experimental group of the sample (\texttt{group}), the specific ID of the sample within
-that experimental group (\texttt{replicate}, e.g., \texttt{2-A} is mouse A in experimental
-group 2), the dilution level for that plating (\texttt{dilution}), and the number of
-bacterial colonies counted in that sample (\texttt{CFUs}).
+RStudio.
 
 The final pre-processing protocol for these data can be downloaded, including
 both \href{https://raw.githubusercontent.com/geanders/improve_repro/master/data/bactcountr_example_data/example_protocol.Rmd}{the original RMarkdown
@@ -12821,35 +12810,69 @@ pre-processing pipelines that are much more involved.
 \subsection{Advice on designing a pre-processing protocol}\label{advice-on-designing-a-pre-processing-protocol}}
 
 Before you write your protocol in a knitted document, you should decide on the
-content to include in the protocol. For example, for the plating data we are
-using for our example, the key tasks to be included in the pre-processing
-protocol are:
+content to include in the protocol.
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Read the data into R
-\item
-  Identify a ``good'' dilution for each sample---the highest dilution at which CFUs
-  can be correctly counted
-\item
-  Estimate the bacterial load in each original sample based on the CFUs counted
-  at a ``good'' dilution for the sample
-\item
-  Output data with the estimated bacterial load for each
-\end{enumerate}
+\textbf{Defining input and output data for the protocol.}
 
-The first thing to decide on are what the starting point will be for the
-protocol (the data input) and what will be the ending point (the data output).
-It may make sense to design a separate protocol for each major type of
-data that you collect in your research laboratory. Your input data for the
-protocol, under this design, might be the data that is output from a
-specific type of equipment (e.g., flow cytometer) or from a certain
-type of sample or measurement (e.g., metabolomics run on a mass spectrometer),
-even if it is a fairly simple type of data (e.g., CFUs from plating data).
-For the data output, it often makes sense to plan for data in a format
-that is appropriate for data analysis and for merging with other types of
+The first step in designing the data pre-processing protocol is to decide on what
+the starting point will be for the protocol (the data input) and what will be
+the ending point (the data output). It may make sense to design a separate
+protocol for each major type of data that you collect in your research
+laboratory.
+
+Your input data for the protocol, under this design, might be the
+data that is output from a specific type of equipment (e.g., flow cytometer) or
+from a certain type of sample or measurement (e.g., metabolomics run on a mass
+spectrometer), even if it is a fairly simple type of data (e.g., CFUs from
+plating data, as used in the example protocol for this module). Once you
+have identified the input data type to use for the protocol, you should
+identify an example dataset from your laboratory that you can use to create
+the protocol. This could be a dataset that you currently need to pre-process,
+in which case the development of the protocol will serve a second purpose
+as allowing you to complete this task at the same time. However, you may not
+have a new set of data of this type that you need to pre-process, and in this
+case you can build your protocol using a dataset from a previous
+experiment in your laboratory. In this case, you may already have a record
+of the steps that you used to pre-process the data previously, and these
+can be helpful as a starting point as you draft the more thorough pre-processing
+protocol.
+
+For the example protocol for this module, we want to pre-process data that were
+collected ``by hand'' by counting CFUs on plates in the laboratory. These counts
+were recorded in a plain text delimited file (a csv file) using spreadsheet
+software. The spreadsheet was set up to ensure the data were recorded in a
+``tidy'' format, as described in module 2.3. The first few rows of the input data
+look like:
+
+\begin{verbatim}
+## # A tibble: 6 x 4
+##   group replicate dilution  CFUs
+##   <dbl> <chr>        <dbl> <dbl>
+## 1     2 2-A              0    26
+## 2     2 2-C              0     0
+## 3     3 3-A              0     0
+## 4     3 3-C              0     0
+## 5     4 4-A              0     0
+## 6     4 4-B              0     0
+\end{verbatim}
+
+Each row represents the number of bacterial colonies counted after plating a
+certain sample at a certain dilution. Columns are included with values for the
+experimental group of the sample (\texttt{group}), the specific ID of the sample within
+that experimental group (\texttt{replicate}, e.g., \texttt{2-A} is mouse A in experimental
+group 2), the dilution level for that plating (\texttt{dilution}), and the number of
+bacterial colonies counted in that sample (\texttt{CFUs}).
+
+When you have identified the input data type you will use for the protocol,
+as well as selected an example dataset of this type to use to create the
+protocol, you can include a subsection in the ``Overview'' section of the protocol
+that describes these input data, what file format they are in, and how they
+can be read into R for pre-processing.
+
+\ldots{}
+
+For the data output, it often makes sense to plan for data in a
+format that is appropriate for data analysis and for merging with other types of
 data collected from the experiment.
 
 For example, say you are working with data from a flow cytometer, metabolomics
@@ -12887,6 +12910,44 @@ preprocess the data, to convert it from the format output by the laboratory
 equipment into a format that can be used for data analysis and to merge with
 other types of data from the experiment. {[}More on pre-processing steps for
 metabolomics data.{]}
+
+\textbf{Outlining key tasks in pre-processing the input data.}
+
+The next step is to outline the key tasks that are involved in moving from the
+data input to the desired data output. For example, for the plating data we are
+using for our example, the key tasks to be included in the pre-processing
+protocol are:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Read the data into R
+\item
+  Explore the data and perform some quality checks
+\item
+  Identify a ``good'' dilution for each sample---one at which you have a ``countable'' plate
+\item
+  Estimate the bacterial load in each original sample based on the CFUs counted
+  at the ``good'' dilution for the sample
+\item
+  Output data with the estimated bacterial load for each original sample
+\end{enumerate}
+
+Once you have this basic design, you can set up the pre-processing protocol to
+include a separate section for each task, as well as an ``Overview'' section at
+the beginning to describe the overall protocol, the data being pre-processed,
+and the laboratory procedures used to collect those data. In RMarkdown, you can
+create first-level section headers by putting the text for the header on its own
+line and beginning that line with \texttt{\#}, followed by a space. You should include a
+blank line before and after the line with this header text. Figure
+\ref{fig:protocolsections} shows how this is done in the example protocol for
+this module, showing how text in the plain text RMarkdown file for the protocol
+align with section headers in the final pdf output of the protocol.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{figures/protocol_sections} \caption[Dividing an RMarkdown data pre-processing protocol into sections]{Dividing an RMarkdown data pre-processing protocol into sections. This shows an example of creating section headers in a data pre-processing protocol created with RMarkdown, showing section headers in the example pre-procotcol for this module.}\label{fig:protocolsections}
+\end{figure*}
 
 {[}Splitting pre-processing into ``modules'' of processes that need to happen---for
 example, standardizing across samples, transforming data to satisfy distribution
@@ -12994,6 +13055,15 @@ higher-level (i.e., what a larger question is being asked) and also at a
 fine level, for each step in the process. {[}Analogy---cookbook that covers
 deeper principles for why each step in process is done. \emph{America's Test Kitchen}
 recipes versus back-of-the-package recipes.{]}
+
+When you write a protocol within RMarkdown, you can include references
+very easily. Figure \ref{fig:protocolreferences} shows an example of the
+elements you use to do this, showing each element in the example protocol for
+this module.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{figures/protocol_references} \caption[Including references in a data pre-processing protocol created with RMarkdown]{Including references in a data pre-processing protocol created with RMarkdown. RMarkdown has a built-in referencing system that you can use, based on the BibTeX system for LaTeX. This figure shows examples from the example protocol for this module of the elements used for referencing. You create a BibTeX file with information about each reference, and then use the key for the reference within the text to cite that reference. All cited references will be printed at the end of the document; you can chose the header that you want for this reference section in the RMarkdown file ('References' in this example). In the YAML of the RMarkdown file, you specify the path to the BibTeX file (with the 'bibliography: ' key), so it can be linked in when the RMarkdown file is rendered.}\label{fig:protocolreferences}
+\end{figure*}
 
 The process of writing a protocol forces you to think about each step in the
 process, why you do it a certain way (include parameters you choose for

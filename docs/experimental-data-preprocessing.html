@@ -6843,12 +6843,15 @@ in the last two modules, to help you put them into practical use for
 data preprocessing that you do repeatedly for research data in your
 laboratory.</p>
 <p>In this module, we will use an example of a common pre-processing task in
-immunological research: estimating the bacterial load in samples by plating
-at different dilutions, identifying a good dilution for counting colony-forming
+immunological research: estimating the bacterial load in samples by plating at
+different dilutions, identifying a good dilution for counting colony-forming
 units (CFUs), and then back-calculating the estimated bacterial load in the
-original sample based on the colonies counted at this dilution. These data
-are originally from example data for an R package called <code>bactcountr</code>,
-currently under development at <a href="https://github.com/aef1004/bactcountr/tree/master/data" class="uri">https://github.com/aef1004/bactcountr/tree/master/data</a>.</p>
+original sample based on the colonies counted at this dilution. This
+experimental technique dates back to the late 1800s, with Koch, and continues to
+be widely used in microbiology research and applications today
+<span class="citation">(Ben-David and Davidson 2014)</span>. These data are originally from example data for an R
+package called <code>bactcountr</code>, currently under development at
+<a href="https://github.com/aef1004/bactcountr/tree/master/data" class="uri">https://github.com/aef1004/bactcountr/tree/master/data</a>.</p>
 <p>These data represent data from a common laboratory task in immunological
 research: estimating the bacterial load in samples by plating each sample at
 different dilutions and counting colony-forming units at a “good” dilution for
@@ -6857,42 +6860,32 @@ infectious bacteria and want to know how successful different drugs are in
 limiting bacterial load. You run an experiment and have samples from animals
 treated with different drugs or under control. You want to know: How much viable
 (i.e., replicating) bacteria are in each of your samples?</p>
-<p>You can find out by <strong>plating</strong> the sample at different <strong>dilutions</strong> and
-counting the <strong>colony-forming units (CFUs)</strong> that are cultured on each plate.
+<p>You can find out by plating the sample at different dilutions and
+counting the colony-forming units (CFUs) that are cultured on each plate.
 You put a sample on a plate with a medium they can grow on and then give them
 time to grow. The idea is that individual bacteria from the original sample end
 up randomly around the surface of the plate, and any that are viable (able to
 reproduce) will form a new colony that, after a while, you’ll be able to see.</p>
-<p>To count the number of colonies, you need <strong>a “just right” dilution</strong> (likely
-won’t know what this is until after plating) to have a <strong>countable plate</strong>. If
-you have <strong>too high</strong> of a dilution (i.e., one with very few viable bacteria),
-randomness will play a big role in the CFU count, and you’ll estimate the
-original with more variability. If you have <strong>too low</strong> of a dilution (i.e., one
-with lots of viable bacteria), it will be difficult to identify separate
-colonies, and they may complete for resources. (The pattern you see when the
-dilution is too low (i.e., too concentrated with bacteria) is called a
-<em>lawn</em>—colonies merge together). To translate from diluted concentration to
-original concentration, you can then do a back-calculation, incorporating both
-the number of colonies counted at that dilution and how dilute the sample was.</p>
-<p>The example data are available as a csv file, downloadable <a href="https://raw.githubusercontent.com/geanders/improve_repro/master/data/bactcountr_example_data/cfu_data.csv">here</a>.
+<p>To count the number of colonies, you need a “just right” dilution (and you
+typically won’t know which dilution this is for a sample until after plating) to
+have a countable plate. If you have too high of a dilution (i.e., one with very
+few viable bacteria), randomness will play a big role in the CFU count, and
+you’ll estimate the original with more variability. If you have too low of a
+dilution (i.e., one with lots of viable bacteria), it will be difficult to
+identify separate colonies, and they may complete for resources. To translate
+from diluted concentration to original concentration, you can then do a
+back-calculation, incorporating both the number of colonies counted at that
+dilution and how dilute the sample was. There is therefore some pre-processing
+required (although it is fairly simple) to prepare the data collected by
+counting the CFUs on each plate for use in statistical testings and to
+combine with other experimental data.</p>
+<p>We will use this example pre-processing protocol as an illustration in this
+module. If you would like, you can access all the components and follow along
+with the example, re-rendering it yourself on your own computer. The example
+data are available as a csv file, downloadable
+<a href="https://raw.githubusercontent.com/geanders/improve_repro/master/data/bactcountr_example_data/cfu_data.csv">here</a>.
 You can open this file using spreadsheet software, or look at it directly in
-RStudio. Here are what the first few rows look like:</p>
-<pre><code>## # A tibble: 6 x 4
-##   group replicate dilution  CFUs
-##   &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;
-## 1     2 2-A              0    26
-## 2     2 2-C              0     0
-## 3     3 3-A              0     0
-## 4     3 3-C              0     0
-## 5     4 4-A              0     0
-## 6     4 4-B              0     0</code></pre>
-<p>The data are already in a “tidy” data format, as described in module 2.3. Each
-row represents the number of bacterial colonies counted after plating a certain
-sample at a certain dilution. Columns are included with values for the
-experimental group of the sample (<code>group</code>), the specific ID of the sample within
-that experimental group (<code>replicate</code>, e.g., <code>2-A</code> is mouse A in experimental
-group 2), the dilution level for that plating (<code>dilution</code>), and the number of
-bacterial colonies counted in that sample (<code>CFUs</code>).</p>
+RStudio.</p>
 <p>The final pre-processing protocol for these data can be downloaded, including
 both <a href="https://raw.githubusercontent.com/geanders/improve_repro/master/data/bactcountr_example_data/example_protocol.Rmd">the original RMarkdown
 file</a>
@@ -6907,6 +6900,408 @@ scientists and easy to explain to anyone who has not used plating experimental
 work. However, the same general process can also be used to create
 pre-processing protocols for data that are much larger or more complex or for
 pre-processing pipelines that are much more involved.</p>
+</div>
+<div id="advice-on-designing-a-pre-processing-protocol" class="section level3" number="3.11.2">
+<h3><span class="header-section-number">3.11.2</span> Advice on designing a pre-processing protocol</h3>
+<p>Before you write your protocol in a knitted document, you should decide on the
+content to include in the protocol.</p>
+<p><strong>Defining input and output data for the protocol.</strong></p>
+<p>The first step in designing the data pre-processing protocol is to decide on what
+the starting point will be for the protocol (the data input) and what will be
+the ending point (the data output). It may make sense to design a separate
+protocol for each major type of data that you collect in your research
+laboratory.</p>
+<p>Your input data for the protocol, under this design, might be the
+data that is output from a specific type of equipment (e.g., flow cytometer) or
+from a certain type of sample or measurement (e.g., metabolomics run on a mass
+spectrometer), even if it is a fairly simple type of data (e.g., CFUs from
+plating data, as used in the example protocol for this module). Once you
+have identified the input data type to use for the protocol, you should
+identify an example dataset from your laboratory that you can use to create
+the protocol. This could be a dataset that you currently need to pre-process,
+in which case the development of the protocol will serve a second purpose
+as allowing you to complete this task at the same time. However, you may not
+have a new set of data of this type that you need to pre-process, and in this
+case you can build your protocol using a dataset from a previous
+experiment in your laboratory. In this case, you may already have a record
+of the steps that you used to pre-process the data previously, and these
+can be helpful as a starting point as you draft the more thorough pre-processing
+protocol.</p>
+<p>For the example protocol for this module, we want to pre-process data that were
+collected “by hand” by counting CFUs on plates in the laboratory. These counts
+were recorded in a plain text delimited file (a csv file) using spreadsheet
+software. The spreadsheet was set up to ensure the data were recorded in a
+“tidy” format, as described in module 2.3. The first few rows of the input data
+look like:</p>
+<pre><code>## # A tibble: 6 x 4
+##   group replicate dilution  CFUs
+##   &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;
+## 1     2 2-A              0    26
+## 2     2 2-C              0     0
+## 3     3 3-A              0     0
+## 4     3 3-C              0     0
+## 5     4 4-A              0     0
+## 6     4 4-B              0     0</code></pre>
+<p>Each row represents the number of bacterial colonies counted after plating a
+certain sample at a certain dilution. Columns are included with values for the
+experimental group of the sample (<code>group</code>), the specific ID of the sample within
+that experimental group (<code>replicate</code>, e.g., <code>2-A</code> is mouse A in experimental
+group 2), the dilution level for that plating (<code>dilution</code>), and the number of
+bacterial colonies counted in that sample (<code>CFUs</code>).</p>
+<p>When you have identified the input data type you will use for the protocol,
+as well as selected an example dataset of this type to use to create the
+protocol, you can include a subsection in the “Overview” section of the protocol
+that describes these input data, what file format they are in, and how they
+can be read into R for pre-processing.</p>
+<p>…</p>
+<p>For the data output, it often makes sense to plan for data in a
+format that is appropriate for data analysis and for merging with other types of
+data collected from the experiment.</p>
+<p>For example, say you are working with data from a flow cytometer, metabolomics
+data measuremd with a mass spectrometer, and bacterial load data measured by
+plating data and counting colony forming units (CFUs). In this case, you may
+want to create three pre-processing protocols: one for the flow data, one for
+the metabolomics data, and one for the CFU data.</p>
+<p>The pre-processing protocol may be very simple for the CFU data. This protocol
+would input data collected in a plain-text delimited file (a csv file, for
+example). Within the protocol, there would be steps to convert initial
+measurements from plating at different dilutions into estimates of the bacterial
+load in each original sample. There may also be sections in the protocol for
+exploratory data analysis, to allow for quality assessment and control of the
+collected data as part of the preprocessing. The output would be a simple data
+object (a dataframe, for example) with the bacterial load for each sample. This
+data could then be used in tables and figures in the research report or
+manuscript, as well as merged with other data from each experimental animal to
+explore associations with the experimental design details (e.g., comparing
+bacterial load in treated versus untreated animals) or with other types of data
+(e.g., comparing immune cell populations, as measured with flow cytometry data,
+with bacterial loads, as measured from plating and counting CFUs).</p>
+<p>The preprocessing protocols would be more extensive for the flow cytometry and
+metabolomics data. For example, the flow cytometry data might need to be
+preprocessed through a number of steps. First, the raw data from the flow
+cytometer will need to be input to R. [Common file format for flow data? R
+packages to read in this data?]. Once the data is input, it will need to be
+gated, to [identify and count the immune cell populations that you’re interested
+in?]. [Tools for automated gating in R.] [Other pre-processing steps?
+Normalizations? Transformations? Others?]</p>
+<p>For the metabolomics data, there will similarly be an extensive set of steps to
+preprocess the data, to convert it from the format output by the laboratory
+equipment into a format that can be used for data analysis and to merge with
+other types of data from the experiment. [More on pre-processing steps for
+metabolomics data.]</p>
+<p><strong>Outlining key tasks in pre-processing the input data.</strong></p>
+<p>The next step is to outline the key tasks that are involved in moving from the
+data input to the desired data output. For example, for the plating data we are
+using for our example, the key tasks to be included in the pre-processing
+protocol are:</p>
+<ol style="list-style-type: decimal">
+<li>Read the data into R</li>
+<li>Explore the data and perform some quality checks</li>
+<li>Identify a “good” dilution for each sample—one at which you have a “countable” plate</li>
+<li>Estimate the bacterial load in each original sample based on the CFUs counted
+at the “good” dilution for the sample</li>
+<li>Output data with the estimated bacterial load for each original sample</li>
+</ol>
+<p>Once you have this basic design, you can set up the pre-processing protocol to
+include a separate section for each task, as well as an “Overview” section at
+the beginning to describe the overall protocol, the data being pre-processed,
+and the laboratory procedures used to collect those data. In RMarkdown, you can
+create first-level section headers by putting the text for the header on its own
+line and beginning that line with <code>#</code>, followed by a space. You should include a
+blank line before and after the line with this header text. Figure
+<a href="experimental-data-preprocessing.html#fig:protocolsections">3.10</a> shows how this is done in the example protocol for
+this module, showing how text in the plain text RMarkdown file for the protocol
+align with section headers in the final pdf output of the protocol.</p>
+<div class="figure"><span id="fig:protocolsections"></span>
+<img src="figures/protocol_sections.png" alt="Dividing an RMarkdown data pre-processing protocol into sections. This shows an example of creating section headers in a data pre-processing protocol created with RMarkdown, showing section headers in the example pre-procotcol for this module." width="\textwidth" />
+<p class="caption">
+Figure 3.10: Dividing an RMarkdown data pre-processing protocol into sections. This shows an example of creating section headers in a data pre-processing protocol created with RMarkdown, showing section headers in the example pre-procotcol for this module.
+</p>
+</div>
+<p>[Splitting pre-processing into “modules” of processes that need to happen—for
+example, standardizing across samples, transforming data to satisfy distribution
+requirements for statistical models / tests, removing extraneous data (dead
+cells in flow cytometry, for example), …]</p>
+<p>[For each module, consider the options you could take in pre-processing. For
+open-source software, like Bioconductor packages, these options are likely
+embedded either in your choice of functions (across a package), or even choice
+of packages in some cases, and then at a finer level through the parameters in a
+package. You can use vigettes and package manuals to identify the different
+functions you can choose and then use the helpfile for a function to determine
+all of its parameters and the choices you can select for each. In the protocol,
+show the code that you use to implement this choice and also explain clearly in
+the text why you made this choice and what alternatives should be considered if
+data characteristics are different. Write this as if you are explaining to a new
+research group member (or your future self) how to think about this step in the
+pre-processing, why you’re doing it the way your doing it, and what code is used
+to do it that way. You should also include references that justify choices when
+they are available—include these using BibTex. By doing this, you will make it
+much easier on yourself when you write the Methods section of papers that report
+on the data you have pre-processed, as you’ll already have draft information on
+your pre-processing methods in your protocol.]</p>
+<p>[Throughout, use an example dataset, preferably from your own research lab. You
+likely want to select one for project that you have already published or are
+getting ready to publish, so you won’t feel awkard about making the data
+available for people to practice with. You can include the data and the
+RMarkdown in its own RStudio Project and post this either publicly or privately
+on GitHub. This creates a “packet” of everything that a reader needs to use to
+recreate what you did—they can download the whole GitHub repository and will
+have a nice project directory on their computer with everything they need to try
+out the protocol. If you don’t have an example dataset from your own laboratory,
+you can explore example datasets that are already available, either as data
+included with existing R packages or through open repositories, included those
+hosted through national research institutions like the NIH. In this case, be
+sure to cite the source of the data and include any available information about
+the equipment that was used to collect it and the settings used when the data
+were collected.]</p>
+</div>
+<div id="writing-research-protocols" class="section level3" number="3.11.3">
+<h3><span class="header-section-number">3.11.3</span> Writing research protocols</h3>
+<p>There are some standards that are typically used when writing protocols for
+research. This is a common practice for task that are repeated in a laboratory,
+including [examples from wet lab].</p>
+<p>[Advantages of creating and using a protocol]</p>
+<p>Computation tasks, including data pre-processing, can also be standardized
+through the creation and use of a protocol.</p>
+<p>A protocol, in the sense we use it here, is essentially an annotated
+recipe for each step in preparing your data from the initial, “raw” state
+that is output from the laboratory equipment (or collected by hand) to a
+state that is useful for answering important research questions. The
+exact implementation of each step is given in code that can be re-used and
+adapted with new data of a similar format. However, the code script is
+often not enough to helpfully understand, share, and collaborate on the
+process. Instead, it’s critical to also include descriptions written
+by humans and for humans. These annotations can include descriptions of the
+code and how certain parameters are standardized the algorithms in the code.
+They can also be used to justify choices, and link them up both with
+characteristics of the data and equipment for your experiment as well as
+with scientific principles that underlie the choices. Protocols like this
+are critical to allow you to standardize the process you use across many
+samples from one experiment, across different experiments and projects in
+your research laboratory, and even across different research laboratories.</p>
+<p>[Links with Good Laboratory Practices (GLP), then link in with
+“Good Enough” computational practice, links with the idea of
+standard operating procedures]</p>
+<p>Clinical studies are organized and guided by a protocol prepared before the
+study:</p>
+<blockquote>
+<p>“Writing a research proposal is probably one of the most challenging and
+difficult task as research is a new area for the majority of postgraduates and
+new researchers.” <span class="citation">(Al-JunDi and SAkkA 2016)</span></p>
+</blockquote>
+<blockquote>
+<p>“Clinical research is conducted according to a plan (a protocol) or an action plan. The protocol demonstrates the guidelines for conducting the trial. It illustrates what will be made in the study by explaining each essential part of it and how it is carried out. It also describes the eligibility of the participants, the length of the study, the medications and the related tests.” <span class="citation">(Al-JunDi and SAkkA 2016)</span></p>
+</blockquote>
+<blockquote>
+<p>“Protocol writing allows the researcher to review and critically evaluate the published literature on the interested topic, plan and review the project steps and serves as a guide throughout the investigation.” <span class="citation">(Al-JunDi and SAkkA 2016)</span></p>
+</blockquote>
+<p>A protocol should include some background, the aims of the work, hypotheses
+to be tested, materials and methods, methods of data collection and
+equipment to analyze samples <span class="citation">(Al-JunDi and SAkkA 2016)</span> (This reference is discussing
+full protocols for a study, e.g., a clinicial trial, so includes more steps
+that just pre-processing.)</p>
+<p>One characteristic of a good protocol for a clinical study:</p>
+<blockquote>
+<p>“It should provide enough detail (methodology) that can allow another investigator to do the study and arrive at comparable conclusions.” <span class="citation">(Al-JunDi and SAkkA 2016)</span></p>
+</blockquote>
+<p>Good protocols include not only how, but also why. This includes both
+higher-level (i.e., what a larger question is being asked) and also at a
+fine level, for each step in the process. [Analogy—cookbook that covers
+deeper principles for why each step in process is done. <em>America’s Test Kitchen</em>
+recipes versus back-of-the-package recipes.]</p>
+<p>When you write a protocol within RMarkdown, you can include references
+very easily. Figure <a href="experimental-data-preprocessing.html#fig:protocolreferences">3.11</a> shows an example of the
+elements you use to do this, showing each element in the example protocol for
+this module.</p>
+<div class="figure"><span id="fig:protocolreferences"></span>
+<img src="figures/protocol_references.png" alt="Including references in a data pre-processing protocol created with RMarkdown. RMarkdown has a built-in referencing system that you can use, based on the BibTeX system for LaTeX. This figure shows examples from the example protocol for this module of the elements used for referencing. You create a BibTeX file with information about each reference, and then use the key for the reference within the text to cite that reference. All cited references will be printed at the end of the document; you can chose the header that you want for this reference section in the RMarkdown file ('References' in this example). In the YAML of the RMarkdown file, you specify the path to the BibTeX file (with the 'bibliography: ' key), so it can be linked in when the RMarkdown file is rendered." width="\textwidth" />
+<p class="caption">
+Figure 3.11: Including references in a data pre-processing protocol created with RMarkdown. RMarkdown has a built-in referencing system that you can use, based on the BibTeX system for LaTeX. This figure shows examples from the example protocol for this module of the elements used for referencing. You create a BibTeX file with information about each reference, and then use the key for the reference within the text to cite that reference. All cited references will be printed at the end of the document; you can chose the header that you want for this reference section in the RMarkdown file (‘References’ in this example). In the YAML of the RMarkdown file, you specify the path to the BibTeX file (with the ‘bibliography:’ key), so it can be linked in when the RMarkdown file is rendered.
+</p>
+</div>
+<p>The process of writing a protocol forces you to think about each step in the
+process, why you do it a certain way (include parameters you choose for
+certain functions in a pipeline of code), and include justifications from
+the literature for this reasoning. If done well, it should allow you to
+quickly and thoroughly write the associated sections of Methods in research
+reports and manuscripts and help you answer questions and challenges from
+reviewers.</p>
+<p>Writing this will also help you identify steps for which you are uncertain
+how to proceed and what choices to make in customizing an analysis for your
+research data. These are areas where you can search more deeply in the
+literature to understand implications of certain choices and, if needed,
+contact the researchers who developed and maintained associated software
+packages to get advice.</p>
+<blockquote>
+<p>“Due to the slow growth rate and pathogenicity of mycobacteria, enumeration by
+traditional reference methods like colony counting is notoriously
+time-consuming, inconvenient and biohazardous.” <span class="citation">(Pathak et al. 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“Traditionally, quantification of mycobacteria is done by seeding serial
+dilutions of bacterial suspensions on suitable media such as Middlebrook 7H10
+agar or Lowenstein Jensen followed by counting colony-forming units (CFU).
+However, this method is hampered by the long generation time and the tendency of
+mycobacteria to aggregate, resulting in multiple founders of a single colony and
+an underestimation of the correct number of bacteria. Typically, the time
+required for visible colonies to appear on 7H10 agar is 2–3 weeks for M.
+tuberculosis and M. a. avium, while it takes about 4–8 weeks for M. a.
+paratuberculosis. In addition, plating enough dilutions to make sure the results
+can be reliably counted is a tedious task that gives piles of plates with
+biohazardous bacteria. A further disadvantage of the colony counting method is
+that it cannot be reliably conducted on frozen samples, which may be both more
+practical and desirable in several research settings.” <span class="citation">(Pathak et al. 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“Mycobacterium tuberculosis culture, a critical technique for routine diagnosis of tuberculosis, takes more than two weeks.” <span class="citation">(Ghodbane, Raoult, and Drancourt 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“A major problem when dealing with tuberculosis has been a difficulty in
+diagnosis due to slow growth of mycobacterial cultures, which subsequently
+explains the slow process of evaluating the susceptibility of this microorganism
+to antibiotics. Using current tools, a primary culture is obtained in two to
+four weeks on average and antibiotic susceptibility is determined after an
+additional two to four weeks. Therefore, four to eight weeks are needed to
+obtain an isolate and determine its susceptibility to antibiotics.”
+<span class="citation">(Ghodbane, Raoult, and Drancourt 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“Quantification of viable bacteria is a crucial foundation for many types of
+research. This seemingly simple task can be challenging, expensive, and
+imprecise for Mycobacterium paratuberculosis, a slowly growing organism (&gt;24-h
+generation time) with a strong tendency to form large clumps. Studies of
+environmental survival, resistance to pasteurization or disinfectants, and
+quantification of the pathogen in milk and feces from infected animals are just
+a few examples that require precise and sensitive quantification of viable M.
+paratuberculosis cells.” <span class="citation">(Shin et al. 2007)</span></p>
+</blockquote>
+<blockquote>
+<p>“The main challenge in serial dilution experiments is the estimation of the
+undiluted microorganisms counts <span class="math inline">\(n_0\)</span> from the measured <span class="math inline">\(\hat{n_j}\)</span>. There are
+two competing processes (Tomasiewicz et al., 1980) that affect the accuracy of
+the estimation: sampling errors and counting errors. Sampling errors are caused
+by the statistical fluctuations of the population. For example, when sampling an
+average of 100 colonies, the fluctuations in the number of the population are
+expected to be <span class="math inline">\(\pm \sqrt{100}\)</span> when the sampling process is governed by a
+Poisson probability (Poisson and Binomial distributions are often used in
+statistical analysis to describe the dilution process (Hedges, 2002, Myers et
+al., 1994)) where the standard deviation equals square-root of the mean; the
+relative error (ratio of the standard deviation to the mean) is <span class="math inline">\(\sqrt{100} / 100 = 0.1\)</span>. Thus, the larger the sample size is, the smaller the relative
+sampling error; hence, one would like to use a dilution plate with the largest
+number (i.e., the least diluted sample, <span class="math inline">\(j \rightarrow 1\)</span>). However, as the
+number of colonies increases, counting error is introduced due to the high
+probability of two (or more) colonies to merge (due to overcrowding) and become
+indistinguishable, and be erroneously counted as one colony. An optimum (a
+‘sweet spot’) between these two processes (sampling and counting error) needs to
+be found for using the optimal dilution (i.e., the optimal jth plate) with
+which to estimate <span class="math inline">\(n_0\)</span>. Cells can grow into colonies in various ways. Wilson
+(1922) states that when two cells are placed very close together only one cell
+will develop, and when two cells are situated at a distance from each other both
+cells may grow and then fuse into one colony. Either way, the end result is the
+appearance of one colony which causes counting error.” <span class="citation">(Ben-David and Davidson 2014)</span></p>
+</blockquote>
+<p>For open-source software, resources to consult extend beyond the traditional
+one. You can often find information on open-source software, including the
+algorithms and principles that underlie the software, through peer-reviewed
+publications in the scientific literature. However, you can also find
+details—and often more thorough details—in <em>vignettes</em> that are published in
+conjunction with the package. [More on vignettes and where to find them.]
+Further, software is often presented at conferences and workshops, including the
+yearly BioC [?] conference for the Bioconductor community. These talks and
+workshops are sometimes available after the event as online recordings [some
+examples of these]. You can consult books, as well, although these often
+quickly become outdated for software that is rapidly evolving; an exception
+is online books, which are becoming very popular to create through R’s
+<code>bookdown</code> package and can be rapidly updates. Many of these books are
+available through [bookdown’s gallery page].</p>
+<p>An added advantage of data pre-processing protocols, created with knitted
+documents, is that you can include steps and code for data quality
+assessment. [More on exploratory data analysis] [Examples of how
+exploratory data analysis could help when pre-processing biomedical
+data—for example, identify outliers that might indicate equipment
+was malfunctioning?]</p>
+<p>Be sure that, in each step of your pre-processing protocol, you explain
+<em>why</em> you are taking a certain step. For example, if you have a step
+that aligns peaks across samples in metabolomics data [?], be sure to
+explain that … [why it’s important to do this]. Include references to
+the literature that justify this explanation; these references also
+serve as further literature that someone else could read to understand
+the step. This <em>why</em> is important even if the step is obvious to you—it
+will allow you to pass along the task to others in your research group
+without the new person needing to blindly trust each step.</p>
+<p>It is particularly important to clearly explain what you are doing in
+each step and how you are implementing your choices through code. Yes,
+the code itself allows someone else to replicate what you did. However,
+only those who are very, very familiar with the software program, including
+any of the extension packages you include, can “read” the code directly
+to understand what it’s doing. Further, even if you understand the code
+very well when you create it, it is unlikely that you will stay at that
+same level of comprehension in the future, as other tasks and challenges
+take over that brain space. Explaining for humans, in text that augments
+and accompanies the code, is also important because function names and
+parameter names in code often are not easy to decipher. While excellent
+programmers can sometimes create functions with clear and transparent
+names, easy to translate to determine the task each is doing, this is
+difficult in software development and is rare in practice. Human annotations,
+written by and for humans, are critical to ensure that the steps will
+be clear to you and others in the future when you revisit what was
+done with this data and what you plan to do with future data.</p>
+<p>You can begin to create this pre-processing protocol before you collect
+any of your own research data. Example datasets exist online, and you
+can often find an example that aligns with the type of data you will
+be collecting and the format you will be collecting it in. [Places where
+you could get this data—repositories, R package example datasets.]
+[Characteristics that are important in your example dataset—same file
+format that you will get from your equipment, key characteristics, like
+number of experimental groups, like treatment categories and single vs
+multiple time points]</p>
+<p>If the format of the initial data is similar to the format you anticipate for
+your data, you can create the code and explanations for key steps in your
+pre-processing for that type of data. Often, you will be able to adapt the
+RMarkdown document to change it from inputting the example data to inputting
+your own experimental data with minimal complications, once your data
+comes in. By thinking through and researching data pre-processing options
+before the data is collected, you can save time in analyzing and presenting
+your project results once you’ve completed the experimental data
+collection for the project.</p>
+<p>Further, with an example dataset, you can get a good approximation of the
+format in which you will output data from the pre-processing steps.
+This will allow you to begin planning the analysis and visualization
+that you will use to combine the different types of data from your
+experiment and use it to investigate important research hypotheses.
+Again, if data follow standardized formats across steps in your process,
+it will often be easy to adapt the code in the protocol to input the new
+dataset that you created, without major changes to the code developed with
+the example dataset.</p>
+<p>For each step of the protocol, you can also include potential problems
+that might come up in specific instances of the data you get from
+future experiments. This can help you adapt the code in the protocol in
+thoughtful ways as you apply it in the future to new data collected
+for new studies and projects.</p>
+<blockquote>
+<p>“Given an unknown sample which contains <span class="math inline">\(n_0\)</span> colony forming units (CFUs), a
+series of <span class="math inline">\(J\)</span> dilutions are made sequentially each with a dilution factor
+<span class="math inline">\(\alpha\)</span>. From each of the J dilutions a fraction <span class="math inline">\(\alpha_p^{-1}\)</span> is taken and
+spread (plated) on an agar plate (assay) where colonies are counted. Thus, in
+general there are two dilution factors: <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\alpha_p\)</span>. For example,
+<span class="math inline">\(\alpha = 10\)</span> indicates a 10-fold dilution, e.g., by diluting successively 0.1
+ml of sample into 0.9 ml of media; and <span class="math inline">\(\alpha_p = 1\)</span> means that the entire
+volume is spread (plated) on the agar plate. For an experiment with a larger
+dilution factor <span class="math inline">\(\alpha_p\)</span>, multiple plates may be spread at the same dilution
+stage. For example, <span class="math inline">\(\alpha_p = 20\)</span> represent a 5% plating of the dilution, and
+thus up to 20 replicates could be created. At each dilution the true number of
+colonies is <span class="math inline">\(n_j = n_0 \alpha^{-j} \alpha_p^{-1}\)</span> and the estimated number is
+<span class="math inline">\(\hat{n_j}\)</span>. The estimated quantities are denoted with a ‘hat’ (estimated
+quantities can be measured quantities, or quantities that are derived from
+measured or sampled quantities); symbols without a ‘hat’ denote true quantities
+(also known as population values in statistics) that do not contain any sampling
+or measurement error. In this work both <span class="math inline">\(n_j\)</span> and <span class="math inline">\(n_0\)</span> are ‘counts,’ i.e.,
+number of colonies. Knowing the aliquot volume, one can easily convert counts to
+concentration (for example CFU/ml).” <span class="citation">(Ben-David and Davidson 2014)</span></p>
+</blockquote>
+</div>
+<div id="practice-quiz-4" class="section level3" number="3.11.4">
+<h3><span class="header-section-number">3.11.4</span> Practice quiz</h3>
 <!-- > "Quantitative estimation of the number of viable microorganisms in -->
 <!-- bacteriological samples has been a mainstay of the microbiological laboratory -->
 <!-- for more than one-hundred years, since Koch first described the technique (Koch, -->
@@ -7283,338 +7678,6 @@ pre-processing pipelines that are much more involved.</p>
 <!-- regimens. Relapse information obtained from mouse models should always be -->
 <!-- interpreted with great care and seen as trends in relapse differences between -->
 <!-- treatments." [@franzblau2012comprehensive] -->
-</div>
-<div id="advice-on-designing-a-pre-processing-protocol" class="section level3" number="3.11.2">
-<h3><span class="header-section-number">3.11.2</span> Advice on designing a pre-processing protocol</h3>
-<p>Before you write your protocol in a knitted document, you should decide on the
-content to include in the protocol. For example, for the plating data we are
-using for our example, the key tasks to be included in the pre-processing
-protocol are:</p>
-<ol style="list-style-type: decimal">
-<li>Read the data into R</li>
-<li>Identify a “good” dilution for each sample—the highest dilution at which CFUs
-can be correctly counted</li>
-<li>Estimate the bacterial load in each original sample based on the CFUs counted
-at a “good” dilution for the sample</li>
-<li>Output data with the estimated bacterial load for each</li>
-</ol>
-<p>The first thing to decide on are what the starting point will be for the
-protocol (the data input) and what will be the ending point (the data output).
-It may make sense to design a separate protocol for each major type of
-data that you collect in your research laboratory. Your input data for the
-protocol, under this design, might be the data that is output from a
-specific type of equipment (e.g., flow cytometer) or from a certain
-type of sample or measurement (e.g., metabolomics run on a mass spectrometer),
-even if it is a fairly simple type of data (e.g., CFUs from plating data).
-For the data output, it often makes sense to plan for data in a format
-that is appropriate for data analysis and for merging with other types of
-data collected from the experiment.</p>
-<p>For example, say you are working with data from a flow cytometer, metabolomics
-data measuremd with a mass spectrometer, and bacterial load data measured by
-plating data and counting colony forming units (CFUs). In this case, you may
-want to create three pre-processing protocols: one for the flow data, one for
-the metabolomics data, and one for the CFU data.</p>
-<p>The pre-processing protocol may be very simple for the CFU data. This protocol
-would input data collected in a plain-text delimited file (a csv file, for
-example). Within the protocol, there would be steps to convert initial
-measurements from plating at different dilutions into estimates of the bacterial
-load in each original sample. There may also be sections in the protocol for
-exploratory data analysis, to allow for quality assessment and control of the
-collected data as part of the preprocessing. The output would be a simple data
-object (a dataframe, for example) with the bacterial load for each sample. This
-data could then be used in tables and figures in the research report or
-manuscript, as well as merged with other data from each experimental animal to
-explore associations with the experimental design details (e.g., comparing
-bacterial load in treated versus untreated animals) or with other types of data
-(e.g., comparing immune cell populations, as measured with flow cytometry data,
-with bacterial loads, as measured from plating and counting CFUs).</p>
-<p>The preprocessing protocols would be more extensive for the flow cytometry and
-metabolomics data. For example, the flow cytometry data might need to be
-preprocessed through a number of steps. First, the raw data from the flow
-cytometer will need to be input to R. [Common file format for flow data? R
-packages to read in this data?]. Once the data is input, it will need to be
-gated, to [identify and count the immune cell populations that you’re interested
-in?]. [Tools for automated gating in R.] [Other pre-processing steps?
-Normalizations? Transformations? Others?]</p>
-<p>For the metabolomics data, there will similarly be an extensive set of steps to
-preprocess the data, to convert it from the format output by the laboratory
-equipment into a format that can be used for data analysis and to merge with
-other types of data from the experiment. [More on pre-processing steps for
-metabolomics data.]</p>
-<p>[Splitting pre-processing into “modules” of processes that need to happen—for
-example, standardizing across samples, transforming data to satisfy distribution
-requirements for statistical models / tests, removing extraneous data (dead
-cells in flow cytometry, for example), …]</p>
-<p>[For each module, consider the options you could take in pre-processing. For
-open-source software, like Bioconductor packages, these options are likely
-embedded either in your choice of functions (across a package), or even choice
-of packages in some cases, and then at a finer level through the parameters in a
-package. You can use vigettes and package manuals to identify the different
-functions you can choose and then use the helpfile for a function to determine
-all of its parameters and the choices you can select for each. In the protocol,
-show the code that you use to implement this choice and also explain clearly in
-the text why you made this choice and what alternatives should be considered if
-data characteristics are different. Write this as if you are explaining to a new
-research group member (or your future self) how to think about this step in the
-pre-processing, why you’re doing it the way your doing it, and what code is used
-to do it that way. You should also include references that justify choices when
-they are available—include these using BibTex. By doing this, you will make it
-much easier on yourself when you write the Methods section of papers that report
-on the data you have pre-processed, as you’ll already have draft information on
-your pre-processing methods in your protocol.]</p>
-<p>[Throughout, use an example dataset, preferably from your own research lab. You
-likely want to select one for project that you have already published or are
-getting ready to publish, so you won’t feel awkard about making the data
-available for people to practice with. You can include the data and the
-RMarkdown in its own RStudio Project and post this either publicly or privately
-on GitHub. This creates a “packet” of everything that a reader needs to use to
-recreate what you did—they can download the whole GitHub repository and will
-have a nice project directory on their computer with everything they need to try
-out the protocol. If you don’t have an example dataset from your own laboratory,
-you can explore example datasets that are already available, either as data
-included with existing R packages or through open repositories, included those
-hosted through national research institutions like the NIH. In this case, be
-sure to cite the source of the data and include any available information about
-the equipment that was used to collect it and the settings used when the data
-were collected.]</p>
-</div>
-<div id="writing-research-protocols" class="section level3" number="3.11.3">
-<h3><span class="header-section-number">3.11.3</span> Writing research protocols</h3>
-<p>There are some standards that are typically used when writing protocols for
-research. This is a common practice for task that are repeated in a laboratory,
-including [examples from wet lab].</p>
-<p>[Advantages of creating and using a protocol]</p>
-<p>Computation tasks, including data pre-processing, can also be standardized
-through the creation and use of a protocol.</p>
-<p>A protocol, in the sense we use it here, is essentially an annotated
-recipe for each step in preparing your data from the initial, “raw” state
-that is output from the laboratory equipment (or collected by hand) to a
-state that is useful for answering important research questions. The
-exact implementation of each step is given in code that can be re-used and
-adapted with new data of a similar format. However, the code script is
-often not enough to helpfully understand, share, and collaborate on the
-process. Instead, it’s critical to also include descriptions written
-by humans and for humans. These annotations can include descriptions of the
-code and how certain parameters are standardized the algorithms in the code.
-They can also be used to justify choices, and link them up both with
-characteristics of the data and equipment for your experiment as well as
-with scientific principles that underlie the choices. Protocols like this
-are critical to allow you to standardize the process you use across many
-samples from one experiment, across different experiments and projects in
-your research laboratory, and even across different research laboratories.</p>
-<p>[Links with Good Laboratory Practices (GLP), then link in with
-“Good Enough” computational practice, links with the idea of
-standard operating procedures]</p>
-<p>Clinical studies are organized and guided by a protocol prepared before the
-study:</p>
-<blockquote>
-<p>“Writing a research proposal is probably one of the most challenging and
-difficult task as research is a new area for the majority of postgraduates and
-new researchers.” <span class="citation">(Al-JunDi and SAkkA 2016)</span></p>
-</blockquote>
-<blockquote>
-<p>“Clinical research is conducted according to a plan (a protocol) or an action plan. The protocol demonstrates the guidelines for conducting the trial. It illustrates what will be made in the study by explaining each essential part of it and how it is carried out. It also describes the eligibility of the participants, the length of the study, the medications and the related tests.” <span class="citation">(Al-JunDi and SAkkA 2016)</span></p>
-</blockquote>
-<blockquote>
-<p>“Protocol writing allows the researcher to review and critically evaluate the published literature on the interested topic, plan and review the project steps and serves as a guide throughout the investigation.” <span class="citation">(Al-JunDi and SAkkA 2016)</span></p>
-</blockquote>
-<p>A protocol should include some background, the aims of the work, hypotheses
-to be tested, materials and methods, methods of data collection and
-equipment to analyze samples <span class="citation">(Al-JunDi and SAkkA 2016)</span> (This reference is discussing
-full protocols for a study, e.g., a clinicial trial, so includes more steps
-that just pre-processing.)</p>
-<p>One characteristic of a good protocol for a clinical study:</p>
-<blockquote>
-<p>“It should provide enough detail (methodology) that can allow another investigator to do the study and arrive at comparable conclusions.” <span class="citation">(Al-JunDi and SAkkA 2016)</span></p>
-</blockquote>
-<p>Good protocols include not only how, but also why. This includes both
-higher-level (i.e., what a larger question is being asked) and also at a
-fine level, for each step in the process. [Analogy—cookbook that covers
-deeper principles for why each step in process is done. <em>America’s Test Kitchen</em>
-recipes versus back-of-the-package recipes.]</p>
-<p>The process of writing a protocol forces you to think about each step in the
-process, why you do it a certain way (include parameters you choose for
-certain functions in a pipeline of code), and include justifications from
-the literature for this reasoning. If done well, it should allow you to
-quickly and thoroughly write the associated sections of Methods in research
-reports and manuscripts and help you answer questions and challenges from
-reviewers.</p>
-<p>Writing this will also help you identify steps for which you are uncertain
-how to proceed and what choices to make in customizing an analysis for your
-research data. These are areas where you can search more deeply in the
-literature to understand implications of certain choices and, if needed,
-contact the researchers who developed and maintained associated software
-packages to get advice.</p>
-<blockquote>
-<p>“Due to the slow growth rate and pathogenicity of mycobacteria, enumeration by
-traditional reference methods like colony counting is notoriously
-time-consuming, inconvenient and biohazardous.” <span class="citation">(Pathak et al. 2012)</span></p>
-</blockquote>
-<blockquote>
-<p>“Traditionally, quantification of mycobacteria is done by seeding serial
-dilutions of bacterial suspensions on suitable media such as Middlebrook 7H10
-agar or Lowenstein Jensen followed by counting colony-forming units (CFU).
-However, this method is hampered by the long generation time and the tendency of
-mycobacteria to aggregate, resulting in multiple founders of a single colony and
-an underestimation of the correct number of bacteria. Typically, the time
-required for visible colonies to appear on 7H10 agar is 2–3 weeks for M.
-tuberculosis and M. a. avium, while it takes about 4–8 weeks for M. a.
-paratuberculosis. In addition, plating enough dilutions to make sure the results
-can be reliably counted is a tedious task that gives piles of plates with
-biohazardous bacteria. A further disadvantage of the colony counting method is
-that it cannot be reliably conducted on frozen samples, which may be both more
-practical and desirable in several research settings.” <span class="citation">(Pathak et al. 2012)</span></p>
-</blockquote>
-<blockquote>
-<p>“Mycobacterium tuberculosis culture, a critical technique for routine diagnosis of tuberculosis, takes more than two weeks.” <span class="citation">(Ghodbane, Raoult, and Drancourt 2014)</span></p>
-</blockquote>
-<blockquote>
-<p>“A major problem when dealing with tuberculosis has been a difficulty in
-diagnosis due to slow growth of mycobacterial cultures, which subsequently
-explains the slow process of evaluating the susceptibility of this microorganism
-to antibiotics. Using current tools, a primary culture is obtained in two to
-four weeks on average and antibiotic susceptibility is determined after an
-additional two to four weeks. Therefore, four to eight weeks are needed to
-obtain an isolate and determine its susceptibility to antibiotics.”
-<span class="citation">(Ghodbane, Raoult, and Drancourt 2014)</span></p>
-</blockquote>
-<blockquote>
-<p>“Quantification of viable bacteria is a crucial foundation for many types of
-research. This seemingly simple task can be challenging, expensive, and
-imprecise for Mycobacterium paratuberculosis, a slowly growing organism (&gt;24-h
-generation time) with a strong tendency to form large clumps. Studies of
-environmental survival, resistance to pasteurization or disinfectants, and
-quantification of the pathogen in milk and feces from infected animals are just
-a few examples that require precise and sensitive quantification of viable M.
-paratuberculosis cells.” <span class="citation">(Shin et al. 2007)</span></p>
-</blockquote>
-<blockquote>
-<p>“The main challenge in serial dilution experiments is the estimation of the
-undiluted microorganisms counts <span class="math inline">\(n_0\)</span> from the measured <span class="math inline">\(\hat{n_j}\)</span>. There are
-two competing processes (Tomasiewicz et al., 1980) that affect the accuracy of
-the estimation: sampling errors and counting errors. Sampling errors are caused
-by the statistical fluctuations of the population. For example, when sampling an
-average of 100 colonies, the fluctuations in the number of the population are
-expected to be <span class="math inline">\(\pm \sqrt{100}\)</span> when the sampling process is governed by a
-Poisson probability (Poisson and Binomial distributions are often used in
-statistical analysis to describe the dilution process (Hedges, 2002, Myers et
-al., 1994)) where the standard deviation equals square-root of the mean; the
-relative error (ratio of the standard deviation to the mean) is <span class="math inline">\(\sqrt{100} / 100 = 0.1\)</span>. Thus, the larger the sample size is, the smaller the relative
-sampling error; hence, one would like to use a dilution plate with the largest
-number (i.e., the least diluted sample, <span class="math inline">\(j \rightarrow 1\)</span>). However, as the
-number of colonies increases, counting error is introduced due to the high
-probability of two (or more) colonies to merge (due to overcrowding) and become
-indistinguishable, and be erroneously counted as one colony. An optimum (a
-‘sweet spot’) between these two processes (sampling and counting error) needs to
-be found for using the optimal dilution (i.e., the optimal jth plate) with
-which to estimate <span class="math inline">\(n_0\)</span>. Cells can grow into colonies in various ways. Wilson
-(1922) states that when two cells are placed very close together only one cell
-will develop, and when two cells are situated at a distance from each other both
-cells may grow and then fuse into one colony. Either way, the end result is the
-appearance of one colony which causes counting error.” <span class="citation">(Ben-David and Davidson 2014)</span></p>
-</blockquote>
-<p>For open-source software, resources to consult extend beyond the traditional
-one. You can often find information on open-source software, including the
-algorithms and principles that underlie the software, through peer-reviewed
-publications in the scientific literature. However, you can also find
-details—and often more thorough details—in <em>vignettes</em> that are published in
-conjunction with the package. [More on vignettes and where to find them.]
-Further, software is often presented at conferences and workshops, including the
-yearly BioC [?] conference for the Bioconductor community. These talks and
-workshops are sometimes available after the event as online recordings [some
-examples of these]. You can consult books, as well, although these often
-quickly become outdated for software that is rapidly evolving; an exception
-is online books, which are becoming very popular to create through R’s
-<code>bookdown</code> package and can be rapidly updates. Many of these books are
-available through [bookdown’s gallery page].</p>
-<p>An added advantage of data pre-processing protocols, created with knitted
-documents, is that you can include steps and code for data quality
-assessment. [More on exploratory data analysis] [Examples of how
-exploratory data analysis could help when pre-processing biomedical
-data—for example, identify outliers that might indicate equipment
-was malfunctioning?]</p>
-<p>Be sure that, in each step of your pre-processing protocol, you explain
-<em>why</em> you are taking a certain step. For example, if you have a step
-that aligns peaks across samples in metabolomics data [?], be sure to
-explain that … [why it’s important to do this]. Include references to
-the literature that justify this explanation; these references also
-serve as further literature that someone else could read to understand
-the step. This <em>why</em> is important even if the step is obvious to you—it
-will allow you to pass along the task to others in your research group
-without the new person needing to blindly trust each step.</p>
-<p>It is particularly important to clearly explain what you are doing in
-each step and how you are implementing your choices through code. Yes,
-the code itself allows someone else to replicate what you did. However,
-only those who are very, very familiar with the software program, including
-any of the extension packages you include, can “read” the code directly
-to understand what it’s doing. Further, even if you understand the code
-very well when you create it, it is unlikely that you will stay at that
-same level of comprehension in the future, as other tasks and challenges
-take over that brain space. Explaining for humans, in text that augments
-and accompanies the code, is also important because function names and
-parameter names in code often are not easy to decipher. While excellent
-programmers can sometimes create functions with clear and transparent
-names, easy to translate to determine the task each is doing, this is
-difficult in software development and is rare in practice. Human annotations,
-written by and for humans, are critical to ensure that the steps will
-be clear to you and others in the future when you revisit what was
-done with this data and what you plan to do with future data.</p>
-<p>You can begin to create this pre-processing protocol before you collect
-any of your own research data. Example datasets exist online, and you
-can often find an example that aligns with the type of data you will
-be collecting and the format you will be collecting it in. [Places where
-you could get this data—repositories, R package example datasets.]
-[Characteristics that are important in your example dataset—same file
-format that you will get from your equipment, key characteristics, like
-number of experimental groups, like treatment categories and single vs
-multiple time points]</p>
-<p>If the format of the initial data is similar to the format you anticipate for
-your data, you can create the code and explanations for key steps in your
-pre-processing for that type of data. Often, you will be able to adapt the
-RMarkdown document to change it from inputting the example data to inputting
-your own experimental data with minimal complications, once your data
-comes in. By thinking through and researching data pre-processing options
-before the data is collected, you can save time in analyzing and presenting
-your project results once you’ve completed the experimental data
-collection for the project.</p>
-<p>Further, with an example dataset, you can get a good approximation of the
-format in which you will output data from the pre-processing steps.
-This will allow you to begin planning the analysis and visualization
-that you will use to combine the different types of data from your
-experiment and use it to investigate important research hypotheses.
-Again, if data follow standardized formats across steps in your process,
-it will often be easy to adapt the code in the protocol to input the new
-dataset that you created, without major changes to the code developed with
-the example dataset.</p>
-<p>For each step of the protocol, you can also include potential problems
-that might come up in specific instances of the data you get from
-future experiments. This can help you adapt the code in the protocol in
-thoughtful ways as you apply it in the future to new data collected
-for new studies and projects.</p>
-<blockquote>
-<p>“Given an unknown sample which contains <span class="math inline">\(n_0\)</span> colony forming units (CFUs), a
-series of <span class="math inline">\(J\)</span> dilutions are made sequentially each with a dilution factor
-<span class="math inline">\(\alpha\)</span>. From each of the J dilutions a fraction <span class="math inline">\(\alpha_p^{-1}\)</span> is taken and
-spread (plated) on an agar plate (assay) where colonies are counted. Thus, in
-general there are two dilution factors: <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\alpha_p\)</span>. For example,
-<span class="math inline">\(\alpha = 10\)</span> indicates a 10-fold dilution, e.g., by diluting successively 0.1
-ml of sample into 0.9 ml of media; and <span class="math inline">\(\alpha_p = 1\)</span> means that the entire
-volume is spread (plated) on the agar plate. For an experiment with a larger
-dilution factor <span class="math inline">\(\alpha_p\)</span>, multiple plates may be spread at the same dilution
-stage. For example, <span class="math inline">\(\alpha_p = 20\)</span> represent a 5% plating of the dilution, and
-thus up to 20 replicates could be created. At each dilution the true number of
-colonies is <span class="math inline">\(n_j = n_0 \alpha^{-j} \alpha_p^{-1}\)</span> and the estimated number is
-<span class="math inline">\(\hat{n_j}\)</span>. The estimated quantities are denoted with a ‘hat’ (estimated
-quantities can be measured quantities, or quantities that are derived from
-measured or sampled quantities); symbols without a ‘hat’ denote true quantities
-(also known as population values in statistics) that do not contain any sampling
-or measurement error. In this work both <span class="math inline">\(n_j\)</span> and <span class="math inline">\(n_0\)</span> are ‘counts,’ i.e.,
-number of colonies. Knowing the aliquot volume, one can easily convert counts to
-concentration (for example CFU/ml).” <span class="citation">(Ben-David and Davidson 2014)</span></p>
-</blockquote>
-</div>
-<div id="practice-quiz-4" class="section level3" number="3.11.4">
-<h3><span class="header-section-number">3.11.4</span> Practice quiz</h3>
 </div>
 </div>
 </div>
