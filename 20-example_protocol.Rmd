@@ -92,7 +92,8 @@ pre-processing pipelines that are much more involved.
 ### Advice on designing a pre-processing protocol
 
 Before you write your protocol in a knitted document, you should decide on the
-content to include in the protocol. 
+content to include in the protocol. This section provides tips on this design
+process.
 
 **Defining input and output data for the protocol.**
 
@@ -267,65 +268,125 @@ finer-level details about what the code is doing.
 knitr::include_graphics("figures/protocol_code.png")
 ```
 
+### Writing data pre-processing protocols
 
-### Writing research protocols
+Now that you have planned out the key components of the pre-processing protocol,
+you can use RMarkdown's functionality to flesh it out into a full pre-processing
+protocol. This gives you the chance to move beyond a simple code script, and
+instead include more thorough descriptions of what you're doing at each step and
+why you're doing it. You can also include discussions of potential limitations
+of the approach that you are taking in the pre-processing, as well as areas
+where other research groups might use a different approach. These details can
+help when it is time to write the Methods section for the paper describing your
+results from an experiment using these data. They can also help your research
+group identify pre-processing choices that might differ from other research
+groups, which opens the opportunity to perform sensitivity analyses regarding
+these pre-processing choices and ensure that your final conclusions are robust
+across multiple reasonable pre-processing approaches.
 
-There are some standards that are typically used when writing protocols for
-research. This is a common practice for task that are repeated in a laboratory, 
-including [examples from wet lab].
-
-[Advantages of creating and using a protocol]
-
-Computation tasks, including data pre-processing, can also be standardized 
-through the creation and use of a protocol. 
-
-A protocol, in the sense we use it here, is essentially an annotated 
-recipe for each step in preparing your data from the initial, "raw" state 
-that is output from the laboratory equipment (or collected by hand) to a
-state that is useful for answering important research questions. The 
-exact implementation of each step is given in code that can be re-used and
-adapted with new data of a similar format. However, the code script is 
-often not enough to helpfully understand, share, and collaborate on the
-process. Instead, it's critical to also include descriptions written 
-by humans and for humans. These annotations can include descriptions of the
-code and how certain parameters are standardized the algorithms in the code.
-They can also be used to justify choices, and link them up both with 
-characteristics of the data and equipment for your experiment as well as
-with scientific principles that underlie the choices. Protocols like this
-are critical to allow you to standardize the process you use across many 
-samples from one experiment, across different experiments and projects in 
-your research laboratory, and even across different research laboratories.
-
-[Links with Good Laboratory Practices (GLP), then link in with 
-"Good Enough" computational practice, links with the idea of 
-standard operating procedures]
-
-Clinical studies are organized and guided by a protocol prepared before the 
-study: 
+Protocols are common for wet lab techniques, where they provide a "recipe" that
+ensures consistency and reproducibility in those processes. Computational tasks,
+including data pre-processing, can also be standardized through the creation and
+use of protocol in your research group. While code scripts are becoming more
+common as a means of recording data pre-processing steps, they are often not
+as clear as a traditional protocol, in particular in terms of providing a 
+thorough description of what is being done at each step and why it is being 
+done that way. Data pre-processing protocols can provide these more thorough 
+descriptions, and by creating them with RMarkdown or with similar types
+of "knitted" documents (module [x]), you can combine the executable code
+used to pre-process the data with extensive documentation. As a further 
+advantage, the creation of these protocols will ensure that your research 
+group has thought carefully about each step of the process, rather than 
+relying on cobbling together bits and pieces of code they've found but don't
+fully understand. Just as the creation of a research protocol for a 
+clinical trial requires a careful consideration of each step of the ultimate
+trial [@al2016protocol], the creation of data pre-processing protocols ensure
+that each step in the process is carefully considered, and so helps to 
+ensure that each step of this process is conducted as carefully as the 
+steps taken in designing the experiment as a whole and each wet lab technique
+conducted for the experiment.
 
 > "Writing a research proposal is probably one of the most challenging and
 difficult task as research is a new area for the majority of postgraduates and
-new researchers." [@al2016protocol]
+new researchers. ... Protocol writing allows the researcher to review and
+critically evaluate the published literature on the interested topic, plan and
+review the project steps and serves as a guide throughout the investigation."
+[@al2016protocol]
 
-> "Clinical research is conducted according to a plan (a protocol) or an action plan. The protocol demonstrates the guidelines for conducting the trial. It illustrates what will be made in the study by explaining each essential part of it and how it is carried out. It also describes the eligibility of the participants, the length of the study, the medications and the related tests." [@al2016protocol]
+A data-preprocessing protocol, in the sense we use it here, is essentially an
+annotated recipe for each step in preparing your data from the initial, "raw"
+state that is output from the laboratory equipment (or collected by hand) to a
+state that is useful for answering important research questions. The exact
+implementation of each step is given in code that can be re-used and adapted
+with new data of a similar format. However, the code script is often not enough
+to helpfully understand, share, and collaborate on the process. Instead, it's
+critical to also include descriptions written by humans and for humans. These
+annotations can include descriptions of the code and how certain parameters are
+standardized the algorithms in the code. They can also be used to justify
+choices, and link them up both with characteristics of the data and equipment
+for your experiment as well as with scientific principles that underlie the
+choices. Protocols like this are critical to allow you to standardize the
+process you use across many samples from one experiment, across different
+experiments and projects in your research laboratory, and even across different
+research laboratories.
 
-> "Protocol writing allows the researcher to review and critically evaluate the published literature on the interested topic, plan and review the project steps and serves as a guide throughout the investigation."  [@al2016protocol]
+As you begin adding text to your pre-processing protocol, you should keep in
+mind these general aims. First, a good protocol provides adequate detail that
+another researcher can fully reproduce the procedure [@al2016protocol]. For a
+protocol for a trial or wet lab technique, this means that the protocol should
+allow another researcher to reproduce the process and get results that are
+*comparable* to your results [@al2016protocol]; for a data pre-processing
+protocol, the protocol must include adequate details that another researcher,
+provided they start with the same data, gets *identical* results (short of any
+pre-processing steps that include some element of sampling or random-number
+generation, e.g., Monte Carlo methods). This idea---being able to exactly
+re-create the computational results from an earlier project---is refered to as
+**computational reproducbility** [ref] and is considered a key component in
+ensuring that research is fully reproducible [ref].
 
-A protocol should include some background, the aims of the work, hypotheses
-to be tested, materials and methods, methods of data collection and 
-equipment to analyze samples [@al2016protocol] (This reference is discussing
-full protocols for a study, e.g., a clinicial trial, so includes more steps
-that just pre-processing.)
+> "It should provide enough detail (methodology) that can allow another
+investigator to do the study and arrive at comparable conclusions."
+[@al2016protocol]
 
-One characteristic of a good protocol for a clinical study: 
+By creating the data pre-processing protocol as a knitted document (module [x])
+using a tool like RMarkdown (module [x]), you can ensure that the protocol is
+computationally reproducible. In an RMarkdown document, you include the code
+examples as *executable* code---this means that the code is run every time you
+render the document. You are therefore "checking" your code every time that you
+run it. As the last step of your pre-processing protocol, you should output the
+copy of the pre-processed data that you will use for any further analysis for
+the project. You can use functions in R to output this to a plain text format,
+for example a comma-separated delimited file (module [x]). Each time you render
+the protocol, you will re-write this output file, and so this provides assurance
+that the code in your protocol can be used to reproduce your output data (since
+that's how you yourself created that form of the data).
 
-> "It should provide enough detail (methodology) that can allow another investigator to do the study and arrive at comparable conclusions." [@al2016protocol]
+Figure \@ref(fig:protocoloutput) provides an example from the example protocol
+for this module. The RMarkdown file for the protocol includes code to write out
+the final, pre-processed data to a comma-separated plain text file called
+"processed_cfu_estimates.csv". This code writes the output file into the same
+directory where you've saved the RMarkdown file. Each time the RMarkdown file is
+rendered to create the pdf version of the protocol, the input data will be
+pre-processed from scratch, using the code throughout the protocol, and this
+file will be overwritten with the data generated. This guarantees that the code
+in the protocol can be used by anyone---you or other researchers---to reproduce
+the final data from the protocol, and so guarantees that these data are
+computationally reproducible.
 
-Good protocols include not only how, but also why. This includes both 
-higher-level (i.e., what a larger question is being asked) and also at a 
-fine level, for each step in the process. [Analogy---cookbook that covers
-deeper principles for why each step in process is done. *America's Test Kitchen*
-recipes versus back-of-the-package recipes.]
+```{r protocoloutput, echo = FALSE, out.width = "\\textwidth", fig.fullwidth = TRUE, fig.cap = "Example of using code in pre-processing protocol to output the final, pre-processed data that will be used in further analysis for the research project. This example comes from the example protocol for this module, showing both the executable code included in the RMarkdown file for the protocol (right) and how this code is included in the final pdf of the protocol. Outputting the pre-processed data into a plain text file as the last step of the protocol helps ensure computational reproducibility for this step of working with experimental data."}
+knitr::include_graphics("figures/protocol_output_data.png")
+```
+
+Good protocols include not only *how* (for data pre-processing protocols, this
+is the code), but also *why* each step is taken. This includes both higher-level
+(i.e., what a larger question is being asked) and also at a fine level, for each
+step in the process. [Analogy---cookbook that covers deeper principles for why
+each step in process is done. *America's Test Kitchen* recipes versus
+back-of-the-package recipes.] A protocol should include some background, the
+aims of the work, hypotheses to be tested, materials and methods, methods of
+data collection and equipment to analyze samples [@al2016protocol] (This
+reference is discussing full protocols for a study, e.g., a clinicial trial, so
+includes more steps that just pre-processing.)
 
 When you write a protocol within RMarkdown, you can include references 
 very easily. Figure \@ref(fig:protocolreferences) shows an example of the 
