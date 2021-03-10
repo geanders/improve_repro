@@ -140,7 +140,23 @@ new set of data of this type that you need to pre-process, and in this case you
 can build your protocol using a dataset from a previous experiment in your
 laboratory. In this case, you may already have a record of the steps that you
 used to pre-process the data previously, and these can be helpful as a starting
-point as you draft the more thorough pre-processing protocol.
+point as you draft the more thorough pre-processing protocol. You may want to
+select an example dataset that you have already published or are getting ready
+to publish, so you won't feel awkard about making the data available for people
+to practice with.  If you don't have an example dataset from your own
+laboratory, you can explore example datasets that are already available, either
+as data included with existing R packages or through open repositories,
+including those hosted through national research institutions like the NIH. In
+this case, be sure to cite the source of the data and include any available
+information about the equipment that was used to collect it and the settings
+used when the data were collected.
+
+You can include the data and the RMarkdown file for the protocol in an RStudio
+Project (see module [x]) and post this either publicly or privately on GitHub
+(see modules [x]). This creates a "packet" of everything that a reader needs to
+use to recreate what you did---they can download the whole GitHub repository and
+will have a nice project directory on their computer with everything they need
+to try out the protocol.
 
 For the example protocol for this module, we want to pre-process data that were
 collected "by hand" by counting CFUs on plates in the laboratory. These counts
@@ -173,20 +189,20 @@ can be read into R for pre-processing (Figure \@ref(fig:protocoldatainput)).
 knitr::include_graphics("figures/protocol_data_input.png")
 ```
 
-For the data output, it often makes sense to plan for data in a
-format that is appropriate for data analysis and for merging with other types of
-data collected from the experiment.
+For the data output, it often makes sense to plan for data in a format that is
+appropriate for data analysis and for merging with other types of data collected
+from the experiment.
 
 **Outlining key tasks in pre-processing the input data.**
 
 The next step is to outline the key tasks that are involved in moving from the
-data input to the desired data output. For example, for the plating data we are
-using for our example, the key tasks to be included in the pre-processing
-protocol are:
+data input to the desired data output. For the plating data we are using for our
+example, the key tasks to be included in the pre-processing protocol are:
 
 1. Read the data into R
 2. Explore the data and perform some quality checks
-3. Identify a "good" dilution for each sample---one at which you have a "countable" plate
+3. Identify a "good" dilution for each sample---one at which you have a
+"countable" plate
 4. Estimate the bacterial load in each original sample based on the CFUs counted
 at the "good" dilution for the sample
 5. Output data with the estimated bacterial load for each original sample
@@ -206,46 +222,40 @@ align with section headers in the final pdf output of the protocol.
 knitr::include_graphics("figures/protocol_sections.png")
 ```
 
+**Adding key code for pre-processing.**
+
+For many of these steps, you likely have code---or can start drafting the
+code---required for that step. If you were doing the pre-processing entirely
+through a code script or interactively, you would exclusively write code for the
+steps. A good next step, therefore, in designing your pre-protocol is to add in
+the code for each step to conduct the pre-processing required in each section.
+
+In RMarkdown, you can test this code as you write it. You insert each piece
+of executable code within a special section, separated from the regular 
+text with special characters, as described in previous modules.
+
+For any pre-processing steps that are straightforward (e.g., calculating the
+dilution factor in the example module, which requires only simple mathematical
+operations), you can directly write in the code required for the step. 
+For other pre-processing steps, however, the algorithm may be a bit more 
+complex. For example, complex algorithms have been developed for steps like 
+peak identification and alignment that are required when 
+pre-processing data from a mass spectrometer. 
+
+For these more complex tasks, you can start to explore available R packages for
+performing the task. There are thousands of packages available that extend the
+basic functionality of R, providing code implementations of algorithms in a
+variety of scientific fields. Many of the R packages relevant for biological
+data---especially high-throughput biological data---are available through a
+repository called Bioconductor. These packages are all open-source (so you can
+explore their code if you want to) and free. You can use vigettes and package
+manuals for Bioconductor packages to identify the different functions you can
+use for your pre-processing steps. Once you have identified a function for the
+task, you can use the helpfile for the function to see how to use it. This help
+documentation will allow you to determine all of the function's parameters and
+the choices you can select for each.
 
 
-[Splitting pre-processing into "modules" of processes that need to happen---for
-example, standardizing across samples, transforming data to satisfy distribution
-requirements for statistical models / tests, removing extraneous data (dead
-cells in flow cytometry, for example), ...]
-
-[For each module, consider the options you could take in pre-processing. For
-open-source software, like Bioconductor packages, these options are likely
-embedded either in your choice of functions (across a package), or even choice
-of packages in some cases, and then at a finer level through the parameters in a
-package. You can use vigettes and package manuals to identify the different
-functions you can choose and then use the helpfile for a function to determine
-all of its parameters and the choices you can select for each. In the protocol,
-show the code that you use to implement this choice and also explain clearly in
-the text why you made this choice and what alternatives should be considered if
-data characteristics are different. Write this as if you are explaining to a new
-research group member (or your future self) how to think about this step in the
-pre-processing, why you're doing it the way your doing it, and what code is used
-to do it that way. You should also include references that justify choices when
-they are available---include these using BibTex. By doing this, you will make it
-much easier on yourself when you write the Methods section of papers that report
-on the data you have pre-processed, as you'll already have draft information on
-your pre-processing methods in your protocol.]
-
-[Throughout, use an example dataset, preferably from your own research lab. You
-likely want to select one for project that you have already published or are
-getting ready to publish, so you won't feel awkard about making the data
-available for people to practice with. You can include the data and the
-RMarkdown in its own RStudio Project and post this either publicly or privately
-on GitHub. This creates a "packet" of everything that a reader needs to use to
-recreate what you did---they can download the whole GitHub repository and will
-have a nice project directory on their computer with everything they need to try
-out the protocol. If you don't have an example dataset from your own laboratory,
-you can explore example datasets that are already available, either as data
-included with existing R packages or through open repositories, included those
-hosted through national research institutions like the NIH. In this case, be
-sure to cite the source of the data and include any available information about
-the equipment that was used to collect it and the settings used when the data
-were collected.]
 
 ### Writing research protocols
 
@@ -500,7 +510,17 @@ or measurement error. In this work both $n_j$ and $n_0$ are 'counts', i.e.,
 number of colonies. Knowing the aliquot volume, one can easily convert counts to
 concentration (for example CFU/ml)." [@ben2014estimation]
 
-
+In your data pre-processing protocol, show the code that you use to implement
+this choice and also explain clearly in the text why you made this choice and
+what alternatives should be considered if data characteristics are different.
+Write this as if you are explaining to a new research group member (or your
+future self) how to think about this step in the pre-processing, why you're
+doing it the way your doing it, and what code is used to do it that way. You
+should also include references that justify choices when they are
+available---include these using BibTex. By doing this, you will make it much
+easier on yourself when you write the Methods section of papers that report on
+the data you have pre-processed, as you'll already have draft information on
+your pre-processing methods in your protocol.
 
 ### Practice quiz
 
