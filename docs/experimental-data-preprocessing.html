@@ -6906,27 +6906,49 @@ pre-processing pipelines that are much more involved.</p>
 <p>Before you write your protocol in a knitted document, you should decide on the
 content to include in the protocol.</p>
 <p><strong>Defining input and output data for the protocol.</strong></p>
-<p>The first step in designing the data pre-processing protocol is to decide on what
-the starting point will be for the protocol (the data input) and what will be
-the ending point (the data output). It may make sense to design a separate
+<p>The first step in designing the data pre-processing protocol is to decide on
+what the starting point will be for the protocol (the data input) and what will
+be the ending point (the data output). It may make sense to design a separate
 protocol for each major type of data that you collect in your research
-laboratory.</p>
-<p>Your input data for the protocol, under this design, might be the
+laboratory. Your input data for the protocol, under this design, might be the
 data that is output from a specific type of equipment (e.g., flow cytometer) or
 from a certain type of sample or measurement (e.g., metabolomics run on a mass
 spectrometer), even if it is a fairly simple type of data (e.g., CFUs from
-plating data, as used in the example protocol for this module). Once you
-have identified the input data type to use for the protocol, you should
-identify an example dataset from your laboratory that you can use to create
-the protocol. This could be a dataset that you currently need to pre-process,
-in which case the development of the protocol will serve a second purpose
-as allowing you to complete this task at the same time. However, you may not
-have a new set of data of this type that you need to pre-process, and in this
-case you can build your protocol using a dataset from a previous
-experiment in your laboratory. In this case, you may already have a record
-of the steps that you used to pre-process the data previously, and these
-can be helpful as a starting point as you draft the more thorough pre-processing
-protocol.</p>
+plating data, as used in the example protocol for this module). For example, say
+you are working with data from a flow cytometer, metabolomics data measuremd
+with a mass spectrometer, and bacterial load data measured by plating data and
+counting colony forming units (CFUs). In this case, you may want to create three
+pre-processing protocols: one for the flow data, one for the metabolomics data,
+and one for the CFU data.</p>
+<p>While pre-processing protocols for some types of data might be very complex,
+others might be fairly simple. However, it is still worthwhile to develop a
+protocol, as it allows you to pass along some of the details of pre-processing
+the data that might have become “common sense” to longer-tenured members of your
+research group. For example, The pre-processing protocol is fairly simple for
+the CFU data used in the example protocol for this module. This protocol inputs
+data collected in a plain-text delimited file (a csv file, in the example).
+Within the protocol, there are be steps to convert initial measurements from
+plating at different dilutions into estimates of the bacterial load in each
+original sample. There are also sections in the protocol for exploratory data
+analysis, to allow for quality assessment and control of the collected data as
+part of the preprocessing. The output of the protocol is a simple data object (a
+dataframe, in this example) with the bacterial load for each original sample.
+These data are now ready to be used in tables and figures in the research report
+or manuscript, as well as to explore associations with the experimental design
+details (e.g., comparing bacterial load in treated versus untreated animals) or
+merged with other types of experimental data (e.g., comparing immune cell
+populations, as measured with flow cytometry data, with bacterial loads, as
+measured from plating and counting CFUs).</p>
+<p>Once you have identified the input data type to use for the protocol, you should
+identify an example dataset from your laboratory that you can use to create the
+protocol. This could be a dataset that you currently need to pre-process, in
+which case the development of the protocol will serve a second purpose as
+allowing you to complete this task at the same time. However, you may not have a
+new set of data of this type that you need to pre-process, and in this case you
+can build your protocol using a dataset from a previous experiment in your
+laboratory. In this case, you may already have a record of the steps that you
+used to pre-process the data previously, and these can be helpful as a starting
+point as you draft the more thorough pre-processing protocol.</p>
 <p>For the example protocol for this module, we want to pre-process data that were
 collected “by hand” by counting CFUs on plates in the laboratory. These counts
 were recorded in a plain text delimited file (a csv file) using spreadsheet
@@ -6952,43 +6974,16 @@ bacterial colonies counted in that sample (<code>CFUs</code>).</p>
 as well as selected an example dataset of this type to use to create the
 protocol, you can include a subsection in the “Overview” section of the protocol
 that describes these input data, what file format they are in, and how they
-can be read into R for pre-processing.</p>
-<p>…</p>
+can be read into R for pre-processing (Figure <a href="experimental-data-preprocessing.html#fig:protocoldatainput">3.10</a>).</p>
+<div class="figure"><span id="fig:protocoldatainput"></span>
+<img src="figures/protocol_data_input.png" alt="Providing details on input data in the pre-processing protocol. Once you have an example data file for the type of data that will be input for the protocol, you can add a section that provides the code to read the data into R. You can also add code that will show the first few rows of the example dataset, as well as a description of the data. This figure shows examples of how these elements can be added to an RMarkdown file for a pre-processing protocol, and the associated elements in the final pdf of the protocol, using the example protocol for this module." width="\textwidth" />
+<p class="caption">
+Figure 3.10: Providing details on input data in the pre-processing protocol. Once you have an example data file for the type of data that will be input for the protocol, you can add a section that provides the code to read the data into R. You can also add code that will show the first few rows of the example dataset, as well as a description of the data. This figure shows examples of how these elements can be added to an RMarkdown file for a pre-processing protocol, and the associated elements in the final pdf of the protocol, using the example protocol for this module.
+</p>
+</div>
 <p>For the data output, it often makes sense to plan for data in a
 format that is appropriate for data analysis and for merging with other types of
 data collected from the experiment.</p>
-<p>For example, say you are working with data from a flow cytometer, metabolomics
-data measuremd with a mass spectrometer, and bacterial load data measured by
-plating data and counting colony forming units (CFUs). In this case, you may
-want to create three pre-processing protocols: one for the flow data, one for
-the metabolomics data, and one for the CFU data.</p>
-<p>The pre-processing protocol may be very simple for the CFU data. This protocol
-would input data collected in a plain-text delimited file (a csv file, for
-example). Within the protocol, there would be steps to convert initial
-measurements from plating at different dilutions into estimates of the bacterial
-load in each original sample. There may also be sections in the protocol for
-exploratory data analysis, to allow for quality assessment and control of the
-collected data as part of the preprocessing. The output would be a simple data
-object (a dataframe, for example) with the bacterial load for each sample. This
-data could then be used in tables and figures in the research report or
-manuscript, as well as merged with other data from each experimental animal to
-explore associations with the experimental design details (e.g., comparing
-bacterial load in treated versus untreated animals) or with other types of data
-(e.g., comparing immune cell populations, as measured with flow cytometry data,
-with bacterial loads, as measured from plating and counting CFUs).</p>
-<p>The preprocessing protocols would be more extensive for the flow cytometry and
-metabolomics data. For example, the flow cytometry data might need to be
-preprocessed through a number of steps. First, the raw data from the flow
-cytometer will need to be input to R. [Common file format for flow data? R
-packages to read in this data?]. Once the data is input, it will need to be
-gated, to [identify and count the immune cell populations that you’re interested
-in?]. [Tools for automated gating in R.] [Other pre-processing steps?
-Normalizations? Transformations? Others?]</p>
-<p>For the metabolomics data, there will similarly be an extensive set of steps to
-preprocess the data, to convert it from the format output by the laboratory
-equipment into a format that can be used for data analysis and to merge with
-other types of data from the experiment. [More on pre-processing steps for
-metabolomics data.]</p>
 <p><strong>Outlining key tasks in pre-processing the input data.</strong></p>
 <p>The next step is to outline the key tasks that are involved in moving from the
 data input to the desired data output. For example, for the plating data we are
@@ -7009,13 +7004,13 @@ and the laboratory procedures used to collect those data. In RMarkdown, you can
 create first-level section headers by putting the text for the header on its own
 line and beginning that line with <code>#</code>, followed by a space. You should include a
 blank line before and after the line with this header text. Figure
-<a href="experimental-data-preprocessing.html#fig:protocolsections">3.10</a> shows how this is done in the example protocol for
+<a href="experimental-data-preprocessing.html#fig:protocolsections">3.11</a> shows how this is done in the example protocol for
 this module, showing how text in the plain text RMarkdown file for the protocol
 align with section headers in the final pdf output of the protocol.</p>
 <div class="figure"><span id="fig:protocolsections"></span>
 <img src="figures/protocol_sections.png" alt="Dividing an RMarkdown data pre-processing protocol into sections. This shows an example of creating section headers in a data pre-processing protocol created with RMarkdown, showing section headers in the example pre-procotcol for this module." width="\textwidth" />
 <p class="caption">
-Figure 3.10: Dividing an RMarkdown data pre-processing protocol into sections. This shows an example of creating section headers in a data pre-processing protocol created with RMarkdown, showing section headers in the example pre-procotcol for this module.
+Figure 3.11: Dividing an RMarkdown data pre-processing protocol into sections. This shows an example of creating section headers in a data pre-processing protocol created with RMarkdown, showing section headers in the example pre-procotcol for this module.
 </p>
 </div>
 <p>[Splitting pre-processing into “modules” of processes that need to happen—for
@@ -7110,13 +7105,13 @@ fine level, for each step in the process. [Analogy—cookbook that covers
 deeper principles for why each step in process is done. <em>America’s Test Kitchen</em>
 recipes versus back-of-the-package recipes.]</p>
 <p>When you write a protocol within RMarkdown, you can include references
-very easily. Figure <a href="experimental-data-preprocessing.html#fig:protocolreferences">3.11</a> shows an example of the
+very easily. Figure <a href="experimental-data-preprocessing.html#fig:protocolreferences">3.12</a> shows an example of the
 elements you use to do this, showing each element in the example protocol for
 this module.</p>
 <div class="figure"><span id="fig:protocolreferences"></span>
 <img src="figures/protocol_references.png" alt="Including references in a data pre-processing protocol created with RMarkdown. RMarkdown has a built-in referencing system that you can use, based on the BibTeX system for LaTeX. This figure shows examples from the example protocol for this module of the elements used for referencing. You create a BibTeX file with information about each reference, and then use the key for the reference within the text to cite that reference. All cited references will be printed at the end of the document; you can chose the header that you want for this reference section in the RMarkdown file ('References' in this example). In the YAML of the RMarkdown file, you specify the path to the BibTeX file (with the 'bibliography: ' key), so it can be linked in when the RMarkdown file is rendered." width="\textwidth" />
 <p class="caption">
-Figure 3.11: Including references in a data pre-processing protocol created with RMarkdown. RMarkdown has a built-in referencing system that you can use, based on the BibTeX system for LaTeX. This figure shows examples from the example protocol for this module of the elements used for referencing. You create a BibTeX file with information about each reference, and then use the key for the reference within the text to cite that reference. All cited references will be printed at the end of the document; you can chose the header that you want for this reference section in the RMarkdown file (‘References’ in this example). In the YAML of the RMarkdown file, you specify the path to the BibTeX file (with the ‘bibliography:’ key), so it can be linked in when the RMarkdown file is rendered.
+Figure 3.12: Including references in a data pre-processing protocol created with RMarkdown. RMarkdown has a built-in referencing system that you can use, based on the BibTeX system for LaTeX. This figure shows examples from the example protocol for this module of the elements used for referencing. You create a BibTeX file with information about each reference, and then use the key for the reference within the text to cite that reference. All cited references will be printed at the end of the document; you can chose the header that you want for this reference section in the RMarkdown file (‘References’ in this example). In the YAML of the RMarkdown file, you specify the path to the BibTeX file (with the ‘bibliography:’ key), so it can be linked in when the RMarkdown file is rendered.
 </p>
 </div>
 <p>The process of writing a protocol forces you to think about each step in the
