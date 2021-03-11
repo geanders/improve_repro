@@ -87,7 +87,24 @@ They come from an experiment to test novel vaccines to protect against
 vaccines were tested, which controls used, and which time points tested.]
 The experimental groups in this case were: 
 
-[table of experimental groups]
+```{r echo = FALSE}
+library(kableExtra)
+library(dplyr)
+
+group <- c(1:10)
+route <- c(rep("I.P.", 5), rep("Oral", 5))
+drug <- c(rep(c("control", "control", "Drug 1", "Drug 2", "Drug 1 + Drug 2"), 2))
+
+vaccination <- c(rep(c("PBS", rep("BCG", 4)), 2))
+
+group_df <- data.frame(group, route, drug, vaccination)
+
+group_df %>%
+  kable(align = "l") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  row_spec(0:nrow(group_df), color = "black")
+```
+
 
 For each replicate, half the spleen was used to estimate bacterial load through
 the plate count method (Figure 1). While only part of the organ was used in this
@@ -97,7 +114,7 @@ of---up to the whole---organ and to plate a very large proportion of the
 homogenate [@franzblau2012comprehensive], to be able to get higher CFU counts
 and reduce sampling error in these counts.
 
-For each animal, this half of the spleen was homogenized in phosphate buffer
+For each animal, this half of the spleen was homogenized in 500 microliters phosphate buffer
 saline (PBS) to create a homogenate. This homogenate was diluted several times,
 and both the homogenate and each dilution were plated on part of a 7H11 agar
 plate. Each dilution resulted from taking 0.5 mL from the previous test tube
@@ -110,7 +127,7 @@ slow-growing, with a rate of division that is between 12 and 24 hours
 [@sakamoto2012pathology], so this incubation period is much longer than would be
 needed for plate counts for most other types of bacteria.
 
-```{r platingexample, echo = FALSE, out.width = "\\textwidth", fig.cap = "Visual overview of the dilution and plating process for this experiment. For each animal, half the spleen was homogenized in phosphate buffer saline (PBS) for plating ('Homogenate' tube in graphic). Three serial dilutions were created by resuspending 0.5 mL from the homogenate or previous dilution in 2.0 mL PBS ('Level 1 dilution', 'Level 2 dilution' and 'Level 3 dilution' tubes in graphic). From each tube, 100 microliters were plated in one quarter of a 7H11 agar plate (circle at bottom of graphic). After 3--5 weeks of incubation at 37\\textsuperscript{o}C, colony-forming units were counted from each quarter of the plate and recorded. These are the input data for this protocol."}
+```{r platingexample, echo = FALSE, out.width = "\\textwidth", fig.cap = "Visual overview of the dilution and plating process for this experiment. For each animal, half the spleen was homogenized in 500 microliters phosphate buffer saline (PBS) for plating ('Homogenate' tube in graphic). Three serial dilutions were created by resuspending 100 microliters from the homogenate or previous dilution in 400 microliters PBS ('Level 1 dilution', 'Level 2 dilution' and 'Level 3 dilution' tubes in graphic). From each tube, 100 microliters were plated in one quarter of a 7H11 agar plate (circle at bottom of graphic). After 3--5 weeks of incubation at 37\\textsuperscript{o}C, colony-forming units were counted from each quarter of the plate and recorded. These are the input data for this protocol."}
 knitr::include_graphics("../../figures/protocol_graphic.png")
 ```
 
@@ -402,7 +419,7 @@ cfu_data_reduced %>%
 For this experiment, many of the samples had 0 CFUs at all dilution levels. For
 the samples with non-zero CFU counts, the best dilutions were often at dilution
 level 0 (i.e., undiluted sample), although in a few cases the best dilutions for
-samples were at dilution levels of 1 ($10{-0.5}$ dilution) or 2 ($10^{-1}$
+samples were at dilution levels of 1 ($\frac{1}{5}$ dilution) or 2 ($\frac{1}{25}$
 dilution). The CFU counts at the best dilution levels were, for non-zero CFU
 samples, between 1 and 30. We may want to keep in mind that the sampling error
 is likely pretty high for the CFU counts that are lower than about 10 in these
@@ -490,11 +507,12 @@ plate to incubate [@ben2014estimation]---we have already calculated the first
 dilution factor, and so we now need to calculate the second. The second dilution
 factor is the inverse of the proportion of each tube that is plated
 [@ben2014estimation]. From each tube, 100 $\mu L$ is taken out to plate, out of
-2.5 mL of liquid in the tube (0.5 mL of sample from the previous dilution or
-homogenate and 2.0 mL PBS), so you are plating 4% of the liquid in each tube:
+500 $\mu L$ of liquid in the tube (100 $\mu L$ of sample from the previous
+dilution or homogenate and 400 $\mu L$ PBS), so you are plating 20% of the liquid
+in each tube:
 
 $$
-100 \mu L * \frac{1 mL}{1000 \mu L} * \frac{1}{2.5 mL} = 0.04
+100 \mu L * \frac{1}{500 \mu L} = 0.2
 $$
 
 Following this logic, we can calculate the dilution factor for the plate
