@@ -6327,6 +6327,61 @@ features when creating a pre-processing protocol.</p>
 referencing system. This allows you to include bibliographical references in the
 documents that you create, and Rmarkdown will handle the creation of the
 references section and the numbering of the documents within your text.</p>
+<p>To include references in RMarkdown documents, you can use something called
+<strong>BibTeX</strong>. This has three components:</p>
+<ol style="list-style-type: decimal">
+<li>Create a plain text file with listings for each of
+your references (<strong>BibTeX file</strong>). Save it with the
+extension <code>.bib</code>.</li>
+<li>In your RMarkdown document, include the filepath
+to this BibTeX file.</li>
+<li>In the text of the RMarkdown file, include a key and special character
+combination anytime you want to reference a paper.</li>
+</ol>
+<p>Once you have a BibTeX file, you will include its
+path in the YAML:</p>
+<pre><code>  ---
+  title: &quot;Reproducible Research with R&quot;
+  author: &quot;Brooke Anderson&quot;
+  date: &quot;1/25/2021&quot;
+  output: beamer_presentation
+  bibliography: mybibliography.bib
+  ---</code></pre>
+<p>It is easiest if you save the BibTeX file in the same directory
+as the RMarkdown document.</p>
+<p>You can add references in the text using a key for each paper
+within special characters (<code>[@paper1, @paper2]</code>).</p>
+<p>For example, you would write:</p>
+<pre><code>This technique follows earlier work [@fox2020, 
+@anderson2019].</code></pre>
+<p>To create:</p>
+<blockquote>
+<p>``This technique follows earlier work (Fox et al. 2020, Anderson et al. 2019)."</p>
+</blockquote>
+<p>With full paper details included at the end of the document.</p>
+<p>Put all the bibliographical details in the BibTeX file:</p>
+<p>You will have a file named something like <code>mybibliography.bib</code>
+with entries for each paper like this:</p>
+<pre><code>@article{fox2020,
+  title={Cyto-feature engineering: A pipeline for flow cytometry 
+    analysis to uncover immune populations and associations with 
+    disease},
+  author={Fox, Amy and Dutt, Taru S and Karger, Burton and Rojas, 
+    Mauricio and Obreg{\&#39;o}n-Henao, Andr{\&#39;e}s and 
+    Anderson, G Brooke and Henao-Tamayo, Marcela},
+  journal={Scientific Reports},
+  volume={10},
+  number={1},
+  pages={1--12},
+  year={2020}
+}</code></pre>
+<p>You can get these details from Google Scholar:</p>
+<div class="figure"><span id="fig:unnamed-chunk-23"></span>
+<img src="figures/google_scholar.png" alt="Example of using Google Scholar to get bibliographical information for a BibTeX file." width="\textwidth" />
+<p class="caption">
+Figure 3.10: Example of using Google Scholar to get bibliographical information for a BibTeX file.
+</p>
+</div>
 <p><strong>Including mathematical equations.</strong></p>
 <p>Next, you can include mathematical equations within an
 Rmarkdown document. This allows you to use nice formatting whenever you need
@@ -6888,11 +6943,11 @@ bacterial colonies counted in that sample (<code>CFUs</code>).</p>
 as well as selected an example dataset of this type to use to create the
 protocol, you can include a subsection in the “Overview” section of the protocol
 that describes these input data, what file format they are in, and how they
-can be read into R for pre-processing (Figure <a href="experimental-data-preprocessing.html#fig:protocoldatainput">3.10</a>).</p>
+can be read into R for pre-processing (Figure <a href="experimental-data-preprocessing.html#fig:protocoldatainput">3.11</a>).</p>
 <div class="figure"><span id="fig:protocoldatainput"></span>
 <img src="figures/protocol_data_input.png" alt="Providing details on input data in the pre-processing protocol. Once you have an example data file for the type of data that will be input for the protocol, you can add a section that provides the code to read the data into R. You can also add code that will show the first few rows of the example dataset, as well as a description of the data. This figure shows examples of how these elements can be added to an RMarkdown file for a pre-processing protocol, and the associated elements in the final pdf of the protocol, using the example protocol for this module." width="\textwidth" />
 <p class="caption">
-Figure 3.10: Providing details on input data in the pre-processing protocol. Once you have an example data file for the type of data that will be input for the protocol, you can add a section that provides the code to read the data into R. You can also add code that will show the first few rows of the example dataset, as well as a description of the data. This figure shows examples of how these elements can be added to an RMarkdown file for a pre-processing protocol, and the associated elements in the final pdf of the protocol, using the example protocol for this module.
+Figure 3.11: Providing details on input data in the pre-processing protocol. Once you have an example data file for the type of data that will be input for the protocol, you can add a section that provides the code to read the data into R. You can also add code that will show the first few rows of the example dataset, as well as a description of the data. This figure shows examples of how these elements can be added to an RMarkdown file for a pre-processing protocol, and the associated elements in the final pdf of the protocol, using the example protocol for this module.
 </p>
 </div>
 <p>For the data output, it often makes sense to plan for data in a format that is
@@ -6918,13 +6973,13 @@ and the laboratory procedures used to collect those data. In RMarkdown, you can
 create first-level section headers by putting the text for the header on its own
 line and beginning that line with <code>#</code>, followed by a space. You should include a
 blank line before and after the line with this header text. Figure
-<a href="experimental-data-preprocessing.html#fig:protocolsections">3.11</a> shows how this is done in the example protocol for
+<a href="experimental-data-preprocessing.html#fig:protocolsections">3.12</a> shows how this is done in the example protocol for
 this module, showing how text in the plain text RMarkdown file for the protocol
 align with section headers in the final pdf output of the protocol.</p>
 <div class="figure"><span id="fig:protocolsections"></span>
 <img src="figures/protocol_sections.png" alt="Dividing an RMarkdown data pre-processing protocol into sections. This shows an example of creating section headers in a data pre-processing protocol created with RMarkdown, showing section headers in the example pre-procotcol for this module." width="\textwidth" />
 <p class="caption">
-Figure 3.11: Dividing an RMarkdown data pre-processing protocol into sections. This shows an example of creating section headers in a data pre-processing protocol created with RMarkdown, showing section headers in the example pre-procotcol for this module.
+Figure 3.12: Dividing an RMarkdown data pre-processing protocol into sections. This shows an example of creating section headers in a data pre-processing protocol created with RMarkdown, showing section headers in the example pre-procotcol for this module.
 </p>
 </div>
 <p><strong>Adding code for pre-processing.</strong></p>
@@ -6956,7 +7011,7 @@ task, you can use the helpfile for the function to see how to use it. This help
 documentation will allow you to determine all of the function’s parameters and
 the choices you can select for each.</p>
 <p>You can add each piece of code in the RMarkdown version of the protocol using
-the standard method for RMarkdown (module [x]). Figure <a href="experimental-data-preprocessing.html#fig:protocolcode">3.12</a>
+the standard method for RMarkdown (module [x]). Figure <a href="experimental-data-preprocessing.html#fig:protocolcode">3.13</a>
 shows an example from the example protocol for this module. Here, we are using
 code to help identify a “good” dilution for counting CFUs for each sample. The
 code in included in an executable code chunk, and so it will be run each time
@@ -6965,7 +7020,7 @@ finer-level details about what the code is doing.</p>
 <div class="figure"><span id="fig:protocolcode"></span>
 <img src="figures/protocol_code.png" alt="Example of including code in a data pre-processing protocol created with RMarkdown. This figure shows how code can be included in the RMarkdown file for a pre-processing protocol (right), and the corresponding output in the final pdf of the protocol (left), for the code to identify a 'good' dilution for counting CFUs for each sample. Code comments are included to provide finer-level details on the code." width="\textwidth" />
 <p class="caption">
-Figure 3.12: Example of including code in a data pre-processing protocol created with RMarkdown. This figure shows how code can be included in the RMarkdown file for a pre-processing protocol (right), and the corresponding output in the final pdf of the protocol (left), for the code to identify a ‘good’ dilution for counting CFUs for each sample. Code comments are included to provide finer-level details on the code.
+Figure 3.13: Example of including code in a data pre-processing protocol created with RMarkdown. This figure shows how code can be included in the RMarkdown file for a pre-processing protocol (right), and the corresponding output in the final pdf of the protocol (left), for the code to identify a ‘good’ dilution for counting CFUs for each sample. Code comments are included to provide finer-level details on the code.
 </p>
 </div>
 </div>
@@ -7059,7 +7114,7 @@ for example a comma-separated delimited file (module [x]). Each time you render
 the protocol, you will re-write this output file, and so this provides assurance
 that the code in your protocol can be used to reproduce your output data (since
 that’s how you yourself created that form of the data).</p>
-<p>Figure <a href="experimental-data-preprocessing.html#fig:protocoloutput">3.13</a> provides an example from the example protocol
+<p>Figure <a href="experimental-data-preprocessing.html#fig:protocoloutput">3.14</a> provides an example from the example protocol
 for this module. The RMarkdown file for the protocol includes code to write out
 the final, pre-processed data to a comma-separated plain text file called
 “processed_cfu_estimates.csv.” This code writes the output file into the same
@@ -7073,7 +7128,7 @@ computationally reproducible.</p>
 <div class="figure"><span id="fig:protocoloutput"></span>
 <img src="figures/protocol_output_data.png" alt="Example of using code in pre-processing protocol to output the final, pre-processed data that will be used in further analysis for the research project. This example comes from the example protocol for this module, showing both the executable code included in the RMarkdown file for the protocol (right) and how this code is included in the final pdf of the protocol. Outputting the pre-processed data into a plain text file as the last step of the protocol helps ensure computational reproducibility for this step of working with experimental data." width="\textwidth" />
 <p class="caption">
-Figure 3.13: Example of using code in pre-processing protocol to output the final, pre-processed data that will be used in further analysis for the research project. This example comes from the example protocol for this module, showing both the executable code included in the RMarkdown file for the protocol (right) and how this code is included in the final pdf of the protocol. Outputting the pre-processed data into a plain text file as the last step of the protocol helps ensure computational reproducibility for this step of working with experimental data.
+Figure 3.14: Example of using code in pre-processing protocol to output the final, pre-processed data that will be used in further analysis for the research project. This example comes from the example protocol for this module, showing both the executable code included in the RMarkdown file for the protocol (right) and how this code is included in the final pdf of the protocol. Outputting the pre-processed data into a plain text file as the last step of the protocol helps ensure computational reproducibility for this step of working with experimental data.
 </p>
 </div>
 <p>Good protocols include not only <em>how</em> (for data pre-processing protocols, this
@@ -7087,13 +7142,13 @@ data collection and equipment to analyze samples <span class="citation">(Al-JunD
 reference is discussing full protocols for a study, e.g., a clinicial trial, so
 includes more steps that just pre-processing.)</p>
 <p>When you write a protocol within RMarkdown, you can include references
-very easily. Figure <a href="experimental-data-preprocessing.html#fig:protocolreferences">3.14</a> shows an example of the
+very easily. Figure <a href="experimental-data-preprocessing.html#fig:protocolreferences">3.15</a> shows an example of the
 elements you use to do this, showing each element in the example protocol for
 this module.</p>
 <div class="figure"><span id="fig:protocolreferences"></span>
 <img src="figures/protocol_references.png" alt="Including references in a data pre-processing protocol created with RMarkdown. RMarkdown has a built-in referencing system that you can use, based on the BibTeX system for LaTeX. This figure shows examples from the example protocol for this module of the elements used for referencing. You create a BibTeX file with information about each reference, and then use the key for the reference within the text to cite that reference. All cited references will be printed at the end of the document; you can chose the header that you want for this reference section in the RMarkdown file ('References' in this example). In the YAML of the RMarkdown file, you specify the path to the BibTeX file (with the 'bibliography: ' key), so it can be linked in when the RMarkdown file is rendered." width="\textwidth" />
 <p class="caption">
-Figure 3.14: Including references in a data pre-processing protocol created with RMarkdown. RMarkdown has a built-in referencing system that you can use, based on the BibTeX system for LaTeX. This figure shows examples from the example protocol for this module of the elements used for referencing. You create a BibTeX file with information about each reference, and then use the key for the reference within the text to cite that reference. All cited references will be printed at the end of the document; you can chose the header that you want for this reference section in the RMarkdown file (‘References’ in this example). In the YAML of the RMarkdown file, you specify the path to the BibTeX file (with the ‘bibliography:’ key), so it can be linked in when the RMarkdown file is rendered.
+Figure 3.15: Including references in a data pre-processing protocol created with RMarkdown. RMarkdown has a built-in referencing system that you can use, based on the BibTeX system for LaTeX. This figure shows examples from the example protocol for this module of the elements used for referencing. You create a BibTeX file with information about each reference, and then use the key for the reference within the text to cite that reference. All cited references will be printed at the end of the document; you can chose the header that you want for this reference section in the RMarkdown file (‘References’ in this example). In the YAML of the RMarkdown file, you specify the path to the BibTeX file (with the ‘bibliography:’ key), so it can be linked in when the RMarkdown file is rendered.
 </p>
 </div>
 <p>The process of writing a protocol forces you to think about each step in the

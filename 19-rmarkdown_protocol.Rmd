@@ -364,7 +364,75 @@ referencing system. This allows you to include bibliographical references in the
 documents that you create, and Rmarkdown will handle the creation of the
 references section and the numbering of the documents within your text.
 
+To include references in RMarkdown documents, you can use something called
+**BibTeX**. This has three components:
 
+1. Create a plain text file with listings for each of 
+your references (**BibTeX file**). Save it with the
+extension `.bib`. 
+2. In your RMarkdown document, include the filepath
+to this BibTeX file. 
+3. In the text of the RMarkdown file, include a key and special character
+combination anytime you want to reference a paper.
+
+Once you have a BibTeX file, you will include its
+path in the YAML: 
+
+```
+  ---
+  title: "Reproducible Research with R"
+  author: "Brooke Anderson"
+  date: "1/25/2021"
+  output: beamer_presentation
+  bibliography: mybibliography.bib
+  ---
+```
+
+It is easiest if you save the BibTeX file in the same directory 
+as the RMarkdown document.
+
+You can add references in the text using a key for each paper
+within special characters (`[@paper1, @paper2]`). 
+
+For example, you would write:
+
+```
+This technique follows earlier work [@fox2020, 
+@anderson2019].
+```
+
+To create: 
+
+> ``This technique follows earlier work (Fox et al. 2020, Anderson et al. 2019)."
+
+With full paper details included at the end of the document.
+
+Put all the bibliographical details in the BibTeX file: 
+
+You will have a file named something like `mybibliography.bib`
+with entries for each paper like this: 
+
+```
+@article{fox2020,
+  title={Cyto-feature engineering: A pipeline for flow cytometry 
+    analysis to uncover immune populations and associations with 
+    disease},
+  author={Fox, Amy and Dutt, Taru S and Karger, Burton and Rojas, 
+    Mauricio and Obreg{\'o}n-Henao, Andr{\'e}s and 
+    Anderson, G Brooke and Henao-Tamayo, Marcela},
+  journal={Scientific Reports},
+  volume={10},
+  number={1},
+  pages={1--12},
+  year={2020}
+}
+```
+
+You can get these details from Google Scholar: 
+
+```{r echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of using Google Scholar to get bibliographical information for a BibTeX file."}
+knitr::include_graphics("figures/google_scholar.png")
+```
 
 **Including mathematical equations.**
 
