@@ -1,8 +1,11 @@
 ---
 title: "Protocol: Estimating bacterial loads from plating samples at different dilutions"
 author: "Henao-Tomayo Research Laboratory"
+date: "Last edited: `r Sys.Date()`"
 output: pdf_document
 bibliography: ../../book.bib
+header-includes:
+   - \usepackage{siunitx}
 ---
 
 ```{r setup, include=FALSE}
@@ -18,32 +21,31 @@ or drug has worked in comparison to controls.
 
 We typically estimate bacterial load in an animal organ using the **plate count
 method** with **serial dilutions**. Serial dilutions allow you to create a
-highly diluted sample without needing a massive amount of diluent, as you
-increase the dilution one step at a time, steadily bringing the samples down to
-lower bacterial loads per volume through increased, step-by-step dilutions. This
-method is common across laboratories that study tuberculosis drug efficacy as a
-method for estimating bacterial load in animal organs
-[@franzblau2012comprehensive] and is a well-established method across
-microbiology in general, dating back to Koch in the late 1800s
-[@wilson1922proportion; @ben2014estimation].
+highly diluted sample without needing a massive amount of diluent: as you
+increase the dilution one step at a time, you can steadily bring the samples
+down to lower bacterial loads per volume. This method is common across
+laboratories that study tuberculosis drug efficacy as a method for estimating
+bacterial load in animal organs [@franzblau2012comprehensive] and is a
+well-established method across microbiology in general, dating back to Koch in
+the late 1800s [@wilson1922proportion; @ben2014estimation].
 
 With this method, we homogenize part of the organ, and then create several
 increasingly dilute samples. Each dilution is then spread on a plate with a
 medium in which *Mycobacterium tuberculosis* can grow and left to grow for
 several weeks at a temperature conducive to *Mycobacterium tuberculosis* growth.
 The idea is that individual bacteria from the original sample end up randomly
-around the surface of the plate, and any that are **viable** (able to reproduce)
-will form a new colony that, after a while, you'll be able to see
-[@wilson1922proportion; @goldman2015practical]. At the end of this incubation period, the number of
-**colony-forming units (CFUs)** are counted on each plate.
+spread across the surface of the plate, and any bacteria that are **viable**
+(able to reproduce) will form a new colony that, after a while, you'll be able
+to see [@wilson1922proportion; @goldman2015practical]. At the end of this
+incubation period, you can count the number of these **colony-forming units
+(CFUs)** on each plate.
 
-For each original sample, we pick a dilution level that provided a good range of
-CFUs for counting. To count the number of colonies, you need **a "just right"
-dilution** (and you likely won't know what this is until after plating) to have
-a **countable plate**. If you have **too high** of a dilution (i.e., one with
-very few viable bacteria), randomness will play a big role in the CFU count, and
-you'll estimate the original with more variability. If you have **too low** of a
-dilution (i.e., one with lots of viable bacteria), it will be difficult to
+To count the number of CFUs, you need **a "just right" dilution** (and you
+likely won't know what this is until after plating) to have a **countable
+plate**. If you have **too high** of a dilution (i.e., one with very few viable
+bacteria), randomness will play a big role in the CFU count, and you'll estimate
+the original with more variability, which isn't ideal. If you have **too low**
+of a dilution (i.e., one with lots of viable bacteria), it will be difficult to
 identify separate colonies, and they may complete for resources. (The pattern
 you see when the dilution is too low (i.e., too concentrated with bacteria) is
 called a **lawn**---colonies merge together).
@@ -81,11 +83,11 @@ used to estimate bacterial load in that organ by homogenizing part of the
 organ and then plating the homogenate and several serial dilutions and 
 counting the CFUs on each plate following an incubation period. 
 
-The data used in this protocol result from this type of experiment. 
-They come from an experiment to test novel vaccines to protect against
-*Mycobacterium tuberculosis*. [A little more about the experiment---what
-vaccines were tested, which controls used, and which time points tested.]
-The experimental groups in this case were: 
+In this data pre-processing protocol, we are using example data from a research
+project that our laboratory previously conducted. This project tested a novel
+vaccine to protect against *Mycobacterium tuberculosis*. The results from this
+study were published previously [@tiwari2020bcg]. The experimental groups in
+this case are given in Table 1.
 
 ```{r echo = FALSE}
 library(kableExtra)
@@ -99,28 +101,29 @@ vaccination <- c(rep(c("PBS", rep("BCG", 4)), 2))
 
 group_df <- data.frame(group, route, drug, vaccination)
 
-group_df %>%
-  kable(align = "l") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  row_spec(0:nrow(group_df), color = "black")
+group_df %>% 
+  kable(caption = "Experimental groups in the example data for this pre-processing protocol.")
 ```
 
 
-For each replicate, half the spleen was used to estimate bacterial load through
-the plate count method (Figure 1). While only part of the organ was used in this
-experiment, in experiments where we expect bacterial counts to be very low
-(e.g., long treatment regimens), it may make more sense to use a larger portion
-of---up to the whole---organ and to plate a very large proportion of the
-homogenate [@franzblau2012comprehensive], to be able to get higher CFU counts
-and reduce sampling error in these counts.
+For each replicate in this experiment, half the spleen was used to estimate
+bacterial load through the plate count method. Figure 1 provides an overview of
+the full process.
 
-For each animal, this half of the spleen was homogenized in 500 microliters phosphate buffer
-saline (PBS) to create a homogenate. This homogenate was diluted several times,
-and both the homogenate and each dilution were plated on part of a 7H11 agar
-plate. Each dilution resulted from taking 0.5 mL from the previous test tube
-(either homogenate or the previous dilution) and resuspending it in 2.0 mL PBS,
-for a total liquid volume of 2.5 mL. From each test tube, 100 microliters were
-plated (Figure 1). The plates were incubated for 3--5 weeks at $37^{o}C$, and
+For each animal, half of the spleen was homogenized in 500 microliters phosphate
+buffer saline (PBS) to create a homogenate. While only part of the organ was
+used in this experiment, in experiments where we expect bacterial counts to be
+very low (e.g., long treatment regimens), it may make more sense to use a larger
+portion of---up to the whole---organ and to plate a very large proportion of the
+homogenate [@franzblau2012comprehensive], to be able to get higher CFU counts
+and reduce sampling error in these counts. The homogenate was diluted several
+times, and both the homogenate and each dilution were plated on a quarter of a
+7H11 agar plate. Each dilution resulted from taking a 100 \textmu L aliquot from
+the previous test tube (either homogenate or the previous dilution) and
+resuspending it in 400 \textmu L PBS, for a total liquid volume of 500 \textmu
+L. From each test tube, 100 \textmu L were plated. Figure 2 shows a photograph
+of the resulting plating, and you can see that each sample was plated on a
+quarter of the plate. The plates were incubated for 3--5 weeks at 37&deg;C, and
 then colony-forming units (CFUs) were counted on each plate and recorded in the
 data used as input to this protocol. *Mycobacterium tuberculosis* is very
 slow-growing, with a rate of division that is between 12 and 24 hours
@@ -130,6 +133,11 @@ needed for plate counts for most other types of bacteria.
 ```{r platingexample, echo = FALSE, out.width = "\\textwidth", fig.cap = "Visual overview of the dilution and plating process for this experiment. For each animal, half the spleen was homogenized in 500 microliters phosphate buffer saline (PBS) for plating ('Homogenate' tube in graphic). Three serial dilutions were created by resuspending 100 microliters from the homogenate or previous dilution in 400 microliters PBS ('Level 1 dilution', 'Level 2 dilution' and 'Level 3 dilution' tubes in graphic). From each tube, 100 microliters were plated in one quarter of a 7H11 agar plate (circle at bottom of graphic). After 3--5 weeks of incubation at 37\\textsuperscript{o}C, colony-forming units were counted from each quarter of the plate and recorded. These are the input data for this protocol."}
 knitr::include_graphics("../../figures/protocol_graphic.png")
 ```
+```{r platingexample2, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of a plate from this process. Each plate is divided into quarters, with a single sample (i.e., from a specific tube shown in Figure 1) spread in each quarter of the plate. The shows the plate after enough time has passed following plating for colony forming units (CFUs) to grow. In this example, CFUs can easily be counted in the bottom two quadrants of the plate, but may be too numerous to count in the top two quadrants."}
+knitr::include_graphics("../../figures/bacteria_plate.JPG")
+```
+
+### Method limitations
 
 As a conclusion for the experimental description, it is useful to keep in mind
 some limitations of this method. There are a number of advantages to this
@@ -145,9 +153,9 @@ Next, because *Mycobacterium tuberculosis* grows so slowly, it takes an
 inconveniently long time to determine bacterial loads by plating
 [@franzblau2012comprehensive; @pathak2012counting]. Since these bacteria are
 dangerous, the incubation of the plates must be done in a secure laboratory, and
-so a key limitation is that the process takes up valuable space over several
-weeks [@pathak2012counting]. Further, the incubation process adds several weeks
-to the time needed to generate results from an experiment
+so a key limitation is that the process takes up valuable laboratory space over
+several weeks [@pathak2012counting]. Further, the incubation process adds
+several weeks to the time needed to generate results from an experiment
 [@franzblau2012comprehensive]. Faster methods are being explored to cut out the
 3--4 weeks of waiting required for plating; some new methods that are faster
 include luciferase readout and fluorescence [@franzblau2012comprehensive].
@@ -195,30 +203,31 @@ numbers of CFUs, as well as counting difficulties introduced with overcrowding
 of colonies on a plate, and so plays a large role when CFUs are high
 [@ben2014estimation; @goldman2015practical]. There are opportunities for error,
 as well, in preparing the dilutions, plating them, and incubating them
-[@goldman2015practical]. **Dilution error** is introduced by the process of
-pipetting from one dilution level to another, since small errors in volume
-can occur each time a sample is pipetted [@jennison1940evaluation].
+[@goldman2015practical]. **Dilution error**, for example, is introduced by the
+process of pipetting from one dilution level to another, since small errors in
+volume can occur each time a sample is pipetted [@jennison1940evaluation].
 
 ## Data description
 
 In our laboratory, we collect data from plating serial dilutions in a plain text
-file, recording the data using a spreadsheet program that is set up in a "tidy"
-data format. Here are the first few rows of the data:
+file, recording the data using a spreadsheet program that is set up so it is
+easy to convert it into in a "tidy" data format once it is read into R. Here are
+the first few rows of the data:
 
 ```{r echo = FALSE}
 library(tidyverse)
 cfu_data <- read_csv("cfu_data.csv")
 head(cfu_data)
 ```
-Each row represents the number of bacterial colonies counted after plating a
-certain sample at a certain dilution. Columns are included with values for the
-experimental group of the sample (`group`), the specific ID of the sample within
-that experimental group (`replicate`, e.g., `2-A` is mouse A in experimental
-group 2), the dilution level for that plating (`dilution`), and the number of
-bacterial colonies counted in that sample (`CFUs`).
 
-In cases where the bacteria were too numerous to count, that dilution level
-is excluded from the data.
+Each row represents a replicate from the experiment, providing the number of
+bacterial colonies counted after plating a samples from that replicate at each
+dilution. Columns are included with values for the experimental group of the
+replicate (`group`), the specific ID of the replicate within that experimental
+group (`replicate`, e.g., `2-A` is mouse A in experimental group 2), and the
+CFUs counted at each dilution level (`dilution_0`, `dilution_1`, `dilution_2`,
+and `dilution_3`). In cases where the bacteria were too numerous to count, this
+is marked in the cell with "TNTC".
 
 # Reading data into R
 
@@ -246,7 +255,35 @@ object `cfu_data`. You can see the first few rows by running:
 head(cfu_data)
 ```
 
-You can get a summary of the data by running: 
+As soon as you read these data into R, you will want to convert them to a "tidy"
+data format, as this will make it easier to do other work with the data. In this
+case, that will require transforming the data so there's a single row for the
+CFUs recorded for each dilution level for each replicate. As we "tidy" the data,
+we'll also get rid of cases where the CFUs were too numerous to count, as well
+as ensure that the column that gives CFU counts is in a numeric data type, so
+that we can do numerical calculations on values in that column.
+
+You can use the following code to make this transformation.
+
+```{r}
+cfu_data <- cfu_data %>% 
+  # Convert all dilution columns to be numeric (this will change the "TNTC"
+  # markers to missing---NA)
+  mutate_at(c("dilution_0", "dilution_1", "dilution_2", "dilution_3"), 
+            .funs = as.numeric) %>% 
+  # Pivot the dilution columns so that there's one column giving the 
+  # dilution level (previous the column name) and one giving the CFUs at that
+  # dilution (previously the cell values for the columns)
+  pivot_longer(cols = starts_with("dilution"), 
+               names_to = "dilution", 
+               values_to = "CFUs") %>% 
+  # Clean up the `dilution` column so it gives only the numeric level 
+  # of the dilution, and make sure that the column is in a numeric data type
+  mutate(dilution = str_extract(dilution, "[0-9]+"), 
+         dilution = as.numeric(dilution))
+```
+
+You can now get a summary of the data by running: 
 
 ```{r}
 summary(cfu_data)
@@ -279,7 +316,7 @@ cfu_data %>%
   facet_wrap(~ dilution)
 ```
 In this case, most bacterial counts are zero at all dilution levels. However, 
-there are more non-zero CFUs at dilution level 0 and more as you move to higher
+there are more non-zero CFUs at dilution level 0 and fewer as you move to higher
 dilution levels. The highest CFU count at any dilution level is a little over
 50, for dilution level 1. Most non-zero CFU counts are at or below 30, 
 regardless of dilution level.
@@ -301,19 +338,20 @@ plating, and this search for an optimal dilution tries to minimize those errors.
 The potential for sampling error is higher at lower CFU counts, where randomness
 of the underlying Poisson process governing the bacterial cells in a sample can
 introduce substantial variation across estimates from the same sample
-[@ben2014estimation]. Conversely, the potential for counting error and errors
+[@ben2014estimation]. Conversely, the potential for counting errors and errors
 from overcrowding are higher at higher CFU counts [@ben2014estimation;
 @wilson1935bacteriological]---if you have too low of a dilution (i.e., one that
 has not been diluted much and has lots of viable bacteria), it will be difficult
 to identify separate colonies, and they may complete for resources. Further,
 when there are a lot of CFUs, there can be counting errors, in which the person
-counting the colonies miscounts or loses track when counting. Typically, there
-will be some standard range of CFUs that are indicative of a plate having a
-"good" dilution for counting. Several sources recommend ranges of CFUs for a
-countable plate; depend on the source, these suggested ranges are often 30--300
-CFUs [@goldman2015practical; @ben2014estimation; @tomasiewicz1980most], although
-some sources have also recommended ranges of 25--200, 40--400, 200--400, and
-100--400 [@ben2014estimation].
+counting the colonies miscounts or loses track when counting. 
+
+Typically, there will be some standard range of CFUs that are indicative of a
+plate having a "good" dilution for counting. Several sources recommend ranges of
+CFUs for a countable plate; depending on the source, these suggested ranges are
+often 30--300 CFUs [@goldman2015practical; @ben2014estimation;
+@tomasiewicz1980most], although some sources have also recommended ranges of
+25--200, 40--400, 200--400, and 100--400 CFUs [@ben2014estimation].
 
 Since we plate each sample in a quarter of a plate, rather than across the whole
 plate, we use a range appropriate for this smaller surface area. We identify 
@@ -325,25 +363,14 @@ although it does present a higher chance for sampling error in the estimates,
 which we consider a reasonable trade-off as there are space constraints for 
 growing plated bacteria within our BSL-3 facility.
 
-<!-- In this protocol, we are describing how to analyze data from experiments with -->
-<!-- *Mycobacterium tuberculosis*. This is a very slow-growing bacteria -->
-<!-- [@pathak2012counting], and so we typically identify "good" dilutions using a -->
-<!-- lower range of CFUs than other laboratories might when working with -->
-<!-- faster-growing bacteria. The trade-off, of course, is that there will likely be -->
-<!-- more variability in our bacterial load estimates, since they tend to be based on -->
-<!-- plates with lower average counts. However, we balance this limitation with the -->
-<!-- practical limitation of how long it takes for this type of bacteria to grow, and -->
-<!-- so need to settle for using lower CFUs in some cases than might be ideal if -->
-<!-- working with faster-growing bacteria.  -->
-
 We use the following criteria to pick the best dilution in each sample 
 to use to back-calculate the bacterial load in the original sample: 
 
-1. If CFU counts at all dilutions were 0, use the lowest dilution (level 0
+1. If CFU counts at all dilutions are 0, use the lowest dilution (level 0
 dilution); and
-2. If some of the dilutions gave non-zero CFU counts, use the dilution with 
+2. If some of the dilutions have non-zero CFU counts, use the dilution with 
 a CFU count closest to 25; and
-3. If there are ties in terms of which dilution gave a CFU closest to 25, take
+3. If there are ties in terms of which dilutions have a CFU closest to 25, take
 the plate with the lowest dilution level of those ties.
 
 Here is the code we used to identify the best dilution level for each sample, 
@@ -392,15 +419,15 @@ cfu_data %>%
   filter(ties_closest_to_25 & !all_zeros)
 ```
 
-These results show that there are no samples where there are non-zero ties in 
-terms of which dilutions gave CFU counts closest to 25, so in this case, that
-is not a criteria we need to consider further in identifying the best dilution 
-level for each sample.
+These results show that there are no samples where there are non-zero ties in
+terms of which dilutions gave CFU counts closest to 25, so in this case, that is
+not a criteria we need to consider further in identifying the CFU count at the
+best dilution level for each sample in these example data.
 
 Now that we've identified the best dilution level for each replicate, we can
 reduce the data, creating a new dataset with only a single row for each sample. 
 Each sample will have a row that provides the best dilution level for that 
-sample and the CFU count at that dilution level: 
+sample: 
 
 ```{r}
 cfu_data_reduced <- cfu_data %>% 
@@ -418,12 +445,12 @@ cfu_data_reduced %>%
 
 For this experiment, many of the samples had 0 CFUs at all dilution levels. For
 the samples with non-zero CFU counts, the best dilutions were often at dilution
-level 0 (i.e., undiluted sample), although in a few cases the best dilutions for
-samples were at dilution levels of 1 ($\frac{1}{5}$ dilution) or 2 ($\frac{1}{25}$
-dilution). The CFU counts at the best dilution levels were, for non-zero CFU
-samples, between 1 and 30. We may want to keep in mind that the sampling error
-is likely pretty high for the CFU counts that are lower than about 10 in these
-samples.
+level 0 (i.e., undiluted homogenate; see Figure 1), although in a few cases the
+best dilutions for samples were at dilution levels of 1 ($\frac{1}{5}$ dilution)
+or 2 ($\frac{1}{25}$ dilution). The CFU counts at the best dilution levels were,
+for non-zero CFU samples, between 1 and 30. We may want to keep in mind that the
+sampling error is likely pretty high for the CFU counts that are lower than
+about 10 in these samples.
 
 # Estimating bacterial load for each sample
 
@@ -441,18 +468,19 @@ First, we can determine the **dilution** in each tube. The **dilution** for any
 particular diluted sample is:
 
 $$
-\mbox{Dilution} = \frac{\mbox{Volume of sample}}{\mbox{Total volume}}
+\mbox{Dilution} = \frac{\mbox{Volume of aliquot}}{\mbox{Total volume}}
 $$
 
-The total sample volume includes the volume resuspended (0.5 mL) and the 
-volume of PBS in which this was diluted (2.0 mL). We can therefore 
-calculate the dilution for each level of dilution in this experiment as: 
+The total sample volume includes the volume of the aliquot (100 \textmu L) and
+the volume of PBS in which this aliquot was diluted (400 \textmu L). We can
+therefore calculate the dilution for each level of dilution (as compared to the
+undiluted homogenate) in this experiment as:
 
 ```{r}
-volume_resuspend <- 0.5     # in milliliters
-volume_pbs <- 2.0           # in milliliters
+volume_aliquot <- 100       # in microliters
+volume_pbs <- 400           # in microliters
 
-dilution <- volume_resuspend / (volume_resuspend + volume_pbs)
+dilution <- volume_aliquot / (volume_aliquot + volume_pbs)
 dilution
 ```
 
@@ -469,8 +497,23 @@ dilution_factor
 ```
 
 In other words, for each level of dilution, there is a five-fold dilution of
-the sample. As you move through the levels of dilution, each level will 
-become diluted by an additional factor of 5: 
+the sample. 
+
+These following general equations apply for determining the total dilution in
+any of the tubes:
+
+$$
+\mbox{Dilution factor in tube} = 5^x
+$$
+
+$$
+\mbox{Dilution in tube} = \frac{1}{5^x}
+$$
+
+where $x$ is the dilution level in the tube.
+
+As you move through the levels of dilution, each level will become diluted by an
+additional factor of 5 compared to the homogenate in the first tube (Figure 1):
 
 | Dilution level  | Dilution factor in tube | Dilution in tube | 
 | ------------- | ------------- | ------------- |
@@ -479,18 +522,8 @@ become diluted by an additional factor of 5:
 | 2  | $5^{2} = 25$  | $\frac{1}{25}$ |
 | 3  | $5^{3} = 125$  | $\frac{1}{125}$ |
 
-These following general equations apply for determining the total dilution in
-any of the tubes:
-
-$$
-\mbox{Dilution factor in tube} = 5^{\mbox{(dilution level in tube)}}
-$$
-
-$$
-\mbox{Dilution in tube} = \frac{1}{5^{\mbox{(dilution level in tube)}}}
-$$
-We can apply the first of these equations to get the dilution factor for
-the optimal dilution we identified for each sample in the previous section:
+We can apply these principles to get the dilution factor for the optimal
+dilution we identified for each sample in the previous section:
 
 ```{r}
 cfu_data_reduced <- cfu_data_reduced %>% 
@@ -503,13 +536,13 @@ cfu_data_reduced %>%
 Next, we can measure the proportion of each tube that was used for plating. With
 plating, there is a dilution factor both for diluting to each tube, then a
 further dilution factor to account for how much of each tube is spread on a
-plate to incubate [@ben2014estimation]---we have already calculated the first
-dilution factor, and so we now need to calculate the second. The second dilution
-factor is the inverse of the proportion of each tube that is plated
-[@ben2014estimation]. From each tube, 100 $\mu L$ is taken out to plate, out of
-500 $\mu L$ of liquid in the tube (100 $\mu L$ of sample from the previous
-dilution or homogenate and 400 $\mu L$ PBS), so you are plating 20% of the liquid
-in each tube:
+plate to incubate [@ben2014estimation]---we have already calculated the dilution
+factor for dilution to each tube, and so we now need to calculate the dilution
+factor for plating a sample from the tube. The second dilution factor is the
+inverse of the proportion of each tube that is plated [@ben2014estimation]. From
+each tube, 100 \textmu L is taken to plate, out of 500 \textmu L of liquid in
+the tube (100 \textmu L of aliquot from the previous dilution or homogenate and
+400 \textmu L PBS), so you are plating 20% of the liquid in each tube:
 
 $$
 100 \mu L * \frac{1}{500 \mu L} = 0.2
@@ -520,40 +553,71 @@ at the selected dilution, as the total dilution on that plate will be the
 product of the dilution factor in that tube and the dilution factor of plating: 
 
 ```{r}
-volume_plated <- 100 / 1000   # Division by 1000 is to convert from uL to mL
-frac_plated <- volume_plated / (volume_resuspend + volume_pbs)
+# Calculate dilution factor for plating process
+volume_plated <- 100      # in microliters
+frac_plated <- volume_plated / (volume_aliquot + volume_pbs)
 plate_dilution_factor <- 1 / frac_plated
 plate_dilution_factor
 
+# Calculate dilution factor on plate for each sample compared to 
+# homogenate in first tube
 cfu_data_reduced <- cfu_data_reduced %>% 
   mutate(dilution_factor_on_plate = dilution_factor_in_tube *
            plate_dilution_factor)
+
+# Print out the results
 cfu_data_reduced %>% 
   knitr::kable()
 ```
 
-Now, we can use the CFUs counted on the plate to estimate the CFUs in the 
-original sample by multiplying the counted CFUs by the total dilution 
-factor on that plate: 
+Now, we can use the CFUs counted on the plate to estimate the concentration of
+viable bacteria in the homogenate by multiplying the counted CFUs by the total
+dilution factor on that plate:
 
 ```{r}
+# Estimate CFUs in homogenate
 cfu_data_reduced <- cfu_data_reduced %>% 
-  mutate(cfu_in_sample = CFUs * dilution_factor_on_plate)
+  mutate(cfu_in_homog = CFUs * dilution_factor_on_plate)
+
+# Print results out as a table
 cfu_data_reduced %>% 
   knitr::kable()
 ```
 
-Finally, to get an estimate of the bacterial load in the full organ, we can 
-back-calculate based on the proportion of the organ that was included in the
-original sample. In this experiment, we used half of the spleen, so the 
-estimated bacterial load in the full organ should be approximately twice
-that estimated in the sample (since $1/0.5 = 2$). We calculated this in R: 
+Finally, to get an estimate of the bacterial load in the full organ, we need 
+to back-calculate from the concentration of bacteria we estimated in the
+homogenate. To do this, we need to account for two factors: the volume of PBS 
+that was used to create the homogenate and the proportion of the organ that was
+included in the homogenate. 
+
+The homogenate was created using 500 \textmu L of PBS to resuspend the portion
+of the spleen, so the bacterial concentration that we estimated in the 
+homogenate provides an estimate of CFUs per 500 \textmu L. To estimate the total 
+number of viable bacteria in the original homogenate, we'll need to multiply 
+the concentration of bacteria in the homogenate, which we calculated 
+previously, by this volume. 
+
+Next, to get an estimate of bacteria load in the full organ, we need to
+backcalculate based on the proportion of the organ that was included in the
+original sample. In this experiment, we used half of the spleen, so the
+estimated bacterial load in the full organ should be approximately twice that
+estimated in the sample (since $1/0.5 = 2$). 
+
+We can calculate to account for these two factors, allowing us to estimate
+the bacterial load in the entire spleen of the animal:
 
 ```{r}
-prop_organ_in_sample <- 0.5 # Half the spleen was included in the sample
+prop_organ_in_homog <- 0.5 # Half the spleen was included in the homogenate
+volume_resuspend <- 500    # The homogenate was created by resuspending the 
+                           # organ part in this many microliters of PBS
 
+# Estimate the bacterial load in the original organ based on the estimated
+# bacterial concentration in the homogenate
 cfu_data_reduced <- cfu_data_reduced %>% 
-  mutate(cfu_in_organ = cfu_in_sample * (1 / prop_organ_in_sample))
+  mutate(cfu_in_organ = cfu_in_homog * volume_resuspend * 
+           (1 / prop_organ_in_homog))
+
+# Print the results as a table
 cfu_data_reduced %>% 
   select(-group) %>% 
   knitr::kable()
@@ -562,10 +626,10 @@ cfu_data_reduced %>%
 # Final output
 
 This protocol describes the pre-processing of data collected through a serial
-dilution viable plate count for each sample from our experiment. Our input
-was the CFUs counted for each plate at each of four dilution levels. Our output
-is an estimate of the bacterial load in the spleen from each sample in the 
-experiment.
+dilution viable plate count for each sample from our experiment. Our input was
+the CFUs counted for each plate at each of four dilution levels. Our output is
+an estimate of the bacterial load in the spleen from each replicate (animal) in
+the experiment.
 
 From the previous steps, we can remove the columns that we no longer need, 
 to create a simpler format for the output data: 
@@ -589,18 +653,18 @@ that are replicates for the same experimental group together:
 library(ggbeeswarm)
 cfu_final %>% 
   ggplot(aes(x = as.factor(group), 
-             y = log10(cfu_in_organ + 1), 
+             y = log10(cfu_in_organ + 0.1), 
              color = as.factor(group))) + 
   geom_quasirandom() + 
   labs(x = "Experimental group", 
        y = "Log(CFU + 1)", 
        color = "Experimental group")
 ```
-In this 
-example plot, the log-10 values of the CFUs are shown, since the counts
-can otherwise be hard to compare. Since some of the CFU counts in the 
-samples are 0, a small constant (1) is added to each value before taking 
-the log, since the log of 0 is undefined.
+
+In this example plot, the log-10 values of the CFUs are shown, since the counts
+can otherwise be hard to compare. Since some of the CFU counts in the samples
+are 0, a small constant (0.1) is added to each value before taking the log,
+since the log of 0 is undefined.
 
 We output this final data to a plain text file (a csv) using the following
 code: 
