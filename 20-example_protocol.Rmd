@@ -1,19 +1,23 @@
 ## Example: Creating a reproducible data pre-processing protocol
 
-We will walk through an example of creating a reproducible protocol for the
-automated gating of flow cytometry data for a project on the immunology of
-tuberculosis lead by one of our Co-Is. This data pre-processing protocol was
-created using RMarkdown and allows the efficient, transparent, and reproducible
-gating of flow cytometry data for all experiments in the research group. We will
-walk the trainees through how we developed the protocol initially, the final
-pre-processing protocol, how we apply this protocol to new experimental data.
+We will walk through an example of creating a reproducible data pre-processing
+protocol. As an example, we will use the pre-processing task required for
+estimating the bacterial load from plating samples from an immunological
+experiment at serial dilutions, using data from an experiment lead by one of the
+coauthors. This data pre-processing protocol was created using RMarkdown and
+allows the efficient, transparent, and reproducible pre-processing of plating
+data for all experiments in the research group. We will go through how RMarkdown
+techniques can be applied to develop this type of data pre-processing protocol
+for a laboratory research group.
 
-**Objectives.** After this module, the trainee will be able to:
+**Objectives.** After this module, you should be able to:
 
-- Explain how a reproducible data pre-processing protocol can be integrated into
+- Explain how a reproducible data pre-processing protocol can be developed for
 a real research project
 - Understand how to design and implement a data pre-processing protocol to
 replace manual or point-and-click data pre-processing tools
+- Apply techniques in RMarkdown to develop your own reproducible data
+pre-processing protocols
 
 ### Introduction and example data
 
@@ -29,20 +33,19 @@ immunological research: estimating the bacterial load in samples by plating at
 different dilutions, identifying a good dilution for counting colony-forming
 units (CFUs), and then back-calculating the estimated bacterial load in the
 original sample based on the colonies counted at this dilution. This
-experimental technique dates back to the late 1800s, with Koch, and continues to
-be widely used in microbiology research and applications today
-[@ben2014estimation]. These data are originally from example data for an R
-package called `bactcountr`, currently under development at
+experimental technique dates back to the late 1800s, with Robert Koch, and
+continues to be widely used in microbiology research and applications today
+[@ben2014estimation]. These data are originally from an experiment in one of our
+authors' laboratory and are also available as example data for an R package
+called `bactcountr`, currently under development at
 https://github.com/aef1004/bactcountr/tree/master/data.
 
-These data represent data from a common laboratory task in immunological
-research: estimating the bacterial load in samples by plating each sample at
-different dilutions and counting colony-forming units at a "good" dilution for
-each sample. For example, you may be testing out some drugs against an
-infectious bacteria and want to know how successful different drugs are in
-limiting bacterial load. You run an experiment and have samples from animals
-treated with different drugs or under control. You want to know: How much viable
-(i.e., replicating) bacteria are in each of your samples? 
+These data are representative of data often collected in immunological research.
+For example, you may be testing out some drugs against an infectious bacteria
+and want to know how successful different drugs are in limiting bacterial load.
+You run an experiment and have samples from animals treated with different drugs
+or under control and would then want to know how much viable (i.e., replicating)
+bacteria are in each of your samples.
 
 You can find out by plating the sample at different dilutions and
 counting the colony-forming units (CFUs) that are cultured on each plate.
@@ -51,30 +54,31 @@ time to grow. The idea is that individual bacteria from the original sample end
 up randomly around the surface of the plate, and any that are viable (able to
 reproduce) will form a new colony that, after a while, you'll be able to see.
 
-To count the number of colonies, you need a "just right" dilution (and you
-typically won't know which dilution this is for a sample until after plating) to
-have a countable plate. If you have too high of a dilution (i.e., one with very
-few viable bacteria), randomness will play a big role in the CFU count, and
-you'll estimate the original with more variability. If you have too low of a
-dilution (i.e., one with lots of viable bacteria), it will be difficult to
-identify separate colonies, and they may complete for resources. To translate
-from diluted concentration to original concentration, you can then do a
-back-calculation, incorporating both the number of colonies counted at that
-dilution and how dilute the sample was. There is therefore some pre-processing
-required (although it is fairly simple) to prepare the data collected by 
-counting the CFUs on each plate for use in statistical testings and to 
-combine with other experimental data. 
+To get a good estimate of bactieral load from this process, you need to count
+CFUs on a "countable" plate---one with a "just right" dilution (and you
+typically won't know which dilution this is for a sample until after plating).
+If you have too high of a dilution (i.e., one with very few viable bacteria),
+randomness will play a big role in the CFU count, and you'll estimate the
+original with more variability. If you have too low of a dilution (i.e., one
+with lots of viable bacteria), it will be difficult to identify separate
+colonies, and they may complete for resources. To translate from diluted
+concentration to original concentration, you can then do a back-calculation,
+incorporating both the number of colonies counted at that dilution and how
+dilute the sample was. There is therefore some pre-processing required (although
+it is fairly simple) to prepare the data collected to get an estimate of
+bacterial load in the original sample. This estimate can then be used in
+statistical testing and combined with other experimental data to explore
+questions like whether a candidate vaccine reduces bacterial load.
 
-We will use this example pre-processing protocol as an illustration in this
-module. If you would like, you can access all the components and follow along
-with the example, re-rendering it yourself on your own computer. The example
-data are available as a csv file, downloadable
+We will use this example of a common data pre-processing task to show how to
+create a reproducible pre-processing protocol in this module. If you would like,
+you can access all the components of the example pre-processing protocol and
+follow along, re-rendering it yourself on your own computer. The example data
+are available as a csv file, downloadable
 [here](https://raw.githubusercontent.com/geanders/improve_repro/master/data/bactcountr_example_data/cfu_data.csv).
 You can open this file using spreadsheet software, or look at it directly in
-RStudio. 
-
-The final pre-processing protocol for these data can be downloaded, including
-both [the original RMarkdown
+RStudio. The final pre-processing protocol for these data can also be
+downloaded, including both [the original RMarkdown
 file](https://raw.githubusercontent.com/geanders/improve_repro/master/data/bactcountr_example_data/example_protocol.Rmd)
 and [the output PDF
 document](https://github.com/geanders/improve_repro/raw/master/data/bactcountr_example_data/example_protocol.pdf).
@@ -88,12 +92,23 @@ scientists and easy to explain to anyone who has not used plating experimental
 work. However, the same general process can also be used to create
 pre-processing protocols for data that are much larger or more complex or for
 pre-processing pipelines that are much more involved.
+For example, this process could be used to create data pre-processing protocols
+for automated gating of flow cytometry data or for pre-processing data 
+collected through liquid chromatography–mass spectrometry.
 
 ### Advice on designing a pre-processing protocol
 
 Before you write your protocol in a knitted document, you should decide on the
 content to include in the protocol. This section provides tips on this design
-process.
+process. In this section, we'll describe some key steps in designing a 
+data pre-processing protocol: 
+
+1. Defining input and output data for the protocol;
+2. Outlining key tasks in pre-processing the input data; and
+3. Adding code for pre-processing.
+
+We will illustrate these design steps using the example protocol on 
+pre-processing plating data. 
 
 **Defining input and output data for the protocol.**
 
