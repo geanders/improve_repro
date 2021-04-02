@@ -4,8 +4,6 @@ author: "Henao-Tomayo Research Laboratory"
 date: "Last edited: `r Sys.Date()`"
 output: pdf_document
 bibliography: example_bib.bib
-header-includes:
-   - \usepackage{siunitx}
 ---
 
 ```{r setup, include=FALSE}
@@ -128,6 +126,7 @@ needed for plate counts for most other types of bacteria.
 ```{r platingexample, echo = FALSE, out.width = "\\textwidth", fig.cap = "Visual overview of the dilution and plating process for this experiment. For each animal, half the spleen was homogenized in 500 microliters phosphate buffer saline (PBS) for plating ('Homogenate' tube in graphic). Three serial dilutions were created by resuspending 100 microliters from the homogenate or previous dilution in 400 microliters PBS ('Level 1 dilution', 'Level 2 dilution' and 'Level 3 dilution' tubes in graphic). From each tube, 100 microliters were plated in one quarter of a 7H11 agar plate (circle at bottom of graphic). After 3--5 weeks of incubation at 37\\textsuperscript{o}C, colony-forming units were counted from each quarter of the plate and recorded. These are the input data for this protocol."}
 knitr::include_graphics("figures/protocol_graphic.png")
 ```
+
 ```{r platingexample2, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of a plate from this process. Each plate is divided into quarters, with a single sample (i.e., from a specific tube shown in Figure 1) spread in each quarter of the plate. The shows the plate after enough time has passed following plating for colony forming units (CFUs) to grow. In this example, CFUs can easily be counted in the bottom two quadrants of the plate, but may be too numerous to count in the top two quadrants."}
 knitr::include_graphics("figures/bacteria_plate.JPG")
 ```
@@ -514,7 +513,7 @@ $$
 where $x$ is the dilution level in the tube.
 
 As you move through the levels of dilution, each level will become diluted by an
-additional factor of 5 compared to the homogenate in the first tube (Figure 1):
+additional factor of 5 compared to the homogenate in the first tube shown in Figure 1:
 
 | Dilution level  | Dilution factor in tube | Dilution in tube | 
 | ------------- | ------------- | ------------- |
@@ -587,36 +586,30 @@ cfu_data_reduced %>%
 
 Finally, to get an estimate of the bacterial load in the full organ, we need 
 to back-calculate from the concentration of bacteria we estimated in the
-homogenate. To do this, we need to account for two factors: the volume of PBS 
-that was used to create the homogenate and the proportion of the organ that was
-included in the homogenate. 
+homogenate. The only source of bacteria in the homogenate comes from the 
+spleen portion that was included, so we can assume that all CFUs estimated
+for the homogenate formed the bacterial load in the portion of spleen 
+used to make the homogenate. However, if we want to estimate the bacterial
+load in the whole spleen, we need to account for the fact that only part
+of the spleen was used to create the homogenate. 
 
-The homogenate was created using 500 \textmu L of PBS to resuspend the portion
-of the spleen, so the bacterial concentration that we estimated in the 
-homogenate provides an estimate of CFUs per 500 \textmu L. To estimate the total 
-number of viable bacteria in the original homogenate, we'll need to multiply 
-the concentration of bacteria in the homogenate, which we calculated 
-previously, by this volume. 
-
-Next, to get an estimate of bacteria load in the full organ, we need to
-backcalculate based on the proportion of the organ that was included in the
-original sample. In this experiment, we used half of the spleen, so the
-estimated bacterial load in the full organ should be approximately twice that
-estimated in the sample (since $1/0.5 = 2$). 
-
-We can calculate to account for these two factors, allowing us to estimate
-the bacterial load in the entire spleen of the animal:
+We'll assume that the bacterial load in the portion of the spleen that was used
+to create the homogenate is representative of the bacterial load per volume of
+spleen throughout the organ. With this assumption, we can estimate the bacterial
+load in the total spleen by dividing the CFUs in the homogenate by the
+proportion of the spleen that was used. Since this proportion will be 1 or less,
+the final estimate will be equal to or larger than the estimated CFUs in the
+homogenate. In this experiment, we used half of the spleen, so the estimated
+bacterial load in the full organ should be approximately twice that estimated in
+the sample (since $1/0.5 = 2$).
 
 ```{r}
 prop_organ_in_homog <- 0.5 # Half the spleen was included in the homogenate
-volume_resuspend <- 500    # The homogenate was created by resuspending the 
-                           # organ part in this many microliters of PBS
 
 # Estimate the bacterial load in the original organ based on the estimated
 # bacterial concentration in the homogenate
 cfu_data_reduced <- cfu_data_reduced %>% 
-  mutate(cfu_in_organ = cfu_in_homog * volume_resuspend * 
-           (1 / prop_organ_in_homog))
+  mutate(cfu_in_organ = cfu_in_homog / prop_organ_in_homog)
 
 # Print the results as a table
 cfu_data_reduced %>% 
