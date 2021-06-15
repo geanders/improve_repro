@@ -6538,6 +6538,8 @@ results you see at each step.
 \hypertarget{process-of-building-a-code-script}{%
 \subsection{Process of building a code script}\label{process-of-building-a-code-script}}
 
+A code script is essentially a recipe for cleaning and analyzing data.
+
 \hypertarget{applied-exercise-4}{%
 \subsection{Applied exercise}\label{applied-exercise-4}}
 
@@ -10804,6 +10806,135 @@ means that users should not transform the read counts in any way before inputing
 them to edgeR.'' \citep{chen2014edger}
 \end{quote}
 
+\begin{quote}
+``Recent work on a grammar of graphics could be extended for biological
+data. The grammar of graphics is based on modular components that when
+combined in different ways will produce different graphics. This enables
+the user to construct a cominatoric number of plots, including those that
+were not preconceived by the implementation of the grammar. Most existing
+tools lack these capabilities.'' \citep{yin2012ggbio}
+\end{quote}
+
+\begin{quote}
+``A new package, ggbio, has been developed and is available on Bioconductor.
+The package provides the tools to create both typical and non-typical
+biological plots for genomic data, generated from core Bioconductor data
+structures by either the high-level autoplot function, or the
+combination of low-level components of the grammar of graphics. Sharing
+data structures with the rest of Bioconductor enables direct integration
+with Bioconductor workflows.'' \citep{yin2012ggbio}
+\end{quote}
+
+\begin{quote}
+``In ggbio, most of the functionality is available through a single
+command, autoplot, which recognizes the data structure and makes a best
+guess of the appropriate plot. \ldots{} Compared to the more general qplot
+API of ggplot2, autoplot facilitates the creation of specialized biological
+graphics and reacts to the specific class of object passed to it. Each type
+of object has a specific set of relevant graphical parameters, and further
+customization is possible through the low-level API.'' \citep{yin2012ggbio}
+\end{quote}
+
+The \texttt{ggbio} package has \texttt{autoplot} functions for many Bioconductor object
+classes, including \texttt{GRangesList}, \ldots{} {[}\citet{yin2012ggbio}
+
+\begin{quote}
+``The grammar {[}of graphics{]} is composed of interchangeable components
+that are combined according to a flexible set of rules to produce plots
+from a wide range of types.'' \citep{yin2012ggbio}
+\end{quote}
+
+\begin{quote}
+``Data are the first component of the grammar\ldots{} The ggbio package attempts
+to automatically load files of specific formats into common Bioconductor
+data structures, using routines provided by Bioconductor packages\ldots{}
+The type of data structure loaded from a file or returned by an algorithm
+depends on the intrinsic structure of the data. For example, BAM files are
+loaded into a GappedAlignments, while FASTA and 2bit sequences result in
+a DNAStringSet. The ggbio package handles each type of data structure
+differently\ldots{} In summary, this abstraction mechanism allows ggbio to
+handle multiple file formats, without discarding any intrinsic properties
+that are critical for effective plotting.'' \citep{yin2012ggbio}
+\end{quote}
+
+\begin{quote}
+``Genomic data have some specific features that are different from those of
+more conventional data types, and the basic grammar does not conveniently
+capture such aspects. The grammar of graphics is extended by ggbio in
+several ways\ldots{} These extensions are specific to genomic data, that is,
+genomic sequences and features, like genes, located on those sequences.''
+\citep{yin2012ggbio}
+\end{quote}
+
+\begin{quote}
+``A geom is responsible for translating data to a visual, geometric
+representation according to mappings between variables and aesthetic
+properties on the geom. In comparison to regular data elements that
+might be mapped to the ggplot2 geoms of points, lines, and polygons,
+genomic data has the basic currency of a range. Ranges underlie exons,
+introns, and other features, and the genomic coordinate system forms
+the reference frame for biological data. We have introduced or extended
+several geoms for representing ranges and gaps between ranges. \ldots{}
+For example, the alignment geom delegates to two other geoms for drawing
+the ranges and gaps. These default to rectangles and chevrons, respectively.
+Having specialized geoms for commonly encountered entities, like genes,
+relegates the tedious coding of primatives, and makes use code simpler
+and more maintainable.'' \citep{yin2012ggbio}
+\end{quote}
+
+\begin{quote}
+``Coordinate systems locate points in space, and we use coordinate
+transformations to map from data coordinates to plot coordinates. The
+most common coordinate system in statistical graphics is cartesian.
+The transformation of data to cartesian coordinates involves mapping
+points onto a plane specified by two perpendicular axes (x and y).
+Why would two plots transform the coordinates differently for the same data?
+The first reason is to simplify, such as changing curvilinear graphics to
+linear, and the second reason is to reshape a graphic so that the most
+important information jumps out at the viewer or can be more accurately
+perceived. Coordinate transformations are also important in genomic data
+visualization. For instance, features of interest are often small
+compared to the intervening gaps, especially in gene models. The exons
+are usually much smaller than the introns. If users are generally interested
+in viewing exons and associated annotations, we could simply cut or
+shrink the intervening introns to use the plot space efficiently.'' \citep{yin2012ggbio}
+\end{quote}
+
+\begin{quote}
+``Almost all experimental outputs are associated with an experimental
+design and other meta-data, for example, cancer types, gender, and age.
+Faceting allows users to subset the data by a combination of factors and then
+lay out multiple plots in a grid, to explore relationships between factors and
+other variables. The ggplot2 package supports various types of faceting by
+arbitrary factors. THe ggbio package extends this notion to facet by a list
+of ranges of interest, for example, a list of gene regions. There is always
+an implicit faceting by sequence (chromosome), because when the x axis is the
+chromosomal coordinate, it is not sensible to plto data from different chromosomes
+on the same plot.'' \citep{yin2012ggbio}
+\end{quote}
+
+\begin{quote}
+``For custom use cases, ggbio provides a low-level API that maps more directly
+to components of the grammar and thus expresses the plot more explicitly.
+Generally speaking, we strive to provide sensible, overrideable defaults at the
+high-level entry points, such as autoplot, while still supporting
+customizability through the low-level API. All lower level functions have a
+special prefix to indicate their role in the grammalr, like layout, geom,
+stat, coord, and theme. The objects returned by the low-level API may be
+added together via the conventional + syntax. This facilitates the creation of
+new types of plots. A geom in ggplot2 may be extended to work with more
+biological data model, for example, geom rect will automatically figure out the
+boundary of rectangles when the data is a GRanges, as to geom bar, geom
+segment, and so on.'' \citep{yin2012ggbio}
+\end{quote}
+
+\begin{quote}
+``We use ggplot2 as the foundation for ggbio, due to its principled style,
+intellegent defaults and explicit orientation towards the grammar of
+graphics model.'' \citep{yin2012ggbio}
+\citep{yin2012ggbio}
+\end{quote}
+
 \hypertarget{applied-exercise-6}{%
 \subsection{Applied exercise}\label{applied-exercise-6}}
 
@@ -10833,7 +10964,7 @@ reproducibility across the research projects conducted by a research team.
 \end{itemize}
 
 \hypertarget{introducing-reproducible-data-pre-processing-protocols}{%
-\section{Introducing reproducible data pre-processing protocols}\label{introducing-reproducible-data-pre-processing-protocols}}
+\subsection{Introducing reproducible data pre-processing protocols}\label{introducing-reproducible-data-pre-processing-protocols}}
 
 \textbf{Data pre-processing}
 
@@ -12912,6 +13043,297 @@ entry must match the one specified in the LaTeX file.'' \citep{mittelbach2004lat
 BibTeX that correspond to the house style of particular journals or editing
 houses.'' \citep{mittelbach2004latex}
 \end{quote}
+
+\begin{quote}
+``The document format `R Markdown' was first introduced in the \texttt{knitr}
+package in early 2012. The idea was to embed code chunks (of R or other
+languages) in Markdown documents. In fact, \texttt{knitr} supported several
+authoring languages from the beginning in addition to Markdown, including
+LaTeX, HTML, AsciiDoc, reStructuredText, and Textile. Looking back over
+the five years, it seems to be fair to say that Markdown has become the
+most popular document format, which is what we expected. The simplicity
+of Markdown clearly stands out among these document formats.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``However, the original version of Markdown invented by John Gruber was
+often found overly simple and not suitable to write highly technical
+documents. For example, there was no syntax for tables, footnotes,
+math expressions, or citations. Fortunately, John MacFarlane created a
+wonderful package named Pandoc to convert Markdown documents (and many
+other types of documents) to a large variety of output formats. More
+importantly, the Markdown syntax was significantly enriched.
+Now we can write more types of elements with Markdown while still enjoying
+its simplicity.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``In a nutshell, R Markdown stands on the shoulders of \texttt{knitr} and Pandoc.
+The former executes the computer code embedded in Markdown, and converts
+R Markdown to Markdown. The latter renders Markdown to the output format
+you want (such as PDF, HTML, Word, and so on.).'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``R Markdown may not be the right format for you if you find these elements
+not enough for your writing: paragraphs, (section) headers, block quotations,
+code blocks, (numbered and unnumbered) lists, horizontal rules, tables, inline
+formatting (emphasis, strikeout, superscripts, subscripts, verbatim, and
+small caps text), LaTeX math expressions, equations, links, images, footnotes,
+citations, theorems, proofs, and examples. We believe this list of elements
+suffice for most technical and non-technical documents.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``Please do not underestimate the customizability of R Markdown because of the
+simplicity of its syntax. In particular, Pandoc templates can be surprisingly
+powerful, as long as you understand the underlying technologies such as LaTeX and
+CSS, and are willing to invest time in the appearance of your output
+documents (reports, books, presentations, and / or websites).'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``R Markdown documents are often portable in the sense that they can be
+compiled to multiple types of output formats. Again, this is mainly due to the
+simplified syntax of the authoring language, Markdown. The simpler the elements
+in your document are, the more likely that the document can be converted to
+different formats. Similarly, if you heavily tailor R Markdown to a specific
+output format (e.g., LaTeX), you are likely to lose the portability, because not
+all features in one format work in another format.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``Last but not least, your computing results will be more likely to be
+reproducibly if you use R Markdown (or other \texttt{knitr}-based source documents),
+compared to the manual cut-and-paste approach. This is because the results
+are dynamically generated from computer source code. If anything goes wrong
+or needs to be updated, you can simply fix or update the source code, compile
+the document again, and the results will automatically be updated. You can
+enjoy reproducibility and convenience at the same time.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``There is a fundamental assumption underneath R Markdown that users should
+be aware of: we assum it suffices that only a limited number of features are
+supported in Markdown. By `features', we mean the types of elements you can
+create with native Markdown. The limitation is a great feature, not a bug.''
+\citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``R Markdown provides an authoring framework for data science. You can use a
+single R Markdown file to both: save and execute code, and; generate high
+quality reports that can be shared with an audience. R Markdown was designed
+for easier reproducibility, since both the computer code and narratives
+are in the same document, and results are automatically
+generated from the source code.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``There are three basic components of an R Markdown document: the
+metadata, text, and code. The metadata is written between the pair of
+three dashes \texttt{-\/-\/-}. The syntax for the metadata is YAML (YAML Ain't Markup
+Language), so sometimes it's also called the YAML metadata or the YAML
+frontmatter. Before it bites you hard, we want to warn you in advance
+that indentation matters in YAML, so do not forget to indent the sub-fields
+of a top field properly. \ldots{} The body of a document follows the metadata.
+The syntax for text (also known as prose or narratives) is Markdown\ldots{}
+There are two types of computer code\ldots{} a code chunk starts with three
+backticks \ldots{} and ends with three backticks\ldots{} An inline R code expressions
+starts with \texttt{\textasciigrave{}r} and ends with a backtick.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``It is fine for humans to err (in computing), as long as the source code
+is readily available.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``The idea {[}of R Markdown{]} should be simple enough: interweave narratives
+with code in a document, knit the document to dynamically generate results
+from the code, and you will get a report. This idea was not generated by
+R Markdown, but came from an early programming paradigm called `Literate
+Programming' (Knuth, 1984).'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``The text in an R Markdown document is written with the Markdown syntax.
+Precisely speaking, it is Pandoc's Mardown. There are many flavors of
+Markdown invented by different people, and Pandoc's flavor is the
+most comprehensive one to our knowledge.'' \citep{xie2018r}
+\end{quote}
+
+Markdown syntax allows: inline formatting (e.g., italics, subscript,
+superscript), hyperlinks, including images from external files, footnotes,
+bibliographical referencing, section headers, \ldots{} \citep{xie2018r}
+
+\begin{quote}
+``There are multiple ways to insert citations {[}in Markdown{]}, and we
+recommend that you use BibTeX databases, because they work better when
+the output format is LaTeX / PDF. \ldots{} The key idea is that when you have
+a BibTeX database (a plain-text file with the conventional filename extension
+\texttt{.bib}) that contains entries like \ldots{} you may add a field named
+\texttt{bibliography} to the YAML metadata, and set its value to the path of the
+BibTeX file. Then in Markdown, you may use \texttt{@R-base} \ldots{} to reference the
+BibTeX entry. Pandoc will automatically generate a list of references in the
+end of the document.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``In general, you'd better leave at least one empty line between adjacent
+but different elements, e.g., a header and a paragraph. This is to avoid
+ambiguity to the Markdown renderer.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``Inline LaTeX equations can be written in a pair of dollar signs using the
+LaTeX syntax\ldots{}'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``There are a lot of things you can do in a code chunk: you can produce
+text output, tables, or graphics. You have fine control over all these output
+via chunk options, which can be provided inside the curly braces. \ldots{} There are
+a large number of chunk options in \texttt{knitr} document at \url{https://yihui.name/knitr/options}. We list a subset of them below {[}eval, echo, results, collapse, warning, message, error, include, cache, fig.width, fig.height, out.width, out.height, fig.align, dev, fig.cap{]}.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``Chunk options in \texttt{knitr} can be surprisingly powerful. For example,
+you can create animations from a series of plots in a code chunk.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``If caching is enabled the same code chunk will not be evaluated the next
+time the document is compiled (if the code chunk was not modified), which can
+save you time. However, I want to honestly remind you of the two hard problems
+in computer science (via Phil Karlton): naming things, and cache invalidation.
+Caching can be handy but also tricky sometimes.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``PDF documents are generated thorugh the LaTeX files generated from R
+Markdown. A highly surprising fact to LaTeX beginners is that figures float
+by default: even if you generate a plot in a code chunk on the first page,
+the whole figure environment may float to the next page. This is just how
+LaTeX works by default. It has a tendency to float figures to the top or
+bottom of pages. Although it can be annoying and distracting, we recommend
+that you refrain from playing the `Whac-A-Mole' game in the beginning of your
+writing, i.e., desparately trying to position figures `correctly' while
+they seem to be always dodging you. You may wish to fine-tune the positions
+once the content is complete using the \texttt{fig.pos} chunk option.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``Formatting tables can be a very complicated task, especially when certain
+cells span more than one column or row. It is even more complicated when you
+have to consider different output formats. For example, it is difficult to make
+a complex table work for both PDF and HTML output.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``A less well-known fact about R Markdown is that many other languages are also
+supported, such as Python, Julia, C++, and SQL. The support comes from the
+\texttt{knitr} package, which has provided a large number of \emph{language engines}.
+Language engines are essentially functions registered in the object
+\texttt{knitr::knit\_engine}. \ldots{} To use a different language engine, you can change the
+language name in the chunk headerf rom \texttt{r} to the engine name\ldots{} For engines
+that rely on external interpreters such as \texttt{python}, \texttt{perl}, and \texttt{ruby}, the
+default interpreters are obtained from \texttt{Sys.which()}, i.e., using the
+interpreter found via the environment variable \texttt{PATH} of the system. If you want
+to use an alternative interpreter, you may specify its path in the chunk option
+\texttt{engine.path}. \ldots{} Most engines will execute each code chunk in a separate new
+session (via a \texttt{system()} call in R), which means objects created in memory in a
+previous code chunk will not be directly available to latter code chunks. \ldots{}
+Currently, the only expections are \texttt{r}, \texttt{python}, and \texttt{julia}. Only these
+engines execute code in the same session throughout the document. To clarify,
+all \texttt{r} code chunks are executed in the same R session, all \texttt{python} code chunks
+are executed in the same Python session, and so on, by \emph{the R session and the
+Python session are independent.}'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``You can also write Shell scripts in R Markdown, if your system can run them
+(the executable \texttt{bash} or \texttt{sh} should exist). Usually this is not a problem for
+Linux or macOS users. It is not impossible for Windows users to run Shell scripts, but you will have to install additional software (such as Cygwin or the Linux Subsystem).'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``R Markdown documents can also generate interactive content. THere are two
+types of interactive R Markdown documents: you can use the HTML Widgets
+framework, or the Shiny framework (or both). \ldots{} The HTML Widgets framework is
+implemented in the R package \texttt{htmlwidgets}, interfacing JavaScript libraries
+that create interactive applications, such as interactive graphics and tables.
+\ldots{} The \texttt{shiny} package builds interactive web apps powered by R. \ldots{} You may
+use Shiny to run any R code that you like in response to user actions. Since web
+browsers cannot execute R code, Shiny interactions occur on the server side and
+rely on a live R session. By comparison, HTML widgets do not require a live R
+session to support them, because the interactivity comes from the client side
+(via JavaScript in the web browser).'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``By default, MathJax scripts are included in HTML documents for rendering LaTeX and MathML equations.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``Within R Markdown documents that generate PDF output, you can use raw LaTeX, and even define LaTeX macros. See Pandoc's documentation on the raw\_tex extension for details.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``By default, citations are processed through \texttt{pandoc-citeproc}, which works for all output formats. For PDF output, sometimes it is better to use LaTeX packages to process citations, such as \texttt{natbib} or \texttt{biblatex}. To use one of these packages, just set the option \texttt{citation\_package} {[}in the YAML{]}.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``Dashboards are particularly common in business-style reports. THey can
+be used to highlight brief and key summaries of a report. THe layout of
+a dashboard is often grid-based, with components arranged in boxes of various
+sizes.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``Most R Markdown applications are single documents. That is you, have a
+single R Markdown source document, and it generates a single output file.
+However, it is also possible to work with multiple Rmd documents in a
+project, and organize them in a meaningful way (e.g., pages can
+reference each other). Currently there are two major ways to build
+multiple Rmd documents: blogdown for building websites, and bookdown for
+authoring books.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``With blogdown, you can write a blog post or a general page in an Rmd
+document, or a plain Markdown document. These source documents will be
+built into a static webset, which is essentially a folder containing static
+HTML files and associated assets (such as images and CSS files). You
+can publish this folder to any web server as a website. Because it is
+only a single folder, it can be easy to maintain. \ldots{} Because the website
+is generated from R Markdown, the content is more likely to be reproducible,
+and also easier to maintain (no cut-and-paste results). Using Markdown
+means your content could be more protable in the sense that you may convert
+your pages to PDF or other formats in the future, and you are not tied to the
+default HTML format.'' \citep{xie2018r}
+\end{quote}
+
+\begin{quote}
+``Academic journals often have strict guidelines on the formatting for
+submitted articles. As of today, few journals directly support R
+Markdown submissions, but many support the LaTeX format. While you can
+convert R Markdown to LaTeX, different journals have different
+typesetting requirements and LaTeX styles, and it may be slow and
+frustrating for all authors who want to use R Markdown to figure out
+the technical details about how to properly convert a paper based on
+R Markdown to a LaTeX document that meets the journal requirements. The
+rticles package is designed to simplify the creation of documents that
+conform to submission standards. A suite of custom R Markdown templates
+for popular journals is provided\ldots{} Understanding of LaTeX is recommended,
+but not essential, to use this package. R Markdown templates may sometimes
+inevitably contain LaTeX code, but usually we can use the simpler Markdown
+and knit syntax to produce elements like figures, tables, and
+math equations\ldots{}'' \citep{xie2018r}
+\end{quote}
+
+The \texttt{rticles} package includes templates for the Elsevier and Springer
+family of journals.
 
 \hypertarget{example-creating-a-reproducible-data-pre-processing-protocol}{%
 \section{Example: Creating a reproducible data pre-processing protocol}\label{example-creating-a-reproducible-data-pre-processing-protocol}}
