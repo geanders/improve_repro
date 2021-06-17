@@ -161,16 +161,97 @@ visualized using reproducible tools.</p>
 <li>Understand how the principles of “tidy” data can be applied for a real, complex research project;</li>
 <li>List advantages of the “tidy” data format for the example project</li>
 </ul>
-<div id="subsection-1-1" class="section level3" number="2.5.1">
-<h3><span class="header-section-number">2.5.1</span> Subsection 1</h3>
+<div id="exampledata-on-rate-of-bacterial-growth" class="section level3" number="2.5.1">
+<h3><span class="header-section-number">2.5.1</span> Example—Data on rate of bacterial growth</h3>
+<p>The first set of data are from a study on the growth of <em>Mycobacterium
+tuberculosis</em>. The goal of this study was to compare growth yield and doubling
+time of <em>Mycobacterium tuberculosis</em> grown in rich medium under two assay
+conditions. One set of cultures were grown in tubes with a low culture volume
+relative to a large air head space to allow free oxygen exchange. A second set
+of cultures were grown in tubes filled to near capacity, resulting in limited
+air head space which has been shown elsewhere to limit oxygen availability over
+time. The caps on both sets of cultures were sealed to restrict air exchange
+during the study.</p>
+<p>Some background information is helpful in understanding these example data,
+especially if you have not conducted this type of experiment. The increase in
+the cell size and cell mass during the development of an organism is termed
+growth. It is the unique characteristics of all organisms. The organism must
+require certain basic parameters for their energy generation and cellular
+biosynthesis. The growth of the organism is affected by both physical and
+nutritional factors. There are multiple methods by which growth can be measured,
+but the use of closed tissue culture tubes and a spectrophotometer to track
+increases in optical density (absorbance at 600 nm) over time offers several
+advantages: 1) it is less subject to technical error and contamination, 2) read
+out is fast and simple, 3) growth as measure by increased absorbance (turbidity)
+is directly proportional to increases in cell mass. There are four distinct
+phases of bacterial growth. Lag phase, log (exponential phase), stationary
+phase, death phase. From these data, bacterial generation times (doubling time)
+during the exponential growth phase can be calculated.</p>
+<p><span class="math display">\[
+\mbox{Doubling time} = \frac{log(2)(t_1 - t_2)}{log(OD_{t_1} - log(OD_{t_2}))}
+\]</span>
+where <span class="math inline">\(t_1\)</span> and <span class="math inline">\(t_2\)</span> are two time points and <span class="math inline">\(OD_{t_1}\)</span> and <span class="math inline">\(OD_{t_2}\)</span> are the
+optical densities at the two time points (all <span class="math inline">\(log\)</span>s are natural in this case).</p>
+<p>An excel-based workbook (Figure <a href="2-5-example-creating-a-template-for-tidy-data-collection.html#fig:growthexcel">2.2</a>) was created to allow the
+student performing the work to (1) calculate the amount of initial inoculum
+(cell culture) to add to each tube to begin the study, (2) record the raw data
+absorbance measurements, (3) graph the data on both a log and linear scale, and
+(4) calculate doubling time in two phases of growth using the equation listed
+above. Columns were added to allow the student to track the time (column A), the
+difference in time (hours) between each time point in which data were collected
+(column B), the date on which data were gathered (column C), and the time in
+hours for each data point from the start of the study for graphing purposes
+(column D). Absorbance data for each sampling timepoint were listed in Columns
+E-F (high oxygen conditions; VA001 A1, A3) or columns G-I (limited oxygen
+conditions; VA001 L1, L2, L3).</p>
+<div class="figure fullwidth"><span id="fig:growthexcel"></span>
+<img src="figures/growth_curve_example.png" alt="Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column." width="\textwidth"  />
+<p class="caption marginnote shownote">
+Figure 2.2: Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column.
+</p>
 </div>
-<div id="subsection-2" class="section level3" number="2.5.2">
-<h3><span class="header-section-number">2.5.2</span> Subsection 2</h3>
+<p>What the researchers found appealing about the format of this excel sheet was
+the ease with which the student could accomplish the study goals. They also
+cited transparency of the raw data and ease with which additional sampling data
+points could be added. The data being graphed in real time and the inclusion of
+a simple macro to calculate doubling time, allowed the student to see tangible
+differences between the two assay conditions. This was also somewhat problematic
+as the equation to calculate doubling time was based on anchored time points
+built into the original spreadsheet resulting in two different results that were
+not properly linked to the correct data time points.</p>
+<p>Data that are saved in a format like that shown in Figure <a href="2-5-example-creating-a-template-for-tidy-data-collection.html#fig:growthexcel">2.2</a>,
+however, are hard to read in for a statistical program like R, Perl, or Python.
+In this format, the raw data (the time points each observation was collected and
+the optical density for the sample at that time point) form only part of the
+spreadsheet. The spreadsheet also includes notes, automated figures, and
+cells where an embedded formula runs calculations behind the scenes.</p>
+<p>Instead of this format, we can design a simpler format to collect the data. We’ll
+remove all figures and calculations, and instead save those to perform in a
+code script. Figure <a href="2-5-example-creating-a-template-for-tidy-data-collection.html#fig:growthsimple">2.3</a> shows an example of a simpler
+format for collecting the same data. In this case, all the “extras” have been
+stripped out—this only has spaces for recording times points and the observed
+optical density at those time points. In later chapters, we’ll show how a code
+script can be used to input these data into R and then perform calculations
+and create figures. By separating out the steps of data recording from
+data analysis, you can ensure that all steps of analysis are clearly spelled
+out (and can be easily reproduced with other similar data) through a code
+script. Note that you can still collect the data in this simpler format using
+a spreadsheet program, if you’d like—Figure <a href="2-5-example-creating-a-template-for-tidy-data-collection.html#fig:growthsimple">2.3</a> shows
+the data collection set up to be recorded in a spreadsheet program, for example.
+Within the spreadsheet, you can choose to save the data in a plain text format
+(a csv [comma-separated value] file, for example).</p>
+<div class="figure"><span id="fig:growthsimple"></span>
+<p class="caption marginnote shownote">
+Figure 2.3: Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created—these are all done later, using a code script.
+</p>
+<img src="figures/growth_curve_simple.png" alt="Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created---these are all done later, using a code script." width="\textwidth"  />
 </div>
-<div id="example-datasets" class="section level3" number="2.5.3">
-<h3><span class="header-section-number">2.5.3</span> Example datasets</h3>
-<p><strong>Example dataset 1.</strong></p>
-<p><strong>Example dataset 2.</strong></p>
+</div>
+<div id="exampledata-on-bacteria-colony-forming-units" class="section level3" number="2.5.2">
+<h3><span class="header-section-number">2.5.2</span> Example—Data on bacteria colony forming units</h3>
+</div>
+<div id="exampledata-from-multiple-related-experiments" class="section level3" number="2.5.3">
+<h3><span class="header-section-number">2.5.3</span> Example—Data from multiple related experiments</h3>
 </div>
 <div id="issues-with-these-data-sets" class="section level3" number="2.5.4">
 <h3><span class="header-section-number">2.5.4</span> Issues with these data sets</h3>

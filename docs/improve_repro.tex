@@ -3256,18 +3256,100 @@ visualized using reproducible tools.
   List advantages of the ``tidy'' data format for the example project
 \end{itemize}
 
-\hypertarget{subsection-1-1}{%
-\subsection{Subsection 1}\label{subsection-1-1}}
+\hypertarget{exampledata-on-rate-of-bacterial-growth}{%
+\subsection{Example---Data on rate of bacterial growth}\label{exampledata-on-rate-of-bacterial-growth}}
 
-\hypertarget{subsection-2}{%
-\subsection{Subsection 2}\label{subsection-2}}
+The first set of data are from a study on the growth of \emph{Mycobacterium
+tuberculosis}. The goal of this study was to compare growth yield and doubling
+time of \emph{Mycobacterium tuberculosis} grown in rich medium under two assay
+conditions. One set of cultures were grown in tubes with a low culture volume
+relative to a large air head space to allow free oxygen exchange. A second set
+of cultures were grown in tubes filled to near capacity, resulting in limited
+air head space which has been shown elsewhere to limit oxygen availability over
+time. The caps on both sets of cultures were sealed to restrict air exchange
+during the study.
 
-\hypertarget{example-datasets}{%
-\subsection{Example datasets}\label{example-datasets}}
+Some background information is helpful in understanding these example data,
+especially if you have not conducted this type of experiment. The increase in
+the cell size and cell mass during the development of an organism is termed
+growth. It is the unique characteristics of all organisms. The organism must
+require certain basic parameters for their energy generation and cellular
+biosynthesis. The growth of the organism is affected by both physical and
+nutritional factors. There are multiple methods by which growth can be measured,
+but the use of closed tissue culture tubes and a spectrophotometer to track
+increases in optical density (absorbance at 600 nm) over time offers several
+advantages: 1) it is less subject to technical error and contamination, 2) read
+out is fast and simple, 3) growth as measure by increased absorbance (turbidity)
+is directly proportional to increases in cell mass. There are four distinct
+phases of bacterial growth. Lag phase, log (exponential phase), stationary
+phase, death phase. From these data, bacterial generation times (doubling time)
+during the exponential growth phase can be calculated.
 
-\textbf{Example dataset 1.}
+\[
+\mbox{Doubling time} = \frac{log(2)(t_1 - t_2)}{log(OD_{t_1} - log(OD_{t_2}))}
+\]
+where \(t_1\) and \(t_2\) are two time points and \(OD_{t_1}\) and \(OD_{t_2}\) are the
+optical densities at the two time points (all \(log\)s are natural in this case).
 
-\textbf{Example dataset 2.}
+An excel-based workbook (Figure \ref{fig:growthexcel}) was created to allow the
+student performing the work to (1) calculate the amount of initial inoculum
+(cell culture) to add to each tube to begin the study, (2) record the raw data
+absorbance measurements, (3) graph the data on both a log and linear scale, and
+(4) calculate doubling time in two phases of growth using the equation listed
+above. Columns were added to allow the student to track the time (column A), the
+difference in time (hours) between each time point in which data were collected
+(column B), the date on which data were gathered (column C), and the time in
+hours for each data point from the start of the study for graphing purposes
+(column D). Absorbance data for each sampling timepoint were listed in Columns
+E-F (high oxygen conditions; VA001 A1, A3) or columns G-I (limited oxygen
+conditions; VA001 L1, L2, L3).
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{figures/growth_curve_example} \caption[Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment]{Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column.}\label{fig:growthexcel}
+\end{figure*}
+
+What the researchers found appealing about the format of this excel sheet was
+the ease with which the student could accomplish the study goals. They also
+cited transparency of the raw data and ease with which additional sampling data
+points could be added. The data being graphed in real time and the inclusion of
+a simple macro to calculate doubling time, allowed the student to see tangible
+differences between the two assay conditions. This was also somewhat problematic
+as the equation to calculate doubling time was based on anchored time points
+built into the original spreadsheet resulting in two different results that were
+not properly linked to the correct data time points.
+
+Data that are saved in a format like that shown in Figure \ref{fig:growthexcel},
+however, are hard to read in for a statistical program like R, Perl, or Python.
+In this format, the raw data (the time points each observation was collected and
+the optical density for the sample at that time point) form only part of the
+spreadsheet. The spreadsheet also includes notes, automated figures, and
+cells where an embedded formula runs calculations behind the scenes.
+
+Instead of this format, we can design a simpler format to collect the data. We'll
+remove all figures and calculations, and instead save those to perform in a
+code script. Figure \ref{fig:growthsimple} shows an example of a simpler
+format for collecting the same data. In this case, all the ``extras'' have been
+stripped out---this only has spaces for recording times points and the observed
+optical density at those time points. In later chapters, we'll show how a code
+script can be used to input these data into R and then perform calculations
+and create figures. By separating out the steps of data recording from
+data analysis, you can ensure that all steps of analysis are clearly spelled
+out (and can be easily reproduced with other similar data) through a code
+script. Note that you can still collect the data in this simpler format using
+a spreadsheet program, if you'd like---Figure \ref{fig:growthsimple} shows
+the data collection set up to be recorded in a spreadsheet program, for example.
+Within the spreadsheet, you can choose to save the data in a plain text format
+(a csv {[}comma-separated value{]} file, for example).
+
+\begin{figure}
+\includegraphics[width=\textwidth]{figures/growth_curve_simple} \caption[Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure]{Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created---these are all done later, using a code script.}\label{fig:growthsimple}
+\end{figure}
+
+\hypertarget{exampledata-on-bacteria-colony-forming-units}{%
+\subsection{Example---Data on bacteria colony forming units}\label{exampledata-on-bacteria-colony-forming-units}}
+
+\hypertarget{exampledata-from-multiple-related-experiments}{%
+\subsection{Example---Data from multiple related experiments}\label{exampledata-from-multiple-related-experiments}}
 
 \hypertarget{issues-with-these-data-sets}{%
 \subsection{Issues with these data sets}\label{issues-with-these-data-sets}}
@@ -3534,8 +3616,8 @@ limiting the search only to Word files. You can leverage this same power yoursel
 and in a way that's more customized to your project or typical research approach,
 by using consistent conventions to name your files.{]}
 
-\hypertarget{subsection-1-2}{%
-\subsection{Subsection 1}\label{subsection-1-2}}
+\hypertarget{subsection-1-1}{%
+\subsection{Subsection 1}\label{subsection-1-1}}
 
 One study surveyed over 250 biomedical researchers at the University of Washington.
 They noted that, ``a common theme surrounding data management and analysis was that
@@ -3652,8 +3734,8 @@ the file itself. If the i-number in a directory entry is zero, it means that the
 removed, but not necessarily the contents of the file---there may still be a link somewhere else.'' \citep{kernighan1984unix}
 \end{quote}
 
-\hypertarget{subsection-2-1}{%
-\subsection{Subsection 2}\label{subsection-2-1}}
+\hypertarget{subsection-2}{%
+\subsection{Subsection 2}\label{subsection-2}}
 
 \begin{quote}
 ``The file system is the part of the operating system that makes physical storage media
@@ -4148,11 +4230,11 @@ in a murine model.
   Initialize a new `Project' directory using this template
 \end{itemize}
 
-\hypertarget{subsection-1-3}{%
-\subsection{Subsection 1}\label{subsection-1-3}}
+\hypertarget{subsection-1-2}{%
+\subsection{Subsection 1}\label{subsection-1-2}}
 
-\hypertarget{subsection-2-2}{%
-\subsection{Subsection 2}\label{subsection-2-2}}
+\hypertarget{subsection-2-1}{%
+\subsection{Subsection 2}\label{subsection-2-1}}
 
 \hypertarget{applied-exercise-2}{%
 \subsection{Applied exercise}\label{applied-exercise-2}}
@@ -6764,8 +6846,8 @@ data following a tidy format and by pre-processing data with the aim of moving
 data toward a tidy dataframe that can be integrated with other ``tidy'' data for
 analysis and visualization.
 
-\hypertarget{subsection-1-4}{%
-\subsection{Subsection 1}\label{subsection-1-4}}
+\hypertarget{subsection-1-3}{%
+\subsection{Subsection 1}\label{subsection-1-3}}
 
 \begin{quote}
 ``There is a now-old trope in the world of programming. It's called the `worse is
@@ -6843,8 +6925,8 @@ to be used in sequence in a seamless analysis pipeline (Wickham, 2009; Wickham a
 \citep{robinson2014broom}
 \end{quote}
 
-\hypertarget{subsection-2-3}{%
-\subsection{Subsection 2}\label{subsection-2-3}}
+\hypertarget{subsection-2-2}{%
+\subsection{Subsection 2}\label{subsection-2-2}}
 
 \hypertarget{practice-quiz-2}{%
 \subsection{Practice quiz}\label{practice-quiz-2}}
@@ -6875,8 +6957,8 @@ laboratory-based scientists.
   data pre-processing
 \end{itemize}
 
-\hypertarget{subsection-1-5}{%
-\subsection{Subsection 1}\label{subsection-1-5}}
+\hypertarget{subsection-1-4}{%
+\subsection{Subsection 1}\label{subsection-1-4}}
 
 In previous modules, we have gone into a lot of detail about all of the advantages of the tidyverse approach. However as you work with biomedical data, particularly complex data from complex research equipment like mass spectrometers and Flow cytometers, you may find that it is unreasonable to start with a tiny burst approach from the first steps of pre processing the data. In this module we will explain why the tidyverse approach is currently not appropriate throughout all steps of pre-processing, analysis, and visualization of the types of data that you may collect through a biomedical research experiment. We will present some of the approaches and data storage methods used in passages in the bioconductor project, as well as explain some more about the purpose an approach of bioconductor. This will include an explanation of the more complex structures that are used to store data through many of the packages in by a conductor. These largely leverage a system in our call BF4 object-oriented system. We will cover several of the most popular object classes that are used to store data for bioconductor packages. Any leader module we will explain how early steps in data preprocessing, which use the bioconductor approach and bioconductor data storage objects, can be combined and transferred during it works slow to convert to using a tidyverse approach leader in the workflow when it is appropriate to store data in simpler structures like dataframes.
 
@@ -7482,8 +7564,8 @@ see a number that you want---an R-squared for example---but don't know how
 to grab that number.'' \citep{burns2011r}
 \end{quote}
 
-\hypertarget{subsection-2-4}{%
-\subsection{Subsection 2}\label{subsection-2-4}}
+\hypertarget{subsection-2-3}{%
+\subsection{Subsection 2}\label{subsection-2-3}}
 
 \hypertarget{practice-quiz-3}{%
 \subsection{Practice quiz}\label{practice-quiz-3}}
@@ -7518,8 +7600,8 @@ data stored in R in this format, including through the \emph{broom} and
   Explain how converting data to a `tidy' format can improve reproducibility
 \end{itemize}
 
-\hypertarget{subsection-1-6}{%
-\subsection{Subsection 1}\label{subsection-1-6}}
+\hypertarget{subsection-1-5}{%
+\subsection{Subsection 1}\label{subsection-1-5}}
 
 When you are writing scripts in R to work with your code, if you are at a
 point in your pipeline when you can use a ``tidyverse'' approach, then you will
@@ -10050,8 +10132,8 @@ made when the code is loaded into the R session---there is a table that charts
 the relation. \citep{burns2011r}
 \end{quote}
 
-\hypertarget{subsection-2-5}{%
-\subsection{Subsection 2}\label{subsection-2-5}}
+\hypertarget{subsection-2-4}{%
+\subsection{Subsection 2}\label{subsection-2-4}}
 
 \hypertarget{applied-exercise-5}{%
 \subsection{Applied exercise}\label{applied-exercise-5}}
@@ -10118,8 +10200,8 @@ tuberculosis.
 ## x purrr::set_names()  masks magrittr::set_names()
 \end{verbatim}
 
-\hypertarget{subsection-1-7}{%
-\subsection{Subsection 1}\label{subsection-1-7}}
+\hypertarget{subsection-1-6}{%
+\subsection{Subsection 1}\label{subsection-1-6}}
 
 In the previous modules, we have talked about two topics. First we have talked about the convenience and power of tidyverse tools. These tools can be used at points in your workflow when the data can be stored in a simple standard format: the Tidy dataframe format. We have also talked about reasons why there are advantages to using more complex data storage formats earlier in the process. In discussing this, we explained why this leads to early steps of the data preprocessing often being conducted outside of the tidyverse approach, instead using tools available through the bioconductor collection of packages. Once your workflow has advanced to a stage where it is straightforward to store the data in a simpler form at like a dataframe there are a large advantages to shifting into the tidyverse approach as compared to using more complex object-oriented classes for storing the DOT. In this module we will talk through approaches to make the shift from having data stored in bioconductor classes, including very specific classes for some data, into a tidy data format. This will allow an easy transition into using the tiny verse approach for data analysis and visualization at later stages in your workflow.
 
@@ -10624,8 +10706,8 @@ method, a dot, and then the name of the object class, e.g., \texttt{?tidy.DGEExa
 \hypertarget{the-ggbio-package}{%
 \subsection{\texorpdfstring{The \texttt{ggbio} package}{The ggbio package}}\label{the-ggbio-package}}
 
-\hypertarget{subsection-2-6}{%
-\subsection{Subsection 2}\label{subsection-2-6}}
+\hypertarget{subsection-2-5}{%
+\subsection{Subsection 2}\label{subsection-2-5}}
 
 \begin{quote}
 ``The biobroom package contains methods for converting standard objects in Bioconductor into a `tidy format'. It serves as a complement to the popular broom package, and follows the same division (tidy/augment/glance) of tidying methods.''
