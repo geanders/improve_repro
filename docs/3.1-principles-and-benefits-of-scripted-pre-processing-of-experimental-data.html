@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="3.1 Principles and benefits of scripted pre-processing of experimental data | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
+<meta property="og:type" content="book" />
+
+
+<meta property="og:description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
+<meta name="github-repo" content="rstudio/bookdown-demo" />
+
+<meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, and Gregory Robertson" />
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<meta name="description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing.">
+
+<title>3.1 Principles and benefits of scripted pre-processing of experimental data | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
+
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="toc.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li><a href="index.html#overview"><span class="toc-section-number">1</span> Overview</a>
+<ul>
+<li><a href="1.1-license.html#license"><span class="toc-section-number">1.1</span> License</a></li>
+</ul></li>
+<li><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a>
+<ul>
+<li><a href="2.1-separating-data-recording-and-analysis.html#separating-data-recording-and-analysis"><span class="toc-section-number">2.1</span> Separating data recording and analysis</a></li>
+<li><a href="2.2-principles-and-power-of-structured-data-formats.html#principles-and-power-of-structured-data-formats"><span class="toc-section-number">2.2</span> Principles and power of structured data formats</a></li>
+<li><a href="2.3-the-tidy-data-format.html#the-tidy-data-format"><span class="toc-section-number">2.3</span> The ‘tidy’ data format</a></li>
+<li><a href="2.4-designing-templates-for-tidy-data-collection.html#designing-templates-for-tidy-data-collection"><span class="toc-section-number">2.4</span> Designing templates for “tidy” data collection</a></li>
+<li><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#example-creating-a-template-for-tidy-data-collection"><span class="toc-section-number">2.5</span> Example: Creating a template for “tidy” data collection</a></li>
+<li><a href="2.6-power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files.html#power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files"><span class="toc-section-number">2.6</span> Power of using a single structured ‘Project’ directory for storing and tracking research project files</a></li>
+<li><a href="2.7-creating-project-templates.html#creating-project-templates"><span class="toc-section-number">2.7</span> Creating ‘Project’ templates</a></li>
+<li><a href="2.8-example-creating-a-project-template.html#example-creating-a-project-template"><span class="toc-section-number">2.8</span> Example: Creating a ‘Project’ template</a></li>
+<li><a href="2.9-harnessing-version-control-for-transparent-data-recording.html#harnessing-version-control-for-transparent-data-recording"><span class="toc-section-number">2.9</span> Harnessing version control for transparent data recording</a></li>
+<li><a href="2.10-enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms.html#enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms"><span class="toc-section-number">2.10</span> Enhance the reproducibility of collaborative research with version control platforms</a></li>
+<li><a href="2.11-using-git-and-gitlab-to-implement-version-control.html#using-git-and-gitlab-to-implement-version-control"><span class="toc-section-number">2.11</span> Using git and GitLab to implement version control</a></li>
+</ul></li>
+<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a>
+<ul>
+<li><a href="3.1-principles-and-benefits-of-scripted-pre-processing-of-experimental-data.html#principles-and-benefits-of-scripted-pre-processing-of-experimental-data"><span class="toc-section-number">3.1</span> Principles and benefits of scripted pre-processing of experimental data</a></li>
+<li><a href="3.2-introduction-to-scripted-data-pre-processing-in-r.html#introduction-to-scripted-data-pre-processing-in-r"><span class="toc-section-number">3.2</span> Introduction to scripted data pre-processing in R</a></li>
+<li><a href="3.3-simplify-scripted-pre-processing-through-rs-tidyverse-tools.html#simplify-scripted-pre-processing-through-rs-tidyverse-tools"><span class="toc-section-number">3.3</span> Simplify scripted pre-processing through R’s ‘tidyverse’ tools</a></li>
+<li><a href="3.4-complex-data-types-in-experimental-data-pre-processing.html#complex-data-types-in-experimental-data-pre-processing"><span class="toc-section-number">3.4</span> Complex data types in experimental data pre-processing</a></li>
+<li><a href="3.5-complex-data-types-in-r-and-bioconductor.html#complex-data-types-in-r-and-bioconductor"><span class="toc-section-number">3.5</span> Complex data types in R and Bioconductor</a></li>
+<li><a href="3.6-example-converting-from-complex-to-tidy-data-formats.html#example-converting-from-complex-to-tidy-data-formats"><span class="toc-section-number">3.6</span> Example: Converting from complex to ‘tidy’ data formats</a></li>
+<li><a href="3.7-introduction-to-reproducible-data-pre-processing-protocols.html#introduction-to-reproducible-data-pre-processing-protocols"><span class="toc-section-number">3.7</span> Introduction to reproducible data pre-processing protocols</a></li>
+<li><a href="3.8-from-pre-processing-scripts-to-pre-processing-protocols.html#from-pre-processing-scripts-to-pre-processing-protocols"><span class="toc-section-number">3.8</span> From pre-processing scripts to pre-processing protocols</a></li>
+<li><a href="3.9-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#rmarkdown-for-creating-reproducible-data-pre-processing-protocols"><span class="toc-section-number">3.9</span> RMarkdown for creating reproducible data pre-processing protocols</a></li>
+<li><a href="3.10-example-creating-a-reproducible-data-pre-processing-protocol.html#example-creating-a-reproducible-data-pre-processing-protocol"><span class="toc-section-number">3.10</span> Example: Creating a reproducible data pre-processing protocol</a></li>
+</ul></li>
+<li><a href="4-references.html#references"><span class="toc-section-number">4</span> References</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="principles-and-benefits-of-scripted-pre-processing-of-experimental-data" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Principles and benefits of scripted pre-processing of experimental data</h2>
+<p>The experimental data collected for biomedical research often requires
+pre-processing before it can be analyzed (e.g., gating of flow cytometry data,
+feature finding / quantification for mass spectrometry data). Use of
+point-and-click software can limit the transparency and reproducibility of this
+analysis stage and is time-consuming for repeated tasks. We will explain how
+scripted pre-processing, especially using open source software, can improve
+transparency and reproducibility.</p>
+<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
+<ul>
+<li>Define ‘pre-processing’ of experimental data</li>
+<li>Describe an open source code script and explain how it can increase
+reproducibility of data pre-processing</li>
+</ul>
+<div id="what-is-pre-processing" class="section level3" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> What is pre-processing?</h3>
+<p>Some data collected through laboratory experiments is very straightforward and
+requires little or no pre-processing before it’s used in analysis. For example,
+[example]. Other data may require some minimal pre-processing. For example, if
+you plate bacteria from a sample at a variety of dilutions, you might count each
+plate and determine a measure of Colony Forming Units from the set of plates
+with different dilutions by deciding which dilution provides the clearest count
+and then back-calculating based on its dilution to get the total number of
+colony-forming units in the original sample.</p>
+<p>This step of pre-processing data can become much more complex with data that was
+collected using complex equipment, like a flow cytometer or a mass spectrometer.
+In these cases, there are often steps required to extract from the machine’s
+readings a biologically-relevant measurement. For example, the data output from
+a mass spectrometer must be processed to move from measurements of mass and
+retention time to estimates of concentrations of different molecules in the
+sample. If you want to compare across multiple samples, then the preprocessing
+will also involve steps to align the different samples (in terms of …), as
+well as to standardize the measurements for each sample, to make the
+measurements from the different samples comparable. For data collected from a
+flow cytometer, preprocessing may include steps to disentangle the florescence
+from different markers to ensure that the read for one marker isn’t inflated by
+spillover florescence from a different marker.</p>
+</div>
+<div id="approaches-to-simple-preprocessing-tasks" class="section level3" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> Approaches to simple preprocessing tasks</h3>
+<p>There are several approaches for tackling this type of data preprocessing, to
+get from the data that you initial observe (or that is measured by a piece of
+laboratory equipment) to meaningful biological measurements that can be analyzed
+and presented to inform explorations of a scientific hypothesis. While there are
+a number of approaches that don’t involve writing code scripts for this
+preprocessing, there are some large advantages to scripting preprocessing any
+time you are preprocessing experimental data prior to including it in figures or
+further analysis. In this section, we’ll describe some common non-scripted
+approaches and discuss the advantages that would be brought by instead using a
+code script. In the next module, we’ll walk through an example of how scripts
+for preprocessing can be created and applied in laboratory research.</p>
+<p>In cases where the pre-processing is mathematically straightforward and the
+dataset is relatively small, many researchers do the preprocessing by hand in a
+laboratory notebook or through an equation or macro embedded in a spreadsheet.
+For example, if you have plated samples at different dilutions and are trying to
+calculate from these the CFUs in the original sample, this calculation is simple
+enough that it could be done by hand. However, there are advantages to instead
+writing a code script to do this simple preprocessing.</p>
+<p>When you write a script to do a task with data, it is like writing a recipe that
+can be applied again and again. By writing a script, you encode the process a
+single time, so you can take the time to check and recheck to make sure that
+you’ve encoded the process correctly. This helps in avoiding small errors when
+you do the preprocessing—if you are punching numbers into a calculator over
+and over, it’s easy to mistype a number or forget a step every now and then,
+while the code will ensure that the same process is run every time and that it
+faithfully uses the numbers saved in the data for each step, rather than relying
+on a person correctly entering each number in the calculation.</p>
+<p>Scripts can be used across projects, as well, and so they can ensure consistency
+in the calculation across projects. If different people do the calculation in
+the lab for different projects or experiments, and they are doing the
+calculations by hand, they might each do the calculation slightly differently,
+even if it’s only in small details like how they report rounded numbers. A
+script will do the exact same thing every time it is applied. You can even share
+your script with colleagues at other labs, if you want to ensure that your data
+preprocessing is comparable for experiments conducted in different research
+groups, and many scientific journals will allow supplemental material with
+code used for data preprocessing and analysis, or links within the manuscript
+to a repository of this code posted online.</p>
+<p>There are also gains in efficiency when you use a script. For small
+pre-processing steps, these might seem small for each experiment, and certainly
+when you first write the script, it will likely take longer to write and test
+the script than it would to just do the calculation by hand (even more if
+you’re just starting to learn how to write code scripts). However, since the
+script can be applied again and again, with very little extra work to apply it
+to new data, you’ll save yourself time in the future, and over a lot of
+experiments and projects, this can add up. This makes it particularly useful to
+write scripts for preprocessing tasks that you find yourself doing again and
+again in the lab.</p>
+</div>
+<div id="approaches-to-more-complex-preprocessing-tasks" class="section level3" number="3.1.3">
+<h3><span class="header-section-number">3.1.3</span> Approaches to more complex preprocessing tasks</h3>
+<p>Other preprocessing tasks can be much more complex, particularly those that need
+to conduct a number of steps to extract biologically meaningful measurements
+from the measurements made by a complex piece of laboratory equipment, as well
+as steps to make sure these measurements can be meaningfully compared across
+samples.</p>
+<p>For these more complex tasks, the equipment manufacturer will often provide
+software that can be used for the preprocessing. This software might conduct
+some steps using defaults, and others based on the user’s specifications. These
+are often provided through “GUIs” (graphical user interfaces), where the user
+does a series of point-and-click steps to process the data. In some software,
+this series of point-and-click steps is recorded as the user does them, so that
+these steps can be “re-run” later or on a different dataset.</p>
+<p>For many types of biological data, including output from equipment like flow
+cytometers and mass spectrometers, open-source software has been developed
+that can be used for this preprocessing. Often, the most cutting edge methods
+for data preprocessing are first available through open-source software packages,
+if the methods are developed by researchers rather than by the companies, and
+often many of the algorithms that are made available through the equipment
+manufacturer’s proprietary software are encoded versions of an algorithm
+first shared by researchers as open-source software.</p>
+<p>It can take a while to develop a code script for preprocessing the raw data from
+a piece of complex equipment like a mass spectrometer. However, the process of
+developing this script requires a thoughtful consideration of the steps of
+preprocessing, and so this is often time well-spent. Again, this initial time
+investment will pay off later, as the script can then be efficiently applied to
+future data you collect from the equipment, saving you time in pointing and
+clicking through the GUI software. Further, it’s easier to teach someone else
+how to conduct the preprocessing that you’ve done, and apply it to future
+experiments, because the script serves as a recipe.</p>
+<p>When you conduct data preprocessing in a script, this also gives you access to
+all the other tools in the scripting language. For example, as you work through
+preprocessing steps for a dataset, if you are doing it through an R script, you
+can use any of the many visualization tools that are available through R. By
+contrast, in GUI software, you are restricted to the visualization and other
+tools included in that particular set of software, and those software developers
+may not have thought of something that you’d like to do. Open-source scripting
+languages like R, Python, and Julia include a huge variety of tools, and once
+you have loaded your data in any of these platforms, you can use any of these
+tools.</p>
+<p>If you have developed a script for preprocessing your raw data, it also becomes
+much easier to see how changes in choices in preprocessing might influence your
+final results. It can be tricky to guess whether your final results are sensitive,
+for example, to what choice you make for a particular tranform for part of your
+data, or in how you standardize data in one sample to make different samples
+easier to compare. If the preprocessing is in a script, then you can test making
+these changes and running all preprocessing and analysis scripts, to see if it
+makes a difference in the final conclusions. If it does, then it helps you
+identify parts of preprocessing that need to be deeply thought through for the
+type of data you’re collecting, and you may want to explore the documentation on
+that particular step of preprocessing to determine what choice is best for your
+data, rather than relying on defaults.</p>
+</div>
+<div id="scripting-preprocessing-tasks" class="section level3" number="3.1.4">
+<h3><span class="header-section-number">3.1.4</span> Scripting preprocessing tasks</h3>
+<p>Code scripts can be developed for any open-source scripting languages, including
+Python, R, and Julia. These can be embedded in or called from literate programming
+documents, like RMarkdown and Julia, which are described in other modules. The
+word “script” is a good one here—it really is as if you are providing the script
+for a play. In an interactive mode, you can send requests to run in the programming
+language step by step using a console, while in a script you provide the whole list
+of all of your “lines” in that conversation, and the programming language will run
+them all in order without you needing to interact from the console.</p>
+<p>For preprocessing the data, the script will have a few predictible parts. First,
+you’ll need to read the data in. There are different functions that can be used
+to read in data from different file formats. For example, data that is stored in
+an Excel spreadsheet can be loaded into R using functions in a package called
+<code>readxl</code>. Data that is stored in a plain-text delimited format (like a csv file)
+can be loaded into R using functions in the <code>readr</code> package.</p>
+<p>When preprocessing data from complex equipment, you can determine how to read the
+data into R by investigating the file type that is output by the equipment.
+Fortunately, many types of scientific equipment follow standardized file formats.
+This means that open-source developers can develop a single package that can
+load data from equipment from multiple manufacturers. For example, flow cytometry
+data is often stored in [file format]. Other biological datasets use file
+formats that are appropriate for very large datasets and that allow R to work
+with parts of the data at a time, without loading the full data in. [netCDF?]
+In these cases, the first step in a script might not be to load in all the data,
+but rather to provide R with a connection to the larger datafile, so it can
+pull in data as it needs it.</p>
+<p>Once the data is loaded or linked in the script, the script can proceed through
+steps required to preprocess this data. These steps will often depend on the type
+of data, especially the methods and equipment used to collect it. For example, for
+mass spectrometry data, these steps will include … . For flow cytometry data,
+these steps would include … .</p>
+<p>The functions for doing these steps will often come from extensions that
+different researchers have made for R. Base R is a simpler collection of data
+processing and statistics tools, but the open-source framework of R has allowed
+users to make and share their own extensions. In R, these are often referred to
+as “packages.” Many of these are shared through the Comprehensive R Archive
+Network (CRAN), and packages on CRAN can be directly installed using the
+<code>install.packages</code> function in R, along with the package’s names. While CRAN
+is the common spot for sharing general-purpose packages, there is a specialized
+repository that is used for many genomics and other biology-related R packages
+called Bioconductor. These packages can also be easily installed through a call
+in R, but in this case it requires an installation function from the <code>BiocManager</code>
+package. Many of the functions that are useful for preprocessing biological
+data from laboratory experiments are available through Bioconductor.</p>
+<p>Table [x] includes some of the primary R packages on Bioconductor that can be
+used in preprocessing different types of biological data. There are often
+multiple choices, developed by different research groups, but this list provides
+a starting point of several of the standard choices that you may want to
+consider as you start developing code.</p>
+<p>Much of the initial preprocessing might use very specific functions that are
+tailored to the format that the data takes once it is loaded. Later in the
+script, there will often be a transfer to using more general-purpose tools in
+that coding language. For example, once data is stored in a “dataframe” format
+in R, it can be processed using a powerful set of general purpose tools
+collected in a suite of packages called the “tidyverse.” This set of packages
+includes functions for filtering to specific subsets of the data, merging
+separate datasets, adding new measurements for each observation that are
+functions of the initial measurements, summarizing, and visualizing. The
+tidyverse suite of R tools is very popular in general R use and is widely
+taught, including through numerous free online resources. By moving from
+specific tools to these more general tools as soon as possible in the script, a
+researcher can focus his or her time in learning these general purpose tools
+well, as these can be widely applied across many types of data.</p>
+<p>By the end of the script, data will be in a format that has extracted
+biologically relevant measurements. Ideally, this data will be in a general
+purpose format, like a dataframe, to make it easier to work with using general
+purpose tools in the scripting language when the data is used in further data
+analysis or to create figures for reports, papers, and presentations. Often, you
+will want to save a version of this preprocessed version of the data in your
+project files, and so the last step of the script might be to write out the
+cleaned data in a file that can be loaded in later scripts for analysis and
+visualization. This is especially useful if these data preprocessing steps are
+time consuming, as is often the case for the large raw datasets output by
+laboratory equipment like flow cytometers and mass spectrometers.</p>
+<p>Figure [x] gives an example of a data preprocessing script, highlighting these
+different common areas that often show up in these scripts.</p>
+<p>[Some data may be incorporated into the preprocessing by downloading it from
+databases or other online sources. These data downloads can be automated and
+recorded by using scripted code for the download in many cases, as long as the
+database or online source offers web services or another API for this type of
+scripted data access. In this case, you can incorporate the script in a
+RMarkdown document to record the date the data was downloaded, as well as the
+code used to download it. R is able to run system calls, and one of these
+will provide the current date, so this can be included in an RMarkdown file
+to record the date the file is run. Further, there may be a call that can
+be made to the online data source’s API that returns the working version of
+the database or source, and if so this can also be included in the RMarkdown
+code used to access the data.]</p>
+<p>RMarkdown files can be used to combine both code and more manual document
+(for example, a record of which collaborator provided each type of data file).
+While traditionally this more manual documentation was recommended to be
+recorded in plain-text README files in a project’s directory and subdirectories
+<span class="citation">(Buffalo 2015)</span>, RMarkdown files provide some advantages over
+this traditional approach. First, RMarkdown files are themselves in plain
+text, and so they offer the advantages of simple plain text documentation
+files (e.g., ones never rendered to another format) in terms of being able
+to use script-based tools to search them. Further, they can be rendered into
+attractive formatted documents that may be easier to share with project
+team members who do not code.</p>
+<p>[Example of a function: recipe for making a vinaigrette. There will be a
+“basic” way that the function can run, which uses its default parameters.
+However, you can also specify and customize certain inputs (for example,
+using walnut oil instead of olive oil, or adding mustard) to tweak the
+recipe in slight ways each time you use it, and to get customized outputs.]</p>
+<p>[History of the mouse—enable GUIs, before everything was from the terminal.]</p>
+</div>
+<div id="potential-quotes" class="section level3" number="3.1.5">
+<h3><span class="header-section-number">3.1.5</span> Potential quotes</h3>
+<blockquote>
+<p>For bioinformatics, “all too often the software is developed without
+thought toward future interoperability with other software products. As a
+result, the bioinformatics software landscape is currently characterized
+by fragmentation and silos, in which each research group develops and uses
+only the tools created within their lab.” <span class="citation">(Barga et al. 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“The group also noted the lack of agility. Although they may be aware of
+a new or better algorithm they cannot easily integrate it into their
+analysis pipelines given the lack of standards across both data formats
+and tools. It typically requires a complete rewrite of the code in order
+to take advntge of a new technique or algorithm, requiring time and often
+funding to hire developers.” <span class="citation">(Barga et al. 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“The benefit of working with a programming language is that you have the code in
+a file. This means that you can easily reuse that code. If the code has
+parameters it can even be applied to problems that follow a similar pattern.”
+<span class="citation">(Janssens 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“Data exploration in spreadsheet software is typically conducted via menus and
+dialog boxes, which leaves no record of the steps taken.” <span class="citation">(Murrell 2009)</span></p>
+</blockquote>
+<blockquote>
+<p>“One reason Unix developers have been cool toward GUI interfaces is that, in their
+designers’ haste to make them ‘user-friendly’ each one often becomes frustratingly
+opaque to anyone who has to solve user problems—or, indeed, interact with it anywhere
+outside the narrow range predicted by the user-interface designer.” <span class="citation">(E. S. Raymond 2003)</span></p>
+</blockquote>
+<blockquote>
+<p>“Many operating systems touted as more ‘modern’ or ‘user friendly’ than Unix achieve their
+surface glossiness by locking users and developers into one interface policy, and offer an
+application-programming interface that for all its elaborateness is rather narrow and rigid.
+On such systems, tasks the designers have anticipated are very easy—but tasks they have
+not anticipated are often impossible or at best extremely painful. Unix, on the other hand, has
+flexibility in depth. The many ways Unix provides to glue together programs means that components
+of its basic toolkit can be combined to produce useful effects that the designers of the individual
+toolkit parts never anticipated.” <span class="citation">(E. S. Raymond 2003)</span></p>
+</blockquote>
+<blockquote>
+<p>“The good news is that a computer is a general-purpose machine, capable of performing
+any computation. Although it only has a few kinds of instructions to work with, it can
+do them blazingly fast, and it can largely control its own operation. The bad news is
+that it doesn’t do anything itself unless someone tells it what to do, in excruciating
+detail. A computer is the ultimate sorcere’s apprentice, able to follow instructions
+tirelessly and without error, but requiring painstaking accuracy in the
+specification of what to do.” <span class="citation">(Kernighan 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“<em>Software</em> is the general term for sequences of instructions that make a computer
+do something useful. It’s ‘soft’ in contrast with ‘hard’ hardware, because it’s
+intangible, not easy to put your hands on. Hardware is quite tangible: if you drop
+a computer on your foot, you’ll notice. Not true for software.” <span class="citation">(Kernighan 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“Modern system increasingly use general purpose hardware—a processor, some memory,
+and connections to the environment—and create specific behaviors by software. The
+conventional wisdom is that software is cheaper, more flexible, and easier to change than
+hardware is (especially once some device has left the factory).” <span class="citation">(Kernighan 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“An algorithm is a precise and unambiguous recipe. It’s expressed in terms of a fixed
+set of basic operations whose meanings are completely known and specified; it spells out
+a sequence of steps using those operations, with all possible situations covered; it’s
+guaranteed to stop eventually. On the other hand, a <em>program</em> is the opposite of
+abstract—it’s a concrete statement of the steps that a real computer must perform to
+accomplish a task. The distinction between an algorithm and a program is like the difference
+between a blueprint and a building; one is an idealization and the other is the real thing.”
+<span class="citation">(Kernighan 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“One way to view a program is as one or more algorithms expressed in a form that a computer
+can process directly. A program has to worry about practical problems like inadequate memory,
+limited processor speed, invalid and even malicious input data, faulty hardware, broken
+network connections, and (in the background and often exacerbating the other problems)
+human frailty. So if an algorithm is an idealized recipe, a program is the instructions for
+a cooking robot preparing a month of meals for an army while under enemy attack.” <span class="citation">(Kernighan 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“During the late 1950s and early 1960s, another step was taken towards getting the
+computer to do more for programmers, arguably the most important step in the history of
+programming. This was the development of ‘high-level’ programming languages that were
+independent of any particular CPU architecture. High-level languages make it possible to
+express computations in terms that are closer to the way a person might express them.”
+<span class="citation">(Kernighan 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“Programming in the real world tends to happen on a large scale. The strategy is similar
+to what one might use to write a book or undertake any other big project: figure out what
+to do, starting with a broad specification that is broken into smaller and smaller pieces,
+then work on the pieces separately, while making sure that they hang together. In programming,
+pieces tend to be of a size such that one person can write the precise computational steps
+in some programming language. Ensuring that the pieces written by different programmers
+work together is challenging, and failing to get this right is a major source of errors.
+For instance, NASA’s Mars Climate Orbiter failed in 1999 because the flight system software
+used metric units for thrust, but course correction data was entered in English units,
+causing an erroneous trajectory that brought the Orbiter too close to the planet’s
+surface.” <span class="citation">(Kernighan 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“If you’re going to build a house today, you don’t start by cutting down trees to make
+lumber and digging clay to make your own bricks. Instead, you buy prefabricated pieces like
+doors, windows, plumbing fixtures, a furnace, and a water heater. House construction is still
+a big job, but it’s manageable because you can build on the work of many others and rely
+on an infrastructure, indeed an entire industry, that will help. The same is true of
+programming. Hardly any significant program is created from nothing. Many components written
+by others can be taken off the shelf and used. For instance, if you’re writing a program for
+Windows or a Mac, there are libraries of prefabricated menus, buttons, text editors, graphics,
+network connections, database access, and so on. Much of the job is understanding the components
+and gluing them together in your own way. Of course, many of these components in turn rest on
+other simpler and more basic ones, often for several layers. Below that, everything runs on
+the operating system, a program that manages the hardware and controls everything that happens.”
+<span class="citation">(Kernighan 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“At the simplest level, programming languages provide a mechanism called functions that make
+it possible for one programmer to write code that performs a useful a useful task, then package
+it in a form that other programmers can use in their programs without having to know how it
+works.” <span class="citation">(Kernighan 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“A function has a name and a set of input data values that it needs to do its job; it does
+a computation and returns a result to the part of the program that called it. … Functions
+make it possible to create a program by building on components that have been created separately
+and can be used as necessary by all programmers. A collection of related functions is usually
+called a <em>library</em>. … The services that a function library provides are described to programmers
+in terms of an <em>Application Programming Interface</em>, or <em>API</em>, which lists the functions, what
+they do, how to use them in a program, what input data they require, and what values they
+produce. The API might also describe data structures—the organization of data that is passed
+back and forth—and various other bits and pieces that all together define what a programmer
+has to do to request services and what will be computed as a result. This specification must
+be detailed and precise, since in the end the program will be interpreted by a dumb literal
+computer, not by a friendly and accomodating human.” <span class="citation">(Kernighan 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“The code that a programmer writes, whether in assembly language or (much more likely) in
+a high-level language, is called <em>source code</em>. … Source code is readable by other programmers,
+though perhaps with some effort, so it can be studied and adapted, and any innovations or ideas
+it contains are visible.” <span class="citation">(Kernighan 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“In early times, most software was developed by companies and most source code was
+unavailable, a trade secret of whoever developed it.” <span class="citation">(Kernighan 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“An <em>operating system</em> is the software underpinning that manages the hardware of a
+computer and makes it possible to run other programs, which are called <em>applications</em>.
+… It’s a clumsy but standard terminology for programs that are more or less self-contained
+and focused on a single task.” <span class="citation">(Kernighan 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“Software, like many other things in computing, is organized into layers, analogous to
+geological strata, that separate one concern from another. Layering is one of the important
+ideas that help programmers to manage complexity.” <span class="citation">(Kernighan 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“I think that it’s important for a well-informed person to know something about
+programming, perhaps only that it can be surprisingly difficult to get very simple
+programs working properly. There is nothing like doing battle with a computer to teach
+this lesson, but also to give people a taste of the wonderful feeling of accomplishment
+when a program does work for the first time. It may also be valuable to have enough
+programming experience that you are cautious when someone says that programming is easy,
+or that there are no errors in a program. If you have trouble making 10 lines of code
+work after a day of struggle, you might be legitimately skeptical of someone who claims
+that a million-line program will be delivered on time and bug-free.” <span class="citation">(Kernighan 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“Programming languages share certain basic ideas, since they are all notations for spelling
+out a computation as a sequence of steps. Every programming language thus will provide ways
+to get input data upon which to compute; do arithmetic; store and retrieve intermediate
+values as computation proceeds; display results along the way; decide how to proceed on the basis
+of previous computations; and save results when the computation is finished. Languages have
+<em>syntax</em>, that is, rules that define what is grammatically legal and what is not.
+Programming languages are picky on the grammatical side: you have to say it right or there
+will be a complaint. Languages also have <em>semantics</em>, that is, a defined meaning for every
+construction in the language.” <span class="citation">(Kernighan 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“In programming, a <em>library</em> is a collection of related pieces of code. A library typically
+includes the code in compiled form, along with needed source code declarations [for C++].
+Libraries can include stand-alone functions, classes, type declarations, or anything else that
+can appear in code.” <span class="citation">(Spraul 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“One way to write R code is simply to enter it interactively at the command line… This
+interactivity is beneficial for experimenting with R or for exploring a data set in a casual
+manner. … However, interactively typing code at the R command line is a very bad approach from
+the perspective of recording and documenting code because the code is lost when R is shut down.
+A superior approach in general is to write R code in a file and get R to read the code from the file.” <span class="citation">(Murrell 2009)</span></p>
+</blockquote>
+<blockquote>
+<p>“The features of R are organized into separate bundles called <em>packages</em>. The standard R
+installation includes about 25 of those packages, but many more can be downloaded from CRAN and
+installed to expand the things that R can do. … Once a package is installed, it must be
+<em>loaded</em> within an R session to make the extra features available. … Of the 25 packages
+that are installed by default, nine packages are <em>loaded</em> by default when we start a new
+R session; these provide the basic functionality of R. All other packages must be loaded
+before the relevant features can be used.” <span class="citation">(Murrell 2009)</span></p>
+</blockquote>
+<blockquote>
+<p>“The R environment is the software used to run R code.” <span class="citation">(Murrell 2009)</span></p>
+</blockquote>
+<blockquote>
+<p>“<em>Document your methods and workflows.</em> This should include full command lines (copied
+and pasted) that are run through the shell that generate data or intermediate results.
+Even if you use the default values in software, be sure to write these values down;
+later versions of the program may use different default values. Scripts naturally
+document all steps and parameters …, but be sure to document any command-line options
+used to run this script. In general, any command that produces results in your work needs
+to be documented somewhere.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“<em>Document the version of the software that you ran.</em> This may seem unimportant, but
+remember the example from ‘Reproducible Research’ on page 6 where my colleagues and I
+traced disagreeing results down to a single piece of software being updated. These
+details matter. Good bioinformatices software usually has a command-line option to
+return the current version. Software managed with a version control system such as
+Git has explicit identifiers to every version, which can be used to document the
+precise version you ran… If no version information is available, a release date,
+link to the software, and download date will suffice.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“<em>Document when you downloaded data.</em> It’s important to include when the data was downloaded,
+as the external data source (such as a website or server) might change in the future. For example,
+a script that downloads data directly from a database might produce different results if
+rerun after the external database is updated. Consequently, it’s important to document
+when data came into your repository.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“All of this [documentation] information is best stored in plain-text README files.
+Plain text can easily be read, searched, and edited directly from the command line,
+making it the perfect choice for portable and accessible README files. It’s also available
+on all computer systems, meaning you can document your steps when working directly on
+a server or computer cluster. Plain text also lacks complex formatting, which can create
+issues when copying and pasting commands from your documentation back into the command
+line.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“The computer is a very flexible and powerful tool, and it is a tool that is ours
+to control. Files and documents, especially those in open standard formats, can be
+manipulated using a variety of software tools, not just one specific piece of software.
+A programming lanuage is a tool that allows us to manipulate data stored in files and
+to manipulate data held in RAM in unlimited ways. Even with a basic knowledge of
+programming, we can perform a huge variety of data processing tasks.” <span class="citation">(Murrell 2009)</span></p>
+</blockquote>
+<blockquote>
+<p>“Computer code is the preferred approach to communicating our instructions to the
+computer. The approach allows us to be precise and expressive, it provides a complete
+record of our actions, and it allows others to replicate our work.” <span class="citation">(Murrell 2009)</span></p>
+</blockquote>
+<blockquote>
+<p>“Programming in R is carried out, primarily, by manipulating and modifying data structures.
+These different transformations are carried out using functions and operators. In R,
+virtually every operation is a function call, and though we separate our discussion into
+operators and function calls, the distinction is not strong … The R evaluator and
+many functions are written in C but most R functions are written in R itself.”
+<span class="citation">(Gentleman 2008)</span></p>
+</blockquote>
+<blockquote>
+<p>“Many biologists are first exposed to the R language by following a cookbook-type
+approach to conduct a statistical analysis like a t-test or an analysis of
+variance (ANOVA). ALthough R excels at these and more complicated statistical
+tests, R’s real power is as a data programming lanugage you can use to explore and
+understand data in an open-ended, highly interactive, iterative way. Learning R as a
+data programming language will give you the freedom to experiment and problem solve
+during data analysis—exactly what we need as bioinformaticians.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Popularized by statistician John W. Tukey, EDA is an approach that emphasizes
+understanding data (and its limitations) through interactive investigation
+rather than explicit statitical modeling. In his 1977 book <em>Exploratory Data
+Analysis</em>, Tukey described EDA as ‘detective work’ involved in ‘finding and
+revealing the clues’ in data. As Tukey’s quote emphasizes, EDA is much more an approach
+to exploring data than using specific statistical methods. In the face of rapidly
+changing sequencing technologies, bioinformatics software, and statistical methods,
+EDA skills are not only widely applicable and comparatively stable—they’re also
+essential to making sure that our analyses are robust to these new data and methods.”
+<span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Developing code in R is a back-and-forth between writing code in a rerunnable script
+and exploring data interactively in the R interpreter. To be reproducible, all steps
+that lead to results you’ll use later must be recorded in the R script that accompanies
+your analysis and interactive work. While R can save a history of the commands you’ve
+entered in the interpreter during a session (with the command <code>savehistory()</code>),
+storing your steps in a well-commented R script makes your life much easier when you
+need to backtrack to understand what you did or change your analysis.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“It’s a good idea to avoid referring to specific dataframe rows in your analysis code.
+This would produce code fragile to row permutations or new rows that may be generated
+by rerunning a previous analysis step. In every case in which you might need to refer
+to a specific row, it’s avoidable by using subsetting… Similarly, it’s a good idea
+to refer to columns by their column name, <em>not</em> their position. While columns may be
+less likely to change across dataset versions than rows, it still happens. Column names
+are more specific than positions, and also lead to more readable code.”
+<span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“In bioinformatics, we often need to extract data from strings. R has several
+functions to manipulate strings that are handy when working with bioinformatics data in
+R. Note, however, that for most bioinformatics text-processing tasks, R is <em>not</em>
+the preferred language to use for a few reasons. First, R works with all data stored
+in memory; many bioinformatics text-processing tasks are best tackled with the
+stream-based approaches…, which explicityly avoid loading all data in memory at
+once. Second, R’s string processing functions are admittedly a bit clunky compared
+to Python’s.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Versions fo R and any R pakcages installed change over time. This can lead to
+reproducibility headaches, as the results of your analyses may change with the
+changing version of R and R packages. … you should always record the versions
+of R and any packages you use for analysis. R actually makes this incrediably
+easy to do—just call the <code>sessionInfo()</code> function.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Bioconductor is an open source R software project focused on developing tools
+for high-throughput genomics and molecular biology data.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Bioconductor’s pakcage system is a bit different than those on the Comprehensive R
+Archive Network (CRAN). Bioconductor packages are released on a set schedule, twice
+a year. Each release is coordinated with a version of R, making Bioconductor’s versions
+tied to specific R versions. The motivation behind this strict coordination is that it
+allows for packages to be thoroughly tested before being released for public use.
+Additionally, because there’s considerable code re-use within the Bioconductor project,
+this ensures that all package versions within a Bioconductor release are compatible
+with one another. For users, the end result is that packages work as expected and
+have been rigorously tested before you use it (this is good when your scientific
+results depend on software reliability!). If you need the cutting-edge version of a
+package for some reason, it’s always possible to work with their development branch.”
+<span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“When installing Bioconductor packages, we use the <code>biocLite()</code> function. <code>biocLite()</code>
+installs the correct version of a package for your R version (and its corresponding
+Bioconductor version).” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“In addition to a careful release cycle that fosters package stability, Bioconductor
+also has extensive, excellent documentation. The best, most up-to-date documentation
+for each package will always be a Bioconductor [web address]. Each package has a full
+reference manual covering all functions and classes included in a package,
+as well as one or more in-depth vignettes. Vignettes step through many examples and
+common workflows using packages.” <span class="citation">(Buffalo 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Quite often, users don’t appreciate the opportunities. Noncomputational
+biologists don’t know when to complain about the status quo. With modest amounts
+of computational consulting, long or impossible jobs can become much shorter or
+richer.” — Barry Demchak in <span class="citation">(Altschul et al. 2013)</span></p>
+</blockquote>
+<blockquote>
+<p>“People not doing the computational work tend to think that you can write a
+program very fast. That, I think, is frankly not true. It takes a lot of time to
+implement a prototype. Then it actually takes a lot of time to really make it
+better.” — Heng Li in <span class="citation">(Altschul et al. 2013)</span></p>
+</blockquote>
+<blockquote>
+<p>“There is also a problem with discovering software that exists; often people
+reinvent the wheel just because they don’t know any better. Good repositories
+for software and best practice workflows, especially if citable, would be a
+start.” — James Taylor in <span class="citation">(Altschul et al. 2013)</span></p>
+</blockquote>
+<blockquote>
+<p>" Now there are a lot of strong, young, faculty members who label themselves
+as computational analysts, yet very often want wet-lab space. They’re not
+content just working off data sets that come from other people. They want to be
+involved in data generation and experimental design and mainstreaming
+computation as a valid research tool. Just as the boundaries of biochemistry and
+cell biology have kind of blurred, I think the same will be true of
+computational biology. It’s going to be alongside biochemistry, or molecular
+biology or microscopy as a core component." — Richard Durbin in
+<span class="citation">(Altschul et al. 2013)</span></p>
+</blockquote>
+<blockquote>
+<p>“I would say that computation is now as important to biology as chemistry is.
+Both are useful background knowledge. Data manipulation and use of information
+are part of the technology of biology research now. Knowing how to program also
+gives people some idea about what’s going on inside data analysis. It helps them
+appreciate what they can and can’t expect from data analysis software.” —
+Richard Durbin in <span class="citation">(Altschul et al. 2013)</span></p>
+</blockquote>
+<blockquote>
+<p>“<strong>Does every new biology PhD student need to learn how to program?</strong> To some,
+the answer might be “no” because that’s left to the experts, to the people
+downstairs who sit in front of a computer. But a similar question would be: does
+every graduate student in biology need to learn grammar? Clearly, yes. Do they
+all need to learn to speak? Clearly, yes. We just don’t leave it to the
+literature experts. That’s because we need to communicate. Do students need to
+tie their shoes? Yes. It has now come to the point where using a computer is as
+essential as brushing your teeth. If you want some kind of a competitive edge,
+you’re going to want to make as much use of that computer as you can. The
+complexity of the task at hand will mean that canned solutions don’t exist. It
+means that if you’re using a canned solution, you’re not at the edge of
+research." — Martin Krzywinski in <span class="citation">(Altschul et al. 2013)</span></p>
+</blockquote>
+<blockquote>
+<p>“Although we are tackling many different types of data, questions, and
+statistical methods hands-on, we maintain a consistent computational approach
+by keeping all the computation under one roof: the R programming language and
+statistical environment, enhanced by the biological data infrastructure and
+specialized method packages from the Bioconductor project.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“The availablility of over 10,000 packages [in R] ensures that almost all
+statistical methods are available, including the most recent developments.
+Moreover, there are implementations of or interfaces to many methods from
+computer science, mathematics, machine learning, data management, visualization
+and internet technologies. This puts thousands of person-years of work by
+experts at your fingertips.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“Bioconductor packages support the reading of many of the data types and formats
+produced by measurement instruments used in modern biology, as well as the
+needed technology-specific ‘preprocessing’ routines. This community is
+actively keeping these up-to-date with the rapid developments in the
+instrument market.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“An equivalent to the laboratory notebook that is standard good practice in
+labwork, we advocate the use of a computational diary written in the R markdown
+format. … Together with a version control system, R markdown helps with
+tracking changes.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“There are (at least) two types of data visualization. The first enables
+a scientist to explore data and make discoveries about the complex processes
+at work. The other type of visualization provides informative, clear and
+visually attractive illustrations of her results that she can show to others
+and eventually include in a publication.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“A common task in biological data analysis is comparison between several
+samples of univariate measurements. … As an example, we’ll use the intensities
+of a set of four genes… A popular way to display [this] is through
+barplots [and boxplots, violin plots, dot plots, and beeswarm plots].” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“At different stages of their development, immune cells express unique
+combinations of proteins on their surfaces. These protein-markers are called
+CDs (clusters of differentiation) and are collected by flow cytometry
+(using fluorescence…) or mass cytometry (using single-cell atomic mass
+spectrometry of heavy metal reporters). An example of a commonly used CD is
+CD4; this protein is expressed by helper T cells that are referred to as
+being ‘CD4+.’ Note, however, that some cells express CD4 (thus are CD4+)
+but are not actually helper T cells. We start by loading some useful Bioconductor
+packages for flow cytometry, <code>flowCore</code> and <code>flowViz</code>. …
+First we load the table data that reports the mapping between isotopes and
+markers (antibodies), and then we replace the isotope names in the column
+names … with the marker names. Changing the column names makes the subsequent
+analysis and plotting easier to read. … Plotting the data in two dimensions…
+already shows that the cells can be grouped into subpopulations. Sometimes just
+one of the markers can be used to define populations on its own; in that case,
+simple rectangular gating is used to separate the populations. For instance,
+CD4+ populations can be gating by taking the subpopulation with high values
+for the CD4 marker. Cell clustering can be improved by carefully choosing
+transformations of the data. … [Such a transformation] reveals
+bimodality and the existence of two cell populations… It is standard
+to transform both flow and mass cytometry data using one of several special
+functions. We take the example of the inverse hyperbolic arcsine (asinh) …
+for large values of x, asinh(x) behaves like the log and is practically
+equal to log(x) + log(2); for small x the function is close to linear in
+x. … This is another example of a variance-stabilizing transformation.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“Consider a set of measurements that reflect some underlying true values
+(say, species represented by DNA sequences from their genomes) but
+have been degraded by technical noise. Clustering can be used to remove
+such noise.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“In the bacterial 16SrRNA gene there are so-called variable regions that are
+taxa-specific. These provide fingerprints that enable taxon identification. The
+raw data are FASTQ-files with quality scored sequences of PCR-amplified DNA
+regions. We use an iterative alternating approach to build a probabilistic noise
+mode from the data. We call this a de novo method, because we use clustering,
+and we use the cluster centers as our denoised sequence variants… After
+finding all the denoised variants, we create contingency tables of their counts
+across the different samples. … these tables can be used to infer properties
+of the underlying bacterial communities using networks and graphs. <strong>In order to
+improve data quality, we often have to start with the raw data and model all the
+sources of variation carefully.</strong> We can think of this as an example of cooking
+from scratch. … The DADA method … uses a parameterized model of substitution
+errors that distinguishes sequencing errors from real biological variation. …
+The dereplicated sequences are read in, and then divisive denoising and
+estimation is run with the <code>dada</code> function… In order to verify that the error
+transition rates have been reasonably well estimated, we inspect the fit between
+the observed error rates … and the fitted error rates .. Once the errors have
+been estimated, the algorithm is rerun on the data to find the sequence
+variants. … Sequence inference removes nearly all substition and indel errors
+from the data. [Footnote: ’The term indel stands for insertion-deletion; when
+comparing two sequences that differ by a small stretch of characters, it is a
+matter of viewpoint whether this is an insertion or a deletion, hence the name].
+We merge the inferred forward and reverse sequences while removing paired
+sequences that do not perfectly overlap, as a final control against residual
+errors.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“Chimera are sequences that are artificially created during the PCR
+amplification by the melding of two (or, in rare cases, more) of the
+original sequences. To complete our denoising workflow, we remove them
+with a call to the function <code>removeBimeraDenovo</code>, leaving us with a
+clean contingency table that we will use later.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“We load up the RNA-Seq dataset <code>airway</code>, which contains gene expression
+measurements (gene-level counts) of four primary human airway smooth muscle
+cell lines with and without treatment with dexamethasone, a synthetic
+glucocorticoid. We’ll use the <code>DESeq2</code> method … it performs a test
+for differential expression for each gene.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“In many cases, different variables are measured in different units, so they
+have different baselines and different scales. [Footnote: ‘Common measures of
+scale are the range and the standard deviation…’] For PCA and many other
+methods, we therefore need to transform the numeric values to some common scale
+in order to make comparisons meaningful. Centering means subtracting the mean,
+so that the mean of the centered data is at the origin. Scaling or standardizing
+then means dividing by the standard deviation, so that the new standard
+deviation is 1. … To perform these operations, there is the R function
+<code>scale</code>, whose default behavior when given a matrix or a dataframe is to make
+each column have a mean of 0 and a standard deviation of 1. … We have already
+encountered other data transformation choices in Chapters 4 and 5, where we used
+the log and asinh functions. The aim of these transformations is (usually)
+variance stabilization, i.e., to make the variances of the replicate
+measurements of one and the same variable in different parts of the dynamic
+range more similar. In contrast, the standardizing transformation described
+above aims to make the scale (as measured by mean and standard deviation) of
+<em>different</em> variables the same. Sometimes it is preferable to leave variables at
+different scales because they are truely of different importance. If their
+original scale is relevant, then we can (and should) leave the data alone. In
+other cases, the variables have different precisions known a priori. We will see
+in Chapter 9 that there are several ways of weighting such variables. After
+preprocessing the data, we are ready to undertake data simplification through
+dimension reduction.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>With data that give the number of reads for each gene in a sample, “The
+data have a large dynamic range, starting from zero up to millions. The
+variance and, more generally, the distribution shape of the data in different
+parts of the dynamic range are very different. We need to take this
+phenomenon, called heteroscedascity, into account. The data are non-negative
+integers, and their distribution is not symmetric—thus normal or log-normal
+distribution models may be a poor fit. We need to understand the systematic
+sampling biases and adjust for them. Confusingly, such adjustment is often
+called normalization. Examples are the total sequencing depth of an experiment
+(even if the true abundance of a gene in two libraries is the same, we expect
+different numbers of reads for it depending on the total number of reads
+sequenced) and differing sampling probabilities (even if the true abundance of
+two genes within a biological sample is the same, we expect different numbers
+of reads for them if they have differing biophysical properties, such as length,
+GC content, secondary structure, binding partners).” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“Often, systematic biases affect the data generation and are worth taking
+into account. Unfortunately, the term normalization is commonly used for that
+aspect of the analysis, even though it is misleading; it has nothing to do
+with the normal distribution, nor does it involve a data transformation.
+Rather, what we aim to do is identify the nature and magnitude of
+systematic biases and take them into account in our model-based analysis of the
+data. The most important systematic bias [for count data from high-throughput
+sequencing applications like RNA-Seq] stems from variations in the total number
+of reads in each sample. If we have more reads for one library than for another,
+then we might assume that, everything else being equal, the counts are
+proportional to each other with some proportionality factor <em>s</em>. Naively,
+we could propose that a decent estimate of <em>s</em> for each sample is simply
+given by the sum of the counts of all genes. However, it turns out that we
+can do better…” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“When testing for differential expression, we operate on raw counts and
+use discrete distributions. For other downstream analyses—e.g., for
+visualization or clustering—it can be useful to work with transformed versions
+of the count data. Maybe the most obvious choice of transformation is the
+logarithm. However, since count values for a gene can be zero, some analysts
+advocate the use of pseudocounts, i.e., transformations of the form
+y = log2(n + 1) or more generally y = log2(n + n0).” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“The data sometimes contain isolated instances of very large counts that
+are apparently unrelated to the experimental or study design and may be
+considered outliers. Outliers can arise for many reasons, including rare
+technical or experimental artifacts, read mapping problems in the case of
+genetically differing samples, and genuine but rare biological events. In
+many cases, users appear primarily interested in genes that show consistent
+behavior, and this is the reason why, by default, genes that are affected by such
+outliers are set aside by <code>DESeq</code>. The function calculates, for every gene
+and for every sample, a diagnostic test for outliers called Cook’s distance.
+Cook’s distance is a measure of how much a single sample is influencing the
+fitted coefficients for a gene, and a large value of Cook’s distance is
+intended to indicate an outlier count. <code>DESeq2</code> automatically flags genes
+with Cook’s distance above a cutoff and sets their p-values and adjusted
+p-values to NA. … With many degrees of freedom—i.e., many more samples
+than number of parameters to be estimated—it might be undesirable to remove
+entire genes from the analysis just becuase their data include a single
+count outlier. An alternative strategy is to replace the outlier counts with
+the trimmed mean over all sample, adjusted by the size factor for that
+sample. This approach is conservative: it will not lead to false positives,
+as it replaces the outlier value with the value predicted by the null hypothesis.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“Since the sampling depthy is typically different for different sequencing
+runs (replicates), we need to estimate the effect of this variable parameter
+and take it into account in our model. … Often this part of the analysis
+is called normalization (the term is not particularly descriptive, but
+unfortunately it is now well established in the literature).” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“Our experimental interventions and our measurement instruments have limited
+precision and accuracy; often we don’t know these limitations at the outset and
+have to collect preliminary data to estimate them.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“Our treatment conditions may have undesired but hard-to-avoid side effects;
+our measurements may be overlaid with interfering signals or ‘background noise.’”
+<span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“Sometimes we explicitly know about factors that cause bias, for instance, when
+different reagent batches were used in different phases of the experiment. We
+call these batch effects (Leek et al., 2010). At other times, we may expect that
+such factors are at work but have no explicit record of them. We call these
+latent factors. We can treat them as adding to the noise, and in Chapter
+4 we saw how to use mixture models to do so. But this may not be enough; with
+high-dimensional data, noise caused by latent factors tends to be correlated,
+and this can lead to faulty inference (Leek et al., 2010). The good news is that
+these same correlations can be exploited to estimate latent factors from
+the data, model them as bias, and thus reduce the noise (Leek and Storey 2007;
+Stegle et al. 2010).” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“Regular noise can be modeled by simple probability models such as independent
+normal distributions or Poissons, or by mixtures such as the gamma-Poisson or
+Laplace. We can use relatively straightforward methods to take such noise into
+account in our data analyses and to compute the probability of extraordinarily
+large or small values. In the real world, this is only part of the story:
+measurements can be completely off-scale (a sample swap, a contamination, or
+a software bug), and they can all go awry at the same time (a whole microtiter
+plate went bad, affecting all data measured from it). Such events are hard to model
+or even correct for—our best chance of dealing with them is data quality
+assessment, outlier detection, and documented removal.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“In Chapters 4 and 8 we saw examples of data transformations that compress or
+stretch the space of quantitative measurements in such a way that the
+measurements’ variance is more similar throughout. Thus the variance between
+replicated measurements is no longer highly dependent on the mean value. The
+mean-variance relationship of our data before transformation can, in
+principle, be any function, but in many cases, the following prototypic relationships
+are found, at least approximately: 1. Constant: the variance is independent
+of the mean…; 2. Poisson: the variance is proproational to the mean…;
+3. Quadratic: the standard deviation is proportional to the mean; therefore
+the variance grows quadratically… The mean-variance relationship in real data
+can also be a combination of these basic types. For instance, with DNA microarrays,
+the fluorescence intensities are subject to a combination of background noise that
+is largely independent of the signal, and multiplicative noise whose standard
+deviation is proportional to the signal (Rocke and Durbin 2001). …
+What is the point of applying a variance-stabilizing transformation? Analyzing the
+data on the transformed scale tends to: 1. Improve visualization, since the
+physical space on the plot is used more ‘fairly’ throughout the range of the
+data. A similar argument applies to the color space in the case of a heatmap.
+2. Improve the outcome of ordination methods such as PCA or clustering based
+on correlation, as the results are not so much dominated by the signal from a few
+very highly expressed genes, but more uniformly from many genes throughout the
+dynamic range. 3. Improve the estimates and inference from statistical models
+that are based on the assumption of identially distributed (and, hence,
+homoscedastic) noise.”
+<span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“We distinguis between data quality assessment (QA)—steps taken to measure
+and monitor data quality—and quality control—the removal of bad data.
+These activities pervade all phases of an analysis, from assembling the raw
+data over transformation, summarization, model fitting, hypothesis testing or
+screening for ‘hits’ to interpretation. QA-related questions include:
+1. How do the marginal distributions of the variables look (histograms,
+ECDF plots)? 2. How do their joint distributions look (scatterplots, pair plots)?
+3. How well do replicated agree (as compared to different biological conditions)?
+Are the magnitudes of different between several conditions plausible?
+4. Is there evidence of batch effects? These could be of a categorical (stepwise)
+or continuous (gradual) nature, e.g., due to changes in experimental reagents,
+protocols or environmental factors. Factors associated with such effects may
+be explicitly known, or unknown and latent, and often they are somewhere in
+between (e.g., when a measurement apparatus slowly degrades over time, and
+we have recorded the times, but don’t really know exactly when the degradation
+becomes bad). For the last two sets of questions, heatmaps, principal components
+plots, and other ordination plots (as we have seen in Chapters 7 and 9) are
+useful.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“It’s not easy to define quality, and the word is used with many meanings. The
+most pertinent for us is fitness for purpose, and this contrasts with other
+definitions that are based on normative specifications. For instance, in
+differential expression analysis with RNA-Seq data, our purpose may be the
+detection of differentially expressed genes between two biological conditions.
+We can check specificiations such as the number of reads, read length, base
+calling quality and fraction of aligned reads, but ultimately these measures in
+isolation have little bearing on our purpose. More to the point will be the
+identification of samples that are not behaving as expected, e.g., because of
+a sample swap or degradation, or genes that were not measured properly.
+… Useful plots include ordination plots … and heatmaps …
+A quality metric is any value that we use to measure quality, and having
+explicit quality metrics helps in automating QA/QC.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“<strong>Use literate programming tools.</strong> Examples are Rmarkdown and Jupyter. This
+makes code more readable (for yourself and for others) than burying
+explanations and usage instructions in comments in the source code or in
+separate README files. In addition, you can directly embed figures and tables
+in these documents. Such documents are good starting points for the supplementary
+material of your paper. Moreover, they’re great for reporting analyses to your
+collaborators.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“<strong>Use functions.</strong> It’s better than copy-pasting (or repeatedly source-ing)
+stretches of code.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p><strong>Use the R package system.</strong> Soon you’ll note recurring function or variable
+definitions that you want to share between your different scripts. It is fine to
+use the R function <code>source</code> to manage them initially, but it is never too early
+to move them into your own package—at the latest when you find yourself staring
+to write emails or code comments explaining to others (or to yourself) how to use
+some functionality. Assembling existing code into an R package is not hard, and it
+offers you many goodies, including standardized ways of composing documentation,
+showing code usage examples, code testing, versioning and provision to others.
+And quite likely you’ll soon appreciate the benefits of using namespaces."
+<span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“<strong>Think in terms of cooking recipes and try to automate them.</strong> When developing
+downstream analysis ideas that bring together several different data types, you
+don’t want to do the conversion from data-type-specific formats into a
+representation suitable for machine learning or a generic statistical method
+each time anew, on an ad hoc basis. Have a recipe script that assembles the
+different ingredients and cooks them up as an easily consumable [footnote:
+In computer science, the term data warehouse is sometimes used for such a concept]
+matrix, dataframe or Bioconductor <code>SummarizedExperiment</code>.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“<strong>Centralize the location of the raw data files and automate the derivation of
+intermediate data.</strong> Store the input data on a centralized file server that is
+profesionally backed up. Mark the files as read-only. Have a clear and linear
+workflow for computing the derived data (e.g., normalized, summarized, transformed,
+etc.) from the raw files, and store these in a separate directory. Anticipate that
+this workflow will need to be run several times, and version it. Use the
+<code>BiocFileCache</code> package to mirror these files on your personal computer.
+[footnote: A more basic alternative is the rsync utility. A popular solution offered
+by some organizations is based on ownCloud. Commercial options are Dropbox,
+Google Drive and the like].” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“<strong>Keep a hyperlinked webpage with an index of all analyses.</strong> This is helpful
+for collaborators (especially if the page and the analysis can be accessed via
+a web browser) and also a good starting point for the methods part of your paper.
+Structure it in chronological or logical order, or a combination of both.”
+<span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“Getting data ready for analysis or visualization often involves a lot of
+shuffling until they are in the right shape and format for an analytical
+algorithm or a graphics routine.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“Data analysis pipelines in high-throughput biology often work as ‘funnels’
+that successively summarize and compress the data. In high-throughput
+sequencing, we may start with individual sequencing reads, then align them to
+a reference, then only count the aligned reads for each position, summarize
+positions to genes (or other kinds of regions), then ‘normalize’ these numbers
+by library size to make them comparable across libraries, etc. At each step,
+we lose information, yet it is important to make sure we still have enough
+information for the task at hand. [footnote: For instance, for the RNA-Seq
+differential experession analysis we saw in Chapter 8, we needed the actual
+read counts, not ‘normalized’ versions; for some analyses, gene-level summaries
+might suffice, for others, we’ll want to look at the exon or isoform level.]
+The problem is particularly acute if we build our data pipeline with a series
+of components from separate developers. Statisticians have a concept for
+whether certain summaries enable the reconstruction of all the relevant
+information in the data: sufficiency. … Iterative approaches akin to what
+we saw when we used the EM algorithm can sometimes help to avoid information
+loss. For instance, when analyzing mass spectroscopy data, a first run
+guesses at peaks individually for each sample. After this preliminary
+spectrum-spotting, another iteration allows us to borrow strength from the
+other samples to spot spectra that may have been overlooked (or looked like
+noise) before.” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
+<p>Try to avoid adding in supplementary / meta data “by hand.” For example, if you
+need to add information about the ID of each sample, and this information is
+included somewhere in the filename, it will be more robust to use regular
+expressions to extract this information from the file names, rather than
+entering it by hand. If you later add new files, the automated approach will
+be robust to this update, while errors might be introduced for information
+added by hand.</p>
+<p>Example of quality control functionality in <code>xcms</code>:
+“Below we create boxplots representing the distribution of total ion currents per file. Such plots can be very useful to spot problematic or failing MS runs.
+… Also, we can cluster the samples based on similarity of their base peak chromatogram. This can also be helpful to spot potentially problematic samples in an experiment or generally get an initial overview of the sample grouping in the experiment. Since the retention times between samples are not exactly identical, we use the bin function to group intensities in fixed time ranges (bins) along the retention time axis. In the present example we use a bin size of 1 second, the default is 0.5 seconds. The clustering is performed using complete linkage hierarchical clustering on the pairwise correlations of the binned base peak chromatograms.”
+<span class="citation">(Smith 2013)</span></p>
+<p>After some quality checks on the data from LCMS, the next step is to
+detect the chromatographic peaks in the samples. This requires some
+specifications to the algorithm that will depend on the settings used
+on the equipment when the samples were run.
+“Next we perform the chromatographic peak detection using the centWave algorithm [2]. Before running the peak detection it is however strongly suggested to visually inspect e.g. the extracted ion chromatogram of internal standards or known compounds to evaluate and adapt the peak detection settings since the default settings will not be appropriate for most LCMS experiments. The two most critical parameters for centWave are the peakwidth (expected range of chromatographic peak widths) and ppm (maximum expected deviation of m/z values of centroids corresponding to one chromatographic peak; this is usually much larger than the ppm specified by the manufacturer) parameters. To evaluate the typical chromatographic peak width we plot the EIC for one peak.”
+<span class="citation">(Smith 2013)</span></p>
+<blockquote>
+<p>“Peak detection will not always work perfectly leading to peak detection artifacts, such as overlapping peaks or artificially split peaks. The refineChromPeaks function allows to refine peak detection results by either removing identified peaks not passing a certain criteria or by merging artificially split chromatographic peaks.” <span class="citation">(Smith 2013)</span></p>
+</blockquote>
+<blockquote>
+<p>“The time at which analytes elute in the chromatography can vary between samples (and even compounds). Such a difference was already observable in the extracted ion chromatogram plot shown as an example in the previous section. The alignment step, also referred to as retention time correction, aims at adjusting this by shifting signals along the retention time axis to align the signals between different samples within an experiment. A plethora of alignment algorithms exist (see [3]), with some of them being implemented also in xcms. The method to perform the alignment/retention time correction in xcms is adjustRtime which uses different alignment algorithms depending on the provided parameter class. … In some experiments it might be helpful to perform the alignment based on only a subset of the samples, e.g. if QC samples were injected at regular intervals or if the experiment contains blanks. Alignment method in xcms allow to estimate retention time drifts on a subset of samples (either all samples excluding blanks or QC samples injected at regular intervals during a measurement run) and use these to adjust the full data set.” <span class="citation">(Smith 2013)</span></p>
+</blockquote>
+<blockquote>
+<p>“The final step in the metabolomics preprocessing is the correspondence that matches detected chromatographic peaks between samples (and depending on the settings, also within samples if they are adjacent). The method to perform the correspondence in xcms is groupChromPeaks. We will use the peak density method [5] to group chromatographic peaks. The algorithm combines chromatographic peaks depending on the density of peaks along the retention time axis within small slices along the mz dimension.” <span class="citation">(Smith 2013)</span></p>
+</blockquote>
+<blockquote>
+<p>“The performance of peak detection, alignment and correspondence should always be evaluated by inspecting extracted ion chromatograms e.g. of known compounds, internal standards or identified features in general.” <span class="citation">(Smith 2013)</span></p>
+</blockquote>
+<p>Normalization can help adjust for technical bias across the samples:</p>
+<blockquote>
+<p>“At last we perform a principal component analysis to evaluate the grouping of the samples in this experiment. Note that we did not perform any data normalization hence the grouping might (and will) also be influenced by technical biases. … We can see the expected separation between the KO and WT samples on PC2. On PC1 samples separate based on their ID, samples with an ID &lt;= 18 from samples with an ID &gt; 18. This separation might be caused by a technical bias (e.g. measurements performed on different days/weeks) or due to biological properties of the mice analyzed (sex, age, litter mates etc).” <span class="citation">(Smith 2013)</span></p>
+</blockquote>
+<blockquote>
+<p>“Normalizing features’ signal intensities is required, but at present not (yet) supported in xcms (some methods might be added in near future). It is advised to use the SummarizedExperiment returned by the quantify method for any further data processing, as this type of object stores feature definitions, sample annotations as well as feature abundances in the same object. For the identification of e.g. features with significant different intensities/abundances it is suggested to use functionality provided in other R packages, such as Bioconductor’s excellent limma package.” <span class="citation">(Smith 2013)</span></p>
+</blockquote>
+</div>
+<div id="discussion-questions-5" class="section level3" number="3.1.6">
+<h3><span class="header-section-number">3.1.6</span> Discussion questions</h3>
+
+</div>
+</div>
+<p style="text-align: center;">
+<a href="3-experimental-data-preprocessing.html"><button class="btn btn-default">Previous</button></a>
+<a href="3.2-introduction-to-scripted-data-pre-processing-in-r.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+
+</body>
+</html>

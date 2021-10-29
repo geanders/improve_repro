@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="2.5 Example: Creating a template for “tidy” data collection | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
+<meta property="og:type" content="book" />
+
+
+<meta property="og:description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
+<meta name="github-repo" content="rstudio/bookdown-demo" />
+
+<meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, and Gregory Robertson" />
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<meta name="description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing.">
+
+<title>2.5 Example: Creating a template for “tidy” data collection | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
+
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="toc.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li><a href="index.html#overview"><span class="toc-section-number">1</span> Overview</a>
+<ul>
+<li><a href="1.1-license.html#license"><span class="toc-section-number">1.1</span> License</a></li>
+</ul></li>
+<li><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a>
+<ul>
+<li><a href="2.1-separating-data-recording-and-analysis.html#separating-data-recording-and-analysis"><span class="toc-section-number">2.1</span> Separating data recording and analysis</a></li>
+<li><a href="2.2-principles-and-power-of-structured-data-formats.html#principles-and-power-of-structured-data-formats"><span class="toc-section-number">2.2</span> Principles and power of structured data formats</a></li>
+<li><a href="2.3-the-tidy-data-format.html#the-tidy-data-format"><span class="toc-section-number">2.3</span> The ‘tidy’ data format</a></li>
+<li><a href="2.4-designing-templates-for-tidy-data-collection.html#designing-templates-for-tidy-data-collection"><span class="toc-section-number">2.4</span> Designing templates for “tidy” data collection</a></li>
+<li><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#example-creating-a-template-for-tidy-data-collection"><span class="toc-section-number">2.5</span> Example: Creating a template for “tidy” data collection</a></li>
+<li><a href="2.6-power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files.html#power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files"><span class="toc-section-number">2.6</span> Power of using a single structured ‘Project’ directory for storing and tracking research project files</a></li>
+<li><a href="2.7-creating-project-templates.html#creating-project-templates"><span class="toc-section-number">2.7</span> Creating ‘Project’ templates</a></li>
+<li><a href="2.8-example-creating-a-project-template.html#example-creating-a-project-template"><span class="toc-section-number">2.8</span> Example: Creating a ‘Project’ template</a></li>
+<li><a href="2.9-harnessing-version-control-for-transparent-data-recording.html#harnessing-version-control-for-transparent-data-recording"><span class="toc-section-number">2.9</span> Harnessing version control for transparent data recording</a></li>
+<li><a href="2.10-enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms.html#enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms"><span class="toc-section-number">2.10</span> Enhance the reproducibility of collaborative research with version control platforms</a></li>
+<li><a href="2.11-using-git-and-gitlab-to-implement-version-control.html#using-git-and-gitlab-to-implement-version-control"><span class="toc-section-number">2.11</span> Using git and GitLab to implement version control</a></li>
+</ul></li>
+<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a>
+<ul>
+<li><a href="3.1-principles-and-benefits-of-scripted-pre-processing-of-experimental-data.html#principles-and-benefits-of-scripted-pre-processing-of-experimental-data"><span class="toc-section-number">3.1</span> Principles and benefits of scripted pre-processing of experimental data</a></li>
+<li><a href="3.2-introduction-to-scripted-data-pre-processing-in-r.html#introduction-to-scripted-data-pre-processing-in-r"><span class="toc-section-number">3.2</span> Introduction to scripted data pre-processing in R</a></li>
+<li><a href="3.3-simplify-scripted-pre-processing-through-rs-tidyverse-tools.html#simplify-scripted-pre-processing-through-rs-tidyverse-tools"><span class="toc-section-number">3.3</span> Simplify scripted pre-processing through R’s ‘tidyverse’ tools</a></li>
+<li><a href="3.4-complex-data-types-in-experimental-data-pre-processing.html#complex-data-types-in-experimental-data-pre-processing"><span class="toc-section-number">3.4</span> Complex data types in experimental data pre-processing</a></li>
+<li><a href="3.5-complex-data-types-in-r-and-bioconductor.html#complex-data-types-in-r-and-bioconductor"><span class="toc-section-number">3.5</span> Complex data types in R and Bioconductor</a></li>
+<li><a href="3.6-example-converting-from-complex-to-tidy-data-formats.html#example-converting-from-complex-to-tidy-data-formats"><span class="toc-section-number">3.6</span> Example: Converting from complex to ‘tidy’ data formats</a></li>
+<li><a href="3.7-introduction-to-reproducible-data-pre-processing-protocols.html#introduction-to-reproducible-data-pre-processing-protocols"><span class="toc-section-number">3.7</span> Introduction to reproducible data pre-processing protocols</a></li>
+<li><a href="3.8-from-pre-processing-scripts-to-pre-processing-protocols.html#from-pre-processing-scripts-to-pre-processing-protocols"><span class="toc-section-number">3.8</span> From pre-processing scripts to pre-processing protocols</a></li>
+<li><a href="3.9-rmarkdown-for-creating-reproducible-data-pre-processing-protocols.html#rmarkdown-for-creating-reproducible-data-pre-processing-protocols"><span class="toc-section-number">3.9</span> RMarkdown for creating reproducible data pre-processing protocols</a></li>
+<li><a href="3.10-example-creating-a-reproducible-data-pre-processing-protocol.html#example-creating-a-reproducible-data-pre-processing-protocol"><span class="toc-section-number">3.10</span> Example: Creating a reproducible data pre-processing protocol</a></li>
+</ul></li>
+<li><a href="4-references.html#references"><span class="toc-section-number">4</span> References</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="example-creating-a-template-for-tidy-data-collection" class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> Example: Creating a template for “tidy” data collection</h2>
+<p>We will walk through an example of creating a template to collect data in a
+“tidy” format for a laboratory-based research project, based on a research
+project on drug efficacy in murine tuberculosis models. We will show the initial
+“untidy” format for data recording and show how we converted it to a “tidy”
+format. Finally, we will show how the data can then easily be analyzed and
+visualized using reproducible tools.</p>
+<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
+<ul>
+<li>Understand how the principles of “tidy” data can be applied for a real, complex research project;</li>
+<li>List advantages of the “tidy” data format for the example project</li>
+</ul>
+<div id="exampledata-on-rate-of-bacterial-growth" class="section level3" number="2.5.1">
+<h3><span class="header-section-number">2.5.1</span> Example—Data on rate of bacterial growth</h3>
+<p>The first set of data are from a study on the growth of <em>Mycobacterium
+tuberculosis</em>. The goal of this study was to compare growth yield and doubling
+time of <em>Mycobacterium tuberculosis</em> grown in rich medium under two assay
+conditions. One set of cultures were grown in tubes with a low culture volume
+relative to a large air head space to allow free oxygen exchange. A second set
+of cultures were grown in tubes filled to near capacity, resulting in limited
+air head space which has been shown elsewhere to limit oxygen availability over
+time. The caps on both sets of cultures were sealed to restrict air exchange
+during the study.</p>
+<p>Some background information is helpful in understanding these example data,
+especially if you have not conducted this type of experiment. The increase in
+the cell size and cell mass during the development of an organism is termed
+growth. It is the unique characteristics of all organisms. The organism must
+require certain basic parameters for their energy generation and cellular
+biosynthesis. The growth of the organism is affected by both physical and
+nutritional factors. There are multiple methods by which growth can be measured,
+but the use of closed tissue culture tubes and a spectrophotometer to track
+increases in optical density (absorbance at 600 nm) over time offers several
+advantages: 1) it is less subject to technical error and contamination, 2) read
+out is fast and simple, 3) growth as measure by increased absorbance (turbidity)
+is directly proportional to increases in cell mass. There are four distinct
+phases of bacterial growth. Lag phase, log (exponential phase), stationary
+phase, death phase. From these data, bacterial generation times (doubling time)
+during the exponential growth phase can be calculated.</p>
+<p><span class="math display">\[
+\mbox{Doubling time} = \frac{log(2)(t_1 - t_2)}{log(OD_{t_1} - log(OD_{t_2}))}
+\]</span>
+where <span class="math inline">\(t_1\)</span> and <span class="math inline">\(t_2\)</span> are two time points and <span class="math inline">\(OD_{t_1}\)</span> and <span class="math inline">\(OD_{t_2}\)</span> are the
+optical densities at the two time points (all <span class="math inline">\(log\)</span>s are natural in this case).</p>
+<p>An excel-based workbook (Figure <a href="2.5-example-creating-a-template-for-tidy-data-collection.html#fig:growthexcel">2.2</a>) was created to allow the
+student performing the work to (1) calculate the amount of initial inoculum
+(cell culture) to add to each tube to begin the study, (2) record the raw data
+absorbance measurements, (3) graph the data on both a log and linear scale, and
+(4) calculate doubling time in two phases of growth using the equation listed
+above. Columns were added to allow the student to track the time (column A), the
+difference in time (hours) between each time point in which data were collected
+(column B), the date on which data were gathered (column C), and the time in
+hours for each data point from the start of the study for graphing purposes
+(column D). Absorbance data for each sampling timepoint were listed in Columns
+E-F (high oxygen conditions; VA001 A1, A3) or columns G-I (limited oxygen
+conditions; VA001 L1, L2, L3).</p>
+<div class="figure fullwidth"><span style="display:block;" id="fig:growthexcel"></span>
+<img src="figures/growth_curve_example.png" alt="Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column." width="\textwidth"  />
+<p class="caption marginnote shownote">
+Figure 2.2: Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column.
+</p>
+</div>
+<p>What the researchers found appealing about the format of this Excel sheet was
+the ease with which the student could accomplish the study goals. They also
+cited transparency of the raw data and ease with which additional sampling data
+points could be added. The data being graphed in real time and the inclusion of
+a simple macro to calculate doubling time, allowed the student to see tangible
+differences between the two assay conditions. This was also somewhat problematic
+as the equation to calculate doubling time was based on anchored time points
+built into the original spreadsheet resulting in two different results that were
+not properly linked to the correct data time points.</p>
+<p>Data that are saved in a format like that shown in Figure <a href="2.5-example-creating-a-template-for-tidy-data-collection.html#fig:growthexcel">2.2</a>,
+however, are hard to read in for a statistical program like R, Perl, or Python.
+In this format, the raw data (the time points each observation was collected and
+the optical density for the sample at that time point) form only part of the
+spreadsheet. The spreadsheet also includes notes, automated figures, and
+cells where an embedded formula runs calculations behind the scenes.</p>
+<p>Instead of this format, we can design a simpler format to collect the data. We’ll
+remove all figures and calculations, and instead save those to perform in a
+code script. Figure <a href="2.5-example-creating-a-template-for-tidy-data-collection.html#fig:growthsimple">2.3</a> shows an example of a simpler
+format for collecting the same data. In this case, all the “extras” have been
+stripped out—this only has spaces for recording times points and the observed
+optical density at those time points. In later chapters, we’ll show how a code
+script can be used to input these data into R and then perform calculations
+and create figures. By separating out the steps of data recording from
+data analysis, you can ensure that all steps of analysis are clearly spelled
+out (and can be easily reproduced with other similar data) through a code
+script. Note that you can still collect the data in this simpler format using
+a spreadsheet program, if you’d like—Figure <a href="2.5-example-creating-a-template-for-tidy-data-collection.html#fig:growthsimple">2.3</a> shows
+the data collection set up to be recorded in a spreadsheet program, for example.
+Within the spreadsheet, you can choose to save the data in a plain text format
+(a csv [comma-separated value] file, for example).</p>
+<div class="figure"><span style="display:block;" id="fig:growthsimple"></span>
+<p class="caption marginnote shownote">
+Figure 2.3: Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created—these are all done later, using a code script.
+</p>
+<img src="figures/growth_curve_simple.png" alt="Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created---these are all done later, using a code script." width="\textwidth"  />
+</div>
+<p>In this new data collection format, the data are not completely “tidy.” This is because
+there is still some information included in the column names that we might want to use
+for analysis and plotting—namely, the different experimental group names (e.g.,
+“aerated1,” “low_oxygen1”). However, there is a balance in creating data collection
+spreadsheets. They should be in a format that is easy to read into an interactive
+programming environment like R, as well as in a format that will be easy to convert
+to a truly “tidy” format once they are read in. However, it’s okay to balance these
+needs with aims to make the data collection spreadsheet easy for a researcher to use.</p>
+<p>The example shown in Figure <a href="2.5-example-creating-a-template-for-tidy-data-collection.html#fig:growthsimple">2.3</a> is designed to be easy to use
+when collecting data. All data points for a single collection time are grouped together
+on a single row. When a researchers collects data for one time point, he or she can
+easy confirm visually that all the experimental groups have been measured for that
+time point. This format still makes it easy to read the data into an interactive
+programming environment, however, since they are in a clear two-dimensional format,
+with column names in the first row and values in the remaining rows. The removal of
+extraneous elements—like embedded formulas, the results of hand calculations or
+automated calculations, and annotations through notes or colored highlighting—remove
+barriers when reading the data into more sophisticated software. Once the data are
+read into R, there can be converted into a truly tidy data format with just a few
+command calls.</p>
+<p>The following code shows an example of how easy it is to read data into R in the simplified
+format shown in Figure <a href="2.5-example-creating-a-template-for-tidy-data-collection.html#fig:growthsimple">2.3</a>. It also shows how a few lines of code
+can then be used to convert the data into a truly “tidy” format, and how easily
+sophisticated plots can then be made with the data.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</span>
+<span id="cb2-2"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;readxl&quot;</span>)</span>
+<span id="cb2-3"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Read data into R from the simplified data collection template</span></span>
+<span id="cb2-5"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb2-5" aria-hidden="true" tabindex="-1"></a>growth_curve <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;data/growth_curve_data_in_excel (1)/growth curve data_GR.xls&quot;</span>, </span>
+<span id="cb2-6"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb2-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">sheet =</span> <span class="st">&quot;simplified_template&quot;</span>)</span>
+<span id="cb2-7"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Example of data</span></span>
+<span id="cb2-9"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb2-9" aria-hidden="true" tabindex="-1"></a>growth_curve</span></code></pre></div>
+<pre><code>## # A tibble: 14 x 6
+##    sampling_date_time  aerated1 aerated3 low_oxygen1 low_oxygen2 low_oxygen3
+##    &lt;dttm&gt;                 &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+##  1 2019-07-09 12:00:00    0.02     0.02        0.02        0.02        0.02 
+##  2 2019-07-09 16:05:00    0.027    0.02        0.022       0.022       0.027
+##  3 2019-07-10 09:50:00    0.087    0.087       0.057       0.082       0.086
+##  4 2019-07-10 16:50:00    0.129    0.137       0.072       0.104       0.111
+##  5 2019-07-11 10:03:00    0.247    0.258       0.102       0.114       0.126
+##  6 2019-07-11 16:07:00    0.299    0.302       0.11        0.11        0.126
+##  7 2019-07-12 09:48:00    0.41     0.428       0.137       0.111       0.131
+##  8 2019-07-12 16:30:00    0.426    0.432       0.138       0.11        0.13 
+##  9 2019-07-13 10:35:00    0.442    0.444       0.138       0.1         0.125
+## 10 2019-07-13 17:52:00    0.448    0.45        0.143       0.103       0.131
+## 11 2019-07-14 13:10:00    0.436    0.448       0.144       0.1         0.131
+## 12 2019-07-15 10:27:00    0.434    0.45        0.147       0.097       0.129
+## 13 2019-07-15 16:42:00    0.428    0.45        0.147       0.097       0.129
+## 14 2019-07-16 09:28:00    0.42     0.448       0.145       0.095       0.128</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to a fully tidy format</span></span>
+<span id="cb4-2"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb4-2" aria-hidden="true" tabindex="-1"></a>growth_curve <span class="ot">&lt;-</span> growth_curve <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>sampling_date_time, </span>
+<span id="cb4-4"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb4-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&quot;experimental_group&quot;</span>, </span>
+<span id="cb4-5"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb4-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&quot;optical_density&quot;</span>)</span>
+<span id="cb4-6"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># How the data look after this transformation</span></span>
+<span id="cb4-8"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb4-8" aria-hidden="true" tabindex="-1"></a>growth_curve</span></code></pre></div>
+<pre><code>## # A tibble: 70 x 3
+##    sampling_date_time  experimental_group optical_density
+##    &lt;dttm&gt;              &lt;chr&gt;                        &lt;dbl&gt;
+##  1 2019-07-09 12:00:00 aerated1                     0.02 
+##  2 2019-07-09 12:00:00 aerated3                     0.02 
+##  3 2019-07-09 12:00:00 low_oxygen1                  0.02 
+##  4 2019-07-09 12:00:00 low_oxygen2                  0.02 
+##  5 2019-07-09 12:00:00 low_oxygen3                  0.02 
+##  6 2019-07-09 16:05:00 aerated1                     0.027
+##  7 2019-07-09 16:05:00 aerated3                     0.02 
+##  8 2019-07-09 16:05:00 low_oxygen1                  0.022
+##  9 2019-07-09 16:05:00 low_oxygen2                  0.022
+## 10 2019-07-09 16:05:00 low_oxygen3                  0.027
+## # … with 60 more rows</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example of how easily sophisticated plots can be created with data in this format</span></span>
+<span id="cb6-2"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb6-2" aria-hidden="true" tabindex="-1"></a>growth_curve <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sampling_date_time, <span class="at">y =</span> optical_density)) <span class="sc">+</span> </span>
+<span id="cb6-4"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
+<span id="cb6-5"><a href="2.5-example-creating-a-template-for-tidy-data-collection.html#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> experimental_group)</span></code></pre></div>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-3-1.png" width="672"  />
+In later chapters, we’ll discuss R’s “tidyverse,” a collection of tools within R
+that facilitate analyzing and visualizing data once they’ve been read into R. Here, we
+only aim to give an example of how little R code is needed to create useful output from
+the data, with the only requirement for gaining this power being that the data need to
+be collected in a format that is “tidy” or close enough to easily read into R.</p>
+</div>
+<div id="exampledata-on-bacteria-colony-forming-units" class="section level3" number="2.5.2">
+<h3><span class="header-section-number">2.5.2</span> Example—Data on bacteria colony forming units</h3>
+</div>
+<div id="exampledata-from-multiple-related-experiments" class="section level3" number="2.5.3">
+<h3><span class="header-section-number">2.5.3</span> Example—Data from multiple related experiments</h3>
+</div>
+<div id="issues-with-these-data-sets" class="section level3" number="2.5.4">
+<h3><span class="header-section-number">2.5.4</span> Issues with these data sets</h3>
+<ol style="list-style-type: decimal">
+<li>Issues related to using a spread sheet program
+<ul>
+<li>Embedded macros</li>
+<li>Use of color to encode information</li>
+</ul></li>
+<li>Issues related to non-structured / non-two-dimensional data
+<ul>
+<li>Added summary row</li>
+<li>Multiple tables in one sheet</li>
+<li>One cell value is meant to represent values for all rows below, until next
+non-missing row</li>
+</ul></li>
+<li>Issues with data being non-“tidy”</li>
+</ol>
+</div>
+<div id="final-tidy-examples" class="section level3" number="2.5.5">
+<h3><span class="header-section-number">2.5.5</span> Final “tidy” examples</h3>
+</div>
+<div id="options-for-recording-tidy-data" class="section level3" number="2.5.6">
+<h3><span class="header-section-number">2.5.6</span> Options for recording tidy data</h3>
+<p><strong>Spreadsheet program.</strong></p>
+<p><strong>Spreadsheet-like interface in R.</strong></p>
+</div>
+<div id="examples-of-how-tidy-data-can-be-easily-analyzed-visualized" class="section level3" number="2.5.7">
+<h3><span class="header-section-number">2.5.7</span> Examples of how “tidy” data can be easily analyzed / visualized</h3>
+</div>
+<div id="discussion-questions-1" class="section level3" number="2.5.8">
+<h3><span class="header-section-number">2.5.8</span> Discussion questions</h3>
+
+</div>
+</div>
+<p style="text-align: center;">
+<a href="2.4-designing-templates-for-tidy-data-collection.html"><button class="btn btn-default">Previous</button></a>
+<a href="2.6-power-of-using-a-single-structured-project-directory-for-storing-and-tracking-research-project-files.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+
+</body>
+</html>

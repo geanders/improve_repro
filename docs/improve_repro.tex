@@ -3308,7 +3308,7 @@ conditions; VA001 L1, L2, L3).
 \includegraphics[width=\textwidth]{figures/growth_curve_example} \caption[Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment]{Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column.}\label{fig:growthexcel}
 \end{figure*}
 
-What the researchers found appealing about the format of this excel sheet was
+What the researchers found appealing about the format of this Excel sheet was
 the ease with which the student could accomplish the study goals. They also
 cited transparency of the raw data and ease with which additional sampling data
 points could be added. The data being graphed in real time and the inclusion of
@@ -3344,6 +3344,114 @@ Within the spreadsheet, you can choose to save the data in a plain text format
 \begin{figure}
 \includegraphics[width=\textwidth]{figures/growth_curve_simple} \caption[Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure]{Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created---these are all done later, using a code script.}\label{fig:growthsimple}
 \end{figure}
+
+In this new data collection format, the data are not completely ``tidy''. This is because
+there is still some information included in the column names that we might want to use
+for analysis and plotting---namely, the different experimental group names (e.g.,
+``aerated1'', ``low\_oxygen1''). However, there is a balance in creating data collection
+spreadsheets. They should be in a format that is easy to read into an interactive
+programming environment like R, as well as in a format that will be easy to convert
+to a truly ``tidy'' format once they are read in. However, it's okay to balance these
+needs with aims to make the data collection spreadsheet easy for a researcher to use.
+
+The example shown in Figure \ref{fig:growthsimple} is designed to be easy to use
+when collecting data. All data points for a single collection time are grouped together
+on a single row. When a researchers collects data for one time point, he or she can
+easy confirm visually that all the experimental groups have been measured for that
+time point. This format still makes it easy to read the data into an interactive
+programming environment, however, since they are in a clear two-dimensional format,
+with column names in the first row and values in the remaining rows. The removal of
+extraneous elements---like embedded formulas, the results of hand calculations or
+automated calculations, and annotations through notes or colored highlighting---remove
+barriers when reading the data into more sophisticated software. Once the data are
+read into R, there can be converted into a truly tidy data format with just a few
+command calls.
+
+The following code shows an example of how easy it is to read data into R in the simplified
+format shown in Figure \ref{fig:growthsimple}. It also shows how a few lines of code
+can then be used to convert the data into a truly ``tidy'' format, and how easily
+sophisticated plots can then be made with the data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(}\StringTok{"tidyverse"}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(}\StringTok{"readxl"}\NormalTok{)}
+
+\CommentTok{\# Read data into R from the simplified data collection template}
+\NormalTok{growth\_curve }\OtherTok{\textless{}{-}} \FunctionTok{read\_excel}\NormalTok{(}\StringTok{"data/growth\_curve\_data\_in\_excel (1)/growth curve data\_GR.xls"}\NormalTok{, }
+                           \AttributeTok{sheet =} \StringTok{"simplified\_template"}\NormalTok{)}
+
+\CommentTok{\# Example of data}
+\NormalTok{growth\_curve}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 14 x 6
+##    sampling_date_time  aerated1 aerated3 low_oxygen1 low_oxygen2 low_oxygen3
+##    <dttm>                 <dbl>    <dbl>       <dbl>       <dbl>       <dbl>
+##  1 2019-07-09 12:00:00    0.02     0.02        0.02        0.02        0.02 
+##  2 2019-07-09 16:05:00    0.027    0.02        0.022       0.022       0.027
+##  3 2019-07-10 09:50:00    0.087    0.087       0.057       0.082       0.086
+##  4 2019-07-10 16:50:00    0.129    0.137       0.072       0.104       0.111
+##  5 2019-07-11 10:03:00    0.247    0.258       0.102       0.114       0.126
+##  6 2019-07-11 16:07:00    0.299    0.302       0.11        0.11        0.126
+##  7 2019-07-12 09:48:00    0.41     0.428       0.137       0.111       0.131
+##  8 2019-07-12 16:30:00    0.426    0.432       0.138       0.11        0.13 
+##  9 2019-07-13 10:35:00    0.442    0.444       0.138       0.1         0.125
+## 10 2019-07-13 17:52:00    0.448    0.45        0.143       0.103       0.131
+## 11 2019-07-14 13:10:00    0.436    0.448       0.144       0.1         0.131
+## 12 2019-07-15 10:27:00    0.434    0.45        0.147       0.097       0.129
+## 13 2019-07-15 16:42:00    0.428    0.45        0.147       0.097       0.129
+## 14 2019-07-16 09:28:00    0.42     0.448       0.145       0.095       0.128
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Convert to a fully tidy format}
+\NormalTok{growth\_curve }\OtherTok{\textless{}{-}}\NormalTok{ growth\_curve }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{pivot\_longer}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{sampling\_date\_time, }
+               \AttributeTok{names\_to =} \StringTok{"experimental\_group"}\NormalTok{, }
+               \AttributeTok{values\_to =} \StringTok{"optical\_density"}\NormalTok{)}
+
+\CommentTok{\# How the data look after this transformation}
+\NormalTok{growth\_curve}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 70 x 3
+##    sampling_date_time  experimental_group optical_density
+##    <dttm>              <chr>                        <dbl>
+##  1 2019-07-09 12:00:00 aerated1                     0.02 
+##  2 2019-07-09 12:00:00 aerated3                     0.02 
+##  3 2019-07-09 12:00:00 low_oxygen1                  0.02 
+##  4 2019-07-09 12:00:00 low_oxygen2                  0.02 
+##  5 2019-07-09 12:00:00 low_oxygen3                  0.02 
+##  6 2019-07-09 16:05:00 aerated1                     0.027
+##  7 2019-07-09 16:05:00 aerated3                     0.02 
+##  8 2019-07-09 16:05:00 low_oxygen1                  0.022
+##  9 2019-07-09 16:05:00 low_oxygen2                  0.022
+## 10 2019-07-09 16:05:00 low_oxygen3                  0.027
+## # ... with 60 more rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Example of how easily sophisticated plots can be created with data in this format}
+\NormalTok{growth\_curve }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ sampling\_date\_time, }\AttributeTok{y =}\NormalTok{ optical\_density)) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{ experimental\_group)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-3-1}
+In later chapters, we'll discuss R's ``tidyverse'', a collection of tools within R
+that facilitate analyzing and visualizing data once they've been read into R. Here, we
+only aim to give an example of how little R code is needed to create useful output from
+the data, with the only requirement for gaining this power being that the data need to
+be collected in a format that is ``tidy'' or close enough to easily read into R.
 
 \hypertarget{exampledata-on-bacteria-colony-forming-units}{%
 \subsection{Example---Data on bacteria colony forming units}\label{exampledata-on-bacteria-colony-forming-units}}
@@ -4579,6 +4687,46 @@ content for research projects.'' \citep{perez2016ten}
 \hypertarget{discussion-questions-3}{%
 \subsection{Discussion questions}\label{discussion-questions-3}}
 
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{quote}
+``Using an RCS {[}revision control system{]} has changed how I work. \ldots{} a day's
+work is no longer a featureless slog toward the summit, but a sequence of small
+steps. What one feature could I add? What one problem could I fix? Once a step is
+made and you are sure your code base is in a safe and clean state, commit a revision,
+and if your next step turns out disastrously, you can fall back to the revision you
+just committed instead of starting from the beginning.'' \citep{klemens201421st}
+\end{quote}
+
+\begin{quote}
+With version control, ``Our filesystem now has a time dimension. We can query the
+RCS's repository of file information to see what a file looked like last week and
+how it changed from then to now. Even without the other powers, I have found that
+this alone makes me a more confident writer.'' \citep{klemens201421st}
+\end{quote}
+
+\begin{quote}
+``The most rudimentary means of revision control is via \texttt{diff} and \texttt{patch}, which
+are POSIX-standard and therefore most certainly on your system.'' \citep{klemens201421st}
+\end{quote}
+
+\begin{quote}
+``Git is a C program like any other, and is based on a small set of objects.
+The key object is the commit object, which is akin to a unified diff file.
+Given a previous commit object and some changes from that baseline, a new commit
+object encapsulates the information. It gets some support from the \emph{index}, which
+is a list of the changes registered since the last commit object, the primary
+use of which will be in generating the next commit object. The commit objects
+link together to form a tree much like any other tree. Each commit object will
+have (at least) one parent commit object. Stepping up and down the tree is akin to
+using \texttt{patch} and \texttt{patch\ -R} to step among versions.'' \citep{klemens201421st}
+\end{quote}
+
+\begin{quote}
+``Having a backup system organized enough that you can delete code with confidence
+and recover as needed will already make you a better writer.'' \citep{klemens201421st}
+\end{quote}
+
 \hypertarget{enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms}{%
 \section{Enhance the reproducibility of collaborative research with version control platforms}\label{enhance-the-reproducibility-of-collaborative-research-with-version-control-platforms}}
 
@@ -5330,6 +5478,37 @@ point to more thorough resources for more detail.
 \item
   More resources for learning to use git and GitHub
 \end{itemize}
+
+\begin{quote}
+``Get a new repository in the directory you are working in via: \texttt{git\ init}. Ok, you
+now have a revision control system in place. You might not see it, because Git stores
+all its files in a directory names \texttt{.git}, where the dot means that all the usual
+utilities like \texttt{ls} will take it to be hidden. You can look for it via, e.g.,
+\texttt{ls\ -a} or via a show hidden files option in your favorite file manager. \ldots{}
+Given that all the data about a repository is in the \texttt{.git\textbackslash{}\ subdirectory\ of\ your\ project\ directory,\ the\ analog\ to\ freeing\ a\ repository\ is\ simple:}rm -rf .git`.''
+\citep{klemens201421st}
+\end{quote}
+
+\begin{quote}
+``Calling \texttt{git\ commit\ -a} writes a new commit object to the repostiory based on
+all the changes the index was able to track, and clears the index. Having saved your
+work, you can now continue to add more. Further---and this is the real, major
+benefit of revision control so far---you can delete whatever you want, confident
+that it can be recovered if you need it back. Don't clutter up the code with large
+blocks of commented-out obsolete routines---delete!'' \citep{klemens201421st}
+\end{quote}
+
+\begin{quote}
+``Having generated a commit object, your interactions with it will mostly consist of
+looking at its contents\ldots{} The key metadata is the name of the object, which is
+assigned via an unpleasant but sensible naming convention: the SHA1 has, a
+40-digit hexadecimal number that can be assigned to an object, in a manner that
+lets us assume that no two objects will have the same hash, and that the same object
+will have the same name in every copy of the repository. When you commit your files,
+you'll see the first few digits of the hash on the screen\ldots{} Fortunately, you
+need only as much of the hash as will uniquely identify your commit.''
+\citep{klemens201421st}
+\end{quote}
 
 \hypertarget{applied-exercise-3}{%
 \subsection{Applied exercise}\label{applied-exercise-3}}
@@ -6960,14 +7139,137 @@ laboratory-based scientists.
 \hypertarget{subsection-1-4}{%
 \subsection{Subsection 1}\label{subsection-1-4}}
 
-In previous modules, we have gone into a lot of detail about all of the advantages of the tidyverse approach. However as you work with biomedical data, particularly complex data from complex research equipment like mass spectrometers and Flow cytometers, you may find that it is unreasonable to start with a tiny burst approach from the first steps of pre processing the data. In this module we will explain why the tidyverse approach is currently not appropriate throughout all steps of pre-processing, analysis, and visualization of the types of data that you may collect through a biomedical research experiment. We will present some of the approaches and data storage methods used in passages in the bioconductor project, as well as explain some more about the purpose an approach of bioconductor. This will include an explanation of the more complex structures that are used to store data through many of the packages in by a conductor. These largely leverage a system in our call BF4 object-oriented system. We will cover several of the most popular object classes that are used to store data for bioconductor packages. Any leader module we will explain how early steps in data preprocessing, which use the bioconductor approach and bioconductor data storage objects, can be combined and transferred during it works slow to convert to using a tidyverse approach leader in the workflow when it is appropriate to store data in simpler structures like dataframes.
+In previous modules, we have gone into a lot of detail about all of the
+advantages of the tidyverse approach. However as you work with biomedical data,
+particularly complex data from complex research equipment, like mass
+spectrometers and flow cytometers, you may find that it is unreasonable to start
+with a tidyverse approach from the first steps of pre-processing the data.
+
+In this module, we will explain why the tidyverse approach is currently not
+appropriate throughout all steps of pre-processing, analysis, and visualization
+of the types of data that you may collect through a biomedical research
+experiment. We will explain what data structures are, and present some of the
+types of data structures commonly used in packages in the Bioconductor project.
+These more complex data structures largely leverage a system in R called the S4
+object-oriented system, which translates some ideas from object-oriented
+programming to use to handle large and complex data in R.
+
+In this module, we will cover several of the most popular data structures (each
+available as an S4 object class) that are used to work with data within
+Bioconductor packages. In a later module, we will explain how you can build a
+pipelin that combines Bioconductor and tidyverse approaches, in which early
+steps in data pre-processing use the Bioconductor approach to handle large and
+complex initial data, and later steps shift to use a tidyverse approach, once it
+is appropriate to store data in simpler structures like dataframes.
+
+\hypertarget{data-structures-and-the-dataframe}{%
+\subsection{Data structures and the dataframe}\label{data-structures-and-the-dataframe}}
+
+To be able to understand some key differences in the Bioconductor approach and the tidyverse approach, you first need to understand how programming uses \textbf{data structures} to store data, and that there can be numerous different data structures available within a programming language to handle different types of data.
 
 When you process data using a programming language, there will be different
-structures that you can use to store data as you work with it. In other modules,
-we've discussed the ``tidyverse'' approach to processing data in R---this approach
-emphasizes the dataframe as a way to store data while you're working with it.
-In fact, its use of this data structure for data storage is one of the defining
-features of the ``tidyverse'' approach.
+structures that you can use to store data as you work with it. You can think of
+these data structures as containers where you keep your data in the programming
+environment while you work with it, and different structures organize the data
+in different ways.
+
+If you've read the earlier modules, you've already seen one example of a data
+structure. In other modules, we've discussed the ``tidyverse'' approach to
+processing data in R---this approach emphasizes the \emph{dataframe} as a way to
+store data while you're working with it (in other words, a data structure). In
+fact, the use of the dataframe as data structure for data storage is one of the
+defining features of the ``tidyverse'' approach. We mentioned in earlier modules
+that the tidyverse approach is based on using a common interface, so that you
+can mix and match small functions in different ways---the common interface is
+the dataframe. The tidyverse approach is built on the use of a common structure
+for storing data, the dataframe---almost all functions take data in this
+structure and almost all return data in this structure.
+
+Figure \ref{fig:dfdatastructure} shows an annotated example of a dataframe,
+highlighting some of the key elements of its structure. A dataframe stores data
+in a two-dimensional structure, combining rows and columns. Each column is
+constrained to have data of the same type---in other words, all values in a
+column could be numeric (e.g., 1, 4, 10), or all could be character strings
+(e.g., ``Mouse 1'', ``Mouse 3''), but the same column cannot combine some values
+that are numeric and some that are character strings. Across the dataframe, all
+columns must have the same length (i.e., if you printed out the full dataframe,
+it would look like a rectangle). All the column values should be lined up, so
+that as you are reading across a row, the values in the column cells are from
+the same observation or unit.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{figures/dataframe} \caption[An example of the dataframe data structure]{An example of the dataframe data structure. This data structure is the most frequently used data structure within the tidyverse approach, and its use is in fact a defining element of the approach.}\label{fig:dfdatastructure}
+\end{figure*}
+
+Dataframes like this are very clearly and simply organized. However, they can be
+too restrictive in some cases. Sometimes, you might have data that are taken at
+different levels of observation---for example, you might have some measurements
+that are specific to a specific sample, but then other measurements or data that
+are common to the experiment as a whole (metadata).
+
+Also, the simple dataframe structure doesn't have the capacity to store data
+taken at these different levels within the same structure (at least, not without
+a lot of repetition). Further, the dataframe won't work for massive datasets.
+Sometimes, you will get massive amounts of data from equipment like
+spectrometers or cytometers, and these datasets can be so big that they can't be
+easily read into R. One strategy with massive data is to read in only the bits
+you need as you need them, rather than reading in all the data and then
+using R commands to work with the full dataset. We'll look later in this module
+about how more complex data structures can facilitate this approach when
+working with massive data in R.
+
+By addition to dataframes, there are a number of other simple, general purpose
+data structures that are often used to store data in R, and that you're likely
+to come across as you work in R. These include \textbf{vectors}, which are used to
+store one-dimensional strings of data of a single type (e.g., all numeric, or
+all character strings; as a note, you can think of each column in a dataframe as
+a vector), \textbf{matrices}, which are also used to store data of a single type, but
+with a two-dimensional structure, and \textbf{arrays}, which, like matrices and
+vectors, store data of a single type, but in three dimensions. Another common
+general purpose data structure in R is the \emph{list}, which allows you to combine
+data stored in any type of structure to create a single R object, giving
+enormous flexibility (but minimal set structure from one object to another).
+This data structure is the building block for some of the more complex specific
+data structures, which we'll cover next.
+
+\hypertarget{more-complex-data-structures-in-r}{%
+\subsection{More complex data structures in R}\label{more-complex-data-structures-in-r}}
+
+The dataframe structure has the advantage of being simple to understand and use.
+By using the dataframe as a common structure, the tidyverse approach is able to
+create a powerful environment for working with data, because the use of a common
+structure allows you to program using small, simple functions that can be
+combined in different ways to solve complex tasks.
+
+However, the dataframe lacks flexibility in storing data that does not naturally
+follow a two-dimensional structure, and it can struggle to handle massive datasets.
+Therefore, in some cases, it is appropriate to adopt approaches that store data
+in more complex data structures. The data from genomic and other 'omic experiments
+often are too complex and/or large to make dataframes practical as data
+structures, at least until data can be simplified through pre-processing.
+In this section, we'll look at an approach to pre-processing these data, leveraging
+more complex data structures when needed. Once data have been pre-processed,
+they are often simplified to the point where they can be stored in a dataframe,
+and so it is possible to create workflows that move into a tidyverse approach
+once data can reasonably be stored in dataframes. This creates a powerful pipeline,
+using more complex tools when necessary and then moving into the more
+straightforward tidyverse approach when possible. In the next module, we'll
+discuss how you can adopt this type of combined approach.
+
+Let's start by looking at how some data might have a structure that is too
+complex to fit into a two-dimensional dataframe. Figure
+\ref{fig:complexdatastructure} shows an example of different components of data
+that may need to be stored in a data structure that is more complex than a
+dataframe. Data from a genomic experiment may include data from several levels,
+including metadata that describes the entire experiment, as well as assay data,
+phenotype data, and gene-level data. More complex data structures in R can be
+used to store all these pieces of data inside a single data structure.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{figures/complex_data_structure} \caption[An example of different components of data that may need to be stored in a data structure that is more complex than a dataframe]{An example of different components of data that may need to be stored in a data structure that is more complex than a dataframe. Data from a genomic experiment may include data from several levels, including metadata that describes the entire experiment, as well as assay data, phenotype data, and gene-level data. More complex data structures in R can be used to store all these pieces of data inside a single data structure.}\label{fig:complexdatastructure}
+\end{figure}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 Data in R can be stored in a variety of other formats, too. When you are working
 with biological data---in particular, complex or large data output from laboratory
@@ -7065,6 +7367,11 @@ cytometry file format?{]}
 data stored in databases or on-disk file formats---\texttt{sergeant} package is one
 example, also running tidyverse commands on data in database, \texttt{matter} package?,
 \texttt{disk.frame} package?{]}
+
+This approach can be done by working with the data while it is what's called
+\emph{on disc}---that is, most of the data is left in longer-term forms of memory,
+like \ldots, and smaller pieces of it are read into R and processed at any given time.
+\ldots{}
 
 \begin{quote}
 ``Reading in a large dataset for which you do not have enough RAM is one easy way to freeze up your computer (or at least your R session). This is usually an unpleasant experience that usually requires you to kill the R process, in the best case scenario, or reboot your computer, in the worst case.'' \citep{peng2016r}
@@ -10079,8 +10386,8 @@ given a class it returns the generic functions that have methods for the class.'
 \end{quote}
 
 \begin{verbatim}
-## [1] "print.acf"     "print.AES"     "print.anova"   "print.aov"    
-## [5] "print.aovlist" "print.ar"
+## [1] "print.acf"         "print.AES"         "print.all_vars"   
+## [4] "print.anova"       "print.ansi_string" "print.ansi_style"
 \end{verbatim}
 
 \begin{verbatim}
@@ -10180,24 +10487,20 @@ tuberculosis.
 \end{itemize}
 
 \begin{verbatim}
-## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
+## 
+## Attaching package: 'magrittr'
 \end{verbatim}
 
 \begin{verbatim}
-## v ggplot2 3.3.3     v purrr   0.3.4
-## v tibble  3.0.6     v dplyr   1.0.4
-## v tidyr   1.1.2     v stringr 1.4.0
-## v readr   1.4.0     v forcats 0.5.1
+## The following object is masked from 'package:purrr':
+## 
+##     set_names
 \end{verbatim}
 
 \begin{verbatim}
-## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-## x dplyr::combine()    masks Biobase::combine(), BiocGenerics::combine()
-## x tidyr::extract()    masks magrittr::extract()
-## x dplyr::filter()     masks stats::filter()
-## x dplyr::lag()        masks stats::lag()
-## x ggplot2::Position() masks BiocGenerics::Position(), base::Position()
-## x purrr::set_names()  masks magrittr::set_names()
+## The following object is masked from 'package:tidyr':
+## 
+##     extract
 \end{verbatim}
 
 \hypertarget{subsection-1-6}{%
@@ -10506,7 +10809,7 @@ distribution of expression levels across all genes in each sample:
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 \end{verbatim}
 
-\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-10-1}
+\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-11-1}
 
 You can also incorporate data that are stored in the \texttt{phenoData} slot of
 the \texttt{ExpressionSet} object by specifying \texttt{addPheno\ =\ TRUE}:
@@ -10535,12 +10838,12 @@ experimental group of each sample:
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 \end{verbatim}
 
-\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-12-1}
+\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-13-1}
 You can also do things like look at differences in values for
 specific genes, pairing tools for exploring data with tools for
 visualization, both from the tidyverse:
 
-\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-13-1}
+\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-14-1}
 
 The data for a subset of the sample can be analyzed using functions from the
 \texttt{edgeR} package, to complete needed pre-processing (for example, calculating
@@ -10697,7 +11000,7 @@ As another example, you can now use tools from \texttt{ggplot2}, as well as
 extensions built on this package, to do things like create a volcano
 plot of the data with highlighting of noteworthy genes on the plot:
 
-\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-22-1}
+\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-23-1}
 
 If you wanted to access the help files for these \texttt{biobroom} methods for this
 object class, you could do so by calling help in R (\texttt{?}) using the name of the
@@ -12514,7 +12817,7 @@ with entries for each paper like this:
 You can get these details from Google Scholar:
 
 \begin{figure*}
-\includegraphics[width=\textwidth]{figures/google_scholar} \caption[Example of using Google Scholar to get bibliographical information for a BibTeX file]{Example of using Google Scholar to get bibliographical information for a BibTeX file. When you look up an article on Google Scholar, there is an option (the quotation mark icon under the article listing) to open a pop-up window with bibliographical information. At the bottom of this pop-up box, you can click on 'BibTeX' to get a plain text version of the BibTeX entry for the article. You can copy and paste this into you BibTeX file.}\label{fig:unnamed-chunk-23}
+\includegraphics[width=\textwidth]{figures/google_scholar} \caption[Example of using Google Scholar to get bibliographical information for a BibTeX file]{Example of using Google Scholar to get bibliographical information for a BibTeX file. When you look up an article on Google Scholar, there is an option (the quotation mark icon under the article listing) to open a pop-up window with bibliographical information. At the bottom of this pop-up box, you can click on 'BibTeX' to get a plain text version of the BibTeX entry for the article. You can copy and paste this into you BibTeX file.}\label{fig:unnamed-chunk-24}
 \end{figure*}
 
 \textbf{Including mathematical equations.}

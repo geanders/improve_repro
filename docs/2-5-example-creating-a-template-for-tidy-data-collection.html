@@ -210,7 +210,7 @@ conditions; VA001 L1, L2, L3).</p>
 Figure 2.2: Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column.
 </p>
 </div>
-<p>What the researchers found appealing about the format of this excel sheet was
+<p>What the researchers found appealing about the format of this Excel sheet was
 the ease with which the student could accomplish the study goals. They also
 cited transparency of the raw data and ease with which additional sampling data
 points could be added. The data being graphed in real time and the inclusion of
@@ -246,6 +246,89 @@ Figure 2.3: Example of an simpler format that can be used to record and analyze 
 </p>
 <img src="figures/growth_curve_simple.png" alt="Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created---these are all done later, using a code script." width="\textwidth"  />
 </div>
+<p>In this new data collection format, the data are not completely “tidy.” This is because
+there is still some information included in the column names that we might want to use
+for analysis and plotting—namely, the different experimental group names (e.g.,
+“aerated1,” “low_oxygen1”). However, there is a balance in creating data collection
+spreadsheets. They should be in a format that is easy to read into an interactive
+programming environment like R, as well as in a format that will be easy to convert
+to a truly “tidy” format once they are read in. However, it’s okay to balance these
+needs with aims to make the data collection spreadsheet easy for a researcher to use.</p>
+<p>The example shown in Figure <a href="2-5-example-creating-a-template-for-tidy-data-collection.html#fig:growthsimple">2.3</a> is designed to be easy to use
+when collecting data. All data points for a single collection time are grouped together
+on a single row. When a researchers collects data for one time point, he or she can
+easy confirm visually that all the experimental groups have been measured for that
+time point. This format still makes it easy to read the data into an interactive
+programming environment, however, since they are in a clear two-dimensional format,
+with column names in the first row and values in the remaining rows. The removal of
+extraneous elements—like embedded formulas, the results of hand calculations or
+automated calculations, and annotations through notes or colored highlighting—remove
+barriers when reading the data into more sophisticated software. Once the data are
+read into R, there can be converted into a truly tidy data format with just a few
+command calls.</p>
+<p>The following code shows an example of how easy it is to read data into R in the simplified
+format shown in Figure <a href="2-5-example-creating-a-template-for-tidy-data-collection.html#fig:growthsimple">2.3</a>. It also shows how a few lines of code
+can then be used to convert the data into a truly “tidy” format, and how easily
+sophisticated plots can then be made with the data.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</span>
+<span id="cb2-2"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;readxl&quot;</span>)</span>
+<span id="cb2-3"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Read data into R from the simplified data collection template</span></span>
+<span id="cb2-5"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb2-5" aria-hidden="true" tabindex="-1"></a>growth_curve <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;data/growth_curve_data_in_excel (1)/growth curve data_GR.xls&quot;</span>, </span>
+<span id="cb2-6"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb2-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">sheet =</span> <span class="st">&quot;simplified_template&quot;</span>)</span>
+<span id="cb2-7"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Example of data</span></span>
+<span id="cb2-9"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb2-9" aria-hidden="true" tabindex="-1"></a>growth_curve</span></code></pre></div>
+<pre><code>## # A tibble: 14 x 6
+##    sampling_date_time  aerated1 aerated3 low_oxygen1 low_oxygen2 low_oxygen3
+##    &lt;dttm&gt;                 &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+##  1 2019-07-09 12:00:00    0.02     0.02        0.02        0.02        0.02 
+##  2 2019-07-09 16:05:00    0.027    0.02        0.022       0.022       0.027
+##  3 2019-07-10 09:50:00    0.087    0.087       0.057       0.082       0.086
+##  4 2019-07-10 16:50:00    0.129    0.137       0.072       0.104       0.111
+##  5 2019-07-11 10:03:00    0.247    0.258       0.102       0.114       0.126
+##  6 2019-07-11 16:07:00    0.299    0.302       0.11        0.11        0.126
+##  7 2019-07-12 09:48:00    0.41     0.428       0.137       0.111       0.131
+##  8 2019-07-12 16:30:00    0.426    0.432       0.138       0.11        0.13 
+##  9 2019-07-13 10:35:00    0.442    0.444       0.138       0.1         0.125
+## 10 2019-07-13 17:52:00    0.448    0.45        0.143       0.103       0.131
+## 11 2019-07-14 13:10:00    0.436    0.448       0.144       0.1         0.131
+## 12 2019-07-15 10:27:00    0.434    0.45        0.147       0.097       0.129
+## 13 2019-07-15 16:42:00    0.428    0.45        0.147       0.097       0.129
+## 14 2019-07-16 09:28:00    0.42     0.448       0.145       0.095       0.128</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to a fully tidy format</span></span>
+<span id="cb4-2"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb4-2" aria-hidden="true" tabindex="-1"></a>growth_curve <span class="ot">&lt;-</span> growth_curve <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>sampling_date_time, </span>
+<span id="cb4-4"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb4-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&quot;experimental_group&quot;</span>, </span>
+<span id="cb4-5"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb4-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&quot;optical_density&quot;</span>)</span>
+<span id="cb4-6"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># How the data look after this transformation</span></span>
+<span id="cb4-8"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb4-8" aria-hidden="true" tabindex="-1"></a>growth_curve</span></code></pre></div>
+<pre><code>## # A tibble: 70 x 3
+##    sampling_date_time  experimental_group optical_density
+##    &lt;dttm&gt;              &lt;chr&gt;                        &lt;dbl&gt;
+##  1 2019-07-09 12:00:00 aerated1                     0.02 
+##  2 2019-07-09 12:00:00 aerated3                     0.02 
+##  3 2019-07-09 12:00:00 low_oxygen1                  0.02 
+##  4 2019-07-09 12:00:00 low_oxygen2                  0.02 
+##  5 2019-07-09 12:00:00 low_oxygen3                  0.02 
+##  6 2019-07-09 16:05:00 aerated1                     0.027
+##  7 2019-07-09 16:05:00 aerated3                     0.02 
+##  8 2019-07-09 16:05:00 low_oxygen1                  0.022
+##  9 2019-07-09 16:05:00 low_oxygen2                  0.022
+## 10 2019-07-09 16:05:00 low_oxygen3                  0.027
+## # … with 60 more rows</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example of how easily sophisticated plots can be created with data in this format</span></span>
+<span id="cb6-2"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb6-2" aria-hidden="true" tabindex="-1"></a>growth_curve <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sampling_date_time, <span class="at">y =</span> optical_density)) <span class="sc">+</span> </span>
+<span id="cb6-4"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
+<span id="cb6-5"><a href="2-5-example-creating-a-template-for-tidy-data-collection.html#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> experimental_group)</span></code></pre></div>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-3-1.png" width="672"  />
+In later chapters, we’ll discuss R’s “tidyverse,” a collection of tools within R
+that facilitate analyzing and visualizing data once they’ve been read into R. Here, we
+only aim to give an example of how little R code is needed to create useful output from
+the data, with the only requirement for gaining this power being that the data need to
+be collected in a format that is “tidy” or close enough to easily read into R.</p>
 </div>
 <div id="exampledata-on-bacteria-colony-forming-units" class="section level3" number="2.5.2">
 <h3><span class="header-section-number">2.5.2</span> Example—Data on bacteria colony forming units</h3>
