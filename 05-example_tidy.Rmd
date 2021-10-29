@@ -63,7 +63,7 @@ conditions; VA001 L1, L2, L3).
 knitr::include_graphics("figures/growth_curve_example.png")
 ```
 
-What the researchers found appealing about the format of this excel sheet was
+What the researchers found appealing about the format of this Excel sheet was
 the ease with which the student could accomplish the study goals. They also
 cited transparency of the raw data and ease with which additional sampling data
 points could be added. The data being graphed in real time and the inclusion of
@@ -99,6 +99,64 @@ Within the spreadsheet, you can choose to save the data in a plain text format
 ```{r growthsimple, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created---these are all done later, using a code script."}
 knitr::include_graphics("figures/growth_curve_simple.png")
 ```
+In this new data collection format, the data are not completely "tidy". This is because
+there is still some information included in the column names that we might want to use 
+for analysis and plotting---namely, the different experimental group names (e.g., 
+"aerated1", "low_oxygen1"). However, there is a balance in creating data collection 
+spreadsheets. They should be in a format that is easy to read into an interactive 
+programming environment like R, as well as in a format that will be easy to convert
+to a truly "tidy" format once they are read in. However, it's okay to balance these
+needs with aims to make the data collection spreadsheet easy for a researcher to use.
+
+The example shown in Figure \@ref(fig:growthsimple) is designed to be easy to use 
+when collecting data. All data points for a single collection time are grouped together
+on a single row. When a researchers collects data for one time point, he or she can 
+easy confirm visually that all the experimental groups have been measured for that 
+time point. This format still makes it easy to read the data into an interactive 
+programming environment, however, since they are in a clear two-dimensional format, 
+with column names in the first row and values in the remaining rows. The removal of
+extraneous elements---like embedded formulas, the results of hand calculations or 
+automated calculations, and annotations through notes or colored highlighting---remove
+barriers when reading the data into more sophisticated software. Once the data are
+read into R, there can be converted into a truly tidy data format with just a few
+command calls. 
+
+The following code shows an example of how easy it is to read data into R in the simplified
+format shown in Figure \@ref(fig:growthsimple). It also shows how a few lines of code
+can then be used to convert the data into a truly "tidy" format, and how easily 
+sophisticated plots can then be made with the data.
+
+```{r echo = TRUE, message = FALSE, warning = FALSE}
+library("tidyverse")
+library("readxl")
+
+# Read data into R from the simplified data collection template
+growth_curve <- read_excel("data/growth_curve_data_in_excel (1)/growth curve data_GR.xls", 
+                           sheet = "simplified_template")
+
+# Example of data
+growth_curve
+
+# Convert to a fully tidy format
+growth_curve <- growth_curve %>% 
+  pivot_longer(-sampling_date_time, 
+               names_to = "experimental_group", 
+               values_to = "optical_density")
+
+# How the data look after this transformation
+growth_curve
+
+# Example of how easily sophisticated plots can be created with data in this format
+growth_curve %>% 
+  ggplot(aes(x = sampling_date_time, y = optical_density)) + 
+  geom_line() + 
+  facet_wrap(~ experimental_group)
+```
+In later chapters, we'll discuss R's "tidyverse", a collection of tools within R
+that facilitate analyzing and visualizing data once they've been read into R. Here, we
+only aim to give an example of how little R code is needed to create useful output from
+the data, with the only requirement for gaining this power being that the data need to 
+be collected in a format that is "tidy" or close enough to easily read into R.
 
 ### Example---Data on bacteria colony forming units
 
