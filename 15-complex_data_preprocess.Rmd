@@ -20,14 +20,135 @@ data pre-processing
 
 ### Subsection 1
 
-In previous modules, we have gone into a lot of detail about all of the advantages of the tidyverse approach. However as you work with biomedical data, particularly complex data from complex research equipment like mass spectrometers and Flow cytometers, you may find that it is unreasonable to start with a tiny burst approach from the first steps of pre processing the data. In this module we will explain why the tidyverse approach is currently not appropriate throughout all steps of pre-processing, analysis, and visualization of the types of data that you may collect through a biomedical research experiment. We will present some of the approaches and data storage methods used in passages in the bioconductor project, as well as explain some more about the purpose an approach of bioconductor. This will include an explanation of the more complex structures that are used to store data through many of the packages in by a conductor. These largely leverage a system in our call BF4 object-oriented system. We will cover several of the most popular object classes that are used to store data for bioconductor packages. Any leader module we will explain how early steps in data preprocessing, which use the bioconductor approach and bioconductor data storage objects, can be combined and transferred during it works slow to convert to using a tidyverse approach leader in the workflow when it is appropriate to store data in simpler structures like dataframes.
+In previous modules, we have gone into a lot of detail about all of the
+advantages of the tidyverse approach. However as you work with biomedical data,
+particularly complex data from complex research equipment, like mass
+spectrometers and flow cytometers, you may find that it is unreasonable to start
+with a tidyverse approach from the first steps of pre-processing the data.
+
+In this module, we will explain why the tidyverse approach is currently not
+appropriate throughout all steps of pre-processing, analysis, and visualization
+of the types of data that you may collect through a biomedical research
+experiment. We will explain what data structures are, and present some of the
+types of data structures commonly used in packages in the Bioconductor project.
+These more complex data structures largely leverage a system in R called the S4
+object-oriented system, which translates some ideas from object-oriented
+programming to use to handle large and complex data in R. 
+
+In this module, we will cover several of the most popular data structures (each
+available as an S4 object class) that are used to work with data within
+Bioconductor packages. In a later module, we will explain how you can build a
+pipelin that combines Bioconductor and tidyverse approaches, in which early
+steps in data pre-processing use the Bioconductor approach to handle large and
+complex initial data, and later steps shift to use a tidyverse approach, once it
+is appropriate to store data in simpler structures like dataframes.
+
+### Data structures and the dataframe
+
+To be able to understand some key differences in the Bioconductor approach and the tidyverse approach, you first need to understand how programming uses **data structures** to store data, and that there can be numerous different data structures available within a programming language to handle different types of data. 
 
 When you process data using a programming language, there will be different
-structures that you can use to store data as you work with it. In other modules, 
-we've discussed the "tidyverse" approach to processing data in R---this approach 
-emphasizes the dataframe as a way to store data while you're working with it. 
-In fact, its use of this data structure for data storage is one of the defining 
-features of the "tidyverse" approach. 
+structures that you can use to store data as you work with it. You can think of
+these data structures as containers where you keep your data in the programming
+environment while you work with it, and different structures organize the data
+in different ways.
+
+If you've read the earlier modules, you've already seen one example of a data
+structure. In other modules, we've discussed the "tidyverse" approach to
+processing data in R---this approach emphasizes the *dataframe* as a way to
+store data while you're working with it (in other words, a data structure). In
+fact, the use of the dataframe as data structure for data storage is one of the
+defining features of the "tidyverse" approach. We mentioned in earlier modules
+that the tidyverse approach is based on using a common interface, so that you
+can mix and match small functions in different ways---the common interface is
+the dataframe. The tidyverse approach is built on the use of a common structure
+for storing data, the dataframe---almost all functions take data in this
+structure and almost all return data in this structure.
+
+Figure \@ref(fig:dfdatastructure) shows an annotated example of a dataframe,
+highlighting some of the key elements of its structure. A dataframe stores data
+in a two-dimensional structure, combining rows and columns. Each column is
+constrained to have data of the same type---in other words, all values in a
+column could be numeric (e.g., 1, 4, 10), or all could be character strings
+(e.g., "Mouse 1", "Mouse 3"), but the same column cannot combine some values
+that are numeric and some that are character strings. Across the dataframe, all
+columns must have the same length (i.e., if you printed out the full dataframe,
+it would look like a rectangle). All the column values should be lined up, so
+that as you are reading across a row, the values in the column cells are from
+the same observation or unit.
+
+```{r dfdatastructure, echo = FALSE, out.width = "\\textwidth", fig.cap = "An example of the dataframe data structure. This data structure is the most frequently used data structure within the tidyverse approach, and its use is in fact a defining element of the approach.", fig.fullwidth = TRUE}
+knitr::include_graphics("figures/dataframe.png")
+```
+
+Dataframes like this are very clearly and simply organized. However, they can be
+too restrictive in some cases. Sometimes, you might have data that are taken at
+different levels of observation---for example, you might have some measurements
+that are specific to a specific sample, but then other measurements or data that
+are common to the experiment as a whole (metadata). 
+
+Also, the simple dataframe structure doesn't have the capacity to store data
+taken at these different levels within the same structure (at least, not without
+a lot of repetition). Further, the dataframe won't work for massive datasets.
+Sometimes, you will get massive amounts of data from equipment like
+spectrometers or cytometers, and these datasets can be so big that they can't be
+easily read into R. One strategy with massive data is to read in only the bits 
+you need as you need them, rather than reading in all the data and then 
+using R commands to work with the full dataset. We'll look later in this module
+about how more complex data structures can facilitate this approach when 
+working with massive data in R.
+
+By addition to dataframes, there are a number of other simple, general purpose
+data structures that are often used to store data in R, and that you're likely
+to come across as you work in R. These include **vectors**, which are used to
+store one-dimensional strings of data of a single type (e.g., all numeric, or
+all character strings; as a note, you can think of each column in a dataframe as
+a vector), **matrices**, which are also used to store data of a single type, but
+with a two-dimensional structure, and **arrays**, which, like matrices and
+vectors, store data of a single type, but in three dimensions. Another common
+general purpose data structure in R is the *list*, which allows you to combine
+data stored in any type of structure to create a single R object, giving
+enormous flexibility (but minimal set structure from one object to another).
+This data structure is the building block for some of the more complex specific
+data structures, which we'll cover next.
+
+### More complex data structures in R
+
+The dataframe structure has the advantage of being simple to understand and use.
+By using the dataframe as a common structure, the tidyverse approach is able to
+create a powerful environment for working with data, because the use of a common
+structure allows you to program using small, simple functions that can be
+combined in different ways to solve complex tasks.
+
+However, the dataframe lacks flexibility in storing data that does not naturally 
+follow a two-dimensional structure, and it can struggle to handle massive datasets.
+Therefore, in some cases, it is appropriate to adopt approaches that store data
+in more complex data structures. The data from genomic and other 'omic experiments
+often are too complex and/or large to make dataframes practical as data 
+structures, at least until data can be simplified through pre-processing. 
+In this section, we'll look at an approach to pre-processing these data, leveraging
+more complex data structures when needed. Once data have been pre-processed, 
+they are often simplified to the point where they can be stored in a dataframe, 
+and so it is possible to create workflows that move into a tidyverse approach
+once data can reasonably be stored in dataframes. This creates a powerful pipeline, 
+using more complex tools when necessary and then moving into the more 
+straightforward tidyverse approach when possible. In the next module, we'll
+discuss how you can adopt this type of combined approach.
+
+Let's start by looking at how some data might have a structure that is too
+complex to fit into a two-dimensional dataframe. Figure
+\@ref(fig:complexdatastructure) shows an example of different components of data
+that may need to be stored in a data structure that is more complex than a
+dataframe. Data from a genomic experiment may include data from several levels,
+including metadata that describes the entire experiment, as well as assay data,
+phenotype data, and gene-level data. More complex data structures in R can be
+used to store all these pieces of data inside a single data structure.
+
+```{r complexdatastructure, echo = FALSE, out.width = "\\textwidth", fig.cap = "An example of different components of data that may need to be stored in a data structure that is more complex than a dataframe. Data from a genomic experiment may include data from several levels, including metadata that describes the entire experiment, as well as assay data, phenotype data, and gene-level data. More complex data structures in R can be used to store all these pieces of data inside a single data structure."}
+knitr::include_graphics("figures/complex_data_structure.png")
+```
+
+-------------------------------------------------------------------------------
 
 Data in R can be stored in a variety of other formats, too. When you are working 
 with biological data---in particular, complex or large data output from laboratory
@@ -123,6 +244,12 @@ cytometry file format?]
 data stored in databases or on-disk file formats---`sergeant` package is one
 example, also running tidyverse commands on data in database, `matter` package?, 
 `disk.frame` package?]
+
+This approach can be done by working with the data while it is what's called
+*on disc*---that is, most of the data is left in longer-term forms of memory, 
+like ..., and smaller pieces of it are read into R and processed at any given time.
+...
+
 
 > "Reading in a large dataset for which you do not have enough RAM is one easy way to freeze up your computer (or at least your R session). This is usually an unpleasant experience that usually requires you to kill the R process, in the best case scenario, or reboot your computer, in the worst case." [@peng2016r]
 
