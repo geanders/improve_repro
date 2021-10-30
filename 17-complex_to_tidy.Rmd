@@ -16,17 +16,40 @@ example to convert from the complex data format from pre-processing to a format
 better for further data analysis and visualization
 - Understand how these tools would fit in their own research pipelines
 
-```{r}
+```{r warning = FALSE, message = FALSE, echo = FALSE}
 library(magrittr)
 library(tidyverse)
 ```
 
 
-### Subsection 1
+### Combining Bioconductor and tidyverse approaches in a workflow
 
-In the previous modules, we have talked about two topics. First we have talked about the convenience and power of tidyverse tools. These tools can be used at points in your workflow when the data can be stored in a simple standard format: the Tidy dataframe format. We have also talked about reasons why there are advantages to using more complex data storage formats earlier in the process. In discussing this, we explained why this leads to early steps of the data preprocessing often being conducted outside of the tidyverse approach, instead using tools available through the bioconductor collection of packages. Once your workflow has advanced to a stage where it is straightforward to store the data in a simpler form at like a dataframe there are a large advantages to shifting into the tidyverse approach as compared to using more complex object-oriented classes for storing the DOT. In this module we will talk through approaches to make the shift from having data stored in bioconductor classes, including very specific classes for some data, into a tidy data format. This will allow an easy transition into using the tiny verse approach for data analysis and visualization at later stages in your workflow.
+In the previous modules, we have talked about two topics. First we have talked about the convenience and power of tidyverse tools. These tools can be used at points in your workflow when the data can be stored in a simple standard format: the tidy dataframe format. We have also talked about reasons why there are advantages to using more complex data storage formats earlier in the process. 
 
-There are two key tools that have been developed as our packages that facilitate the shift of data from being stored in a more customized object-oriented class, for example one of the S4 type classes that we discussed when talking about complex data formats for bioconductor. These packages move data from one of those storage containers into a tidy dataframe format. By doing this it moves the data into a format that is very easy to use in conjunction with the Tidy barstools and the tidyverse approach.
+Work with research data will typically require a series of steps for
+pre-processing, analysis, exploration, and visualization. Collectively, these
+form a **workflow** or **pipeline** for the data analysis. With large, complex
+biological data, early steps in this workflow might need to use a Bioconductor
+approach, given the size and complexity of the data. However, this doesn't mean
+that you must completely give up the power and efficiency of the tidyverse
+approach described in earlier modules. Instead, you can combine the two, in a
+workflow like that shown in Figure \@ref(fig:combinedworkflow). In this combined
+approach, you start the workflow in the Bioconductor approach and transition
+when possible to a tidyverse approach, transitioning by "tidying" from a more
+complex data structure to a simpler dataframe data structure along the way. In
+this module, we will describe how you can make this transition to create this
+type of combined workflow. This is a useful approach, because once your workflow
+has advanced to a stage where it is straightforward to store the data in a a
+dataframe, there are a large advantages to shifting into the tidyverse approach
+as compared to using more complex object-oriented classes for storing the data,
+in particular when it comes to data analysis and visualization at later stages
+in your workflow.
+
+```{r combinedworkflow, echo = FALSE, out.width = "\\textwidth", fig.cap = "An overview of a workflow that moves from a Bioconductor approach---for pre-processing of the data---through to a tidyverse approach one pre-processing has created smaller, simpler data that can be reasonably stored in a dataframe structure.", fig.fullwidth = TRUE}
+knitr::include_graphics("figures/workflow.png")
+```
+
+There are two key tools that have been developed as our packages that facilitate the shift of data from being stored in a more customized object-oriented class, for example one of the S4 type classes that we discussed when talking about complex data formats for Bioconductor. These packages move data from one of those storage containers into a tidy dataframe format. By doing this it moves the data into a format that is very easy to use in conjunction with the tidyverse tools and the tidyverse approach.
 
 In this module we will focus specifically on the biobroom package. Of the two
 packages this focuses  specifically on moving data out of many of the common
