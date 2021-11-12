@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="2.1 Separating data recording and analysis | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
+<meta property="og:type" content="book" />
+
+
+<meta property="og:description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
+<meta name="github-repo" content="rstudio/bookdown-demo" />
+
+<meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, and Gregory Robertson" />
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<meta name="description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing.">
+
+<title>2.1 Separating data recording and analysis | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
+
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="toc.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li><a href="index.html#overview"><span class="toc-section-number">1</span> Overview</a></li>
+<li><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
+<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
+<li><a href="4-references.html#references"><span class="toc-section-number">4</span> References</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="module1" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Separating data recording and analysis</h2>
+<p>Many biomedical laboratories currently use spreadsheet programs to jointly
+record, visualize, and analyze experimental data <span class="citation">(Broman and Woo 2018)</span>. These
+software tools, such as Microsoft Excel[Ref, copyright?] or Google Sheets[Ref,
+copyright?], provide for manual or automated entry of data into rows and columns
+of cells. Standard or custom formulas and other operations can be applied to the
+cells, and are commonly used to reformat or clean the data, calculate various
+statistics, and to generate simple plots; all of which are embedded as
+additional data entries and programming elements within the spreadsheet. While
+these tools greatly improved the paper worksheets on which they were originally
+based <span class="citation">(Campbell-Kelly 2007)</span>, this all-in-one practice impedes the transparency
+and reproducibility of both recording and analysis of the large and complex data
+sets that are routinely generated in life science experiments.</p>
+<p>To improve the computational reproducibility of a research project, it is
+critical for biomedical researchers to learn the importance of maintaining
+recorded experimental data as “read-only” files, separating data recording from
+any data pre-processing or data analysis steps <span class="citation">(Broman and Woo 2018; Marwick, Boettiger, and Mullen 2018)</span>. Statisticians have outlined specific methods that a
+laboratory-based scientist can take to ensure that data shared in an Excel
+spreadsheet are shared in a reliable and reproducible way, including avoiding
+macros or embedded formulas, using a separate Excel file for each dataset,
+recording descriptions of variables in a separate code book rather than in the
+Excel file, avoiding the use of color of the cells to encode information, using
+“NA” to code missing values, avoiding spaces in column headers, and avoiding
+splitting or merging cells <span class="citation">(Ellis and Leek 2018; Broman and Woo 2018)</span>. In this module,
+we will describe this common practice and will outline alternative approaches
+that separate the steps of data recording and data analysis.</p>
+<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
+<ul>
+<li>Explain the difference between data recording and data analysis</li>
+<li>Understand why collecting data on spreadsheets with embedded formulas impedes
+reproducibility</li>
+<li>List alternative approaches to improve reproducibility</li>
+</ul>
+<div id="data-recording-versus-data-analysis" class="section level3" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> Data recording versus data analysis</h3>
+<p><strong>History of spreadsheets.</strong></p>
+<p>Spreadsheets have long been an extremely popular tool for recording and
+analyzing data, in part because they allow people without programming experience
+to conduct a range of standard computations and statistical analyses through a
+visual interface that is more immediately user-friendly to non-programmers than
+programs with command line interfaces. An early target for spreadsheet programs
+in terms of users was business executives, and so the programs were designed to
+be very simple and easy to use—just one step up in complexity from crunching
+numbers on the back of an envelope <span class="citation">(Campbell-Kelly 2007)</span>. Spreadsheet programs
+in fact became so popular within businesses that many attribute these programs
+with driving the uptake of personal computers <span class="citation">(Campbell-Kelly 2007)</span>.</p>
+<p>Spreadsheets were innovative and rapidly adapted in part because they allowed
+users to combine data recording and analysis—while previously, in business
+settings, any complicated data analysis task needed to be outsourced to
+mainframe computers and data processing teams, the initial spreadsheet program
+(VisiCalc) allowed one person to quickly apply and test different models or
+calculations on recorded data <span class="citation">(Levy 1984)</span>. These spreadsheet programs
+allowed non-programmers to engage with data, including data processing and
+analysis tasks, in a way that previously required programming expertise
+<span class="citation">(Levy 1984)</span>.</p>
+<p><strong>Use of spreadsheets.</strong></p>
+<p>Many scientific laboratories use spreadsheets within their data collection
+process, both to record data and to clean and analyze the data. Illustrative
+examples can be found in surveys of over 250 biomedical researchers at the University
+of Washington <span class="citation">(Anderson et al. 2007)</span>, and of neuroscience researchers at the
+University of Newcastle, with most respondents reporting the use of spreadsheets
+and other general-purpose software in their research <span class="citation">(AlTarawneh and Thorne 2017)</span>.
+A working group on bioinformatics and data-intensive science similarly found
+spreadsheets were the most common tool used across attendees
+<span class="citation">(Barga et al. 2011)</span>.</p>
+<p>In some cases, a spreadsheet is used solely to record data, as a simple type of
+database <span class="citation">(Birch, Lyford-Smith, and Guo 2018)</span>. However, biomedical researchers often use
+spreadsheets to both record and analyze experimental data <span class="citation">(Anderson et al. 2007)</span>.
+In this case, data processing and analysis is implemented through the use of
+formulas and macros embedded within the spreadsheet. When a spreadsheet has
+formulas or macros within it, the spreadsheet program creates an internal record
+of how cells are connected through these formulas. For example, if the value in
+a specific cell is converted from Fahrenheit to Celsius to fill a second cell,
+and then that value is combined with other values in a column to calculate the
+mean temperature across several observations, then the spreadsheet program has
+internally saved how the later cells depend on the earlier ones. When you change
+the value recorded in a cell of a spreadsheet, the spreadsheet program queries
+this record and only recalculates the cells that depend on that cell. This
+process allows the program to quickly “react” to any change in cell inputs,
+immediately providing an update to all downstream calculations and analyses
+<span class="citation">(Levy 1984)</span>. Starting from the spreadsheet program Lotus 1-2-3,
+spreadsheet programs also included <em>macros</em>, “a single computer instruction that
+stands for a sequence of operations” <span class="citation">(Creeth 1985)</span>.</p>
+<p>Spreadsheets have become so popular in part because so many people know how to
+use them, at least in basic ways, and so many people have the software on their
+computers that files can be shared with the virtual guarantee that everyone will
+be able to open the file on their own computer <span class="citation">(Hermans et al. 2016)</span>.
+Spreadsheets use the visual metaphore of a traditional gridded ledger sheet
+<span class="citation">(Levy 1984)</span>, providing an interface that is easy for users to
+immediately understand and create a mental map of <span class="citation">(Birch, Lyford-Smith, and Guo 2018; Barga et al. 2011)</span>. This visually clear interface also means that
+spreadsheets can be printed or incorporated into other documents (Word files,
+PowerPoint presentations) “as-is,” as a workable and understandable table of
+data values. In fact, some of the most popular plug-in software packages for the
+early spreadsheet program Lotus 1-2-3 were programs for printing and publishing
+spreadsheets <span class="citation">(Campbell-Kelly 2007)</span>. This “What You See Is What You Get”
+interface was a huge advance from previous methods of data analysis for the
+first spreadsheet program, VisiCalc, providing a “window to the data” that was
+accessible to business executives and others without programming expertise
+<span class="citation">(Creeth 1985)</span>. Several surveys of researchers have found that
+spreadsheets were popular because of their simplicity and ease-of-use
+<span class="citation">(Anderson et al. 2007; AlTarawneh and Thorne 2017; Barga et al. 2011)</span>. By
+contrast, databases and scritped programming lanugages can be perceived as
+requiring a cognitive load and lengthly training that is not worth the
+investment when an easier tool is available <span class="citation">(Hermans et al. 2016; Anderson et al. 2007; Myneni and Patel 2010; Barga et al. 2011; Topaloglou et al. 2004)</span>.</p>
+</div>
+<div id="hazards-of-combining-recording-and-analysis" class="section level3" number="2.1.2">
+<h3><span class="header-section-number">2.1.2</span> Hazards of combining recording and analysis</h3>
+<p><strong>Raw data often lost.</strong></p>
+<p>One of the key tenets of ensuring that research is computationally reproducible
+is to always keep a copy of all raw data, as well as the steps taken to get from
+the raw data to a cleaned version of the data through to the results of data
+analysis. However, maintaining an easily accessible copy of all original raw data
+for a project is a common problem among biomedical researchers
+<span class="citation">(Goodman et al. 2014)</span>, especially as team members move on from a laboratory group
+<span class="citation">(Myneni and Patel 2010)</span>.</p>
+<p>The use of spreadsheets to jointly record and analyze data can contribute to
+this problem. Spreadsheets allow for the immediate and embedded processing of
+data. As a result, it may become very difficult to pull out the raw data
+originally recorded in a spreadsheet. At the least, the combination of raw and
+processed data in a spreadsheet makes it hard to identify which data points
+within a spreadsheet make up the raw data and which are the result of processing
+that raw data. One study of operational spreadsheets noted that:</p>
+<blockquote>
+<p>“The data used in most spreadsheets is undocumented and there is no practical
+way to check it. Even the original developer would have difficulty checking the
+data.” <span class="citation">(S. G. Powell, Baker, and Lawson 2009)</span></p>
+</blockquote>
+<p>Further, data in a spreadsheet is typically not saved as “read-only,” so it is
+possible for it to be accidentally overwritten: in situations where spreadsheets
+are shared among multiple users, original cell values can easily be accidentally
+written over, and it may not be clear who last changed a value, when it was
+changed, or why <span class="citation">(AlTarawneh and Thorne 2017)</span>.</p>
+<p>Finally, many spreadsheets use a proprietary format. In the development of
+spreadsheet programs, this use of proprietary binary file formats helped a
+software program keep users, increasing barriers for a user to switch to a new
+program (since the new program wouldn’t be able to read their old files)
+<span class="citation">(Campbell-Kelly 2007)</span>. However, this file format may be hard to open in the
+future, as software changes and evolves <span class="citation">(Michener 2015)</span>; by comparison, plain
+text files should be widely accessible through general purpose tools—a text
+editor is a type of software available on all computers, for
+example—regardless of changes to proprietary software like Microsoft Excel.</p>
+<p><strong>Opacity of analysis steps and potential for errors.</strong></p>
+<p>Previous studies have found that errors are very common within spreadsheets
+<span class="citation">(Hermans et al. 2016)</span>. For example, one study of 50 operational
+spreadsheets found that about 90% contained at least one error
+<span class="citation">(S. G. Powell, Baker, and Lawson 2009)</span>. In part, it is easier to make errors in spreadsheets and
+harder to catch errors in later work with a spreadsheet because the formulas and
+connections between cells aren’t visible when you look at the
+spreadsheet—they’re behind the scenes <span class="citation">(Birch, Lyford-Smith, and Guo 2018)</span>. This makes it very
+hard to get a clear and complete view of the pipeline of analytic steps in data
+processing and analysis within a spreadsheet, or to discern how cells
+are connected within and across sheets of the spreadsheet. As one early article on
+the history of spreadsheet programs notes:</p>
+<blockquote>
+<p>“People tend to forget that even the most elegantly crafted spreadsheet is a
+house of cards, ready to collapse at the first erroneous assumption. The
+spreadsheet that looks good but turns out to be tragically wrong is becoming
+a familiar phenomenon.” <span class="citation">(Levy 1984)</span></p>
+</blockquote>
+<p>Some characteristics of spreadsheets may heighten chances for errors. These
+include high conditional complexity (i.e., lots of branching of data flow
+through if / else structures), formulas that depend on a large number of cells
+or that incorporate many functions <span class="citation">(Hermans et al. 2016)</span>. Following the
+logical chain of spreadsheet formulas can be particularly difficult when several
+calculations are chained in a row <span class="citation">(Hermans and Murphy-Hill 2015)</span>. Very long chains of
+dependent formulas across spreadsheet cells may in some case requiring sketching
+out by hand the flow of information through the spreadsheet to understand what’s
+going on <span class="citation">(Nardi and Miller 1990)</span>. The use of macros can also make it
+particularly hard to figure out the steps of an analysis and to diagnose and fix
+any bugs in those steps <span class="citation">(Nash 2006; Creeth 1985)</span>. One
+study of spreadsheets used in real life applications noted that, “Many
+spreadsheets are so chaotically designed that auditing (especially of a few
+formulas) is extremely difficult or impossible.” <span class="citation">(S. G. Powell, Baker, and Lawson 2009)</span></p>
+<p>In some cases, formula dependences might span across different sheets of a
+spreadsheet file. For the example given previously of a spreadsheet that converts
+temperature from one unit to another and then averages across observations, for
+example, the original temperature might be recorded in one sheet while the
+converted temperature value is calculated and shown in a second sheet. These
+cross-sheet dependencies can make the analysis steps even more opaque
+<span class="citation">(Hermans et al. 2016)</span>, as a change in the cell value of one sheet might not
+be immediately visible as a change in another cell on that sheet (the same is
+true for spreadsheets so large that all the cells in a sheet are not
+concurrently visible on the screen). Other common sources of errors included
+incorrect references to cells inside formulas and incorrect use of formulas
+<span class="citation">(S. G. Powell, Baker, and Lawson 2009)</span> or errors introduced through the common practice of copying
+and pasting when developing spreadsheets <span class="citation">(Hermans et al. 2016)</span>.</p>
+<p>To keep analysis steps clear, whether in scripted code or in spreadsheets or
+pen-and-paper calculations, it is important to document what is being done at
+each step and why <span class="citation">(Goodman et al. 2014)</span>. Scripted languages allow for code comments,
+which are written directly into the script but not evaluated by the computer,
+and so can be used to document steps within the code without changing the
+operation of the code. Further, the program file itself often presents a linear,
+step-by-step view of the pipeline, stored separated from the data itself
+<span class="citation">(Creeth 1985)</span>. Calculations done with pen-and-paper (e.g., in a
+laboratory notebook) can be annotated with text to document the steps.
+Spreadsheets, on the other hand, are often poorly documented, or documented in
+ways that are hard to keep track of. Before spreadsheets,</p>
+<blockquote>
+<p>“The formulas appeared in one place and the results in another. You could see
+what you were getting. That cannot be said of electronic spreadsheets, which
+don’t display the formulas that govern their calculations. As Mitch Kapor
+explained, with electronic spreadsheets, ‘You can just randomly make formulas,
+all of which depend on each other. And when you look at the final results, you
+have no way of knowing what the rules are, unless someone tells you.’”
+<span class="citation">(Levy 1984)</span></p>
+</blockquote>
+<p>Within spreadsheets, the logic and methods behind the pipeline of data
+processing and analysis is often not documented, or only documented with cell
+comments (hard to see as a whole) or in emails, not the spreadsheet file.
+One study that investigated a large collection of spreadsheets found that most
+do not include documentation explaining the logic or implementation of data
+processing and analysis implemented within the spreadsheet
+<span class="citation">(Hermans et al. 2016)</span>. A survey of neuroscience researchers at a UK
+institute found that about a third of respondents included no documentation
+for spreadsheets used in their research laboratories <span class="citation">(AlTarawneh and Thorne 2017)</span>.</p>
+<p>When spreadsheet pipelines are documented, it is often through methods that are
+hard to find and interpret later. One study of scientific researchers found
+that, when research spreadsheets were documented, it was often through “cell
+comments” added to specific cells in the spreadsheet, which can be hard to
+interpret inclusively to understand the flow and logic of a spreadsheet as a
+whole <span class="citation">(AlTarawneh and Thorne 2017)</span>. In some cases, teams discuss and document
+functionality and changes in spreadsheets through email chains, passing
+different versions of the spreadsheet file as attachments of emails with
+discussion of the spreadsheet in the email body. One research team investigated
+over 700,000 emails from employees of Enron that were released during legal
+proceedings and investigated the spreadsheets attached to these emails (over
+15,000 spreadsheets) as well as discussion of the spreadsheets within the emails
+themselves <span class="citation">(Hermans and Murphy-Hill 2015)</span>. They found that the logic and methods of
+calculations within the spreadsheets were often documented within the bodies of
+emails that team members used to share and discuss spreadsheets. This means
+that, if someone needs to figure out why a step was taken or identify when an
+error was introduced into a spreadsheet, they may need to dig through the chain
+of old emails documenting that spreadsheet, rather than being able to find the
+relevant documentation within the spreadsheet’s own file.</p>
+<p>Often spreadsheets are designed, and their structure determined, by one person,
+and this is often done in an <em>ad hoc</em> fashion, rather than designing the
+spreadsheet to follow a common structure for the research field or for the
+laboratory group <span class="citation">(Anderson et al. 2007)</span>. Often, data processing and analysis
+pipelines for spreadsheets are not carefully designed; instead, it’s more
+typically for spreadsheet user to start by directly entering data and formulas
+without a clear overall plan <span class="citation">(AlTarawneh and Thorne 2017)</span>. Often, the person who
+created the spreadsheet is the only person who fully knows how it works
+<span class="citation">(Myneni and Patel 2010)</span>, particularly if the spreadsheet includes complex
+macros or a complicated structure in the analysis pipeline
+<span class="citation">(Creeth 1985)</span>.</p>
+<p>This practice creates a heavy dependence on the person who created that
+spreadsheet anytime the data or results in that spreadsheet need to be
+interpreted. This is particularly problematic in projects where the spreadsheet
+will be shared for collaboration or adapted to be used in a future project, as
+is often done in scientific research groups. One survey of neuroscience
+researchers at a UK institute, for example, found that “on average, 2–5
+researchers share the same spreadsheet.” <span class="citation">(AlTarawneh and Thorne 2017)</span> In this case, it
+can be hard to “onboard” new people to use the file, and much of the work and
+knowledge about the spreadsheet can be lost when that person moves on from the
+business or laboratory group <span class="citation">(Creeth 1985; Myneni and Patel 2010)</span>. If you share a spreadsheet with numerous and complex
+macros and formulas included to clean and analyze the data, it can take an
+extensive amount of time, and in some cases may be impossible, for the
+researcher you share it with to decipher what is being done to get from the
+original data input in some cells to the final results shown in others and in
+graphs. Further, if others can’t figure out the steps being done through macros
+and formulas in a spreadsheet, they will not be able to check it for problems in
+the logic of the overall analysis pipeline or for errors in the specific
+formulas used within that pipeline. They also will struggle to extend and adapt
+the spreadsheet to be used for other projects. These problems come up not only
+when sharing with a collaborator, but also when reviewing spreadsheets that you
+have previously created and used (as many have noted, your most frequent
+collaborator will likely be “future you”). In fact, one survey of biomedical
+researchers at the University of Washington noted that,</p>
+<blockquote>
+<p>“The profusion of individually created spreadsheets containing overlapping and
+inconsistently updated data created a great deal of confusion within some labs.
+There was little consideration to future data exchange of submission
+requirements at the time of publication.” <span class="citation">(Anderson et al. 2007)</span></p>
+</blockquote>
+<p>There are methods that have been brought from more traditional programming work
+into spreadsheet programming to try to help limit errors, including a tool
+called assertions that allows users to validate data or test logic within their
+spreadsheets <span class="citation">(Hermans et al. 2016)</span>. However, these are often not
+implemented, in part perhaps because many spreadsheet users see themselves as
+“end-users,” creating spreadsheets for their own personal use rather than as
+something robust to future use by others, and so don’t seek out strategies
+adopted by “programmers” when creating stable tools for others to use
+<span class="citation">(Hermans et al. 2016)</span>. In practice, though, often a spreadsheet is used
+much longer, and by more people, than originally intended. From early in the
+history of spreadsheet programs, users have shared spreadsheet files with
+interesting functionality with other users <span class="citation">(Levy 1984)</span>, and the
+lifespan of a spreadsheet can be much longer than originally intended—a
+spreadsheet created by one user for their own personal use can end up being used
+and modified by that person or others for years <span class="citation">(Hermans et al. 2016)</span>.</p>
+<p><strong>Subpar software for analysis.</strong></p>
+<p>While spreadsheets serve as a widely-used tool for data recording and analysis,
+in many cases spreadsheets programs are poorly suited to clean and analyze
+scientific data compared to other programs. As tools and interfaces continue to
+develop that make other software more user-friendly to those new to programming,
+scientists may want to reevaluate the costs and benefits, in terms of both time
+required for training and aptness of tools, for spreadsheet programs compared to
+using scripted programming languages like R and Python.</p>
+<p>Several problems have been identified with spreadsheet programs in the context of
+recording and, especially, analyzing scientific data. First, some statistical
+methods may be inferior to those available in other statistical programming language.
+Since the most popular spreadsheet program (Excel) is closed source, it is hard to
+identify and diagnose such problems, and there is likely less of an incentive for
+problems in statistical methodology to be fixed (rather than using development time
+and funds to increase easier-to-see functionality in the program). Many statistical
+operations require computations that cannot be perfectly achieved with a
+computer, since the computer must ultimately solve many mathematical problems using
+numerical approximations rather than continuous methods (e.g., calculus). The choice of
+the algorithms used for these approximations heavily influence how closely a result
+approximates the true answer.</p>
+<p>A series of papers examined the quality of statistical methods in several
+statistical software programs, including Excel, starting in the 1990s
+<span class="citation">(Bruce D. McCullough and Wilson 1999, 2005; Bruce D. McCullough 1999; B. D. McCullough and Wilson 2002; Bruce D. McCullough and Heiser 2008; Mélard 2014)</span>. In the
+earliest studies, they found some concerns across all programs considered
+<span class="citation">(Bruce D. McCullough and Wilson 1999; Bruce D. McCullough 1999)</span>. One of the biggest
+concerns, however, was that there was little evidence over the years that the
+identified problems in Excel were resolved, or at least improved, over time
+<span class="citation">(B. McCullough 2001; Bruce D. McCullough and Heiser 2008)</span>. The authors note that there may
+be little incentive for checking and fixing problems with algorithms for
+statistical approximation in closed source software like Excel, where sales
+might depend more on the more immediately evident functionality in the software,
+while problems with statistical algorithms might be less evident to potential
+users <span class="citation">(B. McCullough 2001)</span>.</p>
+<p>Open source software, on the other hand, offers pathways for identifying and fixing
+any problems in the software, including for statistical algorithms and methods
+implemented in the software’s code. Since the full source code is available, researchers
+can closely inspect the algorithms being used and compare them to the latest
+knowledge in statistical computing methodology. Further, if an inferior algorithm is in
+use, most open source software licenses allow a user to adapt and extend the software,
+for example to implement better statistical algorithms.</p>
+<p>Second, spreadsheet programs can include automated functionality that’s meant to
+make something easier for most users, but that might invisibly create problems
+in some cases. A critical problem, for example, has been identified when using
+Excel for genomics data. When Excel encounters a cell value in a format that
+seems like it could be a date (e.g., “Mar-3-06”), it will try to convert that
+cell to a “date” class. Many software programs save date as this special “date”
+format, where it is printed and visually appears in a format like “3-Mar-06” but
+is saved internally by the program as a number (for Microsoft Excel, the number
+of days since January 1, 1900 <span class="citation">(Willekens 2013)</span>). By doing this, the
+software can more easily undertake calculations with dates, like calculating the
+number of days between two dates or which of two dates is earlier.
+Bioinformatics researchers at the National Institutes of Health found that Excel
+was doing this type of automatic and irreversible date conversion for 30 gene
+names, including “MAR3” and “APR-4,” resulting in these gene names being lost
+for further analysis <span class="citation">(Zeeberg et al. 2004)</span>.</p>
+<p>Avoiding this automatic date conversion required specifying that columns with
+columns susceptible to these problems, including columns of gene names, should
+be retained in a “text” class in Excel’s file import process. While this
+problem was originally identified and published in 2004 <span class="citation">(Zeeberg et al. 2004)</span>,
+along with tips to identify and avoid the problem, a study in 2016 found that
+approximately a fifth of genomics papers investigated in a large-scale review
+had gene name errors resulting from Excel automatic conversion, with the rate of
+errors actually increasing over time <span class="citation">(Ziemann, Eren, and El-Osta 2016)</span>.</p>
+<p>Other automatic conversion problems caused the lost of clone identifiers with
+composed of digits and the letter “E” <span class="citation">(Zeeberg et al. 2004; Welsh et al. 2017)</span>,
+which were assumed to be expressing a number using scientific notation and so
+automatically and irreversibly converted to a numeric class. Further automatic
+conversion problems can be caused by cells that start with an operator (e.g., “+
+control”) or with leading zeros in a numeric identifier (e.g., “007”)
+<span class="citation">(Welsh et al. 2017)</span>.</p>
+<p>Finally, spreadsheet programs can be limited as analysis needs become more
+complex or large <span class="citation">(Topaloglou et al. 2004)</span>. For example, spreadsheets can be
+problematic when integrating or merging large, separate datasets
+<span class="citation">(Birch, Lyford-Smith, and Guo 2018)</span>. This can create barriers, for example, in biological studies
+seeking to integrate measurements from different instruments (e.g., flow
+cytometry data with RNA-sequencing data). Further, while spreadsheet programs
+continue to expand in their capacity for data, for very large datasets they
+continue to face limits that may be reached in practical applications
+<span class="citation">(Birch, Lyford-Smith, and Guo 2018)</span>—until recently, for example, Excel could not handle more
+than one million rows of data per spreadsheet. Even when spreadsheets can handle
+larger data, their efficiency in running data processing and analysis pipelines
+across large datasets can be slow compared to code implemented with other
+programming languages.</p>
+<p><strong>Difficulty collaborating with statisticians.</strong></p>
+<p>Modern biomedical researchers requires large teams, with statisticians and
+bioinformaticians often forming a critical part of the team to enable
+sophisticated processing and analysis of experimental data. However, the process
+of combining data recording and analysis of experimental data, especially
+through the use of spreadsheet programs, can create barriers in working across
+disciplines. One group defined these issues as “data friction” and “science
+friction”—the extra steps and work required at each interface where data
+passes, for example, from a machine to analysis or from a collaborator in one
+discipline to one in a separate discipline <span class="citation">(Edwards et al. 2011)</span>.
+From a survey of scientific labs, for example, one respondent said:</p>
+<blockquote>
+<p>“I can give data that I think are appropriate to answer a question to a
+biostatistician, but when they look at it, they see it from a different point of
+view. And that spreadsheet does not really encapsulate where it came from very
+well, how was it generated, was it random, how was this data collected. You
+would run a series of queries that you think are pertinent to what this
+biostatistician would want to know. They become a part of the exploration and
+not just a receiver of whatever I decided to put in my spreadsheet on that day.
+What I get back is almost never fully documented in any way that I can really
+understand and add more to the process.” <span class="citation">(Myneni and Patel 2010)</span></p>
+</blockquote>
+<p>When collaborating with statisticians or bioinformaticians, one of the key
+sources of this “data friction” can result from the use of spreadsheets to
+jointly record and analyze experiemental data. First, spreadsheets are easy to
+print or copy into another format (e.g., PowerPoint presentation, Word
+document), and so researchers often design spreadsheets to be immediately
+visually appealing to viewers. For example, a spreadsheet might be designed to
+include hierarchically organized headers (e.g., heading and subheading, some
+within a cell merged across several columns), or to show the result of a
+calculation at the bottom of a column of observations (e.g., “Total” in the last
+cell of the column) <span class="citation">(Teixeira and Amaral 2016)</span>. Multiple separate small tables
+might be included in the same sheet, with empty cells used for visual
+separation, or use a “horizontal single entry” design , where the headers are in
+the leftmost column rather than the top row <span class="citation">(Teixeira and Amaral 2016)</span>.</p>
+<p>These spreadsheet design choices make it much more difficult for the contents of
+the spreadsheet to be read into other statistical programs. These types of data
+require several extra steps in coding, in some cases fairly complex coding, with
+regular expressions or logical rules needed to parse out the data and convert it
+to the needed shape, before the statistical work can be done for the dataset.
+This is a poor use of time for a collaborating statistician, especially if it
+can be avoided through the design of the data recording template. Further, it
+introduces many more chances for errors in cleaning the data.</p>
+<p>Further, information embedded in formulas, macros, and extra formatting like
+color or text boxes is lost when the spreadsheet file is input into other
+programs. Spreadsheets allow users to use highlighting to represent information
+(e.g., measurements for control animals shown in red, those for experiment
+animals in blue) and to include information or documentation in text boxes. For
+example, one survey study of biomedical researchers at the University of
+Washington included this quote from a respondent: “I have one spreadsheet that
+has all of my chromosomes … and then I’ve gone through and color coded it for
+homozygosity and linkage.” <span class="citation">(Anderson et al. 2007)</span> All the information encoded in
+this sheet through color will be lost when the data from the spreadsheet is read
+into another statistical program.</p>
+</div>
+<div id="approaches-to-separate-recording-and-analysis" class="section level3" number="2.1.3">
+<h3><span class="header-section-number">2.1.3</span> Approaches to separate recording and analysis</h3>
+<p>In the remaining modules in this section, we will present and describe techniques
+that can be used to limit or remove these problems. First, in the module on
+“Structured data,” we will walk through techniques to design data recording
+formats so that data is saved in a consistent format across experiments within
+a laboratory group, and in a way that removes “data friction” for collaboration
+with statisticians or later use in scripted code. These techniques can be immediately
+used to design a better spreadsheet to be used solely for data collection.</p>
+<p>In later modules, we will discuss the use of R projects to coordinate data
+recording and analysis steps within a directory, while using separate files for
+data recording versus data processing and analysis. These more advanced formats
+will enable the use of quality assurance / control measures like testing of data
+entry and analysis functionality, better documentation of data analysis pipelines,
+and easy use of version control to track projects and collaborate transparently and
+with a recorded history.</p>
+<p>[We will probably want to flesh this section out as we write later modules.]</p>
+</div>
+<div id="discussion-questions" class="section level3" number="2.1.4">
+<h3><span class="header-section-number">2.1.4</span> Discussion questions</h3>
+<!---
+
+### Additional notes / quotes for revisions
+
+> "Many scientists spend a lot of time using Excel, and without batting an eye will
+change the value in a cell and save the results. I strongly discourage modifying 
+data this way. Instead, a better approach is to treat all data as *read-only* and
+only allow programs to read data and create new, separate files of results. Why 
+is treating data as read-only important in bioinformatics? First, modifying the 
+data in place can easily lead to corrupted results. For example, suppose you 
+wrote a script that directly modifies a file. Midway through processing a large
+file, your script encounters an error and crashes. Because you've modified the
+original file, you can't undo the changes and try again (unless you have a backup)!
+Essentially, this file is corrupted and can no longer be used. Second, it's easy to 
+lose track of how we've changed a file when we modify it in place. Unlike a workflow
+where each step has an input file and an output file, a file modified in place
+doesn't give us any indication of what we've done to it. Were we to lose track of how
+we've changed a file and don't have a backup copy of the original data, our changes
+are essentially irreproducible. Treating data as read-only may seem counterintuitive
+may seem counterintuitive to scientists familiar with working extensively in Excel, 
+but it's essential to robust research (and prevents catastrophe, and helps reproducibility).
+The initial difficulty is well worth it; it also fosters reproducibility. Additionally, 
+any step of the analysis can easily be redone, as the input data is unchanged by the 
+program." [@buffalo2015bioinformatics]
+
+> "'Plain text' data files are encoded in a format (typically UTF-8) that can be read by humans and computers alike. The great thing about plain text is their simplicity and their ease of use: any programming language can read a plain text file. The most common plain text format is .csv, comma-separated values, in which columns are separated by commas and rows are separated by line breaks." [@gillespie2016efficient]
+
+--->
+
+</div>
+</div>
+<p style="text-align: center;">
+<a href="2-experimental-data-recording.html"><button class="btn btn-default">Previous</button></a>
+<a href="2.2-module2.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="3.3 Simplify scripted pre-processing through R’s ‘tidyverse’ tools | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
+<meta property="og:type" content="book" />
+
+
+<meta property="og:description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
+<meta name="github-repo" content="rstudio/bookdown-demo" />
+
+<meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, and Gregory Robertson" />
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<meta name="description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing.">
+
+<title>3.3 Simplify scripted pre-processing through R’s ‘tidyverse’ tools | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
+
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="toc.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li><a href="index.html#overview"><span class="toc-section-number">1</span> Overview</a></li>
+<li><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
+<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
+<li><a href="4-references.html#references"><span class="toc-section-number">4</span> References</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="module14" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Simplify scripted pre-processing through R’s ‘tidyverse’ tools</h2>
+<p>The R programming language now includes a collection of ‘tidyverse’ extension
+packages that enable user-friendly yet powerful work with experimental data,
+including pre-processing and exploratory visualizations. The principle behind
+the ‘tidyverse’ is that a collection of simple, general tools can be joined
+together to solve complex problems, as long as a consistent format is used for
+the input and output of each tool (the ‘tidy’ data format taught in other
+modules). In this module, we will explain why this ‘tidyverse’ system is so
+powerful and how it can be leveraged within biomedical research, especially for
+reproducibly pre-processing experimental data.</p>
+<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
+<ul>
+<li>Define R’s ‘tidyverse’ system</li>
+<li>Explain how the ‘tidyverse’ collection of packages can be both user-friendly
+and powerful in solving many complex tasks with data</li>
+<li>Describe the difference between base R and R’s ‘tidyverse.’</li>
+</ul>
+<div id="limitations-of-object-oriented-programming" class="section level3" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Limitations of object-oriented programming</h3>
+<p>In previous sections, we described how the R programming language allows for
+object-oriented programming, and how customized objects are often used in
+preprocessing for biological data. This is a helpful approach for preprocessing,
+because it can handle complexities in biological data at its early stages of
+preprocessing, when R must handle complex input formats from equipment like
+flow cytometers or mass spectrometers, and data sizes that are often very large.</p>
+<p>However, once you have preprocessed your data, it is often possible to work with it
+in a smaller, more consistent object type. This will give you a lot of flexibility
+and power. While object-oriented approaches can handle complex data, it can be a
+little hard to write and work with code that is built on an object oriented approach.
+Working with this type of code requires you to keep track of what object type your
+data is in at each stage of a code pipeline, as well as which functions can work with
+that type of object.</p>
+<p>Further, this type of coding, in practice at least, can be a bit inflexible.
+Often, specific functions only work with a single or few types of functions. In
+theory, object-oriented programming allows for <em>methods</em> that work in customized
+ways with different types of objects to apply customized code to that type of
+object for similar, common-sense results. For example, there are often <code>summary</code>
+and <code>plot</code> methods for most types of objects, and these apply code that is
+customized to that object type and output, respectively, summarized information
+about the data in the object and a plot of the data in the object. However, when
+you want to do more with the object that summarize it or create its default
+plot, you often end up needing to move to more customized functions that work
+only with a single or few object types. When you get to this point, you find that
+you have to remember which functions work with which object type, and you have to
+use different functions at different stages of your code pipeline, as your code
+changes from one object class to another.</p>
+<p>Further, many of these functions input one object type and output a different
+one. This evolution of object types for storing data can be difficult to navigate
+and keep track of. Different object types store data in different ways, and so
+this evolution of data object types for storage can make it tricky to figure out
+how to extract and explore data along the pipeline. It makes it hard to write your
+own code to explore and visualize the data along the way, as well, and so users
+are often restricted to the visualization and analysis functions pre-made and
+shared in packages when working with data in complex object types, especially
+until the user becomes very comfortable with coding in R.</p>
+<p>Overall, what does this all mean? Object-oriented approaches offer real advantages
+early in the process of pre-processing biological data, especially complex and
+large data output from complex laboratory equipment. However, once this pre-processing
+is completed, there is a big advantage in moving the data into a simple format
+and then continuing coding, data analysis, and visualization using tools that
+work with this simple format. This is the approach taken by a suite of R packages
+called the “tidyverse,” as well as extensions that build off the approach that
+this suite of tools embraces. This “tidyverse” approach is described in the
+next section.</p>
+</div>
+<div id="the-tidyverse-approach" class="section level3" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> The “tidyverse” approach</h3>
+<p>The term “elegance” often captures styles and approaches that are beautiful and
+functional without unneeded extras or complexity. Engineers and scientists
+sometimes use this term to capture approaches that achieve a desired result with
+minimal complexity and friction. A coding problem, for example, could be solved
+by an average coder with a hundred lines of code that get the job done, but a
+very good coder might be able to solve the same problem with five lines of code
+that are easy to follow. The second approach would be applauded as the “elegant”
+solution. In mathematics, similarly, proofs can be complex and unwieldy, or they
+can be simple and elegant—this idea was beautifully captured by the Hungarian
+mathematician Paul Erdos, who famously described very elegant mathematical proofs
+as being from “The Book”—that is, God’s own version of the proof of the
+mathematical idea.</p>
+<blockquote>
+<p>“Paul Erdos liked to talk about The Book, in which God maintains the perfect
+proofs for mathematical theorems, following the dictum of G. H. Hardy that
+there is no permanent place for ugly mathematics. Erdos also said that you
+need not believe in God but, as a mathematician, you should believe in
+The Book.” [Proofs from the Book, Third Edition, Preface]</p>
+</blockquote>
+<p>The “tidyverse” approach in R is elegant. It is powerful, and gives you immense
+flexibility once you’ve gotten the hang of it, but it’s also so straightforward
+that the basics can be quickly taught to and applied by beginning coders. It
+focuses on keeping data in a simple, standard format called “tidy” dataframes.
+By keeping data in this format while working with it, common tools can be applied
+that work with the data at any stage of a “tidy” coding pipeline. These tools take
+a “tidy” dataframe as their input, and they also output a “tidy” dataframe, with
+whatever change the function implements applied. Because each of these “tidyverse”
+tools input and output data in the same standard format, they can be strung together
+in order you want. By contrast, when functions input and output data in different
+object types, they can only be joined in a specified order, because you can only
+apply certain functions to certain object types.</p>
+<p>Since the “tidyverse” tools can be strung together in any order, they can be
+used very flexibly to build up to do interesting tasks. The tidyverse tools
+generally each do very small and simple things. For example, one function
+(<code>select</code>) just limits the data to a subset of its original columns; another
+(<code>mutate</code>) adds or changes values in columns of the dataset, while another
+(<code>distinct</code>) limits the dataframe to remove any rows that are duplicates. These
+small, simple steps can be combined together in different patterns to add up to
+complex operations on the data, while keeping each step very simple and clear.
+Since the data stays in a standard and simple object type, it is easy to check
+in on your data at any stage, as the common visualization tools for this
+approach (from the <code>ggplot2</code> package and its extensions) can be always be
+applied to data stored in a tidy dataframe.</p>
+<p>The centralizing principal of the tidyverse approach is the format in which data
+is stored throughout “tidyverse” coding—the tidy dataframe. We’ve described
+this data type, including its rules and advantages, in an earlier module of this
+book. Briefly, you can think of this format in two parts. First, there’s the R
+object type that the data should be stored in—a basic “dataframe” object. The
+dataframe object type is a very basic two-dimensional format for storing data in
+R. When you print it out, it will remind you of looking at data in a
+spreadsheet. The two dimensions—rows and columns—allow you to include data
+for one or more observations, with different values that were measured for each.
+For example, if you were conducting a study of children’s BMI and blood sugar,
+you might have an observation for each child in the study, and values measured
+for each child of height, weight, a blood sugar measure, study ID, and date of
+the observation.</p>
+<p>The two-dimensional structure of a dataframe keeps the values
+measured for each observation lined up with each other, and lets you keep them
+aligned as you work with the data. You could also store data for each value as
+separate objects, in one-dimensional vectors, which you can visualize as strings
+of values of the same data type, like the dates that each observation was made,
+or the weight of each study subject. However, when the data is in separate
+vectors, it is easy to make coding mistakes, and coding is often less efficient.
+If you want to remove one observation, for example, because you find it is a
+duplicate, you would need to carefully make sure you remove it correctly from
+each vector. When data are stored in a dataframe, you can remove the row for
+that observation with one command, and you can be sure that you’ve removed the
+value you meant to from each of the measured values.</p>
+<p>Sometimes, you’ll see that data in a tidyverse approach are stored in a special
+type of dataframe called a “tibble”—this isn’t very different from a
+dataframe, and in fact is a special type of dataframe. It’s only differences in
+practice are that it has a slightly different <code>print</code> method. The <code>print</code> method
+is the method that’s run, by default, when you just type the R object’s name
+at the console. A tibble prints more nicely than a basic dataframe. By default,
+it will only print the first few lines. By contrast, a dataframe will, by default,
+print everything—if you have a lot of data, this can create an overwhelming
+amount of output when you just want to check out what the data looks like. The
+printout of a tibble will also include some interesting annotations to help you
+see what’s in the data, including the dimensions of the full dataframe and the
+data type of each column in the data.</p>
+<p>The R object class—dataframe, and more specifically, tibble—of the standard
+format for data for a tidyverse approach is just the first part of the standard
+data format for the tidyverse approach. The second part of the standard format is
+how you organize your data in this format. To easily work with tidyverse functions,
+you’ll want to make sure that your data is stored within that dataframe following
+“tidy” data principals. These are fully described in an earlier module in this
+book [which module]. If you use this data format to initially collect your
+data, as described in an earlier module, you will find it very easy to read the
+data into R and work within the tidyverse approach. When working with larger and
+more complex data collected from laboratory equipment, you may find you need to
+do some preprocessing of the data using an object-oriented approach before you
+can move the data into this tidy format, but at that point, you can continue with
+analysis and visualization of your data using a tidyverse approach.</p>
+</div>
+<div id="how-to-tidyverse" class="section level3" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> How to “tidyverse”</h3>
+<p>Once data are in the “tidy” data format, you can create a pipeline of code that
+uses small tools, each of which does one simple thing, to work with the data.
+This work can include cleaning the data, adding values that are functions of the
+original values for each observation (e.g., adding a column with BMI based on
+values for each observation on height and weight), applying statistical models to
+test hypotheses, summarizing data to create tables, and visualizing the data.</p>
+<p>The tidyverse approach is now widely taught, both in in-person courses at
+universities and through a variety of online resources. One key resource for
+learning the tidyverse approach for R is the book <em>R for Data Science</em> by Hadley
+Wickham (the primary developer of the tidyverse) and Garrett Grolemund. This
+book is available as a print edition through O’Reilly Media. It is also freely
+available online at <a href="https://r4ds.had.co.nz/" class="uri">https://r4ds.had.co.nz/</a>. This book is geared to beginners in
+R, moving through to get readers to an intermediate stage of coding expertise,
+which is a level that will allow most scientific researchers to powerfully
+work with their experimental data. The book includes exercises for practicing the
+concepts, and a separate online book is available with solutions for the
+exercises (<a href="https://jrnold.github.io/r4ds-exercise-solutions/" class="uri">https://jrnold.github.io/r4ds-exercise-solutions/</a>).</p>
+<p>[More on other resources for learning the tidyverse.]</p>
+<p>Since there are so many excellent resources available—many for free—to learn
+how to code in R using the tidyverse approach, we consider it beyond the scope
+of these modules to go more deeply into these instructions. However, we do think
+it is critical that biological researchers learn how to connect this approach to
+the type of coding that is often necessary for pre-processing large and complex
+data that is output from laboratory equipment. Through many of the modules in this book,
+we provide advice on how to make these connections, so that data from different
+sources—including different types of laboratory equipment and hand-recorded data
+collected by personnel in the lab, like colony forming units measured from plating
+samples—can all be connected in a tidyverse pipeline by recording hand-recorded
+data following a tidy format and by pre-processing data with the aim of moving
+data toward a tidy dataframe that can be integrated with other “tidy” data for
+analysis and visualization.</p>
+</div>
+<div id="subsection-1-3" class="section level3" number="3.3.4">
+<h3><span class="header-section-number">3.3.4</span> Subsection 1</h3>
+<blockquote>
+<p>“There is a now-old trope in the world of programming. It’s called the ‘worse is
+better’ debate; it seeks to explain why the Unix operating systems (which include
+Mac OS X these days), made up of so many little interchangeable parts, were so much
+more successful in the marketplace than LISP systems, which were ideologically pure,
+based on a single languagae (again, LISP), which itself was exceptionally simple,
+a favorite of ‘serious’ hackers everywhere. It’s too complex to rehash here, but one
+of the ideas inherent within ‘worse is better’ is thata systems made up of many
+simple pieces that can be roped together, even if those pieces don’t share a consistent
+interface, are likely to be more successful than systems that are designed with consistency
+in every regard. And it strikes me that this is a fundamental drama of new technologies.
+Unix beat out the LISP machines. If you consider mobile handsets, many of which run
+descendants of Unit (iOS and Andriod), Unix beat out Windows as well. And HTML5 beat out
+all of the various initiatives to create a single unified web. It nods to accessibility:
+it doesn’t get in the way of those who want to make something huge and interconnected.
+But it doesn’t enforce; it doesn’t seek to change the behavior of page creators in the
+same way that such lost standards as XHTML 2.0 (which eremged from the offices of
+the World Wide Web Consortium, and then disappeared under the weight of its own
+intentions) once did. It’s not a bad place to end up. It means that there is no
+single framework, no set of easy rules to lear, no overarching principles that,
+once learned, can make the web appear like a golden statue atop a mountain. There
+are just components: HTML to get the words on the page, forms to get people to
+write in, videos and images to put up pictures, moving or otherwise, and
+JavaScript to make everything dance.” <span class="citation">(Ford 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“One of the fundamental contributions of the Unix system [is] the idea of a <em>pipe</em>.
+A pipe is a way to connect the output of one program to the input of another program
+without any temporary file; a <em>pipeline</em> is a connection of two or more programs through
+pipes. … Any program that reads from a terminal can read from a pipe instead; any program
+that writes on the terminal can write to a pipe. … The programs in a pipeline actually
+run at the same time, not one after another. This means that the programs in a pipeline
+can be interactive; the kernel looks after whatever scheduling and synchronization is needed
+to make it all work. As you probably suspect by now, the shell arranges things when you
+ask for a pipe; the individual programs are oblivious to the redirection.” <span class="citation">(Kernighan and Pike 1984)</span></p>
+</blockquote>
+<blockquote>
+<p>“Even though the Unix system introduces a number of innovative programs and techniques,
+no single program or idea makes it work well. Instead, what makes it effective is an approach
+to programming, a philosophy of using the computer. Although that philosophy can’t be written
+down in a single sentence, at its heart is the idea that the power of a system comes more from
+the relationships among programs than from the programs themselves. Many Unix programs do
+quite trivial things in isolation, but, combined with other programs, become general and
+useful tools.” <span class="citation">(Kernighan and Pike 1984)</span></p>
+</blockquote>
+<blockquote>
+<p>“What is ‘Unix?’ In the narrowest sense, it is a time-sharing operating system <em>kernel</em>:
+a program that controls the resources of a computer and allocates them among its users.
+It lets users run their programs; it controls the peripheral devices (discs, terminals,
+printers, and the like) connected to the machine; and it provides a file system that
+manages the long-term storage of information such as programs, data, and documents.
+In a broader sense, ‘Unix’ is often taken to include not only the kernel, but also
+essential programs like compiles, editors, command languages, programs for copying and
+printing files, and so on. Still more broadly, ‘Unix’ may even include programs
+develpoed by you or others to be run on your system, such as tools for document
+preparation, routines for statistical analysis, and graphics packages.” <span class="citation">(Kernighan and Pike 1984)</span></p>
+</blockquote>
+<blockquote>
+<p>“A common observation is that more of the data scientist’s time is occupied
+with data cleaning, manipulation, and ‘munging’ than it is with actual
+statistical modeling (Rahm and Do, 2000; Dasu and Johnson, 2003). Thus, the
+development of tools for manipulating and transforming data is necessary for
+efficient and effective data analysis. One important choice for a data scientist
+working in R is how data should be structured, particularly the choice of
+dividing observations across rows, columns, and multiple tables. The concept of
+‘tidy data,’ introduced by Wickham (2014a), offers a set of guidelines for
+organizing data in order to facilitate statistical analysis and visualization. … This framework makes it easy for analysts to reshape, combine, group and otherwise manipulate data. Packages such as ggplot2, dplyr, and many built-in R modeling and plotting functions require the input to be in a tidy form, so keeping the data in this form allows multiple tools
+to be used in sequence in a seamless analysis pipeline (Wickham, 2009; Wickham and Francois,
+2014).”
+<span class="citation">(D. Robinson 2014)</span></p>
+</blockquote>
+</div>
+<div id="subsection-2-2" class="section level3" number="3.3.5">
+<h3><span class="header-section-number">3.3.5</span> Subsection 2</h3>
+</div>
+<div id="practice-quiz-2" class="section level3" number="3.3.6">
+<h3><span class="header-section-number">3.3.6</span> Practice quiz</h3>
+
+</div>
+</div>
+<p style="text-align: center;">
+<a href="3.2-module13.html"><button class="btn btn-default">Previous</button></a>
+<a href="3.4-module15.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+
+</body>
+</html>

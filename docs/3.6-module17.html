@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="3.6 Example: Converting from complex to ‘tidy’ data formats | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
+<meta property="og:type" content="book" />
+
+
+<meta property="og:description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
+<meta name="github-repo" content="rstudio/bookdown-demo" />
+
+<meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, and Gregory Robertson" />
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<meta name="description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing.">
+
+<title>3.6 Example: Converting from complex to ‘tidy’ data formats | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
+
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="toc.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li><a href="index.html#overview"><span class="toc-section-number">1</span> Overview</a></li>
+<li><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
+<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
+<li><a href="4-references.html#references"><span class="toc-section-number">4</span> References</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="module17" class="section level2" number="3.6">
+<h2><span class="header-section-number">3.6</span> Example: Converting from complex to ‘tidy’ data formats</h2>
+<p>We will provide a detailed example of a case where data pre-processing in R
+results in a complex, ‘untidy’ data format. We will walk through an example of
+applying automated gating to flow cytometry data. We will demonstrate the
+complex initial format of this pre-processed data and then show trainees how a
+‘tidy’ dataset can be extracted and used for further data analysis and
+visualization using the popular R ‘tidyverse’ tools. This example will use real
+experimental data from one of our Co-Is research on the immunology of
+tuberculosis.</p>
+<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
+<ul>
+<li>Describe how tools like  were used in this real research
+example to convert from the complex data format from pre-processing to a format
+better for further data analysis and visualization</li>
+<li>Understand how these tools would fit in their own research pipelines</li>
+</ul>
+<div id="combining-bioconductor-and-tidyverse-approaches-in-a-workflow" class="section level3" number="3.6.1">
+<h3><span class="header-section-number">3.6.1</span> Combining Bioconductor and tidyverse approaches in a workflow</h3>
+<p>In the previous modules, we have talked about two topics. First we have talked about the convenience and power of tidyverse tools. These tools can be used at points in your workflow when the data can be stored in a simple standard format: the tidy dataframe format. We have also talked about reasons why there are advantages to using more complex data storage formats earlier in the process.</p>
+<p>Work with research data will typically require a series of steps for
+pre-processing, analysis, exploration, and visualization. Collectively, these
+form a <strong>workflow</strong> or <strong>pipeline</strong> for the data analysis. With large, complex
+biological data, early steps in this workflow might need to use a Bioconductor
+approach, given the size and complexity of the data. However, this doesn’t mean
+that you must completely give up the power and efficiency of the tidyverse
+approach described in earlier modules. Instead, you can combine the two, in a
+workflow like that shown in Figure <a href="3.6-module17.html#fig:combinedworkflow">3.3</a>. In this combined
+approach, you start the workflow in the Bioconductor approach and transition
+when possible to a tidyverse approach, transitioning by “tidying” from a more
+complex data structure to a simpler dataframe data structure along the way. In
+this module, we will describe how you can make this transition to create this
+type of combined workflow. This is a useful approach, because once your workflow
+has advanced to a stage where it is straightforward to store the data in a a
+dataframe, there are a large advantages to shifting into the tidyverse approach
+as compared to using more complex object-oriented classes for storing the data,
+in particular when it comes to data analysis and visualization at later stages
+in your workflow.</p>
+<div class="figure fullwidth"><span style="display:block;" id="fig:combinedworkflow"></span>
+<img src="figures/workflow.png" alt="An overview of a workflow that moves from a Bioconductor approach---for pre-processing of the data---through to a tidyverse approach one pre-processing has created smaller, simpler data that can be reasonably stored in a dataframe structure." width="\textwidth"  />
+<p class="caption marginnote shownote">
+Figure 3.3: An overview of a workflow that moves from a Bioconductor approach—for pre-processing of the data—through to a tidyverse approach one pre-processing has created smaller, simpler data that can be reasonably stored in a dataframe structure.
+</p>
+</div>
+<p>There are two key tools that have been developed as our packages that facilitate the shift of data from being stored in a more customized object-oriented class, for example one of the S4 type classes that we discussed when talking about complex data formats for Bioconductor. These packages move data from one of those storage containers into a tidy dataframe format. By doing this it moves the data into a format that is very easy to use in conjunction with the tidyverse tools and the tidyverse approach.</p>
+<p>In this module we will focus specifically on the biobroom package. Of the two
+packages this focuses specifically on moving data out of many of the common
+bioconductor classes and into tidy dataframes. this package drawers and an
+object-oriented approach in that it provides generic functions for extracting
+data from many different object classes that are coming in by a conductor. You
+will call the same function regardless of the class that the dad is in. If that
+object class has a bio broom method for that generic function, then the function
+will be able to extract parts of the data into a tidy data frame.</p>
+<p>In this module we will also discuss another tool from the tidyverse, or rather a
+tool that draws on the tiny verse approach, that can be easily used in
+conjunction with biomedical data that has been processed using bioconductor
+tools. This is a package called <code>ggbio</code> that facilitates the visualization of
+biomedical data. It includes functions and Specialized gian’s or geometrical
+objects that are customized for some of the tasks that you might want to conduct
+in visualizing biomedical data in r. by drawing on tools and an approach from
+ggplot which is part of the tidyverse approach, these tools allow you to work
+with this data while still leveraging the powerful visualization tools and
+philosophy underlying the ggplot package.</p>
+<p>Finally it is quite likely better purchase will continue to evolve through are,
+and that in the future there might be tidy data frame format that are adaptable
+enough to handle earlier stages in the data preprocessing. Tidy first dataframe
+have already been adapted to enable them to include more complex types of data
+within certain columns of the data frame any special list type column. This
+functionality is being leveraged through the ffs package to an evil a tidy
+approach to working with geographical data. This allows those who are working
+with geographical data, for example data from shapefiles for creating Maps, to
+use the standard tidyverse approaches while still containing complex data needed
+for this geographical information. It seems very possible that similar
+approaches may be adapted in the near future to allow for biomedical or genomic
+data to be stored in a way that both accounts for complexity early and
+pre-processing of these data but also allows for a more natural integration with
+the wealth of powerful tools available through the tidyverse approach.</p>
+</div>
+<div id="the-biobroom-package" class="section level3" number="3.6.2">
+<h3><span class="header-section-number">3.6.2</span> The <code>biobroom</code> package</h3>
+<p>The <code>biobroom</code> package includes three main generic functions (methods), which
+can be used on a number of Bioconductor object classes. When applied to object
+stored in one of these Bioconductor classes, these functions will extract part
+of the data into a tidy dataframe format. In this format, it is easy to use the
+tools from the tidyverse to further explore, analyze, and visualize the data.</p>
+<p>The three generic functions of <code>biobroom</code> are the functions <code>tidy</code>, <code>augment</code>,
+and <code>glance</code>. These function names mimic the names of the three main functions
+in the <code>broom</code> package, which is a more general purpose package for extracting
+tidy datasets from more complex R object containers. The <code>broom</code> package
+focuses on the output from functions in R for statistical testing and modeling,
+while the newer <code>biobroom</code> package replicates this idea, but for many of the
+common object classes used to store data through Bioconductor packages and
+workflows.</p>
+<p>The <code>biobroom</code> package includes methods for the following object classes
+<span class="citation">(Bass et al. 2020)</span>:</p>
+<ul>
+<li><code>qvalue</code> objects, which are used …</li>
+<li><code>DESeqDataSet</code> objects, which are used …</li>
+<li><code>DGEExact</code> objects, which are used …</li>
+<li>[limma objects]</li>
+<li>[ExpressoinSet objects]</li>
+<li><code>MSnSet</code> objects, which are used …</li>
+</ul>
+<p>As an example, we can look at how the <code>biobroom</code> package can be used to
+convert output generated by functions in the <code>edgeR</code> package into a tidy
+dataframe, and how that output can then be explored and visualized using
+functions from the tidyverse.</p>
+<p>The <code>edgeR</code> package is a popular Bioconductor package that can be used on gene
+expression data to explore which genes are expressed differently across
+experimental groups (<em>differential expression analysis</em>) <span class="citation">(M. D. Robinson, McCarthy, and Smyth 2010)</span>. Before using
+the functions in the package, the data must be preprocessed to align sequence
+reads from the raw data and then to create a table with the counts of each read
+at each gene across each sample. The <code>edgeR</code> package includes functions for
+pre-processing through its own functions, as well, including capabilities for
+filtering out genes with low read counts across all samples and model-based
+normalization across samples to help handle technical bias, including
+differences in sequencing depth <span class="citation">(Chen et al. 2014)</span>.</p>
+<p>The <code>edgeR</code> package operates on data stored in a special object class
+defined by the package, the <code>DGEList</code> object class <span class="citation">(Chen et al. 2014)</span>.
+This object class includes areas for storing the table of read counts,
+in the form of a matrix appropriate for analysis by other functions in
+the package, as well as other spots for storing information about each
+sample and, if needed, a space to store annotations of the genes
+<span class="citation">(Chen et al. 2014)</span>.</p>
+<p>[Example from the <code>biobroom</code> help documentation—uses the <code>hammer</code> data
+that comes with the package. These data are stored in an <code>ExpressionSet</code>
+object, an object class defined by the <code>Biobase</code> package. You can see how the <code>tidy</code> function extracts these data in a
+tidy format. Then, the data are put in a <code>DGEList</code> class so they are in
+the right container for operations from <code>edgeR</code>. Then functions from the
+<code>edgeR</code> package are run to perform differential expression analysis on the
+data. The result is an object in the <code>DGEExact</code> class, which is defined
+by the <code>edgeR</code> package. To extract data from this class in a tidy format,
+you can use the <code>tidy</code> and <code>glance</code> functions from <code>biobroom</code>.]</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="3.6-module17.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biobroom)</span>
+<span id="cb10-2"><a href="3.6-module17.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Biobase)</span>
+<span id="cb10-3"><a href="3.6-module17.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(edgeR)</span>
+<span id="cb10-4"><a href="3.6-module17.html#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="3.6-module17.html#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(hammer)</span>
+<span id="cb10-6"><a href="3.6-module17.html#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="3.6-module17.html#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(hammer)</span></code></pre></div>
+<pre><code>## [1] &quot;ExpressionSet&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;Biobase&quot;</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="3.6-module17.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(hammer)</span></code></pre></div>
+<pre><code>## # A tibble: 236,128 × 3
+##    gene               sample    value
+##    &lt;chr&gt;              &lt;chr&gt;     &lt;int&gt;
+##  1 ENSRNOG00000000001 SRX020102     2
+##  2 ENSRNOG00000000007 SRX020102     4
+##  3 ENSRNOG00000000008 SRX020102     0
+##  4 ENSRNOG00000000009 SRX020102     0
+##  5 ENSRNOG00000000010 SRX020102    19
+##  6 ENSRNOG00000000012 SRX020102     7
+##  7 ENSRNOG00000000014 SRX020102     0
+##  8 ENSRNOG00000000017 SRX020102     4
+##  9 ENSRNOG00000000021 SRX020102     7
+## 10 ENSRNOG00000000024 SRX020102    86
+## # … with 236,118 more rows</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="3.6-module17.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Example from `biobroom` help documentation</span></span>
+<span id="cb14-2"><a href="3.6-module17.html#cb14-2" aria-hidden="true" tabindex="-1"></a>hammer.counts <span class="ot">&lt;-</span> <span class="fu">exprs</span>(hammer)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb14-3"><a href="3.6-module17.html#cb14-3" aria-hidden="true" tabindex="-1"></a>hammer.treatment <span class="ot">&lt;-</span> <span class="fu">phenoData</span>(hammer)<span class="sc">$</span>protocol[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb14-4"><a href="3.6-module17.html#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="3.6-module17.html#cb14-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(<span class="at">counts=</span>hammer.counts,<span class="at">group=</span>hammer.treatment)</span>
+<span id="cb14-6"><a href="3.6-module17.html#cb14-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(y)</span>
+<span id="cb14-7"><a href="3.6-module17.html#cb14-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateCommonDisp</span>(y)</span>
+<span id="cb14-8"><a href="3.6-module17.html#cb14-8" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateTagwiseDisp</span>(y)</span>
+<span id="cb14-9"><a href="3.6-module17.html#cb14-9" aria-hidden="true" tabindex="-1"></a>et <span class="ot">&lt;-</span> <span class="fu">exactTest</span>(y)</span>
+<span id="cb14-10"><a href="3.6-module17.html#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="3.6-module17.html#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(et)</span></code></pre></div>
+<pre><code>## [1] &quot;DGEExact&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;edgeR&quot;</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="3.6-module17.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(et)</span></code></pre></div>
+<pre><code>## # A tibble: 29,516 × 4
+##    gene               estimate  logCPM    p.value
+##    &lt;chr&gt;                 &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;
+##  1 ENSRNOG00000000001   2.65    1.49   0.00000131
+##  2 ENSRNOG00000000007  -0.409  -0.226  1         
+##  3 ENSRNOG00000000008   2.22   -0.407  0.129     
+##  4 ENSRNOG00000000009   0      -1.31   1         
+##  5 ENSRNOG00000000010   0.0331  1.79   1         
+##  6 ENSRNOG00000000012  -3.39    0.0794 0.00375   
+##  7 ENSRNOG00000000014   3.65   -0.854  0.252     
+##  8 ENSRNOG00000000017   2.42    1.11   0.0000638 
+##  9 ENSRNOG00000000021  -2.02    0.211  0.0373    
+## 10 ENSRNOG00000000024   0.133   3.97   0.508     
+## # … with 29,506 more rows</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="3.6-module17.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(et)</span></code></pre></div>
+<pre><code>##   significant     comparison
+## 1        6341 control/L5 SNL</code></pre>
+<p>The creator of the <code>broom</code> package listed some of the common ways that
+statistical model output objects—the focus on ‘tidying’ in <code>broom</code>—tend to
+be untidy. These include that important information is stored in the row names,
+where it is harder to access, that the names of some columns can be tricky to
+work with because they use non-standard conventions (i.e., they don’t follow the
+rules for naming objects in R), that some desired information is not available
+in the object, but rather is typically computed with later methods for the
+object, like when <code>summary</code> is run on the object, or are only available as the
+result of a <code>print</code> method run on the object, and vectors that a user may want
+to explore in tandem are stored in different places in the object.
+<span class="citation">(D. Robinson 2014)</span></p>
+<p>[Examples of these in Bioconductor objects?]</p>
+<p>These ‘messy’ characteristics show up in the data stored in Bioconductor
+objects, as well, in terms of characteristics that impede working with
+data stored in these formats easily using tools from the tidyverse.
+As an example, one common class for storing data in Bioconductor work is
+the <code>ExpressionSet</code> object class, defined in the <code>Biobase</code> package <span class="citation">(W. Huber et al. 2015)</span>.
+This object class can be used to store the data from high-throughput
+assays. It includes slots for the assay data, as well as slots
+for storing metadata about the experiment, which could include information
+like sampling time points or sample strains, as well as the experimental
+group of each sample (control versus treated, for example).</p>
+<p>Data from the assay for the experiment—for example, gene expression
+or intensity [?] measurements for each gene and each sample [?]—can be
+extracted from an <code>ExpressionSet</code> object using an extractor function
+called <code>exprs</code>. Here is an example using the <code>hammer</code> example dataset
+available with the <code>biobroom</code> package. The code call here extracts the
+assay data from the <code>hammer</code> R object, which is an instance of the
+<code>ExpressionSet</code> object class. It uses indexing (<code>[1:10, 1:3]</code>) to limit
+printing to the first ten rows and first three columns of the output, so
+we can investigate a small snapshot of the data:</p>
+<pre><code>##                    SRX020102 SRX020103 SRX020104
+## ENSRNOG00000000001         2         4        18
+## ENSRNOG00000000007         4         1         3
+## ENSRNOG00000000008         0         1         4
+## ENSRNOG00000000009         0         0         0
+## ENSRNOG00000000010        19        10        19
+## ENSRNOG00000000012         7         5         1
+## ENSRNOG00000000014         0         0         2
+## ENSRNOG00000000017         4         1        12
+## ENSRNOG00000000021         7         5         2
+## ENSRNOG00000000024        86        53        86</code></pre>
+<p>These data are stored in a matrix format. The gene identifiers [?] are given in
+the rownames and the samples in the column names. Each cell of the matrix
+provides the expression level (number of reads [?]) of a specific gene in a
+specific sample.</p>
+<p>These data are structured and stored in such a way that they have some of the
+characteristics that can make data difficult to work with the data using
+tidyverse tools. For example, they store gene identifiers in the rownames,
+rather than in a separate column where they can be easily accessed when using
+tidyverse functions. Also, there are phenotype / meta data that are stored
+in other parts of the <code>ExpressionSet</code> data but that may be interesting to
+explore in conjunction with these assay data, including the experimental
+group of each sample (control versus animals in which chronic neuropathic
+pain was induced, in these example data).</p>
+<p>The <code>tidy</code> function from the <code>biobroom</code> package extracts these data and
+restructures them into a ‘tidy’ format, ready to use easily with tidyverse
+tools.</p>
+<pre><code>## # A tibble: 236,128 × 3
+##    gene               sample    value
+##    &lt;chr&gt;              &lt;chr&gt;     &lt;int&gt;
+##  1 ENSRNOG00000000001 SRX020102     2
+##  2 ENSRNOG00000000007 SRX020102     4
+##  3 ENSRNOG00000000008 SRX020102     0
+##  4 ENSRNOG00000000009 SRX020102     0
+##  5 ENSRNOG00000000010 SRX020102    19
+##  6 ENSRNOG00000000012 SRX020102     7
+##  7 ENSRNOG00000000014 SRX020102     0
+##  8 ENSRNOG00000000017 SRX020102     4
+##  9 ENSRNOG00000000021 SRX020102     7
+## 10 ENSRNOG00000000024 SRX020102    86
+## # … with 236,118 more rows</code></pre>
+<p>This output is a tidy dataframe object, with three columns providing the
+gene name, the sample identifier, and the expression level. In this format,
+the data can easily be explored and visualized with tidyverse tools. For example,
+you could easily create a set of histograms, one per sample, showing the
+distribution of expression levels across all genes in each sample:
+[better example visualization here?]</p>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-22-1.png" width="672"  /></p>
+<p>You can also incorporate data that are stored in the <code>phenoData</code> slot of
+the <code>ExpressionSet</code> object by specifying <code>addPheno = TRUE</code>:</p>
+<pre><code>## # A tibble: 236,128 × 8
+##    gene               sample sample.id num.tech.reps protocol strain Time  value
+##    &lt;chr&gt;              &lt;chr&gt;  &lt;fct&gt;             &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;  &lt;fct&gt; &lt;int&gt;
+##  1 ENSRNOG00000000001 SRX02… SRX020102             1 control  Sprag… 2 mo…     2
+##  2 ENSRNOG00000000007 SRX02… SRX020102             1 control  Sprag… 2 mo…     4
+##  3 ENSRNOG00000000008 SRX02… SRX020102             1 control  Sprag… 2 mo…     0
+##  4 ENSRNOG00000000009 SRX02… SRX020102             1 control  Sprag… 2 mo…     0
+##  5 ENSRNOG00000000010 SRX02… SRX020102             1 control  Sprag… 2 mo…    19
+##  6 ENSRNOG00000000012 SRX02… SRX020102             1 control  Sprag… 2 mo…     7
+##  7 ENSRNOG00000000014 SRX02… SRX020102             1 control  Sprag… 2 mo…     0
+##  8 ENSRNOG00000000017 SRX02… SRX020102             1 control  Sprag… 2 mo…     4
+##  9 ENSRNOG00000000021 SRX02… SRX020102             1 control  Sprag… 2 mo…     7
+## 10 ENSRNOG00000000024 SRX02… SRX020102             1 control  Sprag… 2 mo…    86
+## # … with 236,118 more rows</code></pre>
+<p>With this addition, visualizations can easily be changed to also show the
+experimental group of each sample:</p>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-24-1.png" width="672"  />
+You can also do things like look at differences in values for
+specific genes, pairing tools for exploring data with tools for
+visualization, both from the tidyverse:</p>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-25-1.png" width="672"  /></p>
+<p>The data for a subset of the sample can be analyzed using functions from the
+<code>edgeR</code> package, to complete needed pre-processing (for example, calculating
+normalizing factors with <code>calcNormFactors</code>, to reduce impacts from technical
+bias [?]), estimate dispersion using conditional maximum likelihood and
+empirical Bayesian methods (<code>estimateCommonDisp</code> and <code>estimateTagwiseDisp</code>), and
+then perform a statistical analysis, conducting a differential expression
+analysis (<code>exactTest</code>) <span class="citation">(Chen et al. 2014)</span>.</p>
+<p>The data are stored in a special Bioconductor class, as an instance of
+<code>DGEList</code>, throughout most of this process. This special class can be initialized
+with data from the original <code>ExpressionSet</code> object, specifically, assay
+data with the counts per gene in each sample and data on the experimental
+phenotypes for the experiment—specifically, the protocol for each sample,
+in terms of whether it was a control or if the sample was from an animal
+in which chronic neuropathic pain was induced <span class="citation">(Hammer et al. 2010)</span>.</p>
+<pre><code>## [1] &quot;DGEList&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;edgeR&quot;</code></pre>
+<p>Once the data are stored in this special <code>DGEList</code> class, different
+steps of the preprocessing can be conducted. In each case, the results are
+stored in special slots of the <code>DGEList</code> object. In this way, the original
+data and results from preprocessing are all kept together in a single
+object, each in a special slot within the object’s structure.</p>
+<pre><code>## [1] &quot;DGEList&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;edgeR&quot;</code></pre>
+<pre><code>## [1] &quot;DGEList&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;edgeR&quot;</code></pre>
+<pre><code>## [1] &quot;DGEList&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;edgeR&quot;</code></pre>
+<p>After the preprocessing, the data can be analyzed using the <code>exactText</code> function.
+This inputs the data stored in a <code>DGEList</code> object and outputs results into
+a different object class, a <code>DGEExact</code> class.</p>
+<pre><code>## [1] &quot;DGEExact&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;edgeR&quot;</code></pre>
+<p>The <code>DGEExact</code> class is defined by the <code>edgeR</code> package and was created
+specifically to store the results from a differential expression analysis
+<span class="citation">(Chen et al. 2014)</span>. It has slots for a dataframe giving the estimates of
+differential change in expression across the experimental groups for each
+gene, within a <code>table</code> slot. Again, in this output, gene identifiers are
+stored as rownames—which makes them hard to access with tidyverse tools—rather
+than in their own column:</p>
+<pre><code>##                          logFC      logCPM       PValue
+## ENSRNOG00000000001  2.64635814  1.49216267 1.309933e-06
+## ENSRNOG00000000007 -0.40869816 -0.22616605 1.000000e+00
+## ENSRNOG00000000008  2.22296029 -0.40665547 1.288756e-01
+## ENSRNOG00000000009  0.00000000 -1.31347471 1.000000e+00
+## ENSRNOG00000000010  0.03307909  1.79448965 1.000000e+00
+## ENSRNOG00000000012 -3.39210151  0.07939132 3.745676e-03</code></pre>
+<p>The <code>DGEExact</code> object also has a slot that contains a vector with identifiers
+for the two experimental groups that are being compared in the
+differential expression analysis, under the slot <code>comparison</code>:</p>
+<pre><code>## [1] &quot;control&quot; &quot;L5 SNL&quot;</code></pre>
+<p>There is also a space in this object class where information about each
+gene can be stored, if desired.</p>
+<p>Two <code>biobroom</code> methods are defined for the <code>DGEExact</code> object class, <code>glance</code>
+and <code>tidy</code>. The <code>tidy</code> method extracts the results from the differential
+experssion analysis, but moves these results into a dataframe where the
+gene names are given their own column, rather than being stored in the
+hard-to-access rownames:</p>
+<pre><code>## # A tibble: 29,516 × 4
+##    gene               estimate  logCPM    p.value
+##    &lt;chr&gt;                 &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;
+##  1 ENSRNOG00000000001   2.65    1.49   0.00000131
+##  2 ENSRNOG00000000007  -0.409  -0.226  1         
+##  3 ENSRNOG00000000008   2.22   -0.407  0.129     
+##  4 ENSRNOG00000000009   0      -1.31   1         
+##  5 ENSRNOG00000000010   0.0331  1.79   1         
+##  6 ENSRNOG00000000012  -3.39    0.0794 0.00375   
+##  7 ENSRNOG00000000014   3.65   -0.854  0.252     
+##  8 ENSRNOG00000000017   2.42    1.11   0.0000638 
+##  9 ENSRNOG00000000021  -2.02    0.211  0.0373    
+## 10 ENSRNOG00000000024   0.133   3.97   0.508     
+## # … with 29,506 more rows</code></pre>
+<p>Now that the data are in this tidy format, tools from the tidyverse can
+be easily applied. For example, you could use functions from the <code>dplyr</code>
+package to see the genes for which the differential expression analysis
+resulted in both a very low p-value and a large difference in expression
+across the experimental groups:</p>
+<pre><code>## # A tibble: 803 × 4
+##    gene               estimate logCPM   p.value
+##    &lt;chr&gt;                 &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;
+##  1 ENSRNOG00000013496     6.39   3.41 5.95e- 46
+##  2 ENSRNOG00000001338     6.01   2.25 1.37e- 22
+##  3 ENSRNOG00000020136     5.17   3.89 3.19e- 52
+##  4 ENSRNOG00000018808     4.78   6.46 1.75e-169
+##  5 ENSRNOG00000006151     4.43   2.99 2.39e- 30
+##  6 ENSRNOG00000009768     4.40   7.83 5.57e-293
+##  7 ENSRNOG00000030927    -4.29   2.45 6.32e- 23
+##  8 ENSRNOG00000001476     4.25   3.76 1.45e- 47
+##  9 ENSRNOG00000004805     4.05   6.64 2.51e-185
+## 10 ENSRNOG00000014327     3.85   4.51 5.39e- 63
+## # … with 793 more rows</code></pre>
+<p>Other exploratory analysis will also be straightforward with the data
+using tidyverse tools, now that they are in a “tidy” format.</p>
+<p>The <code>glance</code> method can also be applied to data that are stored in a
+<code>DGEExact</code> class. In this case, the method will extract the names of the
+experimental groups being compared (from the <code>comparison</code> slot of the
+object) as well as count the number of genes with statistically
+significant differences in expression level, based on the values in the
+<code>table</code> slot of the object.</p>
+<pre><code>##   significant     comparison
+## 1        6341 control/L5 SNL</code></pre>
+<pre><code>##   significant     comparison
+## 1        4225 control/L5 SNL</code></pre>
+<p>As another example, you can now use tools from <code>ggplot2</code>, as well as
+extensions built on this package, to do things like create a volcano
+plot of the data with highlighting of noteworthy genes on the plot:</p>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-34-1.png" width="672"  /></p>
+<p>If you wanted to access the help files for these <code>biobroom</code> methods for this
+object class, you could do so by calling help in R (<code>?</code>) using the name of the
+method, a dot, and then the name of the object class, e.g., <code>?tidy.DGEExact</code>.</p>
+</div>
+<div id="the-ggbio-package" class="section level3" number="3.6.3">
+<h3><span class="header-section-number">3.6.3</span> The <code>ggbio</code> package</h3>
+</div>
+<div id="subsection-2-4" class="section level3" number="3.6.4">
+<h3><span class="header-section-number">3.6.4</span> Subsection 2</h3>
+<blockquote>
+<p>“The biobroom package contains methods for converting standard objects in Bioconductor into a ‘tidy format.’ It serves as a complement to the popular broom package, and follows the same division (tidy/augment/glance) of tidying methods.”
+<span class="citation">(Bass et al. 2020)</span></p>
+</blockquote>
+<blockquote>
+<p>“Tidying data makes it easy to recombine, reshape and visualize bioinformatics analyses. Objects that can be tidied include: ExpressionSet object,
+GRanges and GRangesList objects, RangedSummarizedExperiment object, MSnSet object,
+per-gene differential expression tests from limma, edgeR, and DESeq2, qvalue object for multiple hypothesis testing.” <span class="citation">(Bass et al. 2020)</span></p>
+</blockquote>
+<blockquote>
+<p>“We are currently working on adding more methods to existing Bioconductor objects.” <span class="citation">(Bass et al. 2020)</span></p>
+</blockquote>
+<blockquote>
+<p>“All biobroom tidy and augment methods return a tbl_df by default (this prevents them from printing many rows at once, while still acting like a traditional data.frame).” <span class="citation">(Bass et al. 2020)</span></p>
+</blockquote>
+<blockquote>
+<p>“The concept of ‘tidy data’ offers a powerful framework for structuring data
+to ease manipulation, modeling and visualization. However, most R functions,
+both those builtin and those found in third-party packages, produce output that
+is not tidy, and that is therefore difficult to reshape, recombine, and
+otherwise manipulate. Here I introduce the broom package, which turns the output
+of model objects into tidy data frames that are suited to further analysis,
+manipulation, and visualization with input-tidy tools.” <span class="citation">(D. Robinson 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“Tools are classified as ‘messy-output’ if their output does not fit into this
+[tidy] framework. Unfortunately, the majority of R modeling tools, both from the
+built-in stats package and those in common third party packages, are
+messy-output. This means the data analyst must tidy not only the original data,
+but the results at each intermediate stage of an analysis.” <span class="citation">(D. Robinson 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“The broom package is an attempt to solve this issue, by bridging the gap from
+untidy outputs of predictions and estimations to create tidy data that is easy
+to manipulate with standard tools. It centers around three S3 methods, tidy,
+augment, and glance, that each take an object produced by R statistical
+functions (such as lm, t.test, and nls) or by popular third-party packages (such
+as glmnet, survival, lme4, and multcomp) and convert it into a tidy data frame
+without rownames (Friedman et al., 2010; Therneau, 2014; Bates et al., 2014;
+Hothorn et al., 2008). These outputs can then be used with input-tidy tools such
+as dplyr or ggplot2, or downstream statistical tests. broom should be
+distinguished from packages such as reshape2 and tidyr, which rearrange and
+reshape data frames into different forms (Wickham, 2007b, 2014b). Those packages
+perform essential tasks in tidy data analysis but focus on manipulating data
+frames in one specific format into another. In contrast, broom is designed to
+take data that is not in a data frame (sometimes not anywhere close) and convert
+it to a tidy data frame.” <span class="citation">(D. Robinson 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“<code>tidy</code> constructs a data frame that summarizes the model’s statistical
+components, which we refer to as the component level. In a regression such as
+the above it may refer to coefficient estimates, p-values, and standard errors
+for each term in a regression. The tidy generic is flexible- in other models it
+could represent per-cluster information in clustering applications, or per-test
+information for multiple comparison functions. … <code>augment</code> add columns to the
+original data that was modeled, thus working at the observation level. This
+includes predictions, residuals and prediction standard errors in a regression,
+and can represent cluster assignments or classifications in other applications.
+By convention, each new column starts with . to ensure it does not conflict with
+existing columns. To ensure that the output is tidy and can be recombined,
+rownames in the original data, if present, are added as a column called
+.rownames. … Finally, <code>glance</code> constructs a concise one-row summary of the
+model level values. In a regression this typically contains values such as R2 ,
+adjusted R2 , residual standard error, Akaike Information Criterion (AIC), or
+deviance. In other applications it can include calculations such as cross
+validation accuracy or prediction error that are computed once for the entire
+model. … These three methods appear across many analyses; indeed, the fact
+that these three levels must be combined into a single S3 object is a common
+reason that model outputs are not tidy. Importantly, some model objects may have
+only one or two of these methods defined. (For example, there is no sense in
+which a Student’s T test or correlation test generates information about each
+observation, and therefore no augment method exists).” <span class="citation">(D. Robinson 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“While model inputs usually require tidy inputs, such attention to detail
+doesn’t carry over to model outputs. Outputs such as predictions and estimated
+coefficients aren’t always tidy. For example, in R, the default representation
+of model coefficients is not tidy because it does not have an explicit variable
+that records the variable name for each estimate, they are instead recorded as
+row names. In R, row names must be unique, so combining coefficients from many
+models (e.g., from bootstrap resamples, or subgroups) requires workarounds to
+avoid losing important information. This knocks you out of the flow of analysis
+and makes it harder to combine the results from multiple models.”
+<span class="citation">(Wickham 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“edgeR can be applied to differential expression at the gene, exon, transcript
+or tag level. In fact, read counts can be summarized by any genomic feature.
+edgeR analyses at the exon level are easily extended to detect differential
+splicing or isoform-specific differential expression.” <span class="citation">(Chen et al. 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“edgeR provides statistical routines for assessing differential expression in
+RNA-Seq experiments or differential marking in ChIP-Seq experiments. The package
+implements exact statistical methods for multigroup experiments developed by
+Robinson and Smyth [33, 34]. It also implements statistical methods based on
+generalized linear models (glms), suitable for multifactor experiments of any
+complexity, developed by McCarthy et al. [22], Lund et al. [20], Chen et al. [5]
+and Lun et al. [19]. … A particular feature of edgeR functionality, both
+classic and glm, are empirical Bayes methods that permit the estimation of
+gene-specific biological variation, even for experiments with minimal levels of
+biological replication.” <span class="citation">(Chen et al. 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“edgeR performs differential abundance analysis for pre-defined genomic
+features. Although not strictly necessary, it usually desirable that these
+genomic features are non-overlapping. For simplicity, we will hence-forth refer
+to the genomic features as ‘genes,’ although they could in principle be
+transcripts, exons, general genomic intervals or some other type of feature. For
+ChIP-seq experiments, abundance might relate to transcription factor binding or
+to histone mark occupancy, but we will henceforth refer to abundance as in terms
+of gene expression.” <span class="citation">(Chen et al. 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“edgeR stores data in a simple list-based data object called a DGEList. This
+type of object is easy to use because it can be manipulated like any list in R.
+… The main components of an DGEList object are a matrix counts containing the
+integer counts, a data.frame samples containing information about the samples or
+libraries, and a optional data.frame genes containing annotation for the genes
+or genomic features. The data.frame samples contains a column lib.size for the
+library size or sequencing depth for each sample. If not specified by the user,
+the library sizes will be computed from the column sums of the counts. For
+classic edgeR the data.frame samples must also contain a column group,
+identifying the group membership of each sample.” <span class="citation">(Chen et al. 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“Genes with very low counts across all libraries provide little evidence for
+differential expression. In the biological point of view, a gene must be
+expressed at some minimal level before it is likely to be translated into a
+protein or to be biologically important. In addition, the pronounced
+discreteness of these counts interferes with some of the statistical
+approximations that are used later in the pipeline. These genes should be
+filtered out prior to further analysis. As a rule of thumb, genes are dropped if
+they can’t possibly be expressed in all the samples for any of the conditions.
+Users can set their own definition of genes being expressed. Usually a gene is
+required to have a count of 5-10 in a library to be considered expressed in that
+library. Users should also filter with count-per-million (CPM) rather than
+filtering on the counts directly, as the latter does not account for differences
+in library sizes between samples.” <span class="citation">(Chen et al. 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“The most obvious technical factor that affects the read counts [in data for
+edgeR and so requires normalizations], other than gene expression levels, is the
+sequencing depth of each RNA sample. edgeR adjusts any differential expression
+analysis for varying sequencing depths as represented by differing library
+sizes. This is part of the basic modeling procedure and flows automatically into
+fold-change or p-value calculations. It is always present, and doesn’t require
+any user intervention.” <span class="citation">(Chen et al. 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“In edgeR, normalization takes the form of correction factors that enter into
+the statistical model. Such correction factors are usually computed internally
+by edgeR functions, but it is also possible for a user to supply them. The
+correction factors may take the form of scaling factors for the library sizes,
+such as computed by calcNormFactors, which are then used to compute the
+effective library sizes. Alternatively, gene-specific correction factors can be
+entered into the glm functions of edgeR as offsets. In the latter case, the
+offset matrix will be assumed to account for all normalization issues, including
+sequencing depth and RNA composition. Note that normalization in edgeR is
+model-based, and the original read counts are not themselves transformed. This
+means that users should not transform the read counts in any way before inputing
+them to edgeR.” <span class="citation">(Chen et al. 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“Recent work on a grammar of graphics could be extended for biological
+data. The grammar of graphics is based on modular components that when
+combined in different ways will produce different graphics. This enables
+the user to construct a cominatoric number of plots, including those that
+were not preconceived by the implementation of the grammar. Most existing
+tools lack these capabilities.” <span class="citation">(Yin, Cook, and Lawrence 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“A new package, ggbio, has been developed and is available on Bioconductor.
+The package provides the tools to create both typical and non-typical
+biological plots for genomic data, generated from core Bioconductor data
+structures by either the high-level autoplot function, or the
+combination of low-level components of the grammar of graphics. Sharing
+data structures with the rest of Bioconductor enables direct integration
+with Bioconductor workflows.” <span class="citation">(Yin, Cook, and Lawrence 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“In ggbio, most of the functionality is available through a single
+command, autoplot, which recognizes the data structure and makes a best
+guess of the appropriate plot. … Compared to the more general qplot
+API of ggplot2, autoplot facilitates the creation of specialized biological
+graphics and reacts to the specific class of object passed to it. Each type
+of object has a specific set of relevant graphical parameters, and further
+customization is possible through the low-level API.” <span class="citation">(Yin, Cook, and Lawrence 2012)</span></p>
+</blockquote>
+<p>The <code>ggbio</code> package has <code>autoplot</code> functions for many Bioconductor object
+classes, including <code>GRangesList</code>, … [<span class="citation">Yin, Cook, and Lawrence (2012)</span></p>
+<blockquote>
+<p>“The grammar [of graphics] is composed of interchangeable components
+that are combined according to a flexible set of rules to produce plots
+from a wide range of types.” <span class="citation">(Yin, Cook, and Lawrence 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“Data are the first component of the grammar… The ggbio package attempts
+to automatically load files of specific formats into common Bioconductor
+data structures, using routines provided by Bioconductor packages…
+The type of data structure loaded from a file or returned by an algorithm
+depends on the intrinsic structure of the data. For example, BAM files are
+loaded into a GappedAlignments, while FASTA and 2bit sequences result in
+a DNAStringSet. The ggbio package handles each type of data structure
+differently… In summary, this abstraction mechanism allows ggbio to
+handle multiple file formats, without discarding any intrinsic properties
+that are critical for effective plotting.” <span class="citation">(Yin, Cook, and Lawrence 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“Genomic data have some specific features that are different from those of
+more conventional data types, and the basic grammar does not conveniently
+capture such aspects. The grammar of graphics is extended by ggbio in
+several ways… These extensions are specific to genomic data, that is,
+genomic sequences and features, like genes, located on those sequences.”
+<span class="citation">(Yin, Cook, and Lawrence 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“A geom is responsible for translating data to a visual, geometric
+representation according to mappings between variables and aesthetic
+properties on the geom. In comparison to regular data elements that
+might be mapped to the ggplot2 geoms of points, lines, and polygons,
+genomic data has the basic currency of a range. Ranges underlie exons,
+introns, and other features, and the genomic coordinate system forms
+the reference frame for biological data. We have introduced or extended
+several geoms for representing ranges and gaps between ranges. …
+For example, the alignment geom delegates to two other geoms for drawing
+the ranges and gaps. These default to rectangles and chevrons, respectively.
+Having specialized geoms for commonly encountered entities, like genes,
+relegates the tedious coding of primatives, and makes use code simpler
+and more maintainable.” <span class="citation">(Yin, Cook, and Lawrence 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“Coordinate systems locate points in space, and we use coordinate
+transformations to map from data coordinates to plot coordinates. The
+most common coordinate system in statistical graphics is cartesian.
+The transformation of data to cartesian coordinates involves mapping
+points onto a plane specified by two perpendicular axes (x and y).
+Why would two plots transform the coordinates differently for the same data?
+The first reason is to simplify, such as changing curvilinear graphics to
+linear, and the second reason is to reshape a graphic so that the most
+important information jumps out at the viewer or can be more accurately
+perceived. Coordinate transformations are also important in genomic data
+visualization. For instance, features of interest are often small
+compared to the intervening gaps, especially in gene models. The exons
+are usually much smaller than the introns. If users are generally interested
+in viewing exons and associated annotations, we could simply cut or
+shrink the intervening introns to use the plot space efficiently.” <span class="citation">(Yin, Cook, and Lawrence 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“Almost all experimental outputs are associated with an experimental
+design and other meta-data, for example, cancer types, gender, and age.
+Faceting allows users to subset the data by a combination of factors and then
+lay out multiple plots in a grid, to explore relationships between factors and
+other variables. The ggplot2 package supports various types of faceting by
+arbitrary factors. THe ggbio package extends this notion to facet by a list
+of ranges of interest, for example, a list of gene regions. There is always
+an implicit faceting by sequence (chromosome), because when the x axis is the
+chromosomal coordinate, it is not sensible to plto data from different chromosomes
+on the same plot.” <span class="citation">(Yin, Cook, and Lawrence 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“For custom use cases, ggbio provides a low-level API that maps more directly
+to components of the grammar and thus expresses the plot more explicitly.
+Generally speaking, we strive to provide sensible, overrideable defaults at the
+high-level entry points, such as autoplot, while still supporting
+customizability through the low-level API. All lower level functions have a
+special prefix to indicate their role in the grammalr, like layout, geom,
+stat, coord, and theme. The objects returned by the low-level API may be
+added together via the conventional + syntax. This facilitates the creation of
+new types of plots. A geom in ggplot2 may be extended to work with more
+biological data model, for example, geom rect will automatically figure out the
+boundary of rectangles when the data is a GRanges, as to geom bar, geom
+segment, and so on.” <span class="citation">(Yin, Cook, and Lawrence 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“We use ggplot2 as the foundation for ggbio, due to its principled style,
+intellegent defaults and explicit orientation towards the grammar of
+graphics model.” <span class="citation">(Yin, Cook, and Lawrence 2012)</span>
+<span class="citation">(Yin, Cook, and Lawrence 2012)</span></p>
+</blockquote>
+</div>
+<div id="applied-exercise-6" class="section level3" number="3.6.5">
+<h3><span class="header-section-number">3.6.5</span> Applied exercise</h3>
+
+</div>
+</div>
+<p style="text-align: center;">
+<a href="3.5-module16.html"><button class="btn btn-default">Previous</button></a>
+<a href="3.7-module18.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+
+</body>
+</html>

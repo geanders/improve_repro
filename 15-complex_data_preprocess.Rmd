@@ -1,4 +1,4 @@
-## Complex data types in experimental data pre-processing
+## Complex data types in experimental data pre-processing {#module15}
 
 Raw data from many biomedical experiments, especially those that use
 high-throughput techniques, can be very large and complex. Because of the scale
@@ -18,7 +18,7 @@ data in complex, 'untidy' formats
 laboratory-based researchers seeking to use reproducibility tools for 
 data pre-processing
 
-### Subsection 1
+### Introduction 
 
 In previous modules, we have gone into a lot of detail about all of the
 advantages of the tidyverse approach. However as you work with biomedical data,
@@ -27,13 +27,13 @@ spectrometers and flow cytometers, you may find that it is unreasonable to start
 with a tidyverse approach from the first steps of pre-processing the data.
 
 In this module, we will explain why the tidyverse approach is currently not
-appropriate throughout all steps of pre-processing, analysis, and visualization
+always ideal throughout all steps of pre-processing, analysis, and visualization
 of the types of data that you may collect through a biomedical research
 experiment. We will explain what data structures are, and present some of the
 types of data structures commonly used in packages in the Bioconductor project.
 These more complex data structures largely leverage a system in R called the S4
 object-oriented system, which translates some ideas from object-oriented
-programming to use to handle large and complex data in R. 
+programming to use to handle large and complex data in R.
 
 In this module, we will cover several of the most popular data structures (each
 available as an S4 object class) that are used to work with data within
@@ -153,7 +153,7 @@ large that it is difficult to read them into R. Second, the data might combine
 various elements, each with their own natural structures, that you'd like to
 keep together as you move through the steps of preprocessing the data.
 
-The data from genomic and other 'omic experiments
+The data from genomic and other high-throughput experiments
 often are too complex and/or large to make dataframes practical as data 
 structures, at least until data can be simplified through pre-processing. 
 In this section, we'll look at an approach to pre-processing these data, leveraging
@@ -164,6 +164,44 @@ once data can reasonably be stored in dataframes. This creates a powerful pipeli
 using more complex tools when necessary and then moving into the more 
 straightforward tidyverse approach when possible. In the next module, we'll
 discuss how you can adopt this type of combined approach.
+
+Most laboratory equipment can output a raw data file that you can then read into R. 
+For many types of laboratory equipment, these raw data files follow a strict format. 
+The file formats will often have different pieces of data stored in specific spots. 
+For example, the equipment might record not only the measurements taken for the 
+sample, but also information about the setting that were applied to the equipment
+while the measurements were taken, the date of the measurements, and other metadata
+that may be useful to access when preprocessing the data. Each piece of data may 
+have different "dimensions". For example, the measurements might provide one 
+measurement per metabolite feature or per marker. Some metadata might also be
+provided with these dimensions (e.g., metadata about the markers for flow 
+cytometry data), but other metadata might be provided a single time per sample
+or even per experiment---for example, the settings on the equipment when the 
+sample or samples were run. 
+
+When it comes to data structures, dataframes and other two-dimensional data storage
+structures (you can visualize these as similar to the format of data in a spreadsheet, 
+with rows and columns) work well to store data where all data conform to a common 
+dimension. For example, a dataframe would work well to store the measurements 
+for each marker in each sample in a flow cytometry experiment. In this case, 
+each column could store the values for a specific marker and each row could 
+provide measurements for a sample. In this way, you could read the measurements
+for one marker across all samples by reading down a column, or read the measurements
+across all markers for one sample by reading across a row. 
+
+When you have data that doesn't conform to these common dimensions [unit of
+measurement?] however, a dataframe may work poorly to store the data. For
+example, if you have measurements taken at the level of the equipment settings
+for the whole experiment, these don't naturally fit into the dataframe format.
+In the "tidyverse" approach, one approach to handling data with different units
+of measurement is to store data for each unit of measurement in a different
+dataframe and to include identifiers that can be used to link data across the
+dataframes. More common, however, in R extensions for preprocessing biomedical
+data is to use more complex data structures that can store data with different
+units of measurement in different slots within the data structure, and use these
+in conjunction with specific functions that are built to work with that specific
+data structure, and so know where to find each element within the data
+structure.
 
 Let's start by looking at how some data might have a structure that is too
 complex to fit into a two-dimensional dataframe. Figure
@@ -242,16 +280,134 @@ With this structure, a software developer can develop a program that inputs
 data in this structure, always knowing where to find the feature data or the
 phenotype data.
 
-There's a second reason why dataframe structures don't always work for 
-data from biological experiments. The traditional dataframe structure in R is 
-built after reading all the data in R's local memory [?]. Many biological 
-experiments now create data that is much too large to read into memory for 
-R in a reasonable way. More complex data structures can allow more sophisticated
-ways to handle massive data, and so they are often necessary when working with 
-massive biological datasets, particularly early in pre-processing, before the
-data can be summarized in an efficient way. 
+[Validation of data as it's entered in an S4 class]
 
-....
+```{marginfigure, echo = TRUE}
+"Big data is encountered in genomics for two reasons: the size of the genome
+and the heterogeneity of populations. Complex organisms, such as plants and
+animals, have genomes on the order of billions of base pairs (the human genome
+consists of over three billion base pairs). The diversity of populations,
+whether of organisms, tissues or cells, means we need to sample deeply to detect
+low frequency events. To interrogate long and/or numerous genomic sequences,
+many measurements are necessary. For example, a typical whole genome sequencing
+experiment will consist of over one billion reads of 75–100 bp each. The reads
+are aligned across billions of positions, most of which have been annotated in
+some way. This experiment may be repeated for thousands of samples. Such a data
+set does not fit within the memory of a current commodity computer, and is not
+processed in a timely and interactive manner. To successfully wrangle a large
+data set, we need to intimately understand its structure and carefully consider
+the questions posed of it." 
+
+[@lawrence2014scalable]
+```
+
+```{marginfigure, echo = TRUE}
+"A major challenge in the analysis of scRNA-seq data is the scalability of analysis methods as datasets increase in size over time. This is particularly problematic as experiments now frequently produce millions of cells [50–53], possibly across multiple batches, making it challenging to even load the data into memory and perform downstream analyses including quality control, batch correction and dimensionality reduction. Providing analysis methods, such as unsupervised clustering, that do not require data to be loaded into memory is an imperative step for scalable analyses. While large-scale scRNA-seq data are now routinely stored in on-disk data formats (e.g. HDF5 files), the methods to process and analyze these data are lagging."
+
+[@hicks2021mbkmeans]
+```
+
+There's a second reason why dataframe structures don't always work for data from
+biological experiments. The traditional dataframe structure in R is built after
+reading all the data in memory, into RAM. Many biological experiments now create
+data that is much too large to read into memory for R in a reasonable way
+[@lawrence2014scalable; @hicks2021mbkmeans]. More complex data structures can
+allow more sophisticated ways to handle massive data, and so they are often
+necessary when working with massive biological datasets, particularly early in
+pre-processing, before the data can be summarized in an efficient way. For
+example, a more complex data structure could allow much of the data to be left
+on disk, and only read into memory [RAM?] on demand, as specific portions of the
+data are needed [@gatto2013msnbase; @hicks2021mbkmeans]. This approach can be
+used to iterate across subsets of the data, only reading parts of the data into
+memory at a time [@lawrence2014scalable]. Such structures can be designed to
+work in a way that, if you are the user, you won't notice the difference in
+where the data is kept (on disk versus in memory)---this means you won't have to
+worry about these memory management issues, but instead can just gain from
+everything going smoothly, even as datasets get very large [@gatto2013msnbase].
+
+[Data size, on-disk backends for files, like HDF5 and netCDF---used for flow
+cytometry file format?]
+
+[Potential future direction---developments of tidyverse based front ends for 
+data stored in databases or on-disk file formats---`sergeant` package is one
+example, also running tidyverse commands on data in database, `matter` package?, 
+`disk.frame` package?]
+
+```{marginfigure, echo = TRUE}
+"Reading in a large dataset for which you do not have enough RAM is one easy way to freeze up your computer (or at least your R session). This is usually an unpleasant experience that usually requires you to kill the R process, in the best case scenario, or reboot your computer, in the worst case." 
+
+[@peng2016r]
+```
+
+```{marginfigure, echo = TRUE}
+"If you use too much memory, R will complain. The key issue is that R holds
+all the data in RAM. This is a limitation if you have huge datasets. The up-side
+is flexibility—in particular, R imposes no rules on what data are like."
+
+[@burns2011r] 
+```
+
+```{marginfigure, echo = TRUE}
+"Random access memory (RAM) is a type of computer memory that can be accessed
+randomly: any byte of memory can be accessed without touching the preceding
+bytes. RAM is found in computers, phones, tablets and even printers. The amount
+of RAM R has access to is incredibly important. Since R loads objects into RAM,
+the amount of RAM you have available can limit the size of data set you can
+analyse." 
+
+[@gillespie2016efficient]
+```
+
+```{marginfigure, echo = TRUE}
+"A rough rule of thumb is that your RAM should be three times the size of your
+data set." 
+
+[@gillespie2016efficient]
+```
+
+```{marginfigure, echo = TRUE}
+"RAM is cheap and thinking hurts." 
+
+Uwe Ligges (about memory requirements in R) R-help (June 2007)
+```
+
+```{marginfigure, echo = TRUE}
+"The strengths of R are also its weaknesses: the R API encourages users to
+store entire data sets in memory as vectors. These vectors are implicitly and
+silently copied to achieve copy-on-write semantics, contribuing to high memory
+usage and poor performance." 
+
+[@lawrence2014scalable]
+```
+
+```{marginfigure, echo = TRUE}
+"Our ultimate goal is to process and summarize a large data set in its
+entirety, and iteration enables this by limiting the resource commitment at a
+given point in time. Limiting resource consumption generalizes beyond iteration
+and is a fundamental technique for computing with big data. In many cases, it
+may render iteration unnecessary. Two effective approaches for being frugal with
+data are restriction and compression. Restriction means controlling which data
+are loaded and lets us avoid wasting resources on irrelevant or excessive data.
+Compression helps by representing the same data with fewer resources."
+
+[@lawrence2014scalable]
+```
+
+```{marginfigure, echo = TRUE}
+"The Bioconductor project distributes the software as a number of different R
+packages, including Rsamtools, IRanges, GenomicRanges, GenomicAlignments,
+Biostrings, rtracklayer, biovizBase and BiocParallel. The software enables the
+analyst to conserve computational resources, iteratively generate summaries and
+visualize data at arbitrary levels of detail. These advances have helped to
+ensure that R and Bioconductor remain relevant in the age of high-throughput
+sequencing. We plan to continue in this direction by designing and implementing
+abstractions that enable user code to be agnostic to the mode of data storage,
+whether it be memory, files or databases. This will bring much needed agility to
+resource allocation and will enable the user to be more resourceful, without the
+burden of increased complexity." 
+
+[@lawrence2014scalable]
+```
 
 ### Limitations to complex data structures
 
@@ -317,6 +473,15 @@ Bioconductor data structures). However, many of these methods are geared toward
 providing "final" output---a final summary or plot that you might read and 
 interpret directly, but not output that serves as a "step" in a longer workflow, 
 so not output that will become input to another function.
+
+```{marginfigure, echo = TRUE}
+"There is a cost to the free lunch. That `print` is generic means that what
+you see is not what you get (sometimes). In the printing of an object you may
+see a number that you want---an R-squared for example---but don’t know how
+to grab that number."
+
+[@burns2011r]
+```
 
 Therefore, even the approach of methods can't get around another way that 
 specialized data structures and their use of specialized functions constrain you
@@ -410,456 +575,339 @@ However, these principles also apply to other programming languages,
 particularly those that can be used in an interactive format, including Python
 and Julia.
 
-### Advantages of complex structures for storing data
 
-There are two main features of biomedical data---in particular, data collected
-from laboratory equipment like flow cytometers and mass spectrometers---that
-make it useful to use more complex data structures in R in the earlier stages of
-preprocessing the data. First, the data are often very large, in some cases so
-large that it is difficult to read them into R. Second, the data might combine
-various elements, each with their own natural structures, that you'd like to
-keep together as you move through the steps of preprocessing the data.
+<!-- > "Input/output (I/O) is the technical term for reading and writing data: the process of getting information into a particular computer system (in this case R) and then exporting it to the ‘outside world’ again (in this case as a file format that other software can read). Data I/O will be needed on projects where data comes from, or goes to, external sources. However, the majority of R resources and documentation start with the optimistic assumption that your data has already been loaded, ignoring the fact that importing datasets into R, and exporting them to the world outside the R ecosystem, can be a time-consuming and frustrating process. Tricky, slow or ultimately unsuccessful data I/O can cripple efficiency right at the outset of a project. Conversely, reading and writing your data efficiently will make your R projects more likely to succeed in the outside world." [@gillespie2016efficient] -->
 
-[Data size, on-disk backends for files, like HDF5 and netCDF---used for flow
-cytometry file format?]
-
-[Potential future direction---developments of tidyverse based front ends for 
-data stored in databases or on-disk file formats---`sergeant` package is one
-example, also running tidyverse commands on data in database, `matter` package?, 
-`disk.frame` package?]
-
-This approach can be done by working with the data while it is what's called
-*on disc*---that is, most of the data is left in longer-term forms of memory, 
-like ..., and smaller pieces of it are read into R and processed at any given time.
-...
-
-
-> "Reading in a large dataset for which you do not have enough RAM is one easy way to freeze up your computer (or at least your R session). This is usually an unpleasant experience that usually requires you to kill the R process, in the best case scenario, or reboot your computer, in the worst case." [@peng2016r]
-
-> "Input/output (I/O) is the technical term for reading and writing data: the process of getting information into a particular computer system (in this case R) and then exporting it to the ‘outside world’ again (in this case as a file format that other software can read). Data I/O will be needed on projects where data comes from, or goes to, external sources. However, the majority of R resources and documentation start with the optimistic assumption that your data has already been loaded, ignoring the fact that importing datasets into R, and exporting them to the world outside the R ecosystem, can be a time-consuming and frustrating process. Tricky, slow or ultimately unsuccessful data I/O can cripple efficiency right at the outset of a project. Conversely, reading and writing your data efficiently will make your R projects more likely to succeed in the outside world." [@gillespie2016efficient]
-
-> "There are circumstances when datasets become too large to read directly into
-R. Reading in a 4 GB text file using the functions tested above, for example,
-consumes all available RAM on a 16 GB machine. To overcome this limitation,
-external stream processing tools can be used to preprocess large text files. The
-following command, using the Linux command line ‘shell’ (or Windows based Linux
-shell emulator Cygwin) command split, for example, will break a large multi GB
-file into many chunks, each of which is more manageable for R: `split -b100m
-bigfile.csv` The result is a series of files, set to 100 MB each with the
-`-b100m` argument in the above code. By default these will be called xaa, xab
-and can be read in one chunk at a time (e.g. using read.csv(), fread() or
-read_csv(), described in the previous section) without crashing most modern
-computers. Splitting a large file into individual chunks may allow it to be read
-into R. This is not an efficient way to import large datasets, however, because
-it results in a non-random sample of the data this way. A more efficient, robust
-and scalable way to work with large datasets is via databases, covered in
-Section 6.6 in the next chapter." [@gillespie2016efficient]
-
-> "Random access memory (RAM) is a type of computer memory that can be accessed
-randomly: any byte of memory can be accessed without touching the preceding
-bytes. RAM is found in computers, phones, tablets and even printers. The amount
-of RAM R has access to is incredibly important. Since R loads objects into RAM,
-the amount of RAM you have available can limit the size of data set you can
-analyse." [@gillespie2016efficient]
-
-> "A rough rule of thumb is that your RAM should be three times the size of your
-data set." [@gillespie2016efficient]
-
-> "RAM is cheap and thinking hurts." -- Uwe Ligges (about memory requirements in
-R) R-help (June 2007) `fortunes::fortune(192)`, also quoted in
-[@gillespie2016efficient]
-
-> "R comes in two versions: 32 -bit and 64 -bit. Your operating system also
-comes in two versions, 32 -bit and 64 -bit. Ideally you want 64 -bit versions of
-both R and the operating system. Using a 32 -bit version of either has severe
-limitations on the amount of RAM R can access. So when we suggest that you
-should just buy more RAM, this assumes that you are using a 64 -bit operating
-system, with a 64 -bit version of R. [Note: If you are using an OS version from
-the last five years, it is unlikely to be 32 -bit OS.] A 32 -bit machine can
-access at most only 4 GB of RAM. Although some CPUs offer solutions to this
-limitation, if you are running a 32 -bit operating system, then R is limited to
-around 3 GB RAM. If you are running a 64 -bit operating system, but only a 32
--bit version of R, then you have access to slightly more memory (but not much).
-Modern systems should run a 64 -bit operating system, with a 64 -bit version of
-R. Your memory limit is now measured as 8 terabytes for Windows machines and 128
-TB for Unix-based OSs." [@gillespie2016efficient]
-
-> "The OnDiskMSnExp class extends MSnExp and inherits all of its functionality
-but is aimed to use as little memory as possible based on a balance between
-memory demand and performance. Most of the spectrum-specific data, like
-retention time, polarity, total ion current are stored within the object’s
-featureData slot. The actual M/Z and intensity values from the individual
-spectra are, in contrast to MSnExp objects, not kept in memory (in the assayData
-slot), but are fetched from the original files on-demand. Because mzML files are
-indexed, using the mzR package to read the relevant spectrum data is fast and
-only moderately slower than for in-memory MSnExp." [@gatto2013msnbase]
-
-> "[For OnDiskMSnExp:] To keep track of data manipulation steps that are applied
-to spectrum data (such as performed by methods removePeaks or clean) a lazy
-execution framework was implemented. Methods that manipulate or subset a
-spectrum’s M/Z or intensity values can not be applied directly to a OnDiskMSnExp
-object, since the relevant data is not kept in memory. Thus, any call to a
-processing method that changes or subset M/Z or intensity values are added as
-ProcessingStep items to the object’s spectraProcessingQueue. When the spectrum
-data is then queried from an OnDiskMSnExp, the spectra are read in from the file
-and all these processing steps are applied on-the-fly to the spectrum data
-before being returned to the user. The operations involving extracting or
-manipulating spectrum data are applied on a per-file basis, which enables
-parallel processing. Thus, all corresponding method implementations for
-OnDiskMSnExp objects have an argument BPPARAM and users can set a
-PARALLEL_THRESH option flag 2 that enables to define how and when parallel
-processing should be performed (using the BiocParallel package). Note that all
-data manipulations that are not applied to M/Z or intensity values of a spectrum
-(e.g. sub-setting by retention time etc) are very fast as they operate directly
-to the object’s featureData slot." [@gatto2013msnbase]
-
-> "The distinction between MSnExp and OnDiskMSnExp is often not explicitly
-stated as it should not matter, from a user’s perspective, which data structure
-they are working with, as both behave in equivalent ways. Often, they are
-referred to as in-memory and on-disk MSnExp implementations."
-[@gatto2013msnbase]
-
-> "Big data is encountered in genomics for two reasons: the size of the genome
-and the heterogeneity of populations. Complex organisms, such as plants and
-animals, have genomes on the order of billions of base pairs (the human genome
-consists of over three billion base pairs). The diversity of populations,
-whether of organisms, tissues or cells, means we need to sample deeply to detect
-low frequency events. To interrogate long and/or numerous genomic sequences,
-many measurements are necessary. For example, a typical whole genome sequencing
-experiment will consist of over one billion reads of 75–100 bp each. The reads
-are aligned across billions of positions, most of which have been annotated in
-some way. This experiment may be repeated for thousands of samples. Such a data
-set does not fit within the memory of a current commodity computer, and is not
-processed in a timely and interactive manner. To successfully wrangle a large
-data set, we need to intimately understand its structure and carefully consider
-the questions posed of it." [@lawrence2014scalable]
-
-> "To compare data across samples, we often summarize experimental annotations
-over a set of reference features to yield a feature-by-sample matrix. For
-example, we might count read alignments overlapping a common set of genes across
-a number of samples. Larger matrices often arise in genetics, where thousands of
-samples are compared over millions of SNPs, positions that are known to vary
-within a population. In every case, the summaries are tied to a genomic range."
-[@lawrence2014scalable]
-
-> "The strengths of R are also its weaknesses: the R API encourages users to
-store entire data sets in memory as vectors. These vectors are implicitly and
-silently copied to achieve copy-on-write semantics, contribuing to high memory
-usage and poor performance." [@lawrence2014scalable]
-
-> "There are general strategies for handling large genomic data that are well
-suited to R programs. Sometimes the analyst is only interested in one aspect of
-the data, such as that overlapping a single gene. In such cases, restricting the
-data to that subset is a valid and effective means of data reduction. However,
-once our interests extend beyond a single region or the region becomes too
-large, resource constraints dictate that we cannot load the entire data set into
-memory at once, and we need to iterate over the data to reduce them to a set of
-interpretable summaries. Iteration lends itself to parallelism, that is,
-computing on multiple parts of the same problem simultaneously. Thus, in
-addition to meeting memory constraints, iteration lets us leverage additional
-processing resources to reduce overall computation time. Investing in additional
-hardware is often more economical than investment in software optimization. This
-is particularly relevant in scientific computing, where we are faced with a
-diverse, rapidly evolving set of unsolved problems, each requiring specialized
-software. The costs of investment in general purpose hardware are amortized over
-each problem, rather than paid each time for software optimization. This also
-relates to maintainability: optimization typically comes at a cost of increased
-code complexity. Many types of summary and filter operations are cheap to
-implement in parallel because the data partitions can be processed
-independently. We call this type of operation embarrassingly parallel. For
-example, the counting of reads overlapping a gene does not depend on the
-counting for a different gene." [@lawrence2014scalable]
-
-> "Our ultimate goal is to process and summarize a large data set in its
-entirety, and iteration enables this by limiting the resource commitment at a
-given point in time. Limiting resource consumption generalizes beyond iteration
-and is a fundamental technique for computing with big data. In many cases, it
-may render iteration unnecessary. Two effective approaches for being frugal with
-data are restriction and compression. Restriction means controlling which data
-are loaded and lets us avoid wasting resources on irrelevant or excessive data.
-Compression helps by representing the same data with fewer resources."
-[@lawrence2014scalable]
-
-> "A special mode of restriction is to randomly generate a selection of records.
-Down-sampling can address many questions, especially during quality assessment
-and data exploration. For example, short reads are initially summarized in FASTQ
-files containing a plain text representation of base calls and corresponding
-quality scores. Basic statistics of quality assessment such as the nucleotide
-count as a function of sequencing cycle or overall GC content are very well
-characterized by random samples of a million reads, which might be 1% of the
-data. This sample fits easily in memory. Computations on this size of data are
-very nimble, enabling interactive exploration on commodity computers. An
-essential requirement is that the data represent a random sample. The ShortRead
-package is designed for the QA and exploratory analysis of the output from
-high-througput sequencing instruments. It defines the FastqSampler object, which
-draws random samples from FASTQ files." [@lawrence2014scalable]
-
-> "An example of a situation where random sampling does not work is when
-prototyping a statistical method that depends on a significant amount of data to
-achieve reasonable power. Variant calling is a specific example: restricting the
-number of reads would lead to less coverage, less power and less meaningful
-results. Instead, we need to restrict the analysis to a particular region and
-include all of the reads falling within it. To optimize range-based queries, we
-often sort and index our data structures by genomic coordinates. We should
-consider indexing an investment because an index is generally expensive to
-generate but cheap to query. The justification is that we will issue a
-sufficient number of queries to outweigh the initial generation cost. Three
-primary file formats follow this pattern: BAM, Tabix and BigWig [7, 10]. Each
-format is best suited for a particular type of data. The BAM format is specially
-designed for sequence alignments and stores the complex alignment structure, as
-well as the aligned sequence. Tabix is meant for indexing general rangebased
-annotations stored in tabular text files, such as BED and GFF. Finally, BigWig
-is optimized for storing genome-length vectors, such as the coverage from a
-sequencing experiment. BAM and Tabix compress the primary data with block-wise
-gzip compression and save the index as a separate file. BigWig files are
-similarly compressed but are self-contained. The Rsamtools package is an
-interface between R and the samtools library, which implements access to BAM,
-Tabix and other binary file formats. Rsamtools enables restriction of BAM
-queries through the ScanBamParam object. This object can be used as an argument
-to all BAM input functions, and enables restriction to particular fields of the
-BAM file, to specific genomic regions of interest and to properties of the
-aligned reads (e.g., restricting input to paired-end alignments that form proper
-pairs)." [@lawrence2014scalable]
-
-> "One common scenario in high-throughput sequencing is the calculation of
-statistics such as coverage (the number of short sequence reads overlapping each
-nucleotide in the genome). The data required for this calculation usually come
-from very large BAM files containing alignment coordinates (including the
-alignment “cigar”), sequences and quality scores for tens of millions of short
-reads. Only the smallest element of these data, the alignment coordinates, is
-required for calculation of coverage. By restricting input to alignment
-coordinates, we transform the computational task from one of complicated memory
-management of large data to simple vectorized operations on in-memory objects."
-[@lawrence2014scalable]
-
-> "Some vectors, in particular, the coverage, have long stretches of repeated
-values, often zeroes. An efficient compression scheme for such cases is
-run-length encoding. Each run of repeated values is reduced to two values: the
-length of the run and the repeated value. This scheme saves space and also
-reduces computation time by reducing computation size. For example, the vector
-0, 0, 0, 1, 1, 5, 5, 5 would have run-values 0, 1, 5 and run-lengths 3, 2, 3.
-The data have been reduced from a size of 8 to a size of 6 (3 values plus 3
-lengths). The IRanges Rle class is a run-length encoded vector that supports the
-full R vector API on top of the compressed representation. Operations on an Rle
-gain efficiency by taking advantage of the compression. For example, the sum
-method computes a sum of the run values, using the run lengths as weights. Thus,
-the time complexity is on the order of the number of runs, rather than the
-length of the vector." [@lawrence2014scalable]
-
-> "The Biostrings package [12] provides XStringViews for views on top of DNA,
-RNA and amino acid sequences. XString is a reference, rather than a value as is
-typical in R, so we can create multiple XStringViews objects without copying the
-underlying data. This is an application of the *fly-weight* design pattern:
-multiple objects decorate the same primary data structure, which is stored only
-once in memory." [@lawrence2014scalable]
-
-> "Iterative summarization of data may be modeled as three separate steps:
-split, apply and combine [15]. The split step is typically the only one that
-depends on the size of the input data. The apply step operates on data of
-restricted size, and it should reduce the data to a scale that facilitates
-combination. Thus, the most challenging step is the first: splitting the data
-into chunks small enough to meet resource constraints. Two modes of splitting
-are particularly applicable to genomic data: sequential chunking and genomic
-partitioning. Sequential chunking is a popular and general technique that simply
-loads records in fixedcount chunks, according to the order in which they are
-stored. Genomic partitioning iterates over a disjoint set of ranges that cover
-the genome. Typical partitioning schemes include one range per chromosome and
-sub-chromosomal ranges of some uniform size. Efficient range-based iteration,
-whether over a partitioning or list of interesting regions, depends on data
-structures, file formats and algorithms that are optimized for range-based
-queries." [@lawrence2014scalable]
-
-> "As an alternative to streaming over chunks, we can iterate over a
-partitioning of the genome or other domain. Genomic partitioning can be
-preferable to streaming when we are only interested in certain regions. The
-tileGenome function is a convenience for generating a set of ranges that
-partition a genome. ... A caveat with partitioning is that since many query
-algorithms return ranges with any overlap of the query, care must be taken to
-intersect the results with each partition, so that reads are not double counted,
-for example." [@lawrence2014scalable]
-
-> "The Bioconductor project distributes the software as a number of different R
-packages, including Rsamtools, IRanges, GenomicRanges, GenomicAlignments,
-Biostrings, rtracklayer, biovizBase and BiocParallel. The software enables the
-analyst to conserve computational resources, iteratively generate summaries and
-visualize data at arbitrary levels of detail. These advances have helped to
-ensure that R and Bioconductor remain relevant in the age of high-throughput
-sequencing. We plan to continue in this direction by designing and implementing
-abstractions that enable user code to be agnostic to the mode of data storage,
-whether it be memory, files or databases. This will bring much needed agility to
-resource allocation and will enable the user to be more resourceful, without the
-burden of increased complexity." [@lawrence2014scalable]
-
-> "The most widely used partitional clustering algorithm is k-means [6–8]. The
-algorithm partitions N cells into k clusters each represented by a centroid, or
-mean profile, for the cells in the kth cluster. This algorithm is commonly used
-not only on its own, but also as a component of ensemble clustering [9, 10].
-While k-means is easy to implement, it assumes that the user has enough
-computational resources (specifically RAM) to store the data and all
-intermediate calculations into memory. However, file sizes generated from
-scRNA-seq experiments can be on the order of tens to hundreds of gigabytes. For
-large enough data, k-means can be slow or completely fail if a user lacks
-sufficient computational resources. Ensemble clustering approaches that depend
-on the use of k-means [9, 10] run it multiple times (e.g., with different
-parameter values or on a different data subset) limiting the usability of these
-packages for large scRNA-seq datasets [11]. We note that our goal here is not to
-debate the relative merits of k-means as a clustering algorithm—k-means is a
-well-established method, which has been thoroughly investigated [12]—but to
-provide users with the ability to use the popular k-means algorithm on large
-single-cell datasets. To address the problems of using k-means with large data,
-two solutions are (1) parallelization and (2) subsampling. Parallelization
-approaches typically leverage some combination of (i) MapReduce [13] concepts to
-handle a large volume of data over a distributed computing environment [14, 15],
-(ii) k-dimensional (k-d) trees to either optimize for the nearest centroid [16]
-or to partition datasets into subsets, representative of the larger dataset
-[17], and (iii) leverage multi-core processors [18]. While these approaches do
-improve the speed of k-means, they can be limited to the number of reducers for
-each centroid and can often require extensive computational resources. In
-contrast, subsampling approaches, such as the mini-batch k-means algorithm [19]
-work on small, random subsamples of data (“mini batches”) that can fit into
-memory on standard computers. We would emphasize, however, that while mini-batch
-k-means only operates on small subsamples of the data at any one time, the
-algorithm still minimizes the same global objective function evaluated over all
-samples as in traditional implementations of k-means. Current implementations of
-the mini-batch k-means algorithm [19] are available in standard programming
-languages such as in the scikit-learn machine learning Python library [20] or in
-the ClusterR R package [21]. However, these implementations either implicitly or
-explicitly require all the data to be read into memory, and therefore do not
-leverage the potential of the algorithm to provide a low memory footprint. To
-address the described problems, we implemented the mini-batch k-means clustering
-algorithm in the open-source mbkmeans R package [22], providing fast, scalable,
-and memory-efficient clustering of scRNA-seq data in the Bioconductor framework
-[5, 23]. Like existing implementations, our package can be applied to in-memory
-data input for smaller datasets, but also to on-disk data, such as from the HDF5
-file format [24], which is widely used for distributing single-cell sequencing
-data. For on-disk input, mbkmeans leverages the subsampling structure of the
-algorithm to read into memory only the current 'mini batch' of data at any given
-point, thereby greatly reducing the required memory (RAM) needed. ... Our
-contribution is two-fold: we implement a mini-batch k-means algorithm for
-on-disk data, and we benchmark the performance of a non-trivial algorithm for
-HDF5 against its in-memory counterpart." [@hicks2021mbkmeans]
-
-> "The mbkmeans software package implements the mini-batch k-means clustering
-algorithm described above and works with matrix-like objects as input.
-Specifically, the package works with standard R data formats that store the data
-in memory, such as the standard matrix class in base R and sparse and dense
-matrix classes from the Matrix R package [29], and with file-backed matrices,
-e.g., by using the HDF5 file format [24]. In addition, the package provides
-methods to interface with standard Bioconductor data containers such as the
-SummarizedExperiment [30] and SingleCellExperiment [31] classes. We implemented
-the computationally most intensive steps of our algorithm in C++, leveraging the
-Rcpp [32] and beachmat [33] packages. Furthermore, we make use of Bioconductor’s
-DelayedArray [34] framework, and in particular the HDF5Array [35] package to
-interface with HDF5 files. The mbkmeans package was built in a modular format
-that would allow it to easily operate on alternative on-disk data
-representations in the future. To initialize the k centroids, the mbkmeans
-package uses the k-means++ initialization algorithm [36] with a random subset of
-b observations (the batch size), by default. Finally, to predict final cluster
-labels, we use block processing through the DelayedArray [34] package to avoid
-working with all the data at once." [@hicks2021mbkmeans]
-
-> "A major challenge in the analysis of scRNA-seq data is the scalability of analysis methods as datasets increase in size over time. This is particularly problematic as experiments now frequently produce millions of cells [50–53], possibly across multiple batches, making it challenging to even load the data into memory and perform downstream analyses including quality control, batch correction and dimensionality reduction. Providing analysis methods, such as unsupervised clustering, that do not require data to be loaded into memory is an imperative step for scalable analyses. While large-scale scRNA-seq data are now routinely stored in on-disk data formats (e.g. HDF5 files), the methods to process and analyze these data are lagging." [@hicks2021mbkmeans]
-
-> "Unlike other existing implementations of mini-batch k-means, our algorithm harnesses the structure of the mini-batch k-means algorithm to only read in the data needed for each batch, controlling memory usage for large datasets. This makes our implementation truly scalable and applicable to both standard in-memory matrix objects, including sparse matrix representations, and on-disk data representations that do not require all the data to be loaded into memory at any one time, such as HDF5 matrices." [@hicks2021mbkmeans]
-
-> "If you use too much memory, R will complain. The key issue is that R holds
-all the data in RAM. This is a limitation if you have huge datasets. The up-side
-is flexibility—in particular, R imposes no rules on what data are like." [@burns2011r] 
-> "Another way of reducing memory use is to store your data in a database and
-only extract portions of the data into R as needed. While this takes some time
-to set up, it can become quite a natural way to work." [@burns2011r]
-
-> "Are tomorrow’s bigger computers going to solve the problem? For some people,
-yes—their data will stay the same size and computers will get big enough to
-hold it comfortably. For other people it will only get worse—more powerful
-computers means extraordinarily larger datasets. If you are likely to be in this
-latter group, you might want to get used to working with databases now." [@burns2011r]
-
-> "Traditionally, the assay data are stored in-memory as an ordinary array object3. Storing the data in-memory becomes a real pain with the ever-growing size of ’omics datasets. It is now not uncommon to collect 10,000--100,000,000 measurements on 100--1,000,000 samples, which would occupy 10--1,000 gigabytes (Gb) if stored in-memory as ordinary R arrays.
-The DelayedArray framework offers a solution to this problem. Wrapping an array-like object (typically an on-disk object) in a DelayedArray object allows one to perform common array operations on it without loading the object in memory. In order to reduce memory usage and optimize performance, operations on the object are either delayed or executed using a block processing mechanism." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/
-
-> "The DelayedArray framework enables the analysis of datasets that are too large to be stored or processed in-memory. This has become particularly relevant with the advent of large single-cell RNA-sequencing (scRNA-seq) studies containing tens of thousands to millions of cells." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/
-
-> "The data contained in an HDF5Matrix is actually stored on disk in a Hierarchical Data Format (HDF5) file. Consequently, the tenx_counts object takes up very little space in memory." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/
-
-> "The subsetting operation has been registered in what is termed a ‘delayed operation’. Registering a delayed operation does not modify the underlying data. Instead, the operation is recorded and only performed when the DelayedArray object is ‘realized’. Realization of a DelayedArray triggers the execution of the delayed operations carried by the object and returns the result as an ordinary array.
-This allows us to chain together multiple operations and only perform them as required. ... To *realize* a DelayedArray object is to trigger execution of the delayed operations carried by the object and return the result as an ordinary array. ... A large DelayedArray object is preferably realized on disk, which is most commonly an HDF5 file." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/
-
-> "Hopefully you can now begin to see the general pattern, a strategy which the DelayedArray package calls 'block-processing': 1. Load a 'block' of the data into memory.
-2. Compute a summary statistic.
-3. Combine the block-level statistics in an appropriate way to get the final result."
-http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/
-
-
-> "Let’s move onto something a little more computationally challenging. Proper normalization is essential for all analyses of gene expression data. We apply the deconvolution method of Lun, Bach, and Marioni (2016) to compute size factors for all cells.
-For highly heterogeneous datasets, like this sample of PBMCs, it is advisable to perform a rough clustering of the cells to better satisfy the assumptions of this normalization method. Namely, we want to avoid normalizing together cells with a large number of differentially expressed genes between them.
-We will use the scran::quickCluster() function to perform a clustering based on the principal component scores generated from the log-expression matrix. This principal component analysis (PCA) in turn uses an approximate singular value decomposition (SVD) with the augmented implicitly restarted Lanczos bidiagonalization algorithm (irlba). If that all sounds rather complicated, then don’t worry: that’s the point of this example! We are able to apply these cutting edge techniques to our HDF5-backed data." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/
-
-> "A HDF5-backed SummarizedExperiment, like the 10x PBMC dataset we analysed in Real world encounter with DelayedArray analysing scRNA-seq data, is a light-weight shell (the SummarizedExperiment) around a large disk-backed data matrix (the HDF5Matrix)." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/
-
-> "A SummarizedExperiment derivative can have one or more of its assays that point to datasets (one per assay) in an HDF5 file. ... These objects have 2 parts: one part is in memory, and one part is on disk. The 1st part is sometimes called the object shell and is generally thin (i.e. it has a small memory footprint). The 2nd part is the data and is typically big. The object shell and data are linked together via some kind of pointer stored in the shell (e.g. an SQLite connection, or a path to a file, etc.). Note that this is a one way link in the sense that the object shell 'knows' where to find the on-disk data but the on-disk data knows nothing about the object shell (and is completely agnostic about what kind of object shell could be pointing to it). Furthermore, at any given time on a given system, there could be more than one object shell pointing to the same on-disk data. These object shells could exist in the same R session or in sessions in other languages (e.g. Python). These various sessions could be run by the same or by different users." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/
-
-> "For example, a normalized scRNA-seq dataset carries around two matrices: the raw counts and the normalized expression values. You might have enough RAM to load one of these a time but not both at once. With a HDF5-backed SingleCellExperiment you can easily just load into memory the matrix you actually need at a given step in the analysis." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/
-
-> "Don’t use a DelayedArray if you can avoid it! ... If you can load your data into memory and still compute on it then you’re always going to have a better time doing it that way. Analyses will be faster, simpler, and you will have more options available to you. But when this isn’t an option then the DelayedArray framework is a powerful set of packages to help you get your work done. I find it pretty remarkable that a first-class single-cell analysis workflow can so seamlessly support the use of in-memory and disk-backed data." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/
-
-[Different elements in the data] 
-Most laboratory equipment can output a raw data file that you can then read into R. 
-For many types of laboratory equipment, these raw data files follow a strict format. 
-For example [flow cytometery format...]...
-
-The file formats will often have different pieces of data stored in specific spots. 
-For example, the equipment might record not only the measurements taken for the 
-sample, but also information about the setting that were applied to the equipment
-while the measurements were taken, the date of the measurements, and other metadata
-that may be useful to access when preprocessing the data. Each piece of data may 
-have different "dimensions". For example, the measurements might provide one 
-measurement per metabolite feature or per marker. Some metadata might also be
-provided with these dimensions (e.g., metadata about the markers for flow 
-cytometry data), but other metadata might be provided a single time per sample
-or even per experiment---for example, the settings on the equipment when the 
-sample or samples were run. 
-
-When it comes to data structures, dataframes and other two-dimensional data storage
-structures (you can visualize these as similar to the format of data in a spreadsheet, 
-with rows and columns) work well to store data where all data conform to a common 
-dimension. For example, a dataframe would work well to store the measurements 
-for each marker in each sample in a flow cytometry experiment. In this case, 
-each column could store the values for a specific marker and each row could 
-provide measurements for a sample. In this way, you could read the measurements
-for one marker across all samples by reading down a column, or read the measurements
-across all markers for one sample by reading across a row. 
-
-When you have data that doesn't conform to these common dimensions [unit of
-measurement?] however, a dataframe may work poorly to store the data. For
-example, if you have measurements taken at the level of the equipment settings
-for the whole experiment, these don't naturally fit into the dataframe format.
-In the "tidyverse" approach, one approach to handling data with different units
-of measurement is to store data for each unit of measurement in a different
-dataframe and to include identifiers that can be used to link data across the
-dataframes. More common, however, in R extensions for preprocessing biomedical
-data is to use more complex data structures that can store data with different
-units of measurement in different slots within the data structure, and use these
-in conjunction with specific functions that are built to work with that specific
-data structure, and so know where to find each element within the data
-structure.
-
-[Validation of data as its entered in an S4 class]
-
-### Limitations of complex structures for storing data
-
-
-
-> "There is a cost to the free lunch. That print is generic means that what
-you see is not what you get (sometimes). In the printing of an object you may
-see a number that you want---an R-squared for example---but don’t know how
-to grab that number." [@burns2011r]
-
-### Subsection 2
+<!-- > "There are circumstances when datasets become too large to read directly into -->
+<!-- R. Reading in a 4 GB text file using the functions tested above, for example, -->
+<!-- consumes all available RAM on a 16 GB machine. To overcome this limitation, -->
+<!-- external stream processing tools can be used to preprocess large text files. The -->
+<!-- following command, using the Linux command line ‘shell’ (or Windows based Linux -->
+<!-- shell emulator Cygwin) command split, for example, will break a large multi GB -->
+<!-- file into many chunks, each of which is more manageable for R: `split -b100m -->
+<!-- bigfile.csv` The result is a series of files, set to 100 MB each with the -->
+<!-- `-b100m` argument in the above code. By default these will be called xaa, xab -->
+<!-- and can be read in one chunk at a time (e.g. using read.csv(), fread() or -->
+<!-- read_csv(), described in the previous section) without crashing most modern -->
+<!-- computers. Splitting a large file into individual chunks may allow it to be read -->
+<!-- into R. This is not an efficient way to import large datasets, however, because -->
+<!-- it results in a non-random sample of the data this way. A more efficient, robust -->
+<!-- and scalable way to work with large datasets is via databases, covered in -->
+<!-- Section 6.6 in the next chapter." [@gillespie2016efficient] -->
 
 
 
 
+
+<!-- > "R comes in two versions: 32 -bit and 64 -bit. Your operating system also -->
+<!-- comes in two versions, 32 -bit and 64 -bit. Ideally you want 64 -bit versions of -->
+<!-- both R and the operating system. Using a 32 -bit version of either has severe -->
+<!-- limitations on the amount of RAM R can access. So when we suggest that you -->
+<!-- should just buy more RAM, this assumes that you are using a 64 -bit operating -->
+<!-- system, with a 64 -bit version of R. [Note: If you are using an OS version from -->
+<!-- the last five years, it is unlikely to be 32 -bit OS.] A 32 -bit machine can -->
+<!-- access at most only 4 GB of RAM. Although some CPUs offer solutions to this -->
+<!-- limitation, if you are running a 32 -bit operating system, then R is limited to -->
+<!-- around 3 GB RAM. If you are running a 64 -bit operating system, but only a 32 -->
+<!-- -bit version of R, then you have access to slightly more memory (but not much). -->
+<!-- Modern systems should run a 64 -bit operating system, with a 64 -bit version of -->
+<!-- R. Your memory limit is now measured as 8 terabytes for Windows machines and 128 -->
+<!-- TB for Unix-based OSs." [@gillespie2016efficient] -->
+
+<!-- > "The OnDiskMSnExp class extends MSnExp and inherits all of its functionality -->
+<!-- but is aimed to use as little memory as possible based on a balance between -->
+<!-- memory demand and performance. Most of the spectrum-specific data, like -->
+<!-- retention time, polarity, total ion current are stored within the object’s -->
+<!-- featureData slot. The actual M/Z and intensity values from the individual -->
+<!-- spectra are, in contrast to MSnExp objects, not kept in memory (in the assayData -->
+<!-- slot), but are fetched from the original files on-demand. Because mzML files are -->
+<!-- indexed, using the mzR package to read the relevant spectrum data is fast and -->
+<!-- only moderately slower than for in-memory MSnExp." [@gatto2013msnbase] -->
+
+<!-- > "[For OnDiskMSnExp:] To keep track of data manipulation steps that are applied -->
+<!-- to spectrum data (such as performed by methods removePeaks or clean) a lazy -->
+<!-- execution framework was implemented. Methods that manipulate or subset a -->
+<!-- spectrum’s M/Z or intensity values can not be applied directly to a OnDiskMSnExp -->
+<!-- object, since the relevant data is not kept in memory. Thus, any call to a -->
+<!-- processing method that changes or subset M/Z or intensity values are added as -->
+<!-- ProcessingStep items to the object’s spectraProcessingQueue. When the spectrum -->
+<!-- data is then queried from an OnDiskMSnExp, the spectra are read in from the file -->
+<!-- and all these processing steps are applied on-the-fly to the spectrum data -->
+<!-- before being returned to the user. The operations involving extracting or -->
+<!-- manipulating spectrum data are applied on a per-file basis, which enables -->
+<!-- parallel processing. Thus, all corresponding method implementations for -->
+<!-- OnDiskMSnExp objects have an argument BPPARAM and users can set a -->
+<!-- PARALLEL_THRESH option flag 2 that enables to define how and when parallel -->
+<!-- processing should be performed (using the BiocParallel package). Note that all -->
+<!-- data manipulations that are not applied to M/Z or intensity values of a spectrum -->
+<!-- (e.g. sub-setting by retention time etc) are very fast as they operate directly -->
+<!-- to the object’s featureData slot." [@gatto2013msnbase] -->
+
+<!-- > "The distinction between MSnExp and OnDiskMSnExp is often not explicitly -->
+<!-- stated as it should not matter, from a user’s perspective, which data structure -->
+<!-- they are working with, as both behave in equivalent ways. Often, they are -->
+<!-- referred to as in-memory and on-disk MSnExp implementations." -->
+<!-- [@gatto2013msnbase] -->
+
+<!-- > "Big data is encountered in genomics for two reasons: the size of the genome -->
+<!-- and the heterogeneity of populations. Complex organisms, such as plants and -->
+<!-- animals, have genomes on the order of billions of base pairs (the human genome -->
+<!-- consists of over three billion base pairs). The diversity of populations, -->
+<!-- whether of organisms, tissues or cells, means we need to sample deeply to detect -->
+<!-- low frequency events. To interrogate long and/or numerous genomic sequences, -->
+<!-- many measurements are necessary. For example, a typical whole genome sequencing -->
+<!-- experiment will consist of over one billion reads of 75–100 bp each. The reads -->
+<!-- are aligned across billions of positions, most of which have been annotated in -->
+<!-- some way. This experiment may be repeated for thousands of samples. Such a data -->
+<!-- set does not fit within the memory of a current commodity computer, and is not -->
+<!-- processed in a timely and interactive manner. To successfully wrangle a large -->
+<!-- data set, we need to intimately understand its structure and carefully consider -->
+<!-- the questions posed of it." [@lawrence2014scalable] -->
+
+<!-- > "To compare data across samples, we often summarize experimental annotations -->
+<!-- over a set of reference features to yield a feature-by-sample matrix. For -->
+<!-- example, we might count read alignments overlapping a common set of genes across -->
+<!-- a number of samples. Larger matrices often arise in genetics, where thousands of -->
+<!-- samples are compared over millions of SNPs, positions that are known to vary -->
+<!-- within a population. In every case, the summaries are tied to a genomic range." -->
+<!-- [@lawrence2014scalable] -->
+
+
+
+<!-- > "There are general strategies for handling large genomic data that are well -->
+<!-- suited to R programs. Sometimes the analyst is only interested in one aspect of -->
+<!-- the data, such as that overlapping a single gene. In such cases, restricting the -->
+<!-- data to that subset is a valid and effective means of data reduction. However, -->
+<!-- once our interests extend beyond a single region or the region becomes too -->
+<!-- large, resource constraints dictate that we cannot load the entire data set into -->
+<!-- memory at once, and we need to iterate over the data to reduce them to a set of -->
+<!-- interpretable summaries. Iteration lends itself to parallelism, that is, -->
+<!-- computing on multiple parts of the same problem simultaneously. Thus, in -->
+<!-- addition to meeting memory constraints, iteration lets us leverage additional -->
+<!-- processing resources to reduce overall computation time. Investing in additional -->
+<!-- hardware is often more economical than investment in software optimization. This -->
+<!-- is particularly relevant in scientific computing, where we are faced with a -->
+<!-- diverse, rapidly evolving set of unsolved problems, each requiring specialized -->
+<!-- software. The costs of investment in general purpose hardware are amortized over -->
+<!-- each problem, rather than paid each time for software optimization. This also -->
+<!-- relates to maintainability: optimization typically comes at a cost of increased -->
+<!-- code complexity. Many types of summary and filter operations are cheap to -->
+<!-- implement in parallel because the data partitions can be processed -->
+<!-- independently. We call this type of operation embarrassingly parallel. For -->
+<!-- example, the counting of reads overlapping a gene does not depend on the -->
+<!-- counting for a different gene." [@lawrence2014scalable] -->
+
+
+<!-- > "A special mode of restriction is to randomly generate a selection of records. -->
+<!-- Down-sampling can address many questions, especially during quality assessment -->
+<!-- and data exploration. For example, short reads are initially summarized in FASTQ -->
+<!-- files containing a plain text representation of base calls and corresponding -->
+<!-- quality scores. Basic statistics of quality assessment such as the nucleotide -->
+<!-- count as a function of sequencing cycle or overall GC content are very well -->
+<!-- characterized by random samples of a million reads, which might be 1% of the -->
+<!-- data. This sample fits easily in memory. Computations on this size of data are -->
+<!-- very nimble, enabling interactive exploration on commodity computers. An -->
+<!-- essential requirement is that the data represent a random sample. The ShortRead -->
+<!-- package is designed for the QA and exploratory analysis of the output from -->
+<!-- high-througput sequencing instruments. It defines the FastqSampler object, which -->
+<!-- draws random samples from FASTQ files." [@lawrence2014scalable] -->
+
+<!-- > "An example of a situation where random sampling does not work is when -->
+<!-- prototyping a statistical method that depends on a significant amount of data to -->
+<!-- achieve reasonable power. Variant calling is a specific example: restricting the -->
+<!-- number of reads would lead to less coverage, less power and less meaningful -->
+<!-- results. Instead, we need to restrict the analysis to a particular region and -->
+<!-- include all of the reads falling within it. To optimize range-based queries, we -->
+<!-- often sort and index our data structures by genomic coordinates. We should -->
+<!-- consider indexing an investment because an index is generally expensive to -->
+<!-- generate but cheap to query. The justification is that we will issue a -->
+<!-- sufficient number of queries to outweigh the initial generation cost. Three -->
+<!-- primary file formats follow this pattern: BAM, Tabix and BigWig [7, 10]. Each -->
+<!-- format is best suited for a particular type of data. The BAM format is specially -->
+<!-- designed for sequence alignments and stores the complex alignment structure, as -->
+<!-- well as the aligned sequence. Tabix is meant for indexing general rangebased -->
+<!-- annotations stored in tabular text files, such as BED and GFF. Finally, BigWig -->
+<!-- is optimized for storing genome-length vectors, such as the coverage from a -->
+<!-- sequencing experiment. BAM and Tabix compress the primary data with block-wise -->
+<!-- gzip compression and save the index as a separate file. BigWig files are -->
+<!-- similarly compressed but are self-contained. The Rsamtools package is an -->
+<!-- interface between R and the samtools library, which implements access to BAM, -->
+<!-- Tabix and other binary file formats. Rsamtools enables restriction of BAM -->
+<!-- queries through the ScanBamParam object. This object can be used as an argument -->
+<!-- to all BAM input functions, and enables restriction to particular fields of the -->
+<!-- BAM file, to specific genomic regions of interest and to properties of the -->
+<!-- aligned reads (e.g., restricting input to paired-end alignments that form proper -->
+<!-- pairs)." [@lawrence2014scalable] -->
+
+<!-- > "One common scenario in high-throughput sequencing is the calculation of -->
+<!-- statistics such as coverage (the number of short sequence reads overlapping each -->
+<!-- nucleotide in the genome). The data required for this calculation usually come -->
+<!-- from very large BAM files containing alignment coordinates (including the -->
+<!-- alignment “cigar”), sequences and quality scores for tens of millions of short -->
+<!-- reads. Only the smallest element of these data, the alignment coordinates, is -->
+<!-- required for calculation of coverage. By restricting input to alignment -->
+<!-- coordinates, we transform the computational task from one of complicated memory -->
+<!-- management of large data to simple vectorized operations on in-memory objects." -->
+<!-- [@lawrence2014scalable] -->
+
+<!-- > "Some vectors, in particular, the coverage, have long stretches of repeated -->
+<!-- values, often zeroes. An efficient compression scheme for such cases is -->
+<!-- run-length encoding. Each run of repeated values is reduced to two values: the -->
+<!-- length of the run and the repeated value. This scheme saves space and also -->
+<!-- reduces computation time by reducing computation size. For example, the vector -->
+<!-- 0, 0, 0, 1, 1, 5, 5, 5 would have run-values 0, 1, 5 and run-lengths 3, 2, 3. -->
+<!-- The data have been reduced from a size of 8 to a size of 6 (3 values plus 3 -->
+<!-- lengths). The IRanges Rle class is a run-length encoded vector that supports the -->
+<!-- full R vector API on top of the compressed representation. Operations on an Rle -->
+<!-- gain efficiency by taking advantage of the compression. For example, the sum -->
+<!-- method computes a sum of the run values, using the run lengths as weights. Thus, -->
+<!-- the time complexity is on the order of the number of runs, rather than the -->
+<!-- length of the vector." [@lawrence2014scalable] -->
+
+<!-- > "The Biostrings package [12] provides XStringViews for views on top of DNA, -->
+<!-- RNA and amino acid sequences. XString is a reference, rather than a value as is -->
+<!-- typical in R, so we can create multiple XStringViews objects without copying the -->
+<!-- underlying data. This is an application of the *fly-weight* design pattern: -->
+<!-- multiple objects decorate the same primary data structure, which is stored only -->
+<!-- once in memory." [@lawrence2014scalable] -->
+
+<!-- > "Iterative summarization of data may be modeled as three separate steps: -->
+<!-- split, apply and combine [15]. The split step is typically the only one that -->
+<!-- depends on the size of the input data. The apply step operates on data of -->
+<!-- restricted size, and it should reduce the data to a scale that facilitates -->
+<!-- combination. Thus, the most challenging step is the first: splitting the data -->
+<!-- into chunks small enough to meet resource constraints. Two modes of splitting -->
+<!-- are particularly applicable to genomic data: sequential chunking and genomic -->
+<!-- partitioning. Sequential chunking is a popular and general technique that simply -->
+<!-- loads records in fixedcount chunks, according to the order in which they are -->
+<!-- stored. Genomic partitioning iterates over a disjoint set of ranges that cover -->
+<!-- the genome. Typical partitioning schemes include one range per chromosome and -->
+<!-- sub-chromosomal ranges of some uniform size. Efficient range-based iteration, -->
+<!-- whether over a partitioning or list of interesting regions, depends on data -->
+<!-- structures, file formats and algorithms that are optimized for range-based -->
+<!-- queries." [@lawrence2014scalable] -->
+
+<!-- > "As an alternative to streaming over chunks, we can iterate over a -->
+<!-- partitioning of the genome or other domain. Genomic partitioning can be -->
+<!-- preferable to streaming when we are only interested in certain regions. The -->
+<!-- tileGenome function is a convenience for generating a set of ranges that -->
+<!-- partition a genome. ... A caveat with partitioning is that since many query -->
+<!-- algorithms return ranges with any overlap of the query, care must be taken to -->
+<!-- intersect the results with each partition, so that reads are not double counted, -->
+<!-- for example." [@lawrence2014scalable] -->
+
+
+
+<!-- > "The most widely used partitional clustering algorithm is k-means [6–8]. The -->
+<!-- algorithm partitions N cells into k clusters each represented by a centroid, or -->
+<!-- mean profile, for the cells in the kth cluster. This algorithm is commonly used -->
+<!-- not only on its own, but also as a component of ensemble clustering [9, 10]. -->
+<!-- While k-means is easy to implement, it assumes that the user has enough -->
+<!-- computational resources (specifically RAM) to store the data and all -->
+<!-- intermediate calculations into memory. However, file sizes generated from -->
+<!-- scRNA-seq experiments can be on the order of tens to hundreds of gigabytes. For -->
+<!-- large enough data, k-means can be slow or completely fail if a user lacks -->
+<!-- sufficient computational resources. Ensemble clustering approaches that depend -->
+<!-- on the use of k-means [9, 10] run it multiple times (e.g., with different -->
+<!-- parameter values or on a different data subset) limiting the usability of these -->
+<!-- packages for large scRNA-seq datasets [11]. We note that our goal here is not to -->
+<!-- debate the relative merits of k-means as a clustering algorithm—k-means is a -->
+<!-- well-established method, which has been thoroughly investigated [12]—but to -->
+<!-- provide users with the ability to use the popular k-means algorithm on large -->
+<!-- single-cell datasets. To address the problems of using k-means with large data, -->
+<!-- two solutions are (1) parallelization and (2) subsampling. Parallelization -->
+<!-- approaches typically leverage some combination of (i) MapReduce [13] concepts to -->
+<!-- handle a large volume of data over a distributed computing environment [14, 15], -->
+<!-- (ii) k-dimensional (k-d) trees to either optimize for the nearest centroid [16] -->
+<!-- or to partition datasets into subsets, representative of the larger dataset -->
+<!-- [17], and (iii) leverage multi-core processors [18]. While these approaches do -->
+<!-- improve the speed of k-means, they can be limited to the number of reducers for -->
+<!-- each centroid and can often require extensive computational resources. In -->
+<!-- contrast, subsampling approaches, such as the mini-batch k-means algorithm [19] -->
+<!-- work on small, random subsamples of data (“mini batches”) that can fit into -->
+<!-- memory on standard computers. We would emphasize, however, that while mini-batch -->
+<!-- k-means only operates on small subsamples of the data at any one time, the -->
+<!-- algorithm still minimizes the same global objective function evaluated over all -->
+<!-- samples as in traditional implementations of k-means. Current implementations of -->
+<!-- the mini-batch k-means algorithm [19] are available in standard programming -->
+<!-- languages such as in the scikit-learn machine learning Python library [20] or in -->
+<!-- the ClusterR R package [21]. However, these implementations either implicitly or -->
+<!-- explicitly require all the data to be read into memory, and therefore do not -->
+<!-- leverage the potential of the algorithm to provide a low memory footprint. To -->
+<!-- address the described problems, we implemented the mini-batch k-means clustering -->
+<!-- algorithm in the open-source mbkmeans R package [22], providing fast, scalable, -->
+<!-- and memory-efficient clustering of scRNA-seq data in the Bioconductor framework -->
+<!-- [5, 23]. Like existing implementations, our package can be applied to in-memory -->
+<!-- data input for smaller datasets, but also to on-disk data, such as from the HDF5 -->
+<!-- file format [24], which is widely used for distributing single-cell sequencing -->
+<!-- data. For on-disk input, mbkmeans leverages the subsampling structure of the -->
+<!-- algorithm to read into memory only the current 'mini batch' of data at any given -->
+<!-- point, thereby greatly reducing the required memory (RAM) needed. ... Our -->
+<!-- contribution is two-fold: we implement a mini-batch k-means algorithm for -->
+<!-- on-disk data, and we benchmark the performance of a non-trivial algorithm for -->
+<!-- HDF5 against its in-memory counterpart." [@hicks2021mbkmeans] -->
+
+<!-- > "The mbkmeans software package implements the mini-batch k-means clustering -->
+<!-- algorithm described above and works with matrix-like objects as input. -->
+<!-- Specifically, the package works with standard R data formats that store the data -->
+<!-- in memory, such as the standard matrix class in base R and sparse and dense -->
+<!-- matrix classes from the Matrix R package [29], and with file-backed matrices, -->
+<!-- e.g., by using the HDF5 file format [24]. In addition, the package provides -->
+<!-- methods to interface with standard Bioconductor data containers such as the -->
+<!-- SummarizedExperiment [30] and SingleCellExperiment [31] classes. We implemented -->
+<!-- the computationally most intensive steps of our algorithm in C++, leveraging the -->
+<!-- Rcpp [32] and beachmat [33] packages. Furthermore, we make use of Bioconductor’s -->
+<!-- DelayedArray [34] framework, and in particular the HDF5Array [35] package to -->
+<!-- interface with HDF5 files. The mbkmeans package was built in a modular format -->
+<!-- that would allow it to easily operate on alternative on-disk data -->
+<!-- representations in the future. To initialize the k centroids, the mbkmeans -->
+<!-- package uses the k-means++ initialization algorithm [36] with a random subset of -->
+<!-- b observations (the batch size), by default. Finally, to predict final cluster -->
+<!-- labels, we use block processing through the DelayedArray [34] package to avoid -->
+<!-- working with all the data at once." [@hicks2021mbkmeans] -->
+
+<!-- > "A major challenge in the analysis of scRNA-seq data is the scalability of analysis methods as datasets increase in size over time. This is particularly problematic as experiments now frequently produce millions of cells [50–53], possibly across multiple batches, making it challenging to even load the data into memory and perform downstream analyses including quality control, batch correction and dimensionality reduction. Providing analysis methods, such as unsupervised clustering, that do not require data to be loaded into memory is an imperative step for scalable analyses. While large-scale scRNA-seq data are now routinely stored in on-disk data formats (e.g. HDF5 files), the methods to process and analyze these data are lagging." [@hicks2021mbkmeans] -->
+
+<!-- > "Unlike other existing implementations of mini-batch k-means, our algorithm harnesses the structure of the mini-batch k-means algorithm to only read in the data needed for each batch, controlling memory usage for large datasets. This makes our implementation truly scalable and applicable to both standard in-memory matrix objects, including sparse matrix representations, and on-disk data representations that do not require all the data to be loaded into memory at any one time, such as HDF5 matrices." [@hicks2021mbkmeans] -->
+
+
+<!-- > "Another way of reducing memory use is to store your data in a database and -->
+<!-- only extract portions of the data into R as needed. While this takes some time -->
+<!-- to set up, it can become quite a natural way to work." [@burns2011r] -->
+
+<!-- > "Are tomorrow’s bigger computers going to solve the problem? For some people, -->
+<!-- yes—their data will stay the same size and computers will get big enough to -->
+<!-- hold it comfortably. For other people it will only get worse—more powerful -->
+<!-- computers means extraordinarily larger datasets. If you are likely to be in this -->
+<!-- latter group, you might want to get used to working with databases now." [@burns2011r] -->
+
+<!-- > "Traditionally, the assay data are stored in-memory as an ordinary array object3. Storing the data in-memory becomes a real pain with the ever-growing size of ’omics datasets. It is now not uncommon to collect 10,000--100,000,000 measurements on 100--1,000,000 samples, which would occupy 10--1,000 gigabytes (Gb) if stored in-memory as ordinary R arrays. -->
+<!-- The DelayedArray framework offers a solution to this problem. Wrapping an array-like object (typically an on-disk object) in a DelayedArray object allows one to perform common array operations on it without loading the object in memory. In order to reduce memory usage and optimize performance, operations on the object are either delayed or executed using a block processing mechanism." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/ -->
+
+<!-- > "The DelayedArray framework enables the analysis of datasets that are too large to be stored or processed in-memory. This has become particularly relevant with the advent of large single-cell RNA-sequencing (scRNA-seq) studies containing tens of thousands to millions of cells." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/ -->
+
+<!-- > "The data contained in an HDF5Matrix is actually stored on disk in a Hierarchical Data Format (HDF5) file. Consequently, the tenx_counts object takes up very little space in memory." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/ -->
+
+<!-- > "The subsetting operation has been registered in what is termed a ‘delayed operation’. Registering a delayed operation does not modify the underlying data. Instead, the operation is recorded and only performed when the DelayedArray object is ‘realized’. Realization of a DelayedArray triggers the execution of the delayed operations carried by the object and returns the result as an ordinary array. -->
+<!-- This allows us to chain together multiple operations and only perform them as required. ... To *realize* a DelayedArray object is to trigger execution of the delayed operations carried by the object and return the result as an ordinary array. ... A large DelayedArray object is preferably realized on disk, which is most commonly an HDF5 file." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/ -->
+
+<!-- > "Hopefully you can now begin to see the general pattern, a strategy which the DelayedArray package calls 'block-processing': 1. Load a 'block' of the data into memory. -->
+<!-- 2. Compute a summary statistic. -->
+<!-- 3. Combine the block-level statistics in an appropriate way to get the final result." -->
+<!-- http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/ -->
+
+
+<!-- > "Let’s move onto something a little more computationally challenging. Proper normalization is essential for all analyses of gene expression data. We apply the deconvolution method of Lun, Bach, and Marioni (2016) to compute size factors for all cells. -->
+<!-- For highly heterogeneous datasets, like this sample of PBMCs, it is advisable to perform a rough clustering of the cells to better satisfy the assumptions of this normalization method. Namely, we want to avoid normalizing together cells with a large number of differentially expressed genes between them. -->
+<!-- We will use the scran::quickCluster() function to perform a clustering based on the principal component scores generated from the log-expression matrix. This principal component analysis (PCA) in turn uses an approximate singular value decomposition (SVD) with the augmented implicitly restarted Lanczos bidiagonalization algorithm (irlba). If that all sounds rather complicated, then don’t worry: that’s the point of this example! We are able to apply these cutting edge techniques to our HDF5-backed data." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/ -->
+
+<!-- > "A HDF5-backed SummarizedExperiment, like the 10x PBMC dataset we analysed in Real world encounter with DelayedArray analysing scRNA-seq data, is a light-weight shell (the SummarizedExperiment) around a large disk-backed data matrix (the HDF5Matrix)." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/ -->
+
+<!-- > "A SummarizedExperiment derivative can have one or more of its assays that point to datasets (one per assay) in an HDF5 file. ... These objects have 2 parts: one part is in memory, and one part is on disk. The 1st part is sometimes called the object shell and is generally thin (i.e. it has a small memory footprint). The 2nd part is the data and is typically big. The object shell and data are linked together via some kind of pointer stored in the shell (e.g. an SQLite connection, or a path to a file, etc.). Note that this is a one way link in the sense that the object shell 'knows' where to find the on-disk data but the on-disk data knows nothing about the object shell (and is completely agnostic about what kind of object shell could be pointing to it). Furthermore, at any given time on a given system, there could be more than one object shell pointing to the same on-disk data. These object shells could exist in the same R session or in sessions in other languages (e.g. Python). These various sessions could be run by the same or by different users." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/ -->
+
+<!-- > "For example, a normalized scRNA-seq dataset carries around two matrices: the raw counts and the normalized expression values. You might have enough RAM to load one of these a time but not both at once. With a HDF5-backed SingleCellExperiment you can easily just load into memory the matrix you actually need at a given step in the analysis." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/ -->
+
+<!-- > "Don’t use a DelayedArray if you can avoid it! ... If you can load your data into memory and still compute on it then you’re always going to have a better time doing it that way. Analyses will be faster, simpler, and you will have more options available to you. But when this isn’t an option then the DelayedArray framework is a powerful set of packages to help you get your work done. I find it pretty remarkable that a first-class single-cell analysis workflow can so seamlessly support the use of in-memory and disk-backed data." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/ -->
 
 
 
