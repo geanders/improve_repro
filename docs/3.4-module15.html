@@ -411,8 +411,34 @@ phenotype data.</p>
 <p><label for="tufte-mn-2" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-2" class="margin-toggle"><span class="marginnote"><span style="display: block;">“A major challenge in the analysis of scRNA-seq data is the scalability of analysis methods as datasets increase in size over time. This is particularly problematic as experiments now frequently produce millions of cells [50–53], possibly across multiple batches, making it challenging to even load the data into memory and perform downstream analyses including quality control, batch correction and dimensionality reduction. Providing analysis methods, such as unsupervised clustering, that do not require data to be loaded into memory is an imperative step for scalable analyses. While large-scale scRNA-seq data are now routinely stored in on-disk data formats (e.g. HDF5 files), the methods to process and analyze these data are lagging.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Hicks et al. 2021)</span></span></span></span></p>
 <p>There’s a second reason why dataframe structures don’t always work for data from
-biological experiments. The traditional dataframe structure in R is built after
-reading all the data in memory, into RAM. Many biological experiments now create
+biological experiments, which has to do with the size of data (and so how much
+memory it requires). A computer has several ways that it can store data. The
+primary storage is closely connected with the computer’s processing unit, where
+calculations are made, and so data stored in this primary storage can be
+processed by code very quickly. R uses this approach, and so when you load data
+in R to be stored in one of its traditional data structures, that data is
+moved into part of the computer’s primary storage (its random access memory, or
+RAM).</p>
+<p>Data can also be stored in other devices on a computer, including hard drives and
+solid state drives that are built into the computer (the computer’s secondary
+storage devices) or even onto storage devices that can be removed from the
+computer, like USB drives or external hard drives (the computer’s tertiary storage).
+The size of available storage in these devices tends to be much, much larger than
+the storage size of the computer’s RAM. However, it takes longer to access data
+in these secondary storage devices because they aren’t directly connected to
+the processor, and instead require the data to move into RAM before it can
+be accessed by the processor, which is the only part of the computer that can
+do things to analyze, modify, or otherwise process the data.</p>
+<p>Your data will often be saved on a file in the computer’s secondary memory
+(e.g., in a file stored on the computer’s solid state drive) before you read it
+into R, then moved into memory (RAM, part of the primary storage) when you ask
+R to load it into a data structure that you can access with code commands in R.
+However, the storage size available in RAM will always be much, much smaller than
+the storage size in secondary storage devices like solid state drives, and so
+with larger data, problems can arise if you try to read data into RAM that is
+too large for that primary storage device to accommodate.</p>
+<p>The traditional dataframe structure in R is therefore built after
+reading the data in memory, into RAM. However, many biological experiments now create
 data that is much too large to read into memory for R in a reasonable way
 <span class="citation">(Lawrence and Morgan 2014; Hicks et al. 2021)</span>. More complex data structures can
 allow more sophisticated ways to handle massive data, and so they are often

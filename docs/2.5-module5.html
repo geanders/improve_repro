@@ -156,8 +156,116 @@ visualized using reproducible tools.</p>
 <li>Understand how the principles of “tidy” data can be applied for a real, complex research project;</li>
 <li>List advantages of the “tidy” data format for the example project</li>
 </ul>
-<div id="exampledata-on-rate-of-bacterial-growth" class="section level3" number="2.5.1">
-<h3><span class="header-section-number">2.5.1</span> Example—Data on rate of bacterial growth</h3>
+<p>In the last module, we covered three principles for designing tidy templates for
+data collection in a biomedical laboratory, motivated by an example dataset from
+a real experiment. In this module, we’ll show you how to apply those principles
+to create a tidier template for the example dataset from the last module.
+As a reminder, those three principles are:</p>
+<ol style="list-style-type: decimal">
+<li>Limit the template to the collection of data.</li>
+<li>Make sensible choices when dividing data collection into rows and columns.</li>
+<li>Avoid characters or formatting that will make it hard for a computer program to process the data.</li>
+</ol>
+<p>It is important to note that there’s no reason that you can’t continue to use a
+spreadsheet program like Excel or Google Sheets to collect data. The spreadsheet
+program itself can easily be used to create a simple template to use as you
+collect data. In fact, we’ll continue using a spreadsheet format in the rest of
+this module and in the next one as we show how to redesign the data collection
+for this example experiment. It is important, however, to think through how you
+will arrange that template spreadsheet to make it most useful in the larger
+context of reproducible research.</p>
+<div id="example-datadata-on-rate-of-bacterial-growth" class="section level3" number="2.5.1">
+<h3><span class="header-section-number">2.5.1</span> Example data—Data on rate of bacterial growth</h3>
+<p>Here, we’ll walk through an example using real data collected in a laboratory
+experiment. We described these data in detail in the previous module. As a
+reminder, they were collected to measure the growth rate of <em>Mycobacteria
+tuberculosis</em> under two conditions—high oxygen and low oxygen. They were
+collected from five test tubes that were measured regularly over one week for
+bacteria growth using a measure of optical density. Figure
+<a href="2.5-module5.html#fig:growthexcel2">2.6</a> shows the original template that the research group used
+to record these data.</p>
+<div class="figure fullwidth"><span style="display:block;" id="fig:growthexcel2"></span>
+<img src="figures/growth_curve_example.png" alt="Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column." width="\textwidth"  />
+<p class="caption marginnote shownote">
+Figure 2.6: Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column.
+</p>
+</div>
+<p>In the previous module, we described features that make this template “untidy”
+and potentially problematic to include in a larger pipeline of reproducible
+research. In the next few sections of this module, we’ll walk step-by-step
+through changes that you could make to make this template tidier. We’ll finish
+the module by showing how you could then easily design a further step of the
+analysis pipeline to visualize and analyze the collected data, so that the
+advantages of real-time plotting from the more complex spreadsheet are not
+missed when moving to a tidier template.</p>
+</div>
+<div id="limiting-the-template-to-the-collection-of-data" class="section level3" number="2.5.2">
+<h3><span class="header-section-number">2.5.2</span> Limiting the template to the collection of data</h3>
+<p>The example template (Figure <a href="2.5-module5.html#fig:growthexcel2">2.6</a>) includes a number of
+“extra” elements beyond simple data collection—all the elements outside rows
+1–15 of columns A–I. Outside this area of the original spread, there are a
+number of extra elements, including plots that visualize the data, summaries
+generated based on the data (rows 16–18, for example), notes about the data,
+and even a macro (top right) that wasn’t involved in data collection but instead
+was used by the researcher to calculate the initial volume of inoculum to
+include in each test tube. None of these “extras” can be easily read into a
+statistical program like R or Python—at best, they will be ignored by the program.
+They can even complicate reading in the cells with measurements (rows
+1–15 of columns A–I), as most statistical programs will try to read in all the
+non-empty cells of a spreadsheet unless directed otherwise.</p>
+<p>A good starting point, then, would be to start designing a tidy data collection
+template for this experiment by extracting only the content from the box in
+Figure <a href="2.4-module4.html#fig:extractraw">2.3</a>. This would result in a template that looks like
+Figure <a href="2.5-module5.html#fig:step1">2.7</a>.</p>
+<div class="figure fullwidth"><span style="display:block;" id="fig:step1"></span>
+<img src="figures/growth_curve_step1.png" alt="First step in designing a tidy data collection template for the example project. A template has been created that focuses only on the raw data, removing all extra elements like plots, notes, macros, and summaries." width="\textwidth"  />
+<p class="caption marginnote shownote">
+Figure 2.7: First step in designing a tidy data collection template for the example project. A template has been created that focuses only on the raw data, removing all extra elements like plots, notes, macros, and summaries.
+</p>
+</div>
+<p>Notice that we’ve also removed any of the color formatting from the spreadsheet. It is fine to
+keep color in the spreadsheet if it will help the research to find the right spot to record data
+while working in the laboratory, but you should make sure that you’re not using it to encode
+information about the data—all color formatting will be ignored when the data are read by a
+statistical program like R.</p>
+<div class="figure fullwidth"><span style="display:block;" id="fig:step2"></span>
+<img src="figures/growth_curve_step2.png" alt="Second step in designing a tidy data collection template for the example project. This template started from the previous one, but removed columns that were hand-calculated and then entered by the researcher in the previous template. This version has removed all calculated values on the template, limiting it to only the original recorded values required for the experiment." width="\textwidth"  />
+<p class="caption marginnote shownote">
+Figure 2.8: Second step in designing a tidy data collection template for the example project. This template started from the previous one, but removed columns that were hand-calculated and then entered by the researcher in the previous template. This version has removed all calculated values on the template, limiting it to only the original recorded values required for the experiment.
+</p>
+</div>
+<div class="figure fullwidth"><span style="display:block;" id="fig:step3"></span>
+<img src="figures/growth_curve_step3.png" alt="Third step in designing a tidy data collection template for the example project. This template started from the previous one, but combined collection of the date and time of the measurement into a single column and revised the format to include all date elements and to prevent automatic conversion by the spreadsheet program." width="\textwidth"  />
+<p class="caption marginnote shownote">
+Figure 2.9: Third step in designing a tidy data collection template for the example project. This template started from the previous one, but combined collection of the date and time of the measurement into a single column and revised the format to include all date elements and to prevent automatic conversion by the spreadsheet program.
+</p>
+</div>
+</div>
+<div id="making-sensible-choices-about-rows-and-columns" class="section level3" number="2.5.3">
+<h3><span class="header-section-number">2.5.3</span> Making sensible choices about rows and columns</h3>
+<p>The second principle is to <strong>make sensible choices when dividing data collection into rows and columns</strong>.
+There are many different ways that you could spread the data collection into rows and columns.
+Figure <a href="2.4-module4.html#fig:extractraw">2.3</a> shows three examples that we can consider.</p>
+<div class="figure fullwidth"><span style="display:block;" id="fig:columnoptions"></span>
+<img src="figures/growth_curve_column_options.png" alt="Examples of ways that data collection could be divided into rows and columns in the example template. Panel A shows an example where date and time are recorded in different columns. Panel B is similar to Panel A, but in this case, date and time are recorded in a single column. Panel C shows a classically 'tidy' data format, where each measurement date-time is repeated for each of the five test tubes, and columns give the test tube ID and absorbance measurement at that time for that tube (only part of the data is shown for this format, while remaining rows are off the page). While Panel C provides the 'tidiest' format, it may have some practical constraints when used in a laboratory setting. For example, it would require more data entry during data collection (since date-time is entered five times at each measurement time), and its long format prevent it all from being seen at once without scrolling on a computer screen." width="\textwidth"  />
+<p class="caption marginnote shownote">
+Figure 2.10: Examples of ways that data collection could be divided into rows and columns in the example template. Panel A shows an example where date and time are recorded in different columns. Panel B is similar to Panel A, but in this case, date and time are recorded in a single column. Panel C shows a classically ‘tidy’ data format, where each measurement date-time is repeated for each of the five test tubes, and columns give the test tube ID and absorbance measurement at that time for that tube (only part of the data is shown for this format, while remaining rows are off the page). While Panel C provides the ‘tidiest’ format, it may have some practical constraints when used in a laboratory setting. For example, it would require more data entry during data collection (since date-time is entered five times at each measurement time), and its long format prevent it all from being seen at once without scrolling on a computer screen.
+</p>
+</div>
+<p>Panel A shows an example where date and time are recorded in different columns. Panel B is similar to Panel A, but in this case, date and time are recorded in a single column. Panel C shows a classically ‘tidy’ data format, where each measurement date-time is repeated for each of the five test tubes, and columns give the test tube ID and absorbance measurement at that time for that tube (only part of the data is shown for this format, while remaining rows are off the page). While Panel C provides the ‘tidiest’ format, it may have some practical constraints when used in a laboratory setting. For example, it would require more data entry during data collection (since date-time is entered five times at each measurement time), and its long format prevent it all from being seen at once without scrolling on a computer screen.</p>
+</div>
+<div id="avoiding-problematic-characters-or-formatting" class="section level3" number="2.5.4">
+<h3><span class="header-section-number">2.5.4</span> Avoiding problematic characters or formatting</h3>
+<p>The third principle is to <strong>avoid characters or formatting that will make it
+hard for a computer program to process the data</strong>.</p>
+</div>
+<div id="moving-further-data-analysis-to-later-in-the-pipeline" class="section level3" number="2.5.5">
+<h3><span class="header-section-number">2.5.5</span> Moving further data analysis to later in the pipeline</h3>
+<hr />
+<p><strong>Older text</strong></p>
+</div>
+<div id="exampledata-on-rate-of-bacterial-growth-1" class="section level3" number="2.5.6">
+<h3><span class="header-section-number">2.5.6</span> Example—Data on rate of bacterial growth</h3>
 <p>The first set of data are from a study on the growth of <em>Mycobacterium
 tuberculosis</em>. The goal of this study was to compare growth yield and doubling
 time of <em>Mycobacterium tuberculosis</em> grown in rich medium under two assay
@@ -187,7 +295,7 @@ during the exponential growth phase can be calculated.</p>
 \]</span>
 where <span class="math inline">\(t_1\)</span> and <span class="math inline">\(t_2\)</span> are two time points and <span class="math inline">\(OD_{t_1}\)</span> and <span class="math inline">\(OD_{t_2}\)</span> are the
 optical densities at the two time points (all <span class="math inline">\(log\)</span>s are natural in this case).</p>
-<p>An excel-based workbook (Figure <a href="2.5-module5.html#fig:growthexcel">2.2</a>) was created to allow the
+<p>An excel-based workbook (Figure <a href="2.5-module5.html#fig:growthexcel2">2.6</a>) was created to allow the
 student performing the work to (1) calculate the amount of initial inoculum
 (cell culture) to add to each tube to begin the study, (2) record the raw data
 absorbance measurements, (3) graph the data on both a log and linear scale, and
@@ -199,12 +307,6 @@ hours for each data point from the start of the study for graphing purposes
 (column D). Absorbance data for each sampling timepoint were listed in Columns
 E-F (high oxygen conditions; VA001 A1, A3) or columns G-I (limited oxygen
 conditions; VA001 L1, L2, L3).</p>
-<div class="figure fullwidth"><span style="display:block;" id="fig:growthexcel"></span>
-<img src="figures/growth_curve_example.png" alt="Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column." width="\textwidth"  />
-<p class="caption marginnote shownote">
-Figure 2.2: Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column.
-</p>
-</div>
 <p>What the researchers found appealing about the format of this Excel sheet was
 the ease with which the student could accomplish the study goals. They also
 cited transparency of the raw data and ease with which additional sampling data
@@ -214,7 +316,7 @@ differences between the two assay conditions. This was also somewhat problematic
 as the equation to calculate doubling time was based on anchored time points
 built into the original spreadsheet resulting in two different results that were
 not properly linked to the correct data time points.</p>
-<p>Data that are saved in a format like that shown in Figure <a href="2.5-module5.html#fig:growthexcel">2.2</a>,
+<p>Data that are saved in a format like that shown in Figure <a href="2.5-module5.html#fig:growthexcel2">2.6</a>,
 however, are hard to read in for a statistical program like R, Perl, or Python.
 In this format, the raw data (the time points each observation was collected and
 the optical density for the sample at that time point) form only part of the
@@ -222,7 +324,7 @@ spreadsheet. The spreadsheet also includes notes, automated figures, and
 cells where an embedded formula runs calculations behind the scenes.</p>
 <p>Instead of this format, we can design a simpler format to collect the data. We’ll
 remove all figures and calculations, and instead save those to perform in a
-code script. Figure <a href="2.5-module5.html#fig:growthsimple">2.3</a> shows an example of a simpler
+code script. Figure <a href="2.5-module5.html#fig:growthsimple">2.11</a> shows an example of a simpler
 format for collecting the same data. In this case, all the “extras” have been
 stripped out—this only has spaces for recording times points and the observed
 optical density at those time points. In later chapters, we’ll show how a code
@@ -231,13 +333,13 @@ and create figures. By separating out the steps of data recording from
 data analysis, you can ensure that all steps of analysis are clearly spelled
 out (and can be easily reproduced with other similar data) through a code
 script. Note that you can still collect the data in this simpler format using
-a spreadsheet program, if you’d like—Figure <a href="2.5-module5.html#fig:growthsimple">2.3</a> shows
+a spreadsheet program, if you’d like—Figure <a href="2.5-module5.html#fig:growthsimple">2.11</a> shows
 the data collection set up to be recorded in a spreadsheet program, for example.
 Within the spreadsheet, you can choose to save the data in a plain text format
 (a csv [comma-separated value] file, for example).</p>
 <div class="figure"><span style="display:block;" id="fig:growthsimple"></span>
 <p class="caption marginnote shownote">
-Figure 2.3: Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created—these are all done later, using a code script.
+Figure 2.11: Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created—these are all done later, using a code script.
 </p>
 <img src="figures/growth_curve_simple.png" alt="Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created---these are all done later, using a code script." width="\textwidth"  />
 </div>
@@ -249,7 +351,7 @@ spreadsheets. They should be in a format that is easy to read into an interactiv
 programming environment like R, as well as in a format that will be easy to convert
 to a truly “tidy” format once they are read in. However, it’s okay to balance these
 needs with aims to make the data collection spreadsheet easy for a researcher to use.</p>
-<p>The example shown in Figure <a href="2.5-module5.html#fig:growthsimple">2.3</a> is designed to be easy to use
+<p>The example shown in Figure <a href="2.5-module5.html#fig:growthsimple">2.11</a> is designed to be easy to use
 when collecting data. All data points for a single collection time are grouped together
 on a single row. When a researchers collects data for one time point, he or she can
 easy confirm visually that all the experimental groups have been measured for that
@@ -262,7 +364,7 @@ barriers when reading the data into more sophisticated software. Once the data a
 read into R, there can be converted into a truly tidy data format with just a few
 command calls.</p>
 <p>The following code shows an example of how easy it is to read data into R in the simplified
-format shown in Figure <a href="2.5-module5.html#fig:growthsimple">2.3</a>. It also shows how a few lines of code
+format shown in Figure <a href="2.5-module5.html#fig:growthsimple">2.11</a>. It also shows how a few lines of code
 can then be used to convert the data into a truly “tidy” format, and how easily
 sophisticated plots can then be made with the data.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="2.5-module5.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</span>
@@ -325,14 +427,14 @@ only aim to give an example of how little R code is needed to create useful outp
 the data, with the only requirement for gaining this power being that the data need to
 be collected in a format that is “tidy” or close enough to easily read into R.</p>
 </div>
-<div id="exampledata-on-bacteria-colony-forming-units" class="section level3" number="2.5.2">
-<h3><span class="header-section-number">2.5.2</span> Example—Data on bacteria colony forming units</h3>
+<div id="exampledata-on-bacteria-colony-forming-units" class="section level3" number="2.5.7">
+<h3><span class="header-section-number">2.5.7</span> Example—Data on bacteria colony forming units</h3>
 </div>
-<div id="exampledata-from-multiple-related-experiments" class="section level3" number="2.5.3">
-<h3><span class="header-section-number">2.5.3</span> Example—Data from multiple related experiments</h3>
+<div id="exampledata-from-multiple-related-experiments" class="section level3" number="2.5.8">
+<h3><span class="header-section-number">2.5.8</span> Example—Data from multiple related experiments</h3>
 </div>
-<div id="issues-with-these-data-sets" class="section level3" number="2.5.4">
-<h3><span class="header-section-number">2.5.4</span> Issues with these data sets</h3>
+<div id="issues-with-these-data-sets" class="section level3" number="2.5.9">
+<h3><span class="header-section-number">2.5.9</span> Issues with these data sets</h3>
 <ol style="list-style-type: decimal">
 <li>Issues related to using a spread sheet program
 <ul>
@@ -349,19 +451,19 @@ non-missing row</li>
 <li>Issues with data being non-“tidy”</li>
 </ol>
 </div>
-<div id="final-tidy-examples" class="section level3" number="2.5.5">
-<h3><span class="header-section-number">2.5.5</span> Final “tidy” examples</h3>
+<div id="final-tidy-examples" class="section level3" number="2.5.10">
+<h3><span class="header-section-number">2.5.10</span> Final “tidy” examples</h3>
 </div>
-<div id="options-for-recording-tidy-data" class="section level3" number="2.5.6">
-<h3><span class="header-section-number">2.5.6</span> Options for recording tidy data</h3>
+<div id="options-for-recording-tidy-data" class="section level3" number="2.5.11">
+<h3><span class="header-section-number">2.5.11</span> Options for recording tidy data</h3>
 <p><strong>Spreadsheet program.</strong></p>
 <p><strong>Spreadsheet-like interface in R.</strong></p>
 </div>
-<div id="examples-of-how-tidy-data-can-be-easily-analyzed-visualized" class="section level3" number="2.5.7">
-<h3><span class="header-section-number">2.5.7</span> Examples of how “tidy” data can be easily analyzed / visualized</h3>
+<div id="examples-of-how-tidy-data-can-be-easily-analyzed-visualized" class="section level3" number="2.5.12">
+<h3><span class="header-section-number">2.5.12</span> Examples of how “tidy” data can be easily analyzed / visualized</h3>
 </div>
-<div id="discussion-questions-1" class="section level3" number="2.5.8">
-<h3><span class="header-section-number">2.5.8</span> Discussion questions</h3>
+<div id="discussion-questions-1" class="section level3" number="2.5.13">
+<h3><span class="header-section-number">2.5.13</span> Discussion questions</h3>
 
 </div>
 </div>
