@@ -12,6 +12,110 @@ visualized using reproducible tools.
 - Understand how the principles of "tidy" data can be applied for a real, complex research project;
 - List advantages of the "tidy" data format for the example project 
 
+In the last module, we covered three principles for designing tidy templates for 
+data collection in a biomedical laboratory, motivated by an example dataset from 
+a real experiment. In this module, we'll show you how to apply those principles
+to create a tidier template for the example dataset from the last module.
+As a reminder, those three principles are:
+
+1. Limit the template to the collection of data.
+2. Make sensible choices when dividing data collection into rows and columns.
+3. Avoid characters or formatting that will make it hard for a computer program to process the data.
+
+It is important to note that there's no reason that you can't continue to use a
+spreadsheet program like Excel or Google Sheets to collect data. The spreadsheet
+program itself can easily be used to create a simple template to use as you
+collect data. In fact, we'll continue using a spreadsheet format in the rest of
+this module and in the next one as we show how to redesign the data collection
+for this example experiment. It is important, however, to think through how you
+will arrange that template spreadsheet to make it most useful in the larger
+context of reproducible research.
+
+### Example data---Data on rate of bacterial growth 
+
+Here, we'll walk through an example using real data collected in a laboratory
+experiment. We described these data in detail in the previous module. As a
+reminder, they were collected to measure the growth rate of *Mycobacteria
+tuberculosis* under two conditions---high oxygen and low oxygen. They were
+collected from five test tubes that were measured regularly over one week for
+bacteria growth using a measure of optical density. Figure
+\@ref(fig:growthexcel2) shows the original template that the research group used
+to record these data.
+
+```{r growthexcel2, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column."}
+knitr::include_graphics("figures/growth_curve_example.png")
+```
+
+In the previous module, we described features that make this template "untidy"
+and potentially problematic to include in a larger pipeline of reproducible
+research. In the next few sections of this module, we'll walk step-by-step
+through changes that you could make to make this template tidier. We'll finish
+the module by showing how you could then easily design a further step of the
+analysis pipeline to visualize and analyze the collected data, so that the
+advantages of real-time plotting from the more complex spreadsheet are not
+missed when moving to a tidier template.
+
+### Limiting the template to the collection of data
+
+The example template (Figure \@ref(fig:growthexcel2)) includes a number of
+"extra" elements beyond simple data collection---all the elements outside rows
+1--15 of columns A--I. Outside this area of the original spread, there are a
+number of extra elements, including plots that visualize the data, summaries
+generated based on the data (rows 16--18, for example), notes about the data,
+and even a macro (top right) that wasn't involved in data collection but instead
+was used by the researcher to calculate the initial volume of inoculum to
+include in each test tube. None of these "extras" can be easily read into a 
+statistical program like R or Python---at best, they will be ignored by the program.
+They can even complicate reading in the cells with measurements (rows
+1--15 of columns A--I), as most statistical programs will try to read in all the 
+non-empty cells of a spreadsheet unless directed otherwise. 
+
+A good starting point, then, would be to start designing a tidy data collection
+template for this experiment by extracting only the content from the box in
+Figure \@ref(fig:extractraw). This would result in a template that looks like
+Figure \@ref(fig:step1).
+
+```{r step1, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "First step in designing a tidy data collection template for the example project. A template has been created that focuses only on the raw data, removing all extra elements like plots, notes, macros, and summaries."}
+knitr::include_graphics("figures/growth_curve_step1.png")
+```
+
+Notice that we've also removed any of the color formatting from the spreadsheet. It is fine to 
+keep color in the spreadsheet if it will help the research to find the right spot to record data 
+while working in the laboratory, but you should make sure that you're not using it to encode 
+information about the data---all color formatting will be ignored when the data are read by a 
+statistical program like R.
+
+```{r step2, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Second step in designing a tidy data collection template for the example project. This template started from the previous one, but removed columns that were hand-calculated and then entered by the researcher in the previous template. This version has removed all calculated values on the template, limiting it to only the original recorded values required for the experiment."}
+knitr::include_graphics("figures/growth_curve_step2.png")
+```
+
+```{r step3, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Third step in designing a tidy data collection template for the example project. This template started from the previous one, but combined collection of the date and time of the measurement into a single column and revised the format to include all date elements and to prevent automatic conversion by the spreadsheet program."}
+knitr::include_graphics("figures/growth_curve_step3.png")
+```
+
+### Making sensible choices about rows and columns
+
+The second principle is to **make sensible choices when dividing data collection into rows and columns**.
+There are many different ways that you could spread the data collection into rows and columns. 
+Figure \@ref(fig:extractraw) shows three examples that we can consider. 
+
+```{r columnoptions, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Examples of ways that data collection could be divided into rows and columns in the example template. Panel A shows an example where date and time are recorded in different columns. Panel B is similar to Panel A, but in this case, date and time are recorded in a single column. Panel C shows a classically 'tidy' data format, where each measurement date-time is repeated for each of the five test tubes, and columns give the test tube ID and absorbance measurement at that time for that tube (only part of the data is shown for this format, while remaining rows are off the page). While Panel C provides the 'tidiest' format, it may have some practical constraints when used in a laboratory setting. For example, it would require more data entry during data collection (since date-time is entered five times at each measurement time), and its long format prevent it all from being seen at once without scrolling on a computer screen."}
+knitr::include_graphics("figures/growth_curve_column_options.png")
+```
+
+Panel A shows an example where date and time are recorded in different columns. Panel B is similar to Panel A, but in this case, date and time are recorded in a single column. Panel C shows a classically 'tidy' data format, where each measurement date-time is repeated for each of the five test tubes, and columns give the test tube ID and absorbance measurement at that time for that tube (only part of the data is shown for this format, while remaining rows are off the page). While Panel C provides the 'tidiest' format, it may have some practical constraints when used in a laboratory setting. For example, it would require more data entry during data collection (since date-time is entered five times at each measurement time), and its long format prevent it all from being seen at once without scrolling on a computer screen.
+
+### Avoiding problematic characters or formatting
+
+The third principle is to **avoid characters or formatting that will make it
+hard for a computer program to process the data**.
+
+### Moving further data analysis to later in the pipeline
+
+---------------------------------------------------------------------------
+
+**Older text**
+
 ### Example---Data on rate of bacterial growth 
 
 The first set of data are from a study on the growth of *Mycobacterium
@@ -46,7 +150,7 @@ $$
 where $t_1$ and $t_2$ are two time points and $OD_{t_1}$ and $OD_{t_2}$ are the 
 optical densities at the two time points (all $log$s are natural in this case).
 
-An excel-based workbook (Figure \@ref(fig:growthexcel)) was created to allow the
+An excel-based workbook (Figure \@ref(fig:growthexcel2)) was created to allow the
 student performing the work to (1) calculate the amount of initial inoculum
 (cell culture) to add to each tube to begin the study, (2) record the raw data
 absorbance measurements, (3) graph the data on both a log and linear scale, and
@@ -59,9 +163,7 @@ hours for each data point from the start of the study for graphing purposes
 E-F (high oxygen conditions; VA001 A1, A3) or columns G-I (limited oxygen
 conditions; VA001 L1, L2, L3).
 
-```{r growthexcel, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column."}
-knitr::include_graphics("figures/growth_curve_example.png")
-```
+
 
 What the researchers found appealing about the format of this Excel sheet was
 the ease with which the student could accomplish the study goals. They also
@@ -73,7 +175,7 @@ as the equation to calculate doubling time was based on anchored time points
 built into the original spreadsheet resulting in two different results that were
 not properly linked to the correct data time points.
 
-Data that are saved in a format like that shown in Figure \@ref(fig:growthexcel), 
+Data that are saved in a format like that shown in Figure \@ref(fig:growthexcel2), 
 however, are hard to read in for a statistical program like R, Perl, or Python.
 In this format, the raw data (the time points each observation was collected and
 the optical density for the sample at that time point) form only part of the 
