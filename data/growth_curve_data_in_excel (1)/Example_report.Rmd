@@ -19,56 +19,57 @@ library(gridExtra)
 ```{r}
 growth_data <- read_excel("growth curve data_GR.xls",
                           sheet = "simplified_template") %>% 
-  mutate(exp_time = difftime(sampling_date_time, 
+  mutate(delta_time = difftime(sampling_date_time, 
                              first(sampling_date_time),
                              units = "hours")) %>% 
-  select(sampling_date_time, exp_time, aerated1:low_oxygen3)
+  select(sampling_date_time, delta_time, aerated1:low_oxygen3)
 ```
 
 ## Table summarizing raw data
 
 ```{r}
-kable(growth_data)
+kable(growth_data, digits = 3)
 ```
 
 ## Plot of growth curves
 
 ```{r}
-growth_data_tidy <- gather(growth_data, -c(sampling_date_time, exp_time),
-                           key = growth_condition, 
-                           value = opt_dens) %>% 
-  mutate(growth_condition = str_to_upper(growth_condition)) %>% 
-  mutate(cond_type = str_extract(growth_condition, "[A-Z]"),
-         cond_number = str_extract(growth_condition, "[0-9]"))
+growth_data_tidy <- pivot_longer(growth_data, -c(sampling_date_time, delta_time),
+                           names_to = "growth_condition", 
+                           values_to = "opt_dens") %>% 
+  mutate(growth_condition = str_to_title(growth_condition)) %>% 
+  mutate(cond_type = str_extract(growth_condition, "[A-Z][a-z_]*"),
+         cond_type = str_replace(cond_type, "_", " "),
+         test_tube_number = str_extract(growth_condition, "[0-9]"))
 ```
 
 
 ```{r message = FALSE, warning = FALSE, fig.width = 7, fig.height = 4.8}
-ggplot(growth_data_tidy, aes(x = exp_time, y = opt_dens, group = growth_condition,
-                             color = cond_type, linetype = cond_number)) + 
+ggplot(growth_data_tidy, aes(x = delta_time, y = opt_dens, group = growth_condition,
+                             color = cond_type, linetype = test_tube_number)) + 
   geom_line() + 
   geom_point() + 
   labs(x = "Time (hours)",
        y = "Optical density\n(Absorbance at 600 nm)",
-       color = "Condition type", 
-       linetype = "Condition number") + 
+       color = "Condition", 
+       linetype = "Test tube number") + 
   theme_classic() + 
   theme(legend.position = "bottom") + 
   ggtitle("Growth curves", subtitle = "Linear scale")
 ```
 
 ```{r message = FALSE, warning = FALSE, fig.width = 7, fig.height = 4.8}
-ggplot(growth_data_tidy, aes(x = exp_time, y = opt_dens, group = growth_condition,
-                             color = cond_type, linetype = cond_number)) + 
+ggplot(growth_data_tidy, aes(x = delta_time, y = opt_dens, group = growth_condition,
+                             color = cond_type, linetype = test_tube_number)) + 
   geom_line() + 
   geom_point() + 
   labs(x = "Time (hours)",
        y = "Optical density\n(Absorbance at 600 nm)",
-       color = "Condition type", 
-       linetype = "Condition number") + 
+       color = "Condition", 
+       linetype = "Test tube number") + 
   theme_classic() + 
   theme(legend.position = "bottom") + 
-  scale_y_log10() + 
+  scale_y_continuous(trans = "log10") + 
   ggtitle("Growth curves", subtitle = "Log scale")
 ```
 
@@ -76,25 +77,25 @@ ggplot(growth_data_tidy, aes(x = exp_time, y = opt_dens, group = growth_conditio
 
 ```{r}
 times_for_doubling <- growth_data %>% 
-  mutate(diff_24 = abs(exp_time - 24),
-         diff_65 = abs(exp_time - 65)) %>% 
-  summarize(closest_to_24 = exp_time[diff_24 == min(diff_24)],
-            closest_to_65 = exp_time[diff_65 == min(diff_65)])
+  mutate(diff_24 = abs(delta_time - 24),
+         diff_65 = abs(delta_time - 65)) %>% 
+  summarize(closest_to_24 = delta_time[diff_24 == min(diff_24)],
+            closest_to_65 = delta_time[diff_65 == min(diff_65)])
 
 doubling_data <- growth_data %>% 
-  filter(exp_time %in% c(times_for_doubling$closest_to_24,
+  filter(delta_time %in% c(times_for_doubling$closest_to_24,
                          times_for_doubling$closest_to_65)) %>% 
   select(-sampling_date_time) %>% 
-  gather(-exp_time, key = growth_conditions, value = opt_dens) 
+  pivot_longer(-delta_time, names_to = "growth_conditions", values_to = "opt_dens") 
 
 doubling_data <- doubling_data %>% 
   group_by(growth_conditions) %>% 
-  summarize(start_time = first(exp_time),
-            end_time = last(exp_time),
-            delta_time = last(exp_time) - first(exp_time),
+  summarize(start_time = first(delta_time),
+            end_time = last(delta_time),
+            diff_time = last(delta_time) - first(delta_time),
             delta_opt_dens = log(last(opt_dens)) - log(first(opt_dens)),
-            doubling_time = (log(2) * delta_time) / delta_opt_dens) %>% 
-  select(-c(delta_time, delta_opt_dens))
+            doubling_time = (log(2) * diff_time) / delta_opt_dens) %>% 
+  select(-c(diff_time, delta_opt_dens))
 ```
 
 ```{r}
@@ -120,17 +121,17 @@ b <- ggplot() +
             aes(xmin = closest_to_24, xmax = closest_to_65),
             ymin = -Inf, ymax = Inf,
             color = "beige", fill = "beige") +
-  geom_line(data = growth_data_tidy, aes(x = exp_time, y = opt_dens, group = growth_condition,
-                             color = cond_type, linetype = cond_number)) + 
-  geom_point(data = growth_data_tidy, aes(x = exp_time, y = opt_dens, group = growth_condition,
-                             color = cond_type, linetype = cond_number)) + 
+  geom_line(data = growth_data_tidy, aes(x = delta_time, y = opt_dens, group = growth_condition,
+                             color = cond_type, linetype = test_tube_number)) + 
+  geom_point(data = growth_data_tidy, aes(x = delta_time, y = opt_dens, group = growth_condition,
+                             color = cond_type, linetype = test_tube_number)) + 
   labs(x = "Time (hours)",
        y = "Optical density\n(Absorbance at 600 nm)",
        color = "Condition type", 
        linetype = "Condition number") + 
   theme_classic() + 
   theme(legend.position = "none") + 
-  scale_y_log10() + 
+  scale_y_continuous(trans = "log10") + 
   ggtitle("Growth curves", subtitle = "Log scale") 
 
 grid.arrange(a, b, ncol = 2)

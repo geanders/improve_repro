@@ -85,30 +85,128 @@ while working in the laboratory, but you should make sure that you're not using 
 information about the data---all color formatting will be ignored when the data are read by a 
 statistical program like R.
 
-```{r step2, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Second step in designing a tidy data collection template for the example project. This template started from the previous one, but removed columns that were hand-calculated and then entered by the researcher in the previous template. This version has removed all calculated values on the template, limiting it to only the original recorded values required for the experiment."}
-knitr::include_graphics("figures/growth_curve_step2.png")
-```
+While the template shown in Figure \@ref(fig:step1) has removed a lot of the calculated values from the
+original template, it has not removed all of them. Two of the columns are still values that were 
+determined by calculation after the original data were collected. Column B and column D both provide
+measures of the length of time since the start of the experiment, and both are calculated by 
+comparing a measurement time to the time at the start of the experiment. 
 
-```{r step3, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Third step in designing a tidy data collection template for the example project. This template started from the previous one, but combined collection of the date and time of the measurement into a single column and revised the format to include all date elements and to prevent automatic conversion by the spreadsheet program."}
-knitr::include_graphics("figures/growth_curve_step3.png")
+The time since the start of the experiment can easily be calculated later in the analysis pipeline, 
+once you read the data into a statistical program like R. By delaying this step, you can both 
+simplify the data collection template (requiring fewer columns for the research in the laboratory 
+to fill out) and also avoid the chance for mistakes, which could occur both in the hand calculations
+of these values and in data entry, when the researcher enters the results of the calculations in the
+spreadsheet cell. Figure \@ref(fig:step2) shows a new version of the template, where these calculated
+columns have been removed. This template is now restricted to only data points originally collected 
+in the course of the experiment, and has removed all elements that are based on calculations or other 
+derivatives of those original, raw data points.
+
+```{r step2, fig.fullwidth = FALSE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Second step in designing a tidy data collection template for the example project. This template started from the previous one, but removed columns that were hand-calculated and then entered by the researcher in the previous template. This version has removed all calculated values on the template, limiting it to only the original recorded values required for the experiment."}
+knitr::include_graphics("figures/growth_curve_step2.png")
 ```
 
 ### Making sensible choices about rows and columns
 
-The second principle is to **make sensible choices when dividing data collection into rows and columns**.
-There are many different ways that you could spread the data collection into rows and columns. 
-Figure \@ref(fig:extractraw) shows three examples that we can consider. 
+The second principle is to **make sensible choices when dividing data collection
+into rows and columns**. There are many different ways that you could spread the
+data collection into rows and columns, and in this step, you can consider which
+method would meet a reasonable balance between making the template easy for the
+researcher in the laboratory to use to record data and also making the resulting
+data file easy to incorporate in a reproducible data analysis pipeline. 
+
+For the example experiment, Figure \@ref(fig:extractraw) shows three examples 
+that we can consider for how to arrange data collection across rows and columns.
+All three build on the changes we made in the earlier step of "tidying" the template, 
+which resulted in the template shown in Figure \@ref(fig:step2).
 
 ```{r columnoptions, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Examples of ways that data collection could be divided into rows and columns in the example template. Panel A shows an example where date and time are recorded in different columns. Panel B is similar to Panel A, but in this case, date and time are recorded in a single column. Panel C shows a classically 'tidy' data format, where each measurement date-time is repeated for each of the five test tubes, and columns give the test tube ID and absorbance measurement at that time for that tube (only part of the data is shown for this format, while remaining rows are off the page). While Panel C provides the 'tidiest' format, it may have some practical constraints when used in a laboratory setting. For example, it would require more data entry during data collection (since date-time is entered five times at each measurement time), and its long format prevent it all from being seen at once without scrolling on a computer screen."}
 knitr::include_graphics("figures/growth_curve_column_options.png")
 ```
 
-Panel A shows an example where date and time are recorded in different columns. Panel B is similar to Panel A, but in this case, date and time are recorded in a single column. Panel C shows a classically 'tidy' data format, where each measurement date-time is repeated for each of the five test tubes, and columns give the test tube ID and absorbance measurement at that time for that tube (only part of the data is shown for this format, while remaining rows are off the page). While Panel C provides the 'tidiest' format, it may have some practical constraints when used in a laboratory setting. For example, it would require more data entry during data collection (since date-time is entered five times at each measurement time), and its long format prevent it all from being seen at once without scrolling on a computer screen.
+Panel A (an exact repeat of the template shown in Figure \@ref(fig:step2)) shows
+an example where date and time are recorded in different columns. Panel B is
+similar to Panel A, but in this case, date and time are recorded in a single
+column. Panel C shows a classically "tidy" data format, where each measurement's
+date-time is repeated for each of the five test tubes, and columns give the test
+tube ID and absorbance measurement at that time for that tube (only part of the
+data is shown for this format, while remaining rows are off the page). 
+
+In this example, the template that may be the most reasonable is the one shown
+in Panel B. While Panel C provides the "tidiest" format, it has some practical
+constraints when used in a laboratory setting. For example, it would require
+more data entry during data collection (since date-time is entered five times at
+each measurement time), and its long format prevent it all from being seen at
+once without scrolling on a computer screen. When comparing Panels A and B, the
+template in Panel B has an advantage. The information on date and time are
+useful together, but not individually. For example, to calculate the time since
+the start of the experiment, you cannot just calculate the difference in dates
+or just the difference in times, but instead must consider both the date and
+time of the measurement in comparison to the date and time of the start of the
+experiment. As a result, at some point in the data analysis pipeline, you'll
+need to combine information about the date and the time to make use of the two
+elements. While this combination of two columns can be easily done within a
+statistical program like R, it can also be directly designed into the original
+template for collecting the data. Therefore, unless there is a practical reason
+why it would be easier for the researcher to enter date and time separately, the
+template shown in Panel B is preferable to that shown in Panel A in terms of
+allowing for the "tidy" collection of research data into a file that is easy to
+include in a reproducible pipeline. Figure \@ref(fig:step3) shows the template
+design at this stage in the process of tidying it, highlighting the column that
+combines date and time elements in a single column. In this version of the
+template, we've also been careful about how date and time are recorded, a
+consideration that we'll discuss more in the next section.
+
+```{r step3, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Third step in designing a tidy data collection template for the example project. This template started from the previous one, but combined collection of the date and time of the measurement into a single column and revised the format to include all date elements and to prevent automatic conversion by the spreadsheet program."}
+knitr::include_graphics("figures/growth_curve_step3.png")
+```
 
 ### Avoiding problematic characters or formatting
 
 The third principle is to **avoid characters or formatting that will make it
-hard for a computer program to process the data**.
+hard for a computer program to process the data**. There are a number of special 
+characters and formatting conventions that can be hard for a statistical program to 
+handle. In the example template shown in Figure \@ref(fig:step3), for example, 
+the column names include spaces (for example, in "Date and time"), as well as 
+parenthese (for example, in "VA 001 (A1)"). While most statistical programs have 
+tools that allow you to handle and convert these characters once the data are 
+read in, it's even simpler to use simpler column names in the original data collection
+template, and this will save some extra coding further along in the analysis pipeline.
+Two general rules for creating easy-to-use column names in a data collection template
+are: (1) start each column name with a letter and (2) for the rest of the column 
+name, use only letters, numbers, or the underscore character ("_"). For example, 
+"aerated1" would work well, but "1--aerated" would not.
+
+Within the cell values below the column names, there is more flexibility. For example, 
+if you have a column that gives the IDs of different samples, it would be fine to include
+spaces and other characters in those IDs. There are a few exceptions, however. A big one 
+is with values that record dates or date-time combinations. First, it is important to include
+all elements of the date (or date and time, if both are recorded). For example, the year 
+should be included in the recorded date, even if the experiment only took a few days. 
+This is because statistical programs have excellent functions for working with data that
+are dates or date-times, but to take advantage of these, the data must be converted into 
+a special class in the program, and conversion to that class requires specific elements
+(for example, a date must include the year, month, and day of month). Second, it is 
+useful to avoid recording dates and date-times in a way that results in a spreadsheet 
+program automatically converting them. Surrounding the information about a date in 
+quotation marks when entering it (as shown in Figure \@ref(fig:step3)) can avoid this.
+Finally, consider using a format to record the date that is unambiguous and so less likely
+to have recording errors. Dates, for example, are sometimes recorded using only numbers---for
+example, the first date of "July 9, 2019" in the example data could be recorded as 
+"7/9/2019" or "7/9/19", to be even more concise. However, this format has some ambiguity.
+It can be unclear if this refers to July 9 or to September 7, both of which could be 
+written as "7/9". For the version that uses two digits for the year, it can be unclear 
+if the date is for 2019 or 1919 (or any other century). Using the format "July 9, 2019", 
+as done in the latest version of the sample template, avoids this potential ambiguity.
+
+Figure \@ref(fig:growthsimple2) shows the template for the example experiment after the 
+column names have been revised to avoid any problematic characters. This template is now in 
+a very useful format for a reproducible research pipeline---the data collected using this 
+template can be very easily read into and processed using further statistical programs like 
+R or Python.
+
+```{r growthsimple2, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created---these are all done later, using a code script."}
+knitr::include_graphics("figures/growth_curve_simple.png")
+```
 
 ### Moving further data analysis to later in the pipeline
 
@@ -193,14 +291,12 @@ and create figures. By separating out the steps of data recording from
 data analysis, you can ensure that all steps of analysis are clearly spelled 
 out (and can be easily reproduced with other similar data) through a code 
 script. Note that you can still collect the data in this simpler format using
-a spreadsheet program, if you'd like---Figure \@ref(fig:growthsimple) shows 
+a spreadsheet program, if you'd like---Figure \@ref(fig:growthsimple2) shows 
 the data collection set up to be recorded in a spreadsheet program, for example.
 Within the spreadsheet, you can choose to save the data in a plain text format
 (a csv [comma-separated value] file, for example).
 
-```{r growthsimple, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created---these are all done later, using a code script."}
-knitr::include_graphics("figures/growth_curve_simple.png")
-```
+
 In this new data collection format, the data are not completely "tidy". This is because
 there is still some information included in the column names that we might want to use 
 for analysis and plotting---namely, the different experimental group names (e.g., 
@@ -210,7 +306,7 @@ programming environment like R, as well as in a format that will be easy to conv
 to a truly "tidy" format once they are read in. However, it's okay to balance these
 needs with aims to make the data collection spreadsheet easy for a researcher to use.
 
-The example shown in Figure \@ref(fig:growthsimple) is designed to be easy to use 
+The example shown in Figure \@ref(fig:growthsimple2) is designed to be easy to use 
 when collecting data. All data points for a single collection time are grouped together
 on a single row. When a researchers collects data for one time point, he or she can 
 easy confirm visually that all the experimental groups have been measured for that 
@@ -224,7 +320,7 @@ read into R, there can be converted into a truly tidy data format with just a fe
 command calls. 
 
 The following code shows an example of how easy it is to read data into R in the simplified
-format shown in Figure \@ref(fig:growthsimple). It also shows how a few lines of code
+format shown in Figure \@ref(fig:growthsimple2). It also shows how a few lines of code
 can then be used to convert the data into a truly "tidy" format, and how easily 
 sophisticated plots can then be made with the data.
 
