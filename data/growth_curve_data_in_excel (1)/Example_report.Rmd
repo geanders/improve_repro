@@ -1,6 +1,6 @@
 ---
-title: "Sample report for growth curves"
-output: word_document
+title: "Sample report for growth curve experiment"
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -8,6 +8,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ```{r message = FALSE}
+## Load packages with additional functionality beyond base R 
 library(readxl)
 library(tidyverse)
 library(knitr)
@@ -17,125 +18,169 @@ library(gridExtra)
 ```
 
 ```{r}
+# Read in data from the Excel spreadsheet template used to collect the
+# data in the laboratory
 growth_data <- read_excel("growth curve data_GR.xls",
-                          sheet = "simplified_template") %>% 
-  mutate(delta_time = difftime(sampling_date_time, 
-                             first(sampling_date_time),
-                             units = "hours")) %>% 
-  select(sampling_date_time, delta_time, aerated1:low_oxygen3)
+                          sheet = "simplified_template") 
+
+# For each measurement time, calculate the time since the start of the
+# experiment
+growth_data <- growth_data %>% 
+  mutate(sampling_delta_time = difftime(sampling_date_time, 
+                                        first(sampling_date_time),
+                                        units = "hours"))
+
+# Convert to a format that will be easier to work with in plotting and
+# data analysis (one row for each combination of measurement time and 
+# test tube).
+growth_data_tidy <- pivot_longer(growth_data, 
+                                 -c(sampling_date_time, 
+                                    sampling_delta_time),
+                           names_to = "test_tube_id", 
+                           values_to = "optical_density") 
+
+# From the test tube IDs, extract information like the growth condition (low 
+# oxygen versus aerated) and a short tube ID (e.g., A1, L2). You can use
+# regular expression functions (from the `stringr` package in the `tidyverse`)
+# to do this.
+growth_data_tidy <- growth_data_tidy %>% 
+  mutate(test_tube_number = str_extract(test_tube_id, "[0-9]"),
+         growth_condition = str_extract(test_tube_id, "[a-z_]*"), 
+         growth_condition = str_replace(growth_condition, "_", " "), 
+         growth_condition = str_to_title(growth_condition),
+         short_tube_id = str_c(str_sub(growth_condition, 1, 1), test_tube_number)) %>% 
+  select(sampling_date_time, sampling_delta_time, short_tube_id, growth_condition, optical_density)
 ```
 
-## Table summarizing raw data
-
-```{r}
-kable(growth_data, digits = 3)
-```
-
-## Plot of growth curves
-
-```{r}
-growth_data_tidy <- pivot_longer(growth_data, -c(sampling_date_time, delta_time),
-                           names_to = "growth_condition", 
-                           values_to = "opt_dens") %>% 
-  mutate(growth_condition = str_to_title(growth_condition)) %>% 
-  mutate(cond_type = str_extract(growth_condition, "[A-Z][a-z_]*"),
-         cond_type = str_replace(cond_type, "_", " "),
-         test_tube_number = str_extract(growth_condition, "[0-9]"))
-```
 
 
-```{r message = FALSE, warning = FALSE, fig.width = 7, fig.height = 4.8}
-ggplot(growth_data_tidy, aes(x = delta_time, y = opt_dens, group = growth_condition,
-                             color = cond_type, linetype = test_tube_number)) + 
-  geom_line() + 
+```{r message = FALSE, warning = FALSE, fig.width = 7, fig.height = 3}
+ggplot(growth_data_tidy, 
+       # Plot time since start on the x-axis, optical density on the y-axis,
+       # and use color to show the growth condition (aerated versus low oxygen)
+       aes(x = sampling_delta_time, 
+           y = optical_density, 
+           color = growth_condition)) + 
+  # Add a line with different patterns for each test tube
+  geom_line(aes(linetype = short_tube_id)) + 
+  # Add points for each measurement
   geom_point() + 
+  # Customize the labels for the legends and x- and y-axes
   labs(x = "Time (hours)",
-       y = "Optical density\n(Absorbance at 600 nm)",
-       color = "Condition", 
+       y = "Optical density at 600 nm",
+       color = "Growth condition", 
        linetype = "Test tube number") + 
+  # Customize the plot appearance
   theme_classic() + 
-  theme(legend.position = "bottom") + 
-  ggtitle("Growth curves", subtitle = "Linear scale")
-```
-
-```{r message = FALSE, warning = FALSE, fig.width = 7, fig.height = 4.8}
-ggplot(growth_data_tidy, aes(x = delta_time, y = opt_dens, group = growth_condition,
-                             color = cond_type, linetype = test_tube_number)) + 
-  geom_line() + 
-  geom_point() + 
-  labs(x = "Time (hours)",
-       y = "Optical density\n(Absorbance at 600 nm)",
-       color = "Condition", 
-       linetype = "Test tube number") + 
-  theme_classic() + 
-  theme(legend.position = "bottom") + 
-  scale_y_continuous(trans = "log10") + 
-  ggtitle("Growth curves", subtitle = "Log scale")
-```
-
-## Table of growth times---24 to 65 hours
-
-```{r}
-times_for_doubling <- growth_data %>% 
-  mutate(diff_24 = abs(delta_time - 24),
-         diff_65 = abs(delta_time - 65)) %>% 
-  summarize(closest_to_24 = delta_time[diff_24 == min(diff_24)],
-            closest_to_65 = delta_time[diff_65 == min(diff_65)])
-
-doubling_data <- growth_data %>% 
-  filter(delta_time %in% c(times_for_doubling$closest_to_24,
-                         times_for_doubling$closest_to_65)) %>% 
-  select(-sampling_date_time) %>% 
-  pivot_longer(-delta_time, names_to = "growth_conditions", values_to = "opt_dens") 
-
-doubling_data <- doubling_data %>% 
-  group_by(growth_conditions) %>% 
-  summarize(start_time = first(delta_time),
-            end_time = last(delta_time),
-            diff_time = last(delta_time) - first(delta_time),
-            delta_opt_dens = log(last(opt_dens)) - log(first(opt_dens)),
-            doubling_time = (log(2) * diff_time) / delta_opt_dens) %>% 
-  select(-c(diff_time, delta_opt_dens))
-```
-
-```{r}
-kable(doubling_data)
+  # Add a title and subtitle
+  ggtitle("Growth curve", subtitle = "Linear scale on y-axis") + 
+  # Ensure that the y-axis ranges from 0 to 1
+  ylim(c(0, 1))
 ```
 
 ```{r message = FALSE, warning = FALSE, fig.width = 7, fig.height = 3}
-doubling_data <- doubling_data %>% 
-  mutate(growth_conditions = str_to_upper(growth_conditions),
-         cond_type = str_extract(growth_conditions, "[A-Z]"),
-         cond_num = str_extract(growth_conditions, "[0-9]"))
-
-a <- ggplot(doubling_data, aes(x = growth_conditions, y = doubling_time, fill = cond_type)) + 
-  geom_col() + 
-  theme_classic() + 
-  labs(y = "Doubling time (hours)", 
-       x = "") + 
-  theme(legend.position = "none") + 
-  ggtitle("Doubling times", subtitle = "24 to 65 hours")
-
-b <- ggplot() + 
-  geom_rect(data = times_for_doubling,
-            aes(xmin = closest_to_24, xmax = closest_to_65),
-            ymin = -Inf, ymax = Inf,
-            color = "beige", fill = "beige") +
-  geom_line(data = growth_data_tidy, aes(x = delta_time, y = opt_dens, group = growth_condition,
-                             color = cond_type, linetype = test_tube_number)) + 
-  geom_point(data = growth_data_tidy, aes(x = delta_time, y = opt_dens, group = growth_condition,
-                             color = cond_type, linetype = test_tube_number)) + 
+ggplot(growth_data_tidy, 
+       # Plot time since start on the x-axis, optical density on the y-axis,
+       # and use color to show the growth condition (aerated versus low oxygen)
+       aes(x = sampling_delta_time, 
+           y = optical_density, 
+           color = growth_condition)) + 
+  # Add a line with different patterns for each test tube
+  geom_line(aes(linetype = short_tube_id)) + 
+  # Add points for each measurement
+  geom_point() + 
+  # Customize the labels for the legends and x- and y-axes
   labs(x = "Time (hours)",
-       y = "Optical density\n(Absorbance at 600 nm)",
+       y = "Optical density at 600 nm",
+       color = "Growth condition", 
+       linetype = "Test tube number") + 
+  # Customize the plot appearance
+  theme_classic() + 
+  # Add a title and subtitle
+  ggtitle("Growth curve", subtitle = "Log-10 scale on y-axis") + 
+  # Use a log scale for the y-axis. Ensure that the y-axis ranges 
+  # from 0.01 to 1 (you can't start at 0, since that's undefined 
+  # as a log transform)
+  scale_y_log10(limits = c(0.01, 1))
+```
+
+\newpage
+
+
+```{r message = FALSE, warning = FALSE}
+# Write a short function that can find the measurement time that is closest to, 
+# but does not exceed, a specified time. For example, if you want to measure
+# growth rate between 24 hours and 48 hours, you can use this function to find
+# the measurement times closest to (while still being below) 24 and 48 hours.
+find_closest_time <- function(data, check_time) {
+  data %>%
+    filter(sampling_delta_time < check_time) %>% 
+    mutate(diff_from_check = check_time - sampling_delta_time) %>% 
+    slice_min(n = 1, order_by = diff_from_check) %>% 
+    pull(sampling_delta_time)
+}
+
+# Use the function to find the sampling times closest to (but not 
+# over) 24 and 65 hours
+closest_to_24 <- find_closest_time(growth_data, 24)
+closest_to_65 <- find_closest_time(growth_data, 65)
+
+# Calculate doubling times from the data
+doubling_times <- growth_data_tidy %>% 
+  filter(sampling_delta_time == closest_to_24 |
+           sampling_delta_time == closest_to_65) %>% 
+  group_by(short_tube_id, growth_condition) %>% 
+  summarize(delta_time = diff(sampling_delta_time), 
+            delta_optical_density = diff(log2(optical_density))) %>% 
+  mutate(generation_time = delta_time / delta_optical_density)
+```
+
+
+```{r message = FALSE, warning = FALSE, fig.width = 7, fig.height = 3}
+a <- ggplot(growth_data_tidy, 
+       aes(x = sampling_delta_time, 
+           y = optical_density, 
+           color = growth_condition)) + 
+  geom_rect(xmin = closest_to_24, 
+            xmax = closest_to_65, 
+            ymin = -Inf, 
+            ymax = Inf, 
+            color = "beige", 
+            fill = "beige") + 
+  geom_line(aes(linetype = short_tube_id)) + 
+  geom_point() + 
+  labs(x = "Time (hours)",
+       y = "Optical density at 600 nm)",
        color = "Condition type", 
        linetype = "Condition number") + 
   theme_classic() + 
+  scale_y_log10() + 
   theme(legend.position = "none") + 
-  scale_y_continuous(trans = "log10") + 
   ggtitle("Growth curves", subtitle = "Log scale") 
+
+b <- ggplot(doubling_times,
+            aes(x = short_tube_id, 
+                y = generation_time, 
+                fill = growth_condition)) + 
+  geom_col() + 
+  theme_classic() + 
+  labs(y = "Doubling time (hours)", 
+       x = "Test Tube ID", 
+       fill = "Growth conditions") + 
+  theme(legend.position = "top") + 
+  ggtitle("Doubling times", subtitle = "24 to 65 hours")
 
 grid.arrange(a, b, ncol = 2)
 ```
 
+### Table of estimated doubling times
+ 
+```{r}
+# Create a table giving the estimated doubling times
+doubling_times %>% 
+  select(short_tube_id, growth_condition, generation_time) %>% 
+  kable(col.names = c("Tube ID", "Growth conditions", "Estimated doubling time"), 
+        digits = 2)
+```
 
 
