@@ -272,14 +272,118 @@ There are many different ways that you could spread the data collection into row
 ...
 
 The third principle is to **avoid characters or formatting that will make it
-hard for a computer program to process the data**. 
+hard for a computer program to process the data**. This principle is
+particularly important for the column names for each column. When you read data
+into a statistical program like R, these names will automatically be used as the
+column names in the R data frame object, and the code will regularly use these
+column names to refer to parts of the data when analyzing and visualizing it.
+You will find it easiest to use the data in a reproducible pipeline if you
+follow a full rules for the column names. The reason that these rules will help
+is that they replicate the rules for naming objects in programming languages,
+and so will help in seamlessly transitioning between the stages of data
+collection and data analysis. First, always start a column name with a letter
+and, second, only use letters, numbers, or the underscore character ("_") for
+the rest of the characters in the column name.
 
-[Special characters. Spaces. Really long column names. Dates in Excel]
+Based on these rules, then, you should avoid putting spaces in your column names
+when you design a data collection template. It is tempting to include spaces to 
+make the names clearer for humans to read, and this is understandable. Often, 
+using an underscore in place of a space can allow for easy human comprehension 
+while still avoiding characters that are difficult for statistical programs. 
+For example, if you have a column named "Optical density", you can change it 
+to "Optical_density" without making it much more difficult for a person to 
+understand. As with other choices in designing a data collection template,
+these choices about column names can be a balance between making the template 
+easy for researchers to use in the laboratory and easy for the statistical 
+program to parse later in the pipeline. For example, statistical programs like
+R have functions for working with character strings that can be used to 
+replace all the spaces in column names with another character. However, if 
+it isn't unreasonable to follow the recommended rules in writing column names 
+for the data collection template, you can keep code later in the pipeline 
+much simpler, so it's worth considering.
 
-These three principles are an excellent starting point for designing a "tidy" template for collecting
-data, and they often
-[Others: Use things like column names to include information (starts with "A"---one treatment; starts
-with "B"---a different one)]
+Beyond spaces, there are a number of other special characters that you might
+be tempted to include in column names. These could include parentheses, dollar signs, 
+percent signs, hash marks ("#"), and so on. Any of these will require extra code
+in later steps of an analysis pipeline, and some can cause more severe problems
+because they have special functionality in the programming language. For example, 
+hash marks are used in the R programming language to add comments within code, while
+dollar signs are used for subsetting elements of a list or data frame object. 
+It is worth the effort to avoid all these characters in column names in a data
+collection template.
+
+There are also considerations you can make in terms of how you record data within
+cells of the data collection template, and these can make a big difference in terms
+of how hard or easy it is to work with the data within a statistical program. While
+statistical programs like R are very powerful in terms of being able to handle even 
+very "messy" input data, they require a lot of code to leverage this power. By being
+thoughtful when you design the template to record the data, you can avoid having to 
+use a lot of code to input and clean the data in later stages of the pipeline.
+
+Figure \@ref(fig:recordingtime) gives an example of a choice that you could make
+in the format you use to record data. This figure shows two columns from the original 
+data collection template from the example experiment for this module. This template includes
+two columns that record the time since the start of the experiment, and they use different
+formats for doing this. In column B, time is recorded in hours and minutes, with the characters
+"hr" and "min" used to separate the two time components. In column D, the same information is 
+recorded, but in decimals of hours (e.g., 4.08 hours for 4 hours and 5 minutes). While the 
+format in column B is more similar to how humans think of time, it will take more code to 
+parse in a statistical program. When reading this data into a program like R, you would need to
+use regular expressions to split apart the different elements and then recombine them into 
+a format that the program understands. By contrast, the values recorded in column D could be 
+easily read in by a statistical program, with minimal code needed before they could be used in 
+analysis and visualizations.
+
+```{r recordingtime, fig.fullwidth = FALSE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Examples of two ways of recording time in the original template from the example experiment. Column B uses hours and minutes, with characters embedded to separate hours from minutes, while column D uses hours in decimal degrees. The format in column D will be much easier to integrate into a larger data analysis pipeline."}
+knitr::include_graphics("figures/growth_curve_recording_time.png")
+```
+
+Finally, when you are designing the data collection template, you should try to
+avoid using formats that may be "auto-converted" by the spreadsheet program. For
+example, if you enter a value like "7-9-19" into a cell, the spreadsheet may try
+to automatically convert it to a date. Perhaps it is a date, but even if it is,
+the spreadsheet algorithm might make problematic assumptions in the conversion.
+For example, it might assume that "7-9-19" means July 9, 2019, when you meant
+for it to represent September 7, 1919. Further, there are cases where you might
+enter a value that is not a date, but that the spreadsheet thinks is based on
+its formatting. This was found to be a problem, for example, for some gene
+names. To avoid potential autoconversion by the spreadsheet, consider putting
+any character stings, including entries with dates and identifiers, inside 
+quotation marks when you enter them in the spreadsheet program. The spreadsheet 
+program will respect this as a sign to leave the entry as-is, rather than 
+attempting automatic formatting into a date or other special class of data.
+
+These three principles are an excellent starting point for designing a "tidy"
+template for collecting data. By using these, you will be well on your way to
+collecting data in a way that is easy to integrate in a longer reproducible data
+analysis pipeline. There are some additional steps that you could consider that
+can help make it easier to do clever and interesting things with your data once
+you read it into a statistical program.
+
+For example, you could design column names and column entries so that you will
+be able to take advantage of statistical programming tools based on something
+called regular expressions. "Regular expressions" refers to patterns in
+character strings (which are just strings of one or more characters, like
+"aerated_1" or "mouseID") that can be described and searched for using defined
+patterns. For example, take the following set of character strings: "aerated1",
+"aerated3", "low_oxygen1", "low_oxygen2", "low_oxygen3". These strings current
+include two pieces of information. First, they give the growth condition, which
+is either "aerated" or "low_oxygen". This information is given in each string
+using only alphabetical characters (e.g., a, b, c) and the underscore character.
+Next, the strings include information on the test tube of the sample for that
+condition---for example, "aerated1" indicates the first test tube under the 
+aerated conditions. This test tube number is given using only numerical 
+characters (e.g., 1, 2, 3). Since these pieces of information are encoded
+in the character strings using these patterns, you can use regular expressions
+in a program like R to isolate only the non-numeric part of each string
+("aerated" versus "low_oxygen") or only the number part ("1", "2", or "3"). 
+This functionality can be a very powerful way to use column names and cell values
+to encode information that you can later separate or extract to use in things 
+like adding color to plots based on certain conditions. In the next module, 
+we'll show an example of using regular expressions in this way to leverage
+information taken when collecting the data. When designing a tidy data collection 
+template, it's worthwhile to think of writing column names or otherwise recording
+data in a way that uses these types of regular patterns in a meaningful way. 
 
 When you convert data collection templates to "tidier" formats, they will
 typically look much simpler than the templates that your research group may have
