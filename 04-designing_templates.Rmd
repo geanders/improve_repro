@@ -257,19 +257,41 @@ These three principles are:
 2. Make sensible choices when dividing data collection into rows and columns.
 3. Avoid characters or formatting that will make it hard for a computer program to process the data.
 
-The first principle in designing a tidier template for collecting laboratory data is to **limit the
-template to the collection of data**. The key here is the word "collection". A tidy template will 
-avoid any calculations done on the original data and instead focus only on the initial data that 
-the researcher records for the experiment. 
+The first principle in designing a tidier template for collecting laboratory
+data is to **limit the template to the collection of data**. The key here is the
+word "collection". A tidy template will avoid any calculations done on the
+original data and instead focus only on the initial data that the researcher
+records for the experiment. This means that you should exclude from the template
+any element that provides a calculation, summary, or plot based on the initial
+recorded element. You should also exclude any special formatting that you are using
+to encode information. For example, say that you are collecting data, and in some 
+cases you get a warning that the reading may be below the instrument's detection 
+limit. It may be tempting to highlight the cells with measurements where this warning
+was displayed as you record the data. However, you should avoid doing this, as any 
+color or other formatting information will be lost when you read the data in the 
+file into a statistical program. Instead, you could add a second column to indicate
+if the measurement included a warning.
 
-... [Includes all macros, plots, summaries, notes. Could also include embedded formulas or columns based
-on hand calculations.
-Could also include formatting that's meant to contain info about the data---things like color
-to show one experimental condition or the other.] ...
+The second principle is to **make sensible choices when dividing data collection
+into rows and columns**. There are many different ways that you could spread the
+data collection into rows and columns. One decision is how (and whether) to
+divide recorded information across columns. Figure \@ref(fig:arrangingcolumns),
+for example, shows several ways that you could divide data on a date and time
+into one or more columns. In this example, it typically makes the most sense
+to use a single column to record all the date and time elements (the top example
+in Figure \@ref(fig:arrangingcolumns)). Most statistical programs have powerful 
+functions for parsing dates and times, after which they store these data in special
+classes that allow time-related operations (for example, calculating the time difference
+between two date-time measurements). It will be most efficient to record all date and 
+time elements in a single column. 
 
-The second principle is to **make sensible choices when dividing data collection into rows and columns**.
-There are many different ways that you could spread the data collection into rows and columns. 
-...
+```{r arrangingcolumns, fig.fullwidth = FALSE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Examples of special characters and formatting in the example template that could cause problems later in a data analysis pipeline."}
+knitr::include_graphics("figures/arranging_columns.png")
+```
+
+Conversely ... [information that R doesn't have a function to parse.]
+
+[Long versus wide formats.]
 
 The third principle is to **avoid characters or formatting that will make it
 hard for a computer program to process the data**. This principle is
@@ -321,18 +343,20 @@ thoughtful when you design the template to record the data, you can avoid having
 use a lot of code to input and clean the data in later stages of the pipeline.
 
 Figure \@ref(fig:recordingtime) gives an example of a choice that you could make
-in the format you use to record data. This figure shows two columns from the original 
-data collection template from the example experiment for this module. This template includes
-two columns that record the time since the start of the experiment, and they use different
-formats for doing this. In column B, time is recorded in hours and minutes, with the characters
-"hr" and "min" used to separate the two time components. In column D, the same information is 
-recorded, but in decimals of hours (e.g., 4.08 hours for 4 hours and 5 minutes). While the 
-format in column B is more similar to how humans think of time, it will take more code to 
-parse in a statistical program. When reading this data into a program like R, you would need to
-use regular expressions to split apart the different elements and then recombine them into 
-a format that the program understands. By contrast, the values recorded in column D could be 
-easily read in by a statistical program, with minimal code needed before they could be used in 
-analysis and visualizations.
+in the format you use to record data. This figure shows two columns from the
+original data collection template from the example experiment for this module.
+This template includes two columns that record the time since the start of the
+experiment, and they use different formats for doing this. In column B, time is
+recorded in hours and minutes, with the characters "hr" and "min" used to
+separate the two time components. In column D, the same information is recorded,
+but in decimals of hours (e.g., 4.08 hours for 4 hours and 5 minutes). While the
+format in column B is more similar to how humans think of time, it will take
+more code to parse in a statistical program. When reading this data into a
+program like R, you would need to use regular expressions to split apart the
+different elements and then recombine them into a format that the program
+understands. By contrast, the values recorded in column D could be easily read
+in by a statistical program, with minimal code needed before they could be used
+in analysis and visualizations.
 
 ```{r recordingtime, fig.fullwidth = FALSE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Examples of two ways of recording time in the original template from the example experiment. Column B uses hours and minutes, with characters embedded to separate hours from minutes, while column D uses hours in decimal degrees. The format in column D will be much easier to integrate into a larger data analysis pipeline."}
 knitr::include_graphics("figures/growth_curve_recording_time.png")
