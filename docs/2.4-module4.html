@@ -393,17 +393,40 @@ These three principles are:</p>
 <li>Make sensible choices when dividing data collection into rows and columns.</li>
 <li>Avoid characters or formatting that will make it hard for a computer program to process the data.</li>
 </ol>
-<p>The first principle in designing a tidier template for collecting laboratory data is to <strong>limit the
-template to the collection of data</strong>. The key here is the word “collection.” A tidy template will
-avoid any calculations done on the original data and instead focus only on the initial data that
-the researcher records for the experiment.</p>
-<p>… [Includes all macros, plots, summaries, notes. Could also include embedded formulas or columns based
-on hand calculations.
-Could also include formatting that’s meant to contain info about the data—things like color
-to show one experimental condition or the other.] …</p>
-<p>The second principle is to <strong>make sensible choices when dividing data collection into rows and columns</strong>.
-There are many different ways that you could spread the data collection into rows and columns.
-…</p>
+<p>The first principle in designing a tidier template for collecting laboratory
+data is to <strong>limit the template to the collection of data</strong>. The key here is the
+word “collection.” A tidy template will avoid any calculations done on the
+original data and instead focus only on the initial data that the researcher
+records for the experiment. This means that you should exclude from the template
+any element that provides a calculation, summary, or plot based on the initial
+recorded element. You should also exclude any special formatting that you are using
+to encode information. For example, say that you are collecting data, and in some
+cases you get a warning that the reading may be below the instrument’s detection
+limit. It may be tempting to highlight the cells with measurements where this warning
+was displayed as you record the data. However, you should avoid doing this, as any
+color or other formatting information will be lost when you read the data in the
+file into a statistical program. Instead, you could add a second column to indicate
+if the measurement included a warning.</p>
+<p>The second principle is to <strong>make sensible choices when dividing data collection
+into rows and columns</strong>. There are many different ways that you could spread the
+data collection into rows and columns. One decision is how (and whether) to
+divide recorded information across columns. Figure <a href="2.4-module4.html#fig:arrangingcolumns">2.7</a>,
+for example, shows several ways that you could divide data on a date and time
+into one or more columns. In this example, it typically makes the most sense
+to use a single column to record all the date and time elements (the top example
+in Figure <a href="2.4-module4.html#fig:arrangingcolumns">2.7</a>). Most statistical programs have powerful
+functions for parsing dates and times, after which they store these data in special
+classes that allow time-related operations (for example, calculating the time difference
+between two date-time measurements). It will be most efficient to record all date and
+time elements in a single column.</p>
+<div class="figure"><span style="display:block;" id="fig:arrangingcolumns"></span>
+<p class="caption marginnote shownote">
+Figure 2.7: Examples of special characters and formatting in the example template that could cause problems later in a data analysis pipeline.
+</p>
+<img src="figures/arranging_columns.png" alt="Examples of special characters and formatting in the example template that could cause problems later in a data analysis pipeline." width="\textwidth"  />
+</div>
+<p>Conversely … [information that R doesn’t have a function to parse.]</p>
+<p>[Long versus wide formats.]</p>
 <p>The third principle is to <strong>avoid characters or formatting that will make it
 hard for a computer program to process the data</strong>. This principle is
 particularly important for the column names for each column. When you read data
@@ -449,22 +472,24 @@ statistical programs like R are very powerful in terms of being able to handle e
 very “messy” input data, they require a lot of code to leverage this power. By being
 thoughtful when you design the template to record the data, you can avoid having to
 use a lot of code to input and clean the data in later stages of the pipeline.</p>
-<p>Figure <a href="2.4-module4.html#fig:recordingtime">2.7</a> gives an example of a choice that you could make
-in the format you use to record data. This figure shows two columns from the original
-data collection template from the example experiment for this module. This template includes
-two columns that record the time since the start of the experiment, and they use different
-formats for doing this. In column B, time is recorded in hours and minutes, with the characters
-“hr” and “min” used to separate the two time components. In column D, the same information is
-recorded, but in decimals of hours (e.g., 4.08 hours for 4 hours and 5 minutes). While the
-format in column B is more similar to how humans think of time, it will take more code to
-parse in a statistical program. When reading this data into a program like R, you would need to
-use regular expressions to split apart the different elements and then recombine them into
-a format that the program understands. By contrast, the values recorded in column D could be
-easily read in by a statistical program, with minimal code needed before they could be used in
-analysis and visualizations.</p>
+<p>Figure <a href="2.4-module4.html#fig:recordingtime">2.8</a> gives an example of a choice that you could make
+in the format you use to record data. This figure shows two columns from the
+original data collection template from the example experiment for this module.
+This template includes two columns that record the time since the start of the
+experiment, and they use different formats for doing this. In column B, time is
+recorded in hours and minutes, with the characters “hr” and “min” used to
+separate the two time components. In column D, the same information is recorded,
+but in decimals of hours (e.g., 4.08 hours for 4 hours and 5 minutes). While the
+format in column B is more similar to how humans think of time, it will take
+more code to parse in a statistical program. When reading this data into a
+program like R, you would need to use regular expressions to split apart the
+different elements and then recombine them into a format that the program
+understands. By contrast, the values recorded in column D could be easily read
+in by a statistical program, with minimal code needed before they could be used
+in analysis and visualizations.</p>
 <div class="figure"><span style="display:block;" id="fig:recordingtime"></span>
 <p class="caption marginnote shownote">
-Figure 2.7: Examples of two ways of recording time in the original template from the example experiment. Column B uses hours and minutes, with characters embedded to separate hours from minutes, while column D uses hours in decimal degrees. The format in column D will be much easier to integrate into a larger data analysis pipeline.
+Figure 2.8: Examples of two ways of recording time in the original template from the example experiment. Column B uses hours and minutes, with characters embedded to separate hours from minutes, while column D uses hours in decimal degrees. The format in column D will be much easier to integrate into a larger data analysis pipeline.
 </p>
 <img src="figures/growth_curve_recording_time.png" alt="Examples of two ways of recording time in the original template from the example experiment. Column B uses hours and minutes, with characters embedded to separate hours from minutes, while column D uses hours in decimal degrees. The format in column D will be much easier to integrate into a larger data analysis pipeline." width="\textwidth"  />
 </div>
@@ -522,7 +547,7 @@ this module). By comparison, the starting template for data collection for this
 experiment is shown in Figure <a href="2.4-module4.html#fig:growthexcel1">2.2</a>.</p>
 <div class="figure"><span style="display:block;" id="fig:growthsimple1"></span>
 <p class="caption marginnote shownote">
-Figure 2.8: Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created—these are all done later, using a code script.
+Figure 2.9: Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created—these are all done later, using a code script.
 </p>
 <img src="figures/growth_curve_simple.png" alt="Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created---these are all done later, using a code script." width="\textwidth"  />
 </div>
@@ -535,10 +560,10 @@ easy to connect the tidier raw data file to reporting tools. In this way, you ca
 quickly create real-time summaries of the data that are similar to those shown in
 Figure <a href="2.4-module4.html#fig:growthexcel1">2.2</a>, but that are created and reported outside the file
 used to originally record the data.</p>
-<p>Figure <a href="2.4-module4.html#fig:growthreport1">2.9</a> shows an example of a simple report that could
+<p>Figure <a href="2.4-module4.html#fig:growthreport1">2.10</a> shows an example of a simple report that could
 be created for the example experiment. This report is generated using a
 statistical program, R, which inputs the data from the simple template shown in
-Figure <a href="2.4-module4.html#fig:growthsimple1">2.8</a>. The report then uses R code to generate a PDF
+Figure <a href="2.4-module4.html#fig:growthsimple1">2.9</a>. The report then uses R code to generate a PDF
 or Word file with the output shown below. The file for this report is created in
 a way that the output can be quickly regenerated with a single button click, and
 so it can be applied to other data saved using the same template. In fact, you can
@@ -548,10 +573,10 @@ the generating file for this report.</p>
 <div class="figure fullwidth"><span style="display:block;" id="fig:growthreport1"></span>
 <img src="figures/growth_curve_report.png" alt="Examples of an automated report that can be created to quickly generate summaries and estimates of the data collected in the simplified data collection template for the example experiment." width="\textwidth"  />
 <p class="caption marginnote shownote">
-Figure 2.9: Examples of an automated report that can be created to quickly generate summaries and estimates of the data collected in the simplified data collection template for the example experiment.
+Figure 2.10: Examples of an automated report that can be created to quickly generate summaries and estimates of the data collected in the simplified data collection template for the example experiment.
 </p>
 </div>
-<p>The report shown in Figure <a href="2.4-module4.html#fig:growthreport1">2.9</a> repeats some of the same summaries
+<p>The report shown in Figure <a href="2.4-module4.html#fig:growthreport1">2.10</a> repeats some of the same summaries
 that were shown in the more complex original data collection template
 (Figure <a href="#growthexcel1"><strong>??</strong></a>). There are a number of advantages, however, to using
 separate steps and files for the processes of collecting versus analyzing the data.
@@ -559,7 +584,7 @@ The separate report (Figure <a href="#growthexcel1"><strong>??</strong></a>) pro
 be easily adapted to make more complex figures and analysis, as well as to integrate
 the collected data with data measured in other ways for the experiment.</p>
 <p>For example, take a look at the graph in the top left corner on the second page
-of the report shown in Figure <a href="2.4-module4.html#fig:growthreport1">2.9</a>. This figure shows the
+of the report shown in Figure <a href="2.4-module4.html#fig:growthreport1">2.10</a>. This figure shows the
 growth curve from the collected data, and it adds a shaded area to show the time
 range that was used to estimate doubling times for each sample. This provides a
 helpful quality check for this experiment. Bacterial growth goes through several
@@ -571,14 +596,14 @@ of growth, as the equation used to calculate it relies on describing growth duri
 a period of regular doubling. When the growth curve is plotted with a log scale on
 the y-axis, the growth curve will look approximately linear in this exponential
 growth region. By including the plot on the top left of the second page in
-Figure <a href="2.4-module4.html#fig:growthreport1">2.9</a>, the research can quickly see that, in this
+Figure <a href="2.4-module4.html#fig:growthreport1">2.10</a>, the research can quickly see that, in this
 experiment, the selected time range for calculating doubling time might not be
 appropriate—for the low oxygen condition, in particular, this time range looks
 like it included some measurements made during the transition into the stationary
 phase of growth. By quickly being able to assess this, the research group
 can reassess whether a different time range should be use to calculate the
 doubling time for this experiment.</p>
-<p>The report shown in Figure <a href="2.4-module4.html#fig:growthreport1">2.9</a> provides results that are
+<p>The report shown in Figure <a href="2.4-module4.html#fig:growthreport1">2.10</a> provides results that are
 very similar to those calculated in the original spreadsheet, to show that
 you don’t need to give up fast and clear summaries and visuals if you simplify
 the template for collecting data. However, this report template could easily be
