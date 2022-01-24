@@ -86,8 +86,17 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
 
-% longtable
-\usepackage{longtable,booktabs}
+% table with pandoc
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
 
 % multiplecol
 \usepackage{multicol}
@@ -4277,6 +4286,95 @@ pre-processed experimental data.
 \item
   List how a single `Project' directory improves reproducibility
 \end{itemize}
+
+\ldots{}
+
+For the next few modules, we'll use an example from a set of real immunology
+experiments. This was a a collection of studies with similar designs and similar
+goals---all are aiming to test candidate treatments for tuberculosis.
+
+Each study tested one or more controls (e.g., saline solution, isofluorane,
+INH) and one or more treatments. Part of the novelty of this experiment was in
+testing some treatments that were monotherapies versus some that were
+combinations of several drugs. For many of the drugs that were tested, they
+were tested at different doses and, in some cases, different methods of
+delivery or different mouse models.
+
+Each of the treatments were given to several mice that had been infected with
+\emph{Mycobacterium tuberculosis}. After a period of time, the mice were sacrificed
+and one lobe from their lungs was used to determine each mouse's bacterial
+load, through plating the material from the lobe and counting the colony
+forming units (CFUs). One aim of the data analysis is to compare the bacterial
+load of mice under various treatments to the bacterial load of mice in the
+control group.
+
+The full set of studies included 19 different studies. These were conducted at
+different times, but the data for all of the studies can be collected using
+a common format. In this module, as well as the following two, we'll be exploring
+how you can use RStudio's Project functionality to organize data from one or
+more studies. We'll particularly focus on how, by using a common format for
+data collection, you can create tools that can be used repeatedly for different
+experiments to ensure that methods are the same across all studies of a similar
+type, as well as to improve the reproducibility of the studies.
+
+\hypertarget{details-of-the-data-from-the-set-of-example-studies}{%
+\section{Details of the data from the set of example studies}\label{details-of-the-data-from-the-set-of-example-studies}}
+
+Let's start by taking a closer look at the set of studies that we'll use as
+a motivating example in this module. Figure {[}x{]} provides an example of the
+data that were collected for one of the studies. Each treatment is coded
+with a numeric ID (e.g., a 0 in the \texttt{rx\_group} column indicates one of the
+control treatments). A different spreadsheet contains metadata on each of
+the treatment regimes (Figure {[}x{]}). For each treatment that was tested in
+this study, bacterial load was measured and recorded for each mouse given
+the treatment, with (in this study in the set) between five and eight mice
+given each treatment.
+
+One other piece of information was recorded in the laboratory for this
+study. Each week of treatment, all the mice under a given treatment were
+weighed as a group, and these weights were recorded (Figure {[}x{]}). These
+values can be divided by the number of mice in that treatment group to
+determine the average weight per mouse each week of treatment. These data
+were recorded within the same data collection spreadsheet as the data on
+bacterial loads, but in a different sheet of that spreadsheet.
+
+This same data collection process we conducted for 19 different studies.
+All the data can be collected using the same data collection template.
+A separate spreadsheet was used to record metadata about the set of
+experiments. This included details on each treatment, using numeric
+treatment IDs that correspond with those used in the data collection
+template shown in Figure {[}x{]}.
+
+\ldots{}
+
+The full directory of files for this example can be found at {[}GitHub address{]},
+where you can download them or explore them online. All files for this
+project can be stored within a well-designed directory, and this directory
+can be enhanced into something called an R Project very easily. In this
+module, we'll explore how to use an R Project and what advantages it
+offers compared to other ways of organizing the files associated with
+a study. In particular, we'll build on ideas from earlier modules about
+creating reproducible data collection templates, as in this example, the
+use of a common template across many studies in a set makes it very
+easy to create and apply a common reporting template to the data, easily
+creating a reproducible report for each of the nineteen studies in the
+example set of studies. Further, we'll look at how this organization
+allows not only for reporting on specific studies in a reproducible way,
+but also makes it easier to create an overall report that combines
+results and details from all studies in the set.
+
+\hypertarget{creating-an-organized-directory-for-project-files}{%
+\section{Creating an organized directory for project files}\label{creating-an-organized-directory-for-project-files}}
+
+To start, let's look at how we can organize the files from this set of studies
+into a directory in an efficient way. \ldots{}
+
+\hypertarget{making-the-project-directory-and-r-project}{%
+\section{Making the project directory and R Project}\label{making-the-project-directory-and-r-project}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Old text}
 
 \hypertarget{organizing-project-files-through-the-file-system}{%
 \subsection{Organizing project files through the file system}\label{organizing-project-files-through-the-file-system}}
@@ -14390,14 +14488,15 @@ family of journals.
 \section{Example: Creating a reproducible data pre-processing protocol}\label{module20}}
 
 We will walk through an example of creating a reproducible data pre-processing
-protocol. As an example, we will use the pre-processing task required for
-estimating the bacterial load from plating samples from an immunological
-experiment at serial dilutions, using data from an experiment lead by one of the
-coauthors. This data pre-processing protocol was created using RMarkdown and
-allows the efficient, transparent, and reproducible pre-processing of plating
-data for all experiments in the research group. We will go through how RMarkdown
-techniques can be applied to develop this type of data pre-processing protocol
-for a laboratory research group.
+protocol. As an example, we will look at how to pre-process and analyze data
+that are collected in the laboratory to estimate bacterial load in samples.
+These data come from plating samples from an immunological experiment at serial
+dilutions, using data from an experiment lead by one of the coauthors. This data
+pre-processing protocol was created using RMarkdown and allows the efficient,
+transparent, and reproducible pre-processing of plating data for all experiments
+in the research group. We will go through how RMarkdown techniques can be
+applied to develop this type of data pre-processing protocol for a laboratory
+research group.
 
 \textbf{Objectives.} After this module, you should be able to:
 
@@ -14426,14 +14525,15 @@ laboratory.
 
 In this module, we will use an example of a common pre-processing task in
 immunological research: estimating the bacterial load in samples by plating at
-different dilutions, identifying a good dilution for counting colony-forming
-units (CFUs), and then back-calculating the estimated bacterial load in the
-original sample based on the colonies counted at this dilution. This
-experimental technique dates back to the late 1800s, with Robert Koch, and
-continues to be widely used in microbiology research and applications today
-\citep{ben2014estimation}. These data are originally from an experiment in one of our
-authors' laboratory and are also available as example data for an R package
-called \texttt{bactcountr}, currently under development at
+different dilutions. For this type of experiment, the laboratory researcher
+plates each of the samples at several dillutions, identifies a good dilution for
+counting colony-forming units (CFUs), and then back-calculates the estimated
+bacterial load in the original sample based on the colonies counted at this ``good''
+dilution. This experimental technique dates back to the late 1800s, with Robert
+Koch, and continues to be widely used in microbiology research and applications
+today \citep{ben2014estimation}. These data are originally from an experiment in one
+of our authors' laboratory and are also available as example data for an R
+package called \texttt{bactcountr}, currently under development at
 \url{https://github.com/aef1004/bactcountr/tree/master/data}.
 
 These data are representative of data often collected in immunological research.
@@ -14455,16 +14555,17 @@ CFUs on a ``countable'' plate---one with a ``just right'' dilution (and you
 typically won't know which dilution this is for a sample until after plating).
 If you have too high of a dilution (i.e., one with very few viable bacteria),
 randomness will play a big role in the CFU count, and you'll estimate the
-original with more variability. If you have too low of a dilution (i.e., one
+original bacterial load with more variability. If you have too low of a dilution (i.e., one
 with lots of viable bacteria), it will be difficult to identify separate
 colonies, and they may complete for resources. To translate from diluted
 concentration to original concentration, you can then do a back-calculation,
 incorporating both the number of colonies counted at that dilution and how
 dilute the sample was. There is therefore some pre-processing required (although
 it is fairly simple) to prepare the data collected to get an estimate of
-bacterial load in the original sample. This estimate can then be used in
+bacterial load in the original sample. This estimate of bacterial load can then be used in
 statistical testing and combined with other experimental data to explore
-questions like whether a candidate vaccine reduces bacterial load.
+questions like whether a candidate vaccine reduces bacterial load when a research
+animal is challenged with a pathogen.
 
 We will use this example of a common data pre-processing task to show how to
 create a reproducible pre-processing protocol in this module. If you would like,
@@ -14484,13 +14585,13 @@ modules for common tasks in your research group.
 
 This example is intentionally simple, to allow a basic introduction to the
 process using pre-processing tasks that are familiar to many laboratory-based
-scientists and easy to explain to anyone who has not used plating experimental
+scientists and easy to explain to anyone who has not used plating in experimental
 work. However, the same general process can also be used to create
 pre-processing protocols for data that are much larger or more complex or for
 pre-processing pipelines that are much more involved.
 For example, this process could be used to create data pre-processing protocols
 for automated gating of flow cytometry data or for pre-processing data
-collected through liquid chromatography--mass spectrometry.
+collected through single cell RNA sequencing.
 
 \hypertarget{advice-on-designing-a-pre-processing-protocol}{%
 \subsection{Advice on designing a pre-processing protocol}\label{advice-on-designing-a-pre-processing-protocol}}
@@ -14689,9 +14790,9 @@ Generally, in the project directory you should include a file with the input
 example data, in whatever file format you will usually collect this type of
 data. You will also include an RMarkdown file where the protocol is written. If
 you are planning to cite articles and other references, you can include a BibTeX
-file, with the bibliographical information for each source you plan to cite.
+file, with the bibliographical information for each source you plan to cite (see module 3.19).
 Finally, if you would like to include photographs or graphics, you can include
-these image files in the project directory. Often, these will be included
+these image files in the project directory. Often, you might want to group these
 together in a subdirectory of the project named something like ``figures''.
 
 Once you run the RMarkdown file for the protocol, you will generate additional
@@ -14702,7 +14803,7 @@ through the protocol code and written into a file to be used in further
 analysis.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/protocol_project_files} \caption[Example of files in the project directory for a data pre-processing protocol]{Example of files in the project directory for a data pre-processing protocol. On the left are the files initially included in the project directory for the example protocol for this module. These include a file with the input data (cfu\_data.csv), a BibTeX file with bibliographical information for references (example\_bib.bib), the RMarkdown file for the protocol (example\_protocol.Rmd), and a subdirectory with figures to include in the protocol (figures). On the right is shown the directory after the code in the protocol RMarkdown document is run, which creates an output pdf with the protocol as well as the output data (processed\_cfu\_estimates.csv).}\label{fig:protocolprojectfiles}
+\includegraphics[width=\textwidth]{figures/protocol_project_files} \caption[Example of files in the project directory for a data pre-processing protocol]{Example of files in the project directory for a data pre-processing protocol. On the left are the files initially included in the project directory for the example protocol for this module. These include a file with the input data (cfu\_data.csv), a BibTeX file with bibliographical information for references (example\_bib.bib), the RMarkdown file for the protocol (example\_protocol.Rmd), and a subdirectory with figures to include in the protocol (figures). On the right is shown the directory after the code in the protocol RMarkdown document is run, which creates an output pdf with the protocol (example\_protocol.pdf) as well as the output data (processed\_cfu\_estimates.csv).}\label{fig:protocolprojectfiles}
 \end{figure}
 
 \textbf{Outlining key tasks in pre-processing the input data.}
@@ -14747,11 +14848,7 @@ protocol.
 \textbf{Adding code for pre-processing.}
 
 For many of these steps, you likely have code---or can start drafting the
-code---required for that step. If you were doing the pre-processing entirely
-through a code script or interactively, you would exclusively write code for the
-steps. A good next step, therefore, in designing your pre-protocol is to add in
-the code for each step to conduct the pre-processing required in each section.
-
+code---required for that step.
 In RMarkdown, you can test this code as you write it. You insert each piece
 of executable code within a special section, separated from the regular
 text with special characters, as described in previous modules.
@@ -14770,7 +14867,7 @@ basic functionality of R, providing code implementations of algorithms in a
 variety of scientific fields. Many of the R packages relevant for biological
 data---especially high-throughput biological data---are available through a
 repository called Bioconductor. These packages are all open-source (so you can
-explore their code if you want to) and free. You can use vigettes and package
+explore their code if you want to) and free. You can use vignettes and package
 manuals for Bioconductor packages to identify the different functions you can
 use for your pre-processing steps. Once you have identified a function for the
 task, you can use the helpfile for the function to see how to use it. This help
@@ -14778,7 +14875,7 @@ documentation will allow you to determine all of the function's parameters and
 the choices you can select for each.
 
 You can add each piece of code in the RMarkdown version of the protocol using
-the standard method for RMarkdown (module {[}x{]}). Figure \ref{fig:protocolcode}
+the standard method for RMarkdown (module 19). Figure \ref{fig:protocolcode}
 shows an example from the example protocol for this module. Here, we are using
 code to help identify a ``good'' dilution for counting CFUs for each sample. The
 code in included in an executable code chunk, and so it will be run each time
@@ -14821,7 +14918,7 @@ as clear as a traditional protocol, in particular in terms of providing a
 thorough description of what is being done at each step and why it is being
 done that way. Data pre-processing protocols can provide these more thorough
 descriptions, and by creating them with RMarkdown or with similar types
-of ``knitted'' documents (module {[}x{]}), you can combine the executable code
+of ``knitted'' documents (modules 18 and 19), you can combine the executable code
 used to pre-process the data with extensive documentation. As a further
 advantage, the creation of these protocols will ensure that your research
 group has thought carefully about each step of the process, rather than
@@ -14834,14 +14931,16 @@ ensure that each step of this process is conducted as carefully as the
 steps taken in designing the experiment as a whole and each wet lab technique
 conducted for the experiment.
 
-\begin{quote}
-``Writing a research proposal is probably one of the most challenging and
-difficult task as research is a new area for the majority of postgraduates and
-new researchers. \ldots{} Protocol writing allows the researcher to review and
-critically evaluate the published literature on the interested topic, plan and
-review the project steps and serves as a guide throughout the investigation.''
-\citep{al2016protocol}
-\end{quote}
+\begin{marginfigure}
+``Writing a research proposal is probably one of the most challenging
+and difficult task as research is a new area for the majority of
+postgraduates and new researchers. \ldots{} Protocol writing allows the
+researcher to review and critically evaluate the published literature on
+the interested topic, plan and review the project steps and serves as a
+guide throughout the investigation.''
+
+{[}@al2016protocol{]}
+\end{marginfigure}
 
 A data-preprocessing protocol, in the sense we use it here, is essentially an
 annotated recipe for each step in preparing your data from the initial, ``raw''
@@ -14870,25 +14969,28 @@ protocol, the protocol must include adequate details that another researcher,
 provided they start with the same data, gets \emph{identical} results (short of any
 pre-processing steps that include some element of sampling or random-number
 generation, e.g., Monte Carlo methods). This idea---being able to exactly
-re-create the computational results from an earlier project---is refered to as
-\textbf{computational reproducbility} {[}ref{]} and is considered a key component in
-ensuring that research is fully reproducible {[}ref{]}.
+re-create the computational results from an earlier project---is referred to as
+\textbf{computational reproducibility} and is considered a key component in
+ensuring that research is fully reproducible.
 
-\begin{quote}
-``It should provide enough detail (methodology) that can allow another
-investigator to do the study and arrive at comparable conclusions.''
-\citep{al2016protocol}
-\end{quote}
+\begin{marginfigure}
+``Now, all scientific research involves the use of powerful computers,
+whether it is for the data collection, the data analysis, or both.
+\ldots{} We are all computational scientists now, and thus the concept
+of reproducibility is relevant to all scientists.''
 
-By creating the data pre-processing protocol as a knitted document (module {[}x{]})
-using a tool like RMarkdown (module {[}x{]}), you can ensure that the protocol is
+{[}@peng2021reproducible{]}
+\end{marginfigure}
+
+By creating the data pre-processing protocol as a knitted document
+using a tool like RMarkdown (modules 18 and 19), you can ensure that the protocol is
 computationally reproducible. In an RMarkdown document, you include the code
 examples as \emph{executable} code---this means that the code is run every time you
 render the document. You are therefore ``checking'' your code every time that you
 run it. As the last step of your pre-processing protocol, you should output the
 copy of the pre-processed data that you will use for any further analysis for
 the project. You can use functions in R to output this to a plain text format,
-for example a comma-separated delimited file (module {[}x{]}). Each time you render
+for example a comma-separated delimited file (modules 4 and 5). Each time you render
 the protocol, you will re-write this output file, and so this provides assurance
 that the code in your protocol can be used to reproduce your output data (since
 that's how you yourself created that form of the data).
@@ -14916,19 +15018,17 @@ Write this as if you are explaining to a new research group member (or your
 future self) how to think about this step in the pre-processing, why you're
 doing it the way your doing it, and what code is used to do it that way. You
 should also include references that justify choices when they are
-available---include these using BibTex. By doing this, you will make it much
+available---include these using BibTeX (module 19). By doing this, you will make it much
 easier on yourself when you write the Methods section of papers that report on
 the data you have pre-processed, as you'll already have draft information on
 your pre-processing methods in your protocol.
 
 Good protocols include not only \emph{how} (for data pre-processing protocols, this
-is the code), but also \emph{why} each step is taken. This includes both higher-level
-(i.e., what a larger question is being asked) and also at a fine level, for each
+is the code), but also \emph{why} each step is taken. This includes explanations that are both higher-level
+(i.e., why a larger question is being asked) and also at a fine level, for each
 step in the process. A protocol should include some background, the
 aims of the work, hypotheses to be tested, materials and methods, methods of
-data collection and equipment to analyze samples \citep{al2016protocol} (This
-reference is discussing full protocols for a study, e.g., a clinicial trial, so
-includes more steps that just pre-processing.)
+data collection and equipment to analyze samples \citep{al2016protocol}.
 
 This step of documentation and explanation is very important to creating a
 useful data pre-processing protocol. Yes, the code itself allows someone else to
@@ -15029,8 +15129,17 @@ that is updated with the day's date each time the protocol is re-rendered.
 \includegraphics[width=\textwidth]{figures/protocol_yaml_date} \caption[Example of using more advanced RMarkdown functionality within a data pre-processing protocol]{Example of using more advanced RMarkdown functionality within a data pre-processing protocol. In this example, R code is incorporated into the YAML of the document to include the date that the document was last rendered, marking this on the pdf output as the *Last edited* date of the protocol.}\label{fig:protocolyaml}
 \end{figure*}
 
-\hypertarget{practice-quiz-4}{%
-\subsection{Practice quiz}\label{practice-quiz-4}}
+\hypertarget{applied-exercise-8}{%
+\section{Applied exercise}\label{applied-exercise-8}}
+
+To wrap up this module, try downloading both the source file and the output of this example
+data pre-processing protocol. Again, you can find the source code (the RMarkdown file)
+\href{https://raw.githubusercontent.com/geanders/improve_repro/master/data/bactcountr_example_data/example_protocol.Rmd}{here} and the output file \href{https://github.com/geanders/improve_repro/raw/master/data/bactcountr_example_data/example_protocol.pdf}{here}. If you would like to try re-running the file, you can get all the additional files
+you'll need (the original data file, figure files, etc.) \href{https://github.com/geanders/improve_repro/tree/master/data/bactcountr_example_data}{here}. See if
+you can compare the elements of the RMarkdown file with the output they produce in the
+PDF file. Read through the descriptions of the protocol. Do you think that you could recreate
+the process if your laboratory ran a new experiment that involved plating samples to
+estimate bacterial load?
 
 \hypertarget{references}{%
 \chapter{References}\label{references}}
