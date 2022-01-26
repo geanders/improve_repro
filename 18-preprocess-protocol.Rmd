@@ -26,6 +26,20 @@ or processes. They are written to be clear enough that everyone in the lab
 could follow the same steps in the process by following the protocol. In this 
 way, they help to standardize processes done in the laboratory, and they can 
 also play a role in improving safety and the quality of data collection. 
+Protocols are similarly used to medical procedures and tests, as well as for 
+clinical trials. In all cases, they help to define in detail the steps of the
+procedure, so they can be done in a way that is comparable from one case to the
+next and with high precision. 
+
+```{marginfigure, echo = TRUE}
+On clinical imaging protocols: "When one is composing a protocol, it is helpful
+to imagine that all the technologists at the facility won the
+lottery and quit. What would a newly hired technologist
+need to know to image a patient in the exact same manner
+as in the past to produce the same results?"
+
+[@thomas2015write]
+```
 
 You can apply a similar idea to pre-processing and analyzing the data that you 
 collect in a laboratory. Just as a wet lab protocol can help standardize your
@@ -71,142 +85,308 @@ more details about how data pre-processing protocols can improve the efficiency
 of this step of the research process. 
 
 You can create a data pre-processing protocol using any document processing
-program that you'd like. For example, you could write one in Google Docs or
-in Word. However, there is a better format. With programming languages like 
-R and Python, you can created a type of document called a **knitted document**.
-A knitted document interweaves two elements: first, text written for humans and 
-second, executable code meant for the computer. These documents can be "rendered"
-in R or another programming language, which executes all the code and adds 
-all the output from that code at the appropriate place in the text. The end
-result is a document in a format that is easy to share and read (PDF, Word, or 
-HTML), which includes text, example code, and output. You can use these documents
-to record the data pre-processing process for a type of data in your laboratory, 
-and by using a knitted document, you ensure that the code is "checked" every
-time you render the document. In the last part of this module, we will give 
-an overview of how these knitted documents work, and then in the next 
-module, we'll show how you can make them in the free RStudio software. 
-In module 20, we'll walk through a full example of writing a data 
-pre-processing protocol in this way. 
+program that you'd like. For example, you could write one in Google Docs or in
+Word. However, there is a better format. With programming languages like R and
+Python, you can created a type of document called a **knitted document**. A
+knitted document interweaves two elements: first, text written for humans and
+second, executable code meant for the computer. These documents can be
+"rendered" in R or another programming language, which executes all the code and
+adds all the output from that code at the appropriate place in the text. The end
+result is a document in a format that is easy to share and read (PDF, Word, or
+HTML), which includes text, example code, and output. You can use these
+documents to record the data pre-processing process for a type of data in your
+laboratory, and by using a knitted document, you ensure that the code is
+"checked" every time you render the document. In the last part of this module,
+we will give an overview of how these knitted documents work, and then in the
+next module, we'll show how you can make them in the free RStudio software. In
+module 20, we'll walk through a full example of writing a data pre-processing
+protocol in this way---you can take a look now to get an idea by downloading the
+example
+[here](https://github.com/geanders/improve_repro/raw/master/data/bactcountr_example_data/example_protocol.pdf)..
 
-**Data pre-processing**
 
-When we take measurements of experimental samples, we do so with the goal of
-using the data we collect to gain scientific knowledge. The data are direct
-measurement of something, but need to be interpreted to gain knowledge.
-Sometimes direct measurements line up very closely with a research
-question---for example if you are conducting a study that investigates the
-mortality status of each test subject then whether or not each subject to dies
-is a data point that is directly related to the research question you are aiming
-to answer. In this case these data may go directly into a statistical analysis
-model without extensive pre-processing. However, there are often cases where we
-collect data that are not as immediately linked to the scientific question.
-Instead, these data may require pre-processing before they can be used to test
-meaningful scientific hypotheses. This is often the case for data extracted
-using complex equipment. Equipment like mass spectrometers and flow cytometers
-leverage physics, chemistry, and biology in clever ways to help us derive more
-information from samples, but one tradeoff is that the data from such equipment
-often require a bit of work to move into a format that is useful for answering
-scientific questions.
+### Improving reproducibility with protocols
 
-One example if the data collected through liquid chromatography-mass
-spectrometry (LC-MS). This is a powerful and useful technique for chemical
-analysis, including analysis of biochemical molecules like metabolites and
-proteins. However, when using this technique, the raw data require extensive
-pre-processing before they can be used to answer scientific questions. 
+Just like a protocol for a laboratory procedure, a protocol for data
+pre-processing should be thorough and detailed. In a protocol, every step of the
+process should be clearly documented [@thomas2015write]. The steps should be
+detailed enough that the reader can start from the example input data and get
+the same resulting output data.
 
-First, the data that are output by the mass spectrometer are often stored in a
-specialized file format, like a netCDF or mzML file format. While these file
-formats are standardized, they are likely formats you don't regularly use in
-other contexts, and so you may need to find special tools to read the data into
-programs to analyze it. In some cases, the data are very large, and so it may be
-necessary to use analysis tools that allow most of the data to stay "on disk"
-while you analyze it, bringing only small parts into your analysis software at a
-time.
+One thing that helps to ensure this level of detail is to do all pre-processing
+steps using code scripts and include this code in the protocol. While there 
+are a number of software tools available that let you pre-process or analyze
+data using point-and-click software, data pre-processing that is done with 
+this type of software can be hard to document and reproduce. As an alternative, 
+you could use code for a program like R or Python to complete the same steps, 
+and this allows you to record each step that was taken in the process. 
 
-Once the data are read in, they must be pre-processed in a number of ways. For
-example, these data can be translated into features that are linked to the
-chemical composition of the sample, with each feature showing up as a "peak" in
-the data that are output from the mass spectrometer. A peak can be linked to a
-specific metabolite feature based on its mass-to-charge ratio (m/z) and its
-retention time. However, the exact retention time for a metabolite feature may
-vary a bit from sample to sample. Pre-processing is required both to identify
-peaks in the data and also to align the peaks from the same metabolite feature
-across all samples from your experiment. There may also be technical bias across
-samples, resulting in differences in the typical expression levels of all peaks
-from one sample to the next. For example it may be the case that all intensities
-measured for one sample tend to be higher than for another sample because of
-technical bias in terms of the settings used for the equipment when the two
-samples were run. These biases must also be corrected through pre-processing
-before you can use the data within statistical tests or models to explore scientific hypotheses.
+As an example, let's consider the process of gating flow cytometry data. Flow
+cytometry data is often collected in immunology research, where it can be used
+to characterize the population size of different types of immune cells, like T
+cells and B cells. The data can therefore be used to help measure an animal's
+immune response following vaccination or a challenge with a pathogen. Flow
+cytometry data is collected by ... There are some steps that a researcher must
+take to get from the raw data that is output by the flow cytometry equipment to
+the measurement they're interested in, which might be something like the
+population size of CD4+ T cells in the sample. The researcher must go through
+the data in steps, comparing along one or two of the measured [markers?] at each
+step, looking at the univariate or bivariate distributions along those markers.
+As they do this, they'll apply "gates" to isolate the cells in a specific part
+of the distribution, and only use those cells in continuing steps. For example,
+they might start by isolating only cells that are live and are "singlets"
+(measurements of single cells, rather than "doublets", which represent two or
+more cells stuck together). 
 
-[Image of identifying and aligning peaks in LC-MS data]
+This gating process can be done with point-and-click software. When such
+software is used, the researcher will sit at the computer and go through a
+series of screens, using their mouse at each stage to add a gate to subset to
+certain cells. As an alternative, a researcher could conduct this process using
+a code script. The script would use algorithms to apply specific rules to the
+gating process at each step. It will be much easier to make a reproducible data
+pre-processing protocol if the researcher uses a code script for the process
+rather than the point-and-click software. With code, all relevant details of the
+process can be found by investigating either the code or the software that the
+code draws on (which, for software like R and Python, is open-source and so can
+be explored). Therefore, the code itself provides thorough and detailed
+documentation of the process. By contrast, to document the point-and-click
+method, the researcher would need to describe each screen they see during the
+process and where they click on each screen. This could be done with screenshots
+and explanations, but it can be hard to describe thoroughly enough to ensure
+that the process could be exactly reproduced. Further, the layout of some 
+screens may change in the future, in which case the described process may 
+no longer work. While the open-source software behind coding-based approaches
+can also change, all former versions tend to be archived so they can be 
+accessed in the future if needed to reproduce an earlier process. 
+(Fortunately, some point-and-click software systems have begun creating a way to 
+save workflows and apply them later, which is more similar to the process
+of writing a script to do the analysis. These do help with reproducibility, 
+including consistency across samples for an experiment and across analyses 
+done by different people. However, they may not always be as transparent 
+and easy to decipher as a well-documented code script, and they won't interface
+as well with other valuable tools, like the RMarkdown system for creating 
+reproducible reports.)
 
-In the research process, these pre-processing steps should be done before
-the data are used for further analysis. There are the first step in working
-with the data after they are collected by the equipment (or by laboratory 
-personal, in the case of data from simpler process, like plating samples
-and counting colony-forming units). After the data are appropriately 
-pre-processed, you can use them for statistical tests---for example, to 
-determine if metabolite profiles are different between experimental groups---and
-also combine them with other data collected from the experiment---for example, 
-to see whether certain metabolite levels are correlated with the bacterial
-load in a sample.
+A data pre-processing protocol can also help in improving the quality of the
+pre-processing. If your research group uses the protocol to explain and 
+document why each step is taken, the process of writing the protocol helps
+to think deeply about each step of pre-processing. You can include references
+in the protocol to recent papers to help justify certain steps, and you can
+revisit and update the protocol at regular periods to make sure that it 
+reflects the current best practices [@thomas2015write]. In doing so, you can create versions
+of the protocol, so that you can both reproduce work done using an earlier
+version, while still allowing the protocol to be a "living" document that 
+changes as new data pre-processing methods become available. 
 
-**Approaches for pre-processing data.**
+```{marginfigure, echo = TRUE}
+On clinical imaging protocols: "When one is composing a protocol, it is helpful
+to imagine that all the technologists at the facility won the
+lottery and quit. What would a newly hired technologist
+need to know to image a patient in the exact same manner
+as in the past to produce the same results?"
 
-There are two main approaches for pre-processing experimental data in this 
-way. First, when data are the output of complex laboratory equipment, there
-will often be proprietary software that is available for this pre-processing.
-This software may be created by the same company that made the equipment, or
-it may be created and sold by other companies. The interface will typically 
-be a graphical-user interface (GUI), where you will use pull-down menus and
-point-and-click interfaces to work through the pre-processing steps. You 
-often will be able to export a pre-processed version of the data in a 
-common file format, like a delimited file or an Excel file, and that version
-of the data can then be read into more general data analysis software, like
-Excel or R.
+[@thomas2015write]
+```
 
-[Include a screenshot of this type of software in action.]
+[Example---scRNA-seq, normalization?]
 
-The second approach is to conduct the pre-processing directly within general
-data analysis software like R or Python. These programs are both open-source,
-and include extensions that were created and shared by users around the world.
-Through these extensions, there are often powerful tools that you can use to
-pre-process complex experimental data. In fact, the algorithms used in
-proprietary software are sometimes extended from algorithms first shared through
-R or Python. With this approach, you will read the data into the program (R, 
-for example) directly from the file output from the equipment. You can 
-record all the code that you use to read in and pre-process the data in a 
-code script, allowing you to reproduce this pre-processing work. You can 
-also go a step further, and incorporate your code into a pre-processing 
-protocol, which combines nicely formatted text with executable code, and
-which we'll describe in much more detail later in this module and in the 
-following two modules.
+### Improving efficiency with protocols
 
-There are advantages to taking the second approach---using scripted code in an
-open-source program---rather than the first---using proprietary software with a
-GUI interface. The use of codes scripts ensures that the steps of pre-processing
-are reproducible. This means both that you will be able to re-do all the steps
-yourself in the future, if you need to, but that also that other researchers can
-explore and replicate what you do. You may want to share your process with
-others in your laboratory group, for example, so they can understand the choices
-you made and steps you took in pre-processing the data. You may also want to
-share the process with readers of the articles you publish, and this may in fact
-be required by the journal. Further, the use of a code script encourages you to
-document this code and this process, even moreso when you move beyond a script
-and include the code in a reproducible pre-processing protocol. Well-documented
-code makes it much easier to write up the method section later in manuscripts
-that leveraged the data collected in the experiment.
+Data pre-processing protocols can also help improve the efficiency of working
+with biomedical data. As an example, let's revisit the flow cytometry example
+that we discussed in the last section. If the process has been documented using
+a code script, then the entire process can often be redone on a new sample just
+by changing the input data for the code. By contrast, if data pre-processing was
+done using point-and-click software, the researcher typically must go through
+each step anew with the data for each sample. The use of code---including code
+that is embedded in a reproducible protocol---can therefore save the researcher
+a lot of time in this scenario. While the use of code for the pre-processing
+plays a large role in this gain in efficiency, there is also some gain from
+using not just a code script but one within a protocol, as the protocol can help
+the researcher quickly figure out any changes that should be made for a new
+sample compared to the example data used within the protocol---the text and
+explanations in the protocol can help in figuring out if anything about
+processing the new sample should be done differently from the standard process.
 
-Also, when you use scripted code to pre-process biomedical data, you will find
-that the same script can often be easily adapted and re-used in later projects
-that use the same type of data. You may need to change small elements, like the
-file names of files with data you want to use, or some details about the methods
-used for certain pre-processing steps. However, often almost all of the
-pre-processing steps will repeat over different experiments that you do. By 
-extending to write a pre-processing protocol, you can further support the 
-ease of adapting and re-using the pre-processing steps you take with one 
-experiment when you run later experiments that are similar.
+...
+
+### Using knitted documents for protocols
+
+When it comes to protocols that are focused on data pre-processing and 
+analysis, there are big advantages to creating them as something called
+**knitted documents**. In this section, we'll walk through what a knitted
+document is, as well as some of the advantages of using this format to 
+create data-focused protocols. 
+
+A knitted document is one that is written in plain text in a way that "knits"
+together text with executable code. Once you have written the document, you can
+render it, which executes the code, adds to the document results from this
+execution (figures, tables, and code output, for example), and formats all text
+using the formatting choices you've specified. The end result is a nicely format
+document, which can be in one of several output formats, including pdf, Word, or
+HTML. Since the code was executed to create the document, you can ensure that
+all the code is worked as intended.
+
+You can visualize the full process of creating and rendering a knitted document
+in the following way. Imagine that you write a document by hand on sheets of
+paper. There are parts where you need a team member to add their data or to run
+a calculation, so you include notes in square brackets telling your team member
+where to do these things. Then, you use some editing marks to show where
+text should be italicized and which text should be section a header:
+
+```
+# Results
+
+We measured the bacterial load of 
+*Mycobacterium tuberculosis* for each 
+sample. 
+
+[Kristina: Calculate bacterial loads for 
+each sample based on dilutions and
+add table with results here.]
+```
+
+You send the document to your team member Kristina first, and she does her
+calculations and adds the results at the indicated spot in the paper, so that
+the note to her gets replaced with results. She focuses on the notes to her in
+square brackets and ignores the rest of the document. Next, Kristina sends the
+document, with her additions, to an assistant, Tom, to type up the document. Tom
+types the full document, paying attention to any indications that are included
+for formatting. For example, he sees that "Results" is meant to be a section
+heading, since it is on a line that starts with "#", your team's convention for
+section headings. He therefore types this on a line by itself in larger font. He
+also sees that "Mycobacterium tuberculosis" is surrounded by asterisks, so he
+types this in italics.
+
+Knitted documents work in the same way, but the computer does the steps that
+Kristina and Tom did in this toy example. The way the document was written in
+this example is analogous to writing up a knitted document in plain text with
+appropriate "executable" sections, designated with special markings, and with
+other markings used to show how the text should be formatted in its final
+version. When Kristina looked for the section that was marked for her, generated
+results in that section, and replaced the note with the results, it was
+analogous to the first stage of rendering a knitted document, where the document
+is passed through software that looks for executable code and ignores everything
+else, executing that code and adding in results in the right place. Finally,
+when Tom took that output and used formatting marks in the text to create a
+nicely formatted final report, the step was analogous to the second stage of
+rendering a formatted document, when a software program takes the output of the
+first stage and formats the full document into an attractive, easy-to-read final
+document, using any markings you include to format the document.
+
+Knitted documents therefore build on two key techniques. The first is the
+ability to include executable code in a document, in a way that a computer can
+go through the document, find that code, execute it, and fill in the results at 
+the appropriate spot in the document. The second is a set of conventions for 
+formatting marks that can be put in the plain text of the document to indicate
+formatting that should be added, like headers and italic text. Let's take a closer
+look at each of these necessary techniques. 
+
+The first technique that's needed to create knitted documents is the ability to
+include executable code within the plain text version of the document.
+The idea here is that you can use special markers to indicate in the document
+where code starts and where it ends. With these markings, a computer program can
+figure out the lines of the document that it should run as code, and the ones it
+should ignore when it's looking for executable code. In the toy example above, 
+notes to Kristina were put in square brackets, with content that started with 
+her name and a colon. To "process" this document, then, she could just scan 
+through it for square brackets with her name inside and ignore everything else 
+in the document. 
+
+The same idea happens with knitted documents, but a computer program takes the
+place of Kristina in the example. With markings in place to indicate executable
+code, the document will be run through two separate programs as it is rendered.
+The first program will look for code to execute and ignore any other lines of
+the file. It will execute this code and then place any results, like figures,
+tables, or code output, into the document right after that piece of code. We 
+will talk about the second program in just a minute, when we talk about markup 
+languages.
+
+This technique comes from an idea that you could include code to be executed in
+a document that is otherwise easy for humans to read. This is an incredibly
+powerful idea. It originated with a famous computer scientist named Donald
+Knuth, who realized that one key to making computer code sound is to make sure
+that it is clear to humans what the code is doing. Computers will faithfully do
+exactly what you tell them to do, so they will do what you're hoping they will
+as long as you provide the correct instructions. The greatest room for error,
+then, comes from humans not giving the right instructions to computers. To 
+write sound code, and code that is easy for yourself and others to maintain and
+extend, you must make sure that you and other humans understand what it is 
+asking the computer to do. Donald Knuth came up with a system called *literate
+programming* that allows programmers to write code in a way that focuses on 
+documenting the code for humans, while also allowing the computer to easily 
+pull out just the parts that it needs to execute, while ignoring all the text
+meant for humans. This process flips the idea of documenting code by including
+plain text comments in the code---instead of the code being the heart of the 
+document, the documentation of the code is the heart, with the code provided
+to illustrate the implementation. When used well, this technique results in
+beautiful documents that clearly and comprehensively document the intent and 
+the implementation of computer code. The knitted documents that we can build
+with R or Python through systems like RMarkdown and Jupyter Notebooks build 
+on these literate programming ideas, applying them in ways that complement
+programming languages that can be run interactively, rather than needing to 
+be compiled before they're run. 
+
+The second technique required for knitted documents is one that allows you to
+write text in plain text, include formatting specifications in that plain text,
+and render this to an attractive output document in pdf, Word, or HTML. This
+part of the process uses a tool from a set of tools called *Markup languages*.
+Here, we will use a markup language called *Markdown*. It is one of the easiest
+markup languages to learn, as it has a fairly small set of formatting indicators
+that can be used to "markup" the formatting in a document. This small set,
+however, covers much of the formatting you might want to do, and so this
+language provides an easy introduction to markup languages while still providing
+adequate functionality for most purposes. 
+
+The Markdown markup languages evolved starting in spaces where people could
+communicate in plain text only, without point-and-click methods for adding
+formatting like bold or italic type [@buffalo2015bioinformatics]. For example,
+early versions of email only allowed users to write using plain text. These
+users eventually evolved some conventions for how to "mark-up" this plain text,
+to serve the purposes served by things like italics and bold in formatted text
+(e.g., emphasis, highlighting). For example, to emphasize a word, a user could
+surround it with asterisks, like:
+
+```
+I just read a *really* interesting article!
+```
+
+In this early prototype for a markup language, the reader's mind was doing 
+the "rendering", interpreting these markers as a sign that part of the text
+was emphasized. In Markdown, the text can be rendered into more attractive
+output documents, like pdf, where the rendering process has actually 
+changed the words between asterisks to print in italics. 
+
+```{marginfigure, echo = TRUE}
+"Markdown originates from the simple formatting conventions used in plain-text 
+emails. Long before HTML crept into email, emails were embellished with simple
+markup for emphasis, lists, and blocks of text. Over time, this became a defacto
+plain-text email formatting scheme. This scheme is very intuitive: underscores or 
+asterisks that flank text indicate emphasis, and lists are simply lines of text 
+beginning with dashes." 
+
+[@buffalo2015bioinformatics]
+```
+
+The Markdown language has developed a set of these types of marks---like
+asterisks---that are used to "mark up" the plain text with the formatting that
+should be applied when the text is rendered. There are marks that you can use
+for a number of formatting specifications, including: italics, bold, underline,
+strike-through, bulleted lists, numbered lists, web links, headers of different
+levels (e.g., to mark off sections and subsections), block quotes, horizontal
+rules, and block quotes. Details and examples of the Markdown syntax can be
+found on the Markdown Guide page at https://www.markdownguide.org/basic-syntax/,
+and we'll cover more examples of using Markdown in the next two modules. Once a
+document is run through a program to execute any code, it will then be run
+through a program that interprets this formatting markup (a markup renderer),
+which will format the document based on any of the mark up indications and will
+output an attractive document in a format like pdf, Word, or HTML.
+
+In the next module, we'll look at how you 
+can leverage these two technique using RMarkdown documents.
+
+------------------------------------------------------------------------------
+
 
 ### From pre-processing scripts to pre-processing protocols
 
@@ -424,6 +604,8 @@ step is analogous to the second stage of rendering a formatted document, when
 a software program takes the output of the first stage and formats the full 
 document into an attractive, easy-to-read final document, using any markings you
 include to format the document. 
+
+
 
 ### Advantages of reproducible pre-processing protocols
 
@@ -851,12 +1033,7 @@ line to read. A lightweight markup language called *Markdown* is a plain-text fo
 that is easy to read and painlessly incorporated into typed notes, and can also be 
 rendered to HTML or PDF." [@buffalo2015bioinformatics]
 
-> "Markdown originates from the simple formatting conventions used in plain-text 
-emails. Long before HTML crept into email, emails were embellished with simple
-markup for emphasis, lists, and blocks of text. Over time, this became a defacto
-plain-text email formatting scheme. This scheme is very intuitive: underscores or 
-asterisks that flank text indicate emphasis, and lists are simply lines of text 
-beginning with dashes." [@buffalo2015bioinformatics]
+
 
 > "Markdown is just plain-text, which means that it's portable and programs to edit
 and read it will exist. Anyone who's written notes or papers in old versions of 
