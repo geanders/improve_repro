@@ -181,6 +181,114 @@ measurements from the different samples comparable. For data collected from a
 flow cytometer, preprocessing may include steps to disentangle the florescence
 from different markers to ensure that the read for one marker isn’t inflated by
 spillover florescence from a different marker.</p>
+<hr />
+<p><strong>Data pre-processing</strong></p>
+<p>When we take measurements of experimental samples, we do so with the goal of
+using the data we collect to gain scientific knowledge. The data are direct
+measurement of something, but need to be interpreted to gain knowledge.
+Sometimes direct measurements line up very closely with a research
+question—for example if you are conducting a study that investigates the
+mortality status of each test subject then whether or not each subject to dies
+is a data point that is directly related to the research question you are aiming
+to answer. In this case these data may go directly into a statistical analysis
+model without extensive pre-processing. However, there are often cases where we
+collect data that are not as immediately linked to the scientific question.
+Instead, these data may require pre-processing before they can be used to test
+meaningful scientific hypotheses. This is often the case for data extracted
+using complex equipment. Equipment like mass spectrometers and flow cytometers
+leverage physics, chemistry, and biology in clever ways to help us derive more
+information from samples, but one tradeoff is that the data from such equipment
+often require a bit of work to move into a format that is useful for answering
+scientific questions.</p>
+<p>One example if the data collected through liquid chromatography-mass
+spectrometry (LC-MS). This is a powerful and useful technique for chemical
+analysis, including analysis of biochemical molecules like metabolites and
+proteins. However, when using this technique, the raw data require extensive
+pre-processing before they can be used to answer scientific questions.</p>
+<p>First, the data that are output by the mass spectrometer are often stored in a
+specialized file format, like a netCDF or mzML file format. While these file
+formats are standardized, they are likely formats you don’t regularly use in
+other contexts, and so you may need to find special tools to read the data into
+programs to analyze it. In some cases, the data are very large, and so it may be
+necessary to use analysis tools that allow most of the data to stay “on disk”
+while you analyze it, bringing only small parts into your analysis software at a
+time.</p>
+<p>Once the data are read in, they must be pre-processed in a number of ways. For
+example, these data can be translated into features that are linked to the
+chemical composition of the sample, with each feature showing up as a “peak” in
+the data that are output from the mass spectrometer. A peak can be linked to a
+specific metabolite feature based on its mass-to-charge ratio (m/z) and its
+retention time. However, the exact retention time for a metabolite feature may
+vary a bit from sample to sample. Pre-processing is required both to identify
+peaks in the data and also to align the peaks from the same metabolite feature
+across all samples from your experiment. There may also be technical bias across
+samples, resulting in differences in the typical expression levels of all peaks
+from one sample to the next. For example it may be the case that all intensities
+measured for one sample tend to be higher than for another sample because of
+technical bias in terms of the settings used for the equipment when the two
+samples were run. These biases must also be corrected through pre-processing
+before you can use the data within statistical tests or models to explore scientific hypotheses.</p>
+<p>[Image of identifying and aligning peaks in LC-MS data]</p>
+<p>In the research process, these pre-processing steps should be done before
+the data are used for further analysis. There are the first step in working
+with the data after they are collected by the equipment (or by laboratory
+personal, in the case of data from simpler process, like plating samples
+and counting colony-forming units). After the data are appropriately
+pre-processed, you can use them for statistical tests—for example, to
+determine if metabolite profiles are different between experimental groups—and
+also combine them with other data collected from the experiment—for example,
+to see whether certain metabolite levels are correlated with the bacterial
+load in a sample.</p>
+<p><strong>Approaches for pre-processing data.</strong></p>
+<p>There are two main approaches for pre-processing experimental data in this
+way. First, when data are the output of complex laboratory equipment, there
+will often be proprietary software that is available for this pre-processing.
+This software may be created by the same company that made the equipment, or
+it may be created and sold by other companies. The interface will typically
+be a graphical-user interface (GUI), where you will use pull-down menus and
+point-and-click interfaces to work through the pre-processing steps. You
+often will be able to export a pre-processed version of the data in a
+common file format, like a delimited file or an Excel file, and that version
+of the data can then be read into more general data analysis software, like
+Excel or R.</p>
+<p>[Include a screenshot of this type of software in action.]</p>
+<p>The second approach is to conduct the pre-processing directly within general
+data analysis software like R or Python. These programs are both open-source,
+and include extensions that were created and shared by users around the world.
+Through these extensions, there are often powerful tools that you can use to
+pre-process complex experimental data. In fact, the algorithms used in
+proprietary software are sometimes extended from algorithms first shared through
+R or Python. With this approach, you will read the data into the program (R,
+for example) directly from the file output from the equipment. You can
+record all the code that you use to read in and pre-process the data in a
+code script, allowing you to reproduce this pre-processing work. You can
+also go a step further, and incorporate your code into a pre-processing
+protocol, which combines nicely formatted text with executable code, and
+which we’ll describe in much more detail later in this module and in the
+following two modules.</p>
+<p>There are advantages to taking the second approach—using scripted code in an
+open-source program—rather than the first—using proprietary software with a
+GUI interface. The use of codes scripts ensures that the steps of pre-processing
+are reproducible. This means both that you will be able to re-do all the steps
+yourself in the future, if you need to, but that also that other researchers can
+explore and replicate what you do. You may want to share your process with
+others in your laboratory group, for example, so they can understand the choices
+you made and steps you took in pre-processing the data. You may also want to
+share the process with readers of the articles you publish, and this may in fact
+be required by the journal. Further, the use of a code script encourages you to
+document this code and this process, even moreso when you move beyond a script
+and include the code in a reproducible pre-processing protocol. Well-documented
+code makes it much easier to write up the method section later in manuscripts
+that leveraged the data collected in the experiment.</p>
+<p>Also, when you use scripted code to pre-process biomedical data, you will find
+that the same script can often be easily adapted and re-used in later projects
+that use the same type of data. You may need to change small elements, like the
+file names of files with data you want to use, or some details about the methods
+used for certain pre-processing steps. However, often almost all of the
+pre-processing steps will repeat over different experiments that you do. By
+extending to write a pre-processing protocol, you can further support the
+ease of adapting and re-using the pre-processing steps you take with one
+experiment when you run later experiments that are similar.</p>
 </div>
 <div id="approaches-to-simple-preprocessing-tasks" class="section level3" number="3.1.2">
 <h3><span class="header-section-number">3.1.2</span> Approaches to simple preprocessing tasks</h3>

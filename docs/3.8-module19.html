@@ -459,45 +459,37 @@ mathematical equations. In the next module, we walk through an example of using
 RMarkdown, and in this example we show how you can use these two more advanced
 features when creating a pre-processing protocol.</p>
 <p><strong>Including bibliographical references.</strong></p>
-<p>You can use Rmarkdown, in combination with something called BibTeX, as a
-referencing system. This allows you to include bibliographical references in the
-documents that you create, and Rmarkdown will handle the creation of the
-references section and the numbering of the documents within your text.</p>
 <p>To include references in RMarkdown documents, you can use something called
-<strong>BibTeX</strong>. This has three components:</p>
+<strong>BibTeX</strong>. This is a software system that is free and open source and works in
+concert with LaTeX. It allows you to save bibliographical information in a plain
+text file—following certain rules—and then reference that information in a
+document. In this way, it can serve the role of a bibliographical reference
+manager (like Endnote or Mendeley) while being free and keeping all information
+in plain text files, where they can easily be tracked with version control like
+git. By using BibTeX with RMarkdown, you can include bibliographical references
+in the documents that you create, and Rmarkdown will handle the creation of the
+references section and the numbering of the documents within your text.</p>
+<p>To use BibTeX to add references to an RMarkdown document, you’ll need to take
+three steps:</p>
 <ol style="list-style-type: decimal">
 <li>Create a plain text file with listings for each of
-your references (<strong>BibTeX file</strong>). Save it with the
-extension <code>.bib</code>.</li>
+your references (<strong>BibTeX file</strong>). Save this file with the
+extension <code>.bib</code>. These listings need to follow a special format, which
+we’ll describe in just a minute.</li>
 <li>In your RMarkdown document, include the filepath
-to this BibTeX file.</li>
+to this BibTeX file, so that RMarkdown will be able to find the bibliographical
+listings.</li>
 <li>In the text of the RMarkdown file, include a key and special character
-combination anytime you want to reference a paper.</li>
+combination anytime you want to reference a paper. This referencing also
+follows a special format, which we’ll describe below.</li>
 </ol>
-<p>Once you have a BibTeX file, you will include its
-path in the YAML:</p>
-<pre><code>  ---
-  title: &quot;Reproducible Research with R&quot;
-  author: &quot;Brooke Anderson&quot;
-  date: &quot;1/25/2021&quot;
-  output: beamer_presentation
-  bibliography: mybibliography.bib
-  ---</code></pre>
-<p>It is easiest if you save the BibTeX file in the same directory
-as the RMarkdown document.</p>
-<p>You can add references in the text using a key for each paper
-within special characters (<code>[@paper1, @paper2]</code>).</p>
-<p>For example, you would write:</p>
-<pre><code>This technique follows earlier work [@fox2020, 
-@anderson2019].</code></pre>
-<p>To create:</p>
-<blockquote>
-<p>``This technique follows earlier work (Fox et al. 2020, Anderson et al. 2019)."</p>
-</blockquote>
-<p>With full paper details included at the end of the document.</p>
-<p>Put all the bibliographical details in the BibTeX file:</p>
-<p>You will have a file named something like <code>mybibliography.bib</code>
-with entries for each paper like this:</p>
+<p>Let’s look at each of these steps in a bit more detail. The first step is
+to create a plain text file with a listing for each of the documents that
+you’d like to cite. The plain text document should be saved with the file
+extension <code>.bib</code> (for example, “mybibliography.bib”), and the listings for
+each document in the file must follow specific rules.</p>
+<p>Let’s take a look at one to explore these rules. Here’s an example of a BibTeX
+listing for a scientific article:</p>
 <pre><code>@article{fox2020,
   title={Cyto-feature engineering: A pipeline for flow cytometry 
     analysis to uncover immune populations and associations with 
@@ -511,13 +503,73 @@ with entries for each paper like this:</p>
   pages={1--12},
   year={2020}
 }</code></pre>
-<p>You can get these details from Google Scholar:</p>
-<div class="figure fullwidth"><span style="display:block;" id="fig:unnamed-chunk-35"></span>
+<p>You can see that this listing is for an article, because it starts with the
+keyword <code>@article</code>. BibTeX can record a number of different types of documents,
+including articles, books, and websites. You start by specifying the document
+type because different types of documents need to include different elements
+in their listings. For example, a website should include the date when it was
+last accessed, while an article typically will not.</p>
+<p>Within the curly brackets for the listing shown above, there are key-value
+pairs—elements where the type of value is given with a keyword (e.g.,
+<code>title</code>), and then the value for that element is given after an equals signe.
+For example, to specify the journal in which the article was published, this
+listing has <code>journal={Scientific Reports}</code>. Finally, the listing has a key
+that you will use to identify the listing in the main text. In this case,
+the listing is given the key <code>fox2020</code>, which combines the first author and
+publication year. You can use any keys you like for the items in the bibliography,
+as long as they are different for every listing, so that the computer can
+identify which bibliographical listing you are referring to when you use a key.</p>
+<p>This format may seem overwhelming, but fortunately you will rarely have to
+create these listings by hand. Instead, you can get them directly from Google
+Scholar. To do this, look up the paper on Google Scholar (Figure
+<a href="3.8-module19.html#fig:googlebibtex">3.13</a>). When you see it, look for a small quotation mark
+symbol at the bottom of the article listing (shown with the top red arrow in
+Figure <a href="3.8-module19.html#fig:googlebibtex">3.13</a>). If you click on this, it will open a pop-up
+with the citation for the article. At the bottom of that pop-up is a link that
+says “BibTeX” (bottom red arrow in Figure <a href="3.8-module19.html#fig:googlebibtex">3.13</a>). If you click
+on that, it will take you to a page that gives the full BibTex listing for that
+article, and you can just copy and paste this into your plain text BibTeX file.</p>
+<div class="figure fullwidth"><span style="display:block;" id="fig:googlebibtex"></span>
 <img src="figures/google_scholar.png" alt="Example of using Google Scholar to get bibliographical information for a BibTeX file. When you look up an article on Google Scholar, there is an option (the quotation mark icon under the article listing) to open a pop-up window with bibliographical information. At the bottom of this pop-up box, you can click on 'BibTeX' to get a plain text version of the BibTeX entry for the article. You can copy and paste this into you BibTeX file." width="\textwidth"  />
 <p class="caption marginnote shownote">
 Figure 3.13: Example of using Google Scholar to get bibliographical information for a BibTeX file. When you look up an article on Google Scholar, there is an option (the quotation mark icon under the article listing) to open a pop-up window with bibliographical information. At the bottom of this pop-up box, you can click on ‘BibTeX’ to get a plain text version of the BibTeX entry for the article. You can copy and paste this into you BibTeX file.
 </p>
 </div>
+<p>Once you have this plain text BibTeX file, you will tell your computer how to
+find it by including its path in the YAML. For example, if you created a BibTeX
+file called “mybibliography.tex” and saved it in the same directory as a
+RMarkdown document, you could use the following to indicate this file for
+the RMarkdown document:</p>
+<pre><code>  ---
+  title: &quot;Reproducible Research with R&quot;
+  author: &quot;Brooke Anderson&quot;
+  date: &quot;1/25/2021&quot;
+  output: beamer_presentation
+  bibliography: mybibliography.bib
+  ---</code></pre>
+<p>This shows the YAML for the document—the part that goes at the beginning of
+the RMarkdown document and gives some metadata and overall instructions for the
+document. In this example, we’ve added an extra line: <code>bibliography: mybibliography.bib</code>. This says that you’d like to link to a BibTeX file when
+this document is rendered, as well as where to find that file (the file named
+“mybibliography.bib” in the directory of the RMarkdown file).</p>
+<p>Now that you have created the BibTeX file and told the RMarkdown file where to
+find it, you can connect the two. As you write in the RMarkdown file, you can
+refer to any of your BibTeX listings by using the key that you set for that
+document. For example, if you wanted to reference the Fox et al. paper we
+used in the example listing above, you would use the key that we set for
+that listing, <code>fox2020</code>.</p>
+<p>You will follow a special convention when you cite a paper: you’ll use the
+<code>@</code> symbol directly followed by that key. Typically, you will surround
+this with square brackets. Therefore, to reference the Fox et al. paper,
+you’d use <code>[@fox2021]</code>.</p>
+<p>Here’s how that might look in practice. If you write in the RMarkdown document:</p>
+<pre><code>This technique follows earlier work [@fox2020].</code></pre>
+<p>In the output from rendering that RMarkdown document you’d get:</p>
+<blockquote>
+<p>``This technique follows earlier work (Fox et al. 2020)."</p>
+</blockquote>
+<p>With full paper details included at the end of the document, in a reference
+section.</p>
 <p><strong>Including mathematical equations.</strong></p>
 <p>Next, you can include mathematical equations within an
 Rmarkdown document. This allows you to use nice formatting whenever you need
@@ -645,7 +697,13 @@ more information about the <code>rticles</code> package on its GitHub page, at
 Markdown: A Definitive Guide</em> [ref] on writing manuscripts for scientific
 journals using Rmarkdown, available online at
 <a href="https://bookdown.org/yihui/rmarkdown/rticles-templates.html" class="uri">https://bookdown.org/yihui/rmarkdown/rticles-templates.html</a>.</p>
-<p>You can use RMarkdown to create much larger outputs, compared to simpler reports
+<p>As a similar idea, you can created parameterized RMarkdown documents. These are
+a simple way to create a kind of template for reports in your laboratory.
+You can create these is a similar way to regular RMarkdown documents, but
+they include an area where you can change some inputs each time you render
+the document. There is a section on parameterized reports in <em>R
+Markdown: A Definitive Guide</em> [ref].</p>
+<p>You can also use RMarkdown to create much larger outputs, compared to simpler reports
 and protocols. RMarkdown can now be used to create very large and dynamic
 documents, including online books (which can also be rendered to pdf versions
 suitable for printing), dashboard-style websites, and blogs. Once members of
@@ -688,8 +746,8 @@ sharing data results—you can see a gallery of examples at
 excellent for creating a webpage that allows users to view complex, and
 potentially interactive, results from data you’ve collected. It can be
 particularly helpful for groups that need to quickly communicate regularly
-updated data to viewers. During 2020, for example, many public health
-departments maintained dashboard-style websites to share evolving data on
+updated data to viewers. During the COVID-19 pandemic, for example, many public
+health departments maintained dashboard-style websites to share evolving data on
 COVID-19 in the community. Using RMarkdown in this case has the key advantage of
 allowing you to easily update the dashboard webpage as you get new or updated
 data, since it is easy to re-run any data processing, analysis, and
