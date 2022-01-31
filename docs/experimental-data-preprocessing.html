@@ -5189,17 +5189,17 @@ the right container for operations from <code>edgeR</code>. Then functions from 
 data. The result is an object in the <code>DGEExact</code> class, which is defined
 by the <code>edgeR</code> package. To extract data from this class in a tidy format,
 you can use the <code>tidy</code> and <code>glance</code> functions from <code>biobroom</code>.]</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="experimental-data-preprocessing.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biobroom)</span>
-<span id="cb21-2"><a href="experimental-data-preprocessing.html#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Biobase)</span>
-<span id="cb21-3"><a href="experimental-data-preprocessing.html#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(edgeR)</span>
-<span id="cb21-4"><a href="experimental-data-preprocessing.html#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-5"><a href="experimental-data-preprocessing.html#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(hammer)</span>
-<span id="cb21-6"><a href="experimental-data-preprocessing.html#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-7"><a href="experimental-data-preprocessing.html#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(hammer)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="experimental-data-preprocessing.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biobroom)</span>
+<span id="cb52-2"><a href="experimental-data-preprocessing.html#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Biobase)</span>
+<span id="cb52-3"><a href="experimental-data-preprocessing.html#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(edgeR)</span>
+<span id="cb52-4"><a href="experimental-data-preprocessing.html#cb52-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-5"><a href="experimental-data-preprocessing.html#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(hammer)</span>
+<span id="cb52-6"><a href="experimental-data-preprocessing.html#cb52-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-7"><a href="experimental-data-preprocessing.html#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(hammer)</span></code></pre></div>
 <pre><code>## [1] &quot;ExpressionSet&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;Biobase&quot;</code></pre>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="experimental-data-preprocessing.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(hammer)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="experimental-data-preprocessing.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(hammer)</span></code></pre></div>
 <pre><code>## # A tibble: 236,128 × 3
 ##    gene               sample    value
 ##    &lt;chr&gt;              &lt;chr&gt;     &lt;int&gt;
@@ -5214,21 +5214,21 @@ you can use the <code>tidy</code> and <code>glance</code> functions from <code>b
 ##  9 ENSRNOG00000000021 SRX020102     7
 ## 10 ENSRNOG00000000024 SRX020102    86
 ## # … with 236,118 more rows</code></pre>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="experimental-data-preprocessing.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Example from `biobroom` help documentation</span></span>
-<span id="cb25-2"><a href="experimental-data-preprocessing.html#cb25-2" aria-hidden="true" tabindex="-1"></a>hammer.counts <span class="ot">&lt;-</span> <span class="fu">exprs</span>(hammer)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb25-3"><a href="experimental-data-preprocessing.html#cb25-3" aria-hidden="true" tabindex="-1"></a>hammer.treatment <span class="ot">&lt;-</span> <span class="fu">phenoData</span>(hammer)<span class="sc">$</span>protocol[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb25-4"><a href="experimental-data-preprocessing.html#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-5"><a href="experimental-data-preprocessing.html#cb25-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(<span class="at">counts=</span>hammer.counts,<span class="at">group=</span>hammer.treatment)</span>
-<span id="cb25-6"><a href="experimental-data-preprocessing.html#cb25-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(y)</span>
-<span id="cb25-7"><a href="experimental-data-preprocessing.html#cb25-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateCommonDisp</span>(y)</span>
-<span id="cb25-8"><a href="experimental-data-preprocessing.html#cb25-8" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateTagwiseDisp</span>(y)</span>
-<span id="cb25-9"><a href="experimental-data-preprocessing.html#cb25-9" aria-hidden="true" tabindex="-1"></a>et <span class="ot">&lt;-</span> <span class="fu">exactTest</span>(y)</span>
-<span id="cb25-10"><a href="experimental-data-preprocessing.html#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-11"><a href="experimental-data-preprocessing.html#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(et)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="experimental-data-preprocessing.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Example from `biobroom` help documentation</span></span>
+<span id="cb56-2"><a href="experimental-data-preprocessing.html#cb56-2" aria-hidden="true" tabindex="-1"></a>hammer.counts <span class="ot">&lt;-</span> <span class="fu">exprs</span>(hammer)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb56-3"><a href="experimental-data-preprocessing.html#cb56-3" aria-hidden="true" tabindex="-1"></a>hammer.treatment <span class="ot">&lt;-</span> <span class="fu">phenoData</span>(hammer)<span class="sc">$</span>protocol[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb56-4"><a href="experimental-data-preprocessing.html#cb56-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-5"><a href="experimental-data-preprocessing.html#cb56-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(<span class="at">counts=</span>hammer.counts,<span class="at">group=</span>hammer.treatment)</span>
+<span id="cb56-6"><a href="experimental-data-preprocessing.html#cb56-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(y)</span>
+<span id="cb56-7"><a href="experimental-data-preprocessing.html#cb56-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateCommonDisp</span>(y)</span>
+<span id="cb56-8"><a href="experimental-data-preprocessing.html#cb56-8" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateTagwiseDisp</span>(y)</span>
+<span id="cb56-9"><a href="experimental-data-preprocessing.html#cb56-9" aria-hidden="true" tabindex="-1"></a>et <span class="ot">&lt;-</span> <span class="fu">exactTest</span>(y)</span>
+<span id="cb56-10"><a href="experimental-data-preprocessing.html#cb56-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-11"><a href="experimental-data-preprocessing.html#cb56-11" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(et)</span></code></pre></div>
 <pre><code>## [1] &quot;DGEExact&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;edgeR&quot;</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="experimental-data-preprocessing.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(et)</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="experimental-data-preprocessing.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(et)</span></code></pre></div>
 <pre><code>## # A tibble: 29,516 × 4
 ##    gene               estimate  logCPM    p.value
 ##    &lt;chr&gt;                 &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;
@@ -5243,7 +5243,7 @@ you can use the <code>tidy</code> and <code>glance</code> functions from <code>b
 ##  9 ENSRNOG00000000021  -2.02    0.211  0.0373    
 ## 10 ENSRNOG00000000024   0.133   3.97   0.508     
 ## # … with 29,506 more rows</code></pre>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="experimental-data-preprocessing.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(et)</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="experimental-data-preprocessing.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(et)</span></code></pre></div>
 <pre><code>##   significant     comparison
 ## 1        6341 control/L5 SNL</code></pre>
 <p>The creator of the <code>broom</code> package listed some of the common ways that
@@ -5325,7 +5325,7 @@ you could easily create a set of histograms, one per sample, showing the
 distribution of expression levels across all genes in each sample:
 [better example visualization here?]</p>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="improve_repro_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
 <p>You can also incorporate data that are stored in the <code>phenoData</code> slot of
 the <code>ExpressionSet</code> object by specifying <code>addPheno = TRUE</code>:</p>
 <pre><code>## # A tibble: 236,128 × 8
@@ -5345,11 +5345,11 @@ the <code>ExpressionSet</code> object by specifying <code>addPheno = TRUE</code>
 <p>With this addition, visualizations can easily be changed to also show the
 experimental group of each sample:</p>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="improve_repro_files/figure-html/unnamed-chunk-24-1.png" width="672" />
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-55-1.png" width="672" />
 You can also do things like look at differences in values for
 specific genes, pairing tools for exploring data with tools for
 visualization, both from the tidyverse:</p>
-<p><img src="improve_repro_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
 <p>The data for a subset of the sample can be analyzed using functions from the
 <code>edgeR</code> package, to complete needed pre-processing (for example, calculating
 normalizing factors with <code>calcNormFactors</code>, to reduce impacts from technical
@@ -5460,7 +5460,7 @@ significant differences in expression level, based on the values in the
 <p>As another example, you can now use tools from <code>ggplot2</code>, as well as
 extensions built on this package, to do things like create a volcano
 plot of the data with highlighting of noteworthy genes on the plot:</p>
-<p><img src="improve_repro_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
 <p>If you wanted to access the help files for these <code>biobroom</code> methods for this
 object class, you could do so by calling help in R (<code>?</code>) using the name of the
 method, a dot, and then the name of the object class, e.g., <code>?tidy.DGEExact</code>.</p>
@@ -6681,7 +6681,8 @@ same data pre-processing steps to different sets of raw data.</p>
 <li>Explain how RMarkdown can be used to improve the reproducibility of research
 projects at the data pre-processing phase</li>
 <li>Create a document in RStudio using RMarkdown</li>
-<li>Apply it to several different datasets with the same format</li>
+<li>Describe more advanced features of Rmarkdown and where you can find out more
+about them</li>
 </ul>
 <div id="creating-knitted-documents-in-r" class="section level3" number="3.8.1">
 <h3><span class="header-section-number">3.8.1</span> Creating knitted documents in R</h3>
