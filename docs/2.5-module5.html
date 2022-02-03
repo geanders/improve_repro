@@ -476,15 +476,15 @@ command calls.</p>
 format shown in Figure <a href="2.5-module5.html#fig:growthsimple2">2.15</a>. It also shows how a few lines of code
 can then be used to convert the data into a truly “tidy” format, and how easily
 sophisticated plots can then be made with the data.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="2.5-module5.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</span>
-<span id="cb2-2"><a href="2.5-module5.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;readxl&quot;</span>)</span>
-<span id="cb2-3"><a href="2.5-module5.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="2.5-module5.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Read data into R from the simplified data collection template</span></span>
-<span id="cb2-5"><a href="2.5-module5.html#cb2-5" aria-hidden="true" tabindex="-1"></a>growth_curve <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;data/growth_curve_data_in_excel (1)/growth curve data_GR.xls&quot;</span>, </span>
-<span id="cb2-6"><a href="2.5-module5.html#cb2-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">sheet =</span> <span class="st">&quot;simplified_template&quot;</span>)</span>
-<span id="cb2-7"><a href="2.5-module5.html#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="2.5-module5.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Example of data</span></span>
-<span id="cb2-9"><a href="2.5-module5.html#cb2-9" aria-hidden="true" tabindex="-1"></a>growth_curve</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="2.5-module5.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</span>
+<span id="cb1-2"><a href="2.5-module5.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;readxl&quot;</span>)</span>
+<span id="cb1-3"><a href="2.5-module5.html#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="2.5-module5.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Read data into R from the simplified data collection template</span></span>
+<span id="cb1-5"><a href="2.5-module5.html#cb1-5" aria-hidden="true" tabindex="-1"></a>growth_curve <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;data/growth_curve_data_in_excel (1)/growth curve data_GR.xls&quot;</span>, </span>
+<span id="cb1-6"><a href="2.5-module5.html#cb1-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">sheet =</span> <span class="st">&quot;simplified_template&quot;</span>)</span>
+<span id="cb1-7"><a href="2.5-module5.html#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="2.5-module5.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Example of data</span></span>
+<span id="cb1-9"><a href="2.5-module5.html#cb1-9" aria-hidden="true" tabindex="-1"></a>growth_curve</span></code></pre></div>
 <pre><code>## # A tibble: 14 × 6
 ##    sampling_date_time  aerated1 aerated3 low_oxygen1 low_oxygen2 low_oxygen3
 ##    &lt;dttm&gt;                 &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
@@ -502,14 +502,14 @@ sophisticated plots can then be made with the data.</p>
 ## 12 2019-07-15 10:27:00    0.434    0.45        0.147       0.097       0.129
 ## 13 2019-07-15 16:42:00    0.428    0.45        0.147       0.097       0.129
 ## 14 2019-07-16 09:28:00    0.42     0.448       0.145       0.095       0.128</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="2.5-module5.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to a fully tidy format</span></span>
-<span id="cb4-2"><a href="2.5-module5.html#cb4-2" aria-hidden="true" tabindex="-1"></a>growth_curve <span class="ot">&lt;-</span> growth_curve <span class="sc">%&gt;%</span> </span>
-<span id="cb4-3"><a href="2.5-module5.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>sampling_date_time, </span>
-<span id="cb4-4"><a href="2.5-module5.html#cb4-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&quot;experimental_group&quot;</span>, </span>
-<span id="cb4-5"><a href="2.5-module5.html#cb4-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&quot;optical_density&quot;</span>)</span>
-<span id="cb4-6"><a href="2.5-module5.html#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="2.5-module5.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># How the data look after this transformation</span></span>
-<span id="cb4-8"><a href="2.5-module5.html#cb4-8" aria-hidden="true" tabindex="-1"></a>growth_curve</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="2.5-module5.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to a fully tidy format</span></span>
+<span id="cb3-2"><a href="2.5-module5.html#cb3-2" aria-hidden="true" tabindex="-1"></a>growth_curve <span class="ot">&lt;-</span> growth_curve <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="2.5-module5.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>sampling_date_time, </span>
+<span id="cb3-4"><a href="2.5-module5.html#cb3-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&quot;experimental_group&quot;</span>, </span>
+<span id="cb3-5"><a href="2.5-module5.html#cb3-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&quot;optical_density&quot;</span>)</span>
+<span id="cb3-6"><a href="2.5-module5.html#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="2.5-module5.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># How the data look after this transformation</span></span>
+<span id="cb3-8"><a href="2.5-module5.html#cb3-8" aria-hidden="true" tabindex="-1"></a>growth_curve</span></code></pre></div>
 <pre><code>## # A tibble: 70 × 3
 ##    sampling_date_time  experimental_group optical_density
 ##    &lt;dttm&gt;              &lt;chr&gt;                        &lt;dbl&gt;
@@ -524,11 +524,11 @@ sophisticated plots can then be made with the data.</p>
 ##  9 2019-07-09 16:05:00 low_oxygen2                  0.022
 ## 10 2019-07-09 16:05:00 low_oxygen3                  0.027
 ## # … with 60 more rows</code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="2.5-module5.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example of how easily sophisticated plots can be created with data in this format</span></span>
-<span id="cb6-2"><a href="2.5-module5.html#cb6-2" aria-hidden="true" tabindex="-1"></a>growth_curve <span class="sc">%&gt;%</span> </span>
-<span id="cb6-3"><a href="2.5-module5.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sampling_date_time, <span class="at">y =</span> optical_density)) <span class="sc">+</span> </span>
-<span id="cb6-4"><a href="2.5-module5.html#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
-<span id="cb6-5"><a href="2.5-module5.html#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> experimental_group)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="2.5-module5.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example of how easily sophisticated plots can be created with data in this format</span></span>
+<span id="cb5-2"><a href="2.5-module5.html#cb5-2" aria-hidden="true" tabindex="-1"></a>growth_curve <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="2.5-module5.html#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sampling_date_time, <span class="at">y =</span> optical_density)) <span class="sc">+</span> </span>
+<span id="cb5-4"><a href="2.5-module5.html#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
+<span id="cb5-5"><a href="2.5-module5.html#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> experimental_group)</span></code></pre></div>
 <p><img src="improve_repro_files/figure-html/unnamed-chunk-23-1.png" width="672"  />
 In later chapters, we’ll discuss R’s “tidyverse,” a collection of tools within R
 that facilitate analyzing and visualizing data once they’ve been read into R. Here, we
