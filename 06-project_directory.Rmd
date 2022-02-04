@@ -13,63 +13,143 @@ pre-processed experimental data.
 - Describe a 'Project' directory, including common components and subdirectories 
 - List how a single 'Project' directory improves reproducibility
 
+In previous modules, we've discussed how you can separate the steps of data
+collection from steps of data cleaning, management, pre-processing, and 
+analysis. In the case of data recorded in a laboratory, this separation 
+will often result in moving from a single file (for example, a spreadsheet), 
+that combines all the steps to using separate files for the different 
+steps. As you move to separate data recording and analysis, then, it 
+is very important to store the set of files for a project in a way that 
+is clear and easy to manage. If the file directory for the project is 
+well-designed, it can even allow you to create software tools and report templates
+that can be reused over many experiments. In the next few modules, we'll 
+discuss how you can organize the files for an experiment using R's "Project"
+system. The modules will discuss the advantages of well-designed project
+directories, tips for arranging files within a project directory, 
+and how to create templates for R Projects that allow you to use consistent
+file organization across many experiments.
 
-...
+As a motivating example, for the next few modules, we'll use an example based on
+a set of real immunology experiments. This example highlights how a research
+laboratory will often conduct a similar type of experiment many times, so it
+lets us demonstrate how the design of the project's files within a project
+directory can be reused across similar experiments. It will allow us to show you
+how you can move from designing a file directory for a single experiment to
+designing one that can be used repeatedly, and then how you can take advantage
+of consistency in the directory structure across projects to make tools and
+templates that can be reused.
 
-For the next few modules, we'll use an example from a set of real immunology
-experiments. This was a a collection of studies with similar designs and similar
-goals---all are aiming to test candidate treatments for tuberculosis. 
+## Example project
 
-Each study tested one or more controls (e.g., saline solution, isofluorane, 
-INH) and one or more treatments. Part of the novelty of this experiment was in 
-testing some treatments that were monotherapies versus some that were 
-combinations of several drugs. For many of the drugs that were tested, they 
-were tested at different doses and, in some cases, different methods of 
-delivery or different mouse models. 
+The examples for this and the next few modules are based on a collection of
+studies that were conducted with similar designs and similar goals---all aimed
+to test candidate treatments for tuberculosis. Most studies in this set tested
+one or more treatments as well as one or more controls. The controls could
+include negative controls, like saline solution, or positive controls, like a
+drug already in use to treat the disease, isoniazid. A few of the studies tested
+only controls, to help in developing baseline expectations for things like the
+bacterial load in different mouse strains used in studies in the set. The
+set of studies tested some treatments that were monotherapies (only one drug
+given to the animal) as well as some that were combinations of two or three
+different drugs. For many of the drugs that were tested, they were tested at
+different doses and, in some cases, different methods of delivery or different
+mouse models.
 
 Each of the treatments were given to several mice that had been infected with
-*Mycobacterium tuberculosis*. After a period of time, the mice were sacrificed
-and one lobe from their lungs was used to determine each mouse's bacterial
-load, through plating the material from the lobe and counting the colony 
-forming units (CFUs). One aim of the data analysis is to compare the bacterial
-load of mice under various treatments to the bacterial load of mice in the 
-control group. 
+*Mycobacterium tuberculosis*. During the treatment, the mice were weighed
+regularly. This weight measurement helps to determine if a particular treatment
+is well-tolerated by the animals---if not, it may show through the treated mice
+losing weight during treatment. For convenience, the mice were not weighed
+individually. Instead, mice with the same treatment were kept in a single cage,
+and the entire cage was weighed, the weight of the cage itself factored out, and
+the average weight of mice for that treatment determined by dividing the weight
+of all mice in the cage by the number of mice in the cage. After a period of
+time, the mice were sacrificed and one lobe from their lungs was used to
+determine each mouse's bacterial load, through plating the material from the
+lobe and counting the colony forming units (CFUs). One aim of the data analysis
+is to compare the bacterial load of mice under various treatments to the
+bacterial load of mice in the control group.
 
 The full set of studies included 19 different studies. These were conducted at
-different times, but the data for all of the studies can be collected using 
-a common format. In this module, as well as the following two, we'll be exploring
+different times, but the data for all of the studies can be collected using a
+common format. In this module, as well as the following two, we'll be exploring
 how you can use RStudio's Project functionality to organize data from one or
-more studies. We'll particularly focus on how, by using a common format for 
-data collection, you can create tools that can be used repeatedly for different
+more studies. We'll particularly focus on how, by using a common format for data
+collection, you can create tools that can be used repeatedly for different
 experiments to ensure that methods are the same across all studies of a similar
-type, as well as to improve the reproducibility of the studies. 
+type, as well as to improve the reproducibility of the studies. Let's walk
+through the types of data that were collected for each study.
 
-## Details of the data from the set of example studies
+First, there was some metadata recorded for each study. Figure
+\@ref(fig:metadata) gives an example. This includes information about the strain
+of mouse that was used in the study, treatment details (including the method of
+giving the drug or drugs, how often they were given each week, and for how many
+weeks), how much bacteria the animals were exposed to (measured both in terms of
+the inoculum they were given and their bacterial load one day after they were
+given that inoculum, which was based on sacrificing one animal the day after
+challenging all the animals with the bacteria), and, if the study included a
+novel drug as part of the tested treatment, the batch number of that drug.
 
-Let's start by taking a closer look at the set of studies that we'll use as
-a motivating example in this module. Figure [x] provides an example of the 
-data that were collected for one of the studies. Each treatment is coded
-with a numeric ID (e.g., a 0 in the `rx_group` column indicates one of the
-control treatments). A different spreadsheet contains metadata on each of 
-the treatment regimes (Figure [x]). For each treatment that was tested in 
-this study, bacterial load was measured and recorded for each mouse given 
-the treatment, with (in this study in the set) between five and eight mice
-given each treatment.
+```{r metadata, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of recording metadata on a study in the set of example studies for this module."}
+knitr::include_graphics("figures/project_metadata.png")
+```
 
-One other piece of information was recorded in the laboratory for this 
-study. Each week of treatment, all the mice under a given treatment were
-weighed as a group, and these weights were recorded (Figure [x]). These
-values can be divided by the number of mice in that treatment group to 
-determine the average weight per mouse each week of treatment. These data
-were recorded within the same data collection spreadsheet as the data on 
-bacterial loads, but in a different sheet of that spreadsheet. 
+Next, the researchers recorded some information about each treatment group
+within the experiment. This typically included at least one negative control.
+In some cases, there was also a positive control, in which the animals were
+treated with a drug that's in standard use against tuberculosis already
+(e.g., isoniazid). Most studies would also test one or more treatments, 
+which could include monotherapies or combined therapies. Figure [x] shows
+an example of the data that were recorded on each treatment in the study. 
+These data include...
 
-This same data collection process we conducted for 19 different studies.
-All the data can be collected using the same data collection template.
-A separate spreadsheet was used to record metadata about the set of 
-experiments. This included details on each treatment, using numeric
-treatment IDs that correspond with those used in the data collection 
-template shown in Figure [x]. 
+[Figure---Treatment details collected for these studies]
+
+Once the animals were challenged with the bacteria, treatment began, and 
+two main types of data were measured and recorded. First, the mice were
+weighed once a week. These weights were converted to a measure of the 
+percent change in weight since the start of treatment. If the animals'
+weights decrease during the treatment, it is a marker that the treatment
+is not well-tolerated by the animals. Figure [x] shows an example of 
+how these data were recorded. All animals within a treatment group 
+were kept in the same cage, and this cage was measured once a week. 
+By dividing the weight of all animals in the cage by the number of 
+animals, the researchers could estimate the average weight of animals
+in that treatment group, which is recorded as shown in Figure [x]. 
+
+[Figure---Recording weights of animals]
+
+Finally, after the treatment period, the mice were sacrificed and 
+a portion of each mouse's lung was used to estimate the bacterial load
+in that mouse. ... Figure [x] shows an example of how the data on 
+the bacterial load in each mouse was recorded.
+
+[Figure---Recording bacterial load]
+
+As you can see, these data were all recorded using templates that were designed
+for the tidy collection of laboratory data (see modules 2.4 and 2.5). These
+spreadsheets were used only to record the data, and then processing, analysis,
+and visualization were done in a separate file. Specifically, for this set of
+studies a preliminary report was designed, with an example shown in Figure [x].
+This report uses the first page to provide a nicely format version of the
+metadata for the study, including a table with overall details and a table with
+details for each specific treatment that was tested. The second page provides a
+graph that shows the percent weight change for mice in each treatment group
+compared to the weight of that group at the start of treatment. The third page
+provides a graph that shows the bacterial loads in each mouse, grouped by
+treatment, as well as the results of running a statistical test to test, for
+each treatment group, the hypothesis that the mean of a transformed version of
+the measure of bacterial load (log-10) for the group was the same as for the
+untreated control group.
+
+```{r prelimreport, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of the preliminary report generated for each study in the set of example studies for this module. The first page includes metadata on the study, as well as details on each treatment that was tested. The second page shows how mouse weights in each treatment group changed over the course of treatment, to help identify if a treatment was well-tolerated. The third page graphs the bacterial load in each mouse, grouped by treatment, and gives the result of a statistical analysis to test which treatment groups had outcomes that were significantly different from the untreated control group."}
+knitr::include_graphics("figures/project_prelim_report.png")
+```
+
+## Creating an organized directory for project files
+
+To start, let's look at how we can organize the files from this set of studies
+into a directory in an efficient way. ...
 
 ...
 
@@ -88,11 +168,6 @@ example set of studies. Further, we'll look at how this organization
 allows not only for reporting on specific studies in a reproducible way, 
 but also makes it easier to create an overall report that combines 
 results and details from all studies in the set. 
-
-## Creating an organized directory for project files
-
-To start, let's look at how we can organize the files from this set of studies
-into a directory in an efficient way. ...
 
 ## Making the project directory and R Project
 
