@@ -2807,42 +2807,40 @@ reports from statistical programs like R and Python. In this section, we will
 give an overview of how you could create the report template shown in Figure
 \ref{fig:growthreport2}.
 
-We will be using the programming language R, including RMarkdown, which is R's
-main tool for creating reproducible reports. If you have never used R or
-RMarkdown before, you'll find it useful to learn some more about their use to
-help in creating these types of reproducible reports from collected data.
-Numerous excellent (and free) resources exist to help learn R. One of the best
-is the book ``R for Data Science'' by Hadley Wickham and Garrett Grolemund. It is
-available in print, as well as free online at \url{https://r4ds.had.co.nz/}.
-
-\ldots{}
-
 This report is written using a framework called RMarkdown, which allows you to
 include executable code inside a nicely-formatted document, resulting in a
 document in Word, PDF, or HTML that is easy for humans to read while also
 generating results based on R code. We will cover this format in details in
-modules 3.7--3.9. In the rest of this section, we'll walk through some of the
-R code that is ``powering'' the analysis in this document, but if you'd like
-to learn how to combine it into an RMarkdown document to create the report
-shown in Figure \ref{fig:growthreport2}, you can learn much more about
-RMarkdown in those later modules.
+modules 3.7--3.9. In the rest of this section, we'll walk through some of the R
+code that is ``powering'' the analysis in this document, but if you'd like to
+learn how to combine it into an RMarkdown document to create the report shown in
+Figure \ref{fig:growthreport2}, you can learn much more about RMarkdown in
+those later modules. The code within the report uses the R language. We'll cover
+a few examples here, but if you would like to use R, you'll find it helpful to
+learn more. Numerous excellent (and free) resources exist to help learn R. One
+of the best is the book ``R for Data Science'' by Hadley Wickham and Garrett
+Grolemund. It is available in print, as well as free online at
+\url{https://r4ds.had.co.nz/}.
 
-The code used to generate the results in Figure \ref{fig:growthreport2}
-is all in the programming language R. A programming language can seem, at
-first glance, much more difficult to learn and use than using a spreadsheet
-program like Excel to set up formulae and macros. However, languages like
-R have evolved substantially in recent years to allow for much more straightforward
-coding than you may have seen in the past, and the barrier to learning to
-use them for straightforward data management and analysis is not much higher
-than the effort required to become proficient in using a spreadsheet program.
-To demonstrate this, let's look through a few of the tasks required to
-generate the results shown in Figure \ref{fig:growthreport2}. We won't cover
-all the code, just highlight some of the key steps. If you'd like to look
-in details over the code and the output document, you can download those
-files and explore them: the {[}Rmarkdown file{]} and the {[}output PDF{]} are
-available here. If you'd like to try out the code in the Rmarkdown file,
-you'll also need the example data, which you can download {[}here{]}. {[}Add refs
-to the last sentence.{]}
+The code used to generate the results in Figure \ref{fig:growthreport2} is all
+in the programming language R. A programming language can seem, at first glance,
+much more difficult to learn and use than using a spreadsheet program like Excel
+to set up formulae and macros. However, languages like R have evolved
+substantially in recent years to allow for much more straightforward coding than
+you may have seen in the past, and the barrier to learning to use them for
+straightforward data management and analysis is not much higher than the effort
+required to become proficient in using a spreadsheet program. To demonstrate
+this, let's look through a few of the tasks required to generate the results
+shown in Figure \ref{fig:growthreport2}. We won't cover all the code, just
+highlight some of the key steps. If you'd like to look in details over the code
+and the output document, you can download those files and explore them: you can
+access the file for the \href{https://github.com/geanders/improve_repro/blob/master/data/growth_curve_data_in_excel\%20(1)/Example_report.Rmd}{Rmarkdown
+file},
+and you can download the \href{https://github.com/geanders/improve_repro/raw/master/data/growth_curve_data_in_excel\%20(1)/Example_report.pdf}{output
+PDF}.
+If you'd like to try out the code in the Rmarkdown file, you'll also need the
+example data, which you can download by clicking
+\href{https://github.com/geanders/improve_repro/raw/master/data/growth_curve_data_in_excel\%20(1)/growth\%20curve\%20data_GR.xls}{here}.
 
 One key step is to read the collected data into R. When you use a spreadsheet
 for both data collection and analysis, you don't need to read the data to start
@@ -2851,12 +2849,14 @@ the steps of data collection and data analysis, however, you do need to take an
 extra step to read the data file into another program for analysis. Fortunately,
 this is very simple in R. The data in this example are recorded using an Excel
 spreadsheet, and there is a simple function in R that lets you read data in from
-this type of spreadsheet. After this step of code, you will have an object in R
-called \texttt{growth\_data}, which contains the data in a two-dimensional form very
-similar to how it is recorded in the spreadsheet (this type of object in R is
-called a dataframe).
+this type of spreadsheet (Figure \ref{fig:growthreadexcel}). After this step of
+code, you will have an object in R called \texttt{growth\_data}, which contains the data
+in a two-dimensional form very similar to how it is recorded in the spreadsheet
+(this type of object in R is called a dataframe).
 
-{[}Figure---read in data from spreadsheet{]}
+\begin{figure*}
+\includegraphics[width=\textwidth]{figures/growth_curve_readxl} \caption[Code to read data from the data collection template into R for cleaning, analysis, and visualization]{Code to read data from the data collection template into R for cleaning, analysis, and visualization. The data were recorded in the tidy data collection template described earlier in this module. Here, those data are read into R (code shown at top). The resulting data in R are stored in a format that is very similar to the design of a spreadsheet, with rows for observations and columns for the values recorded for each observation (bottom).}\label{fig:growthreadexcel}
+\end{figure*}
 
 Another key step is to calculate, for each observation, the time since the start
 of the experiment. In the original data collection template shown in Figure
@@ -2869,20 +2869,22 @@ difference in time as they are running the experiment, they can just record the
 time, and we can write code in the analysis document that handles the further
 calculations, using well-designed and well-tested tools to do this calculation.
 
-Figure {[}x{]} shows code that can be used for this calculation. At the start of this
-code, the data are stored in an object named \texttt{growth\_data}. The \texttt{mutate} function
-adds a column to the data, named \texttt{sampling\_delta\_time}, that will give the
-difference between the time of an observation and the start of the experiment.
-Within the \texttt{mutate} call, a special function named \texttt{difftime} calculates the
-difference in two time points. This function lets us specify the time units
-we'd like to use, and here we can pick \texttt{"hours"} for the units. The \texttt{first}
-function lets us pull out the first value in the data for a recorded time---in
-other words, the time when the experiment started. This lets us compare each
-observation time to the time of the start of the experiment. The result
-of this code is a new version of the \texttt{growth\_data} dataframe, with a new
-column giving time since the start of the experiment:
+Figure \ref{fig:growthadddifftime} shows code that can be used for this
+calculation. At the start of this code, the data are stored in an object named
+\texttt{growth\_data}. The \texttt{mutate} function adds a column to the data, named
+\texttt{sampling\_delta\_time}, that will give the difference between the time of an
+observation and the start of the experiment. Within the \texttt{mutate} call, a special
+function named \texttt{difftime} calculates the difference in two time points. This
+function lets us specify the time units we'd like to use, and here we can pick
+\texttt{"hours"} for the units. The \texttt{first} function lets us pull out the first value
+in the data for a recorded time---in other words, the time when the experiment
+started. This lets us compare each observation time to the time of the start of
+the experiment. The result of this code is a new version of the \texttt{growth\_data}
+dataframe, with a new column giving time since the start of the experiment:
 
-{[}Figure---calculating the difference in time{]}
+\begin{figure*}
+\includegraphics[width=\textwidth]{figures/growth_curve_adddifftime} \caption[Code to add a column to the data that gives the time since the start of the experiment]{Code to add a column to the data that gives the time since the start of the experiment. This code (top) uses the time recorded for each experiment and compares it to the first recorded time, at the start of the experiment. This determines the time since the start of the experiment for each observation, given in a new column in the data (bottom).}\label{fig:growthadddifftime}
+\end{figure*}
 
 Another key step is to plot results from the data. In R, there is a package
 called \texttt{ggplot2} that provides tools for visualization. The tools in this
@@ -2892,25 +2894,28 @@ While the resulting code can be long, each step is simple, and so it
 becomes simple to learn these different ``layers'' and learn how to combine
 them to create complex plots.
 
-Figure {[}x{]} walks through the code for one of the visualizations in the report.
-At this point in the report code, the data have been reformatted into an object
-called \texttt{growth\_data\_tidy}, which has columns for each observation on the time
-since the start of the experiment (\texttt{sampling\_delta\_time}), the measured optical
-density (\texttt{optical\_density}), whether the tube was aerated or low oxygen
-(\texttt{growth\_conditions}), and a short ID for the test tube (\texttt{short\_tube\_id}). The
-code starts by creating a plot object, specifying that in this plot the color
-will show the growth conditions, the position on the x-axis will show the time
-since the start of the experiment, and the y-axis will show the optical density.
-Layers are then added to this plot object that add points and lines to the plot
-based on these mappings, and for the lines, it's further specified that the type
-of line should show the test tube ID (for example, one tube will be shown with a
-dotted line, another with a dashed line). Further layers are added to customize
-the scale labels with \texttt{labs}, including the labels for the x-axis and y-axis and
-the legends of the color and linetype scales. Another layer is used to customize
-the appearance of the plot---things like the background color and the font
-used---and another layer is added to use a log-10 scale for the x-axis.
+Figure \ref{fig:growthplotcode} walks through the code for one of the
+visualizations in the report. At this point in the report code, the data have
+been reformatted into an object called \texttt{growth\_data\_tidy}, which has columns for
+each observation on the time since the start of the experiment
+(\texttt{sampling\_delta\_time}), the measured optical density (\texttt{optical\_density}),
+whether the tube was aerated or low oxygen (\texttt{growth\_conditions}), and a short ID
+for the test tube (\texttt{short\_tube\_id}). The code starts by creating a plot object,
+specifying that in this plot the color will show the growth conditions, the
+position on the x-axis will show the time since the start of the experiment, and
+the y-axis will show the optical density. Layers are then added to this plot
+object that add points and lines to the plot based on these mappings, and for
+the lines, it's further specified that the type of line should show the test
+tube ID (for example, one tube will be shown with a dotted line, another with a
+dashed line). Further layers are added to customize the scale labels with
+\texttt{labs}, including the labels for the x-axis and y-axis and the legends of the
+color and linetype scales. Another layer is used to customize the appearance of
+the plot---things like the background color and the font used---and another
+layer is added to use a log-10 scale for the x-axis.
 
-{[}Figure---plotting some of the results{]}
+\begin{figure*}
+\includegraphics[width=\textwidth]{figures/growth_curve_plot_code} \caption[Code to plot growth curves from the data]{Code to plot growth curves from the data. When the plotting code is run, the data have been transformed into a 'tidy' format (top), with columns that include the time since the start of the experiment, a test tube ID, the growth condition for the test tube, and the optical density measured in that test tube. The code (middle) add layers to implement each element of the plot based on this input data. The final plot is shown at the bottom.}\label{fig:growthplotcode}
+\end{figure*}
 
 While this looks like a lot of code, the process isn't any longer than it would
 be to customize elements of a plot in a spreadsheet program. The advantages of
@@ -2936,17 +2941,19 @@ less prone to error by writing a small function that does the same thing,
 then using that function to automate the process of identifying the
 relevant observations to use in calculating the doubling rate.
 
-Figure {[}x{]} shows how you can write and then use a small function in R. This
-function will input your \texttt{growth\_data} dataset, as well as a time that you are
-aiming for, and will output the sampling time in the data that is closest
-to---while not larger than---that time. It does that in a few steps within the
-body of the function. First, the code in the function filters to only
+Figure \ref{fig:growthfunction} shows how you can write and then use a small
+function in R. This function will input your \texttt{growth\_data} dataset, as well as a
+time that you are aiming for, and will output the sampling time in the data that
+is closest to---while not larger than---that time. It does that in a few steps
+within the body of the function. First, the code in the function filters to only
 observations earlier than the target time. Then it measures the difference
 between each of the times for these observations and the target time, and uses
 this to identify the observation with the closest time to the target. It pulls
 out the time of this observation and returns it.
 
-{[}Figure---writing and using a small function{]}
+\begin{figure*}
+\includegraphics[width=\textwidth]{figures/growth_curve_function} \caption[Code to create and apply a small function]{Code to create and apply a small function. The code at the top can be used to create a function that can input your dataframe and determine the observation time in that data that is closest to (without being larger than) a target time. The function does this through a series of small steps. This function can then be applied to find the observation time in the data that is closest to specific target times, like 24 hours and 64 hours (bottom).}\label{fig:growthfuntion}
+\end{figure*}
 
 Small functions like this can easily be reused in other code for your research
 group. By writing the logic of the step out as a function---rather than redoing
@@ -2960,15 +2967,18 @@ you are getting a base set of tools. Many people have developed helpful
 extensions that build on this base. These are stored and shared in what are
 called \textbf{R packages}. You can install these extra packages for free, and you
 use the \texttt{library} function in R to load a package you've installed, giving you
-access to the extra functions that it provides. Figure {[}x{]} shows the spot in the
-Rmarkdown code where we loaded packages we needed for this report. These include
-packages with functions to read data in R from Excel (the \texttt{readxl}) package, as
-well as a suite of packages with tools for cleaning and visualizing data (the
-\texttt{tidyverse} package). In later modules, we'll talk some more about R coding
-tools that you might find useful for working with biomedical data, including the
-tools in the powerful and popular \texttt{tidyverse} suite of packages.
+access to the extra functions that it provides. Figure
+\ref{fig:growthloadpackage} shows the spot in the Rmarkdown code where we
+loaded packages we needed for this report. These include packages with functions
+to read data in R from Excel (the \texttt{readxl}) package, as well as a suite of
+packages with tools for cleaning and visualizing data (the \texttt{tidyverse} package).
+In later modules, we'll talk some more about R coding tools that you might find
+useful for working with biomedical data, including the tools in the powerful and
+popular \texttt{tidyverse} suite of packages.
 
-{[}Figure---loading packages{]}
+\begin{figure*}
+\includegraphics[width=\textwidth]{figures/growth_curve_load_packages} \caption[Code to load packages with additional functionality]{Code to load packages with additional functionality. These provide functions that are not offered in base R, but that are useful in working with the example data. They include packages with functions for reading in data from an Excel file, as well as packages with functions for cleaning and visualizing data.}\label{fig:growthloadpackage}
+\end{figure*}
 
 Overall, you can see that the code in this document provides a step-by-step
 recipe that documents all the calculations and cleaning that we do with the

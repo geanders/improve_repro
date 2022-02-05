@@ -4523,39 +4523,39 @@ Figure 2.17: Examples of an automated report that can be created to quickly gene
 reports from statistical programs like R and Python. In this section, we will
 give an overview of how you could create the report template shown in Figure
 <a href="experimental-data-recording.html#fig:growthreport2">2.17</a>.</p>
-<p>We will be using the programming language R, including RMarkdown, which is R’s
-main tool for creating reproducible reports. If you have never used R or
-RMarkdown before, you’ll find it useful to learn some more about their use to
-help in creating these types of reproducible reports from collected data.
-Numerous excellent (and free) resources exist to help learn R. One of the best
-is the book “R for Data Science” by Hadley Wickham and Garrett Grolemund. It is
-available in print, as well as free online at <a href="https://r4ds.had.co.nz/" class="uri">https://r4ds.had.co.nz/</a>.</p>
-<p>…</p>
 <p>This report is written using a framework called RMarkdown, which allows you to
 include executable code inside a nicely-formatted document, resulting in a
 document in Word, PDF, or HTML that is easy for humans to read while also
 generating results based on R code. We will cover this format in details in
-modules 3.7–3.9. In the rest of this section, we’ll walk through some of the
-R code that is “powering” the analysis in this document, but if you’d like
-to learn how to combine it into an RMarkdown document to create the report
-shown in Figure <a href="experimental-data-recording.html#fig:growthreport2">2.17</a>, you can learn much more about
-RMarkdown in those later modules.</p>
-<p>The code used to generate the results in Figure <a href="experimental-data-recording.html#fig:growthreport2">2.17</a>
-is all in the programming language R. A programming language can seem, at
-first glance, much more difficult to learn and use than using a spreadsheet
-program like Excel to set up formulae and macros. However, languages like
-R have evolved substantially in recent years to allow for much more straightforward
-coding than you may have seen in the past, and the barrier to learning to
-use them for straightforward data management and analysis is not much higher
-than the effort required to become proficient in using a spreadsheet program.
-To demonstrate this, let’s look through a few of the tasks required to
-generate the results shown in Figure <a href="experimental-data-recording.html#fig:growthreport2">2.17</a>. We won’t cover
-all the code, just highlight some of the key steps. If you’d like to look
-in details over the code and the output document, you can download those
-files and explore them: the [Rmarkdown file] and the [output PDF] are
-available here. If you’d like to try out the code in the Rmarkdown file,
-you’ll also need the example data, which you can download [here]. [Add refs
-to the last sentence.]</p>
+modules 3.7–3.9. In the rest of this section, we’ll walk through some of the R
+code that is “powering” the analysis in this document, but if you’d like to
+learn how to combine it into an RMarkdown document to create the report shown in
+Figure <a href="experimental-data-recording.html#fig:growthreport2">2.17</a>, you can learn much more about RMarkdown in
+those later modules. The code within the report uses the R language. We’ll cover
+a few examples here, but if you would like to use R, you’ll find it helpful to
+learn more. Numerous excellent (and free) resources exist to help learn R. One
+of the best is the book “R for Data Science” by Hadley Wickham and Garrett
+Grolemund. It is available in print, as well as free online at
+<a href="https://r4ds.had.co.nz/" class="uri">https://r4ds.had.co.nz/</a>.</p>
+<p>The code used to generate the results in Figure <a href="experimental-data-recording.html#fig:growthreport2">2.17</a> is all
+in the programming language R. A programming language can seem, at first glance,
+much more difficult to learn and use than using a spreadsheet program like Excel
+to set up formulae and macros. However, languages like R have evolved
+substantially in recent years to allow for much more straightforward coding than
+you may have seen in the past, and the barrier to learning to use them for
+straightforward data management and analysis is not much higher than the effort
+required to become proficient in using a spreadsheet program. To demonstrate
+this, let’s look through a few of the tasks required to generate the results
+shown in Figure <a href="experimental-data-recording.html#fig:growthreport2">2.17</a>. We won’t cover all the code, just
+highlight some of the key steps. If you’d like to look in details over the code
+and the output document, you can download those files and explore them: you can
+access the file for the <a href="https://github.com/geanders/improve_repro/blob/master/data/growth_curve_data_in_excel%20(1)/Example_report.Rmd">Rmarkdown
+file</a>,
+and you can download the <a href="https://github.com/geanders/improve_repro/raw/master/data/growth_curve_data_in_excel%20(1)/Example_report.pdf">output
+PDF</a>.
+If you’d like to try out the code in the Rmarkdown file, you’ll also need the
+example data, which you can download by clicking
+<a href="https://github.com/geanders/improve_repro/raw/master/data/growth_curve_data_in_excel%20(1)/growth%20curve%20data_GR.xls">here</a>.</p>
 <p>One key step is to read the collected data into R. When you use a spreadsheet
 for both data collection and analysis, you don’t need to read the data to start
 working with them, since everything is saved in the same file. Once you separate
@@ -4563,11 +4563,16 @@ the steps of data collection and data analysis, however, you do need to take an
 extra step to read the data file into another program for analysis. Fortunately,
 this is very simple in R. The data in this example are recorded using an Excel
 spreadsheet, and there is a simple function in R that lets you read data in from
-this type of spreadsheet. After this step of code, you will have an object in R
-called <code>growth_data</code>, which contains the data in a two-dimensional form very
-similar to how it is recorded in the spreadsheet (this type of object in R is
-called a dataframe).</p>
-<p>[Figure—read in data from spreadsheet]</p>
+this type of spreadsheet (Figure <a href="experimental-data-recording.html#fig:growthreadexcel">2.18</a>). After this step of
+code, you will have an object in R called <code>growth_data</code>, which contains the data
+in a two-dimensional form very similar to how it is recorded in the spreadsheet
+(this type of object in R is called a dataframe).</p>
+<div class="figure"><span style="display:block;" id="fig:growthreadexcel"></span>
+<img src="figures/growth_curve_readxl.png" alt="Code to read data from the data collection template into R for cleaning, analysis, and visualization. The data were recorded in the tidy data collection template described earlier in this module. Here, those data are read into R (code shown at top). The resulting data in R are stored in a format that is very similar to the design of a spreadsheet, with rows for observations and columns for the values recorded for each observation (bottom)." width="\textwidth" />
+<p class="caption">
+Figure 2.18: Code to read data from the data collection template into R for cleaning, analysis, and visualization. The data were recorded in the tidy data collection template described earlier in this module. Here, those data are read into R (code shown at top). The resulting data in R are stored in a format that is very similar to the design of a spreadsheet, with rows for observations and columns for the values recorded for each observation (bottom).
+</p>
+</div>
 <p>Another key step is to calculate, for each observation, the time since the start
 of the experiment. In the original data collection template shown in Figure
 <a href="experimental-data-recording.html#fig:growthexcel2">2.11</a>, this calculation was done by hand by the researcher and
@@ -4578,19 +4583,24 @@ avoid errors and typos—instead of having the researcher calculate the
 difference in time as they are running the experiment, they can just record the
 time, and we can write code in the analysis document that handles the further
 calculations, using well-designed and well-tested tools to do this calculation.</p>
-<p>Figure [x] shows code that can be used for this calculation. At the start of this
-code, the data are stored in an object named <code>growth_data</code>. The <code>mutate</code> function
-adds a column to the data, named <code>sampling_delta_time</code>, that will give the
-difference between the time of an observation and the start of the experiment.
-Within the <code>mutate</code> call, a special function named <code>difftime</code> calculates the
-difference in two time points. This function lets us specify the time units
-we’d like to use, and here we can pick <code>"hours"</code> for the units. The <code>first</code>
-function lets us pull out the first value in the data for a recorded time—in
-other words, the time when the experiment started. This lets us compare each
-observation time to the time of the start of the experiment. The result
-of this code is a new version of the <code>growth_data</code> dataframe, with a new
-column giving time since the start of the experiment:</p>
-<p>[Figure—calculating the difference in time]</p>
+<p>Figure <a href="experimental-data-recording.html#fig:growthadddifftime">2.19</a> shows code that can be used for this
+calculation. At the start of this code, the data are stored in an object named
+<code>growth_data</code>. The <code>mutate</code> function adds a column to the data, named
+<code>sampling_delta_time</code>, that will give the difference between the time of an
+observation and the start of the experiment. Within the <code>mutate</code> call, a special
+function named <code>difftime</code> calculates the difference in two time points. This
+function lets us specify the time units we’d like to use, and here we can pick
+<code>"hours"</code> for the units. The <code>first</code> function lets us pull out the first value
+in the data for a recorded time—in other words, the time when the experiment
+started. This lets us compare each observation time to the time of the start of
+the experiment. The result of this code is a new version of the <code>growth_data</code>
+dataframe, with a new column giving time since the start of the experiment:</p>
+<div class="figure"><span style="display:block;" id="fig:growthadddifftime"></span>
+<img src="figures/growth_curve_adddifftime.png" alt="Code to add a column to the data that gives the time since the start of the experiment. This code (top) uses the time recorded for each experiment and compares it to the first recorded time, at the start of the experiment. This determines the time since the start of the experiment for each observation, given in a new column in the data (bottom)." width="\textwidth" />
+<p class="caption">
+Figure 2.19: Code to add a column to the data that gives the time since the start of the experiment. This code (top) uses the time recorded for each experiment and compares it to the first recorded time, at the start of the experiment. This determines the time since the start of the experiment for each observation, given in a new column in the data (bottom).
+</p>
+</div>
 <p>Another key step is to plot results from the data. In R, there is a package
 called <code>ggplot2</code> that provides tools for visualization. The tools in this
 package work by building a plot using “layers,” adding on small elements
@@ -4598,24 +4608,30 @@ line by line through simple functions that each do one simple thing.
 While the resulting code can be long, each step is simple, and so it
 becomes simple to learn these different “layers” and learn how to combine
 them to create complex plots.</p>
-<p>Figure [x] walks through the code for one of the visualizations in the report.
-At this point in the report code, the data have been reformatted into an object
-called <code>growth_data_tidy</code>, which has columns for each observation on the time
-since the start of the experiment (<code>sampling_delta_time</code>), the measured optical
-density (<code>optical_density</code>), whether the tube was aerated or low oxygen
-(<code>growth_conditions</code>), and a short ID for the test tube (<code>short_tube_id</code>). The
-code starts by creating a plot object, specifying that in this plot the color
-will show the growth conditions, the position on the x-axis will show the time
-since the start of the experiment, and the y-axis will show the optical density.
-Layers are then added to this plot object that add points and lines to the plot
-based on these mappings, and for the lines, it’s further specified that the type
-of line should show the test tube ID (for example, one tube will be shown with a
-dotted line, another with a dashed line). Further layers are added to customize
-the scale labels with <code>labs</code>, including the labels for the x-axis and y-axis and
-the legends of the color and linetype scales. Another layer is used to customize
-the appearance of the plot—things like the background color and the font
-used—and another layer is added to use a log-10 scale for the x-axis.</p>
-<p>[Figure—plotting some of the results]</p>
+<p>Figure <a href="experimental-data-recording.html#fig:growthplotcode">2.20</a> walks through the code for one of the
+visualizations in the report. At this point in the report code, the data have
+been reformatted into an object called <code>growth_data_tidy</code>, which has columns for
+each observation on the time since the start of the experiment
+(<code>sampling_delta_time</code>), the measured optical density (<code>optical_density</code>),
+whether the tube was aerated or low oxygen (<code>growth_conditions</code>), and a short ID
+for the test tube (<code>short_tube_id</code>). The code starts by creating a plot object,
+specifying that in this plot the color will show the growth conditions, the
+position on the x-axis will show the time since the start of the experiment, and
+the y-axis will show the optical density. Layers are then added to this plot
+object that add points and lines to the plot based on these mappings, and for
+the lines, it’s further specified that the type of line should show the test
+tube ID (for example, one tube will be shown with a dotted line, another with a
+dashed line). Further layers are added to customize the scale labels with
+<code>labs</code>, including the labels for the x-axis and y-axis and the legends of the
+color and linetype scales. Another layer is used to customize the appearance of
+the plot—things like the background color and the font used—and another
+layer is added to use a log-10 scale for the x-axis.</p>
+<div class="figure"><span style="display:block;" id="fig:growthplotcode"></span>
+<img src="figures/growth_curve_plot_code.png" alt="Code to plot growth curves from the data. When the plotting code is run, the data have been transformed into a 'tidy' format (top), with columns that include the time since the start of the experiment, a test tube ID, the growth condition for the test tube, and the optical density measured in that test tube. The code (middle) add layers to implement each element of the plot based on this input data. The final plot is shown at the bottom." width="\textwidth" />
+<p class="caption">
+Figure 2.20: Code to plot growth curves from the data. When the plotting code is run, the data have been transformed into a ‘tidy’ format (top), with columns that include the time since the start of the experiment, a test tube ID, the growth condition for the test tube, and the optical density measured in that test tube. The code (middle) add layers to implement each element of the plot based on this input data. The final plot is shown at the bottom.
+</p>
+</div>
 <p>While this looks like a lot of code, the process isn’t any longer than it would
 be to customize elements of a plot in a spreadsheet program. The advantages of
 the coded approach are that you maintain a full record of all the steps you took
@@ -4637,16 +4653,21 @@ to calculate the doubling time. We can make this process more rigorous and
 less prone to error by writing a small function that does the same thing,
 then using that function to automate the process of identifying the
 relevant observations to use in calculating the doubling rate.</p>
-<p>Figure [x] shows how you can write and then use a small function in R. This
-function will input your <code>growth_data</code> dataset, as well as a time that you are
-aiming for, and will output the sampling time in the data that is closest
-to—while not larger than—that time. It does that in a few steps within the
-body of the function. First, the code in the function filters to only
+<p>Figure <a href="#fig:growthfunction"><strong>??</strong></a> shows how you can write and then use a small
+function in R. This function will input your <code>growth_data</code> dataset, as well as a
+time that you are aiming for, and will output the sampling time in the data that
+is closest to—while not larger than—that time. It does that in a few steps
+within the body of the function. First, the code in the function filters to only
 observations earlier than the target time. Then it measures the difference
 between each of the times for these observations and the target time, and uses
 this to identify the observation with the closest time to the target. It pulls
 out the time of this observation and returns it.</p>
-<p>[Figure—writing and using a small function]</p>
+<div class="figure"><span style="display:block;" id="fig:growthfuntion"></span>
+<img src="figures/growth_curve_function.png" alt="Code to create and apply a small function. The code at the top can be used to create a function that can input your dataframe and determine the observation time in that data that is closest to (without being larger than) a target time. The function does this through a series of small steps. This function can then be applied to find the observation time in the data that is closest to specific target times, like 24 hours and 64 hours (bottom)." width="\textwidth" />
+<p class="caption">
+Figure 2.21: Code to create and apply a small function. The code at the top can be used to create a function that can input your dataframe and determine the observation time in that data that is closest to (without being larger than) a target time. The function does this through a series of small steps. This function can then be applied to find the observation time in the data that is closest to specific target times, like 24 hours and 64 hours (bottom).
+</p>
+</div>
 <p>Small functions like this can easily be reused in other code for your research
 group. By writing the logic of the step out as a function—rather than redoing
 the steps by hand or step-by-step each time you need to do it—you can save
@@ -4658,14 +4679,20 @@ you are getting a base set of tools. Many people have developed helpful
 extensions that build on this base. These are stored and shared in what are
 called <strong>R packages</strong>. You can install these extra packages for free, and you
 use the <code>library</code> function in R to load a package you’ve installed, giving you
-access to the extra functions that it provides. Figure [x] shows the spot in the
-Rmarkdown code where we loaded packages we needed for this report. These include
-packages with functions to read data in R from Excel (the <code>readxl</code>) package, as
-well as a suite of packages with tools for cleaning and visualizing data (the
-<code>tidyverse</code> package). In later modules, we’ll talk some more about R coding
-tools that you might find useful for working with biomedical data, including the
-tools in the powerful and popular <code>tidyverse</code> suite of packages.</p>
-<p>[Figure—loading packages]</p>
+access to the extra functions that it provides. Figure
+<a href="experimental-data-recording.html#fig:growthloadpackage">2.22</a> shows the spot in the Rmarkdown code where we
+loaded packages we needed for this report. These include packages with functions
+to read data in R from Excel (the <code>readxl</code>) package, as well as a suite of
+packages with tools for cleaning and visualizing data (the <code>tidyverse</code> package).
+In later modules, we’ll talk some more about R coding tools that you might find
+useful for working with biomedical data, including the tools in the powerful and
+popular <code>tidyverse</code> suite of packages.</p>
+<div class="figure"><span style="display:block;" id="fig:growthloadpackage"></span>
+<img src="figures/growth_curve_load_packages.png" alt="Code to load packages with additional functionality. These provide functions that are not offered in base R, but that are useful in working with the example data. They include packages with functions for reading in data from an Excel file, as well as packages with functions for cleaning and visualizing data." width="\textwidth" />
+<p class="caption">
+Figure 2.22: Code to load packages with additional functionality. These provide functions that are not offered in base R, but that are useful in working with the example data. They include packages with functions for reading in data from an Excel file, as well as packages with functions for cleaning and visualizing data.
+</p>
+</div>
 <p>Overall, you can see that the code in this document provides a step-by-step
 recipe that documents all the calculations and cleaning that we do with the
 data, as well as how we create the plots. This code runs every time we create
@@ -4901,7 +4928,7 @@ experiments to ensure that methods are the same across all studies of a similar
 type, as well as to improve the reproducibility of the studies. Let’s walk
 through the types of data that were collected for each study.</p>
 <p>First, there was some metadata recorded for each study. Figure
-<a href="experimental-data-recording.html#fig:metadata">2.18</a> gives an example. This includes information about the strain
+<a href="experimental-data-recording.html#fig:metadata">2.23</a> gives an example. This includes information about the strain
 of mouse that was used in the study, treatment details (including the method of
 giving the drug or drugs, how often they were given each week, and for how many
 weeks), how much bacteria the animals were exposed to (measured both in terms of
@@ -4912,7 +4939,7 @@ novel drug as part of the tested treatment, the batch number of that drug.</p>
 <div class="figure"><span style="display:block;" id="fig:metadata"></span>
 <img src="figures/project_metadata.png" alt="Example of recording metadata for a study in the set of example studies for this module." width="\textwidth" />
 <p class="caption">
-Figure 2.18: Example of recording metadata for a study in the set of example studies for this module.
+Figure 2.23: Example of recording metadata for a study in the set of example studies for this module.
 </p>
 </div>
 <p>Next, the researchers recorded some information about each treatment group
@@ -4920,7 +4947,7 @@ within the experiment. This typically included at least one negative control. In
 some cases, there was also a positive control, in which the animals were treated
 with a drug that’s in standard use against tuberculosis already (e.g.,
 isoniazid). Most studies would also test one or more treatments, which could
-include monotherapies or combined therapies. Figure <a href="experimental-data-recording.html#fig:treatmentdetails">2.19</a>
+include monotherapies or combined therapies. Figure <a href="experimental-data-recording.html#fig:treatmentdetails">2.24</a>
 shows an example of the data that were recorded on each treatment in the study.
 These data include the names and doses of up to three drugs in each treatment,
 as well as a column where the researcher can provide detailed specifications of
@@ -4928,7 +4955,7 @@ the treatment.</p>
 <div class="figure"><span style="display:block;" id="fig:treatmentdetails"></span>
 <img src="figures/project_treatment_details.png" alt="Example of recording treatment details for a study in the set of example studies for this module." width="\textwidth" />
 <p class="caption">
-Figure 2.19: Example of recording treatment details for a study in the set of example studies for this module.
+Figure 2.24: Example of recording treatment details for a study in the set of example studies for this module.
 </p>
 </div>
 <p>Once the animals were challenged with the bacteria, treatment began, and two
@@ -4936,7 +4963,7 @@ main types of data were measured and recorded. First, the mice were weighed once
 a week. These weights were converted to a measure of the percent change in
 weight since the start of treatment. If the animals’ weights decrease during the
 treatment, it is a marker that the treatment is not well-tolerated by the
-animals. Figure <a href="experimental-data-recording.html#fig:mouseweight">2.20</a> shows an example of how these data were
+animals. Figure <a href="experimental-data-recording.html#fig:mouseweight">2.25</a> shows an example of how these data were
 recorded. All animals within a treatment group were kept in the same cage, and
 this cage was measured once a week. By dividing the weight of all animals in the
 cage by the number of animals, the researchers could estimate the average weight
@@ -4945,17 +4972,17 @@ of animals in that treatment group, which is recorded as shown in Figure
 <div class="figure"><span style="display:block;" id="fig:mouseweight"></span>
 <img src="figures/project_metadata.png" alt="Example of recording weekly weights of mice in each treatment group for the example set of studies." width="\textwidth" />
 <p class="caption">
-Figure 2.20: Example of recording weekly weights of mice in each treatment group for the example set of studies.
+Figure 2.25: Example of recording weekly weights of mice in each treatment group for the example set of studies.
 </p>
 </div>
 <p>Finally, after the treatment period, the mice were sacrificed and a portion of
 each mouse’s lung was used to estimate the bacterial load in that mouse. Figure
-<a href="experimental-data-recording.html#fig:bacterialload">2.21</a> shows an example of how the data on the bacterial load
+<a href="experimental-data-recording.html#fig:bacterialload">2.26</a> shows an example of how the data on the bacterial load
 in each mouse was recorded.</p>
 <div class="figure"><span style="display:block;" id="fig:bacterialload"></span>
 <img src="figures/project_bacterial_load.png" alt="Example of recording the bacterial load in the lungs of each mouse at the end of treatment for the example set of studies." width="\textwidth" />
 <p class="caption">
-Figure 2.21: Example of recording the bacterial load in the lungs of each mouse at the end of treatment for the example set of studies.
+Figure 2.26: Example of recording the bacterial load in the lungs of each mouse at the end of treatment for the example set of studies.
 </p>
 </div>
 <p>As you can see, these data were all recorded using templates that were designed
@@ -4976,22 +5003,22 @@ untreated control group.</p>
 <div class="figure"><span style="display:block;" id="fig:prelimreport"></span>
 <img src="figures/project_prelim_report.png" alt="Example of the preliminary report generated for each study in the set of example studies for this module. The first page includes metadata on the study, as well as details on each treatment that was tested. The second page shows how mouse weights in each treatment group changed over the course of treatment, to help identify if a treatment was well-tolerated. The third page graphs the bacterial load in each mouse, grouped by treatment, and gives the result of a statistical analysis to test which treatment groups had outcomes that were significantly different from the untreated control group." width="\textwidth" />
 <p class="caption">
-Figure 2.22: Example of the preliminary report generated for each study in the set of example studies for this module. The first page includes metadata on the study, as well as details on each treatment that was tested. The second page shows how mouse weights in each treatment group changed over the course of treatment, to help identify if a treatment was well-tolerated. The third page graphs the bacterial load in each mouse, grouped by treatment, and gives the result of a statistical analysis to test which treatment groups had outcomes that were significantly different from the untreated control group.
+Figure 2.27: Example of the preliminary report generated for each study in the set of example studies for this module. The first page includes metadata on the study, as well as details on each treatment that was tested. The second page shows how mouse weights in each treatment group changed over the course of treatment, to help identify if a treatment was well-tolerated. The third page graphs the bacterial load in each mouse, grouped by treatment, and gives the result of a statistical analysis to test which treatment groups had outcomes that were significantly different from the untreated control group.
 </p>
 </div>
 <p>Let’s take a closer look at a few of these elements. For example, Figure
-<a href="experimental-data-recording.html#fig:studytable">2.23</a> shows the tables from the first page of the report shown
-in Figure <a href="experimental-data-recording.html#fig:prelimreport">2.22</a>. If you look back to the data collection for
-this study (e.g., Figures <a href="experimental-data-recording.html#fig:metadata">2.18</a> and <a href="experimental-data-recording.html#fig:treatmentdetails">2.19</a>),
+<a href="experimental-data-recording.html#fig:studytable">2.28</a> shows the tables from the first page of the report shown
+in Figure <a href="experimental-data-recording.html#fig:prelimreport">2.27</a>. If you look back to the data collection for
+this study (e.g., Figures <a href="experimental-data-recording.html#fig:metadata">2.23</a> and <a href="experimental-data-recording.html#fig:treatmentdetails">2.24</a>),
 you can see that all of the information in these tables was pulled from data
 recorded at the start of the study.</p>
 <div class="figure"><span style="display:block;" id="fig:studytable"></span>
 <img src="figures/project_study_info_table.png" alt="Example of one element of the preliminary report generated for each study in the set of example studies for this module. The first page provides tables with metadata about the study and details about each treatment that was tested." width="\textwidth" />
 <p class="caption">
-Figure 2.23: Example of one element of the preliminary report generated for each study in the set of example studies for this module. The first page provides tables with metadata about the study and details about each treatment that was tested.
+Figure 2.28: Example of one element of the preliminary report generated for each study in the set of example studies for this module. The first page provides tables with metadata about the study and details about each treatment that was tested.
 </p>
 </div>
-<p>Figure <a href="experimental-data-recording.html#fig:mouseweightsplot">2.24</a> shows the second page of the report. This
+<p>Figure <a href="experimental-data-recording.html#fig:mouseweightsplot">2.29</a> shows the second page of the report. This
 figure has taken the mouse weights—which were recorded in one of the data
 collection templates for the project (Figure <a href="#fig:mouseweights"><strong>??</strong></a>)—and used
 them to generate a plot of how average mouse weight in each treatment group
@@ -4999,10 +5026,10 @@ changed over the course of the treatment.</p>
 <div class="figure"><span style="display:block;" id="fig:mouseweightsplot"></span>
 <img src="figures/project_mouse_weights_graph.png" alt="Example of one element of the preliminary report generated for each study in the set of example studies for this module. The second page provides a plot of how the weights of mice in each treatment changed over the course of treatment." width="\textwidth" />
 <p class="caption">
-Figure 2.24: Example of one element of the preliminary report generated for each study in the set of example studies for this module. The second page provides a plot of how the weights of mice in each treatment changed over the course of treatment.
+Figure 2.29: Example of one element of the preliminary report generated for each study in the set of example studies for this module. The second page provides a plot of how the weights of mice in each treatment changed over the course of treatment.
 </p>
 </div>
-<p>Figure <a href="experimental-data-recording.html#fig:bactcompare">2.25</a> shows the last page of the report. This page
+<p>Figure <a href="experimental-data-recording.html#fig:bactcompare">2.30</a> shows the last page of the report. This page
 starts with a figure that shows the bacterial load in the lungs of each mouse in
 the study at the end of the treatment period. In this figure, the measurement
 for each mouse is shown with a point, and these points are grouped by the
@@ -5020,7 +5047,7 @@ are from the data collected in the data collection templates shown earlier.</p>
 <div class="figure"><span style="display:block;" id="fig:bactcompare"></span>
 <img src="figures/project_bact_compare_plot.png" alt="Example of one element of the preliminary report generated for each study in the set of example studies for this module. The third page provides results on how bacterial load in the lungs compares among treatments at the end of the treatment period." width="\textwidth" />
 <p class="caption">
-Figure 2.25: Example of one element of the preliminary report generated for each study in the set of example studies for this module. The third page provides results on how bacterial load in the lungs compares among treatments at the end of the treatment period.
+Figure 2.30: Example of one element of the preliminary report generated for each study in the set of example studies for this module. The third page provides results on how bacterial load in the lungs compares among treatments at the end of the treatment period.
 </p>
 </div>
 </div>
@@ -5728,11 +5755,11 @@ different experiments.</p>
 the available project templates currently downloaded to your copy of R
 <span class="citation">(<span>“<span>RStudio Project Templates</span>”</span> 2021)</span>. To create a new project, go to the “File” menu
 in the top menu bar in RStudio, and then choose “New Project.” This will open
-a pop-up box like the one shown in Figure <a href="experimental-data-recording.html#fig:createnewproject">2.26</a>.</p>
+a pop-up box like the one shown in Figure <a href="experimental-data-recording.html#fig:createnewproject">2.31</a>.</p>
 <div class="figure"><span style="display:block;" id="fig:createnewproject"></span>
 <img src="figures/create_new_project.png" alt="Creating a new project in RStudio. When you chose 'File' then 'New Project' from the RStudio menu, it opens the New Project Wizard shown here. You have the option to create a new project that is not based on a project template by selecting 'New Project'. You also have the chance to create a project using a template by selecting one of the templates. The listed templates will depend on which packages you have downloaded for your copy of R. For example, here the `bookdown` package has been installed for the local copy of R, and so a template is available for 'Book Project using bookdown'." width="\textwidth" />
 <p class="caption">
-Figure 2.26: Creating a new project in RStudio. When you chose ‘File’ then ‘New Project’ from the RStudio menu, it opens the New Project Wizard shown here. You have the option to create a new project that is not based on a project template by selecting ‘New Project.’ You also have the chance to create a project using a template by selecting one of the templates. The listed templates will depend on which packages you have downloaded for your copy of R. For example, here the <code>bookdown</code> package has been installed for the local copy of R, and so a template is available for ‘Book Project using bookdown.’
+Figure 2.31: Creating a new project in RStudio. When you chose ‘File’ then ‘New Project’ from the RStudio menu, it opens the New Project Wizard shown here. You have the option to create a new project that is not based on a project template by selecting ‘New Project.’ You also have the chance to create a project using a template by selecting one of the templates. The listed templates will depend on which packages you have downloaded for your copy of R. For example, here the <code>bookdown</code> package has been installed for the local copy of R, and so a template is available for ‘Book Project using bookdown.’
 </p>
 </div>
 <p>This pop-up contains the New Project Wizard in RStudio. Here, you can either
@@ -5742,7 +5769,7 @@ copy of R will be listed below the “New Project” listing. Depending on which
 packages you’ve installed for your copy of R, you will have different choices of
 project templates available, as project templates tend to be created and shared
 within R packages <span class="citation">(<span>“<span>RStudio Project Templates</span>”</span> 2021)</span>. In the example shown in
-Figure <a href="experimental-data-recording.html#fig:createnewproject">2.26</a>, for example, one of the template options is
+Figure <a href="experimental-data-recording.html#fig:createnewproject">2.31</a>, for example, one of the template options is
 for a “Book Project using bookdown,” available because the <code>bookdown</code> R package
 has been installed locally.</p>
 </div>
@@ -6667,12 +6694,12 @@ and ownership) would be a great set to try out in a first project.</p>
 <p>Each time a team member makes a change to files in a GitHub repository, the change is
 recorded as a <strong>commit</strong>, and the team member must include a short <strong>commit message</strong>
 describing the change. Each file in the project will have its own page on GitHub
-(Figure <a href="experimental-data-recording.html#fig:githubcommits1">2.27</a>), and you can see the history of changes to that
+(Figure <a href="experimental-data-recording.html#fig:githubcommits1">2.32</a>), and you can see the history of changes to that
 files by clicking the “History” link on that page.</p>
 <div class="figure"><span style="display:block;" id="fig:githubcommits1"></span>
 <img src="figures/github_commits1.png" alt="Example of a file page within a GitHub repository. Each file in a repository has its own page. On this page, you can see the history of changes made to the file by looking at 'History'. You can also make a commit an edit directly in GitHub by clicking on the 'Edit' icon." width="\textwidth" />
 <p class="caption">
-Figure 2.27: Example of a file page within a GitHub repository. Each file in a repository has its own page. On this page, you can see the history of changes made to the file by looking at ‘History.’ You can also make a commit an edit directly in GitHub by clicking on the ‘Edit’ icon.
+Figure 2.32: Example of a file page within a GitHub repository. Each file in a repository has its own page. On this page, you can see the history of changes made to the file by looking at ‘History.’ You can also make a commit an edit directly in GitHub by clicking on the ‘Edit’ icon.
 </p>
 </div>
 <p>You can make changes to a file locally, on the repository copy on your own computer.
@@ -6682,19 +6709,19 @@ you commit it.</p>
 <p>However, it is also possible to make a commit directly on GitHub, and this may be a
 useful option for team members who are not coding and would like to make small changes
 to the writing files. On the file’s page on GitHub, there is an “Edit” icon
-(Figure <a href="experimental-data-recording.html#fig:githubcommits1">2.27</a>). By clicking on this, you will get to a page where you
-can directly edit the file (Figure <a href="experimental-data-recording.html#fig:githubcommits2">2.28</a>). Once you have made your
+(Figure <a href="experimental-data-recording.html#fig:githubcommits1">2.32</a>). By clicking on this, you will get to a page where you
+can directly edit the file (Figure <a href="experimental-data-recording.html#fig:githubcommits2">2.33</a>). Once you have made your
 edits, you will need to commit them, and a short description of the commit is required.
 If you would like to include a longer explanation of your changes, there is space for
-that, as well, when you make the commit (Figure <a href="experimental-data-recording.html#fig:githubcommits2">2.28</a>).</p>
+that, as well, when you make the commit (Figure <a href="experimental-data-recording.html#fig:githubcommits2">2.33</a>).</p>
 <div class="figure"><span style="display:block;" id="fig:githubcommits2"></span>
 <img src="figures/github_commits1.png" alt="Committing changes directly in GitHub. When you click on the 'Edit' button in a file's GitHub page (see previous figure), it will take you to a page where you can edit the file directly. You save the changes with a 'commit', including a commit message describing why you made the change. The change will be tagged with the message and your name." width="\textwidth" />
 <p class="caption">
-Figure 2.28: Committing changes directly in GitHub. When you click on the ‘Edit’ button in a file’s GitHub page (see previous figure), it will take you to a page where you can edit the file directly. You save the changes with a ‘commit,’ including a commit message describing why you made the change. The change will be tagged with the message and your name.
+Figure 2.33: Committing changes directly in GitHub. When you click on the ‘Edit’ button in a file’s GitHub page (see previous figure), it will take you to a page where you can edit the file directly. You save the changes with a ‘commit,’ including a commit message describing why you made the change. The change will be tagged with the message and your name.
 </p>
 </div>
 <p>You can see the full history of changes that have been made to each file in the
-project (Figure <a href="experimental-data-recording.html#fig:githubcommithistory">2.29</a>). Each change is tracked through
+project (Figure <a href="experimental-data-recording.html#fig:githubcommithistory">2.34</a>). Each change is tracked through
 a commit, which includes markers of who made the change and a message describing
 the change. Further, this history page for the file provides a line-by-line
 history of when each line in the file was last changed and what that change
@@ -6703,12 +6730,12 @@ file.</p>
 <div class="figure"><span style="display:block;" id="fig:githubcommithistory"></span>
 <img src="figures/github_commit_history.png" alt="Commit history in GitHub. Each file in a repository has a 'History' page, where you can explore each change commited for the file. Each commit has a unique identifier and commit message describing the change. You can click on the entry for any of these commits to see the changes made to the file with the commit (see next figure)." width="\textwidth" />
 <p class="caption">
-Figure 2.29: Commit history in GitHub. Each file in a repository has a ‘History’ page, where you can explore each change commited for the file. Each commit has a unique identifier and commit message describing the change. You can click on the entry for any of these commits to see the changes made to the file with the commit (see next figure).
+Figure 2.34: Commit history in GitHub. Each file in a repository has a ‘History’ page, where you can explore each change commited for the file. Each commit has a unique identifier and commit message describing the change. You can click on the entry for any of these commits to see the changes made to the file with the commit (see next figure).
 </p>
 </div>
 <p>If you click on one of the commits listed on a file’s History page (Figure
-<a href="experimental-data-recording.html#fig:githubcommithistory">2.29</a>, it will take you to a page providing information
-on the changes made with that commit (Figure <a href="experimental-data-recording.html#fig:githubcommithistory2">2.30</a>).
+<a href="experimental-data-recording.html#fig:githubcommithistory">2.34</a>, it will take you to a page providing information
+on the changes made with that commit (Figure <a href="experimental-data-recording.html#fig:githubcommithistory2">2.35</a>).
 This page provides a line-by-line view of each change that was made to project
 files with that commit. This page includes the commit message for that commit.
 If the person committing the change included a longer description or commentary
@@ -6722,7 +6749,7 @@ the commit.</p>
 <div class="figure"><span style="display:block;" id="fig:githubcommithistory2"></span>
 <img src="figures/github_commit_history2.png" alt="Commit history in GitHub. Each commit has its own page, where you can explore what changes were made with the commit, who made them, and when they were committed." width="\textwidth" />
 <p class="caption">
-Figure 2.30: Commit history in GitHub. Each commit has its own page, where you can explore what changes were made with the commit, who made them, and when they were committed.
+Figure 2.35: Commit history in GitHub. Each commit has its own page, where you can explore what changes were made with the commit, who made them, and when they were committed.
 </p>
 </div>
 <p><strong>Issues</strong></p>
@@ -6731,25 +6758,25 @@ that will help your team collaborate on a project. A key tool is the
 “Issues” tracker. Each repository includes this type of tracker, and it
 can be easily used by all team members, whether they are comfortable
 coding or not.</p>
-<p>Figure <a href="experimental-data-recording.html#fig:githubissues1">2.31</a> gives an example of <a href="https://github.com/aef1004/cyto-feature_engineering/issues">the Issues tracker page</a> for the
+<p>Figure <a href="experimental-data-recording.html#fig:githubissues1">2.36</a> gives an example of <a href="https://github.com/aef1004/cyto-feature_engineering/issues">the Issues tracker page</a> for the
 repository we are using as an example.</p>
 <div class="figure"><span style="display:block;" id="fig:githubissues1"></span>
 <img src="figures/github_issues.png" alt="Issues tracker page for an example GitHub repository. Arrows highlight the tab to click to get to the Issues tracker page in a repository, as well as where to go to find open and closed Issues for the repository." width="\textwidth" />
 <p class="caption">
-Figure 2.31: Issues tracker page for an example GitHub repository. Arrows highlight the tab to click to get to the Issues tracker page in a repository, as well as where to go to find open and closed Issues for the repository.
+Figure 2.36: Issues tracker page for an example GitHub repository. Arrows highlight the tab to click to get to the Issues tracker page in a repository, as well as where to go to find open and closed Issues for the repository.
 </p>
 </div>
 <p>The main Issues tracker page provides clickable links to all open issues for
 the repository. You can open a new issue using the “New Issue” on this main
 page or on the specific page of any of the repository’s issues (see Figure
-<a href="experimental-data-recording.html#fig:githubissues2">2.32</a> for an example of this button).</p>
+<a href="experimental-data-recording.html#fig:githubissues2">2.37</a> for an example of this button).</p>
 <div class="figure"><span style="display:block;" id="fig:githubissues2"></span>
 <img src="figures/github_issues2.png" alt="Conversation about an Issue on Issues tracker page of an example GitHub repository. In this example, you can see how GitHub Issues trackers allow you to discuss how to resolve an issue across your team. From this page, you can read the current conversation about Issue \#1 of the repository and add your own comments. Once the Issue is resolved, you can 'Close' the Issue, which moves it off the list of active issues, but allows you to still re-read the conversation and, if necessary, re-open the issue later. You can also open a new issue from this page, using the button highlighted at the top right." width="\textwidth" />
 <p class="caption">
-Figure 2.32: Conversation about an Issue on Issues tracker page of an example GitHub repository. In this example, you can see how GitHub Issues trackers allow you to discuss how to resolve an issue across your team. From this page, you can read the current conversation about Issue #1 of the repository and add your own comments. Once the Issue is resolved, you can ‘Close’ the Issue, which moves it off the list of active issues, but allows you to still re-read the conversation and, if necessary, re-open the issue later. You can also open a new issue from this page, using the button highlighted at the top right.
+Figure 2.37: Conversation about an Issue on Issues tracker page of an example GitHub repository. In this example, you can see how GitHub Issues trackers allow you to discuss how to resolve an issue across your team. From this page, you can read the current conversation about Issue #1 of the repository and add your own comments. Once the Issue is resolved, you can ‘Close’ the Issue, which moves it off the list of active issues, but allows you to still re-read the conversation and, if necessary, re-open the issue later. You can also open a new issue from this page, using the button highlighted at the top right.
 </p>
 </div>
-<p>On the page for a specific issue (e.g., Figure <a href="experimental-data-recording.html#fig:githubissues2">2.32</a>), you
+<p>On the page for a specific issue (e.g., Figure <a href="experimental-data-recording.html#fig:githubissues2">2.37</a>), you
 can have a conversation with your team to determine how to resolve the issue.
 This conversation can include web links, figures, and “To-do” check boxes, to
 help you discuss and plan how to resolve the issue. Each issue is numbered,
@@ -6762,11 +6789,11 @@ determine that it was not fully resolved.</p>
 <div class="figure"><span style="display:block;" id="fig:githubissues3"></span>
 <img src="figures/github_issues3.png" alt="Labeling and assigning Issues. The GitHub Issues tracker allows you to assign each issue to one or more team members, clarifying that they will take the lead in resolving the issue. It also allows you to tag each issue with one or more labels, so you can easily navigate to issues of a specific type or identify the category of a specific issue." width="\textwidth" />
 <p class="caption">
-Figure 2.33: Labeling and assigning Issues. The GitHub Issues tracker allows you to assign each issue to one or more team members, clarifying that they will take the lead in resolving the issue. It also allows you to tag each issue with one or more labels, so you can easily navigate to issues of a specific type or identify the category of a specific issue.
+Figure 2.38: Labeling and assigning Issues. The GitHub Issues tracker allows you to assign each issue to one or more team members, clarifying that they will take the lead in resolving the issue. It also allows you to tag each issue with one or more labels, so you can easily navigate to issues of a specific type or identify the category of a specific issue.
 </p>
 </div>
 <p>The Issues tracker page includes some more advanced functionality, as well
-(Figure <a href="experimental-data-recording.html#fig:githubissues3">2.33</a>). For example, you can “assign” an issue to one
+(Figure <a href="experimental-data-recording.html#fig:githubissues3">2.38</a>). For example, you can “assign” an issue to one
 of more team members, indicating that they are responsible for resolving that
 issue. You can also tag each issue with one of more labels, allowing you to
 group issues into common categories. For example, you could tag all issues that
