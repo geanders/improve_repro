@@ -276,17 +276,17 @@ the right container for operations from <code>edgeR</code>. Then functions from 
 data. The result is an object in the <code>DGEExact</code> class, which is defined
 by the <code>edgeR</code> package. To extract data from this class in a tidy format,
 you can use the <code>tidy</code> and <code>glance</code> functions from <code>biobroom</code>.]</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="3.6-module17.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biobroom)</span>
-<span id="cb9-2"><a href="3.6-module17.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Biobase)</span>
-<span id="cb9-3"><a href="3.6-module17.html#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(edgeR)</span>
-<span id="cb9-4"><a href="3.6-module17.html#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="3.6-module17.html#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(hammer)</span>
-<span id="cb9-6"><a href="3.6-module17.html#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="3.6-module17.html#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(hammer)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="3.6-module17.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biobroom)</span>
+<span id="cb4-2"><a href="3.6-module17.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Biobase)</span>
+<span id="cb4-3"><a href="3.6-module17.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(edgeR)</span>
+<span id="cb4-4"><a href="3.6-module17.html#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="3.6-module17.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(hammer)</span>
+<span id="cb4-6"><a href="3.6-module17.html#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="3.6-module17.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(hammer)</span></code></pre></div>
 <pre><code>## [1] &quot;ExpressionSet&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;Biobase&quot;</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="3.6-module17.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(hammer)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="3.6-module17.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(hammer)</span></code></pre></div>
 <pre><code>## # A tibble: 236,128 × 3
 ##    gene               sample    value
 ##    &lt;chr&gt;              &lt;chr&gt;     &lt;int&gt;
@@ -301,21 +301,21 @@ you can use the <code>tidy</code> and <code>glance</code> functions from <code>b
 ##  9 ENSRNOG00000000021 SRX020102     7
 ## 10 ENSRNOG00000000024 SRX020102    86
 ## # … with 236,118 more rows</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="3.6-module17.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Example from `biobroom` help documentation</span></span>
-<span id="cb13-2"><a href="3.6-module17.html#cb13-2" aria-hidden="true" tabindex="-1"></a>hammer.counts <span class="ot">&lt;-</span> <span class="fu">exprs</span>(hammer)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb13-3"><a href="3.6-module17.html#cb13-3" aria-hidden="true" tabindex="-1"></a>hammer.treatment <span class="ot">&lt;-</span> <span class="fu">phenoData</span>(hammer)<span class="sc">$</span>protocol[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb13-4"><a href="3.6-module17.html#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="3.6-module17.html#cb13-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(<span class="at">counts=</span>hammer.counts,<span class="at">group=</span>hammer.treatment)</span>
-<span id="cb13-6"><a href="3.6-module17.html#cb13-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(y)</span>
-<span id="cb13-7"><a href="3.6-module17.html#cb13-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateCommonDisp</span>(y)</span>
-<span id="cb13-8"><a href="3.6-module17.html#cb13-8" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateTagwiseDisp</span>(y)</span>
-<span id="cb13-9"><a href="3.6-module17.html#cb13-9" aria-hidden="true" tabindex="-1"></a>et <span class="ot">&lt;-</span> <span class="fu">exactTest</span>(y)</span>
-<span id="cb13-10"><a href="3.6-module17.html#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-11"><a href="3.6-module17.html#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(et)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="3.6-module17.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Example from `biobroom` help documentation</span></span>
+<span id="cb8-2"><a href="3.6-module17.html#cb8-2" aria-hidden="true" tabindex="-1"></a>hammer.counts <span class="ot">&lt;-</span> <span class="fu">exprs</span>(hammer)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb8-3"><a href="3.6-module17.html#cb8-3" aria-hidden="true" tabindex="-1"></a>hammer.treatment <span class="ot">&lt;-</span> <span class="fu">phenoData</span>(hammer)<span class="sc">$</span>protocol[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb8-4"><a href="3.6-module17.html#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="3.6-module17.html#cb8-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(<span class="at">counts=</span>hammer.counts,<span class="at">group=</span>hammer.treatment)</span>
+<span id="cb8-6"><a href="3.6-module17.html#cb8-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(y)</span>
+<span id="cb8-7"><a href="3.6-module17.html#cb8-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateCommonDisp</span>(y)</span>
+<span id="cb8-8"><a href="3.6-module17.html#cb8-8" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateTagwiseDisp</span>(y)</span>
+<span id="cb8-9"><a href="3.6-module17.html#cb8-9" aria-hidden="true" tabindex="-1"></a>et <span class="ot">&lt;-</span> <span class="fu">exactTest</span>(y)</span>
+<span id="cb8-10"><a href="3.6-module17.html#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="3.6-module17.html#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(et)</span></code></pre></div>
 <pre><code>## [1] &quot;DGEExact&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;edgeR&quot;</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="3.6-module17.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(et)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="3.6-module17.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(et)</span></code></pre></div>
 <pre><code>## # A tibble: 29,516 × 4
 ##    gene               estimate  logCPM    p.value
 ##    &lt;chr&gt;                 &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;
@@ -330,7 +330,7 @@ you can use the <code>tidy</code> and <code>glance</code> functions from <code>b
 ##  9 ENSRNOG00000000021  -2.02    0.211  0.0373    
 ## 10 ENSRNOG00000000024   0.133   3.97   0.508     
 ## # … with 29,506 more rows</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="3.6-module17.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(et)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="3.6-module17.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(et)</span></code></pre></div>
 <pre><code>##   significant     comparison
 ## 1        6341 control/L5 SNL</code></pre>
 <p>The creator of the <code>broom</code> package listed some of the common ways that
@@ -412,7 +412,7 @@ you could easily create a set of histograms, one per sample, showing the
 distribution of expression levels across all genes in each sample:
 [better example visualization here?]</p>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="improve_repro_files/figure-html/unnamed-chunk-42-1.png" width="672"  /></p>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-41-1.png" width="672"  /></p>
 <p>You can also incorporate data that are stored in the <code>phenoData</code> slot of
 the <code>ExpressionSet</code> object by specifying <code>addPheno = TRUE</code>:</p>
 <pre><code>## # A tibble: 236,128 × 8
@@ -432,11 +432,11 @@ the <code>ExpressionSet</code> object by specifying <code>addPheno = TRUE</code>
 <p>With this addition, visualizations can easily be changed to also show the
 experimental group of each sample:</p>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="improve_repro_files/figure-html/unnamed-chunk-44-1.png" width="672"  />
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-43-1.png" width="672"  />
 You can also do things like look at differences in values for
 specific genes, pairing tools for exploring data with tools for
 visualization, both from the tidyverse:</p>
-<p><img src="improve_repro_files/figure-html/unnamed-chunk-45-1.png" width="672"  /></p>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-44-1.png" width="672"  /></p>
 <p>The data for a subset of the sample can be analyzed using functions from the
 <code>edgeR</code> package, to complete needed pre-processing (for example, calculating
 normalizing factors with <code>calcNormFactors</code>, to reduce impacts from technical
@@ -547,7 +547,7 @@ significant differences in expression level, based on the values in the
 <p>As another example, you can now use tools from <code>ggplot2</code>, as well as
 extensions built on this package, to do things like create a volcano
 plot of the data with highlighting of noteworthy genes on the plot:</p>
-<p><img src="improve_repro_files/figure-html/unnamed-chunk-54-1.png" width="672"  /></p>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-53-1.png" width="672"  /></p>
 <p>If you wanted to access the help files for these <code>biobroom</code> methods for this
 object class, you could do so by calling help in R (<code>?</code>) using the name of the
 method, a dot, and then the name of the object class, e.g., <code>?tidy.DGEExact</code>.</p>
@@ -555,7 +555,7 @@ method, a dot, and then the name of the object class, e.g., <code>?tidy.DGEExact
 <div id="the-ggbio-package" class="section level3" number="3.6.3">
 <h3><span class="header-section-number">3.6.3</span> The <code>ggbio</code> package</h3>
 </div>
-<div id="subsection-2-4" class="section level3" number="3.6.4">
+<div id="subsection-2-3" class="section level3" number="3.6.4">
 <h3><span class="header-section-number">3.6.4</span> Subsection 2</h3>
 <blockquote>
 <p>“The biobroom package contains methods for converting standard objects in Bioconductor into a ‘tidy format.’ It serves as a complement to the popular broom package, and follows the same division (tidy/augment/glance) of tidying methods.”
@@ -838,7 +838,7 @@ graphics model.” <span class="citation">(Yin, Cook, and Lawrence 2012)</span>
 <span class="citation">(Yin, Cook, and Lawrence 2012)</span></p>
 </blockquote>
 </div>
-<div id="applied-exercise-5" class="section level3" number="3.6.5">
+<div id="applied-exercise-6" class="section level3" number="3.6.5">
 <h3><span class="header-section-number">3.6.5</span> Applied exercise</h3>
 
 </div>

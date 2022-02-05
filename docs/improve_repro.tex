@@ -2743,7 +2743,7 @@ hard for a computer program to process the data}. There are a number of special
 characters and formatting conventions that can be hard for a statistical program to
 handle. In the example template shown in Figure \ref{fig:step3}, for example,
 the column names include spaces (for example, in ``Date and time''), as well as
-parenthese (for example, in ``VA 001 (A1)''). While most statistical programs have
+parentheses (for example, in ``VA 001 (A1)''). While most statistical programs have
 tools that allow you to handle and convert these characters once the data are
 read in, it's even simpler to use simpler column names in the original data collection
 template, and this will save some extra coding further along in the analysis pipeline.
@@ -2753,17 +2753,22 @@ name, use only letters, numbers, or the underscore character ("\_``). For exampl
 
 Within the cell values below the column names, there is more flexibility. For example,
 if you have a column that gives the IDs of different samples, it would be fine to include
-spaces and other characters in those IDs. There are a few exceptions, however. A big one
+spaces and other characters in those IDs.
+
+There are a few exceptions, however. A big one
 is with values that record dates or date-time combinations. First, it is important to include
 all elements of the date (or date and time, if both are recorded). For example, the year
 should be included in the recorded date, even if the experiment only took a few days.
 This is because statistical programs have excellent functions for working with data that
 are dates or date-times, but to take advantage of these, the data must be converted into
 a special class in the program, and conversion to that class requires specific elements
-(for example, a date must include the year, month, and day of month). Second, it is
+(for example, a date must include the year, month, and day of month).
+
+Second, it is
 useful to avoid recording dates and date-times in a way that results in a spreadsheet
 program automatically converting them. Surrounding the information about a date in
 quotation marks when entering it (as shown in Figure \ref{fig:step3}) can avoid this.
+
 Finally, consider using a format to record the date that is unambiguous and so less likely
 to have recording errors. Dates, for example, are sometimes recorded using only numbers---for
 example, the first date of ``July 9, 2019'' in the example data could be recorded as
@@ -2798,263 +2803,187 @@ in Figure \ref{fig:growthsimple2}.
 \end{figure*}
 
 To create a report template like this, you can use tools for reproducible
-reports from statistical programs like R and Python. In this section, we'll walk
-through how you could create the report template shown in Figure
-\ref{fig:growthreport2}. We will be using the programming language R, including
-RMarkdown, which is R's main tool for creating reproducible reports. If you have
-never used R or RMarkdown before, you'll find it useful to learn some more about
-their use to help in creating these types of reproducible reports from collected
-data. Numerous excellent (and free) resources exist to help learn R. One of the
-best is the book ``R for Data Science'' by Hadley Wickham and Garrett Grolemund.
-It is available in print, as well as free online at \url{https://r4ds.had.co.nz/}.
+reports from statistical programs like R and Python. In this section, we will
+give an overview of how you could create the report template shown in Figure
+\ref{fig:growthreport2}.
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+We will be using the programming language R, including RMarkdown, which is R's
+main tool for creating reproducible reports. If you have never used R or
+RMarkdown before, you'll find it useful to learn some more about their use to
+help in creating these types of reproducible reports from collected data.
+Numerous excellent (and free) resources exist to help learn R. One of the best
+is the book ``R for Data Science'' by Hadley Wickham and Garrett Grolemund. It is
+available in print, as well as free online at \url{https://r4ds.had.co.nz/}.
 
-\textbf{Older text}
+\ldots{}
 
-\hypertarget{exampledata-on-rate-of-bacterial-growth-1}{%
-\subsection{Example---Data on rate of bacterial growth}\label{exampledata-on-rate-of-bacterial-growth-1}}
+This report is written using a framework called RMarkdown, which allows you to
+include executable code inside a nicely-formatted document, resulting in a
+document in Word, PDF, or HTML that is easy for humans to read while also
+generating results based on R code. We will cover this format in details in
+modules 3.7--3.9. In the rest of this section, we'll walk through some of the
+R code that is ``powering'' the analysis in this document, but if you'd like
+to learn how to combine it into an RMarkdown document to create the report
+shown in Figure \ref{fig:growthreport2}, you can learn much more about
+RMarkdown in those later modules.
 
-The first set of data are from a study on the growth of \emph{Mycobacterium
-tuberculosis}. The goal of this study was to compare growth yield and doubling
-time of \emph{Mycobacterium tuberculosis} grown in rich medium under two assay
-conditions. One set of cultures were grown in tubes with a low culture volume
-relative to a large air head space to allow free oxygen exchange. A second set
-of cultures were grown in tubes filled to near capacity, resulting in limited
-air head space which has been shown elsewhere to limit oxygen availability over
-time. The caps on both sets of cultures were sealed to restrict air exchange
-during the study.
+The code used to generate the results in Figure \ref{fig:growthreport2}
+is all in the programming language R. A programming language can seem, at
+first glance, much more difficult to learn and use than using a spreadsheet
+program like Excel to set up formulae and macros. However, languages like
+R have evolved substantially in recent years to allow for much more straightforward
+coding than you may have seen in the past, and the barrier to learning to
+use them for straightforward data management and analysis is not much higher
+than the effort required to become proficient in using a spreadsheet program.
+To demonstrate this, let's look through a few of the tasks required to
+generate the results shown in Figure \ref{fig:growthreport2}. We won't cover
+all the code, just highlight some of the key steps. If you'd like to look
+in details over the code and the output document, you can download those
+files and explore them: the {[}Rmarkdown file{]} and the {[}output PDF{]} are
+available here. If you'd like to try out the code in the Rmarkdown file,
+you'll also need the example data, which you can download {[}here{]}. {[}Add refs
+to the last sentence.{]}
 
-Some background information is helpful in understanding these example data,
-especially if you have not conducted this type of experiment. The increase in
-the cell size and cell mass during the development of an organism is termed
-growth. It is the unique characteristics of all organisms. The organism must
-require certain basic parameters for their energy generation and cellular
-biosynthesis. The growth of the organism is affected by both physical and
-nutritional factors. There are multiple methods by which growth can be measured,
-but the use of closed tissue culture tubes and a spectrophotometer to track
-increases in optical density (absorbance at 600 nm) over time offers several
-advantages: 1) it is less subject to technical error and contamination, 2) read
-out is fast and simple, 3) growth as measure by increased absorbance (turbidity)
-is directly proportional to increases in cell mass. There are four distinct
-phases of bacterial growth. Lag phase, log (exponential phase), stationary
-phase, death phase. From these data, bacterial generation times (doubling time)
-during the exponential growth phase can be calculated.
+One key step is to read the collected data into R. When you use a spreadsheet
+for both data collection and analysis, you don't need to read the data to start
+working with them, since everything is saved in the same file. Once you separate
+the steps of data collection and data analysis, however, you do need to take an
+extra step to read the data file into another program for analysis. Fortunately,
+this is very simple in R. The data in this example are recorded using an Excel
+spreadsheet, and there is a simple function in R that lets you read data in from
+this type of spreadsheet. After this step of code, you will have an object in R
+called \texttt{growth\_data}, which contains the data in a two-dimensional form very
+similar to how it is recorded in the spreadsheet (this type of object in R is
+called a dataframe).
 
-\[
-\mbox{Doubling time} = \frac{log(2)(t_1 - t_2)}{log(OD_{t_1} - log(OD_{t_2}))}
-\]
-where \(t_1\) and \(t_2\) are two time points and \(OD_{t_1}\) and \(OD_{t_2}\) are the
-optical densities at the two time points (all \(log\)s are natural in this case).
+{[}Figure---read in data from spreadsheet{]}
 
-An excel-based workbook (Figure \ref{fig:growthexcel2}) was created to allow the
-student performing the work to (1) calculate the amount of initial inoculum
-(cell culture) to add to each tube to begin the study, (2) record the raw data
-absorbance measurements, (3) graph the data on both a log and linear scale, and
-(4) calculate doubling time in two phases of growth using the equation listed
-above. Columns were added to allow the student to track the time (column A), the
-difference in time (hours) between each time point in which data were collected
-(column B), the date on which data were gathered (column C), and the time in
-hours for each data point from the start of the study for graphing purposes
-(column D). Absorbance data for each sampling timepoint were listed in Columns
-E-F (high oxygen conditions; VA001 A1, A3) or columns G-I (limited oxygen
-conditions; VA001 L1, L2, L3).
+Another key step is to calculate, for each observation, the time since the start
+of the experiment. In the original data collection template shown in Figure
+\ref{fig:growthexcel2}, this calculation was done by hand by the researcher and
+entered into the spreadsheet. When we converted the spreadsheet to a tidier
+version, we took out all steps that involved calculations with the data, and
+instead limited the data collection to only raw, observed values. This helps us
+avoid errors and typos---instead of having the researcher calculate the
+difference in time as they are running the experiment, they can just record the
+time, and we can write code in the analysis document that handles the further
+calculations, using well-designed and well-tested tools to do this calculation.
 
-What the researchers found appealing about the format of this Excel sheet was
-the ease with which the student could accomplish the study goals. They also
-cited transparency of the raw data and ease with which additional sampling data
-points could be added. The data being graphed in real time and the inclusion of
-a simple macro to calculate doubling time, allowed the student to see tangible
-differences between the two assay conditions. This was also somewhat problematic
-as the equation to calculate doubling time was based on anchored time points
-built into the original spreadsheet resulting in two different results that were
-not properly linked to the correct data time points.
+Figure {[}x{]} shows code that can be used for this calculation. At the start of this
+code, the data are stored in an object named \texttt{growth\_data}. The \texttt{mutate} function
+adds a column to the data, named \texttt{sampling\_delta\_time}, that will give the
+difference between the time of an observation and the start of the experiment.
+Within the \texttt{mutate} call, a special function named \texttt{difftime} calculates the
+difference in two time points. This function lets us specify the time units
+we'd like to use, and here we can pick \texttt{"hours"} for the units. The \texttt{first}
+function lets us pull out the first value in the data for a recorded time---in
+other words, the time when the experiment started. This lets us compare each
+observation time to the time of the start of the experiment. The result
+of this code is a new version of the \texttt{growth\_data} dataframe, with a new
+column giving time since the start of the experiment:
 
-Data that are saved in a format like that shown in Figure \ref{fig:growthexcel2},
-however, are hard to read in for a statistical program like R, Perl, or Python.
-In this format, the raw data (the time points each observation was collected and
-the optical density for the sample at that time point) form only part of the
-spreadsheet. The spreadsheet also includes notes, automated figures, and
-cells where an embedded formula runs calculations behind the scenes.
+{[}Figure---calculating the difference in time{]}
 
-Instead of this format, we can design a simpler format to collect the data. We'll
-remove all figures and calculations, and instead save those to perform in a
-code script. Figure \ref{fig:growthsimple} shows an example of a simpler
-format for collecting the same data. In this case, all the ``extras'' have been
-stripped out---this only has spaces for recording times points and the observed
-optical density at those time points. In later chapters, we'll show how a code
-script can be used to input these data into R and then perform calculations
-and create figures. By separating out the steps of data recording from
-data analysis, you can ensure that all steps of analysis are clearly spelled
-out (and can be easily reproduced with other similar data) through a code
-script. Note that you can still collect the data in this simpler format using
-a spreadsheet program, if you'd like---Figure \ref{fig:growthsimple2} shows
-the data collection set up to be recorded in a spreadsheet program, for example.
-Within the spreadsheet, you can choose to save the data in a plain text format
-(a csv {[}comma-separated value{]} file, for example).
+Another key step is to plot results from the data. In R, there is a package
+called \texttt{ggplot2} that provides tools for visualization. The tools in this
+package work by building a plot using ``layers'', adding on small elements
+line by line through simple functions that each do one simple thing.
+While the resulting code can be long, each step is simple, and so it
+becomes simple to learn these different ``layers'' and learn how to combine
+them to create complex plots.
 
-In this new data collection format, the data are not completely ``tidy''. This is because
-there is still some information included in the column names that we might want to use
-for analysis and plotting---namely, the different experimental group names (e.g.,
-``aerated1'', ``low\_oxygen1''). However, there is a balance in creating data collection
-spreadsheets. They should be in a format that is easy to read into an interactive
-programming environment like R, as well as in a format that will be easy to convert
-to a truly ``tidy'' format once they are read in. However, it's okay to balance these
-needs with aims to make the data collection spreadsheet easy for a researcher to use.
+Figure {[}x{]} walks through the code for one of the visualizations in the report.
+At this point in the report code, the data have been reformatted into an object
+called \texttt{growth\_data\_tidy}, which has columns for each observation on the time
+since the start of the experiment (\texttt{sampling\_delta\_time}), the measured optical
+density (\texttt{optical\_density}), whether the tube was aerated or low oxygen
+(\texttt{growth\_conditions}), and a short ID for the test tube (\texttt{short\_tube\_id}). The
+code starts by creating a plot object, specifying that in this plot the color
+will show the growth conditions, the position on the x-axis will show the time
+since the start of the experiment, and the y-axis will show the optical density.
+Layers are then added to this plot object that add points and lines to the plot
+based on these mappings, and for the lines, it's further specified that the type
+of line should show the test tube ID (for example, one tube will be shown with a
+dotted line, another with a dashed line). Further layers are added to customize
+the scale labels with \texttt{labs}, including the labels for the x-axis and y-axis and
+the legends of the color and linetype scales. Another layer is used to customize
+the appearance of the plot---things like the background color and the font
+used---and another layer is added to use a log-10 scale for the x-axis.
 
-The example shown in Figure \ref{fig:growthsimple2} is designed to be easy to use
-when collecting data. All data points for a single collection time are grouped together
-on a single row. When a researchers collects data for one time point, he or she can
-easy confirm visually that all the experimental groups have been measured for that
-time point. This format still makes it easy to read the data into an interactive
-programming environment, however, since they are in a clear two-dimensional format,
-with column names in the first row and values in the remaining rows. The removal of
-extraneous elements---like embedded formulas, the results of hand calculations or
-automated calculations, and annotations through notes or colored highlighting---remove
-barriers when reading the data into more sophisticated software. Once the data are
-read into R, there can be converted into a truly tidy data format with just a few
-command calls.
+{[}Figure---plotting some of the results{]}
 
-The following code shows an example of how easy it is to read data into R in the simplified
-format shown in Figure \ref{fig:growthsimple2}. It also shows how a few lines of code
-can then be used to convert the data into a truly ``tidy'' format, and how easily
-sophisticated plots can then be made with the data.
+While this looks like a lot of code, the process isn't any longer than it would
+be to customize elements of a plot in a spreadsheet program. The advantages of
+the coded approach are that you maintain a full record of all the steps you took
+to customize the plot. This is something that you can use to reproduce your plot
+later, or even to use as a starting point for creating a similar plot with new
+data.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(}\StringTok{"tidyverse"}\NormalTok{)}
-\FunctionTok{library}\NormalTok{(}\StringTok{"readxl"}\NormalTok{)}
+The next key step that we'd like to point out is how you can write and use small
+functions to do customized tasks for the experimental data. As one example, for
+the data in this example, we want to estimate doubling times based on the
+observed data. The principal investigator has decided that we should do this
+based on comparing bacteria levels at two times points---the measured time that
+is closest to 65 hours after the start of the experiment, and the time that is
+closest to 24 hours after the start of the experiment.
 
-\CommentTok{\# Read data into R from the simplified data collection template}
-\NormalTok{growth\_curve }\OtherTok{\textless{}{-}} \FunctionTok{read\_excel}\NormalTok{(}\StringTok{"data/growth\_curve\_data\_in\_excel (1)/growth curve data\_GR.xls"}\NormalTok{, }
-                           \AttributeTok{sheet =} \StringTok{"simplified\_template"}\NormalTok{)}
+In the original data collection template---where the data were both recorded
+and analyzed in a spreadsheet---this step was done by hand by the researcher,
+looking through the data and selecting the cell closest to each of these
+times, and then connecting that cell to a spreadsheet formula calculation
+to calculate the doubling time. We can make this process more rigorous and
+less prone to error by writing a small function that does the same thing,
+then using that function to automate the process of identifying the
+relevant observations to use in calculating the doubling rate.
 
-\CommentTok{\# Example of data}
-\NormalTok{growth\_curve}
-\end{Highlighting}
-\end{Shaded}
+Figure {[}x{]} shows how you can write and then use a small function in R. This
+function will input your \texttt{growth\_data} dataset, as well as a time that you are
+aiming for, and will output the sampling time in the data that is closest
+to---while not larger than---that time. It does that in a few steps within the
+body of the function. First, the code in the function filters to only
+observations earlier than the target time. Then it measures the difference
+between each of the times for these observations and the target time, and uses
+this to identify the observation with the closest time to the target. It pulls
+out the time of this observation and returns it.
 
-\begin{verbatim}
-## # A tibble: 14 x 6
-##    sampling_date_time  aerated1 aerated3 low_oxygen1 low_oxygen2 low_oxygen3
-##    <dttm>                 <dbl>    <dbl>       <dbl>       <dbl>       <dbl>
-##  1 2019-07-09 12:00:00    0.02     0.02        0.02        0.02        0.02 
-##  2 2019-07-09 16:05:00    0.027    0.02        0.022       0.022       0.027
-##  3 2019-07-10 09:50:00    0.087    0.087       0.057       0.082       0.086
-##  4 2019-07-10 16:50:00    0.129    0.137       0.072       0.104       0.111
-##  5 2019-07-11 10:03:00    0.247    0.258       0.102       0.114       0.126
-##  6 2019-07-11 16:07:00    0.299    0.302       0.11        0.11        0.126
-##  7 2019-07-12 09:48:00    0.41     0.428       0.137       0.111       0.131
-##  8 2019-07-12 16:30:00    0.426    0.432       0.138       0.11        0.13 
-##  9 2019-07-13 10:35:00    0.442    0.444       0.138       0.1         0.125
-## 10 2019-07-13 17:52:00    0.448    0.45        0.143       0.103       0.131
-## 11 2019-07-14 13:10:00    0.436    0.448       0.144       0.1         0.131
-## 12 2019-07-15 10:27:00    0.434    0.45        0.147       0.097       0.129
-## 13 2019-07-15 16:42:00    0.428    0.45        0.147       0.097       0.129
-## 14 2019-07-16 09:28:00    0.42     0.448       0.145       0.095       0.128
-\end{verbatim}
+{[}Figure---writing and using a small function{]}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# Convert to a fully tidy format}
-\NormalTok{growth\_curve }\OtherTok{\textless{}{-}}\NormalTok{ growth\_curve }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{pivot\_longer}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{sampling\_date\_time, }
-               \AttributeTok{names\_to =} \StringTok{"experimental\_group"}\NormalTok{, }
-               \AttributeTok{values\_to =} \StringTok{"optical\_density"}\NormalTok{)}
+Small functions like this can easily be reused in other code for your research
+group. By writing the logic of the step out as a function---rather than redoing
+the steps by hand or step-by-step each time you need to do it---you can save
+time later, and in return, you have extra time that you can spend in writing
+the original function and carefully checking to make sure that it works
+correctly.
 
-\CommentTok{\# How the data look after this transformation}
-\NormalTok{growth\_curve}
-\end{Highlighting}
-\end{Shaded}
+Finally, many of these steps require extensions to base R. When you download R,
+you are getting a base set of tools. Many people have developed helpful
+extensions that build on this base. These are stored and shared in what are
+called \textbf{R packages}. You can install these extra packages for free, and you
+use the \texttt{library} function in R to load a package you've installed, giving you
+access to the extra functions that it provides. Figure {[}x{]} shows the spot in the
+Rmarkdown code where we loaded packages we needed for this report. These include
+packages with functions to read data in R from Excel (the \texttt{readxl}) package, as
+well as a suite of packages with tools for cleaning and visualizing data (the
+\texttt{tidyverse} package). In later modules, we'll talk some more about R coding
+tools that you might find useful for working with biomedical data, including the
+tools in the powerful and popular \texttt{tidyverse} suite of packages.
 
-\begin{verbatim}
-## # A tibble: 70 x 3
-##    sampling_date_time  experimental_group optical_density
-##    <dttm>              <chr>                        <dbl>
-##  1 2019-07-09 12:00:00 aerated1                     0.02 
-##  2 2019-07-09 12:00:00 aerated3                     0.02 
-##  3 2019-07-09 12:00:00 low_oxygen1                  0.02 
-##  4 2019-07-09 12:00:00 low_oxygen2                  0.02 
-##  5 2019-07-09 12:00:00 low_oxygen3                  0.02 
-##  6 2019-07-09 16:05:00 aerated1                     0.027
-##  7 2019-07-09 16:05:00 aerated3                     0.02 
-##  8 2019-07-09 16:05:00 low_oxygen1                  0.022
-##  9 2019-07-09 16:05:00 low_oxygen2                  0.022
-## 10 2019-07-09 16:05:00 low_oxygen3                  0.027
-## # ... with 60 more rows
-\end{verbatim}
+{[}Figure---loading packages{]}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# Example of how easily sophisticated plots can be created with data in this format}
-\NormalTok{growth\_curve }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ sampling\_date\_time, }\AttributeTok{y =}\NormalTok{ optical\_density)) }\SpecialCharTok{+} 
-  \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+} 
-  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{ experimental\_group)}
-\end{Highlighting}
-\end{Shaded}
+Overall, you can see that the code in this document provides a step-by-step
+recipe that documents all the calculations and cleaning that we do with the
+data, as well as how we create the plots. This code runs every time we create
+the report shown in Figure \ref{fig:growthreport2}, and it gives us a good
+starting point if we run additional experiments that generate similar data.
 
-\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-23-1}
-In later chapters, we'll discuss R's ``tidyverse'', a collection of tools within R
-that facilitate analyzing and visualizing data once they've been read into R. Here, we
-only aim to give an example of how little R code is needed to create useful output from
-the data, with the only requirement for gaining this power being that the data need to
-be collected in a format that is ``tidy'' or close enough to easily read into R.
+\hypertarget{applied-exercise-1}{%
+\subsection{Applied exercise}\label{applied-exercise-1}}
 
-\hypertarget{exampledata-on-bacteria-colony-forming-units}{%
-\subsection{Example---Data on bacteria colony forming units}\label{exampledata-on-bacteria-colony-forming-units}}
-
-\hypertarget{exampledata-from-multiple-related-experiments}{%
-\subsection{Example---Data from multiple related experiments}\label{exampledata-from-multiple-related-experiments}}
-
-\hypertarget{issues-with-these-data-sets}{%
-\subsection{Issues with these data sets}\label{issues-with-these-data-sets}}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Issues related to using a spread sheet program
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Embedded macros
-  \item
-    Use of color to encode information
-  \end{itemize}
-\item
-  Issues related to non-structured / non-two-dimensional data
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Added summary row
-  \item
-    Multiple tables in one sheet
-  \item
-    One cell value is meant to represent values for all rows below, until next
-    non-missing row
-  \end{itemize}
-\item
-  Issues with data being non-``tidy''
-\end{enumerate}
-
-\hypertarget{final-tidy-examples}{%
-\subsection{Final ``tidy'' examples}\label{final-tidy-examples}}
-
-\hypertarget{options-for-recording-tidy-data}{%
-\subsection{Options for recording tidy data}\label{options-for-recording-tidy-data}}
-
-\textbf{Spreadsheet program.}
-
-\textbf{Spreadsheet-like interface in R.}
-
-\hypertarget{examples-of-how-tidy-data-can-be-easily-analyzed-visualized}{%
-\subsection{Examples of how ``tidy'' data can be easily analyzed / visualized}\label{examples-of-how-tidy-data-can-be-easily-analyzed-visualized}}
-
-\hypertarget{discussion-questions}{%
-\subsection{Discussion questions}\label{discussion-questions}}
+The Rmarkdown document includes a number of other steps, and you might find
+it interesting to download the document and the example data and walk through
+them to get a feel for the process. All the steps are documented in the
+Rmarkdown document with extensive code comments, to explain what's happening
+along the way.
 
 \hypertarget{module6}{%
 \section{Power of using a single structured `Project' directory for storing and tracking research project files}\label{module6}}
@@ -4100,8 +4029,8 @@ R scripts, analytical results, figures. This is such a wise and common practice
 that RStudio has built-in support for this via \textbf{projects}.'' \citep{wickham2016r}
 \end{quote}
 
-\hypertarget{discussion-questions-1}{%
-\subsection{Discussion questions}\label{discussion-questions-1}}
+\hypertarget{discussion-questions}{%
+\subsection{Discussion questions}\label{discussion-questions}}
 
 \hypertarget{module8}{%
 \section{Example: Creating a `Project' template}\label{module8}}
@@ -4124,14 +4053,17 @@ in a murine model.
   Initialize a new `Project' directory using this template
 \end{itemize}
 
-\hypertarget{subsection-1-1}{%
-\subsection{Subsection 1}\label{subsection-1-1}}
+For this module, we'll show how to create an R Project template to manage data
+from the example set of studies that we described in module 2.7. As a reminder\ldots{}
 
-\hypertarget{subsection-2-1}{%
-\subsection{Subsection 2}\label{subsection-2-1}}
+\hypertarget{creating-a-basic-template}{%
+\subsection{Creating a basic template}\label{creating-a-basic-template}}
 
-\hypertarget{applied-exercise-1}{%
-\subsection{Applied exercise}\label{applied-exercise-1}}
+\hypertarget{creating-an-r-project-template}{%
+\subsection{Creating an R Project template}\label{creating-an-r-project-template}}
+
+\hypertarget{applied-exercise-2}{%
+\subsection{Applied exercise}\label{applied-exercise-2}}
 
 \hypertarget{module9}{%
 \section{Harnessing version control for transparent data recording}\label{module9}}
@@ -4470,8 +4402,8 @@ and commands and will provide a solid ground to efficiently track code and relat
 content for research projects.'' \citep{perez2016ten}
 \end{quote}
 
-\hypertarget{discussion-questions-2}{%
-\subsection{Discussion questions}\label{discussion-questions-2}}
+\hypertarget{discussion-questions-1}{%
+\subsection{Discussion questions}\label{discussion-questions-1}}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -4952,8 +4884,8 @@ platform. The process is particularly straightforward when the research project
 files are collected in an RStudio Project format, as described in earlier
 modules.
 
-\hypertarget{discussion-questions-3}{%
-\subsection{Discussion questions}\label{discussion-questions-3}}
+\hypertarget{discussion-questions-2}{%
+\subsection{Discussion questions}\label{discussion-questions-2}}
 
 \hypertarget{module11}{%
 \section{Using git and GitLab to implement version control}\label{module11}}
@@ -5296,8 +5228,8 @@ need only as much of the hash as will uniquely identify your commit.''
 \citep{klemens201421st}
 \end{quote}
 
-\hypertarget{applied-exercise-2}{%
-\subsection{Applied exercise}\label{applied-exercise-2}}
+\hypertarget{applied-exercise-3}{%
+\subsection{Applied exercise}\label{applied-exercise-3}}
 
 \hypertarget{experimental-data-preprocessing}{%
 \chapter{Experimental Data Preprocessing}\label{experimental-data-preprocessing}}
@@ -6651,8 +6583,8 @@ Normalization can help adjust for technical bias across the samples:
 ``Normalizing features' signal intensities is required, but at present not (yet) supported in xcms (some methods might be added in near future). It is advised to use the SummarizedExperiment returned by the quantify method for any further data processing, as this type of object stores feature definitions, sample annotations as well as feature abundances in the same object. For the identification of e.g.~features with significant different intensities/abundances it is suggested to use functionality provided in other R packages, such as Bioconductor's excellent limma package.'' \citep{smith2013lc}
 \end{quote}
 
-\hypertarget{discussion-questions-4}{%
-\subsection{Discussion questions}\label{discussion-questions-4}}
+\hypertarget{discussion-questions-3}{%
+\subsection{Discussion questions}\label{discussion-questions-3}}
 
 \hypertarget{module13}{%
 \section{Introduction to scripted data pre-processing in R}\label{module13}}
@@ -6733,8 +6665,8 @@ results you see at each step.
 
 A code script is essentially a recipe for cleaning and analyzing data.
 
-\hypertarget{applied-exercise-3}{%
-\subsection{Applied exercise}\label{applied-exercise-3}}
+\hypertarget{applied-exercise-4}{%
+\subsection{Applied exercise}\label{applied-exercise-4}}
 
 \hypertarget{module14}{%
 \section{Simplify scripted pre-processing through R's `tidyverse' tools}\label{module14}}
@@ -6782,6 +6714,8 @@ Some key tools from the tidyverse for pre-processing laboratory data:
   them.
 \item
   Working with lists, converting from lists to tidy dataframes
+\item
+  Examples from code in earlier modules
 \end{itemize}
 
 \hypertarget{limitations-of-object-oriented-programming}{%
@@ -6979,8 +6913,8 @@ data following a tidy format and by pre-processing data with the aim of moving
 data toward a tidy dataframe that can be integrated with other ``tidy'' data for
 analysis and visualization.
 
-\hypertarget{subsection-1-2}{%
-\subsection{Subsection 1}\label{subsection-1-2}}
+\hypertarget{subsection-1-1}{%
+\subsection{Subsection 1}\label{subsection-1-1}}
 
 \begin{quote}
 ``There is a now-old trope in the world of programming. It's called the `worse is
@@ -7058,8 +6992,8 @@ to be used in sequence in a seamless analysis pipeline (Wickham, 2009; Wickham a
 \citep{robinson2014broom}
 \end{quote}
 
-\hypertarget{subsection-2-2}{%
-\subsection{Subsection 2}\label{subsection-2-2}}
+\hypertarget{subsection-2-1}{%
+\subsection{Subsection 2}\label{subsection-2-1}}
 
 \hypertarget{practice-quiz-2}{%
 \subsection{Practice quiz}\label{practice-quiz-2}}
@@ -10227,8 +10161,8 @@ given a class it returns the generic functions that have methods for the class.'
 \end{quote}
 
 \begin{verbatim}
-## [1] "print.acf"         "print.AES"         "print.all_vars"   
-## [4] "print.anova"       "print.ansi_string" "print.ansi_style"
+## [1] "print.acf"     "print.AES"     "print.anova"   "print.aov"    
+## [5] "print.aovlist" "print.ar"
 \end{verbatim}
 
 \begin{verbatim}
@@ -10280,11 +10214,11 @@ made when the code is loaded into the R session---there is a table that charts
 the relation. \citep{burns2011r}
 \end{quote}
 
-\hypertarget{subsection-2-3}{%
-\subsection{Subsection 2}\label{subsection-2-3}}
+\hypertarget{subsection-2-2}{%
+\subsection{Subsection 2}\label{subsection-2-2}}
 
-\hypertarget{applied-exercise-4}{%
-\subsection{Applied exercise}\label{applied-exercise-4}}
+\hypertarget{applied-exercise-5}{%
+\subsection{Applied exercise}\label{applied-exercise-5}}
 
 \begin{itemize}
 \tightlist
@@ -10656,7 +10590,7 @@ distribution of expression levels across all genes in each sample:
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 \end{verbatim}
 
-\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-42-1}
+\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-41-1}
 
 You can also incorporate data that are stored in the \texttt{phenoData} slot of
 the \texttt{ExpressionSet} object by specifying \texttt{addPheno\ =\ TRUE}:
@@ -10685,12 +10619,12 @@ experimental group of each sample:
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 \end{verbatim}
 
-\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-44-1}
+\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-43-1}
 You can also do things like look at differences in values for
 specific genes, pairing tools for exploring data with tools for
 visualization, both from the tidyverse:
 
-\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-45-1}
+\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-44-1}
 
 The data for a subset of the sample can be analyzed using functions from the
 \texttt{edgeR} package, to complete needed pre-processing (for example, calculating
@@ -10847,7 +10781,7 @@ As another example, you can now use tools from \texttt{ggplot2}, as well as
 extensions built on this package, to do things like create a volcano
 plot of the data with highlighting of noteworthy genes on the plot:
 
-\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-54-1}
+\includegraphics{improve_repro_files/figure-latex/unnamed-chunk-53-1}
 
 If you wanted to access the help files for these \texttt{biobroom} methods for this
 object class, you could do so by calling help in R (\texttt{?}) using the name of the
@@ -10856,8 +10790,8 @@ method, a dot, and then the name of the object class, e.g., \texttt{?tidy.DGEExa
 \hypertarget{the-ggbio-package}{%
 \subsection{\texorpdfstring{The \texttt{ggbio} package}{The ggbio package}}\label{the-ggbio-package}}
 
-\hypertarget{subsection-2-4}{%
-\subsection{Subsection 2}\label{subsection-2-4}}
+\hypertarget{subsection-2-3}{%
+\subsection{Subsection 2}\label{subsection-2-3}}
 
 \begin{quote}
 ``The biobroom package contains methods for converting standard objects in Bioconductor into a `tidy format'. It serves as a complement to the popular broom package, and follows the same division (tidy/augment/glance) of tidying methods.''
@@ -11167,8 +11101,8 @@ graphics model.'' \citep{yin2012ggbio}
 \citep{yin2012ggbio}
 \end{quote}
 
-\hypertarget{applied-exercise-5}{%
-\subsection{Applied exercise}\label{applied-exercise-5}}
+\hypertarget{applied-exercise-6}{%
+\subsection{Applied exercise}\label{applied-exercise-6}}
 
 \hypertarget{module18}{%
 \section{Introduction to reproducible data pre-processing protocols}\label{module18}}
@@ -13069,8 +13003,8 @@ that is updated with the day's date each time the protocol is re-rendered.
 \includegraphics[width=\textwidth]{figures/protocol_yaml_date} \caption[Example of using more advanced RMarkdown functionality within a data pre-processing protocol]{Example of using more advanced RMarkdown functionality within a data pre-processing protocol. In this example, R code is incorporated into the YAML of the document to include the date that the document was last rendered, marking this on the pdf output as the *Last edited* date of the protocol.}\label{fig:protocolyaml}
 \end{figure*}
 
-\hypertarget{applied-exercise-6}{%
-\section{Applied exercise}\label{applied-exercise-6}}
+\hypertarget{applied-exercise-7}{%
+\section{Applied exercise}\label{applied-exercise-7}}
 
 To wrap up this module, try downloading both the source file and the output of this example
 data pre-processing protocol. Again, you can find the source code (the RMarkdown file)
