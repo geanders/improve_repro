@@ -22,14 +22,18 @@ library(gridExtra)
 # data in the laboratory
 growth_data <- read_excel("growth curve data_GR.xls",
                           sheet = "simplified_template") 
+```
 
+```{r}
 # For each measurement time, calculate the time since the start of the
 # experiment
 growth_data <- growth_data %>% 
   mutate(sampling_delta_time = difftime(sampling_date_time, 
                                         first(sampling_date_time),
                                         units = "hours"))
+```
 
+```{r}
 # Convert to a format that will be easier to work with in plotting and
 # data analysis (one row for each combination of measurement time and 
 # test tube).
@@ -38,7 +42,9 @@ growth_data_tidy <- pivot_longer(growth_data,
                                     sampling_delta_time),
                            names_to = "test_tube_id", 
                            values_to = "optical_density") 
+```
 
+```{r}
 # From the test tube IDs, extract information like the growth condition (low 
 # oxygen versus aerated) and a short tube ID (e.g., A1, L2). You can use
 # regular expression functions (from the `stringr` package in the `tidyverse`)
@@ -51,8 +57,6 @@ growth_data_tidy <- growth_data_tidy %>%
          short_tube_id = str_c(str_sub(growth_condition, 1, 1), test_tube_number)) %>% 
   select(sampling_date_time, sampling_delta_time, short_tube_id, growth_condition, optical_density)
 ```
-
-
 
 ```{r message = FALSE, warning = FALSE, fig.width = 7, fig.height = 3}
 ggplot(growth_data_tidy, 
@@ -77,6 +81,7 @@ ggplot(growth_data_tidy,
   # Ensure that the y-axis ranges from 0 to 1
   ylim(c(0, 1))
 ```
+
 
 ```{r message = FALSE, warning = FALSE, fig.width = 7, fig.height = 3}
 ggplot(growth_data_tidy, 
