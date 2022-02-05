@@ -275,12 +275,14 @@ the steps of data collection and data analysis, however, you do need to take an
 extra step to read the data file into another program for analysis. Fortunately,
 this is very simple in R. The data in this example are recorded using an Excel
 spreadsheet, and there is a simple function in R that lets you read data in from
-this type of spreadsheet. After this step of code, you will have an object in R
-called `growth_data`, which contains the data in a two-dimensional form very
-similar to how it is recorded in the spreadsheet (this type of object in R is
-called a dataframe).
+this type of spreadsheet (Figure \@ref(fig:growthreadexcel)). After this step of
+code, you will have an object in R called `growth_data`, which contains the data
+in a two-dimensional form very similar to how it is recorded in the spreadsheet
+(this type of object in R is called a dataframe).
 
-[Figure---read in data from spreadsheet]
+```{r growthreadexcel, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Code to read data from the data collection template into R for cleaning, analysis, and visualization. The data were recorded in the tidy data collection template described earlier in this module. Here, those data are read into R (code shown at top). The resulting data in R are stored in a format that is very similar to the design of a spreadsheet, with rows for observations and columns for the values recorded for each observation (bottom)."}
+knitr::include_graphics("figures/growth_curve_readxl.png")
+```
 
 Another key step is to calculate, for each observation, the time since the start
 of the experiment. In the original data collection template shown in Figure
@@ -293,20 +295,22 @@ difference in time as they are running the experiment, they can just record the
 time, and we can write code in the analysis document that handles the further
 calculations, using well-designed and well-tested tools to do this calculation.
 
-Figure [x] shows code that can be used for this calculation. At the start of this 
-code, the data are stored in an object named `growth_data`. The `mutate` function
-adds a column to the data, named `sampling_delta_time`, that will give the 
-difference between the time of an observation and the start of the experiment.
-Within the `mutate` call, a special function named `difftime` calculates the 
-difference in two time points. This function lets us specify the time units 
-we'd like to use, and here we can pick `"hours"` for the units. The `first` 
-function lets us pull out the first value in the data for a recorded time---in
-other words, the time when the experiment started. This lets us compare each
-observation time to the time of the start of the experiment. The result 
-of this code is a new version of the `growth_data` dataframe, with a new
-column giving time since the start of the experiment:
+Figure \@ref(fig:growthadddifftime) shows code that can be used for this
+calculation. At the start of this code, the data are stored in an object named
+`growth_data`. The `mutate` function adds a column to the data, named
+`sampling_delta_time`, that will give the difference between the time of an
+observation and the start of the experiment. Within the `mutate` call, a special
+function named `difftime` calculates the difference in two time points. This
+function lets us specify the time units we'd like to use, and here we can pick
+`"hours"` for the units. The `first` function lets us pull out the first value
+in the data for a recorded time---in other words, the time when the experiment
+started. This lets us compare each observation time to the time of the start of
+the experiment. The result of this code is a new version of the `growth_data`
+dataframe, with a new column giving time since the start of the experiment:
 
-[Figure---calculating the difference in time]
+```{r growthadddifftime, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Code to add a column to the data that gives the time since the start of the experiment. This code (top) uses the time recorded for each experiment and compares it to the first recorded time, at the start of the experiment. This determines the time since the start of the experiment for each observation, given in a new column in the data (bottom)."}
+knitr::include_graphics("figures/growth_curve_adddifftime.png")
+```
 
 Another key step is to plot results from the data. In R, there is a package 
 called `ggplot2` that provides tools for visualization. The tools in this 
@@ -316,25 +320,28 @@ While the resulting code can be long, each step is simple, and so it
 becomes simple to learn these different "layers" and learn how to combine
 them to create complex plots. 
 
-Figure [x] walks through the code for one of the visualizations in the report.
-At this point in the report code, the data have been reformatted into an object
-called `growth_data_tidy`, which has columns for each observation on the time
-since the start of the experiment (`sampling_delta_time`), the measured optical
-density (`optical_density`), whether the tube was aerated or low oxygen
-(`growth_conditions`), and a short ID for the test tube (`short_tube_id`). The
-code starts by creating a plot object, specifying that in this plot the color
-will show the growth conditions, the position on the x-axis will show the time
-since the start of the experiment, and the y-axis will show the optical density.
-Layers are then added to this plot object that add points and lines to the plot
-based on these mappings, and for the lines, it's further specified that the type
-of line should show the test tube ID (for example, one tube will be shown with a
-dotted line, another with a dashed line). Further layers are added to customize
-the scale labels with `labs`, including the labels for the x-axis and y-axis and
-the legends of the color and linetype scales. Another layer is used to customize
-the appearance of the plot---things like the background color and the font
-used---and another layer is added to use a log-10 scale for the x-axis.
+Figure \@ref(fig:growthplotcode) walks through the code for one of the
+visualizations in the report. At this point in the report code, the data have
+been reformatted into an object called `growth_data_tidy`, which has columns for
+each observation on the time since the start of the experiment
+(`sampling_delta_time`), the measured optical density (`optical_density`),
+whether the tube was aerated or low oxygen (`growth_conditions`), and a short ID
+for the test tube (`short_tube_id`). The code starts by creating a plot object,
+specifying that in this plot the color will show the growth conditions, the
+position on the x-axis will show the time since the start of the experiment, and
+the y-axis will show the optical density. Layers are then added to this plot
+object that add points and lines to the plot based on these mappings, and for
+the lines, it's further specified that the type of line should show the test
+tube ID (for example, one tube will be shown with a dotted line, another with a
+dashed line). Further layers are added to customize the scale labels with
+`labs`, including the labels for the x-axis and y-axis and the legends of the
+color and linetype scales. Another layer is used to customize the appearance of
+the plot---things like the background color and the font used---and another
+layer is added to use a log-10 scale for the x-axis.
 
-[Figure---plotting some of the results]
+```{r growthplotcode, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Code to plot growth curves from the data. When the plotting code is run, the data have been transformed into a 'tidy' format (top), with columns that include the time since the start of the experiment, a test tube ID, the growth condition for the test tube, and the optical density measured in that test tube. The code (middle) add layers to implement each element of the plot based on this input data. The final plot is shown at the bottom."}
+knitr::include_graphics("figures/growth_curve_plot_code.png")
+```
 
 While this looks like a lot of code, the process isn't any longer than it would
 be to customize elements of a plot in a spreadsheet program. The advantages of
