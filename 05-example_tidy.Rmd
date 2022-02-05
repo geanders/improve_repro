@@ -231,42 +231,40 @@ reports from statistical programs like R and Python. In this section, we will
 give an overview of how you could create the report template shown in Figure
 \@ref(fig:growthreport2).
 
-We will be using the programming language R, including RMarkdown, which is R's
-main tool for creating reproducible reports. If you have never used R or
-RMarkdown before, you'll find it useful to learn some more about their use to
-help in creating these types of reproducible reports from collected data.
-Numerous excellent (and free) resources exist to help learn R. One of the best
-is the book "R for Data Science" by Hadley Wickham and Garrett Grolemund. It is
-available in print, as well as free online at https://r4ds.had.co.nz/.
+This report is written using a framework called RMarkdown, which allows you to
+include executable code inside a nicely-formatted document, resulting in a
+document in Word, PDF, or HTML that is easy for humans to read while also
+generating results based on R code. We will cover this format in details in
+modules 3.7--3.9. In the rest of this section, we'll walk through some of the R
+code that is "powering" the analysis in this document, but if you'd like to
+learn how to combine it into an RMarkdown document to create the report shown in
+Figure \@ref(fig:growthreport2), you can learn much more about RMarkdown in
+those later modules. The code within the report uses the R language. We'll cover
+a few examples here, but if you would like to use R, you'll find it helpful to
+learn more. Numerous excellent (and free) resources exist to help learn R. One
+of the best is the book "R for Data Science" by Hadley Wickham and Garrett
+Grolemund. It is available in print, as well as free online at
+https://r4ds.had.co.nz/.
 
-...
-
-This report is written using a framework called RMarkdown, which allows you to 
-include executable code inside a nicely-formatted document, resulting in a 
-document in Word, PDF, or HTML that is easy for humans to read while also 
-generating results based on R code. We will cover this format in details in 
-modules 3.7--3.9. In the rest of this section, we'll walk through some of the
-R code that is "powering" the analysis in this document, but if you'd like 
-to learn how to combine it into an RMarkdown document to create the report 
-shown in Figure \@ref(fig:growthreport2), you can learn much more about 
-RMarkdown in those later modules. 
-
-The code used to generate the results in Figure \@ref(fig:growthreport2)
-is all in the programming language R. A programming language can seem, at
-first glance, much more difficult to learn and use than using a spreadsheet 
-program like Excel to set up formulae and macros. However, languages like 
-R have evolved substantially in recent years to allow for much more straightforward
-coding than you may have seen in the past, and the barrier to learning to 
-use them for straightforward data management and analysis is not much higher
-than the effort required to become proficient in using a spreadsheet program. 
-To demonstrate this, let's look through a few of the tasks required to 
-generate the results shown in Figure \@ref(fig:growthreport2). We won't cover
-all the code, just highlight some of the key steps. If you'd like to look 
-in details over the code and the output document, you can download those
-files and explore them: the [Rmarkdown file] and the [output PDF] are 
-available here. If you'd like to try out the code in the Rmarkdown file, 
-you'll also need the example data, which you can download [here]. [Add refs
-to the last sentence.]
+The code used to generate the results in Figure \@ref(fig:growthreport2) is all
+in the programming language R. A programming language can seem, at first glance,
+much more difficult to learn and use than using a spreadsheet program like Excel
+to set up formulae and macros. However, languages like R have evolved
+substantially in recent years to allow for much more straightforward coding than
+you may have seen in the past, and the barrier to learning to use them for
+straightforward data management and analysis is not much higher than the effort
+required to become proficient in using a spreadsheet program. To demonstrate
+this, let's look through a few of the tasks required to generate the results
+shown in Figure \@ref(fig:growthreport2). We won't cover all the code, just
+highlight some of the key steps. If you'd like to look in details over the code
+and the output document, you can download those files and explore them: you can
+access the file for the [Rmarkdown
+file](https://github.com/geanders/improve_repro/blob/master/data/growth_curve_data_in_excel%20(1)/Example_report.Rmd),
+and you can download the [output
+PDF](https://github.com/geanders/improve_repro/raw/master/data/growth_curve_data_in_excel%20(1)/Example_report.pdf).
+If you'd like to try out the code in the Rmarkdown file, you'll also need the
+example data, which you can download by clicking
+[here](https://github.com/geanders/improve_repro/raw/master/data/growth_curve_data_in_excel%20(1)/growth%20curve%20data_GR.xls).
 
 One key step is to read the collected data into R. When you use a spreadsheet
 for both data collection and analysis, you don't need to read the data to start
@@ -367,17 +365,19 @@ less prone to error by writing a small function that does the same thing,
 then using that function to automate the process of identifying the 
 relevant observations to use in calculating the doubling rate.
 
-Figure [x] shows how you can write and then use a small function in R. This
-function will input your `growth_data` dataset, as well as a time that you are
-aiming for, and will output the sampling time in the data that is closest
-to---while not larger than---that time. It does that in a few steps within the
-body of the function. First, the code in the function filters to only
+Figure \@ref(fig:growthfunction) shows how you can write and then use a small
+function in R. This function will input your `growth_data` dataset, as well as a
+time that you are aiming for, and will output the sampling time in the data that
+is closest to---while not larger than---that time. It does that in a few steps
+within the body of the function. First, the code in the function filters to only
 observations earlier than the target time. Then it measures the difference
 between each of the times for these observations and the target time, and uses
 this to identify the observation with the closest time to the target. It pulls
 out the time of this observation and returns it.
 
-[Figure---writing and using a small function]
+```{r growthfuntion, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Code to create and apply a small function. The code at the top can be used to create a function that can input your dataframe and determine the observation time in that data that is closest to (without being larger than) a target time. The function does this through a series of small steps. This function can then be applied to find the observation time in the data that is closest to specific target times, like 24 hours and 64 hours (bottom)."}
+knitr::include_graphics("figures/growth_curve_function.png")
+```
 
 Small functions like this can easily be reused in other code for your research 
 group. By writing the logic of the step out as a function---rather than redoing
@@ -391,15 +391,18 @@ you are getting a base set of tools. Many people have developed helpful
 extensions that build on this base. These are stored and shared in what are
 called **R packages**. You can install these extra packages for free, and you
 use the `library` function in R to load a package you've installed, giving you
-access to the extra functions that it provides. Figure [x] shows the spot in the
-Rmarkdown code where we loaded packages we needed for this report. These include
-packages with functions to read data in R from Excel (the `readxl`) package, as
-well as a suite of packages with tools for cleaning and visualizing data (the
-`tidyverse` package). In later modules, we'll talk some more about R coding
-tools that you might find useful for working with biomedical data, including the
-tools in the powerful and popular `tidyverse` suite of packages.
+access to the extra functions that it provides. Figure
+\@ref(fig:growthloadpackage) shows the spot in the Rmarkdown code where we
+loaded packages we needed for this report. These include packages with functions
+to read data in R from Excel (the `readxl`) package, as well as a suite of
+packages with tools for cleaning and visualizing data (the `tidyverse` package).
+In later modules, we'll talk some more about R coding tools that you might find
+useful for working with biomedical data, including the tools in the powerful and
+popular `tidyverse` suite of packages.
 
-[Figure---loading packages]
+```{r growthloadpackage, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Code to load packages with additional functionality. These provide functions that are not offered in base R, but that are useful in working with the example data. They include packages with functions for reading in data from an Excel file, as well as packages with functions for cleaning and visualizing data."}
+knitr::include_graphics("figures/growth_curve_load_packages.png")
+```
 
 Overall, you can see that the code in this document provides a step-by-step
 recipe that documents all the calculations and cleaning that we do with the
