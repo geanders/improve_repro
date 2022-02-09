@@ -170,15 +170,54 @@ has been installed locally.
 
 ### Setting up a useful template
 
+...
 
+Once you set up this template, a researcher in your group can initialize a project
+for a new experiment by copying the template directory and renaming it to the name
+of the experiment. They can then open the directory and replace any placeholder
+data in the project files with real data from the experiment. 
+
+Figure \@ref(fig:replacingplaceholdermetadata) gives an example of this process. One
+of the files that is included in the example template directory shown earlier is
+a spreadsheet to record metadata on the experiment. This spreadsheet file has two
+sheets, one that records overall metadata on the study (for example, the weeks of 
+treatment given and the strain of mouse used) and one that records details on each 
+of the treatments that was tested. In the file in the template directory, these
+spreadsheet pages include placeholder data. These are formatted in red, so that 
+they visually can be identified as placeholders. By including these placeholder data, 
+the researcher can see an example of the format that you expect to be used in recording
+data in this file. Once the project template is copied, the researcher will replace
+these data with the real data, and then change the font color to black to indicate that
+the placeholder data have been replaced (Figure \@ref(fig:replacingplaceholdermetadata)).
 
 ```{r replacingplaceholdermetadata, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "The template includes a file with experiment metadata, with a sheet for recording the overall details of the experiment. A user can open this file and replace the placeholder values (in red) with real values for the experiment. By changing the text color to black, the user can have a visual confirmation that the placeholder data have been replaced with real study data."}
 knitr::include_graphics("figures/project_replace_placeholder_metadata.png")
 ```
 
+Another sheet of this spreadsheet allows the researcher to record the details of 
+each of the treatments that were tested in the experiment. Again, placeholder data are
+included in the template in a red font to help show the researcher how to record the
+data, and these are meant to be replaced with real data from the specific experiment
+(Figure \@ref(fig:replacingplaceholdertreatment)). A similar format is used in the 
+template file to record data from the experiment, including the weights of each animal
+over each week of treatment and the final bacterial load in each animal at the end
+of treatment. Again, there are placeholder values in the template file, which the 
+researcher will replace with real data after copying the project template for a new
+experiment.
+
 ```{r replacingplaceholdertreatment, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "The template includes a file with experiment metadata, with a sheet for recording the details of each treatment. A user can open this file and replace the placeholder values (in red) with real values for the treatments in the experiment. By changing the text color to black, the user can have a visual confirmation that the placeholder data have been replaced with real study data."}
 knitr::include_graphics("figures/project_replacing_placeholder_treatment_data.png")
 ```
+
+The project template also includes a file that provides a template to create a report
+based on the data from the experiment. This file is created using the RMarkdown format, 
+which combines text with executable code. You can create this template so that it 
+inputs the experimental data from the file formats created for the data recording
+files in the project template. By doing this, the researcher should be able to "knit" 
+this report for a new experiment, and it should recreate the report based on the 
+data recorded for that experiment (Figure \@ref(fig:makingareport)). By knitting
+this template report, you can create a nicely formatted version of the report for
+the experimental data (Figure \@ref(fig:examplereport1)).
 
 ```{r makingareport, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of how a user can create a report from the template. The template includes an example report, which is written using RMarkdown. The user can open this template report file and use the 'Knit' button in RStudio to render the file. As long as the experimental data are recorded using the data template files, the code for this report can process the data to generate a report from the data. The user can also make changes and additions to the template report."}
 knitr::include_graphics("figures/project_opening_and_running_report.png")
@@ -190,11 +229,18 @@ knitr::include_graphics("figures/project_example_report_study001.png")
 
 ### Creating 'Project' templates in RStudio 
 
+Your research group can create your own Project templates. This will allow 
+you to use a standard template for your projects, just like we showed in the
+last section. However, instead of needing to copy, paste, and rename the template
+each time, if you create an official RStudio Project template, then the researcher
+can chose to use this template under the "New Project" option in RStudio 
+(Figure \@ref(fig:exampleprojectwizard)).
+
 ```{r exampleprojectwizard, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "To make it easier for members of a group to use a project template, the group can create an official R template for the type of project. Once this type of template is created, a user can access it as a choice when creating a new R Project from RStudio. When doing so, a box will pop up with options for setting up the project. In this example, the user can specify the members of the research team and indicate if the experiment will include data from flow cytometry or single cell RNA-sequencing, in which case the Project will include subdirectories to store these types of data, as well as data recorded in the laboratory."}
 knitr::include_graphics("figures/project_example_project_template.png")
 ```
 
-Your research group can create your own Project templates. You will need to
+To create your own Project template that can be used in this way, you will need to
 create them within an R package, but this package does not need to be posted to
 a public site like CRAN. Instead, it can be shared exclusively among the
 research group as a zipped file that can be installed directly from source onto
