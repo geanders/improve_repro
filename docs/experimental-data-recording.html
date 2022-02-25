@@ -216,7 +216,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="2.8" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#module8"><i class="fa fa-check"></i><b>2.8</b> Example: Creating a ‘Project’ template</a>
 <ul>
-<li class="chapter" data-level="2.8.1" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#creating-a-basic-template"><i class="fa fa-check"></i><b>2.8.1</b> Creating a basic template</a></li>
+<li class="chapter" data-level="2.8.1" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#creating-and-using-a-basic-template"><i class="fa fa-check"></i><b>2.8.1</b> Creating and using a basic template</a></li>
 <li class="chapter" data-level="2.8.2" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#creating-an-r-project-template"><i class="fa fa-check"></i><b>2.8.2</b> Creating an R Project template</a></li>
 <li class="chapter" data-level="2.8.3" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#applied-exercise-1"><i class="fa fa-check"></i><b>2.8.3</b> Applied exercise</a></li>
 </ul></li>
@@ -3582,9 +3582,144 @@ in a murine model.</p>
 <li>Initialize a new ‘Project’ directory using this template</li>
 </ul>
 <p>For this module, we’ll show how to create an R Project template to manage data
-from the example set of studies that we described in module 2.7. As a reminder…</p>
-<div id="creating-a-basic-template" class="section level3" number="2.8.1">
-<h3><span class="header-section-number">2.8.1</span> Creating a basic template</h3>
+from the example set of studies that we described in module 2.7. As a reminder,
+this example set of studies covers a group of studies to explore novel
+treatments for tuberculosis. Each study investigates how mice that are
+challenged with tuberculosis respond to different treatments, both in terms of
+how well they handle the treatment (assessed by checking if their weight
+decreases notably while on treatment) and also how well the treatment manages to
+limit the growth of tuberculosis in the mouse’s lungs.</p>
+<p>We will walk through the process of creating a project directory template that could
+be used to manage and analyze data from any of the specific studies in this set of
+studies. We’ll cover two ways that you could do this. The first is simpler—it involves
+creating a basic file directory with the desired template files and file directory
+structure and then copying this file directory every time you want to start a new
+project for a study in this set of studies. The second way is a bit more complex and
+time-consuming to set up, but has the benefit of providing a very nice interface for
+members of your laboratory group to use when they start a new project. This second way
+is to create a full R Project template that can be accessed from RStudio anytime you
+create a new R Project. This type of template may not be worth the extra set-up time
+for project types that your research group only uses rarely, but for types of projects
+that your group conducts time and time again, it can be a powerful way to enforce a common
+project directory structure, and this in turn will allow your group to create reusable
+tools that work in coordination with this project structure.</p>
+<div id="creating-and-using-a-basic-template" class="section level3" number="2.8.1">
+<h3><span class="header-section-number">2.8.1</span> Creating and using a basic template</h3>
+<p>Let’s start by looking at the more basic way to create a project template. This involves
+no fancy tools—in fact, it’s so straightforward that at first it might seem to simple
+to be useful. For this basic approach, you will create an example file directory that
+includes template files and that captures you desired project directory structure, and
+then members of your group will copy and rename that template every time they start a
+new project of that type.</p>
+<p>Figure <a href="experimental-data-recording.html#fig:basicprojecttemplateuse">2.38</a> gives a basic walk-through of the
+simple steps you’ll use to start a new project directory once you’ve created
+this type of template. First, you will find the project directory template in
+your computer’s file system, copy it to where you’d like to save the files for
+the new project, and rename the directory to your new project’s name. At this
+point, you can use RStudio to make this directory an RStudio Project. Next,
+you’ll open the data collection template files and replace the placeholder
+example data in the template (shown in red font) with the real data from your
+study. The placeholder data can help you remember the format you should use to
+record the real data. Finally, once you’ve recorded the data for the study or
+experiment, you can open the example report template file. If you’ve designed
+this report template well, it should run with the new data you’ve recorded to
+create a report for the experiment. At this stage, you can add to the report
+or customize it for the new project by changing the Rmarkdown file and re-rendering
+it to update the report.</p>
+<div class="figure"><span style="display:block;" id="fig:basicprojecttemplateuse"></span>
+<img src="figures/project_template_basic_use.png" alt="Steps in using a basic project directory template that you have created for a type of study or experiment." width="\textwidth" />
+<p class="caption">
+Figure 2.38: Steps in using a basic project directory template that you have created for a type of study or experiment.
+</p>
+</div>
+<p>There are a few steps you’ll need to take to create this type of basic project directory
+template:</p>
+<ol style="list-style-type: decimal">
+<li>List the data you typically collect or files you create for that type of study or experiment</li>
+<li>Create template files for any data collection that is typical for that type of study
+or experiment. Use example or placeholder data to create examples of those files.</li>
+<li>Create a directory structure that divides the types of files into subdirectories of similar
+types.</li>
+<li>Create one or more templates of report files that access and report on the data in the
+project template</li>
+</ol>
+<p>In modules [x], we showed how you can create tidy data collection templates to use to
+collect data, and how these can be paired with reproducible reporting tools to separate
+the steps of data collection and reporting (modules [x] go into much more depth on these
+reproducible reporting tools). Once you have decided on the types of data that you will
+usually collect for the type of study that this template is for, you can use that process
+to create tidy data collection templates for each type of data.</p>
+<p>In addition to the data that you record in the laboratory by hand, the type of study may
+also typically have data that’s generated and recorded by laboratory equipment. For example,
+the type of study may often include data collected from flow cytometry, to measure certain
+cell populations in samples, or from mass spectometry, to measure levels of certain molecules.
+For these data, the recording format will typically be determined by the equipment, and
+so you won’t need to create data collection templates for the data. However, you should store
+these data files in your project directory as well, where they are easy to access and integrate
+with other data as you analyze the data for the study.</p>
+<p>The recorded data files and the files that come directly from equipment can all be considered
+raw data files. In addition, you may typically create some files with pre-processed data.
+For example, if you have sequencing data [?], you may initially get large [what type] files
+from the [what type] equipment. You may use a program like [what] to pre-process these files
+to [do what]. In addition to saving the raw [what type] data files, you’ll also want to
+save the processed data files in your project directory, since these are the files that you’ll
+analyze and integrate with other data from the project.</p>
+<p>Once you have determined the types of files that you’ll normally include in your
+project, you can decide how to organize them into subdirectories in a project
+file directory. As you do this, it will be helpful to have example or template
+files for each file type. For data that you will record yourself, these can be
+the templates that you developed to collect the data in a tidy format (modules
+[x]), while for data from equipment, these can just be one or more example files
+from the equipment that you have collected for a past project. Having these example files
+will help you to develop a template project report that can input the type of data that
+you typically collect for this type of project.</p>
+<p>For the example set of studies for this module, there are a few types of data
+that we plan to typically collect for each study. First, we will be recording
+metadata for each experiment. This will include a study ID, as well as details
+like the mouse strain that we used in that experiment, the route used to
+administer the treatment, the treatments per week and total weeks of treatment,
+the inoculum used for the challenge, and so on. Second, we’ll be recording some
+details about each experimental group that was tested. This includes the drug or
+drugs that were tested, doses of each, and some exact details about the
+treatment regimen for that group. Both of these types of data can be recorded at
+the beginning of the study. Two other types of data will also be recorded, both
+of them during the study rather than at the start. The first is weights of the
+mice each week. These weights will be recorded for each treatment group each
+week of treatment, to help see if there are drugs that are poorly tolerated by
+the mice (which can show up through weight decreases in mice in that group). The
+second is the bacterial load in the lungs of each mouse at the end of the
+treatment period.</p>
+<p>To create the project directory template for these studies, then, we’ll create
+data collection templates for each of these types of data. We’ll create a
+separate spreadsheet for each type of data, but we can group them into files if
+we’d like. In our example, we created two files to store this type of data, one
+for the metadata that are recorded at the start of the experiment (overall
+experiment details and the details of each tested treatment) and one for the
+data that are collected over the course of the experiment (mouse weights and
+bacterial loads). Within each file, we’ve used separate sheets to record the
+different types of data. This allows us to keep similar types of data together
+in the same file, while having a tidy collection format for each specific type
+of data. [Figure]</p>
+<p>[Figure showing these files and sheets]</p>
+<p>Now that we have these data collection templates for this type of study, we can
+decide how to organize the project directory into subdirectories with the different
+types of data. In this case, we’ll use a simple structure. We’ll save the metadata
+file in the top level of the project directory, since it provides metadata on the
+project as a whole. For the data that are collected during the experiment, we’ll
+move that data collection file into a subdirectory called “data,” with its own
+subdirectory for “recorded_data” (indicating that we recorded it by hand in the
+laboratory). If you had other types of data, you could create other subdirectories
+for each type. For example, you could have a “flow_data” subdirectory for data
+collected through flow cytometry.</p>
+<p>If you had raw data that required pre-processing, you could create
+subdirectories both for the raw data and for the processed data that result from
+pre-processing steps. For example, if you had data from [RNA sequencing?], you might
+have [initial files] and [processed files], as well as a [bash?] script that you used
+to generate the processed files from the initial raw data. You could create a directory
+called “raw_data” to use to store both the initial raw data and the script used to
+process that data, then a “rna_seq_data” subdirectory in the “data” subdirectory to
+store the smaller processed files.</p>
+<p>[Example of this kind of more complex directory set-up]</p>
 </div>
 <div id="creating-an-r-project-template" class="section level3" number="2.8.2">
 <h3><span class="header-section-number">2.8.2</span> Creating an R Project template</h3>
@@ -4373,12 +4508,12 @@ and ownership) would be a great set to try out in a first project.</p>
 <p>Each time a team member makes a change to files in a GitHub repository, the change is
 recorded as a <strong>commit</strong>, and the team member must include a short <strong>commit message</strong>
 describing the change. Each file in the project will have its own page on GitHub
-(Figure <a href="experimental-data-recording.html#fig:githubcommits1">2.38</a>), and you can see the history of changes to that
+(Figure <a href="experimental-data-recording.html#fig:githubcommits1">2.39</a>), and you can see the history of changes to that
 files by clicking the “History” link on that page.</p>
 <div class="figure"><span style="display:block;" id="fig:githubcommits1"></span>
 <img src="figures/github_commits1.png" alt="Example of a file page within a GitHub repository. Each file in a repository has its own page. On this page, you can see the history of changes made to the file by looking at 'History'. You can also make a commit an edit directly in GitHub by clicking on the 'Edit' icon." width="\textwidth" />
 <p class="caption">
-Figure 2.38: Example of a file page within a GitHub repository. Each file in a repository has its own page. On this page, you can see the history of changes made to the file by looking at ‘History.’ You can also make a commit an edit directly in GitHub by clicking on the ‘Edit’ icon.
+Figure 2.39: Example of a file page within a GitHub repository. Each file in a repository has its own page. On this page, you can see the history of changes made to the file by looking at ‘History.’ You can also make a commit an edit directly in GitHub by clicking on the ‘Edit’ icon.
 </p>
 </div>
 <p>You can make changes to a file locally, on the repository copy on your own computer.
@@ -4388,19 +4523,19 @@ you commit it.</p>
 <p>However, it is also possible to make a commit directly on GitHub, and this may be a
 useful option for team members who are not coding and would like to make small changes
 to the writing files. On the file’s page on GitHub, there is an “Edit” icon
-(Figure <a href="experimental-data-recording.html#fig:githubcommits1">2.38</a>). By clicking on this, you will get to a page where you
-can directly edit the file (Figure <a href="experimental-data-recording.html#fig:githubcommits2">2.39</a>). Once you have made your
+(Figure <a href="experimental-data-recording.html#fig:githubcommits1">2.39</a>). By clicking on this, you will get to a page where you
+can directly edit the file (Figure <a href="experimental-data-recording.html#fig:githubcommits2">2.40</a>). Once you have made your
 edits, you will need to commit them, and a short description of the commit is required.
 If you would like to include a longer explanation of your changes, there is space for
-that, as well, when you make the commit (Figure <a href="experimental-data-recording.html#fig:githubcommits2">2.39</a>).</p>
+that, as well, when you make the commit (Figure <a href="experimental-data-recording.html#fig:githubcommits2">2.40</a>).</p>
 <div class="figure"><span style="display:block;" id="fig:githubcommits2"></span>
 <img src="figures/github_commits1.png" alt="Committing changes directly in GitHub. When you click on the 'Edit' button in a file's GitHub page (see previous figure), it will take you to a page where you can edit the file directly. You save the changes with a 'commit', including a commit message describing why you made the change. The change will be tagged with the message and your name." width="\textwidth" />
 <p class="caption">
-Figure 2.39: Committing changes directly in GitHub. When you click on the ‘Edit’ button in a file’s GitHub page (see previous figure), it will take you to a page where you can edit the file directly. You save the changes with a ‘commit,’ including a commit message describing why you made the change. The change will be tagged with the message and your name.
+Figure 2.40: Committing changes directly in GitHub. When you click on the ‘Edit’ button in a file’s GitHub page (see previous figure), it will take you to a page where you can edit the file directly. You save the changes with a ‘commit,’ including a commit message describing why you made the change. The change will be tagged with the message and your name.
 </p>
 </div>
 <p>You can see the full history of changes that have been made to each file in the
-project (Figure <a href="experimental-data-recording.html#fig:githubcommithistory">2.40</a>). Each change is tracked through
+project (Figure <a href="experimental-data-recording.html#fig:githubcommithistory">2.41</a>). Each change is tracked through
 a commit, which includes markers of who made the change and a message describing
 the change. Further, this history page for the file provides a line-by-line
 history of when each line in the file was last changed and what that change
@@ -4409,12 +4544,12 @@ file.</p>
 <div class="figure"><span style="display:block;" id="fig:githubcommithistory"></span>
 <img src="figures/github_commit_history.png" alt="Commit history in GitHub. Each file in a repository has a 'History' page, where you can explore each change commited for the file. Each commit has a unique identifier and commit message describing the change. You can click on the entry for any of these commits to see the changes made to the file with the commit (see next figure)." width="\textwidth" />
 <p class="caption">
-Figure 2.40: Commit history in GitHub. Each file in a repository has a ‘History’ page, where you can explore each change commited for the file. Each commit has a unique identifier and commit message describing the change. You can click on the entry for any of these commits to see the changes made to the file with the commit (see next figure).
+Figure 2.41: Commit history in GitHub. Each file in a repository has a ‘History’ page, where you can explore each change commited for the file. Each commit has a unique identifier and commit message describing the change. You can click on the entry for any of these commits to see the changes made to the file with the commit (see next figure).
 </p>
 </div>
 <p>If you click on one of the commits listed on a file’s History page (Figure
-<a href="experimental-data-recording.html#fig:githubcommithistory">2.40</a>, it will take you to a page providing information
-on the changes made with that commit (Figure <a href="experimental-data-recording.html#fig:githubcommithistory2">2.41</a>).
+<a href="experimental-data-recording.html#fig:githubcommithistory">2.41</a>, it will take you to a page providing information
+on the changes made with that commit (Figure <a href="experimental-data-recording.html#fig:githubcommithistory2">2.42</a>).
 This page provides a line-by-line view of each change that was made to project
 files with that commit. This page includes the commit message for that commit.
 If the person committing the change included a longer description or commentary
@@ -4428,7 +4563,7 @@ the commit.</p>
 <div class="figure"><span style="display:block;" id="fig:githubcommithistory2"></span>
 <img src="figures/github_commit_history2.png" alt="Commit history in GitHub. Each commit has its own page, where you can explore what changes were made with the commit, who made them, and when they were committed." width="\textwidth" />
 <p class="caption">
-Figure 2.41: Commit history in GitHub. Each commit has its own page, where you can explore what changes were made with the commit, who made them, and when they were committed.
+Figure 2.42: Commit history in GitHub. Each commit has its own page, where you can explore what changes were made with the commit, who made them, and when they were committed.
 </p>
 </div>
 <p><strong>Issues</strong></p>
@@ -4437,25 +4572,25 @@ that will help your team collaborate on a project. A key tool is the
 “Issues” tracker. Each repository includes this type of tracker, and it
 can be easily used by all team members, whether they are comfortable
 coding or not.</p>
-<p>Figure <a href="experimental-data-recording.html#fig:githubissues1">2.42</a> gives an example of <a href="https://github.com/aef1004/cyto-feature_engineering/issues">the Issues tracker page</a> for the
+<p>Figure <a href="experimental-data-recording.html#fig:githubissues1">2.43</a> gives an example of <a href="https://github.com/aef1004/cyto-feature_engineering/issues">the Issues tracker page</a> for the
 repository we are using as an example.</p>
 <div class="figure"><span style="display:block;" id="fig:githubissues1"></span>
 <img src="figures/github_issues.png" alt="Issues tracker page for an example GitHub repository. Arrows highlight the tab to click to get to the Issues tracker page in a repository, as well as where to go to find open and closed Issues for the repository." width="\textwidth" />
 <p class="caption">
-Figure 2.42: Issues tracker page for an example GitHub repository. Arrows highlight the tab to click to get to the Issues tracker page in a repository, as well as where to go to find open and closed Issues for the repository.
+Figure 2.43: Issues tracker page for an example GitHub repository. Arrows highlight the tab to click to get to the Issues tracker page in a repository, as well as where to go to find open and closed Issues for the repository.
 </p>
 </div>
 <p>The main Issues tracker page provides clickable links to all open issues for
 the repository. You can open a new issue using the “New Issue” on this main
 page or on the specific page of any of the repository’s issues (see Figure
-<a href="experimental-data-recording.html#fig:githubissues2">2.43</a> for an example of this button).</p>
+<a href="experimental-data-recording.html#fig:githubissues2">2.44</a> for an example of this button).</p>
 <div class="figure"><span style="display:block;" id="fig:githubissues2"></span>
 <img src="figures/github_issues2.png" alt="Conversation about an Issue on Issues tracker page of an example GitHub repository. In this example, you can see how GitHub Issues trackers allow you to discuss how to resolve an issue across your team. From this page, you can read the current conversation about Issue \#1 of the repository and add your own comments. Once the Issue is resolved, you can 'Close' the Issue, which moves it off the list of active issues, but allows you to still re-read the conversation and, if necessary, re-open the issue later. You can also open a new issue from this page, using the button highlighted at the top right." width="\textwidth" />
 <p class="caption">
-Figure 2.43: Conversation about an Issue on Issues tracker page of an example GitHub repository. In this example, you can see how GitHub Issues trackers allow you to discuss how to resolve an issue across your team. From this page, you can read the current conversation about Issue #1 of the repository and add your own comments. Once the Issue is resolved, you can ‘Close’ the Issue, which moves it off the list of active issues, but allows you to still re-read the conversation and, if necessary, re-open the issue later. You can also open a new issue from this page, using the button highlighted at the top right.
+Figure 2.44: Conversation about an Issue on Issues tracker page of an example GitHub repository. In this example, you can see how GitHub Issues trackers allow you to discuss how to resolve an issue across your team. From this page, you can read the current conversation about Issue #1 of the repository and add your own comments. Once the Issue is resolved, you can ‘Close’ the Issue, which moves it off the list of active issues, but allows you to still re-read the conversation and, if necessary, re-open the issue later. You can also open a new issue from this page, using the button highlighted at the top right.
 </p>
 </div>
-<p>On the page for a specific issue (e.g., Figure <a href="experimental-data-recording.html#fig:githubissues2">2.43</a>), you
+<p>On the page for a specific issue (e.g., Figure <a href="experimental-data-recording.html#fig:githubissues2">2.44</a>), you
 can have a conversation with your team to determine how to resolve the issue.
 This conversation can include web links, figures, and “To-do” check boxes, to
 help you discuss and plan how to resolve the issue. Each issue is numbered,
@@ -4468,11 +4603,11 @@ determine that it was not fully resolved.</p>
 <div class="figure"><span style="display:block;" id="fig:githubissues3"></span>
 <img src="figures/github_issues3.png" alt="Labeling and assigning Issues. The GitHub Issues tracker allows you to assign each issue to one or more team members, clarifying that they will take the lead in resolving the issue. It also allows you to tag each issue with one or more labels, so you can easily navigate to issues of a specific type or identify the category of a specific issue." width="\textwidth" />
 <p class="caption">
-Figure 2.44: Labeling and assigning Issues. The GitHub Issues tracker allows you to assign each issue to one or more team members, clarifying that they will take the lead in resolving the issue. It also allows you to tag each issue with one or more labels, so you can easily navigate to issues of a specific type or identify the category of a specific issue.
+Figure 2.45: Labeling and assigning Issues. The GitHub Issues tracker allows you to assign each issue to one or more team members, clarifying that they will take the lead in resolving the issue. It also allows you to tag each issue with one or more labels, so you can easily navigate to issues of a specific type or identify the category of a specific issue.
 </p>
 </div>
 <p>The Issues tracker page includes some more advanced functionality, as well
-(Figure <a href="experimental-data-recording.html#fig:githubissues3">2.44</a>). For example, you can “assign” an issue to one
+(Figure <a href="experimental-data-recording.html#fig:githubissues3">2.45</a>). For example, you can “assign” an issue to one
 of more team members, indicating that they are responsible for resolving that
 issue. You can also tag each issue with one of more labels, allowing you to
 group issues into common categories. For example, you could tag all issues that
