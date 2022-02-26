@@ -140,7 +140,18 @@ different types of data. This allows us to keep similar types of data together
 in the same file, while having a tidy collection format for each specific type
 of data. [Figure] 
 
-[Figure showing these files and sheets]
+```{r projectdatacollection, fig.cap = "Data collection templates for the example project directory template. These templates were created in two files, one for metadata, which is saved in the main directory of the project, and one for data collected in the laboratory during the experiment, which is saved in the 'data' subdirectory. Each file is saved as a spreadsheet file, with two sheets in each file to store different types of data.", fig.fullwidth = TRUE, out.width = "\\textwidth"}
+knitr::include_graphics("figures/project_data_collection.png")
+```
+
+All of these data collection files are designed using the principles of tidy data
+collection (modules [x]). This will ensure that it will be easy to read these
+recorded data in a programming language like R for analysis and visualization. 
+Specifically, when we designed these template files, we thought a lot about 
+things like using a two-dimensional structure (one row of header names and then
+values within each of the columns), using column names that would be easy for
+a programming language to parse (e.g., no special characters or spaces in the
+column names), and so on. 
 
 Now that we have these data collection templates for this type of study, we can 
 decide how to organize the project directory into subdirectories with the different
@@ -160,11 +171,198 @@ have [initial files] and [processed files], as well as a [bash?] script that you
 to generate the processed files from the initial raw data. You could create a directory 
 called "raw_data" to use to store both the initial raw data and the script used to 
 process that data, then a "rna_seq_data" subdirectory in the "data" subdirectory to 
-store the smaller processed files. 
+store the smaller pre-processed files. 
 
-[Example of this kind of more complex directory set-up]
+```{r projecttemplatecomplex, fig.cap = "Example of a more complex project directory structure that could be created, with directories added to store data collected through flow cytometry and single cell RNA sequencing.", fig.fullwidth = FALSE, out.width = "\\textwidth"}
+knitr::include_graphics("figures/project_template_morecomplex.png")
+```
+
+With the previous steps, you will have determined the types of files you normally 
+have for this type of study, as well as structured the project directory to organize
+these files. The next step is to create a template report. You can create this using
+tools for reproducible reports---in R, a key tool for this is RMarkdown. Here, we'll 
+cover using this tool for creating a report briefly, but there are many more details 
+in modules [x]. 
+
+Briefly, RMarkdown allows you to include both code and text meant for humans within 
+a single, plain text document. This document can then be rendered, a process that 
+executes the code and formats the text meant for humans, producing a document in an
+easy-to-read format like Word or PDF. When it comes to project directories, it turns
+out that you can use the directory structure in your favor when you create these 
+reports. 
+
+There are functions in R, for example, that will allow you to print all the
+files in a specified subdirectory. Say that you have several flow cytometry files 
+in a subdirectory of the "data" subdirectory called "flow_data". You could use this
+function in R to create a list of all the files in that subdirectory, and then you 
+can run other functions to do the same operations on all of those files. 
+
+When you create a project directory template, we recommend that you create a
+subdirectory named something like "reports" to use to store any Rmarkdown report
+files for the project. This organization will make it clear where you've stored your
+reports in the project directory. You'll be able to use file and directory pathnames
+to access all the data in the project, so it will be easy to use the study's data
+in the report even if they're in separate subdirectories. There's only one tool 
+you'll need to do this---you'll need to learn how to use relative pathnames 
+within R code to access files in a different part of your project directory. 
+
+A pathname gives the directions to a file that is stored somewhere, for example
+on your computer or a server. There are two ways to state a pathname---you can 
+state it as either an absolute pathname or a relative pathname. An absolute 
+pathname gives the directions to the file from the root directory of the 
+computer where it's stored. In other words, it gives the directions starting 
+from the very earliest point in the file directory for that computer. A relative
+pathname, on the other hand, gives the directions to the file from something 
+called the current working directory---that is, the directory that your current
+program is currently operating from. 
+
+You have likely already used relative pathnames extensively. If you read in a file
+to a statistical program like R or Python, if that file is in the current working 
+directory, you only have to give its file name to point the program to the file. 
+You may not have realized it, but in this case, you were using the simplest type of 
+relative pathname---since the file is already in your working directory, you 
+don't need to give directions that move through different directories to get from
+your current working directory to the file. 
+
+If you have a file in a subdirectory of the current working directory, you can
+use a relative pathname to access it by giving the direction through the
+subdirectories to get to the file. For example, if you want to read in a file
+named "bacterial_counts.xlsx" that is in a subdirectory of the current working
+directory called "data", you could point to that file using the relative
+pathname "data/bacterial_counts.xlsx". Instead, if you want to point to a file
+with the same name that's in a subdirectory called "reported_data" of the "data"
+subdirectory, you'd use the relative pathname
+"data/reported_data/bacterial_counts.xlsx". 
+
+You can use relative pathnames to navigate, too, to files that aren't in a 
+subdirectory for the current file. To do this, you can use [abbreviations?]
+for filenames. One of the most useful is ".", which stands for the parent 
+(i.e., one above) the current working directory. For example, if you have 
+a project directory, and you've put an RMarkdown file in the "reports" 
+subdirectory, but within the code in that file you want to read in data from 
+the "data" subdirectory of the same project, you could do so with a relative 
+pathname like "./data/bacterial_counts.xlsx". This pathname says to move up 
+one directory from the current working directory (in other words, to the 
+directory that the current work directory is a subdirectory of) and then
+look for a different subdirectory of that parent directory called "data", 
+then read a file from that subdirectory. 
+
+This strategy is necessary when you're using RMarkdown for your reports
+and have created a project directory template with different subdirectories
+for your data versus your reports. In an RMarkdown document, the code will 
+run using the directory where the RMarkdown file is stored as the working
+directory [correct even with Projects?]. Therefore, if you organize your 
+project directory in the type of structure we've recommended, then you'll
+need to use this type of relative pathname to access data elsewhere in 
+the project directory when you write code for the report. 
+
+We can take a look at how this works in the project directory template we
+created for the example set of studies. In module [x] we gave details on 
+what is included in the template report for this project directory template. 
+Briefly, it is a file that will generate a couple of tables with metadata
+on the experiment (overall experiment details as well as details on each 
+of the treatments), then a graph showing mouse weights over time, then a 
+graph showing the bacterial load at the end of the study in mice grouped 
+by treatment, and finally a table giving the results of comparing the 
+bacterial load in each treatment group to the bacterial load in the control
+group.
+
+We created an Rmarkdown file that does this analysis and visualization and
+included it in the project template directory. This means that the report file
+will be copied and available each time someone copies the project template
+directory at the start of a new project. We wrote the code in a way that will
+input data that are stored in the data collection files that also come with the
+project directory template. Since we named those files in the directory
+template, we can refer to them with the same name in the code for the report. We
+wrote the code in the report in a way that it will still run if there are more
+or fewer observations in any of the data collection files, so the report
+template has some flexibility in terms of how each study in the set of studies
+might vary. For example, in the example set of studies, some of the experiments
+were run using only a control group of mice, while others were run to test as
+many as [x] different treatment groups. The report template can accommodate
+these differences across studies in the set of studies.
+
+...
+
+In many cases, you may have a more complex design for your project directory. For
+example, if you were collecting flow cytometry data for the project as well, then 
+you would want a subdirectory in the project that is specifically designed to 
+store files from the flow cytometry component of the experiment. This subdirectory
+would likely include several files, rather than just one. Further, you would not
+know ahead of time what the name of these files would be (as you do with the data
+collection template files that are included in the template directory). However, 
+you can still easily write code for a template report file that will work with 
+multiple files of a similar type, even if you don't know what the names will be, 
+as long as you know what the name of their subdirectory will be. There are functions
+in R like `list.files` that can be used to list all the file names for the files 
+in a given directory. You can use this function to create a vector of all the file
+names. For example, you could run: 
+
+```{r eval = FALSE}
+flow_filepaths <- list.files("../data/flow_data", full.names = TRUE)
+```
+
+to get an object (`flow_filepaths`) that lists each of the filepaths for the files
+stored in the "flow_data" subdirectory within the "data" subdirectory of the 
+project. You could then "map" a function or group of functions across these
+files to read them in, process them, and join them into a single dataframe in R. 
+By using this process, you can write template code in the report for the project
+that should work in most cases for the data that you collect for a given type of 
+study. 
+
+The report template is included in the project directory template, so it will be
+copied and available for you to use anytime you start a new project using that 
+template. However, you are not obligated to keep the report identical to the template. 
+Instead, the template report serves as a starting point, and you can add to it or
+adapt it as you work on a study. 
+
+For example, in our example template report, we've included the results of
+applying a statistical test that compares each treatment group to the control
+group. Instead, for a specific study of this type, you may want to control
+treatments against each other. For example, some of the studies in this example
+set of studies include a positive control group, where the mice are treated with
+a drug that is already in common use for the disease. In some cases, the
+researcher may want to control the bacterial load in groups treated with a novel
+drug to groups treated with the positive control. You could easy add to the
+report template in that case, adding statistical tests where you compare
+different treatment groups to each other.
 
 ### Creating an R Project template
 
+In the previous section, we covered a very basic way to make a project directory 
+template: you make an example directory of project files, and then anytime you 
+start a project for that type of study, you copy, rename, and use that example 
+directory as a template. 
+
+There is a second way to make project templates for your research group. This
+method requires a lot more work at the beginning. However, it makes it very easy
+for anyone in your group to use the template once it's been created. This method
+is to create an R Studio Project template. To be clear, with the basic method
+covered in the last chapter, you can create a project directory based on you
+basic template and then convert it to an RStudio Project within RStudio.
+However, with this second method, you will gain the option to create a new
+project based on your template from within RStudio, and many of the details of
+creating the template are encapsulated within the process, so you're more likely
+to be able to enforce a common project directory structure across projects. 
+
+This method does require a good bit of familiarity with R programming, as it
+requires you to create a new R package. In this section, we'll go over the
+process, using the example set of studies for this module as a motivating
+example. ...
+
+...
+
+**Decide on project directory structure**
+
+**Create templates for recording data**
+
+**Create a template for a report for the project**
+
+**Write code to create project structure and copy in templates**
+
+**Customize the Project Wizard for the Project**
+
+If you would like to create one of these RStudio Project templates for studies
+in your research group, there are more details on the process at ...
 
 ### Applied exercise
