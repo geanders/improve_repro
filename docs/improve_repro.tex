@@ -4195,7 +4195,117 @@ this is using a special R project template, just like you'll be creating!)
 
 \ldots{}
 
-{[}How you can build the package and test it{]}
+For most R packages, you create them to use to share new R functions.
+Therefore, the package directory is focused on new R scripts. However,
+the R package structure is very flexible, and it can be effectively used
+to share other things as well. For example, R packages can be created
+to share datasets, with very few or no new functions included. Similarly,
+the R package that we'll make with your template will allow you to share
+a directory structure and some ``starter'' files to go into that structure,
+rather than R code.
+
+Since we're using the R package structure for this alternative use, it may
+at first seem a bit confusing why we need to put certain files in certain
+places or write code that moves files around. Briefly, R packages are
+created and shared essentially as file directories, but these file
+directories must follow a very specific structure, with specific names
+for different subdirectories and files within the structure. We'll need
+to follow these rules as we organize the template files within our R package
+for our Project template. We will explain as we move through this section
+where you should save everything in your R package directory, but this is
+just to clarify that there is a reason that the structure might seem a
+bit convoluted---we're leveraging a structure normally meant for a bit of
+a different use.
+
+{[}Where to put the template files{]}
+
+You can make as many template files as you'd like to include in your Project
+template. When you make the R project with your template, you'll store these all
+in a special directory that you should call ``inst''. In an R package, the ``inst''
+directory can act as a bit of a catch-all, where you can store files that you
+would like to be included when someone installs your package, but that don't
+naturally fit in another part of the package directory.
+
+Within this ``inst'' subdirectory, you can create as many subdirectories as you'd
+like, to help you organize your template files. The only rule is that there are
+a handful of names that you should avoid for these subdirectory names. This is
+because, when the package is installed, all the subdirectories in this ``inst''
+subdirectory will be moved up to the main package directory, and so you should
+avoid directory names that have a specific meaning in an R package. Namely, you
+should avoid naming any subdirectories in the ``inst'' subdirectory any of the
+following: ``data'', ``R'', ``src'', ``man'', ``demo'', ``tests'', ``exec'', ``po'', ``tools'',
+``vignettes'' {[}?{]}, ``build'' {[}?{]}, ``share'' {[}?{]}, ``licenses'' {[}?{]}.
+
+In the template for the example set of studies for this module, for example, we
+created three subdirectories in the ``inst'' subdirectory to use to store
+templates for this type of Project: ``data\_collection\_templates'', where we stored
+an Excel file with the template for collecting data during each experiment
+(i.e., the mice weights and final bacterial loads), ``metadata\_templates'', which
+includes an Excel file with the template for collecting metadata on the
+experiment on a whole and on each of the tested treatments, and
+``report\_templates'', where we stored an RMarkdown file with the template report
+for the project. For any templates that include code, keep in mind that you'll
+need to be careful in setting the pathnames to access any data in the project
+directory. {[}More on this?{]}
+
+Once you've added any templates to the ``inst'' directory, the next step is to
+write code in the template package. For this type of package, which aims to
+set up a new Project structure, you'll only include R code for one purpose---the
+R code will run when someone first opens a new Project of this type, and it
+will operate to set up the initial project structure. R can be used to do
+many different things---while you may have mostly used it before to read in and
+analyze data, it can also be used to do things like make new directories on
+you computer, or to copy files from one place in your computer's file directory
+to another. We'll be using these types of commands in this template R package,
+as it will allow us to move the template files that you created into the
+right place in a user's new project directory when they chose to use your
+template to make a new project.
+
+There are four key R functions that we'll be using to do these tasks. The first
+is the \texttt{dir.create} function. This can be used to create new directories on
+the user's computer. You can include the name that you'd like to use as the
+new subdirectory. We'll use this function to create the subdirectories in the
+new project, and so this function will let us create a structure within the
+user's subdirectory.
+
+The second key R function that we'll use is \texttt{file.copy}. This function allows
+us to copy a file from one place in the user's computer to another spot. When
+the user installs our package, all of the template files will be included with
+that installation. With \texttt{file.copy}, we'll be able to copy these template files
+into the right spot on each user's computer each time they open a new Project
+with this template.
+
+The third key R function also helps with this process of copying the template
+files. In order to copy the files, we need to be able to find where they're
+stored on the user's computer. Since they've been installed with the package,
+the template files will be located on the user's computer based on where that
+user stores their installed R packages. This location can differ by user,
+but fortunately there's a function called \texttt{system.file} that lets us figure out
+the file path for any file that's stored in an R package that the user has
+installed, on that user's computer. This function will therefore allow us to
+get the original filepath for each of the template files, so we can copy them
+into the new Project.
+
+Finally, the fourth key R function is \texttt{file.path}. \ldots{}
+
+{[}How to create directories and move in the template files{]}
+
+{[}How to customize the Project Wizard for the project{]}
+
+As you work on the package, you can build it and test it on your own computer.
+If you are working in RStudio, you can use a ``Build'' Pane that is available
+when you're working on a R Project that is a package. In this pane, there
+is a ``Install and Reload'' button {[}doublecheck{]}---if you click this button,
+it will build the package and install it on your computer in the same
+place that other R packages are installed (for example, packages that you
+install from CRAN).
+
+Once you've built and installed your package, give it a try. You can go
+up to the ``File'' menu in RStudio and select ``New Project''. Select
+``New Directory'', and this will take you to a menu with the different types
+of R Projects you can create. You should now see your Project template
+as one of the options. Click on this, and you can test out if the template's
+working like you hoped it would.
 
 {[}How a different user can download and install a package that isn't on CRAN{]}
 
