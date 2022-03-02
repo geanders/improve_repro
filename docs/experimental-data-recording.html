@@ -243,12 +243,13 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="3.1" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#module12"><i class="fa fa-check"></i><b>3.1</b> Principles and benefits of scripted pre-processing of experimental data</a>
 <ul>
-<li class="chapter" data-level="3.1.1" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#what-is-pre-processing"><i class="fa fa-check"></i><b>3.1.1</b> What is pre-processing?</a></li>
-<li class="chapter" data-level="3.1.2" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#approaches-to-simple-preprocessing-tasks"><i class="fa fa-check"></i><b>3.1.2</b> Approaches to simple preprocessing tasks</a></li>
-<li class="chapter" data-level="3.1.3" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#approaches-to-more-complex-preprocessing-tasks"><i class="fa fa-check"></i><b>3.1.3</b> Approaches to more complex preprocessing tasks</a></li>
-<li class="chapter" data-level="3.1.4" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#scripting-preprocessing-tasks"><i class="fa fa-check"></i><b>3.1.4</b> Scripting preprocessing tasks</a></li>
-<li class="chapter" data-level="3.1.5" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#potential-quotes"><i class="fa fa-check"></i><b>3.1.5</b> Potential quotes</a></li>
-<li class="chapter" data-level="3.1.6" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#discussion-questions-1"><i class="fa fa-check"></i><b>3.1.6</b> Discussion questions</a></li>
+<li class="chapter" data-level="3.1.1" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#example-dataset"><i class="fa fa-check"></i><b>3.1.1</b> Example dataset</a></li>
+<li class="chapter" data-level="3.1.2" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#what-is-pre-processing"><i class="fa fa-check"></i><b>3.1.2</b> What is pre-processing?</a></li>
+<li class="chapter" data-level="3.1.3" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#approaches-to-simple-preprocessing-tasks"><i class="fa fa-check"></i><b>3.1.3</b> Approaches to simple preprocessing tasks</a></li>
+<li class="chapter" data-level="3.1.4" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#approaches-to-more-complex-preprocessing-tasks"><i class="fa fa-check"></i><b>3.1.4</b> Approaches to more complex preprocessing tasks</a></li>
+<li class="chapter" data-level="3.1.5" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#scripting-preprocessing-tasks"><i class="fa fa-check"></i><b>3.1.5</b> Scripting preprocessing tasks</a></li>
+<li class="chapter" data-level="3.1.6" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#potential-quotes"><i class="fa fa-check"></i><b>3.1.6</b> Potential quotes</a></li>
+<li class="chapter" data-level="3.1.7" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#discussion-questions-1"><i class="fa fa-check"></i><b>3.1.7</b> Discussion questions</a></li>
 </ul></li>
 <li class="chapter" data-level="3.2" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#module13"><i class="fa fa-check"></i><b>3.2</b> Introduction to scripted data pre-processing in R</a>
 <ul>
@@ -3952,7 +3953,6 @@ where you should save everything in your R package directory, but this is
 just to clarify that there is a reason that the structure might seem a
 bit convoluted—we’re leveraging a structure normally meant for a bit of
 a different use.</p>
-<p>[Where to put the template files]</p>
 <p>You can make as many template files as you’d like to include in your Project
 template. When you make the R project with your template, you’ll store these all
 in a special directory that you should call “inst.” In an R package, the “inst”
@@ -4013,8 +4013,33 @@ the file path for any file that’s stored in an R package that the user has
 installed, on that user’s computer. This function will therefore allow us to
 get the original filepath for each of the template files, so we can copy them
 into the new Project.</p>
-<p>Finally, the fourth key R function is <code>file.path</code>. …</p>
+<p>Finally, the fourth key R function is <code>file.path</code>. This function can create a
+file path, and it’s helpful because it can allow you to write code that will
+generate the full path to a file or subdirectory on the user’s computer, based
+on the relationship of that file or subdirectory to the working directory of the
+project they’ve created. We’ll use this function, for example, to create the
+file path for the new subdirectories that should go in the Project when the user
+opens it. Even though each user could be storing their project in a different
+part of their computer’s file directory, this function can determine the path we
+should use for each subcomponent in the project.</p>
 <p>[How to create directories and move in the template files]</p>
+<p>Using these functions, we’ll create the subdirectory structure of the project
+and then move any template files into the right place in that structure. This
+will happen in an R function—in many cases, this might be the only R function
+that you’ll include in the package that defines the Project template. You
+can name this R function anything you’d like (later, we’ll show how you can
+connect this function so that it’s automatically run when someone makes their
+new Project with the template). You should save the code for the function in the
+R subdirectory of your package directory.</p>
+<p>In the example for this module, we’ve named the function <code>create_project</code> and
+stored the code for it in a file called “create_project.R” in the R
+subdirectory of our package. This function should take at least two inputs:
+<code>path</code>, which will be the filepath to the project’s directory, and <code>...</code>
+(which we’ll call “dots”), which allows other arguments to pass into the
+function.</p>
+<p>Within the function, we’ve included code that will create all the subdirectories
+for this type of project, as well as code that moves the template files into the
+right place in those subdirectories. First, …</p>
 <p>[How to customize the Project Wizard for the project]</p>
 <p>As you work on the package, you can build it and test it on your own computer.
 If you are working in RStudio, you can use a “Build” Pane that is available

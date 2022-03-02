@@ -4217,8 +4217,6 @@ just to clarify that there is a reason that the structure might seem a
 bit convoluted---we're leveraging a structure normally meant for a bit of
 a different use.
 
-{[}Where to put the template files{]}
-
 You can make as many template files as you'd like to include in your Project
 template. When you make the R project with your template, you'll store these all
 in a special directory that you should call ``inst''. In an R package, the ``inst''
@@ -4286,9 +4284,37 @@ installed, on that user's computer. This function will therefore allow us to
 get the original filepath for each of the template files, so we can copy them
 into the new Project.
 
-Finally, the fourth key R function is \texttt{file.path}. \ldots{}
+Finally, the fourth key R function is \texttt{file.path}. This function can create a
+file path, and it's helpful because it can allow you to write code that will
+generate the full path to a file or subdirectory on the user's computer, based
+on the relationship of that file or subdirectory to the working directory of the
+project they've created. We'll use this function, for example, to create the
+file path for the new subdirectories that should go in the Project when the user
+opens it. Even though each user could be storing their project in a different
+part of their computer's file directory, this function can determine the path we
+should use for each subcomponent in the project.
 
 {[}How to create directories and move in the template files{]}
+
+Using these functions, we'll create the subdirectory structure of the project
+and then move any template files into the right place in that structure. This
+will happen in an R function---in many cases, this might be the only R function
+that you'll include in the package that defines the Project template. You
+can name this R function anything you'd like (later, we'll show how you can
+connect this function so that it's automatically run when someone makes their
+new Project with the template). You should save the code for the function in the
+R subdirectory of your package directory.
+
+In the example for this module, we've named the function \texttt{create\_project} and
+stored the code for it in a file called ``create\_project.R'' in the R
+subdirectory of our package. This function should take at least two inputs:
+\texttt{path}, which will be the filepath to the project's directory, and \texttt{...}
+(which we'll call ``dots''), which allows other arguments to pass into the
+function.
+
+Within the function, we've included code that will create all the subdirectories
+for this type of project, as well as code that moves the template files into the
+right place in those subdirectories. First, \ldots{}
 
 {[}How to customize the Project Wizard for the project{]}
 
@@ -5532,6 +5558,152 @@ transparency and reproducibility.
   Describe an open source code script and explain how it can increase
   reproducibility of data pre-processing
 \end{itemize}
+
+\hypertarget{example-dataset}{%
+\subsection{Example dataset}\label{example-dataset}}
+
+In this module and several of the following modules, we'll use an example
+dataset that is based on real data collected from an immunology experiment.
+These data will help us to describe and motivate the steps of pre-processing
+data using code scripts, as well as explaining the use of tidyverse tools
+and the discussion of complex versus tidy data formats in R.
+
+The data come from an experiment to test a novel vaccine for COVID-19, and
+we'll be focusing on data collected during this experiment that measured
+single-cell transcriptomics---in other words, it characterizes the levels
+of messenger RNA with each of thousands of cells collected from animals
+in different experimental groups. In this section, we'll give you more
+details to help you understand this example dataset, as well as instructions
+on how to download the data on your own computer, if you would like to
+follow along with examples.
+
+The results of this experiment have been published {[}ref{]}, and so you can read
+the full details in the published paper, but we'll provide an overview here.
+This experiment tested a potential vaccine called SolaVAX. There are numerous
+ways to make vaccines; this one uses an attenuated (in other words, weakened)
+version of the full virus, and it is novel in that it attenuates the virus using
+a light-activated \ldots{} (hence the ``Sola'' in ``SolaVAX'').
+
+This experiment tested how well this vaccine worked, not only by itself, but
+also when it was given in conjunction with something called an adjuvant. In the
+context of vaccines, an adjuvant is a substance that is meant to shape the
+body's immune response as it ``learns'' from a vaccine. For example, an adjuvant
+can be something as simple as a substance that triggers a larger immune response
+than the vaccine by itself, to ensure that the immune system responds at a
+sufficient scale to the core components of the vaccine---that is, the components
+of the vaccine that the immune system needs to recognize in the future to mount
+a fast defense against that pathogen. This experiment tested two adjuvants
+in conjunction with the SolaVAX vaccine, both of which the researchers were
+hoping might help in switching which type of T helper immune cells would
+drive the later response to COVID after vaccination. Specifically, they
+hypothesized that the adjuvants would bring about a later response that was
+driven more by a type of T helper cell called Th2 rather than one called
+Th1. {[}Why this would be good.{]}
+
+To run the experiment, the researchers used Golden Hamsters as a model
+animal. {[}Why?{]} They created four experimental groups: one control group,
+one group vaccinated with only SolaVAX, one vaccinated with SolaVAX plus
+an adjuvant called {[}x{]}, and one vaccinated with SolaVAX plus an adjuvant
+called {[}y{]}. There were eight hamsters in each of these groups, and these
+were further divided into two groups of four, so that the vaccine could
+be tested using two routes of administration: {[}the two routes{]}.
+
+The hamsters were vaccinated, and then after a period of time, they were
+challenged with COVID. This allowed the researchers to see how successful
+each vaccination type was, in terms of how well the animals could limit
+the replication of COVID in their bodies, and also to explore how the
+animals' immune systems responded as they tried to limit COVID replication
+after exposure. Therefore, this experiment could help not only in seeing
+which vaccine strategies were successful, but also to explore how and why
+they did or didn't work, at the level of the immune response.
+
+{[}x{]} days after the animals were exposed to COVID, they were sacrificed,
+and the researchers took samples from several areas to use to measure
+levels of COVID as well as the immune response to the challenge. In tissue
+samples from the lungs of the animals, they measured things like the
+{[}viral numbers?{]} to see the extent of COVID replication in that animal,
+and {[}histopathology{]}, to see the extent of damage that the infection had
+done to the animal's lungs. If the vaccine were successful, it would have
+spurred a fast and powerful immune response, which you'd see through
+lower {[}viral numbers{]} and less damage to the animal's lungs.
+They also used part of the lung sample to measure immune cell populations.
+These measures can help to determine things like whether the immune
+response was driven more by the innate immune response (which you'd
+expect in an unvaccinated animal) or the adaptive immune response
+(which you hope to see in a vaccinated animal, as a sign that the vaccine
+helped in allowing for the immediate immune response to be much more
+specific than that achieved by the innate immune system).
+
+Out of the many types of data that were collected for this experiment, we'll
+focus on one type in our examples in this and following modules---data that were
+collected that measured the single-cell transcriptomics of samples collected
+from the lungs of each animal. While every cell in a body has the same genome,
+the cells differ in which of those genes they express at a given time. The
+expression of different genes in the genome can be measured based on the number
+of messenger RNAs that are in the cell from each gene. This is what single cell
+RNA sequencing aims to measure---the number of mRNAs from each of a large number
+of genes, measuring the number in each cell in the sample separately. Because
+different types of cells express different patterns and levels of genes, these
+data can be used to help sort the cells into different types. For example, the
+data can be used to help identify cells that are from the innate immune system
+versus those that are hallmarks of an adaptive immune response. The data can
+also help in categorizing cells within very specific cell categories---for
+example, identifying Th1 versus Th2 cells out of the group of helper T cells,
+which can help to address the hypothesis that these researchers had about how
+the adjuvants might work. Finally, the data can help to identify how certain
+types of cells work differently under different experimental conditions. For
+example, do adaptive immune cells tend to express different genes (or different
+levels of a gene) when the vaccination included an adjuvant versus when only the
+vaccine was given?
+
+These single cell RNA sequencing data were shared by the researchers through
+one of NIH's {[}?{]} databases for biological data. To get a copy of these
+data, go to the study's page on the Gene Expression Omnibus (GEO) database:
+\url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE165190} (you can also
+search for the study on the database by its accession number, GSE165190).
+This page includes data from single cell
+RNA sequencing for twelve samples from this study, three from each of the
+experimental conditions. You can download data for all the samples by clicking
+the link on the page to download the file named ``GSE165190\_RAW.tar''. This is
+a compressed file, so once you download it, you will need to uncompress it,
+which will give you a folder with a number of data files. On a Mac, you can
+decompress the file by double-clicking on the file named ``GSE165190\_RAW.tar''
+in the Finder program. On a Windows computer, {[}how to do it. From R?{]}
+
+Among the data files, there are three files for each sample. One includes
+``barcodes'' in the file name, one includes ``features'' in the file name, and one
+includes ``matrix'' in the file name. For each sample, the ``barcodes'' file gives
+\ldots, the ``features'' file gives \ldots, and the ``matrix'' file gives \ldots{} .
+
+{[}More about working with these files?{]}
+
+Collectively, these data provide a count that is related to the number of
+messanger RNA particles {[}?{]} from each of approximately {[}x{]} genes within each
+cell in the sample. These counts can be used to group the cells into
+groups of similar cell types, identify those cell types, and explore how
+the gene expression within a cell type varies across experimental conditions.
+
+These data can therefore be used to answer interesting scientific questions.
+However, before they can, it is important to do some pre-processing on the raw
+data. This preprocessing serves several purposes. First, there are patterns
+in the data that can be introduced as a result of the data collection process.
+These need to be corrected or otherwise accounted for to move the data into
+a format where it can be meaningfully compared, for example across different
+cells in a sample or across different samples. Second, some of the pre-processing
+will help identify and resolve any issues related to quality control. For
+example, while the process of collecting these data will normally result in
+isolating single cells, in some cases the values for a cell might be for a
+poor-quality cell (for example, a dying cell) or might be a case where two
+cells were captured together {[}true for this platform?{]}. Pre-processing can
+help to identify and exclude these low-quality data points, so that the
+analysis can focus on the higher-quality data collected for the sample.
+Finally, some of the pre-processing will help us to prepare the data to be
+used in analysis algorithms. For example, since the data is high dimensional
+(that is, measurements are included for many genes {[}?{]}), we will often include
+a step of dimension reduction in our analysis, to help pull out key patterns
+in the data. Many of the dimension reduction algorithms will need to data to
+be scaled, so that the mean value of each measurement in a type of measurement
+has an average of zero and a standard deviation {[}? variance?{]} of one.
 
 \hypertarget{what-is-pre-processing}{%
 \subsection{What is pre-processing?}\label{what-is-pre-processing}}

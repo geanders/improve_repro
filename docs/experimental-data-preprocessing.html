@@ -243,12 +243,13 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="3.1" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#module12"><i class="fa fa-check"></i><b>3.1</b> Principles and benefits of scripted pre-processing of experimental data</a>
 <ul>
-<li class="chapter" data-level="3.1.1" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#what-is-pre-processing"><i class="fa fa-check"></i><b>3.1.1</b> What is pre-processing?</a></li>
-<li class="chapter" data-level="3.1.2" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#approaches-to-simple-preprocessing-tasks"><i class="fa fa-check"></i><b>3.1.2</b> Approaches to simple preprocessing tasks</a></li>
-<li class="chapter" data-level="3.1.3" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#approaches-to-more-complex-preprocessing-tasks"><i class="fa fa-check"></i><b>3.1.3</b> Approaches to more complex preprocessing tasks</a></li>
-<li class="chapter" data-level="3.1.4" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#scripting-preprocessing-tasks"><i class="fa fa-check"></i><b>3.1.4</b> Scripting preprocessing tasks</a></li>
-<li class="chapter" data-level="3.1.5" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#potential-quotes"><i class="fa fa-check"></i><b>3.1.5</b> Potential quotes</a></li>
-<li class="chapter" data-level="3.1.6" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#discussion-questions-1"><i class="fa fa-check"></i><b>3.1.6</b> Discussion questions</a></li>
+<li class="chapter" data-level="3.1.1" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#example-dataset"><i class="fa fa-check"></i><b>3.1.1</b> Example dataset</a></li>
+<li class="chapter" data-level="3.1.2" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#what-is-pre-processing"><i class="fa fa-check"></i><b>3.1.2</b> What is pre-processing?</a></li>
+<li class="chapter" data-level="3.1.3" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#approaches-to-simple-preprocessing-tasks"><i class="fa fa-check"></i><b>3.1.3</b> Approaches to simple preprocessing tasks</a></li>
+<li class="chapter" data-level="3.1.4" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#approaches-to-more-complex-preprocessing-tasks"><i class="fa fa-check"></i><b>3.1.4</b> Approaches to more complex preprocessing tasks</a></li>
+<li class="chapter" data-level="3.1.5" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#scripting-preprocessing-tasks"><i class="fa fa-check"></i><b>3.1.5</b> Scripting preprocessing tasks</a></li>
+<li class="chapter" data-level="3.1.6" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#potential-quotes"><i class="fa fa-check"></i><b>3.1.6</b> Potential quotes</a></li>
+<li class="chapter" data-level="3.1.7" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#discussion-questions-1"><i class="fa fa-check"></i><b>3.1.7</b> Discussion questions</a></li>
 </ul></li>
 <li class="chapter" data-level="3.2" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#module13"><i class="fa fa-check"></i><b>3.2</b> Introduction to scripted data pre-processing in R</a>
 <ul>
@@ -380,8 +381,141 @@ transparency and reproducibility.</p>
 <li>Describe an open source code script and explain how it can increase
 reproducibility of data pre-processing</li>
 </ul>
-<div id="what-is-pre-processing" class="section level3" number="3.1.1">
-<h3><span class="header-section-number">3.1.1</span> What is pre-processing?</h3>
+<div id="example-dataset" class="section level3" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Example dataset</h3>
+<p>In this module and several of the following modules, we’ll use an example
+dataset that is based on real data collected from an immunology experiment.
+These data will help us to describe and motivate the steps of pre-processing
+data using code scripts, as well as explaining the use of tidyverse tools
+and the discussion of complex versus tidy data formats in R.</p>
+<p>The data come from an experiment to test a novel vaccine for COVID-19, and
+we’ll be focusing on data collected during this experiment that measured
+single-cell transcriptomics—in other words, it characterizes the levels
+of messenger RNA with each of thousands of cells collected from animals
+in different experimental groups. In this section, we’ll give you more
+details to help you understand this example dataset, as well as instructions
+on how to download the data on your own computer, if you would like to
+follow along with examples.</p>
+<p>The results of this experiment have been published [ref], and so you can read
+the full details in the published paper, but we’ll provide an overview here.
+This experiment tested a potential vaccine called SolaVAX. There are numerous
+ways to make vaccines; this one uses an attenuated (in other words, weakened)
+version of the full virus, and it is novel in that it attenuates the virus using
+a light-activated … (hence the “Sola” in “SolaVAX”).</p>
+<p>This experiment tested how well this vaccine worked, not only by itself, but
+also when it was given in conjunction with something called an adjuvant. In the
+context of vaccines, an adjuvant is a substance that is meant to shape the
+body’s immune response as it “learns” from a vaccine. For example, an adjuvant
+can be something as simple as a substance that triggers a larger immune response
+than the vaccine by itself, to ensure that the immune system responds at a
+sufficient scale to the core components of the vaccine—that is, the components
+of the vaccine that the immune system needs to recognize in the future to mount
+a fast defense against that pathogen. This experiment tested two adjuvants
+in conjunction with the SolaVAX vaccine, both of which the researchers were
+hoping might help in switching which type of T helper immune cells would
+drive the later response to COVID after vaccination. Specifically, they
+hypothesized that the adjuvants would bring about a later response that was
+driven more by a type of T helper cell called Th2 rather than one called
+Th1. [Why this would be good.]</p>
+<p>To run the experiment, the researchers used Golden Hamsters as a model
+animal. [Why?] They created four experimental groups: one control group,
+one group vaccinated with only SolaVAX, one vaccinated with SolaVAX plus
+an adjuvant called [x], and one vaccinated with SolaVAX plus an adjuvant
+called [y]. There were eight hamsters in each of these groups, and these
+were further divided into two groups of four, so that the vaccine could
+be tested using two routes of administration: [the two routes].</p>
+<p>The hamsters were vaccinated, and then after a period of time, they were
+challenged with COVID. This allowed the researchers to see how successful
+each vaccination type was, in terms of how well the animals could limit
+the replication of COVID in their bodies, and also to explore how the
+animals’ immune systems responded as they tried to limit COVID replication
+after exposure. Therefore, this experiment could help not only in seeing
+which vaccine strategies were successful, but also to explore how and why
+they did or didn’t work, at the level of the immune response.</p>
+<p>[x] days after the animals were exposed to COVID, they were sacrificed,
+and the researchers took samples from several areas to use to measure
+levels of COVID as well as the immune response to the challenge. In tissue
+samples from the lungs of the animals, they measured things like the
+[viral numbers?] to see the extent of COVID replication in that animal,
+and [histopathology], to see the extent of damage that the infection had
+done to the animal’s lungs. If the vaccine were successful, it would have
+spurred a fast and powerful immune response, which you’d see through
+lower [viral numbers] and less damage to the animal’s lungs.
+They also used part of the lung sample to measure immune cell populations.
+These measures can help to determine things like whether the immune
+response was driven more by the innate immune response (which you’d
+expect in an unvaccinated animal) or the adaptive immune response
+(which you hope to see in a vaccinated animal, as a sign that the vaccine
+helped in allowing for the immediate immune response to be much more
+specific than that achieved by the innate immune system).</p>
+<p>Out of the many types of data that were collected for this experiment, we’ll
+focus on one type in our examples in this and following modules—data that were
+collected that measured the single-cell transcriptomics of samples collected
+from the lungs of each animal. While every cell in a body has the same genome,
+the cells differ in which of those genes they express at a given time. The
+expression of different genes in the genome can be measured based on the number
+of messenger RNAs that are in the cell from each gene. This is what single cell
+RNA sequencing aims to measure—the number of mRNAs from each of a large number
+of genes, measuring the number in each cell in the sample separately. Because
+different types of cells express different patterns and levels of genes, these
+data can be used to help sort the cells into different types. For example, the
+data can be used to help identify cells that are from the innate immune system
+versus those that are hallmarks of an adaptive immune response. The data can
+also help in categorizing cells within very specific cell categories—for
+example, identifying Th1 versus Th2 cells out of the group of helper T cells,
+which can help to address the hypothesis that these researchers had about how
+the adjuvants might work. Finally, the data can help to identify how certain
+types of cells work differently under different experimental conditions. For
+example, do adaptive immune cells tend to express different genes (or different
+levels of a gene) when the vaccination included an adjuvant versus when only the
+vaccine was given?</p>
+<p>These single cell RNA sequencing data were shared by the researchers through
+one of NIH’s [?] databases for biological data. To get a copy of these
+data, go to the study’s page on the Gene Expression Omnibus (GEO) database:
+<a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE165190" class="uri">https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE165190</a> (you can also
+search for the study on the database by its accession number, GSE165190).
+This page includes data from single cell
+RNA sequencing for twelve samples from this study, three from each of the
+experimental conditions. You can download data for all the samples by clicking
+the link on the page to download the file named “GSE165190_RAW.tar.” This is
+a compressed file, so once you download it, you will need to uncompress it,
+which will give you a folder with a number of data files. On a Mac, you can
+decompress the file by double-clicking on the file named “GSE165190_RAW.tar”
+in the Finder program. On a Windows computer, [how to do it. From R?]</p>
+<p>Among the data files, there are three files for each sample. One includes
+“barcodes” in the file name, one includes “features” in the file name, and one
+includes “matrix” in the file name. For each sample, the “barcodes” file gives
+…, the “features” file gives …, and the “matrix” file gives … .</p>
+<p>[More about working with these files?]</p>
+<p>Collectively, these data provide a count that is related to the number of
+messanger RNA particles [?] from each of approximately [x] genes within each
+cell in the sample. These counts can be used to group the cells into
+groups of similar cell types, identify those cell types, and explore how
+the gene expression within a cell type varies across experimental conditions.</p>
+<p>These data can therefore be used to answer interesting scientific questions.
+However, before they can, it is important to do some pre-processing on the raw
+data. This preprocessing serves several purposes. First, there are patterns
+in the data that can be introduced as a result of the data collection process.
+These need to be corrected or otherwise accounted for to move the data into
+a format where it can be meaningfully compared, for example across different
+cells in a sample or across different samples. Second, some of the pre-processing
+will help identify and resolve any issues related to quality control. For
+example, while the process of collecting these data will normally result in
+isolating single cells, in some cases the values for a cell might be for a
+poor-quality cell (for example, a dying cell) or might be a case where two
+cells were captured together [true for this platform?]. Pre-processing can
+help to identify and exclude these low-quality data points, so that the
+analysis can focus on the higher-quality data collected for the sample.
+Finally, some of the pre-processing will help us to prepare the data to be
+used in analysis algorithms. For example, since the data is high dimensional
+(that is, measurements are included for many genes [?]), we will often include
+a step of dimension reduction in our analysis, to help pull out key patterns
+in the data. Many of the dimension reduction algorithms will need to data to
+be scaled, so that the mean value of each measurement in a type of measurement
+has an average of zero and a standard deviation [? variance?] of one.</p>
+</div>
+<div id="what-is-pre-processing" class="section level3" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> What is pre-processing?</h3>
 <p>Some data collected through laboratory experiments is very straightforward and
 requires little or no pre-processing before it’s used in analysis. For example,
 [example]. Other data may require some minimal pre-processing. For example, if
@@ -512,8 +646,8 @@ extending to write a pre-processing protocol, you can further support the
 ease of adapting and re-using the pre-processing steps you take with one
 experiment when you run later experiments that are similar.</p>
 </div>
-<div id="approaches-to-simple-preprocessing-tasks" class="section level3" number="3.1.2">
-<h3><span class="header-section-number">3.1.2</span> Approaches to simple preprocessing tasks</h3>
+<div id="approaches-to-simple-preprocessing-tasks" class="section level3" number="3.1.3">
+<h3><span class="header-section-number">3.1.3</span> Approaches to simple preprocessing tasks</h3>
 <p>There are several approaches for tackling this type of data preprocessing, to
 get from the data that you initial observe (or that is measured by a piece of
 laboratory equipment) to meaningful biological measurements that can be analyzed
@@ -563,8 +697,8 @@ experiments and projects, this can add up. This makes it particularly useful to
 write scripts for preprocessing tasks that you find yourself doing again and
 again in the lab.</p>
 </div>
-<div id="approaches-to-more-complex-preprocessing-tasks" class="section level3" number="3.1.3">
-<h3><span class="header-section-number">3.1.3</span> Approaches to more complex preprocessing tasks</h3>
+<div id="approaches-to-more-complex-preprocessing-tasks" class="section level3" number="3.1.4">
+<h3><span class="header-section-number">3.1.4</span> Approaches to more complex preprocessing tasks</h3>
 <p>Other preprocessing tasks can be much more complex, particularly those that need
 to conduct a number of steps to extract biologically meaningful measurements
 from the measurements made by a complex piece of laboratory equipment, as well
@@ -617,8 +751,8 @@ type of data you’re collecting, and you may want to explore the documentation 
 that particular step of preprocessing to determine what choice is best for your
 data, rather than relying on defaults.</p>
 </div>
-<div id="scripting-preprocessing-tasks" class="section level3" number="3.1.4">
-<h3><span class="header-section-number">3.1.4</span> Scripting preprocessing tasks</h3>
+<div id="scripting-preprocessing-tasks" class="section level3" number="3.1.5">
+<h3><span class="header-section-number">3.1.5</span> Scripting preprocessing tasks</h3>
 <p>Code scripts can be developed for any open-source scripting languages, including
 Python, R, and Julia. These can be embedded in or called from literate programming
 documents, like RMarkdown and Julia, which are described in other modules. The
@@ -724,8 +858,8 @@ using walnut oil instead of olive oil, or adding mustard) to tweak the
 recipe in slight ways each time you use it, and to get customized outputs.]</p>
 <p>[History of the mouse—enable GUIs, before everything was from the terminal.]</p>
 </div>
-<div id="potential-quotes" class="section level3" number="3.1.5">
-<h3><span class="header-section-number">3.1.5</span> Potential quotes</h3>
+<div id="potential-quotes" class="section level3" number="3.1.6">
+<h3><span class="header-section-number">3.1.6</span> Potential quotes</h3>
 <blockquote>
 <p>For bioinformatics, “all too often the software is developed without
 thought toward future interoperability with other software products. As a
@@ -1552,8 +1686,8 @@ on the equipment when the samples were run.
 <p>“Normalizing features’ signal intensities is required, but at present not (yet) supported in xcms (some methods might be added in near future). It is advised to use the SummarizedExperiment returned by the quantify method for any further data processing, as this type of object stores feature definitions, sample annotations as well as feature abundances in the same object. For the identification of e.g. features with significant different intensities/abundances it is suggested to use functionality provided in other R packages, such as Bioconductor’s excellent limma package.” <span class="citation">(Smith 2013)</span></p>
 </blockquote>
 </div>
-<div id="discussion-questions-1" class="section level3" number="3.1.6">
-<h3><span class="header-section-number">3.1.6</span> Discussion questions</h3>
+<div id="discussion-questions-1" class="section level3" number="3.1.7">
+<h3><span class="header-section-number">3.1.7</span> Discussion questions</h3>
 
 </div>
 </div>
