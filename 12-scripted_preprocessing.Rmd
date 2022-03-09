@@ -30,20 +30,22 @@ reproducibility of data pre-processing
 
 ### Example dataset
 
-In this module and several of the following modules, we'll use an example 
-dataset that is based on real data collected from an immunology experiment. 
+In this module and several of the following modules, we'll use two example 
+datasets that are based on real data collected from an immunology experiment. 
 These data will help us to describe and motivate the steps of pre-processing
 data using code scripts, as well as explaining the use of tidyverse tools
 and the discussion of complex versus tidy data formats in R. 
 
-The data come from an experiment to test a novel vaccine for COVID-19, and 
-we'll be focusing on data collected during this experiment that measured
-single-cell transcriptomics---in other words, it characterizes the levels
-of messenger RNA with each of thousands of cells collected from animals 
-in different experimental groups. In this section, we'll give you more 
-details to help you understand this example dataset, as well as instructions
-on how to download the data on your own computer, if you would like to 
-follow along with examples.
+The first dataset was introduced in module [x]. ...
+
+The second dataset have not yet been introduced. They come from an experiment to
+test a novel vaccine for COVID-19, and we'll be focusing on data collected
+during this experiment that measured single-cell transcriptomics---in other
+words, it characterizes the levels of messenger RNA with each of thousands of
+cells collected from animals in different experimental groups. In this section,
+we'll give you more details to help you understand this example dataset, as well
+as instructions on how to download the data on your own computer, if you would
+like to follow along with examples.
 
 The results of this experiment have been published [ref], and so you can read
 the full details in the published paper, but we'll provide an overview here.
@@ -177,26 +179,102 @@ has an average of zero and a standard deviation [? variance?] of one.
 
 Some data collected through laboratory experiments is very straightforward and
 requires little or no pre-processing before it's used in analysis. For example,
-[example]. Other data may require some minimal pre-processing. For example, if
-you plate bacteria from a sample at a variety of dilutions, you might count each
+if you are regularly weighing the animals in an experiment, then the data may
+require no pre-processing (in other words, you'll directly use the weight
+recorded from the scale) or very minimal pre-processing (for example, if you are
+keeping all animals for a treatment group in the same cage, you may weigh the
+cage as a whole, in which case you could divide that weight by the number of
+animals in the cage as a pre-processing step to estimate the average weight per
+animal). 
+
+Other data collected in the laboratory may require some pre-processing that
+takes a few more steps, but is still fairly straightforward. For example, if you
+plate bacteria from a sample at a variety of dilutions, you might count each
 plate and determine a measure of Colony Forming Units from the set of plates
 with different dilutions by deciding which dilution provides the clearest count
 and then back-calculating based on its dilution to get the total number of
-colony-forming units in the original sample.
+colony-forming units in the original sample. Pre-processing these data typically
+will also involve transforming data, to get them in a format that is easier to
+visualize or more appropriate for statistical analysis. For example, when
+bacterial loads are counted as colony forming units (CFUs), it is common to
+transform these values using a log-10 [?] transform before plotting the data or
+using them to test a hypothesis. [Why do a log-10 transform with CFUs?]
 
 This step of pre-processing data can become much more complex with data that was
-collected using complex equipment, like a flow cytometer or a mass spectrometer.
-In these cases, there are often steps required to extract from the machine's
-readings a biologically-relevant measurement. For example, the data output from
-a mass spectrometer must be processed to move from measurements of mass and
-retention time to estimates of concentrations of different molecules in the
-sample. If you want to compare across multiple samples, then the preprocessing
-will also involve steps to align the different samples (in terms of ...), as
-well as to standardize the measurements for each sample, to make the
-measurements from the different samples comparable. For data collected from a
-flow cytometer, preprocessing may include steps to disentangle the florescence
-from different markers to ensure that the read for one marker isn't inflated by
-spillover florescence from a different marker.
+collected using complex equipment, like a flow cytometer, mass spectrometer, or
+sequencer. In these cases, there are often steps required to extract from the
+machine's readings a biologically-relevant measurement. For example, the data
+output from a mass spectrometer must be processed to move from measurements of
+mass and retention time to estimates of concentrations of different molecules in
+the sample. If you want to compare across multiple samples, then the
+preprocessing will also involve steps to align the different samples (in terms
+of ...), as well as to standardize the measurements for each sample, to make the
+measurements from the different samples comparable. 
+
+For data collected from a flow cytometer, preprocessing may include steps to
+disentangle the florescence from different markers to ensure that the read for
+one marker isn't inflated by spillover florescence from a different marker. ...
+
+For data from a sequencing machine [? sequencer?], the pre-processing will
+include a series of steps. We'll use an example of data from single-cell RNA
+sequencing. First, the sequencing process results in small fragments of
+complementary DNA [? cDNA], complementary to the original RNA in each cell in
+the sample, for which the sequence of nucleotide bases along each small fragment
+have been determined [?]. These raw read data can be used to answer more
+interesting scientific questions---for example, how do gene expression levels
+vary across cells in the samples, or what mixture of cell types comprise the
+sample---but first the raw data require multiple steps of pre-processing. For
+example, the small fragments of cNDA sequences must be aligned to a reference
+genome or transcriptome, so that their counts can be used to estimate the 
+number of RNA molecules transcribed from different genes, and the counts for 
+each fragment must also be linked with the cell it originally came from, so 
+that these counts can be determined cell-by-cell. 
+
+These early steps of pre-processing create a count matrix for each sample, 
+with a row for each feature of the data (for example, a gene), a column for 
+each cell in the sample, and matrix cell values that estimate the number of 
+messenger RNA molecules from each gene in each cell. However, more pre-processing
+is required before these count matrices can be used to answer scientific 
+questions. 
+
+First, it is necessary to perform quality control on the count matrices, to 
+identify and remove problematic data points. For example, one method for 
+single cell sequencing involves isolating each cell within a droplet. While 
+most of the droplets that are processed will indeed have one and only one cell, 
+a few droplets will end up having two cells or no cells, and these must be 
+identified and removed during a quality control step of pre-processing. For 
+all methods of single cell sequencing, there will also be some poor-quality 
+cells. For example, if a cell's membrane has broken [?] during the process of
+measurement, then much of its messenger RNA may have leaked out [?] of the 
+cell. These cells can be identified based on a combination of characteristics: 
+they typically will have a combination of low total counts of RNA molecules, 
+low numbers of total genes expressed, and a high percentage of the RNA molecules
+that are captured will be from mitochondrial RNA [because?]. Using these 
+characteristics, many of these cells can be identified and removed from the 
+count matrix in a quality control step of pre-processing.
+
+Second, the count matrix will require normalization before the data in it can be
+used to test scientific hypotheses. To be able to count the small amount of mRNA
+within single cells, the single-cell RNA-sequencing approach relies on
+amplification (that is, once cDNA have been created from each RNA molecule, the
+cDNA are replicated many times through ... [?]). ...
+
+There are other steps of pre-processing that can be considered for single cell 
+RNA-seq data, but that might not be applied in every case. For example, a 
+technique called scaling could be used to help constrain the influence of 
+highly-expressed genes when conducted further analysis steps, like grouping 
+the cells into clusters based on cell type (with cell type in this case
+being determined based on similar patterns of gene expression). [More on 
+scaling] 
+
+There are also cases where pre-processing steps could be used to 
+remove patterns from technical noise or even from biological patterns that 
+are unrelated to the scientific question of interest. In terms of technical 
+noise, for example, there are cases where pre-processing steps could be used 
+to help remove variation that's introduced by running the experimental samples
+in different batches. In terms of biological patterns, one pattern that may 
+be desirable to remove through pre-processing is gene expression related to 
+a cell's phase in the cell cycle. [More on this.]
 
 -------------------------------------------------------------------------------
 
@@ -280,6 +358,18 @@ Excel or R.
 
 [Include a screenshot of this type of software in action.]
 
+In the simplest case, the point-and-click interface that is used for this
+approach to pre-processing could be Excel or another version of spreadsheet
+software. An Excel spreadsheet might be used with data recorded "by hand" in the
+laboratory, with the researcher using embedded equations (or calculating and
+entering new values by hand) for steps like calculating values based on the raw
+data (for example, determining the time since the start of an experiment based
+on the time stamp of each data collection timepoint). A spreadsheet may also be
+used in steps of quality control. For example, if a recorded data point is known
+to be problematic (for example, ...), then the data point may be highlighted in
+some way in the spreadsheet (e.g., with color) or removed entirely by deleting
+or clearing the cell in the spreadsheet.
+
 The second approach is to conduct the pre-processing directly within general
 data analysis software like R or Python. These programs are both open-source,
 and include extensions that were created and shared by users around the world.
@@ -319,7 +409,6 @@ pre-processing steps will repeat over different experiments that you do. By
 extending to write a pre-processing protocol, you can further support the 
 ease of adapting and re-using the pre-processing steps you take with one 
 experiment when you run later experiments that are similar.
-
 
 ### Approaches to simple preprocessing tasks
 
