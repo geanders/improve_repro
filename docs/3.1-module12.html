@@ -158,21 +158,142 @@ transparency and reproducibility.</p>
 <li>Describe an open source code script and explain how it can increase
 reproducibility of data pre-processing</li>
 </ul>
-<div id="example-dataset" class="section level3" number="3.1.1">
-<h3><span class="header-section-number">3.1.1</span> Example dataset</h3>
-<p>In this module and several of the following modules, we’ll use an example
-dataset that is based on real data collected from an immunology experiment.
+<div id="example-datasets" class="section level3" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Example datasets</h3>
+<p><strong>Simpler example dataset: Measuring bacterial growth rates</strong></p>
+<p><strong>More complex example dataset: Characterizing lung cell populations</strong></p>
+</div>
+<div id="why-do-data-need-preprocessing" class="section level3" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> Why do data need preprocessing?</h3>
+<p><strong>Use of scientific principles to make measurements</strong></p>
+<p>For a long time, scientists have leveraged existing scientific principles and
+knowledge to build equipment that can make measurements to build new scientific
+knowledge.</p>
+<p>When preprocessing biomedical data, many of the steps are to leverage the
+scientific principles that underlie that measurement technique, so you can
+move from the measurements made by the equipment to a measurement that can help
+answer a biological question.</p>
+<p>Simple examples: average cage weights, microscope scale, stethoscope, determining
+date since start of the experiment, determining period of exponential growth</p>
+<p>A very simple example of this is a stethoscope. This is a very simple example
+because, in this case, the “data preprocessing” is done in the mind of the
+person using the stethoscope. A stethoscope is a simple piece of equipment that
+… . It’s used to … . When using a stethoscope to ask …, the user must know
+how to use the sounds of … to infer … . This is therefore a very simple
+example of inputting data (in this case, sounds) from equipment (in this case,
+the stethoscope) and processing it (in this case, within the mind of the user)
+to answer a biological question (in this case, …). If the preprocessing step
+is not done, the input is useless—more simpler, if the stethoscope is used by
+someone who can’t interpret the sounds to infer …, then it’s not help as a
+tool to determine … .</p>
+<p>More complex examples: Flow cytometry is based on physics—using lasers to
+excite fluorescent probes that are manufactured to stick to certain surface
+proteins. To interpret the data, must link the light output at certain
+frequencies (?) to which probe you made, adjust for light overlapping from
+several types of probes at certain frequencies, determine how the intensity of
+light is linked to the number of fluorescent probes, use knowledge of the size,
+shape, and granularity of certain types of cells to interpret data on forward
+and side scatter of light, etc.</p>
+<p><strong>Data can have technical noise</strong></p>
+<p>Simple example: microscope measurements made at different scales (resolutions?)</p>
+<p>More complex example: Reading depth of sequencing-based data</p>
+<p><strong>Data can have quality control issues</strong></p>
+<p>Examples of QC issues: missing data, outliers, errors in data entry, a whole
+sample that has problems</p>
+<p>More complex example: Cells that are poor quality in single cell RNA-seq—membrane
+has broken? A lot of the RNA molecules have been lost and aren’t represented in
+the measurements?</p>
+<p><strong>Data can be high-dimensional</strong></p>
+<p>Many types of biomedical data now are “high-dimensional”—they include
+measurements of a very large number of characteristics for each observation. For
+example, bulk transcriptomics data measure the expression of a large number of
+genes within each sample, metabolomics data measure the levels of a large number
+of metabolite features within each sample, proteomics measure the levels of a
+large number of peptides (?) within each sample, and so on.</p>
+<p>With these high-dimensional data, often many of the measured characteristics
+will be strongly correlated. For example, in metabolomics data many of the
+metabolite features may be strongly correlated with each other, either because
+they originally were pieces of the same metabolite (the process of measuring the
+features, for example through mass spectrometry, breaks the chemicals up into
+smaller components [?]) or because they are part of a common metabolic pathway
+[?]. It can be hard to explore and understand a set of data that measures
+thousands of characteristics of each sample, but patterns and correlations in
+the data can be used to help you pull out and explore a few key dimensions of
+variability in the data. Dimension reduction techniques—principal components
+analysis (PCA) is one very popular one—is therefore often a key element of
+data preprocessing when working with high-dimensional biological data.</p>
+<p>If you envision a dataset as a two-dimensional table, with the observations as
+the rows and the characteristics measured for each observation as the columns,
+then high-dimensional data are large in terms of the number of columns in the
+table. A growing number of biomedical data now also are large in the number of
+observations they capture—in the number of rows in the table of data, in other
+words. A longer-standing example of this is flow cytometry data, where the
+observations are individual cells. Current experiments often capture in the
+range of [x] cells for each sample in flow cytometry, measuring for each
+characteristics that can be used to determine cell size, granularity, and
+surface proteins, all with the aim of characterizing the cells by cell type. A
+more recent example is with single cell RNA-sequencing. Again, with this
+technique, observations are taken at the level of the cell, with on the order of
+[x] cells processed per sample.</p>
+<p>As with high-dimensional data, again the sheer size of the data collected in
+this case can make it difficult to explore and generate knowledge from the data.
+For data with a large number of observations, clustering techniques can be
+helpful to explore large-scale patterns across the many observations. These are
+particularly helpful in data that both have a large number of observations and
+measure many characteristics of each observation, like single-cell
+transcriptomics.</p>
+</div>
+<div id="common-steps-in-data-preprocessing-for-biomedical-research" class="section level3" number="3.1.3">
+<h3><span class="header-section-number">3.1.3</span> Common steps in data preprocessing for biomedical research</h3>
+<p><strong>Data input</strong></p>
+<p><strong>Quality assessment / quality control</strong></p>
+<p><strong>Data transformations</strong></p>
+<p>Scaling, normalization, log transformations, calculating time since start
+of experiment, etc.</p>
+<p>One critical process in this category is the process of <em>normalization</em>. …</p>
+<p><strong>Extracting information based on scientific principals</strong></p>
+<p>Identifying data that are appropriate to answer the scientific question (e.g.,
+period of exponential growth)</p>
+<p>Taking data on light intensities at different frequencies and using it to
+estimate the presence or absence of certain surface proteins (and their amount)
+on each cell for flow cytometry.</p>
+<p><strong>Dimension reduction and clustering</strong></p>
+</div>
+<div id="examples-of-biomedical-data-preprocessing" class="section level3" number="3.1.4">
+<h3><span class="header-section-number">3.1.4</span> Examples of biomedical data preprocessing</h3>
+<p><strong>Simpler example: Measuring bacterial growth rates</strong></p>
+<p><strong>More complex example: Characterizing lung cell populations</strong></p>
+</div>
+<div id="tools-for-biomedical-data-preprocessing" class="section level3" number="3.1.5">
+<h3><span class="header-section-number">3.1.5</span> Tools for biomedical data preprocessing</h3>
+<p><strong>GUI versus code script</strong></p>
+<p>Examples of coding languages for data preprocessing: Python, R, Julia, bash scripts</p>
+<p>Examples of GUIs for data preprocessing: FlowJo, …</p>
+<p>Advantages / disadvantages of GUIs</p>
+<p>Advantages / disadvantages of code scripts</p>
+<p><strong>Free and open-source versus proprietary</strong></p>
+<p>Examples of free and open-source tools: Python, R, Julia, bash scripts</p>
+<p>Examples of proprietary software: FlowJo (?), …</p>
+<p>Advantages / disadvantages of proprietary</p>
+<p>Advantages / disadvantages of free and open-source</p>
+<hr />
+</div>
+<div id="example-dataset" class="section level3" number="3.1.6">
+<h3><span class="header-section-number">3.1.6</span> Example dataset</h3>
+<p>In this module and several of the following modules, we’ll use two example
+datasets that are based on real data collected from an immunology experiment.
 These data will help us to describe and motivate the steps of pre-processing
 data using code scripts, as well as explaining the use of tidyverse tools
 and the discussion of complex versus tidy data formats in R.</p>
-<p>The data come from an experiment to test a novel vaccine for COVID-19, and
-we’ll be focusing on data collected during this experiment that measured
-single-cell transcriptomics—in other words, it characterizes the levels
-of messenger RNA with each of thousands of cells collected from animals
-in different experimental groups. In this section, we’ll give you more
-details to help you understand this example dataset, as well as instructions
-on how to download the data on your own computer, if you would like to
-follow along with examples.</p>
+<p>The first dataset was introduced in module [x]. …</p>
+<p>The second dataset have not yet been introduced. They come from an experiment to
+test a novel vaccine for COVID-19, and we’ll be focusing on data collected
+during this experiment that measured single-cell transcriptomics—in other
+words, it characterizes the levels of messenger RNA with each of thousands of
+cells collected from animals in different experimental groups. In this section,
+we’ll give you more details to help you understand this example dataset, as well
+as instructions on how to download the data on your own computer, if you would
+like to follow along with examples.</p>
 <p>The results of this experiment have been published [ref], and so you can read
 the full details in the published paper, but we’ll provide an overview here.
 This experiment tested a potential vaccine called SolaVAX. There are numerous
@@ -290,30 +411,1809 @@ a step of dimension reduction in our analysis, to help pull out key patterns
 in the data. Many of the dimension reduction algorithms will need to data to
 be scaled, so that the mean value of each measurement in a type of measurement
 has an average of zero and a standard deviation [? variance?] of one.</p>
+<blockquote>
+<p>“As a proxy for studying the proteome, many researchers have turned to
+protein-encoding, mRNA molecules (collectively termed the ‘transcriptome’),
+whose expression correlates well with cellular traits and changes in
+cellular state. Transcriptomics was initially conducted on ensembles of
+millions of cells, firstly with hybridization-based microarrays, and later
+with next-generation sequencing (NGS) techniques referred to as RNA-seq.
+RNA-seq on pooled cells has yielded a vast amount of information that
+continues to fuel discovery and innovation in biomedicine. …
+Nevertheless, the averaging that occurs in pooling large numbers of
+cells does not allow detailed assessment of the fundamental biological
+unit—the cell—or the individual nuclei that package the genome.
+Since the first scRNA-seq study was published in 2009, there has been
+increasing interest in conducting such studies. Perhaps one of the most
+compelling reasons for doing so is that scRNA-seq can describe RNA molecules
+in individual cells with high resolution and on a genomic scale.”
+<span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“scRNA-seq permits comparison of the transcriptomes of individual cells.
+Therefore, a major use of scRNA-seq has been to assess transcriptional
+similarities and differences within a population of cells, with early reports
+revealing unappreciated levels of heterogeneity… Thus, heterogeneity analysis
+remains a core reason for embarking on scRNA-seq studies. Similarly, assessments
+of transcriptional differences between individual cells have been used to
+identiy rare cell populations that would otherwise go undetected in analyses of
+pooled cells, for example malignant tumour cells within a seemingly homogeneous
+group. … In addition to resolving cellular heterogeneity, scRNA-seq can also
+provide important informaiton about fundamental characteristics of gene
+expression… Importantly, studying gene co-expression patterns at the
+single-cell level might allow identification of co-regulated gene modules and
+even inference of gene-regulatory networks that underlie functional
+heterogeneity and cell-type specification.” <span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Single-cell RNA sequencing (scRNA-seq) is a recent and powerful technology
+developed as an alternative to previously existing bulk RNA sequencing methods.
+Bulk sequencing methods analyzed the average genetic content for individual
+genes across a large population of input cells within a sample (e.g., a tissue),
+potentially obscuring transcriptional features and other differences among
+individual cells. Conversely, scRNA-seq is able to discern such heterogeneous properties
+within a sample and has great potential to reveal novel subpopulations and
+cell types.” <span class="citation">(Lytal, Ran, and An 2020)</span></p>
+</blockquote>
+<blockquote>
+<p>“Single-cell RNA sequencing is widely used for high-resolution gene expression
+studies investigating the behavior of individual cells.” <span class="citation">(McCarthy et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“While scRNA-seq data can provide substantial biological insights, the complexity
+and noise of the data is also much greater than that of conventional bulk RNA-seq.
+Thus, rigorous analysis of scRNA-seq data requires careful quality control to remove
+low-quality cells and genes, as well as normalization to adjust for biases and
+batch effects in the expression data. Failure to carry out these procedures
+correctly is likely to compromise the validity of all downstream analyses.”
+<span class="citation">(McCarthy et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Conventional ‘bulk’ methods of RNA sequencing (RNA-seq) process hundreds of
+thousands of cells at a time and average out the differences. But no two cells
+are exactly alike, and scRNA-seq can reveal the subtle changes that make each
+one unique. It can even reveal entirely new cell types.” <span class="citation">(J. M. Perkel 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“It’s much more difficult to manipulate individual cells than large populations,
+and because each cell yields only a tiny amount of RNA, there’s no room for
+error. Another problem is analyzing the enormous amounts of data that result—not
+least because the tools can be unintuitive.” <span class="citation">(J. M. Perkel 2017)</span></p>
+</blockquote>
 </div>
-<div id="what-is-pre-processing" class="section level3" number="3.1.2">
-<h3><span class="header-section-number">3.1.2</span> What is pre-processing?</h3>
+<div id="what-is-pre-processing" class="section level3" number="3.1.7">
+<h3><span class="header-section-number">3.1.7</span> What is pre-processing?</h3>
+<blockquote>
+<p>“Assessing the structure of the data must also take account of the prior
+knowledge of the system in regard to such matters as the design of th experiment,
+the known sources of systemic variation (e.g., any blocking factors or known
+groupings of the experimental units) and so on.” <span class="citation">(Chatfield 1995)</span></p>
+</blockquote>
+<blockquote>
+<p>“The three main types of problem data are errors, outliers, and missing
+observations. … An error is an observation which is incorrect, perhaps
+because it has been copied or typed incorrectly at some stage. An outlier is a ‘wild’
+or extreme observation which does not appear to be consistent with the rest of
+the data. Outliers arise for a variety of reasons and can create severe problems.
+… Errors and outliers are often confused. An error may or may not be an outlier,
+while an outlier may or may not be an error. … An outlier may be caused by an error,
+but it is important to consider the alternative possibility that the observation
+is a genuine extreme result from the ‘tail’ of the distribution. This usually happens
+when the distribution is skewed and the outlier comes from the long ‘tail.’”
+<span class="citation">(Chatfield 1995)</span></p>
+</blockquote>
+<blockquote>
+<p>“There are several types of error…, including the following: 1. A recording error
+arises, for example, when an instrument is misread. 2. A typing error arises when an
+observation is typed incorrectly. 3. A transcription error arises when an observation
+is copied incorrectly, and so it is advisable to keep the amount of copying to a
+minimum. …” <span class="citation">(Chatfield 1995)</span></p>
+</blockquote>
+<blockquote>
+<p>“Extreme observations which, while large, could still be correct, are more difficult
+to handle [than errors]. The tests for deciding whether an outlier is significant
+provide little information as to whether an observation is actually an error. Rather
+external subject-matter considerations become paramount. It is essential to get advice
+from people in the field as to which suspect values are obviously silly or impossible,
+and which, while physically possible, are extremely unlikely and should be viewed with
+caution. … It is sometimes sensible to remove an outlier, or treat it as a missing
+observation, but this outright rejection of an observation is rather drastic, particularly
+if there is evidence of a long tail in the distribution. Sometimes the outliers are the
+most interesting observations. … An alternative approach is to use robust methods of
+examination, which automatically downweight extreme observations… My recommended
+procedure for dealing with outliers, when there is no evidence that they are errors,
+is to repeat the analysis with and without suspect values… If the conclusions are
+similar, then the suspect values do not matter. However, if the conclusions differ
+substantially, then the values do matter and additional effort should be expended
+to check them. If the matter still cannot be resolved, then it may be necessary to present
+two lots of results or a least point out that it may be unwise to make judgements
+from a set of data where the results depend crucially on just one or two
+observations (called influential observations).” <span class="citation">(Chatfield 1995)</span></p>
+</blockquote>
+<blockquote>
+<p>“Missing observations arise for a variety of reasons. … It is important to find out
+why an observation is missing. This is best done by asking ‘people in the field.’ In
+particular, there is a world of difference between observations that are lost through
+random events, and situations where missing observations due to damage or loss are
+more likely to arise under certain conditions.” <span class="citation">(Chatfield 1995)</span></p>
+</blockquote>
+<blockquote>
+<p>“There are various reasons for making a transformation, which may also apply to
+deriving a new variable: 1. to get a more meaningful variable (the best reason!);
+2. to stabilize variance; 3. to achieve normality (or at least symmetry); 4. to
+create additive effects (i.e. remove interaction effects); 5. to enable a linear
+model to be fitted.” <span class="citation">(Chatfield 1995)</span></p>
+</blockquote>
+<blockquote>
+<p>[For transformations] “Logarithms are often meaningful, particularly with economic
+data when proportional, rather than absolute, changes are of interest. Another
+application of the logarithmic transformation is … to transform a severely
+skewed distribution to normality.” <span class="citation">(Chatfield 1995)</span></p>
+</blockquote>
 <p>Some data collected through laboratory experiments is very straightforward and
 requires little or no pre-processing before it’s used in analysis. For example,
-[example]. Other data may require some minimal pre-processing. For example, if
-you plate bacteria from a sample at a variety of dilutions, you might count each
+if you are regularly weighing the animals in an experiment, then the data may
+require no pre-processing (in other words, you’ll directly use the weight
+recorded from the scale) or very minimal pre-processing (for example, if you are
+keeping all animals for a treatment group in the same cage, you may weigh the
+cage as a whole, in which case you could divide that weight by the number of
+animals in the cage as a pre-processing step to estimate the average weight per
+animal).</p>
+<p>Other data collected in the laboratory may require some pre-processing that
+takes a few more steps, but is still fairly straightforward. For example, if you
+plate bacteria from a sample at a variety of dilutions, you might count each
 plate and determine a measure of Colony Forming Units from the set of plates
 with different dilutions by deciding which dilution provides the clearest count
 and then back-calculating based on its dilution to get the total number of
-colony-forming units in the original sample.</p>
+colony-forming units in the original sample. Pre-processing these data typically
+will also involve transforming data, to get them in a format that is easier to
+visualize or more appropriate for statistical analysis. For example, when
+bacterial loads are counted as colony forming units (CFUs), it is common to
+transform these values using a log-10 [?] transform before plotting the data or
+using them to test a hypothesis. [Why do a log-10 transform with CFUs?]</p>
 <p>This step of pre-processing data can become much more complex with data that was
-collected using complex equipment, like a flow cytometer or a mass spectrometer.
-In these cases, there are often steps required to extract from the machine’s
-readings a biologically-relevant measurement. For example, the data output from
-a mass spectrometer must be processed to move from measurements of mass and
-retention time to estimates of concentrations of different molecules in the
-sample. If you want to compare across multiple samples, then the preprocessing
-will also involve steps to align the different samples (in terms of …), as
-well as to standardize the measurements for each sample, to make the
-measurements from the different samples comparable. For data collected from a
-flow cytometer, preprocessing may include steps to disentangle the florescence
-from different markers to ensure that the read for one marker isn’t inflated by
-spillover florescence from a different marker.</p>
+collected using complex equipment, like a flow cytometer, mass spectrometer, or
+sequencer. In these cases, there are often steps required to extract from the
+machine’s readings a biologically-relevant measurement. For example, the data
+output from a mass spectrometer must be processed to move from measurements of
+mass and retention time to estimates of concentrations of different molecules in
+the sample. If you want to compare across multiple samples, then the
+preprocessing will also involve steps to align the different samples (in terms
+of …), as well as to standardize the measurements for each sample, to make the
+measurements from the different samples comparable.</p>
+<blockquote>
+<p>“Scientists can now study all kinds of cell components and processes—from all
+the proteins in a cell (a discipline known as proteomics) to the amount of messenger
+RNA (the templates from which proteins are made) made from every gene (‘transcriptomics’)
+to the intermediate and final products of cell metabolism (‘metabolomics’).”
+<span class="citation">(Barry and Cheung 2009)</span></p>
+</blockquote>
+<blockquote>
+<p>“To reap the full benefits of the omics revolution, we need information technology
+tools capable of making sense of the vast data sets generated by omics experiments.
+In fact, the development of such tools has become a discipline unto itself, called
+bioinformatics. And only with those tools can researchers hope to clear another
+obstacle to drug development: that posed by so-called emergent properties—behaviors
+of biological systems that cannot be predicted from the basic biochemical properties
+of their components.” <span class="citation">(Barry and Cheung 2009)</span></p>
+</blockquote>
+<p>For data collected from a flow cytometer, preprocessing may include steps to
+disentangle the florescence from different markers to ensure that the read for
+one marker isn’t inflated by spillover florescence from a different marker. …</p>
+<p>For data from a sequencing machine [? sequencer?], the pre-processing will
+include a series of steps. We’ll use an example of data from single-cell RNA
+sequencing. First, the sequencing process results in small fragments of
+complementary DNA [? cDNA], complementary to the original RNA in each cell in
+the sample, for which the sequence of nucleotide bases along each small fragment
+have been determined [?]. These raw read data can be used to answer more
+interesting scientific questions—for example, how do gene expression levels
+vary across cells in the samples, or what mixture of cell types comprise the
+sample—but first the raw data require multiple steps of pre-processing. For
+example, the small fragments of cNDA sequences must be aligned to a reference
+genome or transcriptome, so that their counts can be used to estimate the
+number of RNA molecules transcribed from different genes, and the counts for
+each fragment must also be linked with the cell it originally came from, so
+that these counts can be determined cell-by-cell.</p>
+<blockquote>
+<p>“Although each [scRNA-seq] experiment is unique …, most analysis pipelines follow
+the same steps to clean up and filter the sequencing data, work out which transcripts
+are expressed and correct for differences in amplification efficiency. Researchers
+then run one or more secondary analyses to detect subpopulations and other
+functions.” <span class="citation">(J. M. Perkel 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“In many cases… the tools used in bulk RNA-seq can be applied to scRNA-seq. But
+fundamental differences in the data mean that this is not always possible. For one
+thing, single-cell data are noisier… With so little RNA to work with, small
+changes in amplification and capture efficiencies can produce large differences from
+cell to cell and day to day and have nothing to do with biology. Researchers must
+therefore be vigilant for ‘batch effects,’ in which seemingly identical cells
+prepared on different days differ for purely technical reasons, and for
+‘dropouts’—genes that are expressed in the cell but not picked up in the sequence
+data. Another challenge is the scale… A typical bulk RNA-seq experiment involves
+a handful of samples, but scRNA-seq studies can involve thousands. Tools that can
+handle a dozen samples often slow to a crawl when confronted with ten or a hundred
+times as many.” <span class="citation">(J. M. Perkel 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Even the seemingly simple question of what constitutes a good cell preparation is
+complicated in the world of scRNA-seq. Lun’s workflow assumes that most of the
+cells have approximately equivalent RNA abundances. But ‘that assumption isn’t
+necessarily true,’ he says. For instance, he says, naive T cells, which have never
+been activated by an antigen and are relatively quiescent, tend to have less
+messenger RNA than other immune cells and could end up being removed during analysis
+because a program thinks there is insufficient RNA for processing.” <span class="citation">(J. M. Perkel 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Perhaps most significantly, researchers performing scRNA-seq tend to ask different
+questions from those analysing bulk RNA. Bulk analyses typically investigate how
+gene expression differs between two or more treatment conditions. But researchers
+working with single cells are often aiming to identify new cell types or states or
+reconstruct developmental cellular pathways. ‘Because the aims are different, that
+necessarily requires a differnt set of tools to analyse the data,’ says Lun.”
+<span class="citation">(J. M. Perkel 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Most scRNA-seq tools exist as Unix programs or packages in the programming
+language R. But relatively few biologists are comfortable working in those
+environments… Even if they are, they may lack the time to download and configure
+everything to make such tools work. Some ready-to-use pipelines have been
+developed. And there are end-to-end graphical tools too, including the
+commercial SeqGeq package from FlowJo, as well as a pair of open-source
+web tools: Granatum … and ASAP (the Automated Single-cell Analysis Pipeline)…
+ASAP and Granatum use a web browser to provide relatively simple, interactive
+workflows that allow researchers to explore their data graphically. Users upload
+their data and the software walks them through the steps one by one. For ASAP,
+that means taking data through preprocessing, visualization, clustering, and
+differential gene-expression analysis; Granatum allows pseudo-time analyses
+and the integration of protein-interaction data as well.” <span class="citation">(J. M. Perkel 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Appropriate methods are ‘very data-set dependent’… The methods and tuning
+parameters may need to be adjusted to account for variable such as sequencing
+length. But John Marioni at Cancer Research UK in Cambridge says it’s important not
+to put complete faith in the pipeline. ‘Just because the satellite navigation
+tells you to drive into the river, you don’t drive into the river,’ he says.”
+<span class="citation">(J. M. Perkel 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“For beginners, caution is warrented. Bioinformatics tools can almost always yield
+an answer; the question is, does that answer mean anything? Dudoit’s advice is do
+some exploratory analysis, and verify that the assumptions underlying your chosen
+algorithms make sense.” <span class="citation">(J. M. Perkel 2017)</span></p>
+</blockquote>
+<ul>
+<li>cDNA libraries</li>
+<li>Mapping sequence fragments to a reference (BowTies, TopHats) / alignment of reads
+(GSNAP) / pseudoalignment (Salmon)</li>
+<li>Quantification / counting reads for each gene (htseq-count)</li>
+</ul>
+<blockquote>
+<p>“Next, poly[T]-primed mRNA is converted to complementary DNA (cDNA) by
+a reverse transcriptase. Depending on the scRNA-seq protocol, the reverse-transcription
+primers will also have other nucelotide sequences added to them, such as
+adaptor sequences for detection on NGS platforms, unique molecular identifiers
+(UMIs) to mark unequivocally a single mRNA molecule, as well as sequences to
+preserve information on cellular origin.” <span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“The minute amounts of cDNA are then amplified either by PCR or, in some instances,
+in vitro transcription followed by another round of reverse transcriptions—some
+protocols opt for nucleotide barcode-tagging at this stage to preserve information on
+cellular origin.” <span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Then, amplified and tagged cDNA from every cell is pooled and sequenced by NGS,
+using library preparation techniques, sequencing platforms and genomic-alignment
+tools similar to those used for bulk samples.” <span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“More recently, droplet-based platforms … have become commercially available…
+Droplet-based instruments can encapsulate thousands of single cells in individual
+partitions, each containing all the necessary reagents for cell lysis, reverse
+transcription and molecular tagging, thus eliminating the need for single-cell
+isolation through flow-cytometric sorting or micro-dissection.” <span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“An important initial step in scRNA-seq data processing is to quantify the
+expression level of genomic features such as transcripts or genes from the
+raw sequencing data.” <span class="citation">(McCarthy et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Read counts can be obtained from conventional quantification methods such
+as HTSeq and featureCounts … another option is to use computationally efficient
+pseudoalignment methods such as kallisto and Salmon. This is especially appealing
+for large scRNA-seq datasets containing hundreds to tens of thousands of cells.
+To this end, scater also provides wrapper functions for kallisto and Salmon so
+that fast quantification of transcript-level expression can be managed completely
+within an R programming environment.” <span class="citation">(McCarthy et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“A common subsequent step for these methods is to collapse transcript-level
+expression to gene-level expression. Exploiting the biomaRt R/Bioconductor
+package, scater provides a convenient function for using Ensembl annotations
+to obtain gene-level expression values and gene or transcript annotations.”
+<span class="citation">(McCarthy et al. 2017)</span></p>
+</blockquote>
+<p>These early steps of pre-processing create a count matrix for each sample,
+with a row for each feature of the data (for example, a gene), a column for
+each cell in the sample, and matrix cell values that estimate the number of
+messenger RNA molecules from each gene in each cell. However, more pre-processing
+is required before these count matrices can be used to answer scientific
+questions.</p>
+<p>First, it is necessary to perform quality control on the count matrices, to
+identify and remove problematic data points. For example, one method for
+single cell sequencing involves isolating each cell within a droplet. While
+most of the droplets that are processed will indeed have one and only one cell,
+a few droplets will end up having two cells or no cells, and these must be
+identified and removed during a quality control step of pre-processing. For
+all methods of single cell sequencing, there will also be some poor-quality
+cells. For example, if a cell’s membrane has broken [?] during the process of
+measurement, then much of its messenger RNA may have leaked out [?] of the
+cell. These cells can be identified based on a combination of characteristics:
+they typically will have a combination of low total counts of RNA molecules,
+low numbers of total genes expressed, and a high percentage of the RNA molecules
+that are captured will be from mitochondrial RNA [because?]. Using these
+characteristics, many of these cells can be identified and removed from the
+count matrix in a quality control step of pre-processing. Other, more sophisticated
+approaches are also available, based on machine learning approaches to
+identify these low quality cells <span class="citation">(Ilicic et al. 2016)</span>.</p>
+<blockquote>
+<p>“Another important challenge is that existing available scRNA-seq protocols
+often result in the captured cells (whether chambers in microfluidic systems,
+microwell plates, or droplets) being stressed, broken, or killed. Moreover,
+some capture sites can be empty and some may contain multiple cells. We refer
+to all such cells as ‘low quality.’ These cells can lead to misinterpretation
+of the data and therefore need to be excluded.” <span class="citation">(Ilicic et al. 2016)</span></p>
+</blockquote>
+<blockquote>
+<p>“We first tested whether each type of low quality cell (broken, empty, multiple)
+has higher average gene expression in specific functional categories (Gene
+Ontology terms) compared to high quality cells. Second, we calculated whether
+gene expressio in these functional categories is noisier for low versus high
+quality cells… Our results suggest that there are indeed several top-level
+biological processes and components that are significantly different. Specifically,
+genes related to Cytoplasm …, Metabolism …, Mitochondrion …, Membrane …,
+and a few other categories … are strongly downregulated … in broken cells.
+… Furthermore, broken cells have transcriptome-wide
+increased noise levels compared to high quality cells. Interestingly, wells
+containing multiple cells (multiples) show similar expression and noise patterns
+to broken cells … This suggest that multiple cells contain a mixture of broken
+and high quality cells.” <span class="citation">(Ilicic et al. 2016)</span></p>
+</blockquote>
+<blockquote>
+<p>“Genes related to mtDNA were upregulated in low quality cells… This suggested
+that these cells are broken and thus of low quality.” <span class="citation">(Ilicic et al. 2016)</span></p>
+</blockquote>
+<blockquote>
+<p>“We have shown that there are biological and technical features within the
+sequencing data that allow automatic identification of the majority of low
+quality cells.” <span class="citation">(Ilicic et al. 2016)</span></p>
+</blockquote>
+<blockquote>
+<p>“At least a subset of the features considered are cell type specific. …
+Somewhat surprisingly, the levels of Membrane, Ribosomes, Metabolism, Apoptosis,
+and Housekeeping genes are highly cell type specific. In contrast, Mitochondrial
+(localized or encoded) and Cytoplasmic genes are more generic features. …
+Interestingly, only moderately and strongly expressed genes seem to be similar
+between the datasets [of different cell types]. Geners that are very strong or
+lowly expressed are highly cell type specific.” <span class="citation">(Ilicic et al. 2016)</span></p>
+</blockquote>
+<blockquote>
+<p>“There is an extensive literature on the relationship between mtDNA, mitochondrially
+localized proteins, and cell death … However, upregulation of RNA levels of mtDNA
+in broken cells suggests losses in cytoplasmic content. In a situation where cell
+membrane is broken, cytoplasmic RNA will be lost, but RNAs enclosed in the
+mitochondria will be retained, thus explaining our observation.” <span class="citation">(Ilicic et al. 2016)</span></p>
+</blockquote>
+<blockquote>
+<p>“Overall, our analysis suggests that empty wells can be remarkably clearly distinct
+from the remainder, while broken cells and multiples are distinct in most but not all
+of the categories.” <span class="citation">(Ilicic et al. 2016)</span></p>
+</blockquote>
+<blockquote>
+<p>“We designed three features based on the assumption that broken cells contain a
+lower and multiple cells a higher number of transcripts compared to a typical
+high quality single cell. For the first feature we calculated the number of
+highly expressed and highly variable genes. For the second feature we calculated the
+variance across genes. Lastly, we hypothesized that the number of genes expressed
+at a particular level would differ between cells. Thus we binned normalized
+read counts into intervals (very low to very high) and counted the number of genes
+in each interval. … Overall, our results show that technical features [like the
+number of detected genes and the percent of mapped reads] can help distinguish
+low and high quality cells.” <span class="citation">(Ilicic et al. 2016)</span></p>
+</blockquote>
+<blockquote>
+<p>“Before further analyses, scRNA-seq data typically require a number of bio-informatic
+QC checks, where poor-quality data from single cells (arising as a result of many
+possible reasons, including poor cell viability at the time of lysis, poor mRNA
+recovery and low efficiency of cDNA production) can be justifiably excluded from
+subsequent analysis. Currently, there is no consensus on exact filtering
+strategies, but most widely used criteria include relative library size, number
+of detected genes and fraction of reads mapped to mitochondria-encoded genes or
+synthetic spike-in RNAs. … Other considerations are whether single cells have
+actually been isolated or whether indeed two or more cells have been mistakenly
+assessed in a particular sample.” <span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Barcoding: Tagging single cells or sequencing libraries with unigue
+oligonucleotide sequences (that is, ‘barcodes’), allowing sample multiplexing.
+Sequencing reads corresponding to each sample are subsequently deconvoluted
+using barcode sequence information.” <span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Dropout: An event in which a transcript is not detected in the sequencing
+data owing to a failure to capture or amplify it.” <span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Sequencing depth: A measure of the sequencing capacity spent on a single sample,
+reported for example as the number of raw reads per cell.” <span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Spike-in: A molecule or set of molecules introduced to the sample in order to
+calibrate measurements and account for technical variation” <span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Transcriptional bursting: A phenomenon, also known as ‘transcriptional pulsing,’
+of relatively short transcriptionally active periods being followed by longer silent
+periods, resulting in temporal fluctuation of transcript levels.” <span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Unique molecular identifier: A variation of barcoding, in which the RNA molecules
+to be amplified are tagged with random n-mer oligonucleotides. The number of distinct
+tags is designed to significantly exceed the number of copies of each transcript
+species to be amplified, resulting in uniquely tagged molecules, and allowing control
+for amplification biases.” <span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“A high percentage of counts mapping to spike-ins typically indicates that a small
+amount of RNA was captured for the cell, suggesting protocol failure or death of the
+cell in processing that renders it unsuitable for downstream analyses.” <span class="citation">(McCarthy et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“For each gene, QC metrics such as the average expression level and the proportion of
+cells in which the gene is expressed are computed. This can be used to identify
+low-abundance genes or genes with high dropout rates that should be filtered out
+prior to downstream analyses.” <span class="citation">(McCarthy et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Typical scRNA-seq datasets will show a broadly sigmoidal relationship between average
+expression level and frequency of expression across cells. This is consistent with
+expected behaviour where genes with greater average expression are more readily
+captured during library preparation and are detected at greater frequency.” <span class="citation">(McCarthy et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“It is common to see ERCC spike-ins (if used), mitochondrial and ribosomal genes among
+the highly expressed genes, while datasets consisting of healthy cells will also show high
+levels of constitutively expressed genes like ACTB.” <span class="citation">(McCarthy et al. 2017)</span></p>
+</blockquote>
+<p>Second, the count matrix will require normalization before the data in it can be
+used to test scientific hypotheses. To be able to count the small amount of mRNA
+within single cells, the single-cell RNA-sequencing approach relies on
+amplification (that is, once cDNA have been created from each RNA molecule, the
+cDNA are replicated many times through … [?]). …</p>
+<ul>
+<li>size factor (approach earlier for bulk RNA-seq)</li>
+<li>technical size factor with spike-ins <span class="citation">(Brennecke et al. 2013)</span>, plus a
+biological size factor [?]</li>
+</ul>
+<blockquote>
+<p>“Progress in gene expression analysis using minute amounts of starting
+material has made single-cell transcriptomics accessible.” <span class="citation">(Brennecke et al. 2013)</span></p>
+</blockquote>
+<blockquote>
+<p>“The low amount of RNA present in a single cell represents the main challenge in
+single-cell RNA-seq experiments. … We demonstrated the relationship between
+technical noise and the amount of starting material with a dilution series,
+using technical replicates of decreasing amounts of total RNA taken from the
+same pool of total RNA. … For 5,000 pg of input material, the noise pattern
+was comparable to that of technical replicates from bulk RNA-seq experiments, in
+which the spread can be accounted for by the Poisson distribution. However, the
+number of genes affected by high levels of technical noise increased notably
+at lower amounts of starting material (for example, a transcript could have 100–1,000
+read counts in one technical replicate but 0 counts in another). … Nevertheless,
+genes with a high read showed very good agreement between replicates even for the
+10-pg data point—meaning that low-read count genes show strong noise and high-read
+count genes show weak noise; what changes across the differing amounts of starting
+material is the read-count range in which noise strength transitions from
+weak to strong.” <span class="citation">(Brennecke et al. 2013)</span></p>
+</blockquote>
+<blockquote>
+<p>“The crux of the issue is how to examine tens of thousands of genes possibly being
+expressed in one cell, and provide a meaningful comparison to another cell expressing
+the same large number of genes, but in a very different matter.” <span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“A major issue common to all protocols is how to account for technical variation
+in the scRNA-seq process from cell to cell. Some protocols ‘spike-in’ a
+commercially available, well-characterized mix of polyadenylated mRNA species …
+The data from spike-ins can be used for assessing the level of technical
+variability and for identifying genes with a hgih degree of biological variability.
+In addition, spike-ins are valuable when computationally correcting for batch
+effects between samples. However, the use of spike-ins is itself not without
+problems… An increasingly popular method involves the use of UMIs, which
+effectively tags every mRNA species recovered from one cell with a unique
+barcode. Theoretically, this allows estimation of absolute molecule counts,
+although the UMIs can be subject to saturation at high expression levels.
+Nevertheless, the use of UMIs can significantly reduce amplification bias and
+therefore improve precision.” <span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“It is as this point that the ‘zero or dropout problem’ of scRNA-seq should be
+raised. The efficiency with which poly-adenylated mRNA are captured, converted
+into cDNA and amplified is currently unclear, and, depending on the study,
+can range between 10 and 40%. This means that, even if a gene is being
+expressed, perhaps at a low level, there is a certain probability that it
+will not be detected by current scRNA-seq methods. A partial solution to this
+issue is to increase read depth. However, beyond a certain point, this
+strategy leads to diminishing returns as the fraction of PCR duplicates increases
+with deeper sequencing. Current data suggest that single-cell libraries from all common
+protocols are very close to saturation when sequenced to a depth of 1,000,000 reads,
+and a large majority of genes are detected already with 500,000 reads, although the
+exact relatinoships are protocol specific.” <span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“While scRNA-seq workflows are conceptually closely related to population-level
+transcriptomics protocols, data from scRNA-seq experiments have several
+features that require specific bioinformatics approaches. First, even with the
+most sensitive platforms, the data are relatively sparse owing to a high frequency
+of dropout events (lack of detection of specific transcripts). Moreover, owing to
+the digital nature of gene expression at the single-cell level, and the related
+phenomenon of transcriptional bursting (in which pulses of transcriptional
+activity are followed by inactive refractory periods), transcript levels are subject
+to temporal fluctuation, further contributing to the high frequency of zero observations
+in scRNA-seq data. Therefore, the numbers of expressed genes detected from single cells
+are typically lower compared with population-level ensemble measurements. Because of
+this imperfect coverage, the commonly used unit of normalized transcript levels used
+for bulk RNA-seq, expressed as ‘reads per kilobase per million’ (RPKM), is biased on a
+single-cell level, and instead the related unit ’transcripts per million (TPM) should
+be used for scRNA-seq. Second, scRNA-seq data, in general, are much more variable
+than bulk data. scRNA-seq data typically include a higher level of technical noise
+(such as dropout events), but also reveal much of the biological variability that is
+missed by RNA-seq on pooled cells. Biological variability that is present on many levels,
+and which of these are considered as nuisance variation, depends on the underlying
+biological question being asked. For example, at the gene level, transcriptional
+bursting causes variation in transcript quantities, whereas as the global level, the
+physical size of individual cells can vary substantially, affecting absolute
+transcript numbers and reflected in the number of detected genes per cell. Cell-size
+variation can also be closely related to proliferative status and cell-cycle phase. …
+Finally, distributions of transcript quantities are often more complex in single-cell
+datasets than in bulk RNA-seq. In general, single-cell expression measurements follow
+a negative binomial distribution, and, in heterogeneous populations, multimodal
+distributoins are also observed. As a consequence, statistical tests that assume
+normally distributed data (used for example for detecting differentially expressed
+genes) are likely to perform suboptimally on scRNA-seq data.” <span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Methods to quantify mRNA abundance introduce systematic sources of variation
+that can obscure signals of interest. Consequently, an essential first step in
+most mRNA-expression analyses is normalization, whereby systemic variations
+are adjusted to make expression counts comparable across genes and / or samples.
+Within-sample normalization methods adjust for gene-specific features, such
+as GC content and gene length, to facility comparisons of a gene’s expression
+within an individual sample; whereas between-sample normalization methods adjust
+for sample-specific features, such as sequencing depth, to allow for comparisons of
+a gene’s expression across samples.” <span class="citation">(Bacher et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“A number of methods are available for between-sample normalization in bulk RNA-seq
+experiments. Most of these methods calculate global scale factors (one factor is
+applied to each sample, and this same factor is applied to all genes in the sample)
+to adjust for sequencing depth. These methods demonstrate excellent performance in
+bulk RNA-seq, but they are compromised in the single-cell setting because of an
+abundance of zero-expression values and increased technical variability.” <span class="citation">(Bacher et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“scRNA-seq data show systematic variation in the relationship between transcript-specific
+expression and sequencing depth (which we refer to as the count-depth relationship)
+that is not accommodated by a single scale factor common to all genes in a cell.
+Global scale factors adjust for a count-depth relatinoship that is assumed to be
+common across genes. When this relationship is not common across genes, normalization
+via global scale factors leads to overcorrection for weakly and moderately expressed
+genes and, in some cases, undernormalization of highly expressed genes. To address this,
+SCnorm uses quantile regression to estimate the dependence of transcript expression
+on sequencing depth for every gene. Genes with similar dependence are then grouped, and
+a second quantile regression is used to estimate scale factors within each group. Within-group
+adjustment for sequencing depth is then performed using the estimated scale factors to
+provide normalized estimates of expression.” <span class="citation">(Bacher et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“To further evaluate SCnorm, we conducted an experiment that, similar to the simulations,
+sequenced cells at very different depths. … Prior to normalization, counts in the
+second group will appear four times higher on average given the increased sequencing
+depth. However, if normalization for depth is effective, fold-change estimates should
+be near one… since the cells between the two groups are identical.” <span class="citation">(Bacher et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Single-cell RNA-seq technology offers an unprecedented opportunity to address
+important biological questions, but accurate data normalization is required to
+ensure that results are meaningful.” <span class="citation">(Bacher et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“However, individual cells have extremely tiny amounts of input material available,
+typically on the scale of picograms. The small scale of scRNA-seq input material means
+that some level of inaccuracy is inevitable even with the most precise instruments,
+resulting in an additional layer of stochasticity known as technical noise.
+During the sequencing process, reverse transcription is necessary to convert RNA
+to cDNA for use in amplification, but this introduces positional bias
+regardless of where the polymerization begins. The following amplification process
+counteracts low input material, though this in turn leads to additional bias as some
+genes may experience preferential amplification, leading to uneven representation in
+the data. The amplification process also runs the risk of producing dropout events,
+in which either genes know to be present in a sample are completely absent from the
+observed gene counts or genes are observed with lower values than their true expression.
+These events frequently lead to excessive zeros, and in many cases, more than half of
+all counts. Traditional bulk approaches do not naturally accommodate these differences,
+and therefore lose their effectiveness when applied to scRNA-seq.” <span class="citation">(Lytal, Ran, and An 2020)</span></p>
+</blockquote>
+<blockquote>
+<p>“Normalization is critical to the development of analysis techniques on scRNA-seq and
+to counteract technical noise or bias. Before observed data can be used to identify
+differentially expressed genes or potential subpopulations, it must undergo these
+corrections, for what is observed is seldom exactly what is present within the data set.”
+<span class="citation">(Lytal, Ran, and An 2020)</span></p>
+</blockquote>
+<blockquote>
+<p>“Some scRNA-seq studies involve the use of spike-in molecules for the purpose of
+normalization. The spike-in RNA set is artificially added to each cell’s lysate in
+the same volume under the assumption that spike-ins and endogenous transcripts will
+experience similar variation among the cells during the capture process. Since spike-in
+gene concentrations are knows, normalization methods model existing technical variation
+by utilizing the difference between these known values and the values observed after
+processing.” <span class="citation">(Lytal, Ran, and An 2020)</span>
+There are other steps of pre-processing that can be considered for single cell
+RNA-seq data, but that might not be applied in every case. For example, a
+technique called scaling could be used to help constrain the influence of
+highly-expressed genes when conducted further analysis steps, like grouping
+the cells into clusters based on cell type (with cell type in this case
+being determined based on similar patterns of gene expression). [More on
+scaling]</p>
+</blockquote>
+<blockquote>
+<p>“Scaling normalization is typically required in RNA-seq data analysis to
+remove biases caused by differences in sequencing depth, capture efficiency
+or composition effects between samples.” <span class="citation">(McCarthy et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“In the analysis and interpretation of single-cell RNA-seq (scRNA-seq)
+data, effective pre-processing and normalization represent key challenges.
+While unsupervised analysis of single-cell data has transformative
+potential to uncover heterogeneous cell types and states, cell-to-cell
+variation in technical factors can also confound these results. In particular,
+the observed sequencing depth (number of genes or molecules detected per
+cell) can vary significantly between cells, with variation in molecular
+counts potentially spanning an order of magnitude, even within the same
+cell type. Importantly, while the now widespread use of unique molecular
+identifiers (UMI) in scRNA-seq removes technical variation associated
+with PCR, differences in cell lysis, reverse transcription efficiency,
+and stochastic molecular sampling during sequencing also contribution
+significantly, necessitating technical correction. These same challenges
+apply to bulk RNA-seq workflows, but are exacerbated due to the extreme
+comparative sparsity of scRNA-seq data.” <span class="citation">(Hafemeister and Satija 2019)</span></p>
+</blockquote>
+<blockquote>
+<p>“The primary goal of single-cell normalization is to remove the influence
+of technical effects in the underlying molecular counts, while preserving
+true biological variation.” <span class="citation">(Hafemeister and Satija 2019)</span></p>
+</blockquote>
+<blockquote>
+<p>“In general, the normalized expression level of a gene should not be
+correlated with the total sequencing depth of a cell. Downstream analytical
+tasks (dimension reduction, differential expression) should also not
+be influenced by variation in sequencing depth.” <span class="citation">(Hafemeister and Satija 2019)</span></p>
+</blockquote>
+<blockquote>
+<p>“The variance of a normalized gene (across cells) should primarily reflect
+biological heterogeneity, independent of gene abundance or sequencing depth. For
+example, genes with high variance after normalization should be differentially
+expressed across cell types, while housekeeping genes should exhibit low
+variance. Additionally, the variance of a gene should be similar when
+considering either deeply sequenced cells, or shallowly sequenced cells.”
+<span class="citation">(Hafemeister and Satija 2019)</span></p>
+</blockquote>
+<blockquote>
+<p>“Sequencing detph variation across single cells represents a substantial
+technical confounder in the analysis and interpretation of scRNA-seq data.”
+<span class="citation">(Hafemeister and Satija 2019)</span></p>
+</blockquote>
+<p>There are also cases where pre-processing steps could be used to
+remove patterns from technical noise or even from biological patterns that
+are unrelated to the scientific question of interest. In terms of technical
+noise, for example, there are cases where pre-processing steps could be used
+to help remove variation that’s introduced by running the experimental samples
+in different batches. In terms of biological patterns, one pattern that may
+be desirable to remove through pre-processing is gene expression related to
+a cell’s phase in the cell cycle. [More on this.]</p>
+<blockquote>
+<p>“[A] promising application [of scRNA-seq] is the study of transcriptional
+heterogeneity within supposedly homogeneous cell types, a phenomenon of
+physiological importance, which can now be studied in a transcriptome-wide
+manner in single cells. In such analyses, which should be distinguished from
+the more common two-group comparison setting, it is necessary to account for
+strong technical noise. Technical noise is unavoidable owing to the low amount
+of starting material, and it must be quantified in order to avoid mistaking it
+for genuine differences in biological expression levels.” <span class="citation">(Brennecke et al. 2013)</span></p>
+</blockquote>
+<blockquote>
+<p>“After scaling normalization, further correction is typically required to
+ameliorate or remove batch effects. For example, in the case study dataset,
+cells from two patients were each processed on two C1 machines. Although C1
+machine is not one of the most important explanatory variables on a per-gene
+level, this factor is correlated with the first principal component of the
+log-expression data. This effect cannot be removed by scaling normalization
+methods, which target cell-specific biases and are not sufficient for removing
+large-scale batch effects that vary on a gene-by-gene basis. … For the
+dataset here, we fit a linear model to the scran normalized log-expression
+values with the C1 machine as an explanatory factor. (We also use the log-total
+counts from the endogenous genes, percentage of counts from the top 100 most
+highly-expressed genes and percentage of counts from control genes as
+additional covariates to control for these other unwanted technical effects.)
+We then use the residuals from the fitted model for further analysis. This approach
+successfully removes the C1 machine effect as a major source of variation between
+cells.” <span class="citation">(McCarthy et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“We emphasize that it is generally preferable to incorporate batch effects or
+latent variables into statistical models used for inference. When this is not
+possible (e.g., for visualization), directly regressing out these uninteresting
+factors is required to obtain ‘corrected’ expression values for further analysis.
+Furthermore, a general risk of removing latent factors is that interesting
+biological variation may be removed along with the presumed unwanted variation.
+Users should therefore apply such methods with appropriate caution, particularly
+when an analysis aims to discover biological conditions, such as new cell types.”
+<span class="citation">(McCarthy et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Once identified, important covariates and latent variables can be flagged for
+inclusion in downstream statistical models or their effects regressed out of
+normalized expression values.” <span class="citation">(McCarthy et al. 2017)</span></p>
+</blockquote>
+<p>[Identifying highly-variable genes in terms of expression]</p>
+<blockquote>
+<p>“All genes will display some biological variability in expression from cell
+to cell, but a high level of variance (exceeding the specified threshold) will
+indicate genes important in explaining heterogeneity within the cell
+population under study.” <span class="citation">(Brennecke et al. 2013)</span></p>
+</blockquote>
+<p>[Principal component analysis]</p>
+<blockquote>
+<p>“Most approaches seek to reduce these ‘multi-dimensional data,’ with each
+dimension being the expression of one gene, into a very small number of dimensions
+that can be more easily visualised and interpreted. Principal component analysis
+(PCA) is a mathematical algorithm that reduces the dimensionality of data, and
+is a basic and very useful tool for examining heterogeneity in scRNA-seq data.”
+<span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Dimensionality reduction and visualization are, in many cases, followed by
+clustering of cells into subpopulations that represent biologically meaningful
+trends in the data, such as functional similarity or developmental
+relationship. Owing to the high dimensionality of scRNA-seq data, clustering
+often requires special consideration… Likewise, a variety of methods exist for
+identifying differentially expressed genes across cell populations.” <span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“One common type of single-cell analysis, for instance, is dimension reduction.
+This process simplifies data sets to facilitate the identification of similar
+cells. … scRNA-seq data represent each cell as ‘a list of 20,000 gene-expression
+values.’ Dimensionality-reduction algorithms such as principal components analysis
+(PCA) and t-distributed stochastic neighbour embedding (t-SNE) effectively project
+those shapes into two or three dimensions, making clusters of similar cells apparent.”
+<span class="citation">(J. M. Perkel 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Multivariate techniques may be used to reduce the dimensionality… It is potentially
+dangerous to allow the number of variables to exceed the number of observations
+because of non-uniqueness and singularity problems. Put simply, the unwary analyst
+may try to estimate more parameters than there are observations.” <span class="citation">(Chatfield 1995)</span></p>
+</blockquote>
+<blockquote>
+<p>“It is also possible to take a wider view of IDA by allowing the use, when
+necessary, of a group of more complicated, multivariate techniques which are
+data-analytic in character. The adjective ‘data-analytic’ could reasonably be
+applied to any statistical technique, but I follow modern usage in applying it
+to techniques which do not depend on a formal probability model except perhaps
+in a secondary way. Their role is to explore multivariate data, to provide
+information-rich summaries, to generate hypotheses (rather than test them) and
+to help generally in the search for structure, both between variables and between
+individuals. In particular, they can be helpful in reducing dimensionality and
+in providing two-dimensional plots of the data. The techniques include principal
+component analysis, multi-dimensional scaling and other forms of cluster analysis…
+They are generally much more sophisticated than earlier data descriptive techniques
+and should not be undertaken lightly. However, they are occasionally very
+fruitful.” <span class="citation">(Chatfield 1995)</span></p>
+</blockquote>
+<blockquote>
+<p>“Principal component analysis rotates the p observed values to p new orthogonal
+variables, called principal components, which are linear combinations of the original
+variables and are chosen in turn to explain as much of the variation as possible.
+It is sometimes possible to confine attention to the first two or three components,
+which reduces the effective dimensionality of the problem. In particular, a scatter
+diagram of the first two components is often helpful in detecting clusters of
+individuals or outliers.” <span class="citation">(Chatfield 1995)</span></p>
+</blockquote>
+<blockquote>
+<p>“Cluster analysis aims to partition a group of individuals into groups or clusters
+which are in some sense ‘close together.’ There is a wide variety of possible
+procedures. In my experience the clusters obtained depend to a large extent on the methods
+used (except where the clusters are really clear-cut) and users are now aware of
+the drawbacks and the precautions which need to be taken to avoid irrelevant or misleading
+results.” <span class="citation">(Chatfield 1995)</span></p>
+</blockquote>
+<blockquote>
+<p>“Another popular application is pseudo-time analysis. Trapnell developed the first
+such tool, called Monocle, in 2014. The software uses machine learning to infer from
+an scRNA-seq experiment the sequence of gene-expression changes that accompany
+cellular differentiation, much like inferring the path of a foot race by photographing
+runners from the air, Trapnell says.” <span class="citation">(J. M. Perkel 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Other tools address subpopulation detection … and spatial positioning, which uses
+data on the distribution of gene expression in tissues to determine where in a
+tissue each transcriptome arose.” <span class="citation">(J. M. Perkel 2017)</span></p>
+</blockquote>
+<ul>
+<li>Polymerase chain reaction (PCR): <strong>Amplifies</strong> DNA</li>
+<li>Microarrays: allowed the analysis of multiple genes at once, previously
+one gene at a time</li>
+<li>Genomic profiles can differ from transcriptional profiles</li>
+</ul>
+<p>Proteomics:</p>
+<blockquote>
+<p>“Protein molecules, rather than DNA or RNA, carry out most cellular functions. The
+direct measurement of protein levels and activity within the cell is therefore the
+best determinant of overall cell function.” <span class="citation">(Lakhani and Ashworth 2001)</span></p>
+</blockquote>
+<blockquote>
+<p>“To sequence a protein ten years ago, a substantial amount had to be purified and
+a technique known as Edman degradation had to be used. … During the 1990s, mass
+spectrometry (MS), in which biomolecules are ionized and their mass is measured by
+following their specific trajectories in a vacuum system, deplaced Edman degradation,
+because it is more sensitive and can fragment the peptides in seconds instead of hours
+or days. Furthermore, MS does not require proteins or peptides to be purified to
+homogeneity and has no problem identifying blocked or otherwise modified proteins.
+In the last few years, further breathtaking tecnological advances have established MS
+not only as the definitive tool to study the primary structure of proteins, but also
+as a central technology for the field of proteomics.” <span class="citation">(Steen and Mann 2004)</span></p>
+</blockquote>
+<blockquote>
+<p>“After protein purification, the first step is to convert proteins to a set of peptides
+using a sequence-specific protease. Even though mass spectrometers can measure the mass
+of intact proteins, there are a number of reasons why peptides, and not proteins,
+are analysed in proteomics. Proteins can be difficult to handle and might not all
+be soluble under the same conditions… In addition, the sensitivity of the mass
+spectrometer for proteins is much lower than for peptides, and the protein may be
+processed and modified such that the combinatorial effect makes determining the
+masses of the numerous resulting isoforms impossible. … Most importantly, if the
+purpose is to identify the protein, sequence information is needed and the mass spectrometer
+is most efficient at obtaining sequence information from peptides that are up to
+~20 residues long, rather than whole proteins. Nevertheless, with very specialized
+equipment, it is becoming possible to derive partial sequence information from intact
+proteins, which can then be used for identification purposes or the analysis of protein
+modifications in an approach called ‘top-down’ protein sequencing.” <span class="citation">(Steen and Mann 2004)</span></p>
+</blockquote>
+<blockquote>
+<p>“Digesting the protein into a set of peptides also means that the physico-chemical
+properties of the protein, such as solubility and ‘stickiness,’ become irrelevant.
+As long as the protein generates a sequence of peptides, at least some of them can
+be sequenced by the mass spectrometer, even if the protein itself would have been
+unstable or insoluble under the conditions used.” <span class="citation">(Steen and Mann 2004)</span></p>
+</blockquote>
+<blockquote>
+<p>“The peptides that are generated by protein digestion are not introduced to the
+mass spectrometer all at once. Instead, they are injected onto a microscale
+capillary high-performance liquid chromatography (HPLC) column that is
+directly coupled to, or is ‘on-line’ with, the mass spectrometer. The peptides are
+eluted from these columns using a solvent gradient of increasing organic content,
+so that the peptide species elute in order of their hydrophobicity.” <span class="citation">(Steen and Mann 2004)</span></p>
+</blockquote>
+<blockquote>
+<p>“When a peptide species arrives at the end of the column, it flows through a
+needle. At the needle tip, the liquid is vaporized and the peptide is subsequently
+ionized by the action of a strong electric potential. This process is called
+‘electrospray ionization.’” <span class="citation">(Steen and Mann 2004)</span></p>
+</blockquote>
+<blockquote>
+<p>“Electrosprayed peptide ions enter the mass spectrometer through a small hole
+or a transfer capillary. Once inside the vacuum system, they are guided and
+manipulated by electric fields. There are diverse types of mass spectrometer,
+which differ in how they determine the mass-to-charge (m/z) ratios of the peptides.
+Three main types of mass spectrometers are used in proteomics: quadrupole mass
+spectometers, time of flight (TOF) mass spectrometers, and quadrupole ‘ion traps.’
+… Each of these instruments generates a mass spectrum, which is a recording of the
+signal intensity of the ion at each value of the m/z scale (which has units of daltons
+(Da) per charge).”</p>
+</blockquote>
+<blockquote>
+<p>“At the beginning of the 1990s, researchers realized that the peptide-sequencing
+problem could be converted to a database-matching problem, which would be much
+simpler to solve. The reason database searching is easier than de novo sequencing is
+that only an infinitesimal fraction of the possible peptide amino-acid sequences
+actually occur in nature. A peptide-fragmentation spectrum might therefore not contain
+sufficient information to unambiguously derive the complete amino-acid sequence, but
+it might still have sufficient information to match it uniquely to a peptide sequence
+in the database on the basis of the observed and expected fragment ions. There are
+several different algorithms that are used to search sequence databases with tandem
+MS-spectra data, and they have names such as PeptideSearch, Sequest, Mascot, Sonar ms/ms,
+and ProteinProspector.” <span class="citation">(Steen and Mann 2004)</span></p>
+</blockquote>
+<blockquote>
+<p>“As a result of rapidly improving technology, the identification of hundreds of
+proteins is not unusual, even in a single project, and determining the reliability
+of these protein hits is especially challenging. This is partly because even small
+error rates for each of the corresponding proteins can quickly add up when many
+thousands of peptides are being identified.” <span class="citation">(Steen and Mann 2004)</span></p>
+</blockquote>
+<blockquote>
+<p>“After all the peptides have been identified, they have to be grouped into protein
+identifications. Usually, the peptide scores are added up to yield protein scores in
+a straightforward manner. However, the confidence in the accuracy of a particular
+peptide identification increases if other peptides identify the same protein and
+decreases if no other peptides do so.” <span class="citation">(Steen and Mann 2004)</span></p>
+</blockquote>
+<blockquote>
+<p>“Often, we are interested not only in the identity of a peptide, but also in its
+quantity. Unfortunately, the intensity of the signal of a peptide ion does not
+directly indicate the amount of protein present. For example, when digesting a
+protein, the peptides that are produced should all be equimolar and might be
+expected to give peaks of equal height in the mass spectrum. However, accessibility
+to the protease, the solubility of the peptide and the ionization efficiency of
+the peptide combine to make these signals orders of magnitude different. Fortunately,
+these factors are reproducible, so the peak height of the same peptides can be
+a good indicator of the relative amount of the related protein from one experiment
+to the next.” <span class="citation">(Steen and Mann 2004)</span></p>
+</blockquote>
+<blockquote>
+<p>“Experiments that are aimed at determining protein expression in whole-cell lysates
+or tissues (expression proteomics) have been less successful so far. However,
+intense research efforts are underway at present, because such a strategy would
+enable the detection/identification of disease-related biomarkers. Such a
+measurement is essentially the equivalent of a microarray experiment, with the
+difference being that protein, instead of mRNA, levels are compared. MS experiments
+that compare protein-expression levels are much more laborious than microarray
+experiments, but are attractive because proteins are the active agents of the cell,
+whereas the mRNA population is often a poor indicator of protein levels. However,
+it is still difficult to identify and quantify all the low-abundance proteins,
+especially in the presence of highly abundant proteins. Furthermore, as in microarray
+experiments, the results are ‘noisy,’ because of the extremely large amounts of
+data, and it can be difficult to distil functional and mechanistic hypotheses
+from such global experiments.” <span class="citation">(Steen and Mann 2004)</span></p>
+</blockquote>
+<blockquote>
+<p>“m/z ratio (mass-to-charge ratio): Mass spectrometry does not measure the mass of
+molecules, but instead measures their m/z value. Electrospray ionization, in particular,
+generates ions with multiple charges, such that the observed m/z value has to be
+multiplied by z and corrected for the number of attached protons (which equals z) to
+calculate the molecular weight of a particular peptide.” <span class="citation">(Steen and Mann 2004)</span>
+<span class="citation">(Steen and Mann 2004)</span></p>
+</blockquote>
+<p>Flow cytometry:</p>
+<blockquote>
+<p>“In multicellular organisms, cells carry out a diverse array of complex, specialized
+functions. This specialization occurs mostly through the expression of cell type–specific
+genes and proteins that generate the appropriate structures and molecular networks.
+A central challenge in the biomedical sciences, however, has been to identify the
+distinct lineages and phenotypes of the specialized cells in organ systems, and track
+their molecular evolution during differentiation.” <span class="citation">(Benoist and Hacohen 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“Since the 1970s, fluoresence-based flow cytometry has been the leading technique
+for studying and sorting cell populations. It involves passing cells through
+flow chambers at high rates (&gt; 20,000 cells/s) and using lasers to excite fluorescent
+tags (‘fluorochromes’) that are usually attached to antibodies; different antibodies
+are tagged with different colors, enabling researchers to quantify molecules that
+define cell subtypes or reflect activation of specific pathways. Progess in instrument
+design, multi-laser combinations, and novel fluorochromes has led to experimental
+configurations that simultaneously measure up to 15 markers. This has enabled very
+detailed description of cell subtypes, perhaps most extensively in the immune
+system, where the Immunological Genome Project is profiling &gt;200 distinct cell typles.
+Fluorescence cytometry seems to have reached a technical plateau, however: In practice,
+researchers typically measure only 6 to 10 cell markers because they are limited by
+the specral overlap between fluorochromes.” <span class="citation">(Benoist and Hacohen 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“In mass cytometry, fluorochrome tags are replaced by a series of rare earth elements
+(e.g., lanthanides), which are attached to antibodies through metal-chelator coupling
+reagents. Cells are labeled by incubation in a cocktail of tagged antibodies; as the
+cells flow through the instrument, they are vaporized at 5500 K, and the released
+tags are identified and quantified by time-of-flight mass spectrometry (MS). … The
+beauty of this approach stems from three factors: the precision of MS detection, which
+eliminates overlap between tags (a dream for any investigator who has battled this
+problem, known as fluorescence compensation); the number of detectable markers
+(34 here, but easily more); and the absence of background noise (because rare earth
+elements are essentially absent from biological materials, there is no equivalent of
+‘autofluorescence’).”
+<span class="citation">(Benoist and Hacohen 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“Because the software tools commonly used for flow cytometry data would be woefully
+inadequate for analyzing dozens of dimensions [as you have for mass cytometry data],
+Bendall et al. used software that clusters cell populations into ‘minimum-spanning trees’
+that reproduce known hematopoietic differentiation, but with much finer granularity.
+As a result, cells that once would have been grouped into one population are now
+divided into many more; for example, naive CD4+ T lymphocytes, a priori considered
+a homogeneous population, are now split into more than 10 subsets.” <span class="citation">(Benoist and Hacohen 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“The secret is that, in flow cytometry, every cell acts as an independent ‘test tube.’”
+<span class="citation">(Benoist and Hacohen 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“Over the past 25 years there have been major technological advances in the ways that
+CD4+ T cells are enumerated, with flow cytometry now generally regarded as the
+predicate technique. During this period, flow cytometry has progressed from large,
+expensive and complex fluorescence-activated cell sorting (FACS) machines that
+require highly specialized operating personnel, to smaller, more affordable
+bench-top instruments that can be used by individuals with minimal training. This
+shift was made possible in part by including multicolour analysis coupled with
+simplified gating technologies.” <span class="citation">(Barnett et al. 2008)</span></p>
+</blockquote>
+<blockquote>
+<p>“In 1954, Wallace Coulter developed an instrument that could measure cell size and
+count the absolute number of cells, and thus the discipline of flow cytometry was
+born. Further developments enabled the production of instruments that could measure
+cell size and nucleic acid content using a two-dimensional approach that compared
+light scatter and light absorption. These instruments were cumbersome and required
+specialist operators, but immunologists began to use them to investigate the
+functions of immune cells. … By the mid-1980s, bench-top flow cytometers were
+available and as the technology advanced the instruments became progressively
+smaller. Coupled with the availability of monoclonal antibodies, the increasing
+number of available fluorochromes (compounds that emit light at a greater wavelength
+than the light source they are excited with) and computer improvements, flow
+cytometers are now accessible for almost every clinical laboratory.” <span class="citation">(Barnett et al. 2008)</span></p>
+</blockquote>
+<blockquote>
+<p>“Flow cytometry enables the examination of microscopic particles (such as cells) that
+are suspended in a stream of fluid which is termed sheath fluid. This fluid is
+focused hydrodynamically such that the cells flow in single file through a flow cell
+in which a beam of light (usually a laser) is focused. As the cells pass through the
+laser beam they scatter the light so that forward scatter (FSC) and side scatter (SSC)
+light is captured; this enables the size and granularity of the cells to be determined.
+In addition, if a cell is labelled with antibodies that carry a fluorochrome, as the
+cell passed in front of the laser beam the fluorochrome emits light at a wavelength
+that is higher than the single wavelength light source and which can be detected by
+fluorescence detectors. The flow cytometers that are in clinical use can analyse at
+least four fluorochromes simultaneously, in addition to the FSC and SSC. This is known
+as multiparametric analysis. The information that is generated is computer analysed
+so that specific analysis regions (known as gates) can be created, which allows
+the user to build up a profile of the size, granularity and antigen profile of
+the target cell population.” <span class="citation">(Barnett et al. 2008)</span></p>
+</blockquote>
+<blockquote>
+<p>“The fundamental basis of CD4 counting and identification relies on the specific
+use of electronic gating approaches. One of the earliest and most popular approaches
+that was used from the mid-1980s to early-1990s relied on using light scatter and
+anti-CD45 and anti-CD14 monoclonal antibodies. This gating approach was termed the
+two-colour approach.”
+<span class="citation">(Barnett et al. 2008)</span></p>
+</blockquote>
+<blockquote>
+<p>“In the early 1990s researchers realized that because of these logistic problems
+[with the two-colour approach], new technologies would need to be developed to
+reduce processing time while providing accurate CD4 counts. Two new gating strategies
+were developed almost simultaneously, one termed CD45 gating and the other T gating,
+both of which helped to more accurately identify the lymphocyte analysis regions.”
+<span class="citation">(Barnett et al. 2008)</span></p>
+</blockquote>
+<blockquote>
+<p>“Flow cytometry is a powerful technology that is capable of quantifying individual
+functions independently and simulataneously on a single-cell basis (and, in some cases,
+under conditions that can preserve the viability of the cell for future use). Quantification
+of multiple functions of T cells requires at least six-colour technology: three colors
+to identify the T-cell lineage (typically, these label CD3, CD4, and CD8), one color for
+viability and/or as a dump channel to remove unwanted cell populations, and two or
+more colors devoted to the effector function of interest. Furthermore, delineation of
+memory T-cell subsets requires an additional two or more colors to distinguish
+differentiation stage.” <span class="citation">(Seder, Darrah, and Roederer 2008)</span></p>
+</blockquote>
+<blockquote>
+<p>“Of note, the number of possible functionally unique subsets increases geometrically
+with the number of measurements made. By applying Boolean gating, all possible
+combinations of T cells that produce the cytokines measured can be determined. …
+In general, not all possible combinations are represented in any given antigen
+response; rather, the overall response is typically limited to a subset of the
+individual combinations of the functions. Based on the frequency of each distinct
+functional subset, a pie chart can be assembled to show the composition of a total
+cytokine response.” <span class="citation">(Seder, Darrah, and Roederer 2008)</span></p>
+</blockquote>
+<blockquote>
+<p>“Boolean gating: A flow cytometric data analysis technique in which cells are
+divided into all possible combinations of the functions measured by using the
+Boolean operators ‘and’ and ‘not’ on analysis gates applied to those measurements.
+These populations of cells can be expressed as absolute frequencies or as a
+fraction of the total response.” <span class="citation">(Seder, Darrah, and Roederer 2008)</span></p>
+</blockquote>
+<blockquote>
+<p>“T cells have an essential role in protection against a variety of infections. Indeed,
+the development of successful vaccines against HIV, malaria or tuberculosis will
+require the generation of potent and durable T-cell responses. … As T cells are
+functionally heterogeneous and mediate their effects through a variety of mechanisms,
+a major hurdle in quantifying protective T-cell responses has been the technical
+limitations in assessing the complexity of such responses. Methods to define the
+full characteristics of T cells are crucial for developing preventative and
+therapeutic vaccines for infections and cancer.” <span class="citation">(Seder, Darrah, and Roederer 2008)</span></p>
+</blockquote>
+<blockquote>
+<p>“A typical ‘gating tree’ hierarchically identifies unique functional subsets of
+CD4+ and CD8+ T cells based on the fluorescence staining of live cells and on the
+expression of other relevant markers, such as CD3, CD4, CD8, CD45RA, CC-chemokine
+receptor (CCR7), interferon gamma (INFgamma), interleukin-2 (IL-2) and tumour-necrosis
+factor (TNF), following antigenic stimulation. The viability marker (ViViD) excludes
+dead cells that can often show non-specific binding to other reagents. Live, CD3+
+T cells are separated into CD4+ and CD8+ T-cell lineages; within each lineage,
+memory T cells are seleced based on the expression of (for example) CCR7 and CD45RA.
+Other combinations of markers can similarly exclude naive T cells from functional
+analysis.” <span class="citation">(Seder, Darrah, and Roederer 2008)</span></p>
+</blockquote>
+<blockquote>
+<p>“Flow cytometry has increasingly become a tool of choice for the analysis of
+cellular phenotype and function in the immune system. It is arguably the most
+powerful technology available for probing human immune phenotypes, because it
+measures multiple parameters on many individual cells. Flow cytometry thus
+allows for the characterization of many subsets of cells, including rare subsets,
+in a complex mixture such as blood. And because of the wide array of antibody
+reagents and protocols available, flow cytometry can be used to assess not only
+the expression of cell-surface proteins, but also that of intracellular
+phosphoproteins and cytokines, as well as other functional readouts.”
+<span class="citation">(Maecker, McCoy, and Nussenblatt 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“This diversity of reagents and applications has led to a large variety of
+ways in which flow cytometry is being used to monitor the immune systems of
+humans and model organisms (mostly mice). These uses include the identification
+of antigen-specific T cells using tetramers or intracellular cytokine staining;
+the measurement of T cell proliferation using dyes such as 5,6-CFSE; and the use
+of immunophenotyping assays to identify lymphocyte, monocyte, and/or granulocyte
+subsets.” <span class="citation">(Maecker, McCoy, and Nussenblatt 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“Animal studies tend to be relatively small and self-contained, as the mice used
+are inbred (genetically identical) and their environment and treatments are
+carefully controlled. Human studies, by contrast, are often larger, to account for
+genetic and environmental variables. They may require longitudinal assays over a
+considerable length of time, owing to the difficulty of recruiting available
+subjects and/or the need to follow those subjects over time. There may also be a
+need to aggregate data from multiple sites, or even across multiple studies, to
+achieve sufficient sample sizes for statistical analysis or to compare different
+treatments. In these situations, the standardization of reagents and protocols
+becomes crucial.” <span class="citation">(Maecker, McCoy, and Nussenblatt 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“Immune phenotypes: Measurable aspects of the immune system, such as the
+proportions of various cell subsets or measures of cellular immune function.”
+<span class="citation">(Maecker, McCoy, and Nussenblatt 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“The steps in a typical flow cytometry experiment … present several
+variables that need to be controlled for effective standardization. These variables
+include the general areas of reagents, sample handling, instrument setup
+and data analysis… The effects of changes in these variables are largely
+known. For example, the stabilization and control of staining reagents
+through the use of pre-configured lyophilized-reagent plates, and centralized
+data analysis, have both been shown to decrease variability in a multi-site
+study. However, the wide-spread adoption of standards for controlling such
+variables has not taken place. This is in contrast to other technologies, such
+as gene expression microarrays, which have achieved a reasonable degree of
+standardization in recent years. … Of course, microarray data are less complex
+than flow cytometry data, which are based on many hierarchical gates. Still,
+a reasonable degree of standardization of flow cytometry assays should be
+possible to achieve.” <span class="citation">(Maecker, McCoy, and Nussenblatt 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“Gates: Sequential filters that are applied to a set of flow cytometry data to
+focus the analysis on particular cell subsets of interest.” <span class="citation">(Maecker, McCoy, and Nussenblatt 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“The study of cells moving in suspension through an image plane—flow cytometry—is
+a potent tool for immunology research and immune monitoring. Its main advantages
+are that is makes multiparameter measurements and this it does so on a single-cell
+basis. The result is that this technique can dissect the phenotypes and functions
+of cell subsets in ways that are not possible using bulk assays, such as Western
+blots, microarrays or enzyme-linked immunosorbent assays (ELISAs). Nowhere has this proven
+more useful than in a mixed suspension of immune cells, such as the blood. Newer
+instrumentation allows for the analysis of eight or more parameters at flow rates of
+thousands of cells per second; the resulting rich data sets are unparalleled for
+the knowledge of immune function that they have contributed.” <span class="citation">(Maecker, McCoy, and Nussenblatt 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“In this context [Human Immunology Project], an ‘immune phenotype’ would encompass
+not only the proportions of major immune cell subsets, but also, for example, their
+activation state, responsiveness to stimuli, and T cell receptor or B cell receptor
+reperotoires, among other parameters.” <span class="citation">(Maecker, McCoy, and Nussenblatt 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“A typical flow cytometry experiment. Sample preparation from blood often involves
+Ficoll gradient separation of mononuclear cells, and sometimes cryopreservation,
+before staining with fluorescent antibody conjugates. Each of these steps can
+introduce variability in the assay results. Instrument setup involves setting
+voltage gains for the photomultiplier tubes (PMTs) so as to achieve optimal sensitivity.
+To the extent that this is not standardized, it becomes a source of variability
+as well. Data acquisition involves passing the stained cells through a laser beam and
+recording the fluorescence emission from all of the bound antibody conjugates. Here,
+the main variable is the type of instrument, including the lasers and optical filters
+used. This is followed by data analysis, in which cell populations of interest are
+defined and reported on, which is another significant source of variation.”
+<span class="citation">(Maecker, McCoy, and Nussenblatt 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“The definition of particular subsets of immune cells using cell-surface markers continues
+to evolve, particularly for cell types that are the subject of intense current
+research. These include regulatory T (TReg) cells, interleukin-17 (IL-17)-secreting T helper
+(TH17) cells, dendritic cells (DCs) and natural killer (NK) cells. However, even
+well-characterized subsets, such as naive and memory T cells, are defined differently
+in various studies. For example, the classical T cell subsets of naive, central memory,
+effector memory, and effector T cells were first defined on the basis of their expression
+of CC-chemokine receptor 7 (CCR7; also known as CD197) and CD45RA … Other investigators
+have since used different markers, such as CD62L or CD27 in place of CCR7, and CD45RO in
+place of CD45RA. Although these different combinations of markers generally define
+similar cell subsets, they introduce an unknown amount of heterogeneity that makes
+comparisons between studies difficult. It is reasonable to think that the discovery
+of new markers and new cell subsets will continue for quite some time in the future.
+However, we propose that there is sufficient maturity in the field of cellular
+immunology to reach consensus working definitions for most of the commonly studies
+subsets of immune cells. … In other words, it should be possible to define a stable
+set of markers that delineate the mojor classes og B, T and NK cells, monocytes and DCs.”
+<span class="citation">(Maecker, McCoy, and Nussenblatt 2012)</span></p>
+</blockquote>
+<blockquote>
+<p><span class="citation">(Maecker, McCoy, and Nussenblatt 2012)</span> recommend, as ways to minimize the effects of technical
+variation in flow cytometry data analysis, “Central analysis by one or a few
+coordinated experts” and “Use of automated gating algorithms”</p>
+</blockquote>
+<blockquote>
+<p>“Activation markers for these cell types are of course of equal interest to the
+differentiation markders discussed above, as the activated subsets can provide clues to
+an individual’s response to infection, vaccination, cancer, or autoimmune disease. For
+this purpose, one can assess intracellular markers of recent cell division (such as
+Ki67) or surface markers of activation that have varying kinetics of expression
+(for example, CD69 is a transient marker, whereas HLA-DR, CD38 and CD71 are
+expressed for longer periods).”
+<span class="citation">(Maecker, McCoy, and Nussenblatt 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“How important is it to define the actual antibody cocktails used for
+immunophenotyping? As described above, the choice of markers is clearly
+important, but different antibody clones and fluorochromes can also greatly
+influence results.” <span class="citation">(Maecker, McCoy, and Nussenblatt 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“In addition to optimizing certain settings, such as laser time delays, instrument
+setup is mostly concerned with the setting of the voltage gains applied to
+each fluorescence detector, which influences the sensitivity of the detector
+to dim versus bright signals. This used to be entirely a matter of user preference, but
+some guiding principles have now emerged based on measuring the variance of a population
+of dim particles over a series of voltage gains.” <span class="citation">(Maecker, McCoy, and Nussenblatt 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“Data analysis is one of the largest variables in flow cytometry, as shown by
+studies analyzing data at multiple sites versus centrally. It is also one of the
+easiest variables to address, as re-analysis of existing data is always possible,
+whereas choices made about sample handling and instrument setup are irrevocable.
+Central analysis is simple in concept, but it can be overwhelming in terms of the
+demands placed on one or a few coordinated personnel who must review all of the
+data to achieve consistent gating. Fortunately, automated gating algorithms have
+proliferated and improved, such that they now compete favorably with expert
+manual gating.” <span class="citation">(Maecker, McCoy, and Nussenblatt 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“With the major exception of CD4+ T cell counting for immune monitoring in
+patients with HIV and the immunophenotyping of leukemias and lymphomas, flow
+cytometry is mostly carried out in a research setting. Particular assays may be
+internally vailidated for a given clinical study, but comprehensive standardization
+is rare to non-existent. However, there is a clear and growing interest in the
+standardization of human immunophenotyping. This is evidenced by standardization
+efforts, such as those of the European ENTIRE and United States CTOC networks. The
+NIH have also invested in a series of awards focused on human immunophenotyping, and
+both FOCIS and the NIH are working to create standard immunophenotyping panels.”
+<span class="citation">(Maecker, McCoy, and Nussenblatt 2012)</span></p>
+</blockquote>
+<p>Metabolomics:</p>
+<p>Bulk transcriptomics:</p>
+<blockquote>
+<p>“Much of biochemistry and molecular biology rests on the assumption that the
+behavior of cells in a population (in a culture, in an organ) can be reliably
+approximated by the population average that results when cells are lysed and
+their molecules analyzed as a pool. Increasingly, however, investigators realize
+that stochastic fluctuations in gene or protein expression, between cells of
+an otherwise identical group, can lead to major differences in their behavior.
+This ‘noise’ in gene expression can have profound consequences for cell differentiation,
+the response to apoptosis-inducing stimuli, or T lymphocyte triggering at the initiation
+of immune responses.” <span class="citation">(Benoist and Hacohen 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“The challenges of deriving statistically robust conclusions from high-throughput
+technologies such as microarrays are well known. Yet the exploration of similar
+challenges for data from sequencers, which can generate orders of magnitude more
+data than an array, is largely at the beginning stages [as of 2011].” <span class="citation">(Mak 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“Statistics becomes particularly important when sequencing technology is being
+used quantitatively. In terms of traditional applications of just sequencing a
+genome, I think that there is an abundance of methods already available that
+addressed many of the major questions. But as soon as any sort of quantification comes
+into play, such as using read depth to quantify copy number variation or
+RNA transcript abundances (RNA-Seq), then statistical modeling—and particularly
+normalization—becomes much more important.” <span class="citation">(Mak 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“One of the main roles that statistics play in science is explaining variation—variation
+of observed data. That variation can actually be true signal that you’re interested in,
+but there can also be variations due to noise or confounding signal. So I think of
+statistical modeling as the process of explaining variation in the data according
+to concrete variables that have been measured.” <span class="citation">(Mak 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“This process of accounting for, and possibly removing, sources of variation that
+are not of biological interest is called normalization. There are two distinct
+approaches to normalization. One of them I would call ‘unsupervised’ in that it
+does not taken into account the study design. These are the most popular methods
+because they require the least amount of statistical modeling and knowledge of
+statistics. The other approach, which is one I strongly favor, is what I would
+call ‘supervised normalization.’ This approach directly takes into account the
+study design. I find this appealing because is one is trying to parse sources of
+variation, then it seems all sources of variation should be considered. If I
+perform an experiment with 20 microarrays, say 10 treated and 10 control, then
+I want to utilize this information when separating and removing technical
+sources of variation. Another component of normalization, which is gaining
+popularity, is normalizing by principal components. Again, I think this should
+be done in the context of the study design, which was the goal of a recent
+method I worked on called ‘surrogate variable analysis.’” <span class="citation">(Mak 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“Let’s say you are doing an RNA-Seq experiment. The sequencer may produce a
+different number of total reads from lane to lane, and that is more likely
+driven by technology, not biology. And so, normalization would be about
+accounting for those differences. Unsupervised normalization might involve
+simply just dividing by the number of lanes and taking each gene as a percentage
+of the reads in the lane. Why is that less than ideal? Suppose you have two batches
+of data, one flow cell that was done in November and another flow cell that was
+done in December. If you’re actually accounting for this variation in the
+total number of reads per lane, my inclination would be to take into account the
+fact that these two flow cells were processed in different months. And it can
+be more complicated than that, too. Maybe you’ve taken clinical samples and there
+were some differences in the clinical conditions under which they were taken.
+In supervised normalization, you would take that information into account. For
+example, the adjustment made to the raw reads may be based on a model that includes
+the total number of reads per lane as well as the information about the study
+design, such as batch and biological variables.” <span class="citation">(Mak 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“The biggest, the easiest way [for a biologist doing RNA-Seq to tell that
+better normalization of the data is needed]—the way that I discovered the
+importance of normalization in the microarray context—is the lack of
+reproducibility across different studies. You can have three studies that are
+all designed to study the same thing, and you just see basically no reproducibility,
+in terms of differentially expressed genes. And every time I encountered that, it
+could always be traced back to normalization. So, I’d say that the biggest sign and
+the biggest reason why you want to use normalization is to have a clear signal
+that’s reproducible.” <span class="citation">(Mak 2011)</span></p>
+</blockquote>
+<blockquote>
+<p>“Typically, RNA-seq data is analysed by laboriously typing commands into a Unix
+operating system. Data files are passed from one software package to the next, with
+each tool tackling one step in the process: genome alignment, quality control, variant
+calling, and so on. The process is complicated. But for bulk RNA-seq, at least,
+a consensus has emerged as to which algorithms work best for each step and how
+they should be run. As a result, ‘pipelines’ now exist that are, if not exactly
+plug-and-play, at least tractable for non-experts. To analyze differences in gene
+expression, says Aaron Lun, a computational biologist at Cancer Research UK in
+Cambridge, bulk RNA-seq is ‘pretty much a solved problem.’” <span class="citation">(J. M. Perkel 2017)</span></p>
+</blockquote>
+<p>Reproducibility of pre-processing:</p>
+<blockquote>
+<p>“Today, one often hears that life sciences are faced with the ‘big data problem.’
+However, data are just a small facet of a much bigger challenge. The true
+difficulty is that most biomedical researchers have no capacity to carry out
+analyses of modern data sets using appropriate tools and computational infrastructure
+in a way that can be fully understood and reused by others. This struggle began with
+the introduction of microarray technology, which, for the first time, introduced
+life sciences to truly large amounts of data and the need for quantitative training.
+What is new, however, is that next-generation sequencing (NGS) has made this problem
+vastly more challenging. Today’s sequencing-based experiments generate substantially
+more data and are more broadly applicable than microarray technology, allowing for
+various novel functional assays, including quantification of protein–DNA binding or
+histone modifications (using chromatin immunoprecipitation followed by high-throughput
+sequencing (ChIP-seq)), transcript levels (using RNA sequencing (RNA-seq)), spatial
+interactions (using Hi-C) and others. These individual applications can be combined
+into larger studies, such as the recently published genomic profiling of a human
+individual whose genome was sequenced and gene expression tracked over an extended
+period in a series of RNA-seq experiments. As a result, meaningful interpretation
+of sequencing data has become particularly important. Yet such interpretation
+relies heavily on complex computation—a new and unfamiliar domain to many of our
+biomedical colleagues—which, unlike data generation, is not univerally
+accessible to everyone.” <span class="citation">(Nekrutenko and Taylor 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“The entire field of NGS analysis is in constant flux, and there is little agreement
+on what is considered to be the ‘best practice.’ In this situation, it is especially
+important to be able to reuse and to adopt various analytical approaches reported
+in the literature. Unfortunately, this is often difficult owing to the the lack of
+necessary details. Let us look at the first and most straightforward of the analyses
+[for genome variant discovery]: read mapping. To repeat a mapping experiment, it is
+ncessary to have access to the primary data and to know the software and its version,
+parameter settings and name of the reference genome build. From the 19 papers listed
+in Box 1 …, only six satisfy all of these criteria. To investigate this further,
+we surveyed 50 papers (Box 2) that use the Burrows-Wheeler Aligner (BWA) for
+mapping (the BWA is one of the most popular mappers for Illumina data). More than
+half do not provide primary data and list neither the version onr the parameters
+used and neither do they list the exact version of the genomic reference sequence. If
+these numbers are representative, then most results reported in today’s publications
+using NGS data cannot be accurately verified, reproduced, adopted, or used to educate
+others, creating an alarming reproducibility crisis.” <span class="citation">(Nekrutenko and Taylor 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“We note that this discussion thus far has dealt only with technical reproducibility
+challenges or with the ability to repeat published analyses using the original data
+to verify the results. Most biomedical researchers are much more acquainted with
+biological reproducibility, in which conceptual results are verified by an
+alternative analysis of different samples. However, we argue that the computational
+nature of modern biology blurs the distinction between technical and biological
+reproducibility.” <span class="citation">(Nekrutenko and Taylor 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“The 1000 Genomes Project is an international effort aimed at uncovering human
+genetic variation with the ultimate goal of understanding the complex relationship
+between genotype and phenotype. … The crucial importance of the pilot project
+[phase of this project] was the establishment of a series of best practices that
+are used for the analysis of the data from the main phase and are broadly applicable
+for analysis of resequencing data in general. … Despite the fact that analytical
+procedures developed by the project are well documented and rely on freely accessible
+open-source software tools, the community still uses a mix of heterogeneous
+approaches for polymorphism detection: we surveyed 299 articles published in 2011 that
+explicitly cite the 1000 Genomes pilot publication. Nineteen of these were in fact
+resequencing studies with an experimental design similar to that of the 1000 Genomes
+Consortium (that is, sequencing a number of individuals for polymorphism discovery …).
+Only ten studies used tools recommended by the consortium for mapping and variant
+discovery, and just four studies used the full workflow involving realignment
+and quality score recalibration. Interestingly, three of the four studies were
+co-authored by at least one member of the 1000 Genomes Consortium.” <span class="citation">(Nekrutenko and Taylor 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“The above challenges can be distilled into two main issues. First, most biomedical
+researchers experience great difficulty carrying out computationally complex analyses
+on large data sets. Second, there is a lack of mechanism for documenting analytical
+steps in detail. Recently, a number of solutions have been developed that, if widely
+adopted, would solve the bulk of these challenges. These solutions can collectively
+be called integrative frameworks, as they bring together diverse tools under the
+umbrella of a unified interface. These include BioExtract, Galaxy, GenePattern, Gene
+Prof, Mobyle, and others. These tools record all analysis metadata, including tools,
+versions and parameter settings used, ultimately transforming research provenance for
+a task that requires active tracking by the analyst to one that is completely automatic.”
+<span class="citation">(Nekrutenko and Taylor 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“The overwhelming majority of currently published papers using NGS technologies include
+analyses that are not detailed … Moreover, the computational approaches used in these
+publications cannot be readily reused by others.” <span class="citation">(Nekrutenko and Taylor 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“Many classical publications in life sciences have become influential because they
+provide complete information on how to repeat reported analyses so others can adopt
+these approaches in their own research, such as for chain termination sequencing
+technology that was developed by Sanger and colleagues and for PCR. Today’s publications
+that include computational analyses are very different. Next-generation sequencing (NGS)
+technologies are undoubtedly as transformative as DNA sequencing and PCR were more than
+30 years abgo. As more and more researchers use high-throughput sequencing in their
+research, they consult other publications for examples of how to carry out computational
+analyses. Unfortunately, they often find that the extensive informatics component that
+is required to analyse NGS data makes it much more difficult to repeat studies published
+today. Note that the lax standards of computational reproducibility are not unique to
+life sciences; the importance of being able to repeat computational experiments was
+first brought up in geosciences and became relevant in life sciences following the
+establishment of microarray technology and high-throughput sequencing. Replication
+of computational experiments requires access to input data sets, source code or binaries
+of exact versions of software used to carry out the initial analysis (this includes
+all helper scripts that are used to convert formats, groom data, and so on) and
+knowing all parameter settings exactly as they were used. In our experience, …
+publications rarely provide such a level of detail, making biomedical computational
+analyses almost irreproducible.” <span class="citation">(Nekrutenko and Taylor 2012)</span></p>
+</blockquote>
+<p>Reproducibility in general:</p>
+<blockquote>
+<p>“Engineers expect their work to be subject to an [independent validation and
+verification] IV&amp;V process, in which the organization conducting the research
+uses a separate set of engineers to test, for example, whether microprocessors
+or navigation software work as expected. NASA’s IV&amp;V facility was established
+more than 25 years ago and has around 300 employees testing code and satellite
+components.” <span class="citation">(Raphael, Sheehan, and Vora 2020)</span></p>
+</blockquote>
+<blockquote>
+<p>“The biological sciences have depended on other, less-reliable techniques
+for reproducbility. The most long-standing is the assumption that reproducibility
+studies will occur organically as different researchers work on related problems.
+In the past five years or so, funding agencies and journals have implemented
+more-stringent experimental-reporting and data-availablility requirements for
+grant proposals and submitted manuscripts. A handful of initiatives have attempted
+to replicate published studies. The peer-reviewed ‘Journal of Visualized Experiments’
+creates videos to disseminate details that are hard to convey in conventional
+methods sections. Yet pitfalls persist. Scientists might waste resources trying
+to build on unproven techniques. And real discoveries can be labelled irreproducible
+because too few resources are available to conduct a validation.” <span class="citation">(Raphael, Sheehan, and Vora 2020)</span></p>
+</blockquote>
+<blockquote>
+<p>“Data-analysis pipelines are replete with configuration decisions, assumptions,
+dependencies and contingencies that move quickly beyond documentation, making
+troubleshooting incrediably difficult. … Teams had to visit each others’ labs more
+than once to understand and fully implement computational-analysis pipelines for
+large microscopy datasets.” <span class="citation">(Raphael, Sheehan, and Vora 2020)</span></p>
+</blockquote>
+<blockquote>
+<p>“The scientific community has lost the connection with the original culture of
+skepticism which existed in the 17th century with the scientists of the
+Royal Society who pioneered the scientific method as captured in their motton
+nullius in verba (‘take nobody’s word’). They regarded the ability to replicate
+results in independent studies as a fundamental criterion for the establishment
+of a scientific fact. Modern scientific practice presents single experiments
+as proofs. When work is published, it is typically presented without self-criticism.”
+<span class="citation">(Neff 2021)</span></p>
+</blockquote>
+<blockquote>
+<p>“Science requires that we constantly question what we know—and that should include
+looking for advancements in study design or statistical analysis. For instance, the
+T-test was a great tool when we didn’t have powerful computers to do complex
+computations. Now that we do, it seems logical to rethink this.” <span class="citation">(Neff 2021)</span></p>
+</blockquote>
+<blockquote>
+<p>“Currently, experimental design and data analysis expertise are not considered
+critical skills and yet research fundamentally relies on the experimental process
+and data is now an abundant output of the process. Statisticians are useful
+support resources, but demand exceeds supply. The scientific process needs
+quality, hands-on training that steps beyond theoretical concepts to give application
+skills. I personally find researchers are opne; the resistance is arising as
+scientists are overwhelmed by resisting forces (resources, time, skill, knowledge).”
+<span class="citation">(Neff 2021)</span></p>
+</blockquote>
+<blockquote>
+<p>“Transparency and quality management are key to improving scientific rigor and
+reproducibility. It is, therefore, good to see that the Open Science movement
+is gaining traction, and that research institutions increasingly view poor
+science as a reputation risk.” <span class="citation">(Neff 2021)</span></p>
+</blockquote>
+<blockquote>
+<p>“Robust findings become established over time as multiple lines of evidence
+emerge. Achieving robustness takes rigour and reproducibility, plus patience
+and judicious attention to the big picture.” <span class="citation">(Garraway 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Diverse data that converge on the same observations in aggregate provide
+robustness, even though any single approach or model system has limitations.”
+<span class="citation">(Garraway 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“We scientists search tenaciously for information about how nature works through
+reason and experimentation. Who can deny the magnitude of knowledge we have
+gleaned, its acceleration over time, and its expanding positive impact on society?
+Of course, some data and models are fragile, and our understanding remains
+punctuated by false premises. Holding fast to the three Rs [rigor, reproducibility,
+and robustness] ensures that the path—although tortuous and treacherous at times—remains
+well lit.” <span class="citation">(Garraway 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Improved reproducibility comes from pinning down methods.” <span class="citation">(Lithgow, Driscoll, and Phillips 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Sources of variation include the quality and purity of reagents, daily fluctuations
+in microenvironment and the idiosyncratic techniques of investigators. With so many
+ways of getting it wrong, perhaps we should be surprised at how often experimental
+findings are reproducible.” <span class="citation">(Lithgow, Driscoll, and Phillips 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Our first task, to develop a protocol, seemed straightforward. But subtle disparities
+were endless. In one particularly painful teleconference, we spent an hour debating
+the proper procedure for picking up worms and placing them on new agar plates. Some
+batches of worms lived a full day longer with gentler techniques. Because a worm’s
+lifespan is only about 20 days, this is a big deal. Hundreds of e-mails and many
+teleconferences later, we converged on a technique but still had a stupendous three-day
+difference in lifespan between labs. The problem, it turned out, was notation—one
+lab determined age on the basis of when an egg hatched, others on when it was laid.”
+<span class="citation">(Lithgow, Driscoll, and Phillips 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“It is a rare project that specifies methods with such precision. In fact, several
+mouse researchers have argued that standardization is counterproductive—better to
+focus on results that persist across a wide range of conditions than to chase
+fragile findings that occur only within narrow parameters. We argue that another way
+forward is to chase down the variability and try to understand it within a common
+environment.” <span class="citation">(Lithgow, Driscoll, and Phillips 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“We have learnt that to understand how life works, describing how the research was
+done is as important as describing what was observed.” <span class="citation">(Lithgow, Driscoll, and Phillips 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“From time to time over the past few years, I’ve politely refused requests to referee
+an article on the grounds that it lacks enough information for me to check the work.
+This can be a hard thing to explain. Our lack of a precise vocabulary—in particular
+the fact that we don’t have a word for ‘you didn’t tell me what you did in sufficient
+detail for me to check it’—contributes to the crisis of scientific reproducibility.”
+<span class="citation">(Stark 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“In computational science, ‘reproducible’ often means that enough information
+is provided to allow a dedicated reader to repeat the calculations in the paper for
+herself. In biomedical disciplines, ‘reproducible’ often means that a different lab,
+starting the experiment from scratch, would get roughly the same experimental
+result.” <span class="citation">(Stark 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“Results that generalize to all universes (or perhaps do not even require a
+universe) are part of mathematics. Results that generalize to our Universe belong
+to physics. Results that generalize to all life on Earth underpin molecular
+biology. Results that generalize to all mice are murine biology. And results that
+hold only for a particular mouse in a particular lab in a particular experiment
+are arguably not science.” <span class="citation">(Stark 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“Ushering in the Enlightenment era in the late seventeenth century, chemist
+Robert Boyle put forth his controversial idea of a vacuum and tasked himself
+with providing descriptions of his work sufficient ‘that the person I addressed
+them to might, without mistake, and with as little trouble as possible, be able
+to repeat such unusual experiments.’ Much modern scientific communication falls
+short of this standard. Most papers fail to report many aspects of the
+experiment and analysis that we may not with advantage omit—things that are
+crucial to understanding the result and its limitations, and to repeating the
+work. We have no common language to describe this shortcoming. I’ve been in
+conferences where scientists argued about whether work was reproducible,
+replicable, repeatable, generalizable and other ‘-bles,’ and clearly meant quite
+different things by identical terms. Contradictory meanings across disciplines
+are deeply entrenched.” <span class="citation">(Stark 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“The lack of standard terminology means that we do not clearly distinguish
+between situations in which there is not enough information to attempt
+repetition, and those in which attempts do not yield substantially the same
+outcome. To reduce confusion, I propose an intuitive, unambiguous neologism:
+‘preproducibility.’ An experiment or analysis is preproducible if it has been
+described in adequate detail for others to undertake it. Preproducibility is a
+prerequisite for reproducibility, and the idea makes sense across disciplines.”
+<span class="citation">(Stark 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“The distinction between a preproducible scientific report and current common
+practice is like the difference between a partial list of ingredients and a
+recipe. To bake a good loaf of bread, it isn’t enough to know that it contains
+flour. It isn’t even enough to know that it contains flour, water, salt and
+yeast. The brand of flour might be omitted from the recipe with advantage, as
+might the day of the week on which the loaf was baked. But the ratio of
+ingredients, the operations, their timing and the temperature of the oven
+cannot. Given preproducibility—a ‘scientific recipe’—we can attempt to make
+a similar loaf of scientific bread. If we follow the recipe but do not get the
+same result, either the result is sensitive to small details that cannot be
+controlled, the result is incorrect or the recipe was not precise enough (things
+were omitted to disadvantage). Depending on the discipline, preproducibility
+might require information about materials (including organisms and their care),
+instruments and procedures; experimental design; raw data at the instrument
+level; algorithms used to process the raw data; computational tools used in
+analyses, including any parameter settings or ad hoc choices; code, processed
+data and software build environments; or analyses that were tried and
+abandoned.” <span class="citation">(Stark 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“Just as I have pledged not to review papers that are not preproducible, I
+have also pledged not to submit papers without providing the software I used,
+and—to the extent permitted by law and ethics—the underlying data. I urge
+you to do the same.” <span class="citation">(Stark 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“If I publish an advertisement for my work (that is, a paper long on results
+but short on methods) and it’s wrong, that makes me untrustworthy. If I say:
+‘here’s my work’ and it’s wrong, I might have erred, but at least I am honest.
+If you and I get different results, preproducibility can help us to identify
+why—and the answer might be fascinating.” <span class="citation">(Stark 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“It should not need to be stated, but here goes. Reproducibility is the key
+underlying principle of science.” <span class="citation">(Gibb 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“As chemists, we have to be able to go to the literature, take a procedure,
+and carry out a similar or identical transformation with our own hands. Frustratingly,
+this doesn’t always happen, and the next-to-worst-case scenario possible is
+when it’s one of your own reactions that can’t be reproduced by a lab
+elsewhere. Unsurprisingly, one step worse than this is when you can’t even
+reproduce one of your own reactions in your own lab!” <span class="citation">(Gibb 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“If there is nothing wrong with the reagents and reproducibility is still an
+issue, then as I like to tell students, there are two options: (1) the physical
+constants of the universe and hence the laws of physics are in a state of flux
+in their round-bottomed flask, or (2) the researcher is doing something wrong
+and either doesn’t know it or doesn’t want to know it. Then I ask them which
+explanation they think I’m leaning towards.” <span class="citation">(Gibb 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“Independent of what chemical companies do, it’s useful to have a good set of
+standard operating procedures to maximize molecular hygiene (a phrase I like
+because it emphasizes that we should treat our molecules in the same way as we
+treat, say, our teeth). All established labs typically have such procedures, but
+the problem is that newcomers often end up learning them the hard way.”
+<span class="citation">(Gibb 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“Another approach to maximizing reproducibility is to use automation to cut
+out sloppy, all-too-human mistakes.” <span class="citation">(Gibb 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“Quality systems are an integral part of most commercial goods and services,
+used in manufacturing everything from planes to paint. Some labs that focus on
+clinical applications implement certified QA systems such as Good Clinical
+Practice, Good Manufacturing Practice and Good Laboratory Practice for data
+submitted to regulatory bodies. There have also been efforts to guide research
+practices outside these schemes. In 2001, the World Health Organization
+published guidelines for QA in basic research. And in 2006, the British
+Association of Research Quality Assurance (now simply the RQA) in Ipswich issued
+guidelines for basic biomedical research. But few academic researchers know that
+these standards exist … Instead, QA tends to be ad hoc in academic settings.
+Many scientists are taught how to keep lab notebooks by their mentors,
+supplemented perhaps by a perfunctory training course. Investigators often
+improvise ways to safeguard data, maintain equipment or catalogue and care for
+experimental materials. Too often, data quality is as likely to be assumed as
+assured.” <span class="citation">(Baker 2016)</span></p>
+</blockquote>
+<blockquote>
+<p>“Many think that antibodies are a major driver of what has been deemed a
+‘reproducibility crisis,’ a growing realization that the results of many
+biomedical experiments cannot be reproduced and that the conclusions based on
+them may be unfounded. Poorly characterized antibodies probably contribute more
+to the problem than any other laboratory tool, says Glenn Begley, chief
+scientific officer at TetraLogic Pharmaceuticals in Malvern, Pennsylvania, and
+author of a controversial analysis1 showing that results in 47 of 53 landmark
+cancer research papers could not be reproduced.” <span class="citation">(Baker 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Antibodies are produced by the immune systems of most vertebrates to target
+an invader such as a bacterium. Since the 1970s, scientists have exploited
+antibodies for research. If a researcher injects a protein of interest into a
+rabbit, white blood cells known as B cells will start producing antibodies
+against the protein, which can be collected from the animal’s blood. For a more
+consistent product, the B cells can be retrieved, fused with an ‘immortalized’
+cell and cultured to provide a theoretically unlimited supply.”
+<span class="citation">(Baker 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“The sandbox of the budding builder is not <em>making</em> as much as it is
+modification: taking something that exists and making it better, either
+functionally or aesthetically or both. Often that involves attaching and
+securing parts that were not originally intended to go together.” <span class="citation">(Savage 2020)</span></p>
+</blockquote>
+<p>Thinking about the data-generating process—to figure out how to preprocess
+your data, you need to think about all the processes that influenced it to
+have the characteristics that it does. [Example of a very stressed mouse, or
+recalibrating equipment between runs of samples]</p>
+<blockquote>
+<p>“That a language is easy for the computer expert does not mean it is
+necessarily easy for the non-expert, and it is likely non-experts who will do the
+bulk of the programming (coding, if you wish) in the near future.” <span class="citation">(Hamming 1997)</span></p>
+</blockquote>
+<blockquote>
+<p>“What is wanted in the long run, of course, is that the man with the problem
+does the actual writing of the code with no human interface, as we all to often
+have these days, between the person who knows the problem and the person who
+knows the programming language. This date is unfortunately too far off to
+do much good immediately, but I would think by the year 2020 it would be
+fairly universal practice for the expert in the field of application to do
+the actual program preparation rather than have expers in computers (and
+ignorant in the field of application) do the program preparation.” <span class="citation">(Hamming 1997)</span></p>
+</blockquote>
+<blockquote>
+<p>“Rule 1: Do not attempt to analyze the data until you understand what is being
+measured and why. … You may have to ask a lot of questions in order to clarify the
+objectives, the meaning of each variable, the units of measurement, the meaning
+of special symbols, whether similar experiments have been carried out before, and
+so on.” <span class="citation">(Chatfield 1995)</span></p>
+</blockquote>
+<blockquote>
+<p>“Statistical models usually contain one or more ssytematic components as well as
+a random (or stochastic) component. The random component, sometimes called the noise,
+arises for a variety of reasons, and it is sometimes helpful to distinguish between
+(i) measurement error and (ii) natural random variability arising from differences
+between experimental units and from changes in experimental conditions which cannot
+be controlled. The systematic component, sometimes called the signal, may be deterministic,
+but there is increasing interest in the case where the signal evolves through time
+according to probabilistic laws. In engineering parlance, a statistical analysis
+can be regarded as extracting information about the signal in the presence of noise.”
+<span class="citation">(Chatfield 1995)</span></p>
+</blockquote>
 <hr />
 <p><strong>Data pre-processing</strong></p>
 <p>When we take measurements of experimental samples, we do so with the goal of
@@ -385,6 +2285,26 @@ common file format, like a delimited file or an Excel file, and that version
 of the data can then be read into more general data analysis software, like
 Excel or R.</p>
 <p>[Include a screenshot of this type of software in action.]</p>
+<p>In the simplest case, the point-and-click interface that is used for this
+approach to pre-processing could be Excel or another version of spreadsheet
+software. An Excel spreadsheet might be used with data recorded “by hand” in the
+laboratory, with the researcher using embedded equations (or calculating and
+entering new values by hand) for steps like calculating values based on the raw
+data (for example, determining the time since the start of an experiment based
+on the time stamp of each data collection timepoint). A spreadsheet may also be
+used in steps of quality control. For example, if a recorded data point is known
+to be problematic (for example, …), then the data point may be highlighted in
+some way in the spreadsheet (e.g., with color) or removed entirely by deleting
+or clearing the cell in the spreadsheet.</p>
+<blockquote>
+<p>“There are currently [2017] very few, if any, ‘plug-and-play’ packages that
+allow researchers to quality control (QC), analyse and interpret scRNA-seq
+data, although companies that sell the wet-lab hardware and reagents for
+scRNA-seq are increasingly offering free software (for example, Loupe from
+10x Genomics, and Singular from Fluidigm). These are user-friendly but have the
+drawback that they are to some extent a ‘black box,’ with little transparency
+as to the precise algorithmic details and parameters employed.” <span class="citation">(Haque et al. 2017)</span></p>
+</blockquote>
 <p>The second approach is to conduct the pre-processing directly within general
 data analysis software like R or Python. These programs are both open-source,
 and include extensions that were created and shared by users around the world.
@@ -423,8 +2343,8 @@ extending to write a pre-processing protocol, you can further support the
 ease of adapting and re-using the pre-processing steps you take with one
 experiment when you run later experiments that are similar.</p>
 </div>
-<div id="approaches-to-simple-preprocessing-tasks" class="section level3" number="3.1.3">
-<h3><span class="header-section-number">3.1.3</span> Approaches to simple preprocessing tasks</h3>
+<div id="approaches-to-simple-preprocessing-tasks" class="section level3" number="3.1.8">
+<h3><span class="header-section-number">3.1.8</span> Approaches to simple preprocessing tasks</h3>
 <p>There are several approaches for tackling this type of data preprocessing, to
 get from the data that you initial observe (or that is measured by a piece of
 laboratory equipment) to meaningful biological measurements that can be analyzed
@@ -474,8 +2394,8 @@ experiments and projects, this can add up. This makes it particularly useful to
 write scripts for preprocessing tasks that you find yourself doing again and
 again in the lab.</p>
 </div>
-<div id="approaches-to-more-complex-preprocessing-tasks" class="section level3" number="3.1.4">
-<h3><span class="header-section-number">3.1.4</span> Approaches to more complex preprocessing tasks</h3>
+<div id="approaches-to-more-complex-preprocessing-tasks" class="section level3" number="3.1.9">
+<h3><span class="header-section-number">3.1.9</span> Approaches to more complex preprocessing tasks</h3>
 <p>Other preprocessing tasks can be much more complex, particularly those that need
 to conduct a number of steps to extract biologically meaningful measurements
 from the measurements made by a complex piece of laboratory equipment, as well
@@ -528,8 +2448,8 @@ type of data you’re collecting, and you may want to explore the documentation 
 that particular step of preprocessing to determine what choice is best for your
 data, rather than relying on defaults.</p>
 </div>
-<div id="scripting-preprocessing-tasks" class="section level3" number="3.1.5">
-<h3><span class="header-section-number">3.1.5</span> Scripting preprocessing tasks</h3>
+<div id="scripting-preprocessing-tasks" class="section level3" number="3.1.10">
+<h3><span class="header-section-number">3.1.10</span> Scripting preprocessing tasks</h3>
 <p>Code scripts can be developed for any open-source scripting languages, including
 Python, R, and Julia. These can be embedded in or called from literate programming
 documents, like RMarkdown and Julia, which are described in other modules. The
@@ -635,8 +2555,8 @@ using walnut oil instead of olive oil, or adding mustard) to tweak the
 recipe in slight ways each time you use it, and to get customized outputs.]</p>
 <p>[History of the mouse—enable GUIs, before everything was from the terminal.]</p>
 </div>
-<div id="potential-quotes" class="section level3" number="3.1.6">
-<h3><span class="header-section-number">3.1.6</span> Potential quotes</h3>
+<div id="potential-quotes" class="section level3" number="3.1.11">
+<h3><span class="header-section-number">3.1.11</span> Potential quotes</h3>
 <blockquote>
 <p>For bioinformatics, “all too often the software is developed without
 thought toward future interoperability with other software products. As a
@@ -1463,8 +3383,8 @@ on the equipment when the samples were run.
 <p>“Normalizing features’ signal intensities is required, but at present not (yet) supported in xcms (some methods might be added in near future). It is advised to use the SummarizedExperiment returned by the quantify method for any further data processing, as this type of object stores feature definitions, sample annotations as well as feature abundances in the same object. For the identification of e.g. features with significant different intensities/abundances it is suggested to use functionality provided in other R packages, such as Bioconductor’s excellent limma package.” <span class="citation">(Smith 2013)</span></p>
 </blockquote>
 </div>
-<div id="discussion-questions-1" class="section level3" number="3.1.7">
-<h3><span class="header-section-number">3.1.7</span> Discussion questions</h3>
+<div id="discussion-questions-1" class="section level3" number="3.1.12">
+<h3><span class="header-section-number">3.1.12</span> Discussion questions</h3>
 
 </div>
 </div>

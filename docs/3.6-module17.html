@@ -160,8 +160,18 @@ example to convert from the complex data format from pre-processing to a format
 better for further data analysis and visualization</li>
 <li>Understand how these tools would fit in their own research pipelines</li>
 </ul>
-<div id="combining-bioconductor-and-tidyverse-approaches-in-a-workflow" class="section level3" number="3.6.1">
-<h3><span class="header-section-number">3.6.1</span> Combining Bioconductor and tidyverse approaches in a workflow</h3>
+<div id="pipelines-that-combine-complex-and-tidy-data-structures" class="section level3" number="3.6.1">
+<h3><span class="header-section-number">3.6.1</span> Pipelines that combine complex and tidy data structures</h3>
+</div>
+<div id="techniques-for-connecting-from-complex-to-tidy-data-in-a-pipeline" class="section level3" number="3.6.2">
+<h3><span class="header-section-number">3.6.2</span> Techniques for connecting from complex to tidy data in a pipeline</h3>
+</div>
+<div id="examplecomplex-to-tidy-pipeline-for-scrna-seq-data-analysis" class="section level3" number="3.6.3">
+<h3><span class="header-section-number">3.6.3</span> Example—Complex to tidy pipeline for scRNA-Seq data analysis</h3>
+<hr />
+</div>
+<div id="combining-bioconductor-and-tidyverse-approaches-in-a-workflow" class="section level3" number="3.6.4">
+<h3><span class="header-section-number">3.6.4</span> Combining Bioconductor and tidyverse approaches in a workflow</h3>
 <p>In the previous modules, we have talked about two topics. First we have talked about the convenience and power of tidyverse tools. These tools can be used at points in your workflow when the data can be stored in a simple standard format: the tidy dataframe format. We have also talked about reasons why there are advantages to using more complex data storage formats earlier in the process.</p>
 <p>Work with research data will typically require a series of steps for
 pre-processing, analysis, exploration, and visualization. Collectively, these
@@ -221,8 +231,8 @@ data to be stored in a way that both accounts for complexity early and
 pre-processing of these data but also allows for a more natural integration with
 the wealth of powerful tools available through the tidyverse approach.</p>
 </div>
-<div id="the-biobroom-package" class="section level3" number="3.6.2">
-<h3><span class="header-section-number">3.6.2</span> The <code>biobroom</code> package</h3>
+<div id="the-biobroom-package" class="section level3" number="3.6.5">
+<h3><span class="header-section-number">3.6.5</span> The <code>biobroom</code> package</h3>
 <p>The <code>biobroom</code> package includes three main generic functions (methods), which
 can be used on a number of Bioconductor object classes. When applied to object
 stored in one of these Bioconductor classes, these functions will extract part
@@ -276,17 +286,17 @@ the right container for operations from <code>edgeR</code>. Then functions from 
 data. The result is an object in the <code>DGEExact</code> class, which is defined
 by the <code>edgeR</code> package. To extract data from this class in a tidy format,
 you can use the <code>tidy</code> and <code>glance</code> functions from <code>biobroom</code>.]</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="3.6-module17.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biobroom)</span>
-<span id="cb4-2"><a href="3.6-module17.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Biobase)</span>
-<span id="cb4-3"><a href="3.6-module17.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(edgeR)</span>
-<span id="cb4-4"><a href="3.6-module17.html#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="3.6-module17.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(hammer)</span>
-<span id="cb4-6"><a href="3.6-module17.html#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="3.6-module17.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(hammer)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="3.6-module17.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biobroom)</span>
+<span id="cb7-2"><a href="3.6-module17.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Biobase)</span>
+<span id="cb7-3"><a href="3.6-module17.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(edgeR)</span>
+<span id="cb7-4"><a href="3.6-module17.html#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="3.6-module17.html#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(hammer)</span>
+<span id="cb7-6"><a href="3.6-module17.html#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="3.6-module17.html#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(hammer)</span></code></pre></div>
 <pre><code>## [1] &quot;ExpressionSet&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;Biobase&quot;</code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="3.6-module17.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(hammer)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="3.6-module17.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(hammer)</span></code></pre></div>
 <pre><code>## # A tibble: 236,128 × 3
 ##    gene               sample    value
 ##    &lt;chr&gt;              &lt;chr&gt;     &lt;int&gt;
@@ -301,21 +311,21 @@ you can use the <code>tidy</code> and <code>glance</code> functions from <code>b
 ##  9 ENSRNOG00000000021 SRX020102     7
 ## 10 ENSRNOG00000000024 SRX020102    86
 ## # … with 236,118 more rows</code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="3.6-module17.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Example from `biobroom` help documentation</span></span>
-<span id="cb8-2"><a href="3.6-module17.html#cb8-2" aria-hidden="true" tabindex="-1"></a>hammer.counts <span class="ot">&lt;-</span> <span class="fu">exprs</span>(hammer)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb8-3"><a href="3.6-module17.html#cb8-3" aria-hidden="true" tabindex="-1"></a>hammer.treatment <span class="ot">&lt;-</span> <span class="fu">phenoData</span>(hammer)<span class="sc">$</span>protocol[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb8-4"><a href="3.6-module17.html#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="3.6-module17.html#cb8-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(<span class="at">counts=</span>hammer.counts,<span class="at">group=</span>hammer.treatment)</span>
-<span id="cb8-6"><a href="3.6-module17.html#cb8-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(y)</span>
-<span id="cb8-7"><a href="3.6-module17.html#cb8-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateCommonDisp</span>(y)</span>
-<span id="cb8-8"><a href="3.6-module17.html#cb8-8" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateTagwiseDisp</span>(y)</span>
-<span id="cb8-9"><a href="3.6-module17.html#cb8-9" aria-hidden="true" tabindex="-1"></a>et <span class="ot">&lt;-</span> <span class="fu">exactTest</span>(y)</span>
-<span id="cb8-10"><a href="3.6-module17.html#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="3.6-module17.html#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(et)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="3.6-module17.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Example from `biobroom` help documentation</span></span>
+<span id="cb11-2"><a href="3.6-module17.html#cb11-2" aria-hidden="true" tabindex="-1"></a>hammer.counts <span class="ot">&lt;-</span> <span class="fu">exprs</span>(hammer)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb11-3"><a href="3.6-module17.html#cb11-3" aria-hidden="true" tabindex="-1"></a>hammer.treatment <span class="ot">&lt;-</span> <span class="fu">phenoData</span>(hammer)<span class="sc">$</span>protocol[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb11-4"><a href="3.6-module17.html#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="3.6-module17.html#cb11-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(<span class="at">counts=</span>hammer.counts,<span class="at">group=</span>hammer.treatment)</span>
+<span id="cb11-6"><a href="3.6-module17.html#cb11-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(y)</span>
+<span id="cb11-7"><a href="3.6-module17.html#cb11-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateCommonDisp</span>(y)</span>
+<span id="cb11-8"><a href="3.6-module17.html#cb11-8" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateTagwiseDisp</span>(y)</span>
+<span id="cb11-9"><a href="3.6-module17.html#cb11-9" aria-hidden="true" tabindex="-1"></a>et <span class="ot">&lt;-</span> <span class="fu">exactTest</span>(y)</span>
+<span id="cb11-10"><a href="3.6-module17.html#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="3.6-module17.html#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(et)</span></code></pre></div>
 <pre><code>## [1] &quot;DGEExact&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;edgeR&quot;</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="3.6-module17.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(et)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="3.6-module17.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(et)</span></code></pre></div>
 <pre><code>## # A tibble: 29,516 × 4
 ##    gene               estimate  logCPM    p.value
 ##    &lt;chr&gt;                 &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;
@@ -330,7 +340,7 @@ you can use the <code>tidy</code> and <code>glance</code> functions from <code>b
 ##  9 ENSRNOG00000000021  -2.02    0.211  0.0373    
 ## 10 ENSRNOG00000000024   0.133   3.97   0.508     
 ## # … with 29,506 more rows</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="3.6-module17.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(et)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="3.6-module17.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(et)</span></code></pre></div>
 <pre><code>##   significant     comparison
 ## 1        6341 control/L5 SNL</code></pre>
 <p>The creator of the <code>broom</code> package listed some of the common ways that
@@ -412,7 +422,7 @@ you could easily create a set of histograms, one per sample, showing the
 distribution of expression levels across all genes in each sample:
 [better example visualization here?]</p>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="improve_repro_files/figure-html/unnamed-chunk-66-1.png" width="672"  /></p>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-68-1.png" width="672"  /></p>
 <p>You can also incorporate data that are stored in the <code>phenoData</code> slot of
 the <code>ExpressionSet</code> object by specifying <code>addPheno = TRUE</code>:</p>
 <pre><code>## # A tibble: 236,128 × 8
@@ -432,11 +442,11 @@ the <code>ExpressionSet</code> object by specifying <code>addPheno = TRUE</code>
 <p>With this addition, visualizations can easily be changed to also show the
 experimental group of each sample:</p>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="improve_repro_files/figure-html/unnamed-chunk-68-1.png" width="672"  />
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-70-1.png" width="672"  />
 You can also do things like look at differences in values for
 specific genes, pairing tools for exploring data with tools for
 visualization, both from the tidyverse:</p>
-<p><img src="improve_repro_files/figure-html/unnamed-chunk-69-1.png" width="672"  /></p>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-71-1.png" width="672"  /></p>
 <p>The data for a subset of the sample can be analyzed using functions from the
 <code>edgeR</code> package, to complete needed pre-processing (for example, calculating
 normalizing factors with <code>calcNormFactors</code>, to reduce impacts from technical
@@ -547,16 +557,16 @@ significant differences in expression level, based on the values in the
 <p>As another example, you can now use tools from <code>ggplot2</code>, as well as
 extensions built on this package, to do things like create a volcano
 plot of the data with highlighting of noteworthy genes on the plot:</p>
-<p><img src="improve_repro_files/figure-html/unnamed-chunk-78-1.png" width="672"  /></p>
+<p><img src="improve_repro_files/figure-html/unnamed-chunk-80-1.png" width="672"  /></p>
 <p>If you wanted to access the help files for these <code>biobroom</code> methods for this
 object class, you could do so by calling help in R (<code>?</code>) using the name of the
 method, a dot, and then the name of the object class, e.g., <code>?tidy.DGEExact</code>.</p>
 </div>
-<div id="the-ggbio-package" class="section level3" number="3.6.3">
-<h3><span class="header-section-number">3.6.3</span> The <code>ggbio</code> package</h3>
+<div id="the-ggbio-package" class="section level3" number="3.6.6">
+<h3><span class="header-section-number">3.6.6</span> The <code>ggbio</code> package</h3>
 </div>
-<div id="subsection-2-2" class="section level3" number="3.6.4">
-<h3><span class="header-section-number">3.6.4</span> Subsection 2</h3>
+<div id="subsection-2-2" class="section level3" number="3.6.7">
+<h3><span class="header-section-number">3.6.7</span> Subsection 2</h3>
 <blockquote>
 <p>“The biobroom package contains methods for converting standard objects in Bioconductor into a ‘tidy format.’ It serves as a complement to the popular broom package, and follows the same division (tidy/augment/glance) of tidying methods.”
 <span class="citation">(Bass et al. 2020)</span></p>
@@ -837,9 +847,25 @@ intellegent defaults and explicit orientation towards the grammar of
 graphics model.” <span class="citation">(Yin, Cook, and Lawrence 2012)</span>
 <span class="citation">(Yin, Cook, and Lawrence 2012)</span></p>
 </blockquote>
+<p>When you have different types and formats of input, you need different tools to
+operate on them. For example, you’d (ideally) use different types of scissors
+depending on whether you needed to cut paper or cloth or metal
+<span class="citation">(Savage 2020)</span>. In a similar way, you can think of these “classes” of
+objects in R as different materials or types of inputs, and therefore a function
+that works when you input data in one object class won’t work with a different
+object class. The beauty of the tidyverse set of tools is that their system
+enforces a common input “material”—the tidy dataframe—and as a result all
+the functions work on this type of input. You can always, in other words, assume
+that you are working with one material (say paper), and what’s more, you can
+(almost) always assume that you’ll get your output in that “material” as well.
+That means that you have a set of tools that works on one type of material
+(scissors for paper, glue for paper, tape for paper, pens for writing on paper),
+but you can combine them in different ways across your pipeline, because no
+matter how much you’ve cut or glued or written on your paper at any given point,
+it’s still paper, and so you can still use paper-focused tools.</p>
 </div>
-<div id="applied-exercise-5" class="section level3" number="3.6.5">
-<h3><span class="header-section-number">3.6.5</span> Applied exercise</h3>
+<div id="applied-exercise-4" class="section level3" number="3.6.8">
+<h3><span class="header-section-number">3.6.8</span> Applied exercise</h3>
 
 </div>
 </div>
