@@ -13,6 +13,517 @@ coding in R
 - Run an R script
 - List some popular packages in R for pre-processing biomedical data
 
+### What is a code script?
+
+Interactive coding you can do in what's called the console. With this style of
+coding, you enter a single command or function call at the cursor in the
+console, tell the program to execute that one element of code (for example, by
+pressing the Return key), and then wait until it executes it before you enter
+the next command or function call.
+
+A script, on the other hand, is a longer document that gives all the steps in a
+process. You can think of a script as being like a script for a play---it's a
+record of everything that happens over the course of the event. For a play, the
+script records the dialogue and stage directions for a play, while for a data
+preprocessing task, it can record all the steps from inputting the data through
+to saving the data in a processed form for further analysis, visualization, and
+statistical testing.
+
+You can run the same code whether you're using a script or typing in the
+commands one at a time in the console. However, when you code interactively at
+the console, you're not making a record of each of your steps (as a note, there
+are ways to save the history of commands typed at a console, but it can be very
+messy to try to use later to reproduce and remember what you did originall, so
+you should consider commands that are typed at the console to not be recorded
+for the purposes of reproducibility). When you write your code in a script, on
+the other hand, you do have a record that you can later reopen to see what you
+did or to repeat the steps. In a very broad way, you can visualize this process
+as walking in wet sand---you are making a record (footsteps) of the path you
+took while you make that path by walking it the first time.
+
+A code script is typically written in a plain text document, and you can create,
+edit, and save code scripts in any interactive development environment (like
+RStudio if you are programming in R). The program (R for example) can then read
+and run this script as a "batch" at any time. In other words, it can walk
+through and execute each piece of code that you recorded in the script, rather
+than you needing to enter each line of code one at a time in the console. For 
+many programming languages, you can also run the code in a script in smaller 
+sections, executing just one or a few lines at a time to explore what's happening
+in each line of the code. With this combination of functionality, as well as
+recording of code for future reference or reproduction, code scripts provide
+an excellent method for building and using pipelines of code to preprocess
+biomedical data. 
+
+In later sections of this module, we'll walk through the practical steps of
+writing one of these code scripts, as well as look at an example script for a
+simple task in biomedical data preprocessing, calculating the rate of growth of
+bacteria under different growing conditions.
+
+### How code scripts improve reproducibility of preprocessing
+
+### How to write an R code script
+
+In this section, we'll go through some basics to help you get started writing a code
+script in R. The process of writing a code script is similar in many other interpreted
+languages, like Python and Julia. If you are familiar with writing code scripts in R, 
+you may want to skip this section. 
+
+We'll start with a few basics of the conventions of the R programming language. If you 
+have never used R before, it is critical to understand these basic pieces---just enough
+so you can understand how an R code script is put together and run. In later modules, 
+we'll go into some more detail about some helpful tools in R, including Bioconductor
+data structures and the suite of "tidyverse" tools that are now taught in most beginner
+R programming courses. We will have room to provide a full course on how to program in 
+R, but we are aiming to give you enough of a view that you can understand how R programming
+can fit in to the data preprocessing and analysis pipeline for laboratory-based biomedical 
+research projects. In a later chapter, we'll provide directions to more resources if you 
+would like to continue developing your expertise in R programming beyond the basics 
+covered in these modules. 
+
+**What is an R object?**
+
+First, you'll need to understand where R "keeps" data while you're working with
+it. When you work in R, any piece of data that you work with will be available
+in something called an "object". The simplest way to think of this R object is
+simply as a container for data. Different objects can be structured in different
+ways, in terms of how they arrange the data---which has implications about how
+you can access the data from that object---but regardless of this structure, all
+R objects share the same purpose of storing data in a way that's available to
+you as you work in R.
+
+One of the first steps in most R scripts, therefore, will be to create some of
+these objects. Until you have some data available, there's not much interesting
+stuff that you can do in R. If you want to work with data that are stored in a
+file---for example, data that you recorded in the laboratory and saved in an
+Excel file---then you can create an R object with that data by reading in the
+data using a specific R function (we'll cover these in a minute). This will read
+the data in R and store it in an object where you can access it later.
+
+To keep track of the objects you have in your R session, you typically assign
+each object a name. Any time you want to use the data in that object, or work 
+with the object in any way, you can then refer to it by that name, rather than 
+needing to repeat all the code you used to initially create it. You can assign 
+an object its name using a special function in R called the "gets arrow" or 
+assignment operator. It's an arrow made of the less than and hyphen keys, with 
+no spaces between the two (`<-`). You'll put the name you want to give the object
+to the left of this arrow and the code to create the object (for example, to read
+in data from a file) to the right. Therefore, the beginning of your R script
+will often have one or more lines of code that look like this: 
+
+```{r eval = FALSE}
+my_data <- read_excel("my_recorded_data.xlsx")
+```
+
+In this example, the line of code is reading in data from an Excel file named
+"my_recorded_data.xlsx" and storing in an R object that is assigned the name 
+`my_data`. When you want to work with these data later in the code pipeline, you 
+can do so by referencing `my_data`, which now stores the data from that file. 
+
+In addition to creating objects from the data that you initially read in, you will 
+likely create more intermediate objects along the way. For example, if you take
+your initial data and filter it down to a subset, then you might assign that version 
+of the data to a separate object name, so you can work with that version later in 
+your code. Alternatively, in some cases you'll just overwrite the original object
+with the new version, using the same object name (for example, creating a subset of
+the `my_data` object and assigning it the same name of `my_data`). This reassigns the
+object name---when you refer to `my_data` from that point on, it will contain the 
+subsetted version. However, in some cases this can be useful because it helps keep 
+the collection of R objects you have in your session a bit smaller and simpler. What's 
+more, you can make these changes to simplify the version of the data you're working 
+with in R without worrying about it changing your raw data. Once you read the data 
+in from an outside file, like an Excel file, R will work on a copy of that data, not
+the original data. You can make as many changes as you want to the data object in R
+without it changing anything in your raw data. 
+
+**What are R functions and an R function calls?**
+
+The next key component of the R programming language is the idea of R functions
+and R function calls. These are the parts of R that do things (whereas the objects in R
+are the "things" that these functions operate on). An R function is a tool that can 
+take one or more R objects as inputs, do something based on those inputs, and return a 
+new R object as the output (occasionally they'll also have "side effects" beyond returning
+this R object---for example, some functions will make a plot and show it in the plotting 
+window of RStudio). 
+
+The R objects that you input can be ones that you've assigned to a name (for
+example, `my_data`). They can also be simple objects that you make on the fly,
+just to have to input to that function. For example, if you're reading in data
+from a file, one of the R object inputs you'll need to give the function is the
+path to that file, which you could either save as an object (e.g.,
+`my_data_filepath <- "my_recorded_data.xlsx"` and then reference
+`my_data_filepath` when you call the function) or create as an object on the fly
+when you call the function (e.g., just put `"my_recorded_data.xlsx"` directly in
+the function call, as shown in the example above).
+
+The function itself is the tool, which encapsulates the code to do something with 
+input objects. When you use that tool, it's called *calling* the function. Therefore, 
+all of the lines of code in your script will give *function calls*, where you are 
+asking R to run a specific function (or, in some cases, a linked set of functions) 
+based on specified inputs. 
+
+For example, the following function call would read in data from the Excel file 
+"my_recorded_data.xlsx": 
+
+```{r eval = FALSE}
+read_excel("my_recorded_data.xlsx")
+```
+
+This line of code is calling the function `read_excel`, which is a tool for inputting
+data from an Excel file into an R object with a specific data structure. By running 
+this line of code, either at the console or in an R script, you are asking R to input
+data from the file named "my_recorded_data.xlsx", which is the R object that you're 
+giving as an input to the function. This particular call would only read the data in---it
+won't assign the resulting object to a name, but instead will just print out the data
+at the R console. 
+
+If you'd like to read the data in and save it in an object to use later, you'll
+want to add another function to this call, so that you assign the output object
+a name. For this, you'll use the gets arrow that we described earlier. This is a
+special type of function in R. Most R functions consist of the function's name,
+followed by parentheses inside of which you put the objects to input to the
+function (e.g., `read_excel("my_recorded_dat.xlsx"`). The gets arrow is a
+different type of function called an operator. These functions go between two
+objects, both of which are input to the operator function. They're used often
+for arithmetic (for example, the `+` operator adds the values in the objects
+before and after it, so that you can call `1 + 2` to add one and two). For the
+gets arrow, it will go between the name that you want to assign to the object
+(e.g., `my_data`) and the function call that creates that object (e.g.,
+`read_excel("my_recorded_data.xlsx")`):
+
+```
+my_data <- read_excel("my_recorded_data.xlsx")
+```
+
+In this case, the line that R will execute will include two functions, where the 
+output of one gets linked straight into the second, and the result will be the 
+output from the second function (that the data in the Excel file is stored in 
+an object assigned the name `my_data`). 
+
+As you write an R script, you will use function calls to work through the 
+preprocessing steps. You can use different function calls to do things like
+apply a transformation, average values across groups, or reduce dimensions of
+a high-dimensional dataset. Once you've preprocessed the data, you can also use 
+function calls to run statistical tests with the data and to visualize results
+through figures and tables. The process of writing a script is normally very 
+iterative---you'll write the code to do the first few steps (e.g., read in the 
+data), look at what you've got, plan out some next steps, try to write some
+code for those steps, run it and check your output, and so on. The process is 
+very similar to drafting a paper. You can try things out in early steps---and
+some steps won't work out at first, or it will turn out that you don't need them. 
+As you continue, you'll refine the script, editing it down to the essential 
+steps and making sure each function call within those steps is operating as you 
+intend. While it can be intimidating to start with a blank file and develop some
+code---just like it is with a blank piece of paper when writing a manuscript---just 
+like with writing, you are able to start with something rough and then iterate
+until you arrive at the version you want.
+
+This process might seem a bit overwhelming when you first learn it, but it
+suffices at this point if you understand that, in R code, you'll be working with
+objects (your materials) and functions (your tools). As we look through R
+scripts in later parts of this module, we'll see these two pieces---objects and
+functions---used again and again in the scripts. They are the building blocks
+for your R scripts.
+
+**What is an R library?**
+
+There's one last component of R that will be helpful to understand as we move through
+the rest of this module and the next few modules. That's the idea of an R package, and 
+fortunately, it's a pretty straightforward one. 
+
+We just talked about how functions in R are tools, which you can use to do interesting 
+things with your data (including all the preprocessing steps we talked about in the
+last module). However, the version of R that you initially install to your computer
+(available for free for all major operating systems at https://cran.r-hub.io/) doesn't
+include all the tools that you will likely want to use. The initial download gives you 
+the base of the programming language, which is called base R, as well as a few 
+extensions of this for very common tasks, like fitting some common statistical models. 
+
+Because R is an open-source software, people who use R can build on top of this
+simple base. R users can create new functions that combine more rudimentary
+tools in base R to create customized tools suited to their own tasks. R users
+can create these tools for their own personal use, and often do, but there is
+also a mechanism for them to share these new tools with others if they'd like.
+They can bundle a set of R functions they've created into an *R package* and
+then post this package on a public repository where others can download it and
+use the functions in it. 
+
+In some of the examples in these modules, we'll be using tools from these packages, 
+and it's rare that someone uses R without using at least some of these supplementary 
+packages, so it's good to get an idea of how to get and use them. The people who 
+make packages can share them in a number of repositories, but the most standard repository 
+for sharing R packages widely is the Comprehensive R Archive Network (CRAN). If a 
+package is shared through CRAN, you can get it using the function `install.packages`
+along with the package's name. For example, in the code we showed earlier, the 
+`read_excel` function does not come with base R, but instead is part of a package called
+`readxl`, which is shared on CRAN. To download that package so that you can use its 
+functions, you can run: 
+
+```
+install.packages("readxl")
+```
+
+This will download the code for the package and unpack it in a special part of your computer
+where R can easily find it. You only need to install a package once, at least until you 
+get a new computer or update your version of base R. However, to use the functions in 
+that package, you'll need to *load* the package in your current R session. This makes 
+the functions in that package available to you as you work in that R session. To do this, 
+you use the `library` function, along with the name of the package. For example, to load the 
+`readxl` package in an R session, you'd need to run: 
+
+```
+library("readxl")
+```
+
+While you only need to install a package once, you need to load it every time
+you open a new R session to do work, if you want to use its functions in that R
+session. Therefore, you'll often see a lot of calls to the `library` function in
+R scripts. You can use this call anywhere in the script as long as you put it
+before code where you use the library's functions, but it's great to get in the
+habit of putting all the `library` function calls at the start of your R script.
+That way, if you share the script with someone else, they can quickly check to
+see if they'll need to install any new packages before they can run the code in
+the script.
+
+**Using a plain text file, edited in a plain text editor (can open in RStudio IDE)**
+
+Based on the points that we've just discussed, hopefully you can envision now that 
+an R script will ultimately include a number of lines of code, covering a number of 
+R function calls that work with data stored in objects. You can expect there to be 
+lots of calls that assign objects their own names (with `<-`), and the function 
+calls will typically include both a function called by name and some objects as input
+to that function, contained inside parentheses after the function name. 
+
+This type of script should be written in plain text, and so the best way to create
+an R script is by using a text editor. Your computer likely came with a text editor
+as one of the pieces of utility software that was installed by default. However, with 
+R scripts, it can be easier to use the text editor that comes as part of RStudio. This
+allows you to open and edit your scripts in a nice environment, one that includes a
+console area where you can test out pieces of code, a pane for viewing figures, and 
+so on. 
+
+In RStudio, you can create a new R script by going to the "File" menu at the top
+of the screen, choosing "New File" and then choosing "R Script". This will open
+a new plain text file that, by default, will have the file extension ".R" (e.g.,
+"my_file.R"), which is the standard file extension for R scripts. Once you've created
+an R script file, you can begin writing your script. In the next section, we'll walk 
+through how you can run code that you've put into your script. However, we think it's 
+worth mentioning that, as you get started on this process, you might find it easiest 
+to start not by writing your own R script from scratch, but instead by starting with 
+someone else's and walking through that. You can explore how it works (reverse engineer
+it). Then you can try changing small parts, to see if it acts as you expect when you do. 
+This process will help you get a feel for how these scripts are organized and how 
+they operate. Later in this module, we'll provide an R script for a basic laboratory
+data preprocessing task and walk you through it, so you can use that as a starting point
+to understand how it would work to create, edit, and run your own R script. 
+
+### How to run code in an R script
+
+Once you've written code in an R script, you can run (execute) that code in a number of
+ways. First, you can run all the code in the script at once, which is known as *batch 
+execution*. When you do this, all the code in the script will be executed by R, and while
+it's executed by R one line at a time, you won't have the chance to make changes along
+the way. If you compare it to the idea of a code script as like a play script, you can 
+think of this as being like when the play is performed for an audience---you start the 
+play, but then you don't have the chance to stop and work on it as it's going. Instead, 
+it will go straight through to the end. If there is an error somewhere along the way, then
+the code will stop running at that point and you'll get an error message, but otherwise
+when you run the code as a batch, R won't stop executing the lines until it gets to the
+end. This mode of running the code is great for once you've developed a pipeline that
+you're happy with---it quickly runs everything and provides the output. 
+
+The other way that you can execute the code is by running a single line, or a small set 
+of lines, of the code at a time. In the play analogy, this is similar to what might happen
+during rehearsals, when you go through part of the play script and then stop to get comments
+from the director, then either re-try that part with a few changes or move on to the 
+next small part. This mode of running the code is great for when you're developing the 
+pipeline. Just like with a play's rehearsals, you'll want a lot of chances to explore
+and change things as you develop the final product, and this mode of running code is 
+excellent for exploration and editing. Often, most of your time when you code will 
+be spent doing this style of code execution. Running in batch mode will get a lot of 
+work done, but is very quick for the programmer---developing the code is what takes
+time, and just like with writing a manuscript, this time comes from drafting a rough
+draft and then editing it until you arrive at a clean and clear final version. 
+
+Both of these methods of code execution are easy to do in RStudio. Since you'll usually
+start by using line-by-line execution, we'll start with showing how you can do that. 
+In RStudio, you can open your code script (a file ending in ".R"), and you will still 
+be able to see the console, which is a space for submitting function calls to R. 
+To execute the code in the script one line at a time, there's a few quick ways that you can 
+tell RStudio to send that line in the script to the console to run. Start by putting your
+cursor on that line of code. One way to now execute this line (i.e., send it to the console to run)
+is to click on the "Run" button in the top right-hand corner of the script file. If you try 
+this, you should see that this line of code gets sent to the console pane of RStudio, and 
+the results from running that line are shown in the console. 
+
+Even quicker is a keyboard shortcut that does the same thing. (Keyboard
+shortcuts are short control sequences that you type in your keyboard to run a
+command. They're faster than clicking buttons because you can do them without
+taking your hands off the keyboard. Ctrl-C is one very common one that you might
+have used before, which in most programs will copy the current selection.) With your
+cursor on the line of the function call that you want to execute, use the keyboard
+shortcut Ctrl-Enter (depending on your operating system, you may need to use
+Command rather than Ctrl).
+
+You can use a similar method to run a few lines of code at once. All you have to 
+do is highlight the code that you want to run, and then you can use either of 
+the two methods (click the "Run" button or use the Ctrl-Enter keyboard shortcut). 
+
+[Figure---how to execute one or a few lines of code in RStudio]
+
+To execute an R script in batch mode, there are again a could of ways you can do
+it. First, there is a "Source" button in the top right of the R script file when
+you open it in RStudio. You can click on this button and it will run the entire
+script as a batch. There is also an R command that you can use to source a file
+based on its file name, `source`. If you have a file in your working directory
+named "my_pipeline.R", for example, you can execute the code in it in a batch by
+running `source("my_pipeline.R)".
+
+[Figure---how to execute an R script as a batch]
+
+To get started, it's probably easiest to just use the buttons "Run" and "Source" 
+that RStudio provides in the window for the R script file. As you do more work, you
+may find some of these other methods help you work faster, or allow you to do
+more interesting things, so it's good to know they're there, but you don't need
+to try to navigate them all as you learn how to run code in an R script. 
+
+### Simple example---Bacterial growth rate
+
+(A simple example of writing a code script for data preprocessing)
+
+
+
+### Style guidelines for writing code scripts
+
+**Find favorite tools and get to know them**
+
+**Modify rather than start from scratch**
+
+**Modular, not monolithic**
+
+**Iterate!**
+
+**Do not repeat yourself**
+
+As you become more familiar with programming with R, you can start to evolve your 
+style of writing scripts in more advanced ways. A key one is to learn how to limit
+how often you repeat the same code. As you write data preprocessing pipelines, you'll
+find that you often need to do the same thing, or variations on the same thing, over
+and over. For example, you may need to read in and clean several files of the same 
+type and structure. You will likely, at first at least, find yourself copying and 
+pasting the same code to several parts of your script, with only minor changes to 
+that code (e.g., changing the R object that you input each time). 
+
+Don't worry too much about this as you start to learn how to write R scripts. This
+is a normal part of the drafting process. However, as you get better at using R, you'll
+want to learn techniques that can help you avoid this repetition. 
+
+There are a few reasons that you'll want to avoid repetition in your code when
+possible. First, these repeated copies of the same or similar code will make your
+code script much longer and harder to read through later to figure out what you did. 
+Second, it is hard to keep these copies of code in sync with each other. For example, if 
+you have several copies of the code you use to check for outliers in your data, and you 
+decide you want to change how you are doing that, you'll need to find every copy of
+the code in your script and make sure you make the same change in each place. Instead, 
+if you have less repetition in your code, then you can make the change in a single place
+and ensure that the change will be in place everywhere you are doing that process. 
+
+There are a few tools that are useful to develop to help avoid repetition. The first
+is to learn how to write your own R functions. Any R user can write a new function, and
+you can write these for your personal use, in addition to writing them in packages you
+plan to share with others. When you wrap a function, it encapsulates the code for something
+that you need to do, and it allows you to do that thing anywhere else in your code 
+just by calling that new function, rather than copying all the lines of the original code.
+This is an excellent way to write the code you need to use often in one place, rather than 
+copying and pasting the same code throughout your R script. 
+
+Since you need to run the code that defines the function before you use it, it
+often makes sense to write any code that creates these functions near the top of
+your code script. If you find that you've written a lot of functions, or that
+you've written functions that you'd like to use in more than one of your data
+preprocessing scripts, you can even save the code that creates the functions in
+a separate R script and just source that separate script at the top of each
+script that uses the function, using the `source` call (and eventually you could
+even think of creating your own package with those functions).
+
+There is one other excellent set of tool for avoiding repetition that we want to mention. 
+Again, it is likely more complex that what you'll want to start off with as you 
+learn to write R scripts, but once you are comfortable with the basics, it's a 
+powerful tool for creating code scripts that are as short and simple as possible 
+while doing very powerful things. This set of tools all focus on iteration. They 
+include `for` loops, which allow you to step through elements in a data structure 
+and apply the same code to each. They also include a set of tools in the `purrr` 
+library that allow you to apply the same code, through a function, to each element
+in a larger data structure. These are excellent tools when you are doing something 
+like reading in a lot of similar files and combining them into a single R object for
+preprocessing. 
+
+We will not go into details about how to write R functions or these iteration
+tools in these modules, as our aim here is to get you started and give you an
+overview of where you might want to go next. If you do want to learn to write
+your own R functions, there's a chapter describing the process in the free
+online book "R for Data Science" with guidance on this topic
+(https://r4ds.had.co.nz/functions.html). If you'd like to learn more about tools
+for iteration, the same book also has a chapter on that
+(https://r4ds.had.co.nz/iteration.html).
+
+**For humans to read, not just computers**
+
+**Some things belong in the console, not the script**
+
+Finally, keep in mind that all of the code you write, as you develop a script with 
+a pipeline, does *not* need to be recorded in the script. Of course you will want
+to include all the code that is necessary for the script as a whole to work on its
+own. However, as you develop code, you'll take some steps to explore your data or
+to do things like installing packages that you don't have yet. 
+
+For example, as you work on your code, you'll likely want to look at the contents
+of your R objects as you work on them. If you have read in your data from a file into
+an R object, you'll want to look and make sure it looks like it read in correctly. 
+If you have created a new object that summarizes the original data by taking the 
+average of each group, you'll probably want to look at that as you develop the code
+to create it, again to check and explore as you build the code. To do this, you can 
+call the object's name (e.g., type `my_data` and run it) or use functions like 
+`head`, which prints out the first few rows or items of the object (e.g., `head(my_data)`), 
+`tail`, which prints out the last few rows or items of the object, or `str`, which 
+summarizes the structure and contents of the object. 
+
+All of these are useful to run as you draft and edit your code, but calls like this that
+print out pieces of the data to check aren't necessary in the final R script (and in 
+fact can make it messier than it needs to be and result in a lot of extra print-out at
+the console when you run the code as a batch once you've finalized it). As you develop
+your code, then, try to get in the habit of not writing these types of exploratory 
+function calls in the script you're developing. Instead, write them directly in the 
+console and run them from there. 
+
+[Figure---writing exploratory code in the console versus the R script. Same for installing
+packages]
+
+The other piece of code that you should run in the console rather than saving in the R script is
+code to install new packages. Since you only need to install a package once (until you get a
+different computer or update base R), you don't need to run `install.package` function calls
+everytime you run the code in a script. Including these functions in the script will therefore
+just slow it down. Instead, go to your console directly to write the function calls to install
+new packages (or, if you prefer, in RStudio you can go to Tools on the menu bar and select 
+Install Packages).
+
+The final goal is to develop an R script that has everything it needs to run the full pipeline
+from in a fresh R session. In other words, if it uses functions from packages, it will include
+the code to load those packages (`library` function calls). For every R object that it uses, there
+will be code that creates that object in the script. It will not include, however, extra pieces
+of code that were used to explore the objects as you built the code. To test that the R script can 
+run in a fresh R session, you can close R and reopen it (make sure that you've set your global
+options in R to never save the workspace to .Rdata on exit, to not restore the .Rdata into the
+workspace on exit, and to not save the history, all of which you can set by going to the RStudio
+Tools menu item and selecting Global Options). When you reopen R, there will not be any objects
+in the environment, and there will not be a history of any of the previous function calls that
+you ran. Try running the code in the script in this fresh environment and make sure that you 
+weren't relying on anything that you did outside the script to make the code work. If the code
+can run in a fresh environment like this, then any R user should be able to rerun everything
+in the script themselves (although they may need to install a few new libraries first if they 
+don't have all the required libraries yet). 
+
+------------------------------------------------------------------------------------
+
 ### Compiled versus interpreted programming languages
 
 When computers were first being developed, they were very tricky to program, 
@@ -66,5 +577,125 @@ results you see at each step.
 
 A code script is essentially a recipe for cleaning and analyzing data. 
 
-### Applied exercise
+### Section
+
+> "Every maker needs to give themselves the space to screw up in the pursuit of 
+perfecting a new skill or in learning something they've never tried before. 
+Screwing up IS learning." [@savage2020every]
+
+> "Mistake tolerance is particularly valuable in this aspect of the creative
+process. When you know what you want to make, but you're not exactly sure what 
+it should look like or how it should operate, you need to give yourself permission
+to experiment, to iterate your way there. That's not just how you get to what you 
+want, it's how you get good at it. You have to do it over and over and over 
+again. Anticipating mistakes is how you put space around the unfamiliar and 
+the unknown." [@savage2020every]
+
+> "If you expect to nail it the first go round every time you build something 
+new---or worse, you demand it of yourself and you punish yourself when you come 
+up short---you will never be happy with what you make and making will never 
+make you happy". [@savage2020every]
+
+BioC Conference
+
+> "Just as writing a book involves an outline and a rough draft (so many drafts!),
+which get polished into a final manuscript, making things often benefits from a 
+preliminary stage where the big details get worked out, and then a final fabrication
+stage where the small details get worked out. Cardboard is a low threshold material
+that can make discussion of ideas at the perliminary stage so much easier and 
+more complete." [@savage2020every]
+
+> "In my professional life, I have worked with every conceivable type of client and 
+collaborator, from those who were makers with the same or greater expertise as me, 
+who understood deeply what I was talking about when we discussed a build, to clients
+who couldn't glue two blocks of wood together if you put the blocks in their hands, 
+covered with glue, and told them to clap. Being able to communicate your ideas to 
+clients and collaborators is one of the most important skills to possess as a maker, 
+otherwise some of your projects may never get off the ground." [@savage2020every]
+
+> "To make anything, it's critical to have a physical understanding of how all the
+component parts of your project will fit together." [@savage2020every]
+
+> "What material can you wrap your arms around to gain a complete sense for the skills
+you want to master and the objects you want to make? Is it cardboard? Muslin fabric?
+Crappy butcher cuts? Scrap wood? The backside of recycled printer paper? A word
+processor? It really doesn't matter as long as it allows you to be messy and it
+keeps you moving forward in your journey as a maker." [@savage2020every]
+
+
+> "Once you have a new tool you thing you need, spend some time getting to know it 
+physically. With certain tools, I'll go so far as to take them apart, just to 
+understand them better, inside and out. ... If you are unfamiliar with a tool or
+inexperienced with the techniques required to use it, getting comfortable like this
+is the most important thing you can do, because you might really need this thing, but
+if you are intimidated by it, you aren't going to want to use it, and then 
+what's the point?" [@savage2020every]
+
+> "If you've never used a tool before, reviews and articles about it can only get
+you so far. You need to work with a tool in order to see how the tool works for YOU.
+You need on-the-ground experience with it in your hands." [@savage2020every]
+
+With open-source, you can think of it as builing a collection of different tools, 
+rather than a black box. The tools can come from different companies (like real tools)---you
+don't have to limit to consuming the tools created by a single producer (as with 
+most proprietary software systems). 
+
+For free and open-source software, you don't have to invest money to get more tools.
+Instead, the investment for each new tool is the time that it takes to learn how 
+to use it in your workflow. This includes several elements. You'll need to understand
+what primary input is used by the function, both in terms of the input's conceptual 
+content and the format or structure in which those data are stored. You'll need to 
+understand the content and format of the output of the function in a similar way, so that
+you can join it with other functions in your workflow. You'll want to make sure 
+you understand the main choices that you can modify with the function, through setting
+different parameters, as well as the reason behind the defaults that are used for 
+those parameters. Finally, ideally you'll want to understand a bit about how the 
+function operates to move from the input you give it to the output it gives back to 
+you.
+
+> "'Freemon Dyson, a famous physicist, suggested that science moves forward by 
+inventing new tools,' Kevin [Kelly, founding editor of Wired magazine] began as
+we talked on the phone one morning about tools. 'When we invented the telescope, 
+suddenly we had astrophysicists, and astronomy, and we moved forward. The invention
+of the microscope opened up the small world of biology to us. In a broad sense, 
+science moves forward by inventing tools, because when you have those tools 
+they give you a new way of thinking." [@savage2020every]
+
+> "My initial reaction was shock---at both the ingenuity of the solution and the fact
+that I'd forgotten all about it---but that quickly resolved into gratitude. I was
+grateful to mayself for taking the time a year before to save me this time now.
+'Thank you, me-from-the-past!' I literally said to myself." [@savage2020every]
+
+> "Complex equipment breaks, and when it breaks you need the technical expertise to 
+fix it, and you need replacement parts. ... Some studies suggest that as much as 95 
+percent of medical technology donated to developing countries breaks within the 
+first five years of use." [@johnson2011good]
+
+> "Good ideas ... are, inevitably, constrained by the parts and skills that surround 
+them. We have a natural tendance to romanticize breathrough innovations, 
+imagining momentous ideas transcending their surroundings, a gifted mind somehow
+seeing over the detritus of old ideas and ossified tradition. But ideas are works
+of bricolage; they're built out of that detritus. We take the ideas we've inherited
+or that we've stumbled across, and we jigger them together into some new shape."
+[@johnson2011good]
+
+> "Good ideas are not conjured out of thin air; they are built out of a collection 
+of existing parts, the composition of which expands (and, occasionally, contracts) 
+over time. Some of these parts are conceptual: ways of solving problems, or new 
+definitions of what constitutes a problem in the first place. Some of them are, 
+literally, mechanical parts." [@johnson2011good]
+
+> "What kind of environment creates good ideas? The simplest way to answer is this: 
+innovative environments are better at helping their inhabitants explore the adjacent
+possible, because they expose a wide and diverse sample of spare parts---mechanical
+or conceptual---and they encourage novel ways of recombining those parts. Environments
+that block or limit new combinations---by punishing experimentation, by obscuring 
+certain branches of possibility, by making the current state so satisfying that no 
+one bothers to explore the edges---will, on average, generate and circulate 
+fewer innovations that environments that encourage exploration." [@johnson2011good]
+
+> "Part of coming up with a good idea is discovering what those spare parts are, and 
+ensuring that you're not just recycling the same old ingredients. ... The trick to 
+having good ideas is not to sit around in glorious isolation and try to think big 
+thoughts. The trick is to get more parts on the table." [@johnson2011good]
 
