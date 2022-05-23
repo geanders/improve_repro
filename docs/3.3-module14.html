@@ -163,15 +163,295 @@ and powerful in solving many complex tasks with data</li>
 </ul>
 <div id="what-are-data-structures-containers" class="section level3" number="3.3.1">
 <h3><span class="header-section-number">3.3.1</span> What are data structures / containers?</h3>
+<p><strong>Data types versus data structures</strong></p>
+<p>You can think of <em>data structures</em> as containers that hold your data in R,
+holding it in a way that lets you access and work with the data.</p>
+<p>One important distinction is between data structures and data types. A
+<em>data type</em> refers to the characteristic of the data. Is it a date, for
+example, or a number, or a character string? R can do different types of
+things with different types of data—for example, R can add together
+two pieces of data that are numbers, while for two pieces of data that are
+dates, it can tell which is the later date. For character strings, R can
+look for patterns in the string (for example, does it include any capital
+letters? Does is start with “b?”). All pieces of data are, at the deepest
+level, stored as a string of 0s and 1s. By assigning a data type like
+“character string” or “numeric” to each piece of data, R can make more
+sense of each piece of data in terms of what operations are reasonable to
+perform on the data, helping to translate those 0s and 1s into something
+more meaningful.</p>
+<p>Data structures, on the other hand, allow you to keep together, as well as
+refer to, data that you have loaded into R. A single object can contain
+pieces of data with different data types, and the object’s data structure
+defines how all the pieces of data in the object are organized and how you
+can access and work with the data in the structure. For example, one of the
+simplest data structures in R is the vector—this data structure requires
+that all the data stored in it have the same data type (e.g., all be
+numeric), and it holds together a one-dimensional string of pieces of data
+of that type. For example, a vector of the numbers one to five would be
+the string of those numbers—1, 2, 3, 4, 5—while a
+vector of the letters a to e would be the string of data with the “character”
+type—“a,” “b,” “c,” “d,” “e.”</p>
+<p>A second key data structure in R, the
+dataframe, provides a structure that stores one or more of these vectors,
+and so it allows you to store data with different types in the same object.
+For example, you could create an object with a dataframe structure that
+contains one column with a vector of the numbers one to five and another
+with the letters a through e. This structure would look something like this:</p>
+<pre><code>##   numbers letters
+## 1       1       a
+## 2       2       b
+## 3       3       c
+## 4       4       d
+## 5       5       e</code></pre>
+<p>While the dataframe structure can combine vectors with data in different types
+(in the example, the <code>numbers</code> column has a numeric data type and the <code>letters</code>
+column has a character data type), it does have a rule for combining different
+vectors. They all must be the same length. This means that the dataframe
+structure is always rectangular, with each column having the same number of
+rows. In the example above, both the <code>numbers</code> and <code>letters</code> columns are
+vectors with five values, so the dataframe ends up having two columns and
+five rows.</p>
+<p><strong>Common R data structures</strong></p>
+<p>We just covered two of the most common data structures in R: the vector and
+the dataframe. You will come across a number of other structures as you work
+in R.</p>
+<p>One other very common data structure is the list. This is a very flexible
+data structure, and it allows enormous flexibility in collecting other types
+of data structures (including other lists) into a single R object.</p>
+<p>Other data structures are more customized for specific types of data. For
+example, there are a number of specialized data structures that are commonly
+used in Bioconductor packages to store specific types of genomic [?] data.
+These structures have been specially designed to meaningfully arrange the
+types of data that are commonly generated in certain types of experiments [?].
+While the common types of data structures the we mentioned before (vectors,
+dataframes, and lists) are all provided as part of base R, many of these more
+specialized data structures are defined in R extensions (packages that you
+install once you’ve installed base R), and so you cannot access those data
+structures until you have installed additional packages.</p>
+<p>In a later module, we will go into more depth about some of these specialized
+data structures in R, and how in certain cases they are powerful tools for
+complex analysis or for working with complex data.</p>
+<p><strong>Link between functions and object classes</strong></p>
+<p>In a language like R, you will find that data structures can be closely tied
+to data structures and data types. In many cases, a function is designed to
+only work with data that is of a certain type or that is stored in a certain
+data structure.</p>
+<p>For example, the package named <code>lubridate</code> provides helpful functions for
+working with data that represent dates. Most of the functions in this package
+will only work on a vector (the data structure) that contains pieces of
+data that are dates (the data type). There are functions in this package
+that can do things like extract the year, month, or day of month from a date,
+but only if you input a vector of data in with the date data type.</p>
+<p>Many other functions require that you input a dataframe. For example, there
+are functions in the <code>dplyr</code> package that allow you to extract a subset of
+a dataframe—for example, to extract a smaller dataframe with only certain
+rows or certain columns from the original. These functions require that you
+input data in a dataframe structure.</p>
+<p>For more complex or customized data structures, like the data structures
+within the Bioconductor project, there will often be a whole suite of
+customized data structures, and functions associated with those data structures,
+that are used during a pipeline of analyzing data from a certain type of
+experiment. For example, there are data structures, and functions associated
+with those structures, that are customized to work with flow cytometry data,
+and other collections of data structures and functions for working with
+metabolomics data, and so on.</p>
+<p>As a note, there are a few functions that are “generics”—they have been coded
+in such a way that they will work with a variety of data structures. For
+these functions, they will often output different things depending on the type
+of data structure that is input when the function is called. For example,
+the <code>summary</code> function is a generic function—you can input objects with a
+variety of data structures and the function will work, providing some type
+of summary of the object in each case. If you input an object with a vector
+data structure, the <code>summary</code> function will provide a summary of the contents
+of that vector—if the data type is numeric, it will give values like the
+median, the range, and the number of missing values, while if the data type
+is logical (TRUE or FALSE for each data piece), it will give a count of the
+number of TRUE and FALSE values in the vector. If you input an object instead
+that is a dataframe, the <code>summary</code> function will output a summary of each of
+the columns in the dataframe. Although there are such generic functions that
+work with different data structures, the general rule in R is that a
+function is typically designed to work with a certain data structure (in
+fact, the generic functions are coded to have different functions that work
+with each type of data structure, and so a structure-specific function is
+called “under the hood” once one of the generic functions is called).</p>
+<p><strong>“Tidy” data and data structures</strong></p>
+<p>In this module, we aim to introduce you to something called the “tidyverse”
+approach to programming in R. This is a powerful approach, and we will
+detail it more extensively in the next section. Here, we want to introduce
+a key element of the approach—it is based on storing data in a single
+data structure throughout your pipeline of code. Specifically, it focuses
+on tools and techniques that work when you use a dataframe structure to
+store data as you work with the data, with a set of functions that both
+input and output objects that use the dataframe structure (as well as
+functions that input and output vectors, which are used to perform
+operations on the data in the columns within the dataframe—if you recall,
+each column in a dataframe has a vector data structure).</p>
+<p>The tidyverse approach requires one step beyond the data structure, and that
+is how the data are arranged within that structure. You can store data in
+a dataframe structure as long as you can put it in two dimensions (rows and
+columns), with the same type of data in each column. With the same set of
+data, there are often many different arrangements you could make that satisfy
+these constraints. The “tidy” part of the “tidy data” structure—which is
+at the heart of the tidyverse approach—are a set of standards describing
+exactly how you arrange the data within the dataframe structure.</p>
+<p><strong>The tibble data structure</strong></p>
+<p>As a final note, there is a specialized data structure that is often
+associated with the tidyverse approach. It is called the “tibble,” and it is
+a specialized version of the dataframe. What do we mean by it being a
+“specialized” version of a more common data structure? This means that there
+are a few functions that will give different results if the data are stored
+in a tibble structure rather than the more generic dataframe structure.
+However, if a function does not have a specialized method for the tibble
+structure (and most functions don’t), then the function will treat the object
+as a regular data frame. Some of the few functions that have specialized
+methods for tibbles include the <code>print</code> function, which is also the default
+function that is run if you just type an object’s name at the console and
+press “Enter.” The <code>print</code> function, when called with an object in the tibble
+structure, will only print out the first few rows (whereas, with a generic
+dataframe, it will print out all rows, sometimes resulting in a very long
+print-out). Similarly, if there are many columns, it will only print out
+a certain number and just provide summaries for the rest (again, with a
+generic dataframe, everything would be printed). It also provides some nice
+summaries of the dataframe as a whole, as well as of the type of data in each
+column. Overall, the <code>print</code> method for a tibble structure provides a clearer
+and typically more useful overview of the data in the object than does the
+<code>print</code> method for a generic dataframe structure. All this being said, as
+you first begin to work in the tidyverse approach, you often may not notice
+whether your data is stored in a more generic dataframe structure or the
+more specialized tibble version, and it often won’t matter much which of the
+two structures is being used, since the tibble structure in most cases
+(i.e., for most functions) is just treated as the more generic dataframe
+structure.</p>
 </div>
 <div id="an-overview-of-the-tidyverse-approach" class="section level3" number="3.3.2">
 <h3><span class="header-section-number">3.3.2</span> An overview of the “tidyverse” approach</h3>
+<p>The “tidyverse” approach is an approach to using R that has grown enormously
+in popularity in recent years. Most R courses and workshops for beginning
+programmers are now structured around this approach. It provides a powerful
+yet flexible approach for working with data in R, and it one of the easier
+ways to start learning R. In this section, we’ll cover the philosophy that
+provides a framework for this approach. In the following sections of the
+modules, we’ll go deeper into specific tools under this approach that can
+be used for common data preprocessing tasks when working with biomedical
+data, as well as provide information on more resources that can be used to
+continue learning this approach.</p>
+<p><strong>Uses the same data structure throughout</strong></p>
+<p>As we mentioned in the last section, the tidyverse approach hinges on
+using the same data structure throughout your coding pipeline—specifically,
+the dataframe structure (or its more specialized version, the tibble structure).
+By insisting on the same data structure throughout, this approach is able to
+offer small functions that can be chained together to solve complex problems.</p>
+<p>This idea rests on the idea of the power of modularity. You can think of this
+in terms of children’s toys—building bricks like Legos are powerful because
+they are modular, while a toy like a stuffed animal is not. Each individual
+Lego is small and simple, and would be pretty boring by itself. However,
+because the blocks can be combined in different ways, they can be used to
+create very complex and interesting structures. By contrast, something that is
+not modular, like a stuffed animal, always retains the same structure. While it
+might be more interesting and complex to start with than a single Lego block,
+it will not evolve or contribute to something more interesting.</p>
+<p>This modularity works in the same way that it does for Lego bricks. Lego
+bricks can be combined in interesting ways because they all take the same input
+and give the same output—the shape of the holes on the bottom of each brick
+accept the shape of the pins [?] at the top of each brick, so they can be
+put together in essentially infinite combinations. The tidyverse approach
+in R works in a similar way—the functions in this approach almost all
+input data that are in a dataframe structure (or in a vector structure, for
+functions that operate on columns in the dataframe) and they almost all output
+data in the same structure that they input it. As a result, the functions can
+be chained together in interesting ways, where the output of one function
+can feed directly into the input of another.</p>
+<p><strong>Small, simple tools</strong></p>
+<p>Since the functions in the tidyverse approach are designed to work in a
+modular way—in other words, to be combined in interesting ways to solve
+larger problems, rather than solving a large problem with a single function—each
+of the functions tends to be a small, simple tool. In other words, each
+function tends to do one thing simply but well. This makes it fairly easy
+to start learning the tidyverse approach, as each of the functions that you
+learn as you begin does one thing that is fairly straightforward. As you
+get better and better as coding using this approach, you often find that it
+is not because you are using more complex functions, but rather that you’re
+becoming more clever at combining sets of simple functions in interesting
+ways.</p>
+<p><strong>Functions available through packages</strong></p>
+<p>The tidyverse functions do not come with base R, but rather are available
+through extensions to base R, commonly referred to as “packages.” Like base
+R, these are all open-source and free. Many are available through a
+repository called CRAN, and you can download them directly from R using the
+<code>install.packages</code> function.</p>
+<p>The heart of the tidyverse functions are available through an umbrella
+package called “tidyverse.” This package includes a number of key tidyverse
+packages (e.g., “dplyr,” “tidyr,” “stringr,” “forcats” [?], “ggplot2”) and allows you
+to quickly install this set of packages on your computer. When you are coding
+in R, you will then need to load the package in your R session, which you can
+do using the <code>library</code> call (e.g., <code>library("tidyverse")</code>).</p>
+<p>In addition to the packages that come with the umbrella “tidyverse” package,
+there are numerous other packages that build on the tidyverse approach.
+Some are created by the creator of the tidyverse approach (Hadley Wickham)
+or others on his team, while others are created by other R programmers but
+follow the standards of the tidyverse approach. Some of the most helpful of
+these for working with biomedical data include …</p>
 </div>
 <div id="useful-tidyverse-tools-for-data-preprocessing" class="section level3" number="3.3.3">
 <h3><span class="header-section-number">3.3.3</span> Useful tidyverse tools for data preprocessing</h3>
+<p>As you learn to code, a good strategy is to start collecting “tools” for
+your “toolbox” in R—functions that you have learned to use very well and
+that you understand thoroughly. This will help make you proficient in R more
+quickly, and it will also limit the chance of bugs and errors in your code,
+making your data work more robust and rigorous. In this section, we’ll cover
+some tidyverse tools that we have found helpful for preprocessing biological
+data. These are not exhaustive, but may help you to identify some sets of
+tools to focus on learning well for data preprocessing and analysis of
+biological data.</p>
+<p><strong>Tools for data input</strong></p>
+<p><strong>Tools for standardization and normalization</strong></p>
+<p><strong>Tools for working with character strings</strong></p>
+<p><strong>Tools for working with dates and times</strong></p>
+<p><strong>Tools for statistical modeling</strong></p>
 </div>
 <div id="resources-to-learn-more-on-tidyverse-tools" class="section level3" number="3.3.4">
 <h3><span class="header-section-number">3.3.4</span> Resources to learn more on tidyverse tools</h3>
+<p>Here we have introduced the tidyverse approach, as well as covered some key
+tools within it for biomedical data preprocessing. However, we strongly
+recommend that you continue to learn more in this approach. In this section,
+we’ll point you to resources that you can use to continue to learn this approach
+to working with data in R.</p>
+<p><strong>Classes and workshops</strong></p>
+<p>Most R programming classes at universities, as well as workshops at conferences
+and other venues, now focus on the tidyverse approach, especially if they are
+geared to new R users. An R programming class can be a worthwhile investment of
+time if this resource is available to you, and if you head a research group and
+do not have time to take one yourself, you could instead consider encouraging
+trainees in your research group to take this type of class. Programming in other
+scripted languages, like Python and Julia, provides similar skills, although the
+collection of extension packages that are available for biomedical data tends to
+be most extensive for R (at least at this time). Classes in programming
+languages like Java or C++, on the other hand, would have less immediate
+relevance for most biologists and other bench scientists, and so if you would
+like to become better at working with biomedical data, it would be worthwhile to
+focus on programming languages that are scripted.</p>
+<p>[Software Carpentry]</p>
+<p><strong>Cheatsheets</strong></p>
+<p>For many of the key tidyverse packages, there are two-page “cheatsheets” that
+have been developed by the package creators to help users learn and remember
+the functions that are available in the package. These are available here [?].</p>
+<p>Each cheatsheet includes numerous working examples. One excellent way to
+familiarize yourself with the tools in a package, then, is to work through the
+examples on the cheatsheet one at a time, making sure that you understand the
+inputs and outputs to the function and how the function has created the output.
+Once you have worked through a cheatsheet in this way, you can keep it close
+to your desk to serve as a quick reminder of the names and uses of different
+functions in the package, until you have used them enough that you don’t need
+this memory jog.</p>
+<p><strong>Online books</strong></p>
+<p>There are a number of excellent free online books that are available to help
+you learn more about R (many of which can also be purchased as a hard copy, if
+you prefer that format). These typically include lots of examples of code that
+help you try out concepts as you learn them. Two excellent books for biomedical
+data preprocessing and analysis are <em>R for
+Data Science</em> by … and <em>Modern Statistics for Modern Biology</em> by …</p>
+<p><em>R for Data Science</em>, which is available at …, covers …</p>
+<p><em>Modern Statistics for Modern Biology</em>, which is available at …, covers …</p>
 <hr />
 </div>
 <div id="key-elements" class="section level3" number="3.3.5">
