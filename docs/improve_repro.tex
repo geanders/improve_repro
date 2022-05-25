@@ -11046,14 +11046,189 @@ laboratory-based scientists.
 \hypertarget{what-are-complex-data-structures}{%
 \subsection{What are complex data structures?}\label{what-are-complex-data-structures}}
 
+\textbf{Examples of complex biomedical data suited for complex data structures}
+
+In the last module, we covered the tidyverse approach to working with
+data in R. This approach hinges on using a common data structure, the
+dataframe. With many tasks in data management and analysis, this data
+structure is sufficient, and so can be leveraged with the tidyverse
+approach. However, there are some cases where data are not well suited
+for a dataframe structure. In these cases, you may need to use some of
+R's more complex data structures, at least for part of your data
+preprocessing and analysis pipeline.
+
+What characteristics might make data less suited for a dataframe structure
+in R? There are a variety of characteristics that could cause this. First,
+if data is extremely large, it may exceed a size that is reasonable for a
+dataframe structure. Some of the more complex data structures in R allow
+much of the data to stay ``on disc'', rather than be loaded into RAM,
+when the data are structured to provide access from R.
+
+Other datasets
+may not fit well within the two-dimensional, non-ragged structure that
+is characteristic of the dataframe structure. For example, some biomedical
+data may have data that records characteristics at several levels of the
+data. It may have records on the levels of gene expression within each
+sample, separate information about each gene that was measured, and
+another separate set of information that characterizes each of the samples.
+While it is critical to keep ``like'' measurements aligned with data like this---in
+other words, to ensure that you can connect the data that characterizes
+a gene with the data that provides measures of the level of expression of
+that gene in each sample---these data do not naturally have a two-dimensional
+structure and so do not fit naturally into a dataframe structure.
+
+\textbf{Building on list data structures}
+
+R allows for very complex and specialized data structures, suitable to be
+customized for very specific needs with large or complex data. These
+structures tend to build on the generic list data structure.
+
+\textbf{S3 and S4 objects in R}
+
+Many complex data structures in R are defined as S3 or S4 objects.
+
 \hypertarget{advantages-of-complex-data-structures}{%
 \subsection{Advantages of complex data structures}\label{advantages-of-complex-data-structures}}
+
+\textbf{Bundling and aligning}
+
+One characteristic that can make data complex is if it includes measurements
+that are taken at several different levels of observation. For example, a single
+data set may have some observations or measurements that are taken at the level
+of the sample (e.g., the age, sex, and treatment of each study subject from
+which the samples are taken). It may have other measurements that are taken at
+the level of the gene (e.g., {[}values that you would have per gene{]}), and then
+measurements that are the result of a specific assay {[}?{]} (e.g., the expression
+level of each of the measured genes within each sample).
+
+These different types of data could be stored in different dataframes, with
+a common identifier to help link them. They could even be stored in separate
+dataframes with the positions used to link them (for example, if each
+column represents a gene in one dataframe and each row represents a gene
+in another, then you assume that the second column in the first dataframe
+aligns with the second row in the second dataframe), although this method
+can be prone to errors, especially one you begin subsetting the original
+dataframes in the course of data preprocessing and analysis.
+
+More complex data structures can help in both bundling all these pieces of
+data into a single object, while at the same time enforcing alignment across
+the pieces of data, so you can line up the measurements for a specific gene
+or sample across data taken at different levels.
+
+\textbf{Handling large data}
+
+Two approaches for this are on disc and through R environments.
+
+\textbf{Allow software development across large, diverse teams}
+
+Robert Gentleman, one of the creators of Bioconductor {[}?{]}, highlights
+this as a key reason for using these more complex data structures.
+R is an open-source language, and it allows contributions from
+software developers worldwide. The Bioconductor project leverages the
+base R software to build tools for working with complex genomic {[}?{]}
+data, also allowing for the development of new extensions from
+developers worldwide. The software extensions are developed, therefore,
+not by a unified team that is all employed at the same place, but
+instead by a collection of people who are making software as part of
+their research program, or perhaps as part of an industry job, and who
+write that software with the intent of having it work smoothly with
+other software packages that are available through Bioconductor.
+
+If you have ever been in a role where you organized volunteers to
+perform a large task, you can probably imagine how challenging it is to
+design a project in a way that allows for this type of software
+development to work. The use of specialized data structures is one
+element that helps in this coordination for Bioconductor. It enforces a
+standard that all the programmers can work toward---they can work under
+the assumption that the output from other functions in the Bioconductor
+ecosystem will be structured in a certain way, and so they can work
+under the assumption that certain elements of the data will be in certain
+spots in the data structure of the object.
+
+{[}Example of the party game where you each add a sentence, only seeing
+part of the story. Exquisite corpse.{]}
 
 \hypertarget{biomedical-data-preprocessing-with-complex-data-structures}{%
 \subsection{Biomedical data preprocessing with complex data structures}\label{biomedical-data-preprocessing-with-complex-data-structures}}
 
+As we noted briefly earlier, the Bioconductor project is one area of
+R programming where complex data structures, rather than a tidyverse
+approach, tends to dominate (although there does seem to be an evolution
+toward more tidyverse techniques in Bioconductor, as we'll discuss
+some in later modules). Bioconductor is critical to learn if you are
+working with genomic {[}?{]} data, as many of the key tools and algorithms
+for this type of data are shared through that project. This means that,
+for many biomedical researchers who are now generating complex,
+high-throughput data, it is worth learning how to use complex data
+structures in R.
+
+\textbf{Powerful algorithms}
+
+One of the advantages of these complex data structures for biomedical
+data preprocessing is that they can be leveraged to develop very powerful
+algorithms for working with complex biomedical data.
+
+{[}Examples{]}
+
+\textbf{Examples of types of complex pre-processing algorithms}
+
+In some cases, more complex algorithms may be used to normalize
+data across different samples {[}?{]}---for example, the normalization
+algorithm may leverage the assumption that the vast majority of
+values (e.g., expression levels of genes) are the same in all samples,
+with only a few varying between the samples. Starting from this
+assumption, an algorithm can be developed to normalize across the
+samples, to help in identifying genes with important differences in
+expression across the samples.
+
+{[}Other examples{]}
+
+\textbf{Challenges}
+
+It can be harder to explore your data along the way. With a tidyverse
+approach, since data are always in dataframes, you can quickly learn
+some tools that let you extract parts of the data, summarize the data,
+and visualize it. This allows for exploratory data analysis at each
+stage as you develop your preprocessing and analysis pipeline.
+Conversely, if you have a pipeline where the data is continuously
+being moved from one data structure to another, you have to learn how
+to use and explore each type of data structure to become as facile with
+exploring your data along the way.
+
+This can also make it harder to experiment, since often a function will
+be tied to a specific data structure, and so instead of learning a small
+set of general use functions that can be combined together in different
+ways (the tidyverse approach), you must learn more functions, since
+functions tend to be tied to a data structure (outside of generic functions),
+and the data structure tends to change frequently across the pipeline.
+
+To be clear, a pipeline in R that includes these complex data structures
+will typically still be modular, in the sense that you can adapt and
+separate specific parts of the pipeline. However, they tend to be much
+less flexible than pipelines developed with a tidyverse approach. The
+data structure changes often, with certain functions outputing a data
+structure that is needed for the next step, then the function of the
+next step outputting the data in a different structure, and so on. This
+changing data structure means that the functions for each step often are
+constrained to always be put in the same order. By comparison, the small
+tools that make up tidyverse functions can often be combined in many different
+orders, letting you build a much larger variety of pipelines with them.
+Also, many of the functions that work with complex data types will do
+many things within one function, so they can be harder to learn and
+understand, and they are often much more customized to a specific action,
+which means that you have to learn more functions (since each does one
+specific thing).
+
 \hypertarget{disadvantages-of-complex-data-structures}{%
 \subsection{Disadvantages of complex data structures}\label{disadvantages-of-complex-data-structures}}
+
+\textbf{Harder to see all the data}
+
+\textbf{Harder to access all the data}
+
+\textbf{Harder to make use of general purpose tools}
+
+\textbf{Higher entry barrier to learn to use well}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -11699,17 +11874,51 @@ data stored in R in this format, including through the \emph{broom} and
   Explain how converting data to a `tidy' format can improve reproducibility
 \end{itemize}
 
-\hypertarget{bioconductor-classes}{%
-\subsection{Bioconductor classes}\label{bioconductor-classes}}
+\hypertarget{bioconductor-data-structures}{%
+\subsection{Bioconductor data structures}\label{bioconductor-data-structures}}
+
+\textbf{Come in packages}
+
+\textbf{Help files for data structures}
+
+\textbf{Data structure often changes over pipeline}
+
+\textbf{Generic versus structure-specific functions}
+
+\textbf{How to access data in a complex structure}
 
 \hypertarget{exampleseurat-data-structure}{%
 \subsection{Example---Seurat data structure}\label{exampleseurat-data-structure}}
 
+\textbf{A tour of the Seurat data structure}
+
 \hypertarget{other-popular-bioconductor-data-structures}{%
 \subsection{Other popular Bioconductor data structures}\label{other-popular-bioconductor-data-structures}}
 
+\textbf{Structures for sequence data}
+
+\textbf{Structures for mass spectrometry data}
+
+\textbf{Structures for flow cytometry data}
+
+\textbf{Structures for gene expression data}
+
+\textbf{Structures for single-cell gene expression data}
+
+\textbf{BiocViews to find more tools}
+
 \hypertarget{working-with-data-in-bioconductor-structures}{%
 \subsection{Working with data in Bioconductor structures}\label{working-with-data-in-bioconductor-structures}}
+
+\textbf{How to explore data in Bioconductor structures}
+
+You can use generic functions, like \texttt{View()} and \texttt{str()}.
+
+\textbf{How to extract data from Bioconductor structures}
+
+\textbf{Finding functions that work with a data structure}
+
+\textbf{Chaining together preprocessing steps with Bioconductor structures}
 
 \hypertarget{examplepreprocessing-single-cell-rna-sequencing-data}{%
 \subsection{Example---Preprocessing single cell RNA sequencing data}\label{examplepreprocessing-single-cell-rna-sequencing-data}}
@@ -14314,8 +14523,22 @@ tuberculosis.
 \hypertarget{pipelines-that-combine-complex-and-tidy-data-structures}{%
 \subsection{Pipelines that combine complex and tidy data structures}\label{pipelines-that-combine-complex-and-tidy-data-structures}}
 
+\textbf{Use complex data structures early and convert to tidyverse approach when possible}
+
+\textbf{``Converting'' as restructuring the data}
+
+\textbf{Converting along the way for exploration}
+
+\textbf{May ``drop'' some data when converting}
+
 \hypertarget{techniques-for-connecting-from-complex-to-tidy-data-in-a-pipeline}{%
 \subsection{Techniques for connecting from complex to tidy data in a pipeline}\label{techniques-for-connecting-from-complex-to-tidy-data-in-a-pipeline}}
+
+\textbf{Accessor functions}
+
+\textbf{broom and biobroom}
+
+\textbf{``tidy'' data structures for single cell gene expression data}
 
 \hypertarget{examplecomplex-to-tidy-pipeline-for-scrna-seq-data-analysis}{%
 \subsection{Example---Complex to tidy pipeline for scRNA-Seq data analysis}\label{examplecomplex-to-tidy-pipeline-for-scrna-seq-data-analysis}}
