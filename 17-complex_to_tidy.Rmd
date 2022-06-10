@@ -23,6 +23,67 @@ library(tidyverse)
 
 ### Pipelines that combine complex and tidy data structures
 
+The tidyverse approach in R is based on keeping data in a dataframe structure.
+By keeping this common structure, the tidyverse allows for straightforward but
+powerful work with your data by chaining together simple, single-purpose
+functions. This approach is widely covered in introductory R programming courses
+and books. A great starting point is the book *R Programming for Data Science*,
+which is available both in print and freely online at [site]. Many excellent
+resources exist for learning this approach, and so we won't recover that
+information here. Instead, we will focus on how to interface between this
+approach and the object-based approach that's more common with Bioconductor
+packages. Bioconductor packages often take an object-based approach, and with
+good reason because of the complexity and size of many early versions of
+biomedical data in the preprocessing process. There are also resources for
+learning to use specific Bioconductor packages, as well as some general
+resources on Bioconductor, like *R Programming for Bioinformatics* [ref].
+However, there are fewer resources available online that teach how to coordinate
+between these two approaches in a pipeline of code, so that you can leverage the
+needed power of Bioconductor approaches early in your pipeline, as you
+preprocess large and complex data, and then shift to use a tidyverse approach
+once your data is amenible to this more straightforward approach to analysis and
+visualization.
+
+The heart of making this shift is learning how to convert data, when possible, 
+from a more complex, class-type data structure (built on the flexible list 
+data structure) to the simpler, more standardized two-dimensional dataframe 
+structure that is required for the tidyverse approach. In this subsection, we'll 
+cover approaches for converting your data from Bioconductor data structures to 
+dataframes. 
+
+If you are lucky, this might be very straightforward. A pair of packages called
+`broom` and `biobroom` have been created specifically to facilitate the conversion
+of data from more complex structures to dataframes. The `broom` package was 
+created first, by David Robinson, to convert the data stored in the objects that 
+are created by fitting statistical models into tidy dataframes. Many of the functions
+in R that run statistical tests or fit statistical models output results in a 
+more complex, list-based data structure. These structures have nice "print" methods, 
+so if fitting the model or running the test is the very last step of your pipeline, 
+you can just read the printed output from R. However, often you want to include 
+these results in further code---for example, creating plots or tables that show
+results from several statistical tests or models. The `broom` package includes 
+several functions for pulling out different bits of data that are stored in the 
+complex data structure created by fitting the model or running the test and convert
+those pieces of data into a tidy dataframe. This tidy dataframe can then be 
+easily used in further code using a tidyverse approach. 
+
+The `biobroom` package was created to meet a similar need with data stored in some
+of the complex structures commonly used in Bioconductor packages. [More about 
+`biobroom`.]
+
+[How to convert data if there isn't a `biobroom` method.] If you are unlucky, 
+there may not be a `broom` or `biobroom` method that you can use for the particular
+class-based data structure that your data's in, or it might be in a more general 
+list, rather than a specific class with a `biobroom` method. In this case, you'll 
+need to extract the data "by hand" to move it into a dataframe once your data is 
+simple enough to work with using a tidyverse approach. If you've mastered how to 
+explore data stored in a list (covered in the last subsection), you'll have a headstart
+on how to do this. Once you know where to find each element of the data in the 
+structure of the list, you can assign these specific pieces to their own R objects
+using typical R assignment (e.g., with the *gets arrow*, `<-`, or with `=`, depending
+on your preferred R programming style). ...
+
+
 **Use complex data structures early and convert to tidyverse approach when possible**
 
 **"Converting" as restructuring the data**

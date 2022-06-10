@@ -162,6 +162,61 @@ better for further data analysis and visualization</li>
 </ul>
 <div id="pipelines-that-combine-complex-and-tidy-data-structures" class="section level3" number="3.6.1">
 <h3><span class="header-section-number">3.6.1</span> Pipelines that combine complex and tidy data structures</h3>
+<p>The tidyverse approach in R is based on keeping data in a dataframe structure.
+By keeping this common structure, the tidyverse allows for straightforward but
+powerful work with your data by chaining together simple, single-purpose
+functions. This approach is widely covered in introductory R programming courses
+and books. A great starting point is the book <em>R Programming for Data Science</em>,
+which is available both in print and freely online at [site]. Many excellent
+resources exist for learning this approach, and so we won’t recover that
+information here. Instead, we will focus on how to interface between this
+approach and the object-based approach that’s more common with Bioconductor
+packages. Bioconductor packages often take an object-based approach, and with
+good reason because of the complexity and size of many early versions of
+biomedical data in the preprocessing process. There are also resources for
+learning to use specific Bioconductor packages, as well as some general
+resources on Bioconductor, like <em>R Programming for Bioinformatics</em> [ref].
+However, there are fewer resources available online that teach how to coordinate
+between these two approaches in a pipeline of code, so that you can leverage the
+needed power of Bioconductor approaches early in your pipeline, as you
+preprocess large and complex data, and then shift to use a tidyverse approach
+once your data is amenible to this more straightforward approach to analysis and
+visualization.</p>
+<p>The heart of making this shift is learning how to convert data, when possible,
+from a more complex, class-type data structure (built on the flexible list
+data structure) to the simpler, more standardized two-dimensional dataframe
+structure that is required for the tidyverse approach. In this subsection, we’ll
+cover approaches for converting your data from Bioconductor data structures to
+dataframes.</p>
+<p>If you are lucky, this might be very straightforward. A pair of packages called
+<code>broom</code> and <code>biobroom</code> have been created specifically to facilitate the conversion
+of data from more complex structures to dataframes. The <code>broom</code> package was
+created first, by David Robinson, to convert the data stored in the objects that
+are created by fitting statistical models into tidy dataframes. Many of the functions
+in R that run statistical tests or fit statistical models output results in a
+more complex, list-based data structure. These structures have nice “print” methods,
+so if fitting the model or running the test is the very last step of your pipeline,
+you can just read the printed output from R. However, often you want to include
+these results in further code—for example, creating plots or tables that show
+results from several statistical tests or models. The <code>broom</code> package includes
+several functions for pulling out different bits of data that are stored in the
+complex data structure created by fitting the model or running the test and convert
+those pieces of data into a tidy dataframe. This tidy dataframe can then be
+easily used in further code using a tidyverse approach.</p>
+<p>The <code>biobroom</code> package was created to meet a similar need with data stored in some
+of the complex structures commonly used in Bioconductor packages. [More about
+<code>biobroom</code>.]</p>
+<p>[How to convert data if there isn’t a <code>biobroom</code> method.] If you are unlucky,
+there may not be a <code>broom</code> or <code>biobroom</code> method that you can use for the particular
+class-based data structure that your data’s in, or it might be in a more general
+list, rather than a specific class with a <code>biobroom</code> method. In this case, you’ll
+need to extract the data “by hand” to move it into a dataframe once your data is
+simple enough to work with using a tidyverse approach. If you’ve mastered how to
+explore data stored in a list (covered in the last subsection), you’ll have a headstart
+on how to do this. Once you know where to find each element of the data in the
+structure of the list, you can assign these specific pieces to their own R objects
+using typical R assignment (e.g., with the <em>gets arrow</em>, <code>&lt;-</code>, or with <code>=</code>, depending
+on your preferred R programming style). …</p>
 <p><strong>Use complex data structures early and convert to tidyverse approach when possible</strong></p>
 <p><strong>“Converting” as restructuring the data</strong></p>
 <p><strong>Converting along the way for exploration</strong></p>
@@ -293,17 +348,17 @@ the right container for operations from <code>edgeR</code>. Then functions from 
 data. The result is an object in the <code>DGEExact</code> class, which is defined
 by the <code>edgeR</code> package. To extract data from this class in a tidy format,
 you can use the <code>tidy</code> and <code>glance</code> functions from <code>biobroom</code>.]</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="3.6-module17.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biobroom)</span>
-<span id="cb8-2"><a href="3.6-module17.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Biobase)</span>
-<span id="cb8-3"><a href="3.6-module17.html#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(edgeR)</span>
-<span id="cb8-4"><a href="3.6-module17.html#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="3.6-module17.html#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(hammer)</span>
-<span id="cb8-6"><a href="3.6-module17.html#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="3.6-module17.html#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(hammer)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="3.6-module17.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biobroom)</span>
+<span id="cb9-2"><a href="3.6-module17.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Biobase)</span>
+<span id="cb9-3"><a href="3.6-module17.html#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(edgeR)</span>
+<span id="cb9-4"><a href="3.6-module17.html#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="3.6-module17.html#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(hammer)</span>
+<span id="cb9-6"><a href="3.6-module17.html#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="3.6-module17.html#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(hammer)</span></code></pre></div>
 <pre><code>## [1] &quot;ExpressionSet&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;Biobase&quot;</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="3.6-module17.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(hammer)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="3.6-module17.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(hammer)</span></code></pre></div>
 <pre><code>## # A tibble: 236,128 × 3
 ##    gene               sample    value
 ##    &lt;chr&gt;              &lt;chr&gt;     &lt;int&gt;
@@ -318,21 +373,21 @@ you can use the <code>tidy</code> and <code>glance</code> functions from <code>b
 ##  9 ENSRNOG00000000021 SRX020102     7
 ## 10 ENSRNOG00000000024 SRX020102    86
 ## # … with 236,118 more rows</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="3.6-module17.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Example from `biobroom` help documentation</span></span>
-<span id="cb12-2"><a href="3.6-module17.html#cb12-2" aria-hidden="true" tabindex="-1"></a>hammer.counts <span class="ot">&lt;-</span> <span class="fu">exprs</span>(hammer)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb12-3"><a href="3.6-module17.html#cb12-3" aria-hidden="true" tabindex="-1"></a>hammer.treatment <span class="ot">&lt;-</span> <span class="fu">phenoData</span>(hammer)<span class="sc">$</span>protocol[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb12-4"><a href="3.6-module17.html#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="3.6-module17.html#cb12-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(<span class="at">counts=</span>hammer.counts,<span class="at">group=</span>hammer.treatment)</span>
-<span id="cb12-6"><a href="3.6-module17.html#cb12-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(y)</span>
-<span id="cb12-7"><a href="3.6-module17.html#cb12-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateCommonDisp</span>(y)</span>
-<span id="cb12-8"><a href="3.6-module17.html#cb12-8" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateTagwiseDisp</span>(y)</span>
-<span id="cb12-9"><a href="3.6-module17.html#cb12-9" aria-hidden="true" tabindex="-1"></a>et <span class="ot">&lt;-</span> <span class="fu">exactTest</span>(y)</span>
-<span id="cb12-10"><a href="3.6-module17.html#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-11"><a href="3.6-module17.html#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(et)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="3.6-module17.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Example from `biobroom` help documentation</span></span>
+<span id="cb13-2"><a href="3.6-module17.html#cb13-2" aria-hidden="true" tabindex="-1"></a>hammer.counts <span class="ot">&lt;-</span> <span class="fu">exprs</span>(hammer)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb13-3"><a href="3.6-module17.html#cb13-3" aria-hidden="true" tabindex="-1"></a>hammer.treatment <span class="ot">&lt;-</span> <span class="fu">phenoData</span>(hammer)<span class="sc">$</span>protocol[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb13-4"><a href="3.6-module17.html#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="3.6-module17.html#cb13-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(<span class="at">counts=</span>hammer.counts,<span class="at">group=</span>hammer.treatment)</span>
+<span id="cb13-6"><a href="3.6-module17.html#cb13-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(y)</span>
+<span id="cb13-7"><a href="3.6-module17.html#cb13-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateCommonDisp</span>(y)</span>
+<span id="cb13-8"><a href="3.6-module17.html#cb13-8" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateTagwiseDisp</span>(y)</span>
+<span id="cb13-9"><a href="3.6-module17.html#cb13-9" aria-hidden="true" tabindex="-1"></a>et <span class="ot">&lt;-</span> <span class="fu">exactTest</span>(y)</span>
+<span id="cb13-10"><a href="3.6-module17.html#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="3.6-module17.html#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(et)</span></code></pre></div>
 <pre><code>## [1] &quot;DGEExact&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;edgeR&quot;</code></pre>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="3.6-module17.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(et)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="3.6-module17.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(et)</span></code></pre></div>
 <pre><code>## # A tibble: 29,516 × 4
 ##    gene               estimate  logCPM    p.value
 ##    &lt;chr&gt;                 &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;
@@ -347,7 +402,7 @@ you can use the <code>tidy</code> and <code>glance</code> functions from <code>b
 ##  9 ENSRNOG00000000021  -2.02    0.211  0.0373    
 ## 10 ENSRNOG00000000024   0.133   3.97   0.508     
 ## # … with 29,506 more rows</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="3.6-module17.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(et)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="3.6-module17.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(et)</span></code></pre></div>
 <pre><code>##   significant     comparison
 ## 1        6341 control/L5 SNL</code></pre>
 <p>The creator of the <code>broom</code> package listed some of the common ways that

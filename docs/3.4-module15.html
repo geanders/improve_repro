@@ -162,163 +162,6 @@ data in complex, ‘untidy’ formats</li>
 laboratory-based researchers seeking to use reproducibility tools for
 data pre-processing</li>
 </ul>
-<div id="what-are-complex-data-structures" class="section level3" number="3.4.1">
-<h3><span class="header-section-number">3.4.1</span> What are complex data structures?</h3>
-<p><strong>Examples of complex biomedical data suited for complex data structures</strong></p>
-<p>In the last module, we covered the tidyverse approach to working with
-data in R. This approach hinges on using a common data structure, the
-dataframe. With many tasks in data management and analysis, this data
-structure is sufficient, and so can be leveraged with the tidyverse
-approach. However, there are some cases where data are not well suited
-for a dataframe structure. In these cases, you may need to use some of
-R’s more complex data structures, at least for part of your data
-preprocessing and analysis pipeline.</p>
-<p>What characteristics might make data less suited for a dataframe structure
-in R? There are a variety of characteristics that could cause this. First,
-if data is extremely large, it may exceed a size that is reasonable for a
-dataframe structure. Some of the more complex data structures in R allow
-much of the data to stay “on disc,” rather than be loaded into RAM,
-when the data are structured to provide access from R.</p>
-<p>Other datasets
-may not fit well within the two-dimensional, non-ragged structure that
-is characteristic of the dataframe structure. For example, some biomedical
-data may have data that records characteristics at several levels of the
-data. It may have records on the levels of gene expression within each
-sample, separate information about each gene that was measured, and
-another separate set of information that characterizes each of the samples.
-While it is critical to keep “like” measurements aligned with data like this—in
-other words, to ensure that you can connect the data that characterizes
-a gene with the data that provides measures of the level of expression of
-that gene in each sample—these data do not naturally have a two-dimensional
-structure and so do not fit naturally into a dataframe structure.</p>
-<p><strong>Building on list data structures</strong></p>
-<p>R allows for very complex and specialized data structures, suitable to be
-customized for very specific needs with large or complex data. These
-structures tend to build on the generic list data structure.</p>
-<p><strong>S3 and S4 objects in R</strong></p>
-<p>Many complex data structures in R are defined as S3 or S4 objects.</p>
-</div>
-<div id="advantages-of-complex-data-structures" class="section level3" number="3.4.2">
-<h3><span class="header-section-number">3.4.2</span> Advantages of complex data structures</h3>
-<p><strong>Bundling and aligning</strong></p>
-<p>One characteristic that can make data complex is if it includes measurements
-that are taken at several different levels of observation. For example, a single
-data set may have some observations or measurements that are taken at the level
-of the sample (e.g., the age, sex, and treatment of each study subject from
-which the samples are taken). It may have other measurements that are taken at
-the level of the gene (e.g., [values that you would have per gene]), and then
-measurements that are the result of a specific assay [?] (e.g., the expression
-level of each of the measured genes within each sample).</p>
-<p>These different types of data could be stored in different dataframes, with
-a common identifier to help link them. They could even be stored in separate
-dataframes with the positions used to link them (for example, if each
-column represents a gene in one dataframe and each row represents a gene
-in another, then you assume that the second column in the first dataframe
-aligns with the second row in the second dataframe), although this method
-can be prone to errors, especially one you begin subsetting the original
-dataframes in the course of data preprocessing and analysis.</p>
-<p>More complex data structures can help in both bundling all these pieces of
-data into a single object, while at the same time enforcing alignment across
-the pieces of data, so you can line up the measurements for a specific gene
-or sample across data taken at different levels.</p>
-<p><strong>Handling large data</strong></p>
-<p>Two approaches for this are on disc and through R environments.</p>
-<p><strong>Allow software development across large, diverse teams</strong></p>
-<p>Robert Gentleman, one of the creators of Bioconductor [?], highlights
-this as a key reason for using these more complex data structures.
-R is an open-source language, and it allows contributions from
-software developers worldwide. The Bioconductor project leverages the
-base R software to build tools for working with complex genomic [?]
-data, also allowing for the development of new extensions from
-developers worldwide. The software extensions are developed, therefore,
-not by a unified team that is all employed at the same place, but
-instead by a collection of people who are making software as part of
-their research program, or perhaps as part of an industry job, and who
-write that software with the intent of having it work smoothly with
-other software packages that are available through Bioconductor.</p>
-<p>If you have ever been in a role where you organized volunteers to
-perform a large task, you can probably imagine how challenging it is to
-design a project in a way that allows for this type of software
-development to work. The use of specialized data structures is one
-element that helps in this coordination for Bioconductor. It enforces a
-standard that all the programmers can work toward—they can work under
-the assumption that the output from other functions in the Bioconductor
-ecosystem will be structured in a certain way, and so they can work
-under the assumption that certain elements of the data will be in certain
-spots in the data structure of the object.</p>
-<p>[Example of the party game where you each add a sentence, only seeing
-part of the story. Exquisite corpse.]</p>
-</div>
-<div id="biomedical-data-preprocessing-with-complex-data-structures" class="section level3" number="3.4.3">
-<h3><span class="header-section-number">3.4.3</span> Biomedical data preprocessing with complex data structures</h3>
-<p>As we noted briefly earlier, the Bioconductor project is one area of
-R programming where complex data structures, rather than a tidyverse
-approach, tends to dominate (although there does seem to be an evolution
-toward more tidyverse techniques in Bioconductor, as we’ll discuss
-some in later modules). Bioconductor is critical to learn if you are
-working with genomic [?] data, as many of the key tools and algorithms
-for this type of data are shared through that project. This means that,
-for many biomedical researchers who are now generating complex,
-high-throughput data, it is worth learning how to use complex data
-structures in R.</p>
-<p><strong>Powerful algorithms</strong></p>
-<p>One of the advantages of these complex data structures for biomedical
-data preprocessing is that they can be leveraged to develop very powerful
-algorithms for working with complex biomedical data.</p>
-<p>[Examples]</p>
-<p><strong>Examples of types of complex pre-processing algorithms</strong></p>
-<p>In some cases, more complex algorithms may be used to normalize
-data across different samples [?]—for example, the normalization
-algorithm may leverage the assumption that the vast majority of
-values (e.g., expression levels of genes) are the same in all samples,
-with only a few varying between the samples. Starting from this
-assumption, an algorithm can be developed to normalize across the
-samples, to help in identifying genes with important differences in
-expression across the samples.</p>
-<p>[Other examples]</p>
-<p><strong>Challenges</strong></p>
-<p>It can be harder to explore your data along the way. With a tidyverse
-approach, since data are always in dataframes, you can quickly learn
-some tools that let you extract parts of the data, summarize the data,
-and visualize it. This allows for exploratory data analysis at each
-stage as you develop your preprocessing and analysis pipeline.
-Conversely, if you have a pipeline where the data is continuously
-being moved from one data structure to another, you have to learn how
-to use and explore each type of data structure to become as facile with
-exploring your data along the way.</p>
-<p>This can also make it harder to experiment, since often a function will
-be tied to a specific data structure, and so instead of learning a small
-set of general use functions that can be combined together in different
-ways (the tidyverse approach), you must learn more functions, since
-functions tend to be tied to a data structure (outside of generic functions),
-and the data structure tends to change frequently across the pipeline.</p>
-<p>To be clear, a pipeline in R that includes these complex data structures
-will typically still be modular, in the sense that you can adapt and
-separate specific parts of the pipeline. However, they tend to be much
-less flexible than pipelines developed with a tidyverse approach. The
-data structure changes often, with certain functions outputing a data
-structure that is needed for the next step, then the function of the
-next step outputting the data in a different structure, and so on. This
-changing data structure means that the functions for each step often are
-constrained to always be put in the same order. By comparison, the small
-tools that make up tidyverse functions can often be combined in many different
-orders, letting you build a much larger variety of pipelines with them.
-Also, many of the functions that work with complex data types will do
-many things within one function, so they can be harder to learn and
-understand, and they are often much more customized to a specific action,
-which means that you have to learn more functions (since each does one
-specific thing).</p>
-</div>
-<div id="disadvantages-of-complex-data-structures" class="section level3" number="3.4.4">
-<h3><span class="header-section-number">3.4.4</span> Disadvantages of complex data structures</h3>
-<p><strong>Harder to see all the data</strong></p>
-<p><strong>Harder to access all the data</strong></p>
-<p><strong>Harder to make use of general purpose tools</strong></p>
-<p><strong>Higher entry barrier to learn to use well</strong></p>
-<hr />
-</div>
-<div id="introduction" class="section level3" number="3.4.5">
-<h3><span class="header-section-number">3.4.5</span> Introduction</h3>
 <p>In previous modules, we have gone into a lot of detail about all of the
 advantages of the tidyverse approach. However as you work with biomedical data,
 particularly complex data from complex research equipment, like mass
@@ -357,44 +200,67 @@ data sets and also for more general tasks in data management and analysis.
 However, these principles also apply to other programming languages,
 particularly those that can be used in an interactive format, including Python
 and Julia.</p>
-</div>
-<div id="data-structures-and-the-dataframe" class="section level3" number="3.4.6">
-<h3><span class="header-section-number">3.4.6</span> Data structures and the dataframe</h3>
-<p>To be able to understand some key differences in the Bioconductor approach and the tidyverse approach, you first need to understand how programming uses <strong>data structures</strong> to store data, and that there can be numerous different data structures available within a programming language to handle different types of data.</p>
-<p>When you process data using a programming language, there will be different
-structures that you can use to store data as you work with it. You can think of
-these data structures as containers where you keep your data in the programming
-environment while you work with it, and different structures organize the data
-in different ways.</p>
-<p>If you’ve read the earlier modules, you’ve already seen one example of a data
-structure. In other modules, we’ve discussed the “tidyverse” approach to
-processing data in R—this approach emphasizes the <em>dataframe</em> as a way to
-store data while you’re working with it (in other words, a data structure). In
-fact, the use of the dataframe as data structure for data storage is one of the
-defining features of the “tidyverse” approach. We mentioned in earlier modules
-that the tidyverse approach is based on using a common interface, so that you
-can mix and match small functions in different ways—the common interface is
-the dataframe. The tidyverse approach is built on the use of a common structure
-for storing data, the dataframe—almost all functions take data in this
-structure and almost all return data in this structure.</p>
-<p>Figure <a href="3.4-module15.html#fig:dfdatastructure">3.1</a> shows an annotated example of a dataframe,
-highlighting some of the key elements of its structure. A dataframe stores data
-in a two-dimensional structure, combining rows and columns. Each column is
-constrained to have data of the same type—in other words, all values in a
-column could be numeric (e.g., 1, 4, 10), or all could be character strings
-(e.g., “Mouse 1,” “Mouse 3”), but the same column cannot combine some values
-that are numeric and some that are character strings. Across the dataframe, all
-columns must have the same length (i.e., if you printed out the full dataframe,
-it would look like a rectangle). All the column values should be lined up, so
-that as you are reading across a row, the values in the column cells are from
-the same observation or unit.</p>
-<div class="figure fullwidth"><span style="display:block;" id="fig:dfdatastructure"></span>
-<img src="figures/dataframe.png" alt="An example of the dataframe data structure. This data structure is the most frequently used data structure within the tidyverse approach, and its use is in fact a defining element of the approach." width="\textwidth"  />
-<p class="caption marginnote shownote">
-Figure 3.1: An example of the dataframe data structure. This data structure is the most frequently used data structure within the tidyverse approach, and its use is in fact a defining element of the approach.
-</p>
-</div>
-<p>Dataframes like this are very clearly and simply organized. However, they can be
+<p>Data in R can be stored in a variety of other formats, too. When you are working
+with biological data—in particular, complex or large data output from laboratory
+equipment—there can be advantages to using data structures besides dataframes.
+In this section, we’ll discuss some of the complex characteristics of biomedical
+data that recommend the use of data structures in R beyond the dataframe. We’ll
+also discuss how the use of these other data structures can complicate the use of
+“tidyverse” functions and principles that you might learn in beginning R programming
+courses and books. In later modules, we’ll discuss how to connect your work in R
+to clean and analyze data by performing earlier pre-processing steps using more
+complex data structures and then transferring when possible to dataframes for
+storing data, to allow you to take advantage of the power and ease of the
+“tidyverse” approach as early as possible in your pipeline.</p>
+<p>As you learn R, you will almost certainly learn how to create and work with
+the more general data structures, including how to explore the data stored in
+each of them. By contrast, you may never learn many of the more complex data
+storage formats, especially if you are not using packages from Bioconductor.
+However, there are a number of good reasons why R packages—especially those
+shared through Bioconductor—define and use more complex data formats. In this
+and following modules, we will explain the advantages and disadvantages of
+complex versus simpler data storage formats in R. We will also explain how these
+advantages and disadvantages weigh out differently in different stages of a data
+preprocessing and analysis workflow. Finally, we will describe how you can
+leverage both to your advantage, and in particular the tools and approaches that
+you can use to shift from a Bioconductor-style approach—with heavy use of
+complex data storage formats—early in your preprocessing pipeline to a
+tidyverse approach—centered on storing data in a simple, tidy dataframe
+object—at later stages, when the data are more suitable to this simpler
+storage format, which allows you to leverage the powerful and widely-taught
+tidyverse approach in later steps of analysis and visualization.</p>
+<p>In these modules, we will focus on explaining these ideas within the R
+programming language. This language is a very popular one for both biomedical
+data sets and also for more general tasks in data management and analysis.
+However, these principles also apply to other programming languages,
+particularly those that can be used in an interactive format, including Python
+and Julia.</p>
+<div id="what-are-complex-data-structures" class="section level3" number="3.4.1">
+<h3><span class="header-section-number">3.4.1</span> What are complex data structures?</h3>
+<p>The R programming language offers a wide variety of structures that can be
+used to store data as you work with it, including steps of preprocessing
+and analysis of the data. Some of these structures are defined through the
+base R language that you first install, while other structures are specially
+defined through the extension R packages you add as you continue to work
+with R. These packages are specific to the tasks you aim to do, and if they
+define their own data storage structures, those structures are typically
+customized to that task.</p>
+<p>For example, there are packages—including the <code>xcms</code> package, for
+example—that allow you to load and preprocess data from LC-MS experiments.
+These packages include functionality to load data from a specialized format
+output by mass spectometry equipment, as well as identify and align peaks within
+the data that might indicate, for example, metabolite features for a
+metabolomics analysis. The <code>xcms</code> package defines its own structures that are
+used to store data during this preprocessing, and also draws on specialized data
+structures defined in other R extension packages, including the <code>OnDiskMSnExp</code>
+data object class that is defined by the <code>MSnbase</code> package.</p>
+<p>Complex data structures like these can be very precise in defining what types of
+data they contain and where each component of the data goes. Later in this and
+other modules, we will provide more details about the advantages and
+disadvantages of these types of specialized data storage formats, especially in
+the context of improving transparency, rigor, and reproducibility across the
+steps of preprocessing experimental biomedical data.</p>
+<p>Dataframes are very clearly and simply organized. However, they can be
 too restrictive in some cases. Sometimes, you might have data that are taken at
 different levels of observation—for example, you might have some measurements
 that are specific to a specific sample, but then other measurements or data that
@@ -409,22 +275,6 @@ you need as you need them, rather than reading in all the data and then
 using R commands to work with the full dataset. We’ll look later in this module
 about how more complex data structures can facilitate this approach when
 working with massive data in R.</p>
-<p>By addition to dataframes, there are a number of other simple, general purpose
-data structures that are often used to store data in R, and that you’re likely
-to come across as you work in R. These include <strong>vectors</strong>, which are used to
-store one-dimensional strings of data of a single type (e.g., all numeric, or
-all character strings; as a note, you can think of each column in a dataframe as
-a vector), <strong>matrices</strong>, which are also used to store data of a single type, but
-with a two-dimensional structure, and <strong>arrays</strong>, which, like matrices and
-vectors, store data of a single type, but in three dimensions. Another common
-general purpose data structure in R is the <em>list</em>, which allows you to combine
-data stored in any type of structure to create a single R object, giving
-enormous flexibility (but minimal set structure from one object to another).
-This data structure is the building block for some of the more complex specific
-data structures, which we’ll cover next.</p>
-</div>
-<div id="more-complex-data-structures-in-r" class="section level3" number="3.4.7">
-<h3><span class="header-section-number">3.4.7</span> More complex data structures in R</h3>
 <p>The dataframe structure has the advantage of being simple to understand and use.
 By using the dataframe as a common structure, the tidyverse approach is able to
 create a powerful environment for working with data, because the use of a common
@@ -441,6 +291,201 @@ preprocessing the data. First, the data are often very large, in some cases so
 large that it is difficult to read them into R. Second, the data might combine
 various elements, each with their own natural structures, that you’d like to
 keep together as you move through the steps of preprocessing the data.</p>
+<p>The code for different implementations of a method (in other words, different
+ways it will run with new object classes) can come in different R packages.
+This allows a developer to add his or her own applications of methods, suited
+for object classes he or she creates.</p>
+<p>A class defines the structure for a way of storing data. When you create
+an object that follows this structure, it’s an instance of that class.
+The <code>new</code> function is used to create new instances of a class.</p>
+<p>When a generic function determines what code to run based on the class of the
+object, it’s called method dispatch.</p>
+<p><strong>Examples of complex biomedical data suited for complex data structures</strong></p>
+<p>In the last module, we covered the tidyverse approach to working with
+data in R. This approach hinges on using a common data structure, the
+dataframe. With many tasks in data management and analysis, this data
+structure is sufficient, and so can be leveraged with the tidyverse
+approach. However, there are some cases where data are not well suited
+for a dataframe structure. In these cases, you may need to use some of
+R’s more complex data structures, at least for part of your data
+preprocessing and analysis pipeline.</p>
+<p>What characteristics might make data less suited for a dataframe structure
+in R? There are a variety of characteristics that could cause this. First,
+if data is extremely large, it may exceed a size that is reasonable for a
+dataframe structure. Some of the more complex data structures in R allow
+much of the data to stay “on disc,” rather than be loaded into RAM,
+when the data are structured to provide access from R.</p>
+<p>Other datasets
+may not fit well within the two-dimensional, non-ragged structure that
+is characteristic of the dataframe structure. For example, some biomedical
+data may have data that records characteristics at several levels of the
+data. It may have records on the levels of gene expression within each
+sample, separate information about each gene that was measured, and
+another separate set of information that characterizes each of the samples.
+While it is critical to keep “like” measurements aligned with data like this—in
+other words, to ensure that you can connect the data that characterizes
+a gene with the data that provides measures of the level of expression of
+that gene in each sample—these data do not naturally have a two-dimensional
+structure and so do not fit naturally into a dataframe structure.</p>
+<p><strong>Building on list data structures</strong></p>
+<p>R allows for very complex and specialized data structures, suitable to be
+customized for very specific needs with large or complex data. These
+structures tend to build on the generic list data structure.</p>
+<p>Another common
+general purpose data structure in R is the <em>list</em>, which allows you to combine
+data stored in any type of structure to create a single R object, giving
+enormous flexibility (but minimal set structure from one object to another).
+This data structure is the building block for some of the more complex specific
+data structures, which we’ll cover next.</p>
+<p>The R programming language offers a wide variety of structures that can be
+used to store data as you work with it, including steps of preprocessing
+and analysis of the data. Some of these structures are defined through the
+base R language that you first install, while other structures are specially
+defined through the extension R packages you add as you continue to work
+with R. These packages are specific to the tasks you aim to do, and if they
+define their own data storage structures, those structures are typically
+customized to that task.</p>
+<p>Many of these more specific data structures are built on the more generic idea
+of the <strong>list</strong> data structure, which provides a very flexible way to combine
+other data structures to create a single R object. In R, you can think of a
+list data structure as having various slots where it can store data, and
+each of these slots can store data stored in another structure. For example,
+one slot of a list might store a dataframe of data, while another might store
+a vector or a dataframe for a different level of observation. A slot could
+even store another list. As an example, if we want to store the type of
+data shown in Figure <a href="3.4-module15.html#fig:complexdatastructure">3.2</a>, we could use a list
+data structure with one slot that stores the metadata for the experiment,
+another that stores a dataframe or matrix with the assay data, another with a
+dataframe or matrix that stores the phenotype data, and another with
+a dataframe or matrix that stores the gene-level data. Each of these slots in
+the list will get a name, and we can use that name to access each of these
+pieces of data later. The list, in this case, allows us to store all these
+different types of data from an experiment in the same structure in R, so
+we can make sure we keep the data together in a single structure, even though
+it’s too complex to fit in a simple dataframe.</p>
+<p>Many R data structures are built on a general structure called a “list.” This
+data structure is a useful basic general data structure, because it is
+extraordinarily flexible. The list data structure is flexible in two
+important ways: it allows you to include data of different <em>types</em> in the
+same data structure, and it allows you to include data with different
+dimensions—and data stored hierarchically, including various other data
+structures—within the list structure. We’ll cover each of these points a bit
+more below and describe why they’re helpful in making the list a very good
+general purpose data structure.</p>
+<p>The list data structure is much more flexible than the vector or dataframe. It essentially allows you to
+create different “slots,” and you can store any type of data in each of these
+slots. In each slot you can store any of the other types of data structures in
+R—for example, vectors, dataframes, or other lists. You can even store unusual
+things like R <em>environments</em> [?] or <em>pointers</em> that give the directions to where
+data is stored on the computer without reading the data into R (and so saving
+room in the RAM memory, which is used when data is “ready to go” in R, but which
+has much more limited space than the mass [?] storage on your computer).</p>
+<p>Since you can put a list into the slot of a list, it allows you to create deep,
+layered structures of data. For example, you could have one slot in a list where
+you store the metadata for your experiment, and this slot might itself be a list
+where you store one dataframe with some information about the settings of the
+laboratory equipement you used to collect the data, and another dataframe that
+provides information about the experimental design variables (e.g., which animal
+received which treatment). Another slot in the larger list then might have
+experimental measurements, and these might either be in a dataframe or, if the
+data are very large, might be represented through pointers to where the data is
+stored in memory, rather than having the data included directly in the data
+structure.</p>
+<p>Given all these advantages of the list data structure, then, why not use it all
+the time? While it is a very helpful building block, it turns out that its flexibility
+can have some disadvantages in some cases. This flexibility means that you can’s
+always assume that certain bits of data are in a certain spot in each instance
+of a list in R. Conversely, if you have data stored in a less flexible structure,
+you can often rely on certain parts of the data always being in a certain part of
+the data structure. In a “tidy” dataframe, for example, you can always assume
+that each row represents the measurements for one observation at the unit of
+observation for that dataframe, and that each column gives values across all
+observations for one particular value that was measured for all the observations.
+For example, if you are conducting an experiment with mice, where a certain number
+of mice were sacrificed at certain time points, with their weight and the bacteria
+load in their lungs measured when the mouse was sacrificed, then you could store
+the data in a dataframe, with a row for each mouse, and columns giving the
+experimental characteristics for each mouse (e.g., treatment status, time point
+when the mouse was sacrificed), the mouse’s weight, and the mouse’s bacteria
+load when sacrificed. You could store all of this information in a list, as
+well, but the defined, two-dimensional structure of the dataframe makes it much
+more clearly defined where all the data goes in the dataframe structure, while
+you could order the data in many ways within a list.</p>
+<p>There is a big advantage to having stricter standards for what parts of data go
+where when it comes to writing functions that can be used across a lot of data.
+You can think of this in terms of how cars are set up versus how kitchens are
+set up. Cars are very standardized in the “interface” that you get when you sit
+down to drive them. The gas and brakes are typically floor pedals, with the gas
+to the right of the brake. The steering is almost always provided through a wheel
+centered in front of the driver’s torso. The mechanism for shifting gears (e.g.,
+forward, reverse) is typically to the right of the steering wheel, while
+mecahnisms for features like lights and windshield wipers, are typically to the
+left of the steering wheel. Because this interface is so standardized, you can
+get into a car you’ve never driven before and typically figure out how to
+drive it very quickly. You don’t need a lot of time exploring where everything
+is or a lot of directions from someone familiar with the car to figure out where
+things are. Think of the last time that you drove a rental car—within five minutes,
+at most, you were probably able to orient yourself to figure out where everything
+you needed was. This is like a dataframe in R—you can pretty quickly figure out
+where everything you might need is stored in the data structure, and people can
+write functions to use with these dataframes that work well generally across lots
+of people’s data because they can assume that certain pieces of data are in
+certain places.</p>
+<p>By contrast, think about walking into someone else’s kitchen and orienting yourself
+to use that. Kitchen designs do tend to have some general features—most will have
+a few common large elements, like a stove somewhere, a refrigerator somewhere,
+a pantry somewhere, and storage for pots, pans, and utensils somewhere. However,
+there is a lot of flexibility in where each of these are in the kitchen design,
+and further flexibility in how things are organized within each of these structures.
+If you cook in someone else’s kitchen, it is easy to find yourself disoriented in the
+middle of cooking a recipe, where a utensil that you can grab almost without
+thinking in your own kitchen requires you to stop and search many places in
+someone else’s kitchen. This is like a list in R—there are so many places that
+you can store data in a list, and so much flexibility, that you often find yourself
+having to dig around to find a certain element in a list data structure that someone
+else has created, and you often can’t assume that certain pieces are in certain
+places if you are writing your own functions, so it becomes hard to write
+functions that are “general purpose” for generic list structures in R.</p>
+<p>There is a way that list structures can be used in R in a way that retains some
+of their flexibility while also leveraging some of the benefits of
+standardization. This is R’s system for creating <em>objects</em>. These object
+structures are built on the list data structure, but each object is constrained
+to have certain elements of data in certain structures of the data. These
+structures cannot be used as easily as dataframes in a “tidyverse” approach,
+since the tidyverse tools are built based on the assumption that data is stored
+in a tidy dataframe. However, they are used in many of the Bioconductor
+approaches that allow powerful tools for the earlier stages in preprocessing
+biological data. The types of standards that are imposed in the more specialized
+objects include which slots the list can have, the names they have, what order
+they’re in (e.g., in a certain object, the metadata about the experiment might
+always be stored in the first slot of the list), and what structures and/or data
+types the data in each slot should have.</p>
+<p><strong>S3 and S4 objects in R</strong></p>
+<p>Many complex data structures in R are defined as S3 or S4 objects.</p>
+</div>
+<div id="advantages-of-complex-data-structures" class="section level3" number="3.4.2">
+<h3><span class="header-section-number">3.4.2</span> Advantages of complex data structures</h3>
+<p><strong>Bundling and aligning</strong></p>
+<p>One characteristic that can make data complex is if it includes measurements
+that are taken at several different levels of observation. For example, a single
+data set may have some observations or measurements that are taken at the level
+of the sample (e.g., the age, sex, and treatment of each study subject from
+which the samples are taken). It may have other measurements that are taken at
+the level of the gene (e.g., [values that you would have per gene]), and then
+measurements that are the result of a specific assay [?] (e.g., the expression
+level of each of the measured genes within each sample).</p>
+<p>These different types of data could be stored in different dataframes, with
+a common identifier to help link them. They could even be stored in separate
+dataframes with the positions used to link them (for example, if each
+column represents a gene in one dataframe and each row represents a gene
+in another, then you assume that the second column in the first dataframe
+aligns with the second row in the second dataframe), although this method
+can be prone to errors, especially one you begin subsetting the original
+dataframes in the course of data preprocessing and analysis.</p>
+<p>More complex data structures can help in both bundling all these pieces of
+data into a single object, while at the same time enforcing alignment across
+the pieces of data, so you can line up the measurements for a specific gene
+or sample across data taken at different levels.</p>
 <p>The data from genomic and other high-throughput experiments
 often are too complex and/or large to make dataframes practical as data
 structures, at least until data can be simplified through pre-processing.
@@ -501,66 +546,8 @@ Figure 3.2: An example of different components of data that may need to be store
 </p>
 <img src="figures/complex_data_structure.png" alt="An example of different components of data that may need to be stored in a data structure that is more complex than a dataframe. Data from a genomic experiment may include data from several levels, including metadata that describes the entire experiment, as well as assay data, phenotype data, and gene-level data. More complex data structures in R can be used to store all these pieces of data inside a single data structure." width="\textwidth"  />
 </div>
-<p>The R programming language offers a wide variety of structures that can be
-used to store data as you work with it, including steps of preprocessing
-and analysis of the data. Some of these structures are defined through the
-base R language that you first install, while other structures are specially
-defined through the extension R packages you add as you continue to work
-with R. These packages are specific to the tasks you aim to do, and if they
-define their own data storage structures, those structures are typically
-customized to that task.</p>
-<p>Many of these more specific data structures are built on the more generic idea
-of the <strong>list</strong> data structure, which provides a very flexible way to combine
-other data structures to create a single R object. In R, you can think of a
-list data structure as having various slots where it can store data, and
-each of these slots can store data stored in another structure. For example,
-one slot of a list might store a dataframe of data, while another might store
-a vector or a dataframe for a different level of observation. A slot could
-even store another list. As an example, if we want to store the type of
-data shown in Figure <a href="3.4-module15.html#fig:complexdatastructure">3.2</a>, we could use a list
-data structure with one slot that stores the metadata for the experiment,
-another that stores a dataframe or matrix with the assay data, another with a
-dataframe or matrix that stores the phenotype data, and another with
-a dataframe or matrix that stores the gene-level data. Each of these slots in
-the list will get a name, and we can use that name to access each of these
-pieces of data later. The list, in this case, allows us to store all these
-different types of data from an experiment in the same structure in R, so
-we can make sure we keep the data together in a single structure, even though
-it’s too complex to fit in a simple dataframe.</p>
-<p>The downside of a general list data structure, however, comes in when it comes
-to developing software for data stored in that structure. The general list
-structure is very flexible, which is why it can store such different types of
-data, but this flexibility means that there’s no guarantee about where in
-the data structure specific elements might be stored. By comparison, in a
-dataframe each row can be assumed to capture an observation, and each column will
-capture measurements or characteristics of that observation. Someone can
-therefore develop software to work with data stored in that structure, relying
-on finding those type of data in those locations in the data structure. When
-more complex data are stored in a general list object, the different components
-could be store in different ways by different users. For example, for the
-type of complex data shown in Figure <a href="3.4-module15.html#fig:complexdatastructure">3.2</a>, one person
-might store the metadata in the first slot of a list and the phenotype data
-in the second, while another person might store the data in a list with the
-metadata in the last slot and the phenotype data in the first.</p>
-<p>The way around this problem is to create data structures that build off the
-general list structure, but impose some rules that constrain the structure, so
-that the same types of data are always stored in the same spot. By doing this,
-software developers can develop code to work with data stored in that structure,
-with the guarantee that they can always find certain elements of the data in
-certain spots in the data structure. Bioconductor makes heavy use of these
-types of specialized data structures, typically called “classes” in Bioconductor
-tutorials and user manuals. This is because, in R, they are created using
-one of R’s object-oriented approaches, most often one called S4.</p>
-<p>Complex data structures like these can be very precise in defining what types of
-data they contain and where each component of the data goes. For example,
-they may have a “phenoData” slot that only will store a specialized
-dataframe with phenotype data describing each sample in the experiment [?],
-and another slot named “featureData” that will only store a specialized
-dataframe with data about each feature (e.g., gene) investigated in the experiment.
-With this structure, a software developer can develop a program that inputs
-data in this structure, always knowing where to find the feature data or the
-phenotype data.</p>
-<p>[Validation of data as it’s entered in an S4 class]</p>
+<p><strong>Handling large data</strong></p>
+<p>Two approaches for this are on disc and through R environments.</p>
 <p><label for="tufte-mn-45" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-45" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Big data is encountered in genomics for two reasons: the size of the genome and the heterogeneity of populations. Complex organisms, such as plants and animals, have genomes on the order of billions of base pairs (the human genome consists of over three billion base pairs). The diversity of populations, whether of organisms, tissues or cells, means we need to sample deeply to detect low frequency events. To interrogate long and/or numerous genomic sequences, many measurements are necessary. For example, a typical whole genome sequencing experiment will consist of over one billion reads of 75–100 bp each. The reads are aligned across billions of positions, most of which have been annotated in some way. This experiment may be repeated for thousands of samples. Such a data set does not fit within the memory of a current commodity computer, and is not processed in a timely and interactive manner. To successfully wrangle a large data set, we need to intimately understand its structure and carefully consider the questions posed of it.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Lawrence and Morgan 2014)</span></span></span></span></p>
 <p><label for="tufte-mn-46" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-46" class="margin-toggle"><span class="marginnote"><span style="display: block;">“A major challenge in the analysis of scRNA-seq data is the scalability of analysis methods as datasets increase in size over time. This is particularly problematic as experiments now frequently produce millions of cells [50–53], possibly across multiple batches, making it challenging to even load the data into memory and perform downstream analyses including quality control, batch correction and dimensionality reduction. Providing analysis methods, such as unsupervised clustering, that do not require data to be loaded into memory is an imperative step for scalable analyses. While large-scale scRNA-seq data are now routinely stored in on-disk data formats (e.g. HDF5 files), the methods to process and analyze these data are lagging.”</span>
@@ -630,9 +617,197 @@ example, also running tidyverse commands on data in database, <code>matter</code
 <span style="display: block;"><span class="citation"><span class="citation">(Lawrence and Morgan 2014)</span></span></span></span></p>
 <p><label for="tufte-mn-54" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-54" class="margin-toggle"><span class="marginnote"><span style="display: block;">“The Bioconductor project distributes the software as a number of different R packages, including Rsamtools, IRanges, GenomicRanges, GenomicAlignments, Biostrings, rtracklayer, biovizBase and BiocParallel. The software enables the analyst to conserve computational resources, iteratively generate summaries and visualize data at arbitrary levels of detail. These advances have helped to ensure that R and Bioconductor remain relevant in the age of high-throughput sequencing. We plan to continue in this direction by designing and implementing abstractions that enable user code to be agnostic to the mode of data storage, whether it be memory, files or databases. This will bring much needed agility to resource allocation and will enable the user to be more resourceful, without the burden of increased complexity.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Lawrence and Morgan 2014)</span></span></span></span></p>
+<p><strong>Allow software development across large, diverse teams</strong></p>
+<p>Robert Gentleman, one of the creators of Bioconductor [?], highlights
+this as a key reason for using these more complex data structures.
+R is an open-source language, and it allows contributions from
+software developers worldwide. The Bioconductor project leverages the
+base R software to build tools for working with complex genomic [?]
+data, also allowing for the development of new extensions from
+developers worldwide. The software extensions are developed, therefore,
+not by a unified team that is all employed at the same place, but
+instead by a collection of people who are making software as part of
+their research program, or perhaps as part of an industry job, and who
+write that software with the intent of having it work smoothly with
+other software packages that are available through Bioconductor.</p>
+<p>If you have ever been in a role where you organized volunteers to
+perform a large task, you can probably imagine how challenging it is to
+design a project in a way that allows for this type of software
+development to work. The use of specialized data structures is one
+element that helps in this coordination for Bioconductor. It enforces a
+standard that all the programmers can work toward—they can work under
+the assumption that the output from other functions in the Bioconductor
+ecosystem will be structured in a certain way, and so they can work
+under the assumption that certain elements of the data will be in certain
+spots in the data structure of the object.</p>
+<p>[Example of the party game where you each add a sentence, only seeing
+part of the story. Exquisite corpse.]</p>
+<p>The downside of a general list data structure, however, comes in when it comes
+to developing software for data stored in that structure. The general list
+structure is very flexible, which is why it can store such different types of
+data, but this flexibility means that there’s no guarantee about where in
+the data structure specific elements might be stored. By comparison, in a
+dataframe each row can be assumed to capture an observation, and each column will
+capture measurements or characteristics of that observation. Someone can
+therefore develop software to work with data stored in that structure, relying
+on finding those type of data in those locations in the data structure. When
+more complex data are stored in a general list object, the different components
+could be store in different ways by different users. For example, for the
+type of complex data shown in Figure <a href="3.4-module15.html#fig:complexdatastructure">3.2</a>, one person
+might store the metadata in the first slot of a list and the phenotype data
+in the second, while another person might store the data in a list with the
+metadata in the last slot and the phenotype data in the first.</p>
+<p>The way around this problem is to create data structures that build off the
+general list structure, but impose some rules that constrain the structure, so
+that the same types of data are always stored in the same spot. By doing this,
+software developers can develop code to work with data stored in that structure,
+with the guarantee that they can always find certain elements of the data in
+certain spots in the data structure. Bioconductor makes heavy use of these
+types of specialized data structures, typically called “classes” in Bioconductor
+tutorials and user manuals. This is because, in R, they are created using
+one of R’s object-oriented approaches, most often one called S4.</p>
+<p>Complex data structures like these can be very precise in defining what types of
+data they contain and where each component of the data goes. For example,
+they may have a “phenoData” slot that only will store a specialized
+dataframe with phenotype data describing each sample in the experiment [?],
+and another slot named “featureData” that will only store a specialized
+dataframe with data about each feature (e.g., gene) investigated in the experiment.
+With this structure, a software developer can develop a program that inputs
+data in this structure, always knowing where to find the feature data or the
+phenotype data.</p>
+<p>[Validation of data as it’s entered in an S4 class]</p>
+<p>R programmers get a lot of advantages from using these classes because they can
+write functions under the assumption that certain pieces of the data will always
+be in the same spot for that type of object. There is still flexibility in the
+object, in that it can store lots of different types of data, in a variety of
+different structures. While this “object oriented” approach in R data structures
+does provide great advantages for programmers, and allow them to create powerful
+tools for you to use in R, it does make it a little trickier in some cases for
+you to explore your data by hand as you work through preprocessing. This is
+because there typically are a variety of these object classes that your data
+will pass through as you go through different stages of preprocessing, because
+different structures are suited to different stages of analysis. Functions often
+can only be used for a single class of objects, and so you have to keep track of
+which functions pair up with which classes of data. Further, it can be a bit
+tricky—at least in comparison to when you have data in a dataframe—to
+explore your data by hand, because you have to navigate through different slots
+in the object. By contrast, a dataframe always has the same two-dimensional,
+rectangular structure, and so it’s very easy to navigate and explore data in
+this structure, and there are a large number of functions that are built to be
+used with dataframes, providing enormous flexibility in what you can do with
+data stored in this structure.</p>
 </div>
-<div id="limitations-to-complex-data-structures" class="section level3" number="3.4.8">
-<h3><span class="header-section-number">3.4.8</span> Limitations to complex data structures</h3>
+<div id="biomedical-data-preprocessing-with-complex-data-structures" class="section level3" number="3.4.3">
+<h3><span class="header-section-number">3.4.3</span> Biomedical data preprocessing with complex data structures</h3>
+<p>As we noted briefly earlier, the Bioconductor project is one area of
+R programming where complex data structures, rather than a tidyverse
+approach, tends to dominate (although there does seem to be an evolution
+toward more tidyverse techniques in Bioconductor, as we’ll discuss
+some in later modules). Bioconductor is critical to learn if you are
+working with genomic [?] data, as many of the key tools and algorithms
+for this type of data are shared through that project. This means that,
+for many biomedical researchers who are now generating complex,
+high-throughput data, it is worth learning how to use complex data
+structures in R.</p>
+<p><strong>Powerful algorithms</strong></p>
+<p>One of the advantages of these complex data structures for biomedical
+data preprocessing is that they can be leveraged to develop very powerful
+algorithms for working with complex biomedical data.</p>
+<p>[Examples]</p>
+<p><strong>Examples of types of complex pre-processing algorithms</strong></p>
+<p>In some cases, more complex algorithms may be used to normalize
+data across different samples [?]—for example, the normalization
+algorithm may leverage the assumption that the vast majority of
+values (e.g., expression levels of genes) are the same in all samples,
+with only a few varying between the samples. Starting from this
+assumption, an algorithm can be developed to normalize across the
+samples, to help in identifying genes with important differences in
+expression across the samples.</p>
+<p>[Other examples]</p>
+<p><strong>Challenges</strong></p>
+<p>It can be harder to explore your data along the way. With a tidyverse
+approach, since data are always in dataframes, you can quickly learn
+some tools that let you extract parts of the data, summarize the data,
+and visualize it. This allows for exploratory data analysis at each
+stage as you develop your preprocessing and analysis pipeline.
+Conversely, if you have a pipeline where the data is continuously
+being moved from one data structure to another, you have to learn how
+to use and explore each type of data structure to become as facile with
+exploring your data along the way.</p>
+<p>This can also make it harder to experiment, since often a function will
+be tied to a specific data structure, and so instead of learning a small
+set of general use functions that can be combined together in different
+ways (the tidyverse approach), you must learn more functions, since
+functions tend to be tied to a data structure (outside of generic functions),
+and the data structure tends to change frequently across the pipeline.</p>
+<p>To be clear, a pipeline in R that includes these complex data structures
+will typically still be modular, in the sense that you can adapt and
+separate specific parts of the pipeline. However, they tend to be much
+less flexible than pipelines developed with a tidyverse approach. The
+data structure changes often, with certain functions outputing a data
+structure that is needed for the next step, then the function of the
+next step outputting the data in a different structure, and so on. This
+changing data structure means that the functions for each step often are
+constrained to always be put in the same order. By comparison, the small
+tools that make up tidyverse functions can often be combined in many different
+orders, letting you build a much larger variety of pipelines with them.
+Also, many of the functions that work with complex data types will do
+many things within one function, so they can be harder to learn and
+understand, and they are often much more customized to a specific action,
+which means that you have to learn more functions (since each does one
+specific thing).</p>
+</div>
+<div id="disadvantages-of-complex-data-structures" class="section level3" number="3.4.4">
+<h3><span class="header-section-number">3.4.4</span> Disadvantages of complex data structures</h3>
+<p><strong>Harder to see all the data</strong></p>
+<p><strong>Harder to access all the data</strong></p>
+<p><strong>Harder to make use of general purpose tools</strong></p>
+<p><strong>Higher entry barrier to learn to use well</strong></p>
+<p>In previous sections, we described how the R programming language allows for
+object-oriented programming, and how customized objects are often used in
+preprocessing for biological data. This is a helpful approach for preprocessing,
+because it can handle complexities in biological data at its early stages of
+preprocessing, when R must handle complex input formats from equipment like
+flow cytometers or mass spectrometers, and data sizes that are often very large.</p>
+<p>However, once you have preprocessed your data, it is often possible to work with it
+in a smaller, more consistent object type. This will give you a lot of flexibility
+and power. While object-oriented approaches can handle complex data, it can be a
+little hard to write and work with code that is built on an object oriented approach.
+Working with this type of code requires you to keep track of what object type your
+data is in at each stage of a code pipeline, as well as which functions can work with
+that type of object.</p>
+<p>Further, this type of coding, in practice at least, can be a bit inflexible.
+Often, specific functions only work with a single or few types of functions. In
+theory, object-oriented programming allows for <em>methods</em> that work in customized
+ways with different types of objects to apply customized code to that type of
+object for similar, common-sense results. For example, there are often <code>summary</code>
+and <code>plot</code> methods for most types of objects, and these apply code that is
+customized to that object type and output, respectively, summarized information
+about the data in the object and a plot of the data in the object. However, when
+you want to do more with the object that summarize it or create its default
+plot, you often end up needing to move to more customized functions that work
+only with a single or few object types. When you get to this point, you find that
+you have to remember which functions work with which object type, and you have to
+use different functions at different stages of your code pipeline, as your code
+changes from one object class to another.</p>
+<p>Further, many of these functions input one object type and output a different
+one. This evolution of object types for storing data can be difficult to navigate
+and keep track of. Different object types store data in different ways, and so
+this evolution of data object types for storage can make it tricky to figure out
+how to extract and explore data along the pipeline. It makes it hard to write your
+own code to explore and visualize the data along the way, as well, and so users
+are often restricted to the visualization and analysis functions pre-made and
+shared in packages when working with data in complex object types, especially
+until the user becomes very comfortable with coding in R.</p>
+<p>Overall, what does this all mean? Object-oriented approaches offer real advantages
+early in the process of pre-processing biological data, especially complex and
+large data output from complex laboratory equipment. However, once this pre-processing
+is completed, there is a big advantage in moving the data into a simple format
+and then continuing coding, data analysis, and visualization using tools that
+work with this simple format. This is the approach taken by a suite of R packages
+called the “tidyverse,” as well as extensions that build off the approach that
+this suite of tools embraces. This “tidyverse” approach is described in the
+next section.</p>
 <p>In the previous parts of this module, we’ve highlighted some of the ways that
 complex data structures are useful (and even necessary) for parts of the data
 pre-processing you may do in R. However, they also have some downsides. In a later
@@ -705,76 +880,6 @@ complex data, they also constrain you somewhat to follow the steps and analysis
 imagined by the original package creator, rather than providing flexibility to
 create your own series of steps, as the tidyverse approach does.</p>
 <hr />
-<p>Data in R can be stored in a variety of other formats, too. When you are working
-with biological data—in particular, complex or large data output from laboratory
-equipment—there can be advantages to using data structures besides dataframes.
-In this section, we’ll discuss some of the complex characteristics of biomedical
-data that recommend the use of data structures in R beyond the dataframe. We’ll
-also discuss how the use of these other data structures can complicate the use of
-“tidyverse” functions and principles that you might learn in beginning R programming
-courses and books. In later modules, we’ll discuss how to connect your work in R
-to clean and analyze data by performing earlier pre-processing steps using more
-complex data structures and then transferring when possible to dataframes for
-storing data, to allow you to take advantage of the power and ease of the
-“tidyverse” approach as early as possible in your pipeline.</p>
-</div>
-<div id="complex-versus-simple-structures-for-storing-data" class="section level3" number="3.4.9">
-<h3><span class="header-section-number">3.4.9</span> Complex versus simple structures for storing data</h3>
-<p>The R programming language offers a wide variety of structures that can be
-used to store data as you work with it, including steps of preprocessing
-and analysis of the data. Some of these structures are defined through the
-base R language that you first install, while other structures are specially
-defined through the extension R packages you add as you continue to work
-with R. These packages are specific to the tasks you aim to do, and if they
-define their own data storage structures, those structures are typically
-customized to that task.</p>
-<p>For example, there are packages—including the <code>xcms</code> package, for
-example—that allow you to load and preprocess data from LC-MS experiments.
-These packages include functionality to load data from a specialized format
-output by mass spectometry equipment, as well as identify and align peaks within
-the data that might indicate, for example, metabolite features for a
-metabolomics analysis. The <code>xcms</code> package defines its own structures that are
-used to store data during this preprocessing, and also draws on specialized data
-structures defined in other R extension packages, including the <code>OnDiskMSnExp</code>
-data object class that is defined by the <code>MSnbase</code> package.</p>
-<p>Complex data structures like these can be very precise in defining what types of
-data they contain and where each component of the data goes. Later in this and
-other modules, we will provide more details about the advantages and
-disadvantages of these types of specialized data storage formats, especially in
-the context of improving transparency, rigor, and reproducibility across the
-steps of preprocessing experimental biomedical data.</p>
-<p>By contrast to these more complex data formats, there are a number of simple,
-general purpose data structures that are often used to store data in R. These
-include <strong>vectors</strong>, which are used to store one-dimensional strings of data of
-a single type (e.g., all numeric, or all character strings), <strong>matrices</strong>, which
-are also used to store data of a single type, but with a two-dimensional
-structure, and <strong>dataframes</strong>, which are used to store multiple vectors of the
-same length, and so allow for storing measurements of different data types for
-multiple observations.</p>
-<p>[Figure: examples of these three structures]</p>
-<p>As you learn R, you will almost certainly learn how to create and work with
-these more general data formats, including how to explore the data stored in
-each of them. By contrast, you may never learn many of the more complex data
-storage formats, especially if you are not using packages from Bioconductor.
-However, there are a number of good reasons why R packages—especially those
-shared through Bioconductor—define and use more complex data formats. In this
-and following modules, we will explain the advantages and disadvantages of
-complex versus simpler data storage formats in R. We will also explain how these
-advantages and disadvantages weigh out differently in different stages of a data
-preprocessing and analysis workflow. Finally, we will describe how you can
-leverage both to your advantage, and in particular the tools and approaches that
-you can use to shift from a Bioconductor-style approach—with heavy use of
-complex data storage formats—early in your preprocessing pipeline to a
-tidyverse approach—centered on storing data in a simple, tidy dataframe
-object—at later stages, when the data are more suitable to this simpler
-storage format, which allows you to leverage the powerful and widely-taught
-tidyverse approach in later steps of analysis and visualization.</p>
-<p>In these modules, we will focus on explaining these ideas within the R
-programming language. This language is a very popular one for both biomedical
-data sets and also for more general tasks in data management and analysis.
-However, these principles also apply to other programming languages,
-particularly those that can be used in an interactive format, including Python
-and Julia.</p>
 <!-- > "Input/output (I/O) is the technical term for reading and writing data: the process of getting information into a particular computer system (in this case R) and then exporting it to the ‘outside world’ again (in this case as a file format that other software can read). Data I/O will be needed on projects where data comes from, or goes to, external sources. However, the majority of R resources and documentation start with the optimistic assumption that your data has already been loaded, ignoring the fact that importing datasets into R, and exporting them to the world outside the R ecosystem, can be a time-consuming and frustrating process. Tricky, slow or ultimately unsuccessful data I/O can cripple efficiency right at the outset of a project. Conversely, reading and writing your data efficiently will make your R projects more likely to succeed in the outside world." [@gillespie2016efficient] -->
 <!-- > "There are circumstances when datasets become too large to read directly into -->
 <!-- R. Reading in a 4 GB text file using the functions tested above, for example, -->
@@ -1066,8 +1171,8 @@ and Julia.</p>
 <!-- > "For example, a normalized scRNA-seq dataset carries around two matrices: the raw counts and the normalized expression values. You might have enough RAM to load one of these a time but not both at once. With a HDF5-backed SingleCellExperiment you can easily just load into memory the matrix you actually need at a given step in the analysis." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/ -->
 <!-- > "Don’t use a DelayedArray if you can avoid it! ... If you can load your data into memory and still compute on it then you’re always going to have a better time doing it that way. Analyses will be faster, simpler, and you will have more options available to you. But when this isn’t an option then the DelayedArray framework is a powerful set of packages to help you get your work done. I find it pretty remarkable that a first-class single-cell analysis workflow can so seamlessly support the use of in-memory and disk-backed data." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/ -->
 </div>
-<div id="practice-quiz-1" class="section level3" number="3.4.10">
-<h3><span class="header-section-number">3.4.10</span> Practice quiz</h3>
+<div id="practice-quiz-1" class="section level3" number="3.4.5">
+<h3><span class="header-section-number">3.4.5</span> Practice quiz</h3>
 
 </div>
 </div>

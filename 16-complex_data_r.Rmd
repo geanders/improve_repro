@@ -22,6 +22,30 @@ structures
 
 ### Bioconductor data structures
 
+When you are writing scripts in R to work with your code, if you are at a 
+point in your pipeline when you can use a "tidyverse" approach, then you will
+"keep" your data in a dataframe, as your data structure, throughout your 
+work. However, at earlier stages in your preprocessing, you may need to use
+tools that use other data structures. It's helpful to understand the 
+basic building blocks of R data structures, so you can find elements of your
+data in these other, more customized data structures. 
+
+For example, metabolomics data can be collected from the mass spectrometer with
+the goal of measuring levels of a large number of metabolite features in each
+sample. The data collected from the mass spectrometer will be very large, as
+these data describe the full spectra [?] measured for each sample. Through
+pre-processing, these data can be used to align peaks across different samples
+and measure the area under each peak [?] to estimate the level of each
+metabolite feature in each sample. This pre-processing will produce a much
+smaller table of data, with a structure that can be easily stored in a dataframe
+structure (for example, a row for each sample and a column for each metabolite
+feature, with the cell values giving the level of each metabolite feature in
+each sample). Therefore, before pre-processing, the data will be too complex and
+large to reasonably be stored in a dataframe structure, but instead will require
+a Bioconductor approach and the use of more complex data structures, while after
+pre-processing, the workflow can move into a tidyverse approach, centered on
+keeping the data in a dataframe structure.
+
 **Come in packages**
 
 **Help files for data structures**
@@ -37,6 +61,22 @@ structures
 **A tour of the Seurat data structure**
 
 ### Other popular Bioconductor data structures
+
+Some object classes in BioConductor: 
+
+- `eSet` from `Biobase`
+- `Sequence` from `IRanges`
+- `MAlist` from `limma` 
+- `ExpressionSet` from `Biobase`
+
+Some of the most important data structures in Bioconductor are [@huber2015orchestrating] (from Table 2 in this reference):
+
+- `ExpressionSet` (`Biobase` package) 
+- `SummarizedExperiment` (`GenomicRanges` package)
+- `GRanges` (`GenomicRanges` package) 
+- `VCF` (`VariantAnnotation` package)
+- `VRanges` (`VariantAnnotation` package) 
+- `BSgenome` (`BSgenome` package) 
 
 **Structures for sequence data**
 
@@ -54,9 +94,83 @@ structures
 
 **How to explore data in Bioconductor structures**
 
+While it is a bit trickier to explore your data when it is stored in a
+list---either a general list you created, or one that forms the base for a
+specialized class structure through functions from a Bioconductor package---you
+can certainly learn how to do this navigation. This is a powerful and critical
+tool for you to learn as you learn to preprocess your data in R, as you should
+*never* feel like you data is stored in a "black box" structure, where you can't
+peek in and explore it. You should *always* feel like you can take a look at any
+part of your data at any step in the process of preprocessing, analyzing, and
+visualizing it.
+
 You can use generic functions, like `View()` and `str()`.
 
+You can use `typeof` to determine the data type and `is.[x]` (`is.logical`,
+`is.character`, `is.double`, and `is.integer`) to test if data has a certain
+type [@wickham2019advanced].
+
+To feel comfortable exploring your data at any stage during the preprocessing
+steps, you should learn how to investigate and explore data that's stored 
+in a list structure in R. Because the list structure is the building block 
+for complex data structures, including Bioconductor class structures, this will
+serve you well throughout your work. You should get in the habit of checking 
+the structure and navigating where each piece of data is stored in the data
+structure at each step in preprocessing your data. Also, by checking your data
+throughout preprocessing, you might find that there are bits of information 
+tucked in your data at early stages that you aren't yet using. For example, 
+many file formats for laboratory equipment include slots for information about
+the equipment and its settings during when running the sample. This information
+might be read in from the file into R, but you might not know it's there for you
+to use if you'd like, to help you in creating reproducible reports that include
+this metadata about the experimental equipment and settings. 
+
+First, you will want to figure out whether your data is stored in a generic
+list, or if it's stored in a specific class-based data structure, which means it
+will have a bit more of a standardized structure. To do this, you can run the
+`class` function on your data object. The output of this might be a single value
+(e.g., "list" [?]) or a short list. If it's a short list, it will include both 
+the specific class of the object and, as you go down the list, the more 
+general data structure types that this class is built on. For example, if the 
+`class` function returns this list: 
+
+```
+[Example list of data types---maybe some specific class, then "list"?]
+```
+
+it means that the data's in a class-based structure called ... which is built on 
+the more general structure of a list. You can apply to this data any of the functions
+that are specifically built for ... data structures, but you can also apply 
+functions built for the more general list data structure. 
+
+There are several tools you can use to explore data structured as lists in R. 
+R lists can sometimes be very large---in terms of the amount of data stored in 
+them---particularly for some types of biomedical data. With some of the tools 
+covered in this subsection, that will mean that your first look might seem 
+overwhelming. We'll also cover some tools, therefore, that will let you peel 
+away levels of the data in a bit more manageable way, which you can use when 
+you encounter list-structured data that at first feels overwhelming. 
+
+First, if your data is stored in a specific class-based data structure, there
+likely will also be help files specifically for the class structure that can
+help you navigate it and figure out where things are. [Example]
+
+[More about exploring data in list structures.]
+
+
+You can use the `getSlots` function with S4 objects to see all the 
+slots within the object. 
+
 **How to extract data from Bioconductor structures**
+
+By using the accessor function, instead of `@`, your code will be more robust
+to changes that the developers make. They will be sensitive to insuring that
+the accessor function for a particular part of the data continues to work 
+regardless of changes they make to the structure that is used to store data in 
+objects in that class. They will be less committed, however, to keeping the 
+same slots, and in the same positions, as they develop the software. The 
+"contract" with the user is through the accessor function, in other words, 
+rather than through the slot name in the object. 
 
 **Finding functions that work with a data structure**
 
