@@ -546,6 +546,43 @@ Since the data stays in a standard and simple object type, it is easy to check
 in on your data at any stage, as the common visualization tools for this
 approach (from the <code>ggplot2</code> package and its extensions) can be always be
 applied to data stored in a tidy dataframe.</p>
+<blockquote>
+<p>“Standards are for products what grammar is for language. People sometimes
+criticize standards for making life a matter of routine rather than inspiration.
+Some argue that standards hinder creativity and keep us slaves to the past.
+But try imagining a world without standards. From tenderloin beef cuts to
+the geometric design of highways, standards may diminish variety and
+authenticity, but they improve efficiency. From street signs to nutrition
+labels, standards provide a common language of reason. From Internet
+protocols to MP3 audio formats, standards enable systems to work together.
+From paper sizes … to George Laurer’s Universal Product Code, standards
+offer the convenience of comparability.” <span class="citation">(Madhavan 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“The lawmakers of the growing nation [Canada] were eager to establish
+a coast-to-coast railway system within the decade. … Throughout his
+surveys, Fleming relied to crude geometric calculations based on
+longitude, as there was no uniform time across the regions. ‘There was
+no system. Like the rail lines, the different times touched or overlapped
+at 300 points in the country.’ … Even regionally, timekeeping was in
+disarray. If it was 12:13 in Boston, it was 12:27 in Philadelphia and
+12:32 in Buffalo. in 1832 the United States had about 229 miles of
+railroads. By 1880, the country had increased its rail infrastructure
+to close to 95,000 miles. To perserve the sanity of the train driver,
+each railroad company began to maintain its own time. Clocks had up
+to six dials, and train stations displayed the time in various
+citis. A train going from Baltimore, Maryland, to Scranton, Pennsylvania,
+in those days might follow Baltimore time, creating the danger of collisions
+when trains operated on a single track.” <span class="citation">(Madhavan 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Simplicity is not about stripping features down to a bare minimum.
+It’s about achieving elegance while maintaining performance.” <span class="citation">(Madhavan 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“The essence of good technology is that it’s intuitive, and it evolves.
+Ideally, you don’t even want to know it’s there.” <span class="citation">(Madhavan 2015)</span></p>
+</blockquote>
 <p><strong>Uses the same data structure throughout</strong></p>
 <p>The centralizing principal of the tidyverse approach is the format in which data
 is stored throughout “tidyverse” coding—the tidy dataframe. Briefly, you can think of this format in two parts. First, there’s the R
@@ -630,10 +667,254 @@ them.</li>
 <li>Examples from code in earlier modules</li>
 </ul>
 <p><strong>Tools for data input</strong></p>
+<p>To be able to work with data in R, you first must load it into your R
+session. Data will typically be saved in some type of file or files, and
+so you must instruct R in how to find that data and then read it from
+the file into the R session.</p>
+<p>There are several key tidyverse tools for inputting data from a file. The
+most important is a package in the tidyverse called, <code>readr</code>. This package
+allows you to read data from plain text files. Data are often stored in
+these plain text files, including in formats like CSV (“comma-separated
+values”), tab-separated values, and fixed width files. These are all files
+that you can open on your computer with a text editor (for example,
+Notepad, Wordpad, or TextEdit).</p>
+<p>The <code>readr</code> package includes various functions to read in data from these
+types of files, with different functions for different formats of those
+files. For example, CSV files separate different pieces of data in the
+file with commas, and these can be read into R with the <code>readr</code> function
+<code>read_csv</code>.</p>
+<p>Some equipment in the laboratory may allow you to save results in a plain
+text format. When you export your data from laboratory equipment, you can
+check to see if there is an option to outload it to a format like “csv”
+or “txt,” which would allow you to use these <code>readr</code> functions to then
+read the data into R.</p>
+<p>There are other packages in the tidyverse that allow you to read in data
+from other types of file formats. For example, you may have data that
+you recorded into an Excel spreadsheet. Excel files are a bit more complex
+in their structure than plain text files, and the functions that read
+plain text files into R will not work for Excel files. Instead, there are
+a series of functions in a package called <code>readxl</code> that you can use to
+read in data from Excel files into R. These functions even allow you to
+specify which sheet of an Excel file to read data from, as well as which
+cells on that sheet, so they allow for very fine control of data input
+from an Excel spreadsheet.</p>
+<p>In some cases, you may be collecting data with laboratory equipment that does
+not export its data to a standard format, like a plain text file or a
+basic spreadsheet file. Instead, some equipment will save data into a file
+format that has been standardized for a certain type of data (e.g., an mzML
+file for metabolomics data) or to a file type that is proprietary to the
+company that manufactures the equipment. There is a chance that someone has
+created an R package that can input data from these more specialized types of
+files. In fact, for common file types from biomedical research, that chance
+is high (for example, there are several packages available with functions that
+input data from an mzML file). One of the best ways to find an appropriate
+tool to input data from more specialized formats is by searching Google for
+“R data input” and then the name of the file format. If you use that file
+format often in your laboratory, it is worth some research to determine
+which R package is a good fit for inputting data from that file format
+and then working through vignettes and other helpfiles for that package to
+learn how to use it well.</p>
+<p>Regardless of the tools that you use to read data from your files into R, there
+is one other tools for data input that is very powerful and useful to learn.
+Once you’ve figured out the code to read in data from a single file, R’s
+programmable structure allows you to expand that code to read in data from many
+different files of the same type and structure and combine that data into a
+single large object in your R session. This process can often streamline your
+data workflow substantially and so is well worth the time to learn.</p>
+<p>Doing this combines three steps:</p>
+<ol style="list-style-type: decimal">
+<li>Developing the code to read in and process data from a single file of
+that type and structure and encapsulate that code into a function</li>
+<li>Create an object that lists all the files you’d like to read in (for
+example, all the files in a certain subdirectory)</li>
+<li>Use functions from the <code>purrr</code> package to apply the input function you
+created to all those files and then reformat the input into a structure
+that’s easy to work with (e.g., a single large dataframe)</li>
+</ol>
 <p><strong>Tools for standardization and normalization</strong></p>
+<p>There are a range of ways to standardize and normalize different types of
+biomedical data, ranging from very simple to much more complex. At the simpler
+end is a process called “scaling,” where the observations for each feature or
+column are changed to have an overall mean of 0 and standard deviation of 1.
+This can be done by taking each value in a column and subtracting from it
+the column-wide mean, then dividing by the column-wide standard deviation [?].
+This type of scaling is often required before using some of the techniques
+for dimension reduction (e.g., principal components analysis) or clustering,
+to ensure that the unit of measurement of each column does not influence
+its weight in later analysis. For example, if you were clustering observations
+using measurements for each subject that included their weight, you don’t
+want to get different results depending on whether their weight is measured
+in grams versus pounds, and this type of scaling can help avoid any of those
+differences based on the units used for measurements.</p>
+<p>In R, there are functions that come with the base installation of R (in other
+words, don’t require installing extra packages) that can be used for more basic
+processes of standardization and normalization. For example, the <code>scale</code>
+function can be used for the basic scaling described in the previous paragraph.
+You can also directly use math functions (like <code>-</code> for subtraction and <code>/</code> for
+division) and very basic functions (like <code>mean</code> to calculate the mean of a
+vector of numbers and <code>sd</code> to calculate the standard deviation) to make these
+types of calculations from scratch.</p>
+<p>In the tidyverse, you can add or change columns in the dataframe to store these
+types of scaled values using the <code>mutate</code> function from the <code>dplyr</code> package, and
+in general, the <code>dplyr</code> package is a key package to learn from the tidyverse, as
+it forms the heart of the tools for cleaning and exploring data that are stored
+in tidy dataframes. These functions can also be used for basic cleaning operations
+in a dataframe. For example, data that are recorded for colony-forming units
+may include “TNTC” in cells of the spreadsheet where so many bacteria had grown
+that the individual colonies were “too numerous to count.” When you read in the
+data, you may want to change these values to missing values so that you can
+run numerical calculations on the cells that include colony counts. This type
+of conversion can easily be done using functions from the <code>dplyr</code> package.
+The package includes not only functions for making changes to a single column
+(e.g., the <code>mutate</code> function), but also functions that can be used to perform
+the same calculation across many columns (e.g., the <code>across</code> function). This
+is an efficient way to do something like scale the data in multiple columns at
+once.</p>
+<p>There are also more complex algorithms that can be used for standardizing
+and normalizing biomedical data. [Why you might sometimes want to use these]
+When you need these more complex algorithms, you will often find that
+they are included as part of the functions in a Bioconductor package that
+was developed specifically for a certain type of biomedical data. [Example?]
+These functions often won’t work directly with a tidy dataframe, but instead
+will be used earlier in the workflow while more complex object types are
+being used to store and work with the data. In a later module, we’ll discuss
+this stage of working with biomedical data more, as well as how you can
+move from this type of data processing to a tidyverse approach once earlier
+steps of data processing have been completed.</p>
 <p><strong>Tools for working with character strings</strong></p>
+<p>Once you have learned the basic tools for inputting data, as well as basic
+manipulations like scaling, you should take some time to learn a few other
+tools that can often be used to make your coding pipelines much more efficient.
+One of these is to learn how to work well with character strings. Character
+strings are strings of alphanumerical symbols that are stored inside
+quotation marks, like “Mouse-01” or “Control group.” Several tidyverse
+packages help you work with this type of data more efficiently, either through
+finding and using regular patterns in the data (e.g., the number “01” stored in
+“Mouse-01”) or in treating these data as a marker of a set number of groups
+(e.g., “Control group” versus “Treated group”). These tools can help you
+in processing and exploring the data, and they are also extremely important
+in creating figures and tables from the data with clear labels. Once you start
+learning to work with character string data, you will realize that it’s not
+just within the data, but also that you can treat the file names and directory
+names of your project as character strings, and use these tools to embed and
+use useful information in them.</p>
+<p>The <code>stringr</code> package, which is part of the tidyverse, includes simple but
+powerful tools for working with vectors composed of character strings. For
+example, the package includes a function that let you extract a subset of each
+character string based on the position of the characters in the string, a
+function that lets you replace every instance of a pattern with something
+else, and a function that will tell you which character strings in the vector
+have a match to a certain pattern. It also includes a function that can change
+the case of all the letters in each string, either to uppercase, to lowercase,
+or to “title case” (the first letter in each word is capitalized).</p>
+<p>You likely will not realize how powerful many of these tools are
+until you have a time when you need to do one of these tasks! For example,
+say that you have a column in your data that provides the ID of each study
+subject (e.g., “Mouse 1A”). If some of the IDs were entered using upper
+case (e.g., “MOUSE 1A”), some with lower case (“mouse 1a”), and some with
+a mixture (e.g., “Mouse 1A”), then you may find that it is hard
+to write code that recognizes that “Mouse 1A” is the same as “mouse 1a” and
+“MOUSE 1A.” The functions in the <code>stringr</code> package would let you quickly
+convert everything to the same case and so work around this issue.
+As another example, you may want to extract certain elements from each
+subject ID—for example, you might want to create a column where you
+have changed “Mouse 1A” to just “1A” and “Mouse 2B” to just “2B.” The
+<code>stringr</code> package has functions that will let you do this in several
+ways. For example, it has a function that would let you remove “Mouse”
+from each character string, and another function that would let you
+extract only the part of the string that starts from the first number.
+These types of tools can be invaluable when you need to preprocess or
+clean data from the format that it first enters R.</p>
+<p>Sometimes, you will want to treat character strings as discrete categories
+or values. For example, if part of your data records subject IDs
+(e.g., “Mouse 1A,” “Mouse 2B”), you may want to be able to link up all
+of the observations that are recorded for each subject. Similarly, you
+may want to treat a variable that records treatment (e.g., “treated” / “control”)
+as a set of specific categories that each observation belongs to.</p>
+<p>In R, you can do this by treating that column as something called a “factor.”
+This data type looks like a character string (e.g., “treated”), but R has
+recorded that there are only a few set values that values in the column can have
+(e.g., “treated” or “control”), and when you summarize or plot the data, you can
+group by this variable to get summaries within each category, or align it with
+the color or shape of plotted points.</p>
+<p>The <code>forcats</code> package includes helpful tools for working with this factor type
+of data. When a column is changed into a factor, the possible levels of the
+factor (in other words, the possible values it can take) will be given an order,
+often alphabetical. You won’t notice this order with many of the processing
+you might do, but it will control the order that categories are mentioned when
+you summarize or plot the data. The <code>forcats</code> package includes a function that
+lets you rearrange this order, and so rearrange the order that each category
+is presented in summaries and plots. The package also includes numerous other
+tools for working with this type of data. For example, if you have a factor
+that takes many different possible values, it will let you to convert to
+specify only those that are most common (you can specify how many categories),
+and then pool the rest into an “Other” category.</p>
 <p><strong>Tools for working with dates and times</strong></p>
+<p>Another handy set of tools is a set for working with dates and times. Often, you
+will record the date that an observation is collected, or the date and time if
+data are being collected at a fine time scale. Although you record these as a
+character string (e.g., “August 1, 2019”), you’ll want to be able to use the
+quantitative information within the date. For example, you may want to be able
+to tell if the date of each observation is before a certain date, or determine
+how many days there are between two date.</p>
+<p>The tidyverse includes a package for working with dates and times called
+<code>lubridate</code>. This package includes functions that allow you to change a column
+in your data to have a date or date-time data type. This will allow you to
+do operations on those values as dates—in other words, do things like determine
+the number of days between two dates. The <code>lubridate</code> package also includes
+functions for these operations on dates, including determining if one date is
+larger or smaller than another and whether it’s within an interval of two dates,
+as well as determining the difference between two dates or finding out which
+date is a certain number of days after a given date. There are also functions
+to extract certain elements from each date, like the day of the week or the
+month of the year.</p>
+<p>The functions in the <code>lubridate</code> package can be very useful for preprocessing
+data. For example, you may record the date of each measurement that you take,
+but also need to determine how much time has passed between the start of the
+experiment and that measurement. The <code>lubridate</code> package has a function that
+will allow you to calculate the time since a recorded start time, and so this
+allows you to record only the date and time of each measurement, and then
+determine the time since the start of the experiment within reproducible code
+once you read the recorded data into R.</p>
 <p><strong>Tools for statistical modeling</strong></p>
+<p>Often, analysis of biomedical data will include some statistical hypothesis
+testing or model building. For example, if you have collected bacterial
+loads in two groups of animals with different treatment assignments
+(treated and control), you may want to test the hypothesis that the average
+bacterial load in the two groups is the same. If the treatment was successful
+and the experiment had adequate power, then the data will hopefully show that
+this null hypothesis should be rejected.</p>
+<p>R has a number of functions that can run the most common statistical
+hypothesis tests (e.g., Student’s t-test) as well as fit commonly-used
+statistical models (e.g., linear regression models). Many of the tools
+for common tests and model building are included with your initial installation
+of R. This means that you can use them without installing or loading additional
+packages.</p>
+<p>Further, there are many additional packages that are available that run
+less common statistical tests or fit less common statistical model frameworks.
+Part of R’s strength is in it’s deep availability of these packages for
+statistical analysis. You can often use a Google search to determine if
+there is a function or package for a statistical analysis that you would
+like to perform in R, and it is rare to not find at least one package with
+the appropriate algorithm. To help you select among different packages, you
+can read [Caroline’s article].</p>
+<p>In addition to learning the tools for the types of statistical analysis
+that you do often in your research, it is also helpful to learn some tools
+that help you incorporate that statistical analysis into your workflow.
+Many of the tools in R for statistical analysis were originally focused on
+being an endpoint of a code pipeline. For example, many of them will result
+in a print-out summary of the results of the statistical test or model fit.
+This is fine if you only want to record that result, but often you will
+want to use the results in further R code, for example to add to plots or
+tables or to combine with other results.</p>
+<p>There are a couple of packages that can help with this. First, there is a
+package called <code>broom</code> that can conver the output of many statistical
+tests and model fits into a tidy dataframe. If you have focused on learning
+tidyverse tools, then this functionality makes it much easier for you to
+continue working with the output.</p>
+<p>A broader set of tools has been developed more recently. The <code>tidytools</code>
+package [?] aims to create a common interface …</p>
+<p>[tidymodels package]</p>
 </div>
 <div id="resources-to-learn-more-on-tidyverse-tools" class="section level3" number="3.3.4">
 <h3><span class="header-section-number">3.3.4</span> Resources to learn more on tidyverse tools</h3>

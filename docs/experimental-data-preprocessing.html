@@ -487,7 +487,52 @@ transcriptomics.</p>
 <div id="common-steps-in-data-preprocessing-for-biomedical-research" class="section level3" number="3.1.3">
 <h3><span class="header-section-number">3.1.3</span> Common steps in data preprocessing for biomedical research</h3>
 <p><strong>Data input</strong></p>
+<p>When working with biomedical research data, you will typically have it
+stored in some type of computer file. Computer files can have different
+file formats, which define for the computer the way that the data are
+stored in the file. For example, data that you enter and save in the Excel
+program may be saved to an “xls” or “xlsx” file format [?]. Some types of
+equipment, like plate readers and [?], may also allow you to output data
+in this file format, or in a simpler plain text format like a comma-separated
+file (“csv”) format.</p>
+<p>To be able to work with data in a program like R or Python, you’ll need to
+first load the data into the program. This means you will need to direct the
+program in how to access and load the data from within whatever file format
+it’s in.</p>
+<p>Fortunately, there are a variety of functions, both in base R and in free
+extension packages, that can read in data from a variety of file formats.
+Loading data with one of these functions will often be the first step in
+a data pre-processing pipeline.</p>
 <p><strong>Quality assessment / quality control</strong></p>
+<p>Once data are loaded, a common next step is to check the data.</p>
+<p>When data are recorded by hand (for example, into a spreadsheet), there is the
+possibility for recording errors. For example, when recording the weights of
+mice, someone might transpose two numbers, so that a weight of [x] is recorded
+as [x].</p>
+<p>When data are recorded and saved by equipment, it typically avoids recording
+errors. However, there is still the possibility for data quality issues.
+[…]</p>
+<p>Further, there can be patterns in the data that result from the way that the
+data are collected. For example, the data can have something called batch
+effects if they have consistent differences based on who was doing the
+measuring or which batch the sample was run with. For example, if two
+researchers are working to weigh the mice for an experiment, the recorded
+weights recorded by one of the researcher might tend to be, on average, lower
+than those recorded by the other researcher, perhaps because the two scales
+they are using are calibrated a bit differently. Similarly, settings or
+conditions can change in subtle ways between different runs on a piece of
+equipment, and so the samples run in different batches might have some
+differences in output based on the batch.</p>
+<p>These batch effects can often be corrected for through statistical modeling,
+as long as they are identified and are not aligned with a difference you
+are trying to measure (in other words, if all the samples for the control
+animals are run in one batch and all those for the treated animals in
+another batch, you would not be able to separate the batch effect from
+the effect of treatment).</p>
+<p>One way you can help to identify potential quality issues in research data is
+through basic exploratory analysis. Basic dot plots or scatterplots of the data,
+for example, can often help to identify unusual outliers, which may be the
+result of a data recording error or an oddity in one of the samples.</p>
 <p><strong>Data transformations</strong></p>
 <p>Scaling, normalization, log transformations, calculating time since start
 of experiment, etc.</p>
@@ -498,7 +543,35 @@ period of exponential growth)</p>
 <p>Taking data on light intensities at different frequencies and using it to
 estimate the presence or absence of certain surface proteins (and their amount)
 on each cell for flow cytometry.</p>
+<p>…</p>
+<p>In some cases, some of the required data preprocessing will aim to apply
+scientific principles to extract helpful information from the data that are
+returned by the scientific equipment.</p>
+<p>As one example, consider flow cytometry. This is a method of identifying
+different types of cells within a sample [?]. It works by …</p>
 <p><strong>Dimension reduction and clustering</strong></p>
+<p>Biomedical research has dramatically changed in the past couple of decades to
+include much more high-throughput data. These data often include measurements
+for each sample on hundreds of thousands of different parameters. For example,
+gene expression data can include measurements for each sample on the expression
+level of thousands [?] of different genes, metabolics data can include
+measurements for thousands [?] of metabolite features, proteomics can
+include measurements for thousands [?] of proteins, and so on.</p>
+<p>For these types of high throughput data, the different measurements often
+have strong correlation structures across samples. For example, a large
+collection of genes may work in concert, and so gene expression across those
+genes may be highly correlated, or a metabolite might break down into
+multiple measured metabolite features, making the measurements for those
+features highly correlated. Therefore, even though there may be thousands
+of measurements that are made on each sample in high throughput data, it
+is often not the case that they are all providing separate information and
+insights.</p>
+<p>To handle the complexity and size of high throughput data, it can be helpful
+to try to either reduce the dimensions of the data, through a technique like
+principal components analysis, or to use the high dimensional data to cluster
+the data into groups of samples with similar patterns across the measurements.</p>
+<p>[dimension reduction]</p>
+<p>[clustering]</p>
 </div>
 <div id="examples-of-biomedical-data-preprocessing" class="section level3" number="3.1.4">
 <h3><span class="header-section-number">3.1.4</span> Examples of biomedical data preprocessing</h3>
@@ -3967,6 +4040,37 @@ to try to navigate them all as you learn how to run code in an R script.</p>
 <div id="style-guidelines-for-writing-code-scripts" class="section level3" number="3.2.6">
 <h3><span class="header-section-number">3.2.6</span> Style guidelines for writing code scripts</h3>
 <p><strong>Find favorite tools and get to know them</strong></p>
+<p>The best thing that you can do to smooth the path as you learn a coding language
+is to start by finding a few general purpose tools and learning to use them
+really well. If you ask most good programmers, you will find that a large
+amount of their code relies on a fairly small set of general-use tools,
+with more specialized tools only used here and there, where a specific
+algorithm is necessary.</p>
+<p>[More on the importance of learning a few foundational tools well]</p>
+<p>Later, we will talk about an approach called the “tidyverse” approach, which
+focuses on sets of these general purpose tools. This approach allows you to
+use the same set of tools for many problems, and it does so by focusing on
+keeping your data in the same type of data structure (a tidy dataframe) for
+as much of the pipeline as you can. This approach therefore fosters the
+approach of starting by learning a small set of tools very well.</p>
+<p>In later modules, we will recommend some of the tools that we have found to be
+very helpful in preprocessing biomedical data, most of which are part of this
+tidyverse. These include tools for adding or modifying columns to a dataframe,
+inputting data from common file formats, and so on. However, this strategy is
+not unique to the R programming language and is a good strategy to adopt
+regardless of the programming language you are learning.</p>
+<blockquote>
+<p>“The functional orientations of Shepherd-Barron and the Wright brothers
+(or Edison) have one thing in common. It’s what the Santa Fe Institute
+scholar Brian Arthur calls <em>deep craft</em>—the ability to know intimately
+the various functionalities and how to effectively combine them. ‘It
+consists in [knowing] what is likely not to work, what methods to use,
+whom to talk to, what theories to look to, and above all of how to
+manipulate phenomena that may be freshly discovered and poorly understood,’
+Arthur writes. Systems-engineering approaches that underline the
+efficiency and reliability of failure-tolerance products like ATMs and
+airplanes have a strong connection to deep craft.” <span class="citation">(Madhavan 2015)</span></p>
+</blockquote>
 <p><strong>Modify rather than start from scratch</strong></p>
 <p>As you start learning to write code in R, don’t force yourself to stare at an
 empty R script file and try to come up with a full script from scratch. One of the
@@ -4008,6 +4112,31 @@ and one of the most useful parts is the “Examples” section. Scroll down to t
 of the helpfile to find this section. It includes several examples that you can copy into
 your R script or console and try yourself, to figure out the types of inputs that the
 function needs and how different options for the function modify how it works.</p>
+<blockquote>
+<p>“All creative work builds on what has gone before. When someone declares
+that something is original, it’s because they are unaware of the influences.
+The creative make the most of things they admire and aren’t ashamed to
+be inspired by something they respect. The bad news: everything has already
+been done. The good news: it can be done again.” <span class="citation">(Judkins 2016)</span></p>
+</blockquote>
+<blockquote>
+<p>“Extracting penicillin from the mold was no child’s play… Instead of
+designing and building a reactor for the chemical reactions from scratch—which
+meant more time, money, and uncertainty—[Margaret] Hutchinson opted for something
+that was already functional. Some researchers had found that mold from
+cantaloupe could be an effective source for penicillin, so she started
+there. Her team then revised a fermentation process that Pfizer was using to
+produce food additives like citric acid and gluconic acid from sugars, with
+the help of microbes. Hutchinson swiftly helped convert a run-down
+Brooklyn ice factory into a production facility. The deep-tank fermentation
+process produced great quantities of mold by mixing sugar, salt, milk, minerals,
+and fodder through a chemical separation process that Hutchinson knew very
+well from the refinery business.” <span class="citation">(Madhavan 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Johannes Gutenberg invented his printing press by repurposing a wine
+press for use with olive oil–based ink and block printing.” <span class="citation">(Madhavan 2015)</span></p>
+</blockquote>
 <p><strong>Modular, not monolithic</strong></p>
 <p>Another key thing to remember as you develop R scripts is that they are all,
 even those that do very complex things, made up of lots of smaller, simpler
@@ -4037,7 +4166,74 @@ same. Therefore, when you’re working on this step, you can google help on read
 Excel files into R if you’re stuck, without worrying about whether the resources
 that you find to help used examples of the type of data you have or other types of
 data.</p>
+<blockquote>
+<p>“The core of the engineering mind-set is what I call modular systems thinking.
+… A specific technique in modular systems thinking, for example, includes
+a functional blend of deconstruction (breaking down a larger system into
+its modules) and reconstructionism (putting those modules back together). The
+focus is on identifying the strong and weak links—how the modules work,
+don’t work, or could potentially work—and applying this knowledge to
+engineer useful outcomes. … there’s a top-down design strategy—‘divide
+and conquer’—in which each subtask is separately attacked in a progression
+toward achieving the final objective.” <span class="citation">(Madhavan 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Psychologist Gary Bradshaw has written about the importance of function-based
+design in the development of airplanes. Wilbur and Orville Wright took about four
+years to implement their first prototype of a flying machine. While their
+competitors focused on the design of winds, fuselage, and propulsion, the
+Wright brothers were devoted to getting the fundamental functions of lift,
+thrust, drag, and yaw correct. Consistent with the notion of modular thinking,
+they solved each puzzle at a subsystems level before they moved to the
+next layer of the assembly, and along the way they invented new instruments and
+measurement techniques.” <span class="citation">(Madhavan 2015)</span></p>
+</blockquote>
 <p><strong>Iterate!</strong></p>
+<p>Code is something that you develop over multiple drafts—it’s the kind of thing
+that you build by trying out one thing, seeing how it works, then revising, reworking,
+and extending to get to the pipeline you ultimately want. You will quickly feel
+frustrated if you try to build your pipelines in a single go, without this process
+of iteration. Just as many writers suffer writer’s block more often when they
+try to get everything perfect in a first draft, you will feel frustrated if you
+think that you should build your code to its final form, from start to
+finish, in just one try.</p>
+<p>When you build a code pipeline, try to break your process up into some key chunks.
+For example, you might know that you’ll first need to input the data into R
+(first chunk), then preprocess the data by log-transforming one of the measurements
+(second chunk), and then run a statistical hypothesis test to compare two groups
+that you measured (third chunk). Once you’ve broken the code into these chunks,
+you can focus on a single chunk at a time and iterate the code for that task until
+you’re happy with it.</p>
+<p>For example, if the first chunk is to read in the data, you might first try to
+use a standard tool that you’ve used before, like the <code>readr</code> function <code>read_csv</code>,
+which reads in data from a CSV file. However, maybe this tool doesn’t work for
+the file format your data are in (perhaps they’re in an Excel file, for example),
+and so you get an error when you try to do that. Keep calm when you get that error,
+and just iterate back and look up some tools for reading Excel files into R.
+When you’ve found some, try adapting the examples from their help files or vignettes
+to work in your code pipeline. If that works, then spend some time exploring the
+input that you get, so you can start to think about how you’ll work with the data
+for the next chunk in your pipeline.</p>
+<p>Once you’re done with this process of iteration, make sure that you go back and
+clean up the code pipeline, so that the code script is streamlined to walk
+efficiently through the tasks. Also, rerun the whole script in a new R session,
+so you can make sure that it is self-contained. One of the most common
+reasons for a script not working the same later is that, when it was originally
+developed, the coder was relying on some objects that were created in their R
+environment at the console, not through code in the script, and so were available
+when running the code originally, but not when it’s opened in a new R session.
+You can often identify and fix these issues much more quickly by testing your
+code pipeline in a new R session right after you create it, rather than
+waiting and running into that problem days or weeks later, when you try to rerun
+the script.</p>
+<blockquote>
+<p>“Prototypes create new capabilities. Prototypes foster adaptation to new
+forms, new expections, and new offshoots of technologies. Prototypes are
+the starting points toward our ultimate creative destinations.” <span class="citation">(Madhavan 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Tweaking and prototyping are basic human habits.” <span class="citation">(Madhavan 2015)</span></p>
+</blockquote>
 <p><strong>Do not repeat yourself</strong></p>
 <p>As you become more familiar with programming with R, you can start to evolve your
 style of writing scripts in more advanced ways. A key one is to learn how to limit
@@ -4095,6 +4291,67 @@ online book “R for Data Science” with guidance on this topic
 for iteration, the same book also has a chapter on that
 (<a href="https://r4ds.had.co.nz/iteration.html" class="uri">https://r4ds.had.co.nz/iteration.html</a>).</p>
 <p><strong>Scripts are for humans to read, not just computers</strong></p>
+<p>A code script, by definition, is a set of instructions that you send to the
+computer to evaluate. However, many starting programmers make things hard
+on themselves by treating the script as a document that is only for the computer.</p>
+<p>While it is true that the code script needs to be written so that the
+computer can evaluate it, that is only the first level of usefulness for the
+script. Keep in mind that one of the key advantages of writing a computer
+script is so that the code becomes reproducible—you and others can revisit
+it, rerun it, and adapt it at a later time. Otherwise, in a programming
+language like R, you could just run all your code at the console, rather than
+saving it in a script.</p>
+<p>To make sure that your code is “legible” by humans, take the time to clean it
+up once you have it running. (As an added bonus, it’s often the case that you’ll
+find a few bugs when you do so, and so you can catch and fix those.) Go back
+through the whole script once you have built your pipeline.</p>
+<p>Use comments! In R, and line that starts with a “#” will be ignored by R, so you
+can use those to write messages for humans that the computer will skip. You can
+use comments in a variety of ways to make your code clearer to humans. First,
+you can use them to divide the code script into sections and to label those
+sections. This will help a human reader get an overview of the script when
+they first look at it and navigate the script as they continue to work with it.
+You can also use code comments to explain coding choices that you’ve made along
+the way that might not immediately be clear. For example, if you needed to
+use a function that is outside of your core set of tools, and that you found
+to tackle a specific problem, you could comment on that, and perhaps add a link
+to more information on that function.</p>
+<p>You can also clean up the code substantially by editing it to follow a set of
+style guidelines for R code. These are guidelines that specify things that
+don’t matter to the computer, but that can help human readers. For example,
+there are many cases where R can evaluate code the same way whether spaces
+have been used to separate pieces of the code or not, but a thoughtful use of
+spacing can help a human read the code. There are several style guidelines
+available for R and other programming languages, and it is less important which
+one you use than that you follow one consistently (at least by the time you
+edit your code for clarity to humans). One style guide you can use is the
+one created by Hadley Wickham available at: <a href="https://style.tidyverse.org/index.html" class="uri">https://style.tidyverse.org/index.html</a>.</p>
+<p>Finally, it is useful to use this editing stage to simplify the logic and
+function calls within the script. Often, when you are first trying to get some
+code to work, you might come up with a pretty ungainly function call to do
+so. Once you’ve gotten it working and figured out a general approach, you can
+often go back and rethink how you’ve coded the approach, and you can often
+come up with a simpler way to perform the same task using less code or
+clearer code. The more you can simplify your code, the lower the risk for
+bugs and the easier it will be for humans to understand.</p>
+<blockquote>
+<p>“Filming [of Apocalypse Now] started in March 1976 and was scheduled to
+take six weeks. It took sixteen months. The director, Francis Ford Coppola,
+shot around 230 hours of footage, with multiple takes of the same scene. He
+was hoping to capture a magical or unusual performance. He encouraged the
+actors to ad-lib, which produced some poetic moments but also hours of unusable
+footage. Once filming was finished, the movie had to be cut and recut for
+months. It took Coppola and his film editor Walter Murch nearly three years to
+edith the footage… Why produce a lot of work and then throw away 95 percent?
+The two processes seem contradictory. Why not just produce the 5 percent ultimately
+used? Because you don’t know <em>which</em> 5 percent that will be. Editing can
+be hard becuase you’re discarding things you have put a lot of energy into
+making.” <span class="citation">(Judkins 2016)</span></p>
+</blockquote>
+<blockquote>
+<p>“You might not write well every day, but you can always edit a bad page.
+You can’t edit a blank page.” – Jodi Picoult, cited in <span class="citation">(Judkins 2016)</span></p>
+</blockquote>
 <p><strong>Some things belong in the console, not the script</strong></p>
 <p>Finally, keep in mind that all of the code you write, as you develop a script with
 a pipeline, does <em>not</em> need to be recorded in the script. Of course you will want
@@ -4734,6 +4991,43 @@ Since the data stays in a standard and simple object type, it is easy to check
 in on your data at any stage, as the common visualization tools for this
 approach (from the <code>ggplot2</code> package and its extensions) can be always be
 applied to data stored in a tidy dataframe.</p>
+<blockquote>
+<p>“Standards are for products what grammar is for language. People sometimes
+criticize standards for making life a matter of routine rather than inspiration.
+Some argue that standards hinder creativity and keep us slaves to the past.
+But try imagining a world without standards. From tenderloin beef cuts to
+the geometric design of highways, standards may diminish variety and
+authenticity, but they improve efficiency. From street signs to nutrition
+labels, standards provide a common language of reason. From Internet
+protocols to MP3 audio formats, standards enable systems to work together.
+From paper sizes … to George Laurer’s Universal Product Code, standards
+offer the convenience of comparability.” <span class="citation">(Madhavan 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“The lawmakers of the growing nation [Canada] were eager to establish
+a coast-to-coast railway system within the decade. … Throughout his
+surveys, Fleming relied to crude geometric calculations based on
+longitude, as there was no uniform time across the regions. ‘There was
+no system. Like the rail lines, the different times touched or overlapped
+at 300 points in the country.’ … Even regionally, timekeeping was in
+disarray. If it was 12:13 in Boston, it was 12:27 in Philadelphia and
+12:32 in Buffalo. in 1832 the United States had about 229 miles of
+railroads. By 1880, the country had increased its rail infrastructure
+to close to 95,000 miles. To perserve the sanity of the train driver,
+each railroad company began to maintain its own time. Clocks had up
+to six dials, and train stations displayed the time in various
+citis. A train going from Baltimore, Maryland, to Scranton, Pennsylvania,
+in those days might follow Baltimore time, creating the danger of collisions
+when trains operated on a single track.” <span class="citation">(Madhavan 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“Simplicity is not about stripping features down to a bare minimum.
+It’s about achieving elegance while maintaining performance.” <span class="citation">(Madhavan 2015)</span></p>
+</blockquote>
+<blockquote>
+<p>“The essence of good technology is that it’s intuitive, and it evolves.
+Ideally, you don’t even want to know it’s there.” <span class="citation">(Madhavan 2015)</span></p>
+</blockquote>
 <p><strong>Uses the same data structure throughout</strong></p>
 <p>The centralizing principal of the tidyverse approach is the format in which data
 is stored throughout “tidyverse” coding—the tidy dataframe. Briefly, you can think of this format in two parts. First, there’s the R
@@ -4818,10 +5112,254 @@ them.</li>
 <li>Examples from code in earlier modules</li>
 </ul>
 <p><strong>Tools for data input</strong></p>
+<p>To be able to work with data in R, you first must load it into your R
+session. Data will typically be saved in some type of file or files, and
+so you must instruct R in how to find that data and then read it from
+the file into the R session.</p>
+<p>There are several key tidyverse tools for inputting data from a file. The
+most important is a package in the tidyverse called, <code>readr</code>. This package
+allows you to read data from plain text files. Data are often stored in
+these plain text files, including in formats like CSV (“comma-separated
+values”), tab-separated values, and fixed width files. These are all files
+that you can open on your computer with a text editor (for example,
+Notepad, Wordpad, or TextEdit).</p>
+<p>The <code>readr</code> package includes various functions to read in data from these
+types of files, with different functions for different formats of those
+files. For example, CSV files separate different pieces of data in the
+file with commas, and these can be read into R with the <code>readr</code> function
+<code>read_csv</code>.</p>
+<p>Some equipment in the laboratory may allow you to save results in a plain
+text format. When you export your data from laboratory equipment, you can
+check to see if there is an option to outload it to a format like “csv”
+or “txt,” which would allow you to use these <code>readr</code> functions to then
+read the data into R.</p>
+<p>There are other packages in the tidyverse that allow you to read in data
+from other types of file formats. For example, you may have data that
+you recorded into an Excel spreadsheet. Excel files are a bit more complex
+in their structure than plain text files, and the functions that read
+plain text files into R will not work for Excel files. Instead, there are
+a series of functions in a package called <code>readxl</code> that you can use to
+read in data from Excel files into R. These functions even allow you to
+specify which sheet of an Excel file to read data from, as well as which
+cells on that sheet, so they allow for very fine control of data input
+from an Excel spreadsheet.</p>
+<p>In some cases, you may be collecting data with laboratory equipment that does
+not export its data to a standard format, like a plain text file or a
+basic spreadsheet file. Instead, some equipment will save data into a file
+format that has been standardized for a certain type of data (e.g., an mzML
+file for metabolomics data) or to a file type that is proprietary to the
+company that manufactures the equipment. There is a chance that someone has
+created an R package that can input data from these more specialized types of
+files. In fact, for common file types from biomedical research, that chance
+is high (for example, there are several packages available with functions that
+input data from an mzML file). One of the best ways to find an appropriate
+tool to input data from more specialized formats is by searching Google for
+“R data input” and then the name of the file format. If you use that file
+format often in your laboratory, it is worth some research to determine
+which R package is a good fit for inputting data from that file format
+and then working through vignettes and other helpfiles for that package to
+learn how to use it well.</p>
+<p>Regardless of the tools that you use to read data from your files into R, there
+is one other tools for data input that is very powerful and useful to learn.
+Once you’ve figured out the code to read in data from a single file, R’s
+programmable structure allows you to expand that code to read in data from many
+different files of the same type and structure and combine that data into a
+single large object in your R session. This process can often streamline your
+data workflow substantially and so is well worth the time to learn.</p>
+<p>Doing this combines three steps:</p>
+<ol style="list-style-type: decimal">
+<li>Developing the code to read in and process data from a single file of
+that type and structure and encapsulate that code into a function</li>
+<li>Create an object that lists all the files you’d like to read in (for
+example, all the files in a certain subdirectory)</li>
+<li>Use functions from the <code>purrr</code> package to apply the input function you
+created to all those files and then reformat the input into a structure
+that’s easy to work with (e.g., a single large dataframe)</li>
+</ol>
 <p><strong>Tools for standardization and normalization</strong></p>
+<p>There are a range of ways to standardize and normalize different types of
+biomedical data, ranging from very simple to much more complex. At the simpler
+end is a process called “scaling,” where the observations for each feature or
+column are changed to have an overall mean of 0 and standard deviation of 1.
+This can be done by taking each value in a column and subtracting from it
+the column-wide mean, then dividing by the column-wide standard deviation [?].
+This type of scaling is often required before using some of the techniques
+for dimension reduction (e.g., principal components analysis) or clustering,
+to ensure that the unit of measurement of each column does not influence
+its weight in later analysis. For example, if you were clustering observations
+using measurements for each subject that included their weight, you don’t
+want to get different results depending on whether their weight is measured
+in grams versus pounds, and this type of scaling can help avoid any of those
+differences based on the units used for measurements.</p>
+<p>In R, there are functions that come with the base installation of R (in other
+words, don’t require installing extra packages) that can be used for more basic
+processes of standardization and normalization. For example, the <code>scale</code>
+function can be used for the basic scaling described in the previous paragraph.
+You can also directly use math functions (like <code>-</code> for subtraction and <code>/</code> for
+division) and very basic functions (like <code>mean</code> to calculate the mean of a
+vector of numbers and <code>sd</code> to calculate the standard deviation) to make these
+types of calculations from scratch.</p>
+<p>In the tidyverse, you can add or change columns in the dataframe to store these
+types of scaled values using the <code>mutate</code> function from the <code>dplyr</code> package, and
+in general, the <code>dplyr</code> package is a key package to learn from the tidyverse, as
+it forms the heart of the tools for cleaning and exploring data that are stored
+in tidy dataframes. These functions can also be used for basic cleaning operations
+in a dataframe. For example, data that are recorded for colony-forming units
+may include “TNTC” in cells of the spreadsheet where so many bacteria had grown
+that the individual colonies were “too numerous to count.” When you read in the
+data, you may want to change these values to missing values so that you can
+run numerical calculations on the cells that include colony counts. This type
+of conversion can easily be done using functions from the <code>dplyr</code> package.
+The package includes not only functions for making changes to a single column
+(e.g., the <code>mutate</code> function), but also functions that can be used to perform
+the same calculation across many columns (e.g., the <code>across</code> function). This
+is an efficient way to do something like scale the data in multiple columns at
+once.</p>
+<p>There are also more complex algorithms that can be used for standardizing
+and normalizing biomedical data. [Why you might sometimes want to use these]
+When you need these more complex algorithms, you will often find that
+they are included as part of the functions in a Bioconductor package that
+was developed specifically for a certain type of biomedical data. [Example?]
+These functions often won’t work directly with a tidy dataframe, but instead
+will be used earlier in the workflow while more complex object types are
+being used to store and work with the data. In a later module, we’ll discuss
+this stage of working with biomedical data more, as well as how you can
+move from this type of data processing to a tidyverse approach once earlier
+steps of data processing have been completed.</p>
 <p><strong>Tools for working with character strings</strong></p>
+<p>Once you have learned the basic tools for inputting data, as well as basic
+manipulations like scaling, you should take some time to learn a few other
+tools that can often be used to make your coding pipelines much more efficient.
+One of these is to learn how to work well with character strings. Character
+strings are strings of alphanumerical symbols that are stored inside
+quotation marks, like “Mouse-01” or “Control group.” Several tidyverse
+packages help you work with this type of data more efficiently, either through
+finding and using regular patterns in the data (e.g., the number “01” stored in
+“Mouse-01”) or in treating these data as a marker of a set number of groups
+(e.g., “Control group” versus “Treated group”). These tools can help you
+in processing and exploring the data, and they are also extremely important
+in creating figures and tables from the data with clear labels. Once you start
+learning to work with character string data, you will realize that it’s not
+just within the data, but also that you can treat the file names and directory
+names of your project as character strings, and use these tools to embed and
+use useful information in them.</p>
+<p>The <code>stringr</code> package, which is part of the tidyverse, includes simple but
+powerful tools for working with vectors composed of character strings. For
+example, the package includes a function that let you extract a subset of each
+character string based on the position of the characters in the string, a
+function that lets you replace every instance of a pattern with something
+else, and a function that will tell you which character strings in the vector
+have a match to a certain pattern. It also includes a function that can change
+the case of all the letters in each string, either to uppercase, to lowercase,
+or to “title case” (the first letter in each word is capitalized).</p>
+<p>You likely will not realize how powerful many of these tools are
+until you have a time when you need to do one of these tasks! For example,
+say that you have a column in your data that provides the ID of each study
+subject (e.g., “Mouse 1A”). If some of the IDs were entered using upper
+case (e.g., “MOUSE 1A”), some with lower case (“mouse 1a”), and some with
+a mixture (e.g., “Mouse 1A”), then you may find that it is hard
+to write code that recognizes that “Mouse 1A” is the same as “mouse 1a” and
+“MOUSE 1A.” The functions in the <code>stringr</code> package would let you quickly
+convert everything to the same case and so work around this issue.
+As another example, you may want to extract certain elements from each
+subject ID—for example, you might want to create a column where you
+have changed “Mouse 1A” to just “1A” and “Mouse 2B” to just “2B.” The
+<code>stringr</code> package has functions that will let you do this in several
+ways. For example, it has a function that would let you remove “Mouse”
+from each character string, and another function that would let you
+extract only the part of the string that starts from the first number.
+These types of tools can be invaluable when you need to preprocess or
+clean data from the format that it first enters R.</p>
+<p>Sometimes, you will want to treat character strings as discrete categories
+or values. For example, if part of your data records subject IDs
+(e.g., “Mouse 1A,” “Mouse 2B”), you may want to be able to link up all
+of the observations that are recorded for each subject. Similarly, you
+may want to treat a variable that records treatment (e.g., “treated” / “control”)
+as a set of specific categories that each observation belongs to.</p>
+<p>In R, you can do this by treating that column as something called a “factor.”
+This data type looks like a character string (e.g., “treated”), but R has
+recorded that there are only a few set values that values in the column can have
+(e.g., “treated” or “control”), and when you summarize or plot the data, you can
+group by this variable to get summaries within each category, or align it with
+the color or shape of plotted points.</p>
+<p>The <code>forcats</code> package includes helpful tools for working with this factor type
+of data. When a column is changed into a factor, the possible levels of the
+factor (in other words, the possible values it can take) will be given an order,
+often alphabetical. You won’t notice this order with many of the processing
+you might do, but it will control the order that categories are mentioned when
+you summarize or plot the data. The <code>forcats</code> package includes a function that
+lets you rearrange this order, and so rearrange the order that each category
+is presented in summaries and plots. The package also includes numerous other
+tools for working with this type of data. For example, if you have a factor
+that takes many different possible values, it will let you to convert to
+specify only those that are most common (you can specify how many categories),
+and then pool the rest into an “Other” category.</p>
 <p><strong>Tools for working with dates and times</strong></p>
+<p>Another handy set of tools is a set for working with dates and times. Often, you
+will record the date that an observation is collected, or the date and time if
+data are being collected at a fine time scale. Although you record these as a
+character string (e.g., “August 1, 2019”), you’ll want to be able to use the
+quantitative information within the date. For example, you may want to be able
+to tell if the date of each observation is before a certain date, or determine
+how many days there are between two date.</p>
+<p>The tidyverse includes a package for working with dates and times called
+<code>lubridate</code>. This package includes functions that allow you to change a column
+in your data to have a date or date-time data type. This will allow you to
+do operations on those values as dates—in other words, do things like determine
+the number of days between two dates. The <code>lubridate</code> package also includes
+functions for these operations on dates, including determining if one date is
+larger or smaller than another and whether it’s within an interval of two dates,
+as well as determining the difference between two dates or finding out which
+date is a certain number of days after a given date. There are also functions
+to extract certain elements from each date, like the day of the week or the
+month of the year.</p>
+<p>The functions in the <code>lubridate</code> package can be very useful for preprocessing
+data. For example, you may record the date of each measurement that you take,
+but also need to determine how much time has passed between the start of the
+experiment and that measurement. The <code>lubridate</code> package has a function that
+will allow you to calculate the time since a recorded start time, and so this
+allows you to record only the date and time of each measurement, and then
+determine the time since the start of the experiment within reproducible code
+once you read the recorded data into R.</p>
 <p><strong>Tools for statistical modeling</strong></p>
+<p>Often, analysis of biomedical data will include some statistical hypothesis
+testing or model building. For example, if you have collected bacterial
+loads in two groups of animals with different treatment assignments
+(treated and control), you may want to test the hypothesis that the average
+bacterial load in the two groups is the same. If the treatment was successful
+and the experiment had adequate power, then the data will hopefully show that
+this null hypothesis should be rejected.</p>
+<p>R has a number of functions that can run the most common statistical
+hypothesis tests (e.g., Student’s t-test) as well as fit commonly-used
+statistical models (e.g., linear regression models). Many of the tools
+for common tests and model building are included with your initial installation
+of R. This means that you can use them without installing or loading additional
+packages.</p>
+<p>Further, there are many additional packages that are available that run
+less common statistical tests or fit less common statistical model frameworks.
+Part of R’s strength is in it’s deep availability of these packages for
+statistical analysis. You can often use a Google search to determine if
+there is a function or package for a statistical analysis that you would
+like to perform in R, and it is rare to not find at least one package with
+the appropriate algorithm. To help you select among different packages, you
+can read [Caroline’s article].</p>
+<p>In addition to learning the tools for the types of statistical analysis
+that you do often in your research, it is also helpful to learn some tools
+that help you incorporate that statistical analysis into your workflow.
+Many of the tools in R for statistical analysis were originally focused on
+being an endpoint of a code pipeline. For example, many of them will result
+in a print-out summary of the results of the statistical test or model fit.
+This is fine if you only want to record that result, but often you will
+want to use the results in further R code, for example to add to plots or
+tables or to combine with other results.</p>
+<p>There are a couple of packages that can help with this. First, there is a
+package called <code>broom</code> that can conver the output of many statistical
+tests and model fits into a tidy dataframe. If you have focused on learning
+tidyverse tools, then this functionality makes it much easier for you to
+continue working with the output.</p>
+<p>A broader set of tools has been developed more recently. The <code>tidytools</code>
+package [?] aims to create a common interface …</p>
+<p>[tidymodels package]</p>
 </div>
 <div id="resources-to-learn-more-on-tidyverse-tools" class="section level3" number="3.3.4">
 <h3><span class="header-section-number">3.3.4</span> Resources to learn more on tidyverse tools</h3>
@@ -5151,6 +5689,11 @@ particularly those that can be used in an interactive format, including Python
 and Julia.</p>
 <div id="what-are-complex-data-structures" class="section level3" number="3.4.1">
 <h3><span class="header-section-number">3.4.1</span> What are complex data structures?</h3>
+<p>An open source programming environment is like Andy Warhol’s studio—the
+door is always open, and people are free to walk in off the street and
+chip in to help create new things <span class="citation">(Judkins 2016)</span>. This means, though,
+that there need to be some general design principles to help coordinate
+all these contributions.</p>
 <p>The R programming language offers a wide variety of structures that can be
 used to store data as you work with it, including steps of preprocessing
 and analysis of the data. Some of these structures are defined through the
@@ -5605,8 +6148,17 @@ the assumption that the output from other functions in the Bioconductor
 ecosystem will be structured in a certain way, and so they can work
 under the assumption that certain elements of the data will be in certain
 spots in the data structure of the object.</p>
-<p>[Example of the party game where you each add a sentence, only seeing
-part of the story. Exquisite corpse.]</p>
+<p>[Example of the party game where you each add a sentence, only seeing part of
+the story. Exquisite corpse. Surrealist game you could do with either writing or
+drawing (later people adapted to other things, like music composition). With
+drawing, you are typically drawing a person or other being, with the defined
+parts of a head, torso, and legs. One person does a part (the head area), then
+folds so the next person can only see enough to connect with what they did, then
+the next person draws the next part (the torso area), again folds so the next
+person can only see enough to connect, and so on. This results in writing or a
+drawing that is connected across the different parts, but can be completely
+independent within each part (and unrelated to other parts). Collaborative,
+combines different parts made by different people.]</p>
 <p>The downside of a general list data structure, however, comes in when it comes
 to developing software for data stored in that structure. The general list
 structure is very flexible, which is why it can store such different types of
@@ -5725,7 +6277,45 @@ specific thing).</p>
 <div id="disadvantages-of-complex-data-structures" class="section level3" number="3.4.4">
 <h3><span class="header-section-number">3.4.4</span> Disadvantages of complex data structures</h3>
 <p><strong>Harder to see all the data</strong></p>
+<p>A first limitation of storing data in a complex structure is that it can
+make it trickier for you to explore the data as you work with it. When data
+are stored in a simple structure, like a dataframe or a vector, there are
+simple tools (like the <code>head</code> function) that allow you to see the first
+values or the first few rows. Further, the simpler structure of the data
+(e.g., a one-dimensional vector or a two-dimensional dataframe) makes it
+easy to generate this kind of snapshot of the data.</p>
+<p>When data are stored in more complex objects, by contrast, they often have
+a more complex, hierarchical structure. For example, a list-based object
+could incorporate elements of a dataframe in one part of the object, a
+vector in another, and another list in still another. While there are tools
+to check out the contents of a list-based object (for example, the <code>str</code>
+function), the results can be hard to interpret usefully. If the object
+includes lots of elements, with lots of levels of hierarchy in some of the
+elements, then when you run this type of exploratory function, you can
+get a long print-out of complex output.</p>
+<p>To explore this type of complex output, you often have to spend a lot of
+time to tackle it from different directions. For example, the <code>str</code> function
+allows you to limit output to just a certain number of levels of nesting, so
+you might start by just figuring out the top-level elements of the object.
+You could then dig deeper into certain elements of the object to take a look
+at the data stored in each element.</p>
+<p>Therefore, while it is possible to explore the data stored in a more complex
+data structure, it is often much more onerous to do so than it is to explore
+data stored in a simpler data structure, like a vector or a dataframe.
+Similarly, it is more difficult to perform simple operations to explore the
+data, like getting a summary of the range and quartiles of a set of numeric
+values, or a count of the number of values in a set that are recorded as
+missing. We’ll cover this limitation more in the next subsections, as it
+relates to the difficulty of accessing data if they are stored in more
+complex data structures, as well as the difficulty in working with those
+data using general purpose tools like functions from packages in the tidyverse.</p>
+<p>[Any tools to help with this for Bioconductor objects? Functions to view
+bits of the elements stored inside an object?]</p>
 <p><strong>Harder to access all the data</strong></p>
+<p>Just as it’s harder to view data that are stored in a complex, rather than
+a simpler, data structure, it can also be harder to access or extract pieces
+of the data when they are stored in a more complex structure.</p>
+<p>[more on this]</p>
 <p><strong>Harder to make use of general purpose tools</strong></p>
 <p><strong>Higher entry barrier to learn to use well</strong></p>
 <p>In previous sections, we described how the R programming language allows for
