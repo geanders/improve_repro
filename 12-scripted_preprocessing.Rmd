@@ -134,7 +134,61 @@ transcriptomics.
 
 **Data input**
 
+When working with biomedical research data, you will typically have it 
+stored in some type of computer file. Computer files can have different 
+file formats, which define for the computer the way that the data are 
+stored in the file. For example, data that you enter and save in the Excel
+program may be saved to an "xls" or "xlsx" file format [?]. Some types of 
+equipment, like plate readers and [?], may also allow you to output data 
+in this file format, or in a simpler plain text format like a comma-separated
+file ("csv") format.
+
+To be able to work with data in a program like R or Python, you'll need to 
+first load the data into the program. This means you will need to direct the
+program in how to access and load the data from within whatever file format
+it's in.
+
+Fortunately, there are a variety of functions, both in base R and in free
+extension packages, that can read in data from a variety of file formats. 
+Loading data with one of these functions will often be the first step in 
+a data pre-processing pipeline. 
+
 **Quality assessment / quality control**
+
+Once data are loaded, a common next step is to check the data. 
+
+When data are recorded by hand (for example, into a spreadsheet), there is the
+possibility for recording errors. For example, when recording the weights of
+mice, someone might transpose two numbers, so that a weight of [x] is recorded
+as [x].
+
+When data are recorded and saved by equipment, it typically avoids recording 
+errors. However, there is still the possibility for data quality issues. 
+[...]
+
+Further, there can be patterns in the data that result from the way that the
+data are collected. For example, the data can have something called batch 
+effects if they have consistent differences based on who was doing the 
+measuring or which batch the sample was run with. For example, if two 
+researchers are working to weigh the mice for an experiment, the recorded
+weights recorded by one of the researcher might tend to be, on average, lower
+than those recorded by the other researcher, perhaps because the two scales
+they are using are calibrated a bit differently. Similarly, settings or 
+conditions can change in subtle ways between different runs on a piece of 
+equipment, and so the samples run in different batches might have some 
+differences in output based on the batch. 
+
+These batch effects can often be corrected for through statistical modeling, 
+as long as they are identified and are not aligned with a difference you 
+are trying to measure (in other words, if all the samples for the control 
+animals are run in one batch and all those for the treated animals in 
+another batch, you would not be able to separate the batch effect from 
+the effect of treatment). 
+
+One way you can help to identify potential quality issues in research data is
+through basic exploratory analysis. Basic dot plots or scatterplots of the data,
+for example, can often help to identify unusual outliers, which may be the
+result of a data recording error or an oddity in one of the samples.
 
 **Data transformations**
 
@@ -152,7 +206,43 @@ Taking data on light intensities at different frequencies and using it to
 estimate the presence or absence of certain surface proteins (and their amount) 
 on each cell for flow cytometry. 
 
+...
+
+In some cases, some of the required data preprocessing will aim to apply 
+scientific principles to extract helpful information from the data that are
+returned by the scientific equipment. 
+
+As one example, consider flow cytometry. This is a method of identifying 
+different types of cells within a sample [?]. It works by ...
+
 **Dimension reduction and clustering**
+
+Biomedical research has dramatically changed in the past couple of decades to 
+include much more high-throughput data. These data often include measurements
+for each sample on hundreds of thousands of different parameters. For example, 
+gene expression data can include measurements for each sample on the expression 
+level of thousands [?] of different genes, metabolics data can include 
+measurements for thousands [?] of metabolite features, proteomics can 
+include measurements for thousands [?] of proteins, and so on. 
+
+For these types of high throughput data, the different measurements often 
+have strong correlation structures across samples. For example, a large 
+collection of genes may work in concert, and so gene expression across those
+genes may be highly correlated, or a metabolite might break down into 
+multiple measured metabolite features, making the measurements for those 
+features highly correlated. Therefore, even though there may be thousands
+of measurements that are made on each sample in high throughput data, it 
+is often not the case that they are all providing separate information and
+insights. 
+
+To handle the complexity and size of high throughput data, it can be helpful 
+to try to either reduce the dimensions of the data, through a technique like
+principal components analysis, or to use the high dimensional data to cluster
+the data into groups of samples with similar patterns across the measurements. 
+
+[dimension reduction]
+
+[clustering]
 
 ### Examples of biomedical data preprocessing
 

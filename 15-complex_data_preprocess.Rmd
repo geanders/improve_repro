@@ -101,6 +101,12 @@ and Julia.
 
 ### What are complex data structures?
 
+An open source programming environment is like Andy Warhol's studio---the
+door is always open, and people are free to walk in off the street and 
+chip in to help create new things [@judkins2016art]. This means, though, 
+that there need to be some general design principles to help coordinate
+all these contributions.
+
 The R programming language offers a wide variety of structures that can be
 used to store data as you work with it, including steps of preprocessing 
 and analysis of the data. Some of these structures are defined through the
@@ -634,8 +640,17 @@ ecosystem will be structured in a certain way, and so they can work
 under the assumption that certain elements of the data will be in certain
 spots in the data structure of the object.
 
-[Example of the party game where you each add a sentence, only seeing 
-part of the story. Exquisite corpse.]
+[Example of the party game where you each add a sentence, only seeing part of
+the story. Exquisite corpse. Surrealist game you could do with either writing or
+drawing (later people adapted to other things, like music composition). With
+drawing, you are typically drawing a person or other being, with the defined
+parts of a head, torso, and legs. One person does a part (the head area), then
+folds so the next person can only see enough to connect with what they did, then
+the next person draws the next part (the torso area), again folds so the next
+person can only see enough to connect, and so on. This results in writing or a
+drawing that is connected across the different parts, but can be completely
+independent within each part (and unrelated to other parts). Collaborative, 
+combines different parts made by different people.]
 
 The downside of a general list data structure, however, comes in when it comes
 to developing software for data stored in that structure. The general list 
@@ -770,7 +785,52 @@ specific thing).
 
 **Harder to see all the data**
 
+A first limitation of storing data in a complex structure is that it can 
+make it trickier for you to explore the data as you work with it. When data
+are stored in a simple structure, like a dataframe or a vector, there are
+simple tools (like the `head` function) that allow you to see the first 
+values or the first few rows. Further, the simpler structure of the data
+(e.g., a one-dimensional vector or a two-dimensional dataframe) makes it
+easy to generate this kind of snapshot of the data. 
+
+When data are stored in more complex objects, by contrast, they often have
+a more complex, hierarchical structure. For example, a list-based object
+could incorporate elements of a dataframe in one part of the object, a 
+vector in another, and another list in still another. While there are tools
+to check out the contents of a list-based object (for example, the `str` 
+function), the results can be hard to interpret usefully. If the object
+includes lots of elements, with lots of levels of hierarchy in some of the
+elements, then when you run this type of exploratory function, you can 
+get a long print-out of complex output. 
+
+To explore this type of complex output, you often have to spend a lot of 
+time to tackle it from different directions. For example, the `str` function
+allows you to limit output to just a certain number of levels of nesting, so 
+you might start by just figuring out the top-level elements of the object. 
+You could then dig deeper into certain elements of the object to take a look
+at the data stored in each element. 
+
+Therefore, while it is possible to explore the data stored in a more complex
+data structure, it is often much more onerous to do so than it is to explore
+data stored in a simpler data structure, like a vector or a dataframe. 
+Similarly, it is more difficult to perform simple operations to explore the
+data, like getting a summary of the range and quartiles of a set of numeric 
+values, or a count of the number of values in a set that are recorded as
+missing. We'll cover this limitation more in the next subsections, as it
+relates to the difficulty of accessing data if they are stored in more 
+complex data structures, as well as the difficulty in working with those 
+data using general purpose tools like functions from packages in the tidyverse.
+
+[Any tools to help with this for Bioconductor objects? Functions to view 
+bits of the elements stored inside an object?]
+
 **Harder to access all the data**
+
+Just as it's harder to view data that are stored in a complex, rather than 
+a simpler, data structure, it can also be harder to access or extract pieces 
+of the data when they are stored in a more complex structure. 
+
+[more on this]
 
 **Harder to make use of general purpose tools**
 

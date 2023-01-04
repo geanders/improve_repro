@@ -396,6 +396,40 @@ to try to navigate them all as you learn how to run code in an R script.
 
 **Find favorite tools and get to know them**
 
+The best thing that you can do to smooth the path as you learn a coding language
+is to start by finding a few general purpose tools and learning to use them 
+really well. If you ask most good programmers, you will find that a large 
+amount of their code relies on a fairly small set of general-use tools, 
+with more specialized tools only used here and there, where a specific 
+algorithm is necessary. 
+
+[More on the importance of learning a few foundational tools well]
+
+Later, we will talk about an approach called the "tidyverse" approach, which
+focuses on sets of these general purpose tools. This approach allows you to 
+use the same set of tools for many problems, and it does so by focusing on 
+keeping your data in the same type of data structure (a tidy dataframe) for
+as much of the pipeline as you can. This approach therefore fosters the 
+approach of starting by learning a small set of tools very well. 
+
+In later modules, we will recommend some of the tools that we have found to be
+very helpful in preprocessing biomedical data, most of which are part of this
+tidyverse. These include tools for adding or modifying columns to a dataframe,
+inputting data from common file formats, and so on. However, this strategy is
+not unique to the R programming language and is a good strategy to adopt
+regardless of the programming language you are learning.
+
+> "The functional orientations of Shepherd-Barron and the Wright brothers
+(or Edison) have one thing in common. It's what the Santa Fe Institute 
+scholar Brian Arthur calls *deep craft*---the ability to know intimately 
+the various functionalities and how to effectively combine them. 'It 
+consists in [knowing] what is likely not to work, what methods to use, 
+whom to talk to, what theories to look to, and above all of how to 
+manipulate phenomena that may be freshly discovered and poorly understood',
+Arthur writes. Systems-engineering approaches that underline the 
+efficiency and reliability of failure-tolerance products like ATMs and 
+airplanes have a strong connection to deep craft." [@madhavan2015applied]
+
 **Modify rather than start from scratch**
 
 As you start learning to write code in R, don't force yourself to stare at an 
@@ -445,6 +479,28 @@ of the helpfile to find this section. It includes several examples that you can 
 your R script or console and try yourself, to figure out the types of inputs that the
 function needs and how different options for the function modify how it works. 
 
+> "All creative work builds on what has gone before. When someone declares
+that something is original, it's because they are unaware of the influences. 
+The creative make the most of things they admire and aren't ashamed to 
+be inspired by something they respect. The bad news: everything has already
+been done. The good news: it can be done again." [@judkins2016art]
+
+> "Extracting penicillin from the mold was no child's play... Instead of 
+designing and building a reactor for the chemical reactions from scratch---which
+meant more time, money, and uncertainty---[Margaret] Hutchinson opted for something
+that was already functional. Some researchers had found that mold from 
+cantaloupe could be an effective source for penicillin, so she started 
+there. Her team then revised a fermentation process that Pfizer was using to 
+produce food additives like citric acid and gluconic acid from sugars, with 
+the help of microbes. Hutchinson swiftly helped convert a run-down 
+Brooklyn ice factory into a production facility. The deep-tank fermentation
+process produced great quantities of mold by mixing sugar, salt, milk, minerals, 
+and fodder through a chemical separation process that Hutchinson knew very 
+well from the refinery business." [@madhavan2015applied]
+
+> "Johannes Gutenberg invented his printing press by repurposing a wine 
+press for use with olive oil--based ink and block printing." [@madhavan2015applied]
+
 **Modular, not monolithic**
 
 Another key thing to remember as you develop R scripts is that they are all,
@@ -478,7 +534,74 @@ Excel files into R if you're stuck, without worrying about whether the resources
 that you find to help used examples of the type of data you have or other types of 
 data. 
 
+> "The core of the engineering mind-set is what I call modular systems thinking.
+... A specific technique in modular systems thinking, for example, includes
+a functional blend of deconstruction (breaking down a larger system into 
+its modules) and reconstructionism (putting those modules back together). The
+focus is on identifying the strong and weak links---how the modules work, 
+don't work, or could potentially work---and applying this knowledge to 
+engineer useful outcomes. ... there's a top-down design strategy---'divide
+and conquer'---in which each subtask is separately attacked in a progression
+toward achieving the final objective." [@madhavan2015applied]
+
+> "Psychologist Gary Bradshaw has written about the importance of function-based
+design in the development of airplanes. Wilbur and Orville Wright took about four
+years to implement their first prototype of a flying machine. While their 
+competitors focused on the design of winds, fuselage, and propulsion, the 
+Wright brothers were devoted to getting the fundamental functions of lift, 
+thrust, drag, and yaw correct. Consistent with the notion of modular thinking, 
+they solved each puzzle at a subsystems level before they moved to the 
+next layer of the assembly, and along the way they invented new instruments and
+measurement techniques." [@madhavan2015applied]
+
 **Iterate!**
+
+Code is something that you develop over multiple drafts---it's the kind of thing
+that you build by trying out one thing, seeing how it works, then revising, reworking,
+and extending to get to the pipeline you ultimately want. You will quickly feel
+frustrated if you try to build your pipelines in a single go, without this process
+of iteration. Just as many writers suffer writer's block more often when they 
+try to get everything perfect in a first draft, you will feel frustrated if you 
+think that you should build your code to its final form, from start to 
+finish, in just one try. 
+
+When you build a code pipeline, try to break your process up into some key chunks. 
+For example, you might know that you'll first need to input the data into R
+(first chunk), then preprocess the data by log-transforming one of the measurements
+(second chunk), and then run a statistical hypothesis test to compare two groups
+that you measured (third chunk). Once you've broken the code into these chunks, 
+you can focus on a single chunk at a time and iterate the code for that task until 
+you're happy with it. 
+
+For example, if the first chunk is to read in the data, you might first try to 
+use a standard tool that you've used before, like the `readr` function `read_csv`, 
+which reads in data from a CSV file. However, maybe this tool doesn't work for 
+the file format your data are in (perhaps they're in an Excel file, for example), 
+and so you get an error when you try to do that. Keep calm when you get that error, 
+and just iterate back and look up some tools for reading Excel files into R. 
+When you've found some, try adapting the examples from their help files or vignettes
+to work in your code pipeline. If that works, then spend some time exploring the
+input that you get, so you can start to think about how you'll work with the data
+for the next chunk in your pipeline. 
+
+Once you're done with this process of iteration, make sure that you go back and 
+clean up the code pipeline, so that the code script is streamlined to walk 
+efficiently through the tasks. Also, rerun the whole script in a new R session, 
+so you can make sure that it is self-contained. One of the most common 
+reasons for a script not working the same later is that, when it was originally 
+developed, the coder was relying on some objects that were created in their R
+environment at the console, not through code in the script, and so were available
+when running the code originally, but not when it's opened in a new R session. 
+You can often identify and fix these issues much more quickly by testing your 
+code pipeline in a new R session right after you create it, rather than 
+waiting and running into that problem days or weeks later, when you try to rerun 
+the script.
+
+> "Prototypes create new capabilities. Prototypes foster adaptation to new 
+forms, new expections, and new offshoots of technologies. Prototypes are
+the starting points toward our ultimate creative destinations." [@madhavan2015applied]
+
+> "Tweaking and prototyping are basic human habits." [@madhavan2015applied]
 
 **Do not repeat yourself**
 
@@ -545,6 +668,71 @@ for iteration, the same book also has a chapter on that
 (https://r4ds.had.co.nz/iteration.html).
 
 **Scripts are for humans to read, not just computers**
+
+A code script, by definition, is a set of instructions that you send to the 
+computer to evaluate. However, many starting programmers make things hard
+on themselves by treating the script as a document that is only for the computer. 
+
+While it is true that the code script needs to be written so that the 
+computer can evaluate it, that is only the first level of usefulness for the
+script. Keep in mind that one of the key advantages of writing a computer
+script is so that the code becomes reproducible---you and others can revisit
+it, rerun it, and adapt it at a later time. Otherwise, in a programming 
+language like R, you could just run all your code at the console, rather than 
+saving it in a script. 
+
+To make sure that your code is "legible" by humans, take the time to clean it
+up once you have it running. (As an added bonus, it's often the case that you'll
+find a few bugs when you do so, and so you can catch and fix those.) Go back 
+through the whole script once you have built your pipeline. 
+
+Use comments! In R, and line that starts with a "#" will be ignored by R, so you
+can use those to write messages for humans that the computer will skip. You can
+use comments in a variety of ways to make your code clearer to humans. First, 
+you can use them to divide the code script into sections and to label those 
+sections. This will help a human reader get an overview of the script when 
+they first look at it and navigate the script as they continue to work with it. 
+You can also use code comments to explain coding choices that you've made along
+the way that might not immediately be clear. For example, if you needed to 
+use a function that is outside of your core set of tools, and that you found 
+to tackle a specific problem, you could comment on that, and perhaps add a link
+to more information on that function. 
+
+You can also clean up the code substantially by editing it to follow a set of 
+style guidelines for R code. These are guidelines that specify things that 
+don't matter to the computer, but that can help human readers. For example, 
+there are many cases where R can evaluate code the same way whether spaces
+have been used to separate pieces of the code or not, but a thoughtful use of
+spacing can help a human read the code. There are several style guidelines 
+available for R and other programming languages, and it is less important which 
+one you use than that you follow one consistently (at least by the time you 
+edit your code for clarity to humans). One style guide you can use is the 
+one created by Hadley Wickham available at: https://style.tidyverse.org/index.html.
+
+Finally, it is useful to use this editing stage to simplify the logic and 
+function calls within the script. Often, when you are first trying to get some
+code to work, you might come up with a pretty ungainly function call to do 
+so. Once you've gotten it working and figured out a general approach, you can 
+often go back and rethink how you've coded the approach, and you can often 
+come up with a simpler way to perform the same task using less code or 
+clearer code. The more you can simplify your code, the lower the risk for 
+bugs and the easier it will be for humans to understand. 
+
+> "Filming [of Apocalypse Now] started in March 1976 and was scheduled to
+take six weeks. It took sixteen months. The director, Francis Ford Coppola, 
+shot around 230 hours of footage, with multiple takes of the same scene. He
+was hoping to capture a magical or unusual performance. He encouraged the 
+actors to ad-lib, which produced some poetic moments but also hours of unusable
+footage. Once filming was finished, the movie had to be cut and recut for 
+months. It took Coppola and his film editor Walter Murch nearly three years to 
+edith the footage... Why produce a lot of work and then throw away 95 percent?
+The two processes seem contradictory. Why not just produce the 5 percent ultimately
+used? Because you don't know *which* 5 percent that will be. Editing can 
+be hard becuase you're discarding things you have put a lot of energy into
+making." [@judkins2016art]
+
+> "You might not write well every day, but you can always edit a bad page. 
+You can't edit a blank page." -- Jodi Picoult, cited in [@judkins2016art]
 
 **Some things belong in the console, not the script**
 
