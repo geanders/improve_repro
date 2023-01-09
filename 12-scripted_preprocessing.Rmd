@@ -28,63 +28,159 @@ transparency and reproducibility.
 - Describe an open source code script and explain how it can increase
 reproducibility of data pre-processing
 
-### Example datasets
+Often, you will not be able to directly use the data you collect in the
+laboratory or extract from equipment to answer scientific questions. Instead,
+the data will need to be preprocessed before it can be used within statistical
+analysis or hypothesis testing.
 
-**Simpler example dataset: Measuring bacterial growth rates**
+This preprocessing will differ depending on the way the data were collected and
+the scientific questions you hope to answer with it. However, there are some
+common themes that drive the need for such preprocessing of data, as well as
+some common steps in preprocessing that come up for many data, across types of
+data collection and research questions.
 
-**More complex example dataset: Characterizing lung cell populations**
+We'll start this module by covering these common reasons for preprocessing and
+common steps in the process. Later in the module, we'll provide examples of the
+steps that might be involved in proprocessing data from two example experiments.
+We'll finish this module by briefly discussing what is required to make this
+preprocessing reproducible, as well as how you can improve the rigor of this
+step. We'll introduce the idea of using scripted code to preprocess data, 
+an idea that we'll cover in much more detail in the next few modules. 
 
 ### Why do data need preprocessing?
 
 **Use of scientific principles to make measurements**
 
-For a long time, scientists have leveraged existing scientific principles and 
-knowledge to build equipment that can make measurements to build new scientific
-knowledge. 
+The first common purpose of preprocessing data is to translate the measurements
+that you directly collect into measurements that are meaningful for your
+scientific research question.
 
-When preprocessing biomedical data, many of the steps are to leverage the 
-scientific principles that underlie that measurement technique, so you can 
-move from the measurements made by the equipment to a measurement that can help
-answer a biological question. 
+Scientific research uses a variety of complex techniques and equipment to 
+initially collect data. [It has been said that science moves forward one 
+invention at a time---as one example, that the invention and improvement of 
+microscopes was necessary for the dramatic steps forward in microbiology in 
+the late 19th? and early 20th? centuries.] 
 
-Simple examples: average cage weights, microscope scale, stethoscope, determining
-date since start of the experiment, determining period of exponential growth
+Biomedical research today leverages extraordinarily complex equipment and
+measurement processes to learn more about health and disease. For example, 
+immune cell populations can be characterized using flow cytometry, through 
+a process that leverages the physics of lasers and fluorescence, as well 
+as the biology of antibody specificity. As another example, the gene expression
+within single cells is now studied through a process of single cell RNA-seq, 
+which leverages biological process, like use of the enzyme? reverse 
+transcriptase and PCR?, as well as complex computer algorithms to [put things
+back together?]. 
 
-A very simple example of this is a stethoscope. This is a very simple example
-because, in this case, the "data preprocessing" is done in the mind of the
-person using the stethoscope. A stethoscope is a simple piece of equipment that
-... . It's used to ... . When using a stethoscope to ask ..., the user must know
-how to use the sounds of ... to infer ... . This is therefore a very simple
-example of inputting data (in this case, sounds) from equipment (in this case,
-the stethoscope) and processing it (in this case, within the mind of the user)
-to answer a biological question (in this case, ...). If the preprocessing step
-is not done, the input is useless---more simpler, if the stethoscope is used by
-someone who can't interpret the sounds to infer ..., then it's not help as a
-tool to determine ... .
+These are all invented processes of measurement that can provide extraordinarily 
+detailed and informative data, allowing us to "see" elements of biological 
+processes that could not be seen at that level before. However, they all 
+require steps to translate the data that are immediately recorded or read
+by equipment into data that are more scientifically meaningful.
 
-More complex examples: Flow cytometry is based on physics---using lasers to 
-excite fluorescent probes that are manufactured to stick to certain surface
-proteins. To interpret the data, must link the light output at certain 
-frequencies (?) to which probe you made, adjust for light overlapping from 
-several types of probes at certain frequencies, determine how the intensity of 
-light is linked to the number of fluorescent probes, use knowledge of the size, 
-shape, and granularity of certain types of cells to interpret data on forward
-and side scatter of light, etc. 
+As a very simple example, take an image that is recorded from a microscope. 
+Very early on, before cameras had been invented, this might be an illustration
+that was drawn by the scientist to reflect what he or she saw when looking 
+through the microscope. To be able to interpret this image, as well as 
+compare it to other images generated by a microscope, you need to "translate" 
+it based on the settings use on the microscope, specifically the amount
+that the microscope was magnifying the image. Without this translation, 
+you could not, for example, compare the size of the eye of a flea? and 
+the leg of a grasshopper? if you did not know the magnification of the two
+images you were comparing. With this information, however, you can 
+measure values on each image and compare them in a way that is meaningful.
+
+The complexity of this "translation" scales up as you move to data that 
+are collected using more complex processed. For example, to interpret the 
+data that are recorded by a flow cytomer---and to generate a characterization
+of immune cell populations from these data---you need to incorporate a 
+number of steps of translation. These include steps that incorporate 
+information about which fluorescent tags were attached to which antibodies, 
+which proteins in the cell each of those antibodies attach to, which immune
+cells those proteins help characterize, what wavelength each fluorescent 
+tag emits? at, and so on. In some cases, the measuring equipment will 
+provide software that performs some of this preprocessing, but often 
+at least some may need to be performed by hand, or customized based on 
+your research question. 
 
 **Data can have technical noise**
 
-Simple example: microscope measurements made at different scales (resolutions?)
+The second common purpose of preprocessing data is to address, to the extent
+that it is possible, unwanted noise in the data. When we collect biomedical
+research data, we are often collecting data in the hope that it will measure
+some meaningful biological variation between two or more conditions. For
+example, we may measure it in the hope that there is a meaningful difference in
+gene expression between a sample taken from an animal that is diseased versus
+one that is healthy, with the aim of finding a biomarker of the disease.
 
-More complex example: Reading depth of sequencing-based data
+There are, however, several sources of variation in data we collect. The first
+of these is variation that comes from meaningful biological variation between
+different samples---the type of variation that we are trying to measure and 
+use to answer scientific questions. 
+
+There are other sources of variation, however. These sources are irrelevant to our
+scientific question, and so we often call them "noise"---in other words, they
+cause our data to change from one sample to the next in a way that might blur
+the signal that we care about (variation from meaningful biological
+differences). We therefore often take steps in preprocessing to try to limit or
+remove this varation to help us see the meaningful biological variation more
+clearly.
+
+There are two main sources of this other variation or noise: biological and
+technical. Biological noise in data comes from biological processes, but from
+ones that are irrelevant to the process that we care about in our particular
+experiment. For example, cells express different genes depending on where they
+are in their growth? cycle. However, if you are trying to use single cell
+RNA-sequencing to explore variation in gene expression by cell type, you might
+consider this growth-related variation as noise, even though it represents a
+biological process.
+
+The second source of noise is technical. Technical noise comes from variation
+that is introduced in the process of collecting data, rather than from 
+biological processes. For example, part of the process of single cell RNA-seq
+involves amplifying complementary DNA that are developed from the messenger
+RNA in each cell in the sample. How much the cDNA are amplified in this 
+process, however, varies from cell to cell. If this isn't addressed in 
+preprocessing, then this "amplification bias" prevents any meaningful 
+comparison across cells. 
+
+Another example of technical noise comes from flow cytometry. In this 
+case, each of the fluorescent tags, rather than emitting at a single 
+wavelength, has a distribution of wavelengths across which it emits. 
+These distributions overlap somewhat for some of the fluorescent tags, 
+especially when measuring many of these "colors" through a multicolor 
+panel?, causing something called "spillover"?, where emissions from 
+one tag might be recorded as part of the signal for another tag. 
+
+One key example of technical noise is known as "batch effects"---if different
+samples are run through the equipment at different times, it can introduce
+differences between the samples based on which "batch" they were measured
+with. ...
 
 **Data can have quality control issues**
 
-Examples of QC issues: missing data, outliers, errors in data entry, a whole 
-sample that has problems
+The third common reason for preprocessing is to identify and resolve quality
+control issues. These are cases where some error or problem occurred in the data
+recording and measurement.
 
-More complex example: Cells that are poor quality in single cell RNA-seq---membrane
-has broken? A lot of the RNA molecules have been lost and aren't represented in 
-the measurements?
+One simple example comes from recording data, in the form of recording 
+errors. For example, if you are recording the weights of mice for an 
+experiment, you may forget to include a decimal in one recorded value, or
+invert two numbers. Other quality control issues may come in the form 
+of missing data (e.g., you forget to measure one mouse at one time 
+point), or larger issues, like a quality problem with a whole sample
+[example?]. 
+
+One common theme in quality control of biomedical data repeats across 
+methods that measure data at the level of the single cell. Some examples of
+this type of single-cell resolution measurement include flow cytometry
+and single-cell RNA-seq. In these cases, some of the measurements might
+be made on cells that are in some way problematic. This can include cells that
+are dead or damaged, and it can also include cases where a measurment that
+was meant to be taken on a single cell was instead taken on two or
+more cells that were stuck together, or on a piece of debris or, in 
+the case of droplet-based single cell RNA-seq, an empty droplet.
+In these cases, quality control steps in preprocessing can help to 
+identify and remove these problematic measurements.
 
 **Data can be high-dimensional**
 
@@ -153,6 +249,24 @@ extension packages, that can read in data from a variety of file formats.
 Loading data with one of these functions will often be the first step in 
 a data pre-processing pipeline. 
 
+**Extracting information based on scientific principals**
+
+Identifying data that are appropriate to answer the scientific question (e.g., 
+period of exponential growth)
+
+Taking data on light intensities at different frequencies and using it to 
+estimate the presence or absence of certain surface proteins (and their amount) 
+on each cell for flow cytometry. 
+
+...
+
+In some cases, some of the required data preprocessing will aim to apply 
+scientific principles to extract helpful information from the data that are
+returned by the scientific equipment. 
+
+As one example, consider flow cytometry. This is a method of identifying 
+different types of cells within a sample [?]. It works by ...
+
 **Quality assessment / quality control**
 
 Once data are loaded, a common next step is to check the data. 
@@ -197,24 +311,6 @@ of experiment, etc.
 
 One critical process in this category is the process of *normalization*. ...
 
-**Extracting information based on scientific principals**
-
-Identifying data that are appropriate to answer the scientific question (e.g., 
-period of exponential growth)
-
-Taking data on light intensities at different frequencies and using it to 
-estimate the presence or absence of certain surface proteins (and their amount) 
-on each cell for flow cytometry. 
-
-...
-
-In some cases, some of the required data preprocessing will aim to apply 
-scientific principles to extract helpful information from the data that are
-returned by the scientific equipment. 
-
-As one example, consider flow cytometry. This is a method of identifying 
-different types of cells within a sample [?]. It works by ...
-
 **Dimension reduction and clustering**
 
 Biomedical research has dramatically changed in the past couple of decades to 
@@ -246,9 +342,39 @@ the data into groups of samples with similar patterns across the measurements.
 
 ### Examples of biomedical data preprocessing
 
+It can be helpful to walk through some examples some of these preprocessing
+steps, in the context of specific types of biomedical experiments. In this
+section, we'll give an overview of the types of preprocessing steps you might 
+need in two example experiments. In later modules, we'll go more in depth
+into how this could be done in coded scripts using open-source software. 
+
 **Simpler example: Measuring bacterial growth rates**
 
+The first example is when you have collected data to measure bacterial 
+growth rates. For example, you may be interested in how different the 
+growth rate of *Mycobacterium tuberculosis* is in an environment with 
+ample oxygen compared to low-oxygen environments, as this may have 
+important implications for how fast the bacteria grow in certain parts
+of the human body. You can collect this data by ..., saving data on 
+... in a spreadsheet or other file. Once you have collected the 
+data, you would then need to take a set of steps to preprocess it
+and then analyze it, to allow you to answer your original research 
+question (how much the growth rate differs in the low-oxygen 
+environment). 
+
+Preprocessing steps: 
+
+- Input data from spreadsheet in which it was recorded in the laboratory
+- ...
+
 **More complex example: Characterizing lung cell populations**
+
+The second example is when you have collected single-cell RNA-seq
+data from a sample with the aim of characterizing the cell populations
+in the animal's lungs.
+
+- Input data from [file format from equipment]
+- ...
 
 ### Tools for biomedical data preprocessing
 
