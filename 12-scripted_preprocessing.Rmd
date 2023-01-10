@@ -204,19 +204,42 @@ variability in the data. Dimension reduction techniques---principal components
 analysis (PCA) is one very popular one---is therefore often a key element of 
 data preprocessing when working with high-dimensional biological data. 
 
-If you envision a dataset as a two-dimensional table, with the observations as
-the rows and the characteristics measured for each observation as the columns,
-then high-dimensional data are large in terms of the number of columns in the
-table. A growing number of biomedical data now also are large in the number of
-observations they capture---in the number of rows in the table of data, in other
-words. A longer-standing example of this is flow cytometry data, where the
-observations are individual cells. Current experiments often capture in the
-range of [x] cells for each sample in flow cytometry, measuring for each
-characteristics that can be used to determine cell size, granularity, and
-surface proteins, all with the aim of characterizing the cells by cell type. A
-more recent example is with single cell RNA-sequencing. Again, with this
-technique, observations are taken at the level of the cell, with on the order of
-[x] cells processed per sample.
+To get a basic idea of dimension reduction, consider this example. Say you 
+have conducted an experiment that includes two species of research mice, 
+C57 black 6 and BALB/C. You record information about each mouse, including 
+columns that record both which species the mouse is and what color its 
+coat is. Since C57 black 6 mice are always black, and BALB/C mice are always
+white, these two columns of data will be perfectly correlated. Therefore, 
+one of the two columns adds no information---once you have one of the 
+measurements for a mouse, you can perfectly deduce what the other measurement
+will be. You could therefore, without any lose of information, reduce
+the dimensions (number of columns) of the data you've collected in this 
+case by choosing only one of these two columns to keep and getting rid of 
+the other column. This same idea scales up to much more complex data---in 
+many high dimensional datasets, many of the measurements (e.g., levels
+of metabolite features in metabolomics data or levels of gene expression
+in gene expression data) will be highly correlated with each other, 
+essentially providing the same information across different measurements. 
+In this case, the complexity of the dataset can often be substantially 
+reduced by using a dimension reduction technique like PCA, and then conducting
+analysis to compare values in some of the main principle components of the
+data. 
+
+There are also some cases where data are large because of the number of
+observations, rather than (or in addition to) the number of measurements taken
+for each obsevation. If you envision a dataset as a two-dimensional table, with
+the observations as the rows and the characteristics measured for each
+observation as the columns, then high-dimensional data are large in terms of the
+number of columns in the table. A growing number of biomedical data now also are
+large in the number of observations they capture---in the number of rows in the
+table of data, in other words. A longer-standing example of this is flow
+cytometry data, where the observations are individual cells. Current experiments
+often capture in the range of [x] cells for each sample in flow cytometry,
+measuring for each characteristics that can be used to determine cell size,
+granularity, and surface proteins, all with the aim of characterizing the cells
+by cell type. A more recent example is with single cell RNA-sequencing. Again,
+with this technique, observations are taken at the level of the cell, with on
+the order of [x] cells processed per sample.
 
 As with high-dimensional data, again the sheer size of the data collected in
 this case can make it difficult to explore and generate knowledge from the data.
@@ -237,7 +260,16 @@ stored in the file. For example, data that you enter and save in the Excel
 program may be saved to an "xls" or "xlsx" file format [?]. Some types of 
 equipment, like plate readers and [?], may also allow you to output data 
 in this file format, or in a simpler plain text format like a comma-separated
-file ("csv") format.
+file ("csv") format. 
+
+For other assays, especially those that involve more complicated equipment, 
+the file format might be more complex than a basic spreadsheet. For example, 
+mass spectrometers, which are used to collect data for proteomics and 
+metabolomics, often output data in [file format]. Flow cytometers often 
+output data in [file format]. In many cases, these file formats will be 
+well-defined and standardized across equipment, which makes it easier for
+open source developers to build functions to input data from those file 
+formats. 
 
 To be able to work with data in a program like R or Python, you'll need to 
 first load the data into the program. This means you will need to direct the
@@ -251,25 +283,41 @@ a data pre-processing pipeline.
 
 **Extracting information based on scientific principals**
 
-Identifying data that are appropriate to answer the scientific question (e.g., 
-period of exponential growth)
+A key element of preprocessing data are to translate the acquired data into
+a format that can more directly answer scientific questions. For example, 
+for flow cytometry data, this translation might be from the emission intensities
+at different wavelengths to a measure of the proportion of different 
+types of immune cells in the sample. 
 
-Taking data on light intensities at different frequencies and using it to 
-estimate the presence or absence of certain surface proteins (and their amount) 
-on each cell for flow cytometry. 
+This type of preprocessing will vary substantially from assay to assay, with 
+algorithms that are tied to the methodology of the assay itself. For the 
+example of flow cytometry, these algorithms would include at least the 
+following steps: 
 
-...
+- A step to link emission at a certain wavelength to a certain fluorochrome
+used in the panel
+- A step that links each fluorochrome to the antibody it was bound to in the
+assay, and then to the immune cell protein to which that antibody has an 
+affinity
+- A series of steps that uses a "gating" process to identify groups of 
+immune cell types based on their levels of different proteins, as well 
+as measures taken of their cell size and granularity (forward and side 
+scatter measurements collected by the flow cytometer)
 
-In some cases, some of the required data preprocessing will aim to apply 
-scientific principles to extract helpful information from the data that are
-returned by the scientific equipment. 
-
-As one example, consider flow cytometry. This is a method of identifying 
-different types of cells within a sample [?]. It works by ...
+The discipline of bioinformatics works to develop these types of algorithms, and
+many of them are available through open-source, scripted software like R and
+Python. These types of preprocessing algorithms are often also available as
+proprietary software, sometimes sold by equipment manufacturers and sometimes
+separately. [Example: FlowJo]
 
 **Quality assessment / quality control**
 
-Once data are loaded, a common next step is to check the data. 
+Once data are loaded, a common next step is to check the data. In particular, 
+it's often necessary to identify and resolve any quality control issues within
+the data. For example, in assays that are run at the level of the cell 
+(flow cytometry, single cell RNA-seq), it is important to identify and 
+remove dead cells or sets of multiple cells that are stuck together and 
+so evaluated at the same time. 
 
 When data are recorded by hand (for example, into a spreadsheet), there is the
 possibility for recording errors. For example, when recording the weights of
