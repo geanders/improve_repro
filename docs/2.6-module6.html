@@ -133,7 +133,7 @@ div.csl-indent {
 <div class="col-sm-12">
 <div id="TOC">
 <ul>
-<li><a href="index.html#overview"><span class="toc-section-number">1</span> Overview</a></li>
+<li><a href="index.html#rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
 <li><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
 <li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
 <li><a href="4-references.html#references"><span class="toc-section-number">4</span> References</a></li>
@@ -172,421 +172,170 @@ system. The modules will discuss the advantages of well-designed project
 directories, tips for arranging files within a project directory,
 and how to create templates for R Projects that allow you to use consistent
 file organization across many experiments.</p>
-<p>As a motivating example, for the next few modules, we’ll use an example based on
-a set of real immunology experiments. This example highlights how a research
-laboratory will often conduct a similar type of experiment many times, so it
-lets us demonstrate how the design of the project’s files within a project
-directory can be reused across similar experiments. It will allow us to show you
-how you can move from designing a file directory for a single experiment to
-designing one that can be used repeatedly, and then how you can take advantage
-of consistency in the directory structure across projects to make tools and
-templates that can be reused.</p>
-<div id="example-project" class="section level3" number="2.6.1">
-<h3><span class="header-section-number">2.6.1</span> Example project</h3>
+<div id="organizing-project-files" class="section level3" number="2.6.1">
+<h3><span class="header-section-number">2.6.1</span> Organizing project files</h3>
+<p>In earlier modules, we discussed how to separate data collection from data
+analysis. By separating data collection and analysis into separate files, we can
+make the file for each step simpler. Further, by separating, we can save the
+files in plain text, which makes it easier to track them using version
+controlled (discussed in later modules), which helps create a record of changes
+made to the data or analysis code during the research process. As we continue
+work on a project, we’ll likely generate more types of files. These can include
+other data files (both “raw” data—directly output from measurement equipment
+or directly recorded from observations, as well as any “cleaned” version of this
+data, after steps have been taken to preprocess the data to prepare it for
+visualization and analysis in papers and reports). These files also include the
+files with writing and presentations (posters and slides) associated with the
+project, as well as code scripts for preprocessing data, for conducting data
+analysis, and for creating and sharing final figures and tables.</p>
+<p>While this process helps in reproducibility, it results in more files being
+collected for an experiment. Instead of data and its analysis collected within a
+single spreadsheet file, you may end up with multiple files of data collected
+from the experiment, as well as separate files with scripts for processing,
+analyzing, and visualizing the data. With more complex experiments, there may be
+different data files with the data collected from different assays. For example,
+you may run an experiment where you collect data from each research animal on
+bacterial load, as well as flow cytometry data, as well as a measure of antibody
+levels through ELISA. As a result, you may have one raw data file each from the
+bacterial load (CFUs) assay and the ELISA analysis, as well as one file per
+animal from the flow cytometry analysis.</p>
+<p>As the files for a project accumulate, do you have a clear plan for keeping them
+organized? Based on one analysis, many biomedical researchers do not. One study,
+for example, surveyed over 250 biomedical researchers at the University of
+Washington. They noted that, “a common theme surrounding data management and
+analysis was that may researchers preferred to utilize their own individual
+methods to organize data. The varied ways of managing data were accepted as
+functional for most present needs. Some researchers admitted to having no
+organizational methodology at all, while others used whatever method best suited
+their individual needs” <span class="citation">(Anderson et al. 2007)</span>. One respondent answered, “They’re
+not organized in any way—they’re just thrown into files under different
+projects,” while another said “I grab them when I need them, they’re not
+organized in any decent way,” and another, “It’s not even organized—a file on
+a central computer of protocols that we use, common lab protocols but those are
+just individual Word files within a folder so it’s not searchable per se”
+<span class="citation">(Anderson et al. 2007)</span>.</p>
 <blockquote>
-<p>“To say that scientists erred in assuming that the first-line drugs from the
-1950s would be sufficient to combat TB is a profound understatement.” <span class="citation">(Barry and Cheung 2009)</span></p>
+<p>“Virtually all researchers use computers as a central tool in their
+workflow. However, our formal education rarely includes any training in
+how to organise our computer files to make it easy to reproduce results
+and share our analysis pipeline with others. Without clear instructions,
+many researchers struggle to avoid chaos in their file structures, and so
+are understandable reluctant to expose their workflow for others to see.
+This may be one of the reasons that so many requests for details about
+method, including requests for data and code, are turned down or go
+unanswered.” <span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
+</blockquote>
+<p>Computer files and directories are the workspace that you use when you are
+working with data, including preprocessing and analyzing it. There are many
+reasons why you will benefit from keeping this “workspace” well-organized. Adam
+Savage, famous from the TV show <em>Mythbusters</em>, talks about why it is so critical
+to keep an organized work space for any project when you are trying to complete a
+substantial or complex project. He has a specific name for the process of
+organizing and cleaning up his work space, “knolling.” He notes that,</p>
+<blockquote>
+<p>“Beyond giving my brain the space to more easily take in what I am working with,
+knolling my work space throughout the day also reduces the likelihood that I’ll
+lose things, and increases the likelihood that I will find them quickly when they
+do go missing. … By forcing me to slow down (which I’ve learned actually allows
+me to work faster), the whole process saves me time on the other end of my work
+process.” <span class="citation">(Savage 2020)</span></p>
+</blockquote>
+<p>He goes even further, to discuss how important work space organization is in
+other cases where teams are trying to do substantial or complex projects:</p>
+<blockquote>
+<p>“There’s one group of makers who understand intuitively, perhaps more than
+anyone else, the multifaceted value proposition that knolling represents: chefs.
+They call it <em>mise en place</em>. Coined in the late nineteenth century by famed
+French chef August Escoffier, <em>mise en place</em> translates roughly to ‘everything
+in its place.’ The principle behind it, cribbed from Escoffier’s military
+service during the Franco-Prussian War, is really about order and discipline.”
+<span class="citation">(Savage 2020)</span></p>
 </blockquote>
 <blockquote>
-<p>“The current treatment course, which was developed in the 1960s, is a demanding
-regimen consisting of four first-line drugs created in the 1950s and 1960s: isoniazid,
-ethambutol, pyrazinamide, and rifampin. Patients who follow the regimen as
-directed take an average of 130 doses of the drugs, ideally under direct observation
-by a health care worker. This combination is extremely effective against active,
-drug-susceptible TB as long as patients are compliant and complete the entire
-six- to nine-month course. Drug-resistant strains develop when patients do not
-complete the full protocol, whether because they start to feel better or because
-their drug supply is interrupted for some reason. Inconsistent use of antibiotics
-gives the bacteria time to evolve into a drug-resistant form. Once a drug-resistant
-strain has developed in one person, that individual can spread the resistant version
-to others. … According to the World Health Organization [as of 2009], nearly 5
-percent of the roughly eight million new TB cases that occur each year involve
-strains of Mtb that are resistant to the two most commonly used drugs in the current
-first-line regimen: isoniazip and rifampin. Most cases of this so-called multidrug-resistant
-TB (MDR-TB) are treatable, but they require therapy for up to two years with second-line
-anti-TB drugs that produce severe side effects. Moreover, MDR-TB treatment can cost up
-to 1,400 times more than regular treatment. … Worst of all, over the past few
-years health surveys have revealed an even more ominous threat, that of extensively
-drug-resistant TB (XDR-TB). This type … is resistant to virtually all the highly-effective
-drugs used in second-line therapy.” <span class="citation">(Barry and Cheung 2009)</span></p>
+<p>“Kitchens are pressure cookers in which wasted movement and hasty technique
+can ruin a dish, slice an artery, burn a hand, land you in the weeds, and
+ultimately kill a restaurant. <em>Mise en place</em> is the only way to reliably create
+a perfect dish, to exact specifications, over and over again, night after night,
+for paying customers who demand nothing less.” <span class="citation">(Savage 2020)</span></p>
 </blockquote>
-<p>The examples for this and the next few modules are based on a collection of
-studies that were conducted with similar designs and similar goals—all aimed
-to test candidate treatments for tuberculosis. Most studies in this set tested
-one or more treatments as well as one or more controls. The controls could
-include negative controls, like saline solution, or positive controls, like a
-drug already in use to treat the disease, isoniazid. A few of the studies tested
-only controls, to help in developing baseline expectations for things like the
-bacterial load in different mouse strains used in studies in the set. The
-set of studies tested some treatments that were monotherapies (only one drug
-given to the animal) as well as some that were combinations of two or three
-different drugs. For many of the drugs that were tested, they were tested at
-different doses and, in some cases, different methods of delivery or different
-mouse models.</p>
-<p>Each of the treatments were given to several mice that had been infected with
-<em>Mycobacterium tuberculosis</em>. During the treatment, the mice were weighed
-regularly. This weight measurement helps to determine if a particular treatment
-is well-tolerated by the animals—if not, it may show through the treated mice
-losing weight during treatment. For convenience, the mice were not weighed
-individually. Instead, mice with the same treatment were kept in a single cage,
-and the entire cage was weighed, the weight of the cage itself factored out, and
-the average weight of mice for that treatment determined by dividing the weight
-of all mice in the cage by the number of mice in the cage. After a period of
-time, the mice were sacrificed and one lobe from their lungs was used to
-determine each mouse’s bacterial load, through plating the material from the
-lobe and counting the colony forming units (CFUs). One aim of the data analysis
-is to compare the bacterial load of mice under various treatments to the
-bacterial load of mice in the control group.</p>
-<p>The full set of studies included 19 different studies. These were conducted at
-different times, but the data for all of the studies can be collected using a
-common format. In this module, as well as the following two, we’ll be exploring
-how you can use RStudio’s Project functionality to organize data from one or
-more studies. We’ll particularly focus on how, by using a common format for data
-collection, you can create tools that can be used repeatedly for different
-experiments to ensure that methods are the same across all studies of a similar
-type, as well as to improve the reproducibility of the studies. Let’s walk
-through the types of data that were collected for each study.</p>
-<p>First, there was some metadata recorded for each study. Figure
-<a href="2.6-module6.html#fig:metadata">2.23</a> gives an example. This includes information about the strain
-of mouse that was used in the study, treatment details (including the method of
-giving the drug or drugs, how often they were given each week, and for how many
-weeks), how much bacteria the animals were exposed to (measured both in terms of
-the inoculum they were given and their bacterial load one day after they were
-given that inoculum, which was based on sacrificing one animal the day after
-challenging all the animals with the bacteria), and, if the study included a
-novel drug as part of the tested treatment, the batch number of that drug.</p>
-<div class="figure fullwidth"><span style="display:block;" id="fig:metadata"></span>
-<img src="figures/project_metadata.png" alt="Example of recording metadata for a study in the set of example studies for this module." width="\textwidth"  />
-<p class="caption marginnote shownote">
-Figure 2.23: Example of recording metadata for a study in the set of example studies for this module.
-</p>
-</div>
-<p>Next, the researchers recorded some information about each treatment group
-within the experiment. This typically included at least one negative control. In
-some cases, there was also a positive control, in which the animals were treated
-with a drug that’s in standard use against tuberculosis already (e.g.,
-isoniazid). Most studies would also test one or more treatments, which could
-include monotherapies or combined therapies. Figure <a href="2.6-module6.html#fig:treatmentdetails">2.24</a>
-shows an example of the data that were recorded on each treatment in the study.
-These data include the names and doses of up to three drugs in each treatment,
-as well as a column where the researcher can provide detailed specifications of
-the treatment.</p>
-<div class="figure fullwidth"><span style="display:block;" id="fig:treatmentdetails"></span>
-<img src="figures/project_treatment_details.png" alt="Example of recording treatment details for a study in the set of example studies for this module." width="\textwidth"  />
-<p class="caption marginnote shownote">
-Figure 2.24: Example of recording treatment details for a study in the set of example studies for this module.
-</p>
-</div>
-<p>Once the animals were challenged with the bacteria, treatment began, and two
-main types of data were measured and recorded. First, the mice were weighed once
-a week. These weights were converted to a measure of the percent change in
-weight since the start of treatment. If the animals’ weights decrease during the
-treatment, it is a marker that the treatment is not well-tolerated by the
-animals. Figure <a href="2.6-module6.html#fig:mouseweight">2.25</a> shows an example of how these data were
-recorded. All animals within a treatment group were kept in the same cage, and
-this cage was measured once a week. By dividing the weight of all animals in the
-cage by the number of animals, the researchers could estimate the average weight
-of animals in that treatment group, which is recorded as shown in Figure
-<a href="#fig:mouseweights"><strong>??</strong></a>.</p>
-<div class="figure fullwidth"><span style="display:block;" id="fig:mouseweight"></span>
-<img src="figures/project_metadata.png" alt="Example of recording weekly weights of mice in each treatment group for the example set of studies." width="\textwidth"  />
-<p class="caption marginnote shownote">
-Figure 2.25: Example of recording weekly weights of mice in each treatment group for the example set of studies.
-</p>
-</div>
-<p>Finally, after the treatment period, the mice were sacrificed and a portion of
-each mouse’s lung was used to estimate the bacterial load in that mouse. Figure
-<a href="2.6-module6.html#fig:bacterialload">2.26</a> shows an example of how the data on the bacterial load
-in each mouse was recorded.</p>
-<div class="figure fullwidth"><span style="display:block;" id="fig:bacterialload"></span>
-<img src="figures/project_bacterial_load.png" alt="Example of recording the bacterial load in the lungs of each mouse at the end of treatment for the example set of studies." width="\textwidth"  />
-<p class="caption marginnote shownote">
-Figure 2.26: Example of recording the bacterial load in the lungs of each mouse at the end of treatment for the example set of studies.
-</p>
-</div>
-<p>As you can see, these data were all recorded using templates that were designed
-for the tidy collection of laboratory data (see modules 2.4 and 2.5). These
-spreadsheets were used only to record the data, and then processing, analysis,
-and visualization were done in a separate file. Specifically, for this set of
-studies a preliminary report was designed, with an example shown in Figure [x].
-This report uses the first page to provide a nicely format version of the
-metadata for the study, including a table with overall details and a table with
-details for each specific treatment that was tested. The second page provides a
-graph that shows the percent weight change for mice in each treatment group
-compared to the weight of that group at the start of treatment. The third page
-provides a graph that shows the bacterial loads in each mouse, grouped by
-treatment, as well as the results of running a statistical test to test, for
-each treatment group, the hypothesis that the mean of a transformed version of
-the measure of bacterial load (log-10) for the group was the same as for the
-untreated control group.</p>
-<div class="figure fullwidth"><span style="display:block;" id="fig:prelimreport"></span>
-<img src="figures/project_prelim_report.png" alt="Example of the preliminary report generated for each study in the set of example studies for this module. The first page includes metadata on the study, as well as details on each treatment that was tested. The second page shows how mouse weights in each treatment group changed over the course of treatment, to help identify if a treatment was well-tolerated. The third page graphs the bacterial load in each mouse, grouped by treatment, and gives the result of a statistical analysis to test which treatment groups had outcomes that were significantly different from the untreated control group." width="\textwidth"  />
-<p class="caption marginnote shownote">
-Figure 2.27: Example of the preliminary report generated for each study in the set of example studies for this module. The first page includes metadata on the study, as well as details on each treatment that was tested. The second page shows how mouse weights in each treatment group changed over the course of treatment, to help identify if a treatment was well-tolerated. The third page graphs the bacterial load in each mouse, grouped by treatment, and gives the result of a statistical analysis to test which treatment groups had outcomes that were significantly different from the untreated control group.
-</p>
-</div>
-<p>Let’s take a closer look at a few of these elements. For example, Figure
-<a href="2.6-module6.html#fig:studytable">2.28</a> shows the tables from the first page of the report shown
-in Figure <a href="2.6-module6.html#fig:prelimreport">2.27</a>. If you look back to the data collection for
-this study (e.g., Figures <a href="2.6-module6.html#fig:metadata">2.23</a> and <a href="2.6-module6.html#fig:treatmentdetails">2.24</a>),
-you can see that all of the information in these tables was pulled from data
-recorded at the start of the study.</p>
-<div class="figure fullwidth"><span style="display:block;" id="fig:studytable"></span>
-<img src="figures/project_study_info_table.png" alt="Example of one element of the preliminary report generated for each study in the set of example studies for this module. The first page provides tables with metadata about the study and details about each treatment that was tested." width="\textwidth"  />
-<p class="caption marginnote shownote">
-Figure 2.28: Example of one element of the preliminary report generated for each study in the set of example studies for this module. The first page provides tables with metadata about the study and details about each treatment that was tested.
-</p>
-</div>
-<p>Figure <a href="2.6-module6.html#fig:mouseweightsplot">2.29</a> shows the second page of the report. This
-figure has taken the mouse weights—which were recorded in one of the data
-collection templates for the project (Figure <a href="#fig:mouseweights"><strong>??</strong></a>)—and used
-them to generate a plot of how average mouse weight in each treatment group
-changed over the course of the treatment.</p>
-<div class="figure fullwidth"><span style="display:block;" id="fig:mouseweightsplot"></span>
-<img src="figures/project_mouse_weights_graph.png" alt="Example of one element of the preliminary report generated for each study in the set of example studies for this module. The second page provides a plot of how the weights of mice in each treatment changed over the course of treatment." width="\textwidth"  />
-<p class="caption marginnote shownote">
-Figure 2.29: Example of one element of the preliminary report generated for each study in the set of example studies for this module. The second page provides a plot of how the weights of mice in each treatment changed over the course of treatment.
-</p>
-</div>
-<p>Figure <a href="2.6-module6.html#fig:bactcompare">2.30</a> shows the last page of the report. This page
-starts with a figure that shows the bacterial load in the lungs of each mouse in
-the study at the end of the treatment period. In this figure, the measurement
-for each mouse is shown with a point, and these points are grouped by the
-treatment group of the mouse. Boxplots are added to show the distribution across
-the mice in each group. The color is used to show whether the treatment was a
-negative control, a positive control, a monotherapy, or a combined therapy. The
-second part of the page gives a table with the results from running a
-statistical analysis to compare the bacterial load for mice in each treatment
-group to the bacterial load in the mice in the untreated control group. Color is
-added to the table to highlight treatments that had a large difference in
-bacterial load from the untreated control, as well as treatments for which the
-difference from the untreated control was estimated to be statistically
-significant. All the data for these results, including the labels for the plot,
-are from the data collected in the data collection templates shown earlier.</p>
-<div class="figure fullwidth"><span style="display:block;" id="fig:bactcompare"></span>
-<img src="figures/project_bact_compare_plot.png" alt="Example of one element of the preliminary report generated for each study in the set of example studies for this module. The third page provides results on how bacterial load in the lungs compares among treatments at the end of the treatment period." width="\textwidth"  />
-<p class="caption marginnote shownote">
-Figure 2.30: Example of one element of the preliminary report generated for each study in the set of example studies for this module. The third page provides results on how bacterial load in the lungs compares among treatments at the end of the treatment period.
-</p>
-</div>
-</div>
-<div id="creating-an-organized-directory-for-project-files" class="section level3" number="2.6.2">
-<h3><span class="header-section-number">2.6.2</span> Creating an organized directory for project files</h3>
-<p>In the example project that we just described, you can see that we ended up
-with a lot of different files. We used separate files for collecting data and
-for creating a preliminary report on that data. For collecting the data, we could
-either use separate sheets in one spreadsheet file, or entirely separate files,
-or some combination. The end result is that we have several project files,
-in comparison to if we had used a single sheet of a spreadsheet file to
-both record and work with the data.</p>
-<p>This is a step in the right direction—by separating data collection and
-analysis into separate files, we can make the file for each step simpler.
-Further, by separating, we can save the files in plain text, which makes it
-easier to track them using version controlled (discussed in later modules),
-which helps create a record of changes made to the data or analysis code during
-the research process. As we continue work on a project, we’ll likely generate
-more types of files. These can include other data files (both “raw”
-data—directly output from measurement equipment or directly recorded from
-observations, as well as any “cleaned” version of this data, after steps have
-been taken to preprocess the data to prepare it for visualization and analysis
-in papers and reports). These files also include the files with writing and
-presentations (posters and slides) associated with the project, as well as code
-scripts for preprocessing data, for conducting data analysis, and for creating
-and sharing final figures and tables.</p>
-<p>However, now that we have multiple files, we should think about how we store and
-organize them. It is very easy otherwise for separate files for a research
-project to become disorganized. One study, for example, surveyed over 250
-biomedical researchers at the University of Washington. They noted that, “a
-common theme surrounding data management and analysis was that may researchers
-preferred to utilize their own individual methods to organize data. The varied
-ways of managing data were accepted as functional for most present needs. Some
-researchers admitted to having no organizational methodology at all, while
-others used whatever method best suited their individual needs.”
-<span class="citation">(Anderson et al. 2007)</span> One respondent answered, “They’re not organized in any
-way—they’re just thrown into files under different projects,” while another
-said “I grab them when I need them, they’re not organized in any decent way,”
-and another, “It’s not even organized—a file on a central computer of
-protocols that we use, common lab protocols but those are just individual Word
-files within a folder so it’s not searchable per se.” <span class="citation">(Anderson et al. 2007)</span></p>
+<blockquote>
+<p>“For all the alchemy that goes into building something, the magic of making is
+only possible because of the many repetitive processes we endure in preparation
+for final assembly, and then the deliberate way we put it all together. And the
+only way to get that prep right, to get your <em>mise</em> in its proper <em>place</em> is to
+slow down, address your work properly, and lock your shit down.”
+<span class="citation">(Savage 2020)</span></p>
+</blockquote>
+<p>You gain in many ways when you organize your work space, especially when you do
+it consistently. You know where to find things. You know where to find things
+when you come back to a project after a while away from it (for example, while
+the paper was out for review). You can teach someone else how to find things
+quickly and consistently across your multiple projects, as well as where to put
+things if they’re contributing to one of them. You have a place for everything.
+An organized work space can help foster organized thinking.</p>
+<blockquote>
+<p>“Your working environment, whether it’s a supermarket, office, studio, or
+building site, persuades you to work and think in certain ways. The more aware
+you are of that, and the more you understand your medium, the more you can use
+it to your advantage.” <span class="citation">(Judkins 2016)</span></p>
+</blockquote>
+<blockquote>
+<p>“I started to clean up before heading upstairs at the end of the day, and lo and
+behold the shop became a far more efficient and well-oiled maching to work in. The
+freed-up space in my mind and the open work space at my fingertips allowed me a lot
+of room, both mental and physical, to pursue a wide variety of projects, and I finally
+started to understand how much benefit was to be gained by taking the time to clean.”
+<span class="citation">(Savage 2020)</span></p>
+</blockquote>
+<blockquote>
+<p>“A research compendium should organize its files according to the prevailing
+conventions of the scholarly community, whether that be an academic discipline
+or a lab group. Following these conventions will help other people recognize the
+structure of the project, and also support tool building which takes advantage
+of the shared structure.” <span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
+</blockquote>
 <p><label for="tufte-mn-21" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-21" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Just as a well-organized laboratory makes a scientist’s life easier, a well-organized and well-documented project makes a bioinformatician’s life easier. Regardless of the particular project you’re working on, your project directory should be laid out in a consistent and understandable fashion. Clear project organization makes it easier for both you and collaborators to figure out exactly where and what everything is. Additionally, it’s much easier to automate tasks when files are organized and clearly named. For example, processing 300 gene sequences stored in separate FASTA files with a script is trivial if these files are organized in a single directory and are consistently named.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Buffalo 2015)</span></span></span></span></p>
-<p>First, and at a minimum, your research team
-should get in the habit of storing all the files for a project (for example,
-for an experiment or a study) in the same file directory.
-There are a number of advantages to keeping all files related to a single
-project inside a dedicated file directory on your computer. First, this provides
-a clear and obvious place to search for all project files throughout your work
-on the project, including after lulls in activity (for example, while waiting
-for reviews from a paper submission). By keeping all project files within a
-single directory, you also make it easier to share the collection of files for
-the project. There are several reasons you might want to share these files. An
-obvious one is that you likely will want to share the project files across
-members in your research team, so they can collaborate together on the project.
-However, there are also other reasons you’d need to share files, and one that is
-growing in popularity is that you may be asked to share files (data, code
-scripts, etc.) when you publish a paper describing your results.</p>
+<blockquote>
+<p>“Using research compendia has benefits both for you as a researcher, and for the community that you work in. Among the most important of these benefits is that a research compendium is a convenient way to publicly share data and code (McKiernan et al. Citation2016). Papers with publicly available datasets may receive a higher number of citations than similar studies without available data (Piwowar, Day, and Fridsma Citation2007; Piwowar and Vision Citation2013; Henneken and Accomazzi Citation2011; Dorch Citation2012; Sears Citation2011; Gleditsch and Strand Citation2003).” <span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“In our own experience as researchers, we enjoy benefits of increased efficiency through simplified file management and streamlined analytical workflows. These help us to work more transparently and efficiently. While reproducibility is no guarantee of correctness, making our results reproducible lets us inspect our own work for errors. Because we follow the same pattern in multiple projects, the startup and reentry costs for each project are significantly reduced. The result is that we save time, and minimize the risk of errors that might result from results which cannot be reproduced. A compendium makes it easier to communicate our work with others, including collaborators and (not least of all) our future selves. As members of research communities, by including compendia with our published papers we benefit from increased impact and visibility of our research among our peers.”
+<span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“There are many barriers to sharing reproducible code and corresponding computational results14. One barrier is simply that
+keeping code and results sufficiently organized and documented
+is difficult—it is burdensome even for experienced programmers who are well-trained in relevant computational tools
+such as version control (discussed later), and even harder for
+the many domain scientists who write code with little formal
+training in computing and informatics15” <span class="citation">(Blischak, Carbonetto, and Stephens 2019)</span></p>
+</blockquote>
+<blockquote>
+<p>“I will not describe profound issues such as how to formulate hypotheses, design experiments, or draw conclusions. Rather, I will focus on relatively mundane issues such as organizing files and directories and documenting progress. These issues are important because poor organizational choices can lead to significantly slower research progress.” <span class="citation">(Noble 2009)</span></p>
+</blockquote>
+</div>
+<div id="how-to-organize-project-files" class="section level3" number="2.6.2">
+<h3><span class="header-section-number">2.6.2</span> How to organize project files</h3>
+<p>First, and at a minimum, you should get in the habit of storing all of the files
+for an experiment in the same place. First, they should all be on the same
+computer. The files should <strong>not</strong> be spread across multiple computers. Second,
+they should all be in a single directory within the file system of that
+computer. The files should not be spread across the fille system of a computer.
+If you are collaborating across a team, you can all share copies of this single
+project directory across your computers, using cloud services like Google Drive
+or Microsoft teams. In other words, you can have multiple copies of the
+directory, so that it can be accessed from different computers, but you
+shouldn’t store some of the files on one computer and some on another computer.
+Ideally, if you’re sharing access to the directory, you should do it in a way
+that the changes that one person makes are synced by other users, so you’re all
+working from the same version of the project directory. In later modules, we
+will discuss how this can be done with some version control systems.</p>
+<blockquote>
+<p>“When you begin a new project, you will need to decide upon some organizational structure for the relevant directories. It is generally a good idea to store all of the files relevant to one project under a common root directory. The exception to this rule is source code or scripts that are used in multiple projects. Each such program might have a project directory of its own.” <span class="citation">(Noble 2009)</span></p>
+</blockquote>
 <p><label for="tufte-mn-22" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-22" class="margin-toggle"><span class="marginnote"><span style="display: block;">“All files and directories used in your project should live in a single project directory with a clear name. During the course of a project, you’ll have amassed data files, notes, scripts, and so on—if these were scattered all over your hard drive (or worse, across many computers’ hard drives), it would be a nightmare to keep track of everything. Even worse, such a disordered project would later make your research nearly impossible to reproduce.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Buffalo 2015)</span></span></span></span></p>
-<p>When files are all stored in one directory, the directory can be compressed and
-shared as an email attachment or through a file sharing platform like Google Drive.
-As you learn more tools for reproducibility, you can also share the directory through
-some more dynamic platforms, that let all those sharing access continue to change
-and contribute to the files in the directory in a way that is tracked and
-reversible. In later modules in this book, we will introduce <code>git</code> version control
-software and the GitHub platform for sharing files under this type of version
-control—this is one example of this more dynamic way of sharing files within
-a directory. To gain the advantages of directory-based project file organization, all the
-files need to be within a single directory, but they don’t all have to be within
-the same “level” in that directory. Instead, you can use subdirectories to
-structure and organize these files, while still retaining all the advantages of
-directory-based file organization. This will help limit the number of files in
-each “level” of the directory, so none becomes an overwhelming slew of files of
-different types. It can help you navigate the files in the directory, and also
-help someone you share the directory with figure out what’s in it and where
-everything is.</p>
-<p>Subdirectory organizations can also, it turns out, be used in clever ways within
-code scripts applied to files in the directory. For example, there are functions
-in all scripting languages that will list all the files in a specified subdirectory.
-If you keep all your raw data files of a certain type (for example, all output from
-running flow cytometry for the project) within a single subdirectory, you can
-use this type of function with code scripts to list all the files in that directory
-and then apply code that you’ve developed to preprocess or visualize the data
-across all those files. This code would continue to work as you added files to that
-directory, since it starts by looking in that subdirectory each time it runs and
-working with all files there as of that moment.</p>
-<p><label for="tufte-mn-23" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-23" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Organizing data files into a single directory with consistent filenames prepares us to iterate over <em>all</em> of our data, whether it’s the four example files used in this example, or 40,000 files in a real project. Think of it this way: remember when you discovered you could select many files with your mouse cursor? With this trick, you could move 60 files as easily as six files. You could also select certain file types (e.g., photos) and attach them all to an email with one movement. By using consistent file naming and directory organization, you can do the same programatically using the Unix shell and other programming languages.”</span>
-<span style="display: block;"><span class="citation"><span class="citation">(Buffalo 2015)</span></span></span></span></p>
-<p>As you decide how to organize project files within a directory, it is worthwhile
-to take some time to think about the types of files that are often generated by
-your research projects, because there are also big advantages to creating a
-standard structure of subdirectories that you can use consistently across the
-directories for all the projects in your research program. Of course, some
-projects may not include certain files, and some might have a new or unusual
-type of file, so you can customize the directory structure to some degree for
-these types of cases, but it is still a big advantage to include as many common
-elements as possible across all your projects.</p>
-<p>For example, you may want to always include a subdirectory called “data,” and
-consistently call it “data,” to store data directly from observations or
-directly output from laboratory equipment. You may want to include
-subdirectories in that “data” subdirectory for each type of data—maybe a
-“recorded_data” subdirectory for data that were recorded by a researcher in the
-laboratory, and another subdirectory called “flow_data” for output from a flow
-cytometer. By using the same structure and the same subdirectory names for
-different experiments with similar aims or designs, you will find that code
-scripts are easier to reuse from one project to another. Again, most scripting
-languages allow you to leverage this order in how you’ve arranged your files in
-the file system, and so using the same order across different projects lets you
-repeat and reuse code scripts more easily from one project to another. This
-strategy is used often in handling complex bioinformatics data
-<span class="citation">(Buffalo 2015)</span>, but it can also be leveraged to improve the
-reproducibility and reliability when only using less complex data recorded in
-the laboratory, as with the data shown in the example for this module.</p>
-<p><label for="tufte-mn-24" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-24" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Because automating file processing tasks is an integral part of bioinformatics, organizing our projects to facilitate this is essential. Organizing data into subdirectories and using clear and consistent file naming schemes is imperative—both of these practices allow us to <em>programmatically</em> refer to files, the first step to automating a task. Doing something programatically means doing it through code rather than manually, using a method that can effortlessly scale to multiple objects (e.g., files). Programatically referring to multiple files is easier and safer than typing them all out (because it’s less error prone.)”</span>
-<span style="display: block;"><span class="citation"><span class="citation">(Buffalo 2015)</span></span></span></span></p>
-<p>Even within a subdirectory, it is worthwhile to give a lot of thought to how you
-name each file. First, special tools in languages like R can use
-thoughtfully-designed files name to extract and use information in the file
-names themselves, based on a technique called <em>regular expressions</em>. Second, the
-file name is a valuable way to be very clear about exactly what is stored in the
-file. The less murky the organization and naming of subdirectories and files within
-the project directory is, the more likely that all research team members will be
-able to correctly navigate and use the data stored for the project.</p>
-<p><label for="tufte-mn-25" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-25" class="margin-toggle"><span class="marginnote"><span style="display: block;">“In addition to simplifying working with files, consistent naming is an often overlooked component of robust bioinformatics. Bad naming schemes can easily lead to switched samples. Poorly chosen filenames can also cause serious errors when you or collaborators think you’re working with the correct data, but it’s actually outdate or the wrong file. I guarantee that out of all the papers published in the past decade, at least a few and likely many more contain erroneous results because of a file naming issue.”</span>
-<span style="display: block;"><span class="citation"><span class="citation">(Buffalo 2015)</span></span></span></span></p>
-<p>Finally, if you create a clear and clean organization structure for your project
-directories, you will find it is much easier to navigate your files in all
-directories, and also that new lab members and others you share the directories
-with will be able to quickly learn to navigate them. In other areas of science
-and engineering, this idea of standardized directory structures has allowed the
-development of powerful techniques for open-source software developers to work
-together. For example, anyone may create their own extensions to the R
-programming language and share these with others through GitHub or several large
-repositories. This is coordinated by enforcing a common directory structure on
-these extension “packages”—to create a new package, you must put certain types
-of files in certain subdirectories within a project directory. With these
-standardized rules of directory structure and content, each of these packages
-can interact with the base version of R, since there are functions that can tap
-into any of these new packages by assuming where each type of file will be
-within the package’s directory of files. In a similar way, if you impose a
-common directory structure across all the project directories in your research
-lab, your collaborators will quickly be able to learn where to find each
-element, even in projects they are new to, and you will all be able to write
-code that can be easily applied across all project directories, allowing you to
-improve reproducibility and comparability across all projects by assuring that
-you are conducting the same preprocessing and analysis across all projects (or,
-if you are conducting things differently for different projects, that you are
-deliberate and aware that you are doing so).</p>
-<p>Figure [x] gives an example of a project directory organization that might make
-sense for the example set of studies described at the beginning of this module. …</p>
-<p>Once you have decided on a structure for your directory, you can create a
-template of it—a file directory with all the subdirectories included, but
-without any files (or only template files you’d want to use as a starting
-point in each project). When you start a new project, you can then just
-copy this template and rename it. If you are using R and begin to use
-R Project (described in the next section), you can also create an R Studio
-Project template to serve as this kind of starting point each time you
-start a new project. In module 2.8, we’ll walk through an example of
-creating and using this kind of project template for the example set of
-studies described earlier in the module.</p>
-</div>
-<div id="using-rstudio-projects-with-project-file-directories" class="section level3" number="2.6.3">
-<h3><span class="header-section-number">2.6.3</span> Using RStudio Projects with project file directories</h3>
-<p>If you are using the R programming language for data preprocessing, analysis,
-and visualization—as well as RMarkdown for writing reports and
-presentations—then you can use RStudio’s “Project” functionality to make it
-even more convenient to work with files within a research project’s directory.
-You can make any file directory a “Project” in RStudio by chosing “File” -&gt;
-“New Project” in RStudio’s menu. This gives you the option to create a
-project from scratch or to make an existing directory and RStudio Project.</p>
-<p>When you make a file directory an RStudio Project, it doesn’t change much in
-the directory itself except adding a “.RProj” file. This file keeps track of
-some things about the file directory for RStudio, including preferred settings
-for RStudio to use when working in that project. Also, when you
-open one of these Projects in RStudio, it will move your working directory
-into that projects top-level directory. This makes it very easy and practical
-to write code using relative pathnames that start from this top-level of the
-project directory. This is very good practice, because these relative pathnames
-will work equally well on someone else’s computer, whereas if you use file
-pathnames that are absolute (i.e., giving directions to the file from the root
-directory on your computer), then when someone else tries on run the code on their
-own computer, it won’t work and they’ll need to change the filepaths in the code,
-since everyone’s computer has its files organized differently. For example, if you,
-on your personal computer, have the project directory stored in your “Documents”
-folder, while a colleague has stored the project directory in his or her “Desktop”
-directory, then the absolute filepaths for each file in the directory will be
-different for each of you. The relative pathnames, starting from the top level of
-the project directory, will be the same for both of you, though, regardless of
-where you each stored the project directory on your computer.</p>
-<p>There are some other advantages, as well, to turning each of your research
-project directories into RStudio Projects. One is that it is very easy to
-connect each of these Projects with GitHub, which facilitates collaborative work
-on the project across multiple team members while tracking all changes under
-version control. This functionality is described in a later module in this book.</p>
-<p>As you continue to use R and RStudio’s Project functionality, you may want to
-take the template directory for your project and create an RStudio Project
-template based on its structure. Once you do, when you start a new research
-project, you can create the full directory for your project’s files from within
-RStudio by going to “File” -&gt; “New Project” and then choosing to create a new
-project based on that template. The new project will already be set up with the
-“.RProj” file that allows you to easily navigate into and out of that project,
-to connect it to GitHub, and all the other advantages of setting a file
-directory as an RStudio Project. This takes a bit of time to set-up, but can
-be a powerful tool in ensuring that researchers in your laboratory use a
-standardized format for project directories across many experiments.</p>
-<p>The next module gives step-by-step directions
-for making a directory an RStudio Project, and also how to create you own
-RStudio Project template to quickly create a new directory for project files
-each time you start a new research project.</p>
-<blockquote>
-<p>“We also needed to cope with a large amount of data going from each lab [involved
-in trying to reproduce results] to a single database. We wrote an iPad app so that
-measurements were entered directly into the system and not jotted on paper to
-be entered later. The app prompted us to include a full description for each
-plate of worms, and ensured that data and metadata for each experiment were proofread
-(the strain names MY16 and my16 are not the same). This simple technology removed
-small recording errors that could disproportionately affect statistical analyses.”
-<span class="citation">(Lithgow, Driscoll, and Phillips 2017)</span></p>
-</blockquote>
 <blockquote>
 <p>“Perhaps the most complex undertaking so far has been developing practices for
 curating and preserving all the data that underpin a paper, including
@@ -601,6 +350,257 @@ process was just extra bureaucratic work, or that it had been invented so I
 could police their data. Now, it has become the norm, and researchers tell me
 they save time and worry by having their data organized and archived.”
 <span class="citation">(Winchester 2018)</span></p>
+</blockquote>
+<p>There are a number of advantages to keeping all files related to a single
+project inside a dedicated file directory on your computer. First, this provides
+a clear and obvious place to search for all project files throughout your work
+on the project, including after lulls in activity (like waiting for reviews from
+a paper submission).</p>
+<p>By keeping all project files within a single directory, you also make it easier
+to share the collection of files for the project. The directory acts as a
+sharable unit that can be easily shared as a collected unit (for example,
+through posting on Google Drive or compressing the directory and emailing the
+resulting file). There are several reasons you might want to share these files.
+An obvious one is that you likely will want to share the project files across
+members in your research team, so they can collaborate together on the project.
+However, there are also other reasons you’d need to share files, and one that is
+growing in popularity is that you may be asked to share files (data, code
+scripts, etc.) when you publish a paper describing your results.</p>
+<p>When files are all stored in one directory, the directory can be compressed and
+shared as an email attachment or through a file sharing platform like Google
+Drive. As you learn more tools for reproducibility, you can also share the
+directory through some more dynamic platforms, that let all those sharing access
+continue to change and contribute to the files in the directory in a way that is
+tracked and reversible. In later modules in this book, we will introduce <code>git</code>
+version control software and the GitHub platform for sharing files under this
+type of version control—this is one example of this more dynamic way of
+sharing files within a directory. To gain the advantages of directory-based
+project file organization, all the files need to be within a single directory,
+but they don’t all have to be within the same “level” in that directory.
+Instead, you can use subdirectories to structure and organize these files, while
+still retaining all the advantages of directory-based file organization. This
+will help limit the number of files in each “level” of the directory, so none
+becomes an overwhelming slew of files of different types. It can help you
+navigate the files in the directory, and also help someone you share the
+directory with figure out what’s in it and where everything is.</p>
+<p>When all the materials for a project are stored in a single directory, it makes
+it easier to share the set of files through version control and online
+version control platforms <span class="citation">(Vuorre and Crump 2021)</span>. (This also helps you to track
+changes to files across the project <span class="citation">(Vuorre and Crump 2021)</span>).</p>
+<p>Next, you should organize the files within that directory in a meaningful
+way. Files can be separated into subdirectories by type or other organizing
+principle. Computer file systems are well-structured to use a hierarchical
+design, with subdirectories nested inside directories. You can leverage this
+to manage the complexity and breadth of files for your project.</p>
+<blockquote>
+<p>“The core guiding principle is simple: Someone unfamiliar with your project should be able to look at your computer files and understand in detail what you did and why. This ‘someone’ could be any of a variety of people: someone who read your published article and wants to try to reproduce your work, a collaborator who wants to understand the details of your experiments, a future student working in your lab who wants to extend your work after you have moved on to a new job, your research advisor, who may be interested in understanding your work or who may be evaluating your research skills. Most commonly, however, that ‘someone’ is you. A few months from now, you may not remember what you were up to when you created a particular set of files, or you may not remember what conclusions you drew. You will either have to then spend time reconstructing your previous experiments or lose whatever insights you gained from those experiments.” <span class="citation">(Noble 2009)</span></p>
+</blockquote>
+<blockquote>
+<p>“This leads to the second principle, which is actually more like a version of Murphy’s Law: Everything you do, you will probably have to do over again. Inevitably, you will discover some flaw in your initial preparation of the data being analyzed, or you will get access to new data, or you will decide that your parameterization of a particular model was not broad enough. This means that the experiment you did last week, or even the set of experiments you’ve been working on over the past month, will probably need to be redone. If you have organized and documented your work clearly, then repeating the experiment with the new data or the new parameterization will be much, much easier.” <span class="citation">(Noble 2009)</span></p>
+</blockquote>
+<blockquote>
+<p>“As a project grows you might start with a single file, then add subdirectories which have consistent and readily meaningful names such as “analysis,” “data,” and so on. There are few strict rules here. The key principle is to organize the compendium so that another person can know what to expect from the plain meaning of the file and directory names. Using widely held conventions, such as the R package structure, will help other people to understand how your files relate to each other without having to ask you. Naming objects is difficult to do well, so it is worth to put some effort into a logical and systematic file naming convention if you have a complex project with many files and directories (e.g., a multi-experiment study where each experiment has numerous data and code files)." <span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
+</blockquote>
+<p>Marwick’s three generic principles of research compendia:</p>
+<blockquote>
+<p>“it organizes the files according to a convention, separates data and code, and specifies the computational environment” <span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
+</blockquote>
+<p>For example, you can use one level of generic subdirectories to organize the
+files into sections for raw (unprocessed) data, processed data, data processing
+scripts, data analysis scripts, output reports, output figures, and so on.
+Within each of those subdirectories, you might have more subdirectories. For
+example, the raw data subdirectory might include subdirectories for data from
+different types of assays (immune cell populations measured through flow
+cytometry, bacterial load measured through CFUs, antibodies measure through
+ELISA, etc.)</p>
+<p>Subdirectory organizations can also, it turns out, be used in clever ways within
+code scripts applied to files in the directory. For example, there are functions
+in all scripting languages that will list all the files in a specified
+subdirectory. If you keep all your raw data files of a certain type (for
+example, all output from running flow cytometry for the project) within a single
+subdirectory, you can use this type of function with code scripts to list all
+the files in that directory and then apply code that you’ve developed to
+preprocess or visualize the data across all those files. This code would
+continue to work as you added files to that directory, since it starts by
+looking in that subdirectory each time it runs and working with all files there
+as of that moment.</p>
+<p><label for="tufte-mn-23" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-23" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Organizing data files into a single directory with consistent filenames prepares us to iterate over <em>all</em> of our data, whether it’s the four example files used in this example, or 40,000 files in a real project. Think of it this way: remember when you discovered you could select many files with your mouse cursor? With this trick, you could move 60 files as easily as six files. You could also select certain file types (e.g., photos) and attach them all to an email with one movement. By using consistent file naming and directory organization, you can do the same programatically using the Unix shell and other programming languages.”</span>
+<span style="display: block;"><span class="citation"><span class="citation">(Buffalo 2015)</span></span></span></span></p>
+<p>Even within a subdirectory, it is worthwhile to give a lot of thought to how you
+name each file. First, special tools in languages like R can use
+thoughtfully-designed files name to extract and use information in the file
+names themselves, based on a technique called <em>regular expressions</em>. Second, the
+file name is a valuable way to be very clear about exactly what is stored in the
+file. The less murky the organization and naming of subdirectories and files
+within the project directory is, the more likely that all research team members
+will be able to correctly navigate and use the data stored for the project.</p>
+<p><label for="tufte-mn-24" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-24" class="margin-toggle"><span class="marginnote"><span style="display: block;">“In addition to simplifying working with files, consistent naming is an often overlooked component of robust bioinformatics. Bad naming schemes can easily lead to switched samples. Poorly chosen filenames can also cause serious errors when you or collaborators think you’re working with the correct data, but it’s actually outdated or the wrong file. I guarantee that out of all the papers published in the past decade, at least a few and likely many more contain erroneous results because of a file naming issue.”</span>
+<span style="display: block;"><span class="citation"><span class="citation">(Buffalo 2015)</span></span></span></span></p>
+<p>Reasons to design and use a project template include:</p>
+<ul>
+<li>Keep your project files organized (and so have more “brain space” for
+other parts of the work, also make it easier for everyone to find
+everything, even after not looking at the project for a while)</li>
+<li>Use the same organization for all projects (“I have a system”; this
+way you can make tools that work across the projects based on the
+organization, this also helps you navigate projects when you revisit
+them, since they’re organized the same way as your most recent projects,
+also this means that you only have to think once about organization, not
+every time you start a project)</li>
+<li>Be able to share and publish project files easily</li>
+</ul>
+</div>
+<div id="what-is-a-project-template" class="section level3" number="2.6.3">
+<h3><span class="header-section-number">2.6.3</span> What is a project template?</h3>
+<p>Here is how a project template will work when it is used: You will have a
+template directory saved on your computer, which will include subdirectories
+and example templates for data collection and the project report. When you
+start a new project, you will copy that template directory, rename it,
+and then start filling it with your data for that particular project.
+As you use it for a project, you can customize it as you need. For example,
+if you had included a subdirectory for flow cytometry data, but are not
+running that assay in this experiment, you can remove that subdirectory.
+Similarly, you can customize the report as you go to help it work well for
+this specific experiment. However, you will aim to keep to the standard
+format as much as possible, since it’s the standardization across projects
+that provides many of the advantages.</p>
+<p>The next step is to not only use a structured directory for each project /
+experiment, but to start using the same, standardized structure for every
+one of your experiments. This takes more work, in particular to design a
+structure that can be used across many projects. However, the gains in terms
+of organization and efficiency can be extraordinary. We have not run across
+many people who have taken the time to set this up. However, among the
+people we know who have, we haven’t run across many who ever went back
+once they started using this type of system.</p>
+<p>This involves first designing a common template for the directory structure for
+your projects. Once you have decided on a structure for this template, you can
+create a version of it on your computer—a file directory with all the
+subdirectories included, but without any files (or only template files you’d
+want to use as a starting point in each project). When you start a new project,
+you can then just copy this template and rename it. If you are using R and begin
+to use R Projects (described in the next section), you can also create an R
+Studio Project template to serve as this kind of starting point each time you
+start a new project.</p>
+<p>In other areas of science and engineering, this idea of standardized directory
+structures has allowed the development of powerful techniques for open-source
+software developers to work together. For example, anyone may create their own
+extensions to the R programming language and share these with others through
+GitHub or several large repositories. This is coordinated by enforcing a common
+directory structure on these extension “packages”—to create a new package, you
+must put certain types of files in certain subdirectories within a project
+directory. With these standardized rules of directory structure and content,
+each of these packages can interact with the base version of R, since there are
+functions that can tap into any of these new packages by assuming where each
+type of file will be within the package’s directory of files. In a similar way,
+if you impose a common directory structure across all the project directories in
+your research lab, your collaborators will quickly be able to learn where to
+find each element, even in projects they are new to, and you will all be able to
+write code that can be easily applied across all project directories, allowing
+you to improve reproducibility and comparability across all projects by assuring
+that you are conducting the same preprocessing and analysis across all projects
+(or, if you are conducting things differently for different projects, that you
+are deliberate and aware that you are doing so).</p>
+<p>In fact, some go so far as to suggest bundling research project
+data and results as an R package <span class="citation">(Vuorre and Crump 2021; Marwick, Boettiger, and Mullen 2018)</span>.</p>
+<blockquote>
+<p>“Our contribution to this drive to improve the openness and reproducibility
+of research is to show how R packages can be used as a research
+compendium for organising and sharing files. Although the R packaging
+system is traditionally a method for sharing statistical methods, we claim
+that R packages are suitable for use as research compendia that can help
+improve computational reproducibility. Our focus is on the R programming
+language because the R package structure is uniquely suitable to being
+easily adapted to solve problems of organising files and sharing them with
+other researchers.” <span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“Borrowing standards and best practices from software development, such as
+the R package standard discussed here, may serve to dramatically improve
+reproducibility. By organizing research assets in a standard format, their
+reuse will be less time consuming and error-prone. Standard formats also
+facilitate large-scale meta-scientific investigations (Gorgolewski et al.,
+2016), and inclusion of data sets for meta-analysis.” <span class="citation">(Vuorre and Crump 2021)</span></p>
+</blockquote>
+<p><label for="tufte-mn-25" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-25" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Because automating file processing tasks is an integral part of bioinformatics, organizing our projects to facilitate this is essential. Organizing data into subdirectories and using clear and consistent file naming schemes is imperative—both of these practices allow us to <em>programmatically</em> refer to files, the first step to automating a task. Doing something programatically means doing it through code rather than manually, using a method that can effortlessly scale to multiple objects (e.g., files). Programatically referring to multiple files is easier and safer than typing them all out (because it’s less error prone.)”</span>
+<span style="display: block;"><span class="citation"><span class="citation">(Buffalo 2015)</span></span></span></span></p>
+<p>There have been burgeoning efforts to standardize the way data are
+organized in some research groups over time:</p>
+<blockquote>
+<p>“Some of the earliest examples of these principles [of research compendia] in
+action can be found in the work of Claerbout (Citation1992) and his colleagues
+in the early 1990s. Claerbout introduced these practices in his Stanford
+geophysics research group (Buckheit and Donoho Citation1995). Other early
+examples of compendia appeared in econometrics (Koenker Citation1996), (Vinod
+Citation2001), epidemiology (Peng, Dominici, and Zeger Citation2006), and signal
+processing (Vandewalle, Kovacevic, and Vetterli Citation2009).”
+<span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
+</blockquote>
+<blockquote>
+<p>“A notable effort to promote reproducible research at the undergraduate level is Project TIER (Teaching Integrity in Empirical Research) for economics majors at Haverford College. Project TIER provides a detailed file-structure protocol for students working on their senior thesis, aiming to teach students to document their data management and analysis to enable an independent researcher to reproduce the student’s data processing and analysis (Ball and Medeiros Citation2012).”
+<span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
+</blockquote>
+<p>You can have different templates to use when you create a new project. A
+template will provide a basic set-up for the project. For example, R packages
+are created within a directory, and package developers now often use an R
+Project for that directory. Since R packages have a consistent set of usual
+subdirectories—including subdirectories for R code, data, and documentation
+and a file for metadata—there is now a Project Template specificially for R
+package development, and this sets up a directory with some of the typical
+subdirectories and files needed for these projects.</p>
+<p>In the next module, we will walk through the steps of designing a project
+template that you can use across experiments for your laboratory group. In
+module 2.8, we’ll walk through an example of creating and using this kind of
+project template for an example set of studies.</p>
+<p>An even broader step would be to standardize formats across research groups,
+to have standard formats within a larger scientific discipline.</p>
+<blockquote>
+<p>“More generally, however, tools and descriptions, such as Psych-DS,
+rrtools, vertical, and workflowr are pointing to the same general idea:
+Psychological sciences would benefit from standardizing, as much as
+possible, the ways in which computational work is curated. We think
+that these tools and principles are in their infancy, and their importance
+is only now being recognized. Therefore, we expect these tools to
+evolve and mutate to best suit the practical researchers’ needs.”
+<span class="citation">(Vuorre and Crump 2021)</span></p>
+</blockquote>
+<p>Efforts to standardize across a discipline or multiple disciplines:</p>
+<ul>
+<li>workflowr: An R package that sets up a project directory and provides
+functionality to automate analysis <span class="citation">(Blischak, Carbonetto, and Stephens 2019)</span>. It has been
+used for example biomedical studies that include scRNA-seq analysis,
+DNA sequencing data, genomic studies <span class="citation">(Blischak, Carbonetto, and Stephens 2019)</span>.</li>
+</ul>
+<blockquote>
+<p>“Workflowr aims to instill a particular”workflow“—a sequence of
+steps to be repeated and integrated into research practice—that
+helps make projects more reproducible and accessible. This workflow
+integrates four key elements: (1) version control (via Git); (2) literate
+programming (via R Markdown); (3) automatic checks and safeguards
+that improve code reproducibility; and (4) sharing code and results via
+a browsable website. These features exploit powerful existing tools,
+whose mastery would take considerable study. However, the
+workflowr interface is simple enough that novice users can quickly
+enjoy its many benefits. By simply following the workflowr”workflow“, R users can create projects whose results, figures, and
+development history are easily accessible on a static website—
+thereby conveniently shareable with collaborators by sending them a
+URL—and accompanied by source code and reproducibility
+safeguards.” <span class="citation">(Blischak, Carbonetto, and Stephens 2019)</span></p>
+</blockquote>
+<p><strong>Alternatives</strong></p>
+<p>Other alternatives might include electronic notebooks or project systems.
+Another tool of use in this area is cloud-based file management (Google,
+Teams). The most common alternative might be to not have any organizing
+system.</p>
+<hr />
+<blockquote>
+<p>“We also needed to cope with a large amount of data going from each lab [involved
+in trying to reproduce results] to a single database. We wrote an iPad app so that
+measurements were entered directly into the system and not jotted on paper to
+be entered later. The app prompted us to include a full description for each
+plate of worms, and ensured that data and metadata for each experiment were proofread
+(the strain names MY16 and my16 are not the same). This simple technology removed
+small recording errors that could disproportionately affect statistical analyses.”
+<span class="citation">(Lithgow, Driscoll, and Phillips 2017)</span></p>
 </blockquote>
 <blockquote>
 <p>“Any scientist adopting a QA system has to wager that the up-front hassle will
@@ -637,35 +637,12 @@ loose paper can too easily be lost or removed.” <span class="citation">(Baker 
 <p>“Protocols should be followed to the letter or deviations documented.” <span class="citation">(Baker 2016)</span></p>
 </blockquote>
 <blockquote>
-<p>“Beyond giving my brain the space to more easily take in what I am working with,
-knolling my work space throughout the day also reduces the likelihood that I’ll
-lose things, and increases the likelihood that I will find them quickly when they
-do go missing. … By forcing me to slow down (which I’ve learned actually allows
-me to work faster), the whole process saves me time on the other end of my work
-process.” <span class="citation">(Savage 2020)</span></p>
-</blockquote>
-<blockquote>
 <p>“Heres how to [knoll:] 1. Examine your work space for all items not in use—tools,
 materials, books, coffee cups, it doesn’t matter what it is. 2. Remove those unused
 items from your space. When in doubt, leave it on the table. 3. Group all like items—pens
 with pencils, washers with O-rings, nuts with bolts, etc. 4. Align (parallel) or square
 (90-degree angle) all objects within each group to each other and then to the surface
 upon which they sit.” <span class="citation">(Savage 2020)</span></p>
-</blockquote>
-<blockquote>
-<p>“There’s one group of makers who understand intuitively, perhaps more than anyone else,
-the multifaceted value proposition that knolling represents: chefs. They call it
-<em>mise en place</em>. Coined in the late nineteenth century by famed French chef August
-Escoffier, <em>mise en place</em> translates roughly to ‘everything in its place.’ The
-principle behind it, cribbed from Escoffier’s military service during the Franco-Prussian
-War, is really about order and discipline.” <span class="citation">(Savage 2020)</span></p>
-</blockquote>
-<blockquote>
-<p>“For all the alchemy that goes into building something, the magic of making is only
-possible because of the many repetitive processes we endure in preparation for
-final assembly, and then the deliberate way we put it all together. And the only
-way to get that prep right, to get your <em>mise</em> in its proper <em>place</em> is to
-slow down, address your work properly, and lock your shit down.” <span class="citation">(Savage 2020)</span></p>
 </blockquote>
 <blockquote>
 <p>“Kitchens are pressure cookers in which wasted movement and hasty technique can
@@ -692,19 +669,6 @@ organized, with everything put away and labeled and color coded, and it could fe
 like a prison with the walls closing in around you. Another could be equally organized
 but a bit more open and exposed, and it could untap creative genius like no other space
 you’ve worked in.” <span class="citation">(Savage 2020)</span></p>
-</blockquote>
-<blockquote>
-<p>“What truly unifies my shops, especially as I got more experienced, is that they are
-each built on two, simple philosophical pillars: 1) I want to be able to see everything
-easily; and 2) I want to be able to reach everything easily.” <span class="citation">(Savage 2020)</span></p>
-</blockquote>
-<blockquote>
-<p>“I started to clean up before heading upstairs at the end of the day, and lo and
-behold the shop became a far more efficient and well-oiled maching to work in. The
-freed-up sapce in my mind and the open work space at my fingertips allowed me a lot
-of room, both mental and physical, to pursue a wide variety of projects, and I finally
-started to understand how much benefit was to be gained by taking the time to clean.”
-<span class="citation">(Savage 2020)</span></p>
 </blockquote>
 <blockquote>
 <p>“Luck favors the prepared mind.” —Louis Pasteur</p>
@@ -740,12 +704,6 @@ transcription of the ideas, which are happening offstage somewhere in Darwin’s
 mind. Darwin was constantly rereading his notes, discovering new implications.
 His ideas emerge as a kind of duet between the present-tense thinking brain and all
 those past observations recorded on paper.” <span class="citation">(Johnson 2011)</span></p>
-</blockquote>
-<blockquote>
-<p>“Your working environment, whether it’s a supermarket, office, studio, or
-building site, persuades you to work and think in certain ways. The more aware
-you are of that, and the more you understand your medium, the more you can use
-it to your advantage.” <span class="citation">(Judkins 2016)</span></p>
 </blockquote>
 <!-- ### Practice quiz -->
 

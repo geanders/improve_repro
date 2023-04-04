@@ -133,7 +133,7 @@ div.csl-indent {
 <div class="col-sm-12">
 <div id="TOC">
 <ul>
-<li><a href="index.html#overview"><span class="toc-section-number">1</span> Overview</a></li>
+<li><a href="index.html#rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
 <li><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
 <li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
 <li><a href="4-references.html#references"><span class="toc-section-number">4</span> References</a></li>
@@ -148,68 +148,153 @@ div.csl-indent {
 <h3 class="subtitle"><em>Training modules for laboratory-based researchers</em></h3>
 <h4 class="author"><em>Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, and Gregory Robertson</em></h4>
 </div>
-<div id="overview" class="section level1" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Overview</h1>
-<p><span class="newthought">The recent NIH-Wide Strategic Plan</span> <span class="citation">(U.S. Department of Health and Human Services, National Institutes of Health 2016)</span>
-describes an integrative view of biology and human health that includes
-translational medicine, team science, and the importance of capitalizing on an
-exponentially growing and increasingly complex data ecosystem <span class="citation">(U.S. Department of Health and Human Services, National Institutes of Health 2018)</span>.
-Underlying this view is the need to use, share, and re-use biomedical data
-generated from widely varying experimental systems and researchers. Basic
-sources of biomedical data range from relatively small sets of measurements,
-such as animal body weights and bacterial cell counts that may be recorded by
-hand, to thousands or millions of instrument-generated data points from various
-imaging, -omic, and flow cytometry experiments. In either case, there is a
-generally common workflow that proceeds from measurement to data recording,
-pre-processing, analysis, and interpretation. However, in practice the distinct
-actions of data recording, data pre-processing, and data analysis are often
-merged or combined as a single entity by the researcher using commercial or open
-source spreadsheets, or as part of an often proprietary experimental measurement
-system / software combination (Figure <a href="index.html#fig:workflow">1.1</a>), resulting in key
-failure points for reproducibility at the stages of data recording and
-pre-processing.</p>
-<div class="figure"><span style="display:block;" id="fig:workflow"></span>
-<p class="caption marginnote shownote">
-Figure 1.1: Two scenarios where ‘black boxes’ of non-transparent, non-reproducible data handling exist in research data workflows at the stages of data recording and pre-processing. These create potential points of failure for reproducible research. Red arrows indicate where data is passed to other research team members, including statisticians / data analysts, often within complex or unstructured spreadsheet files.
-</p>
-<img src="figures/existing_blackboxes.jpg" alt="Two scenarios where 'black boxes' of non-transparent, non-reproducible data handling exist in research data workflows at the stages of data recording and pre-processing. These create potential points of failure for reproducible research. Red arrows indicate where data is passed to other research team members, including statisticians / data analysts, often within complex or unstructured spreadsheet files." width="\textwidth"  />
-</div>
-<p>It is widely known and discussed among data scientists, mathematical modelers,
-and statisticians <span class="citation">(Broman and Woo 2018; Krishnan et al. 2016)</span> that there is
-frequently a need to discard, transform, and reformat various elements of the
-data shared with them by laboratory-based researchers, and that data is often
-shared in an unstructured format, increasing the risks of introducing errors
-through reformatting before applying more advanced computational methods.
-Instead, a critical need for reproducibility is for the transparent and clear
-sharing across research teams of: (1) raw data, directly from hand-recording or
-directly output from experimental equipment; (2) data that has been
-pre-processed as necessary (e.g., gating for flow cytometry data, feature
-identification for metabolomics data), saved in a consistent, structured format,
-and (3) a clear and repeatable description of how the pre-processed data was
-generated from the raw data <span class="citation">(Broman and Woo 2018; Ellis and Leek 2018)</span>.</p>
-<p>To enhance data reproducibility, it is critical to create a clear separation
-among data recording, data pre-processing, and data analysis—breaking up
-commonly existing ``black boxes" in data handling across the research process.
-Such a rigorous demarcation requires some change in the conventional
-understanding and use of spreadsheets and a recognition by biomedical
-researchers that recent advances in computer programming languages, especially
-the R programming language, provide user-friendly and accessible tools and
-concepts that can be used to extend a transparent and reproducible data workflow
-to the steps of data recording and pre-processing. Among our team, we have found
-that there are many common existing practices—including use of spreadsheets
-with embedded formulas that concurrently record and analyze experimental data,
-problematic management of project files, and reliance on proprietary,
-vendor-supplied point-and-click software for data pre-processing—that can
-interfere with the transparency, reproducibility, and efficiency of
-laboratory-based biomedical research projects, problems that have also been
-identified by others as key barriers to research reproducibility
-<span class="citation">(Broman and Woo 2018; Bryan 2018; Ellis and Leek 2018; Marwick, Boettiger, and Mullen 2018)</span>. In
-these training modules, we have choosen topics that tackle barriers to
-reproducibility that have straightforward, easy-to-teach solutions, but which
-are still very common in biomedical laboratory-based research programs.</p>
+<div id="rigor-and-reproducibility-in-computation" class="section level1" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Rigor and reproducibility in computation</h1>
+<p><span class="newthought">Science advances by building on</span> previous results, an idea that
+Isaac Newton captured well when he wrote, “If I have seen further it is by
+standing on the shoulders of Giants.” However, this base must be secure if
+results from an experiment is to serve as a good foundation for future advances
+<span class="citation">(Garraway 2017)</span>. It is therefore critical that scientists work to ensure
+that their studies are rigorous.</p>
+<blockquote>
+<p>“Robust findings become established over time as multiple lines of evidence
+emerge. Achieving robustness takes rigour and reproducibility, plus patience
+and judicious attention to the big picture.” <span class="citation">(Garraway 2017)</span></p>
+</blockquote>
+<p>Further, for scientists to build on previous work, they must be able to fully
+understand that work, and even to convince themselves of the results by
+reproducing key experiments before building on those results. Many of the
+best scientists—those that make the most groundbreaking discoveries—question
+everything they are building on and even insist on trying to repeat some of
+the key experiments that gave the basis for their current work. They embrace
+a spirit of, “Don’t trust, try.”</p>
+<blockquote>
+<p>“It should not need to be stated, but here goes. Reproducibility is the key
+underlying principle of science.” <span class="citation">(Gibb 2014)</span></p>
+</blockquote>
+<blockquote>
+<p>“We have learnt that to understand how life works, describing how the research
+was done is as important as describing what was observed.” <span class="citation">(Lithgow, Driscoll, and Phillips 2017)</span></p>
+</blockquote>
+<p>This is a spirit with deep roots in the scientific community. For example,
+a scientist who worked in the Enlightenment period might expect to share
+a key finding not through a peer-reviewed paper, but rather by demonstrating
+the experiment to other scientists in a scientific meeting. The other
+scientists would not be satisfied with only a report of the results of
+an experiment—they needed to see it with their own eyes, and in enough
+detail that they could go back and repeat it in their own laboratories.</p>
+<blockquote>
+<p>“Ushering in the Enlightenment era in the late seventeenth century, chemist
+Robert Boyle put forth his controversial idea of a vacuum and tasked himself
+with providing descriptions of his work sufficient ‘that the person I addressed
+them to might, without mistake, and with as little trouble as possible, be able
+to repeat such unusual experiments.’ Much modern scientific communication falls
+short of this standard. Most papers fail to report many aspects of the
+experiment and analysis that we may not with advantage omit—things that are
+crucial to understanding the result and its limitations, and to repeating the
+work. We have no common language to describe this shortcoming. I’ve been in
+conferences where scientists argued about whether work was reproducible,
+replicable, repeatable, generalizable and other ‘-bles,’ and clearly meant quite
+different things by identical terms. Contradictory meanings across disciplines
+are deeply entrenched.” <span class="citation">(Stark 2018)</span></p>
+</blockquote>
+<p>[Robert Koch? Paul Ehrlich?]</p>
+<p>Scientists benefit from this level of skepticism, as it through trying to
+reproduce an experiment, the scientific community provides some checks on
+whether the initial result was rigorous and stands up under repetition.</p>
+<blockquote>
+<p>“Results that generalize to all universes (or perhaps do not even require a
+universe) are part of mathematics. Results that generalize to our Universe belong
+to physics. Results that generalize to all life on Earth underpin molecular
+biology. Results that generalize to all mice are murine biology. And results that
+hold only for a particular mouse in a particular lab in a particular experiment
+are arguably not science.” <span class="citation">(Stark 2018)</span></p>
+</blockquote>
+<p>However, some of this emphasis on reproducing prior results—as well as the
+skepticism —has become lower priority in scientific practice. One author notes:</p>
+<blockquote>
+<p>“The scientific community has lost the connection with the original culture of
+skepticism which existed in the 17th century with the scientists of the
+Royal Society who pioneered the scientific method as captured in their motto
+<em>nullius in verba</em> (‘take nobody’s word’). They regarded the ability to replicate
+results in independent studies as a fundamental criterion for the establishment
+of a scientific fact. Modern scientific practice presents single experiments
+as proofs. When work is published, it is typically presented without self-criticism.” <span class="citation">(Neff 2021)</span></p>
+</blockquote>
+<p>[Example of low level of reproducibility]</p>
+<blockquote>
+<p>“Additionally, the entire field of NGS analysis is in constant flux, and there
+is little agreement on what is considered to be the ‘best practice.’ In this
+situation, it is especially important to be able to reuse and to adopt various
+analytical approaches reported in the literature. Unfortunately, this is often
+difficult owing to the lack of necessary details. Let us look at the first and
+most straightforward of the analyses: read mapping. To repeat a map- ping
+experiment, it is necessary to have access to primary data and to know the
+software and its version, parameter settings and name of the reference genome
+build. From the 19 papers listed in BOX 1 and in Supplementary information S1
+(table), only six satisfy all of these criteria. To investigate this further, we
+surveyed 50 papers (BOX 2) that use the Burrows–Wheeler Aligner (BWA)15 for map-
+ping (the BWA is one of the most popular mappers for Illumina data). More than
+half do not provide primary data and list neither the version nor the parameters
+used and neither do they list the exact version of the genomic reference
+sequence. If these numbers are representative, then most results reported in
+today’s publications using NGS data cannot be accurately verified, reproduced,
+adopted or used to educate others, creating an alarming reproducibility crisis.”
+<span class="citation">(Nekrutenko and Taylor 2012)</span></p>
+</blockquote>
+<p>[Need to bring this back, and how]</p>
+<p>There are a number of different definitions of “reproducibility” that are used
+across different disciplines <span class="citation">(Stark 2018)</span>. In biological sciences, when
+an experiment is described as being reproducible, it often means that the
+experiment could be done from scratch in a different laboratory and that it
+would reach the same conclusions <span class="citation">(Stark 2018)</span>, although there might be
+some variability in the exact numerical values, stemming from natural
+variability that comes from things like using different animals.</p>
+<p>For computational research, the term “reproducible” typically means that another
+researcher could get the exact results of the original study starting from the
+original data collected for the experiment <span class="citation">(Stark 2018)</span>. In other words,
+this type of reproducibility insists on a higher level of precision in matching
+results, but starts at a point of replication (once the data are collected) that
+ensures that this level of precise replication should be possible, as all the
+steps of analysis at that point are based on computation and removes any
+variability that comes from running the experiment and collecting the data.
+Computational reproducibility, then, requires two things: the original data,
+and very thorough instructions that describe how those data were processed and
+analyzed <span class="citation">(Nekrutenko and Taylor 2012)</span>.</p>
+<blockquote>
+<p>“Replication of computational experiments requires access to input data sets,
+source code or binaries of exact versions of software used to carry out the
+initial analysis (this includes all helper scripts that are used to convert
+formats, groom data, and so on) and knowing all parameter settings exactly as
+they were used. In our experience, … publications rarely provide such a level
+of detail, making biomedical computational analyses almost irreproducible.”
+<span class="citation">(Nekrutenko and Taylor 2012)</span></p>
+</blockquote>
+<p>When you make your research reproducible, you also improve the change
+that it will be high impact, serving as a building block for more research,
+and receiving more citations as a result.</p>
+<blockquote>
+<p>“Many classical publications in life sciences have become influential because
+they provide complete information on how to repeat reported analyses so others
+can adopt these approaches in their own research, such as for chain termination
+sequencing technology that was developed by Sanger and colleagues and for PCR.
+Today’s publications that include computational analyses are very different.
+Next-generation sequencing (NGS) technologies are undoubtedly as transformative
+as DNA sequencing and PCR were more than 30 years abgo. As more and more
+researchers use high-throughput sequencing in their research, they consult other
+publications for examples of how to carry out computational analyses.
+Unfortunately, they often find that the extensive informatics component that is
+required to analyse NGS data makes it much more difficult to repeat studies
+published today. Note that the lax standards of computational reproducibility
+are not unique to life sciences; the importance of being able to repeat
+computational experiments was first brought up in geosciences and became
+relevant in life sciences following the establishment of microarray technology
+and high-throughput sequencing.” <span class="citation">(Nekrutenko and Taylor 2012)</span></p>
+</blockquote>
+<p>[How this helps with rigor, computational rigor]</p>
 </div>
 <p style="text-align: center;">
-<a href="1.1-license.html"><button class="btn btn-default">Next</button></a>
+<a href="1.1-overview-of-these-modules.html"><button class="btn btn-default">Next</button></a>
 </p>
 </div>
 </div>

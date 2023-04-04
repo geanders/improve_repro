@@ -133,7 +133,7 @@ div.csl-indent {
 <div class="col-sm-12">
 <div id="TOC">
 <ul>
-<li><a href="index.html#overview"><span class="toc-section-number">1</span> Overview</a></li>
+<li><a href="index.html#rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
 <li><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
 <li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
 <li><a href="4-references.html#references"><span class="toc-section-number">4</span> References</a></li>
@@ -153,6 +153,7 @@ save, and run an R code script for a simple data cleaning task.</p>
 <ul>
 <li>Describe what an R code script is and how it differs from interactive
 coding in R</li>
+<li>Explain how code scripts can increase reproducibility of data pre-processing</li>
 <li>Create and save an R script to perform a simple data pre-processing task</li>
 <li>Run an R script</li>
 <li>List some popular packages in R for pre-processing biomedical data</li>
@@ -201,6 +202,77 @@ bacteria under different growing conditions.</p>
 </div>
 <div id="how-code-scripts-improve-reproducibility-of-preprocessing" class="section level3" number="3.2.2">
 <h3><span class="header-section-number">3.2.2</span> How code scripts improve reproducibility of preprocessing</h3>
+<p>In the introduction to this book, we provide the definition for computational
+reproducibility. Specifically, computational reproducibility typically means
+that another researcher could get the exact results of the original study from
+the original data collected from a study <span class="citation">(Stark 2018)</span>. Computational
+reproducibility, then, requires a few things: the original data and very
+thorough instructions that describe how those data were processed and analyzed
+<span class="citation">(Nekrutenko and Taylor 2012)</span>.</p>
+<p>Neither of these elements is trivial to provide in a thorough way for a complex
+biomedical experiment. Raw datasets are often extremely large and complex. To
+provide thorough instructions on the processing and analyis requires “access to
+… source code or binaries of exact versions of software used to carry out the
+initial analysis (this includes all helper scripts that are used to convert
+formats, groom data, and so on) and knowing all parameter settings exactly as
+they were used” <span class="citation">(Nekrutenko and Taylor 2012)</span>.</p>
+<blockquote>
+<p>“Replication of computational experiments requires access to input data sets,
+source code or binaries of exact versions of software used to carry out the
+initial analysis (this includes all helper scripts that are used to convert
+formats, groom data, and so on) and knowing all parameter settings exactly as
+they were used. In our experience, … publications rarely provide such a level
+of detail, making biomedical computational analyses almost irreproducible.”
+<span class="citation">(Nekrutenko and Taylor 2012)</span></p>
+</blockquote>
+<p>By using a code script for data preprocessing (and data analysis and
+visualization), you can often substantially improve the computational
+reproducibility of your experiment, because the code script itself documents the
+exact and precise instructions for how the data are processed and analyzed. For
+example, an R script will include all instructions for how the data were loaded
+from a file, and will even include the file name where the data are saved, as it
+must reference this to input the data. Further, it provides a list of all the
+function calls that were run and the order in which they were run. For each
+function call, it provides the details on the parameter settings used for that
+function. Since R is an open-source language, and its packages are largely
+open-source as well, if you know the version of R and each package used in the
+script, you can find and read through all the underlying code that defines all
+the functions used in the script. In other words, the open-source nature of the
+code means that you can, if you want, dig into the algorithms underlying any
+step of the process, and so you do not have to consider any step of the script
+as a “black box.”</p>
+<p>In other words, in the course of writing an executable script to preprocess
+data, you are thoroughly documenting each step that you take in that process,
+creating one of the key components (clear instructions on how the data were
+processed and analyzed) that is necessary to make an experiment computationally
+reproducible. Once you have this script, there are only two other elements
+that are required to make the experiment fully computationally reproducible:
+first, the original, raw data, and second, information on the versions of
+any software you used in the code (this would include the version of R that
+was used, as well as versions of any R packages that were used to
+supplement the base R functions).</p>
+<blockquote>
+<p>“Note the exact versions of software used. Different versions of the same
+software often produce different results, and important bug fixes may have
+implications to results produced with a particular version of a tool.”
+<span class="citation">(Nekrutenko and Taylor 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“Record all parameters, even if defaults are used. Although the reason to
+record all parameters requires no explanation, we emphasize the importance of
+explaining default settings for reproducibility. A clause ‘software was used
+with default settings’ is found in many publications. However, the meaning of
+default settings often changes between versions of software and can be quite
+difficult to track down when a substantial amount of time has passed since
+publication. Thus, record what the default settings actually are.”
+<span class="citation">(Nekrutenko and Taylor 2012)</span></p>
+</blockquote>
+<blockquote>
+<p>“Provide all custom scripts. With the complexity of NGS analysis, it is often
+unavoidable to create simple scripts that carry out such straightforward tasks
+as, for example, changing data formats. Such scripts must be made accessible as
+any other part of the analysis.” <span class="citation">(Nekrutenko and Taylor 2012)</span></p>
+</blockquote>
 </div>
 <div id="how-to-write-an-r-code-script" class="section level3" number="3.2.3">
 <h3><span class="header-section-number">3.2.3</span> How to write an R code script</h3>
@@ -474,12 +546,18 @@ may find some of these other methods help you work faster, or allow you to do
 more interesting things, so it’s good to know they’re there, but you don’t need
 to try to navigate them all as you learn how to run code in an R script.</p>
 </div>
-<div id="simple-examplebacterial-growth-rate" class="section level3" number="3.2.5">
-<h3><span class="header-section-number">3.2.5</span> Simple example—Bacterial growth rate</h3>
-<p>(A simple example of writing a code script for data preprocessing)</p>
-</div>
-<div id="style-guidelines-for-writing-code-scripts" class="section level3" number="3.2.6">
-<h3><span class="header-section-number">3.2.6</span> Style guidelines for writing code scripts</h3>
+<div id="tips-and-guidelines-for-writing-code-scripts" class="section level3" number="3.2.5">
+<h3><span class="header-section-number">3.2.5</span> Tips and guidelines for writing code scripts</h3>
+<p>Learning to code can seem daunting, but it’s not any more difficult than
+learning any new language. Many people from a variety of disciplines have
+learned to code to help with their research. Doing so can pay big dividends in
+terms of reproducibility and efficiency.</p>
+<p>In this section, we’ll provide some tips to make it easier as you get started.
+If you are new to coding, these can give you a framework for how to tackle what
+can seem the daunting task of learning to code, as well as help you see that
+there are approachable techniques. If you already know how to code, these tips
+and guidelines can help in improving that code and give you some new directions
+in how to code efficiently and reproducibly.</p>
 <p><strong>Find favorite tools and get to know them</strong></p>
 <p>The best thing that you can do to smooth the path as you learn a coding language
 is to start by finding a few general purpose tools and learning to use them
@@ -577,6 +655,24 @@ well from the refinery business.” <span class="citation">(Madhavan 2015)</span
 <blockquote>
 <p>“Johannes Gutenberg invented his printing press by repurposing a wine
 press for use with olive oil–based ink and block printing.” <span class="citation">(Madhavan 2015)</span></p>
+</blockquote>
+<p>However, it is critical that you work through and understand any example code
+that you bring in and modify in your own workflow.</p>
+<blockquote>
+<p>“Appropriate methods are ‘very data-set dependent’… The methods and tuning
+parameters may need to be adjusted to account for variable such as sequencing
+length. But John Marioni at Cancer Research UK in Cambridge says it’s important not
+to put complete faith in the pipeline. ‘Just because the satellite navigation
+tells you to drive into the river, you don’t drive into the river,’ he says.”
+<span class="citation">(J. M. Perkel 2017)</span></p>
+</blockquote>
+<blockquote>
+<p>“Do not reinvent the wheel. It pays to reuse existing software. Integrative
+frameworks and associated application stores already house hundreds of tools
+(for example, as of May 2012, Galaxy ToolShed contains ~ 1,700 tools). It is
+likely that a script for a particular problem has been already written. Ask
+around through existing resources such as SEQanswers43 and BioStar44.”
+<span class="citation">(Nekrutenko and Taylor 2012)</span></p>
 </blockquote>
 <p><strong>Modular, not monolithic</strong></p>
 <p>Another key thing to remember as you develop R scripts is that they are all,
@@ -840,6 +936,16 @@ weren’t relying on anything that you did outside the script to make the code w
 can run in a fresh environment like this, then any R user should be able to rerun everything
 in the script themselves (although they may need to install a few new libraries first if they
 don’t have all the required libraries yet).</p>
+</div>
+<div id="exercise" class="section level3" number="3.2.6">
+<h3><span class="header-section-number">3.2.6</span> Exercise</h3>
+<p><strong>Simple example—Bacterial growth rate</strong></p>
+<p>As we mentioned earlier, it can be helpful to start by dissecting and
+reverse engineering someone else’s script. We’ll give an example of that
+using, a script that captures an example given in a previous module.
+We will walk through how this script captures some of the elements
+discussed in this module.</p>
+<p>(A simple example of writing a code script for data preprocessing)</p>
 <hr />
 </div>
 <div id="compiled-versus-interpreted-programming-languages" class="section level3" number="3.2.7">

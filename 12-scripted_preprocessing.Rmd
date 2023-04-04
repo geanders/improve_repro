@@ -15,94 +15,342 @@ This section includes modules on:
 ## Principles and benefits of scripted pre-processing of experimental data {#module12}
 
 The experimental data collected for biomedical research often requires
-pre-processing before it can be analyzed (e.g., gating of flow cytometry data,
-feature finding / quantification for mass spectrometry data). Use of
-point-and-click software can limit the transparency and reproducibility of this
-analysis stage and is time-consuming for repeated tasks. We will explain how
-scripted pre-processing, especially using open source software, can improve
-transparency and reproducibility.
+pre-processing before it can be analyzed. This stage of working with
+experimental data has critical implications for the reproducibility and rigor of
+later data analysis. Use of point-and-click software and/or propritary software
+can limit the transparency and reproducibility of this analysis stage and is
+time-consuming for repeated tasks. We will explain how preprocessing can be
+broken into common themes and processes, as well as how scripted pre-processing,
+especially using open source software, can improve transparency and
+reproducibility.
 
 **Objectives.** After this module, the trainee will be able to:
 
 - Define 'pre-processing' of experimental data 
-- Describe an open source code script and explain how it can increase
-reproducibility of data pre-processing
+- Understand key themes and processes in pre-processing and identify these
+processes in their own pipelines
+- Describe software approaches for pre-processing data 
+- Compare the advantages and disadvantages of Graphical User Interface--based
+versus scripted approaches and of open-source versus proprietary approaches
+to pre-processing
 
-Often, you will not be able to directly use the data you collect in the
-laboratory or extract from equipment to answer scientific questions. Instead,
-the data will need to be preprocessed before it can be used within statistical
-analysis or hypothesis testing.
+We'll start this module by covering what preprocessing is, and then common
+reasons for preprocessing and common steps in the process. Later in the module,
+we'll introduce the idea of using scripted code to preprocess data, an idea that
+we'll cover in much more detail in the next few modules. We'll finish the module
+with a couple of examples of the steps in specific preprocessing pipelines, 
+along with a chance for discussion of how these steps align with common themes
+in preprocessing. 
 
-This preprocessing will differ depending on the way the data were collected and
-the scientific questions you hope to answer with it. However, there are some
-common themes that drive the need for such preprocessing of data, as well as
-some common steps in preprocessing that come up for many data, across types of
-data collection and research questions.
+### What is data preprocessing?
 
-We'll start this module by covering these common reasons for preprocessing and
-common steps in the process. Later in the module, we'll provide examples of the
-steps that might be involved in proprocessing data from two example experiments.
-We'll finish this module by briefly discussing what is required to make this
-preprocessing reproducible, as well as how you can improve the rigor of this
-step. We'll introduce the idea of using scripted code to preprocess data, 
-an idea that we'll cover in much more detail in the next few modules. 
+In any scientific field, when you work with data, it will often take much more
+time to prepare the data for analysis than it takes to set up and run the
+statistical analysis itself [@robinson2014broom]. This is certainly true with
+complex biomedical data, including data for flow cytometry, transcriptomics,
+proteomics, and metabolomics. 
 
-### Why do data need preprocessing?
+In the research process, pre-processing steps must be done before the data are
+used for further analysis. There are the first step in working with the data
+after they are collected by the equipment (or by laboratory personal, in the
+case of data from simpler process, like plating samples and counting
+colony-forming units). After the data are appropriately pre-processed, you can
+use them for statistical tests---for example, to determine if metabolite
+profiles are different between experimental groups---and also combine them with
+other data collected from the experiment---for example, to see whether certain
+metabolite levels are correlated with the bacterial load in a sample.
 
-**Use of scientific principles to make measurements**
+It is a worthwhile investment of time to learn
+strategies to make preprocessing of this data more efficient and reproducible,
+and it is critical---for the rigor of the entire experiment---to ensure that the
+preprocessing is done correctly.
 
-The first common purpose of preprocessing data is to translate the measurements
-that you directly collect into measurements that are meaningful for your
-scientific research question.
+Let's start by talking about why biomedical data often need extensive
+preprocessing. When you run an assay, you are aiming to gain knowledge and
+insights on a scientific question. For example, does a new drug help in curing a
+disease? There are some measures that you can take that are directly linked to
+the scientific question. For example, if you track people who take a drug versus
+a placebo for a terminal disease, the length of time that each subject survives
+would be a direct measure of the success of that drug. When you have direct
+measurements like this, your data may not require much preprocessing before you
+incorporate it in a statistical analysis.
 
-Scientific research uses a variety of complex techniques and equipment to 
-initially collect data. [It has been said that science moves forward one 
-invention at a time---as one example, that the invention and improvement of 
-microscopes was necessary for the dramatic steps forward in microbiology in 
-the late 19th? and early 20th? centuries.] 
+However, there are often cases where we collect data that are not as immediately
+linked to the scientific question. Instead, these data may require
+pre-processing before they can be used to test meaningful scientific hypotheses.
+This is often the case for data extracted using complex equipment. Equipment
+like mass spectrometers and flow cytometers leverage physics, chemistry, and
+biology in clever ways to help us derive more information from samples, but one
+tradeoff is that the data from such equipment often require a bit of work to
+move into a format that is useful for answering scientific questions.
 
-Biomedical research today leverages extraordinarily complex equipment and
-measurement processes to learn more about health and disease. For example, 
-immune cell populations can be characterized using flow cytometry, through 
-a process that leverages the physics of lasers and fluorescence, as well 
-as the biology of antibody specificity. As another example, the gene expression
-within single cells is now studied through a process of single cell RNA-seq, 
-which leverages biological process, like use of the enzyme? reverse 
-transcriptase and PCR?, as well as complex computer algorithms to [put things
-back together?]. 
+Some types of preprocessing fulfill the need of translating from the equipment
+measurements to measures that are directly relevant to the scientific question.
+Other preprocessing tasks are more housekeeping (e.g., reading data into memory
+so the software can use it) and others aim to digest complexity in the data or 
+reduce or handle noise and bias in the data collection. 
 
-These are all invented processes of measurement that can provide extraordinarily 
-detailed and informative data, allowing us to "see" elements of biological 
-processes that could not be seen at that level before. However, they all 
-require steps to translate the data that are immediately recorded or read
-by equipment into data that are more scientifically meaningful.
+### Common themes and processes in data preprocessing
 
-As a very simple example, take an image that is recorded from a microscope. 
-Very early on, before cameras had been invented, this might be an illustration
-that was drawn by the scientist to reflect what he or she saw when looking 
-through the microscope. To be able to interpret this image, as well as 
-compare it to other images generated by a microscope, you need to "translate" 
-it based on the settings use on the microscope, specifically the amount
-that the microscope was magnifying the image. Without this translation, 
-you could not, for example, compare the size of the eye of a flea? and 
-the leg of a grasshopper? if you did not know the magnification of the two
-images you were comparing. With this information, however, you can 
-measure values on each image and compare them in a way that is meaningful.
+This preprocessing will vary depending on the way the data were collected and
+the scientific questions you hope to answer, and often it will take a lot of
+work to develop a solid pipeline for preprocessing data from a specific assay.
+However, there are some common themes that drive the need for such preprocessing
+of data, as well as some common steps in preprocessing that come up for many
+data, across types of data collection and research questions. These common
+themes provide a framework that can help as you design data
+preprocessing pipelines, or as you interpret and apply pipelines that were 
+developed by other researchers.
 
-The complexity of this "translation" scales up as you move to data that 
-are collected using more complex processed. For example, to interpret the 
-data that are recorded by a flow cytomer---and to generate a characterization
-of immune cell populations from these data---you need to incorporate a 
-number of steps of translation. These include steps that incorporate 
-information about which fluorescent tags were attached to which antibodies, 
-which proteins in the cell each of those antibodies attach to, which immune
-cells those proteins help characterize, what wavelength each fluorescent 
-tag emits? at, and so on. In some cases, the measuring equipment will 
-provide software that performs some of this preprocessing, but often 
-at least some may need to be performed by hand, or customized based on 
-your research question. 
+**Data input**
 
-**Data can have technical noise**
+To be able to work with data---whether to preprocess it or to analyze it---you
+will first need to provide a way for the software to access the data. For some
+software programs, this will require reading the data into memory for the
+program. Other software might be able to access data in a streaming fashion,
+working with only part in memory at a time, or be able to read into memory
+specific pieces from a file while leaving most of the data on disk. Regardless
+of the method that the software needs to access the data, it will need some kind
+of access. Therefore, the first step in most data preprocessing pipelines is to
+provide the software access to the data.
+
+When working with biomedical research data, you will typically have it stored in
+some type of computer file. Computer files are saved in various file formats.
+File formats define for the computer the way that the data are stored in the
+file, and different formats are used for biomedical data. For example, data that
+you enter and save in the Excel program may be saved to an ".xls" or ".xlsx" file
+format. Some types of equipment, like plate readers, may also allow you to
+output data in this file format. An even more basic file format is a plain text
+file, in which data can be "delimited" (divided into sections, like columns)
+using commas or other marks. These files often have an extension like ".csv" (if
+commas are used as the delimiter) or ".tsv" (if tabs are used as the delimiter).
+It is usually very straightforward to read data from these simper file formats 
+into R and other similar software. In later modules, we'll provide examples
+of how to read in from these types of file formats. 
+
+For other assays, especially those that involve more complicated equipment, 
+the file format will be more complex than a basic spreadsheet. For example, 
+mass spectrometers, which are used to collect data for proteomics and 
+metabolomics, often output data in [file format]. Flow cytometers often 
+output data in [file format]. In many cases, these file formats will be 
+well-defined and standardized across equipment, which makes it easier for
+open source developers to build functions to input data from those file 
+formats. 
+
+Often, the initial download of R or similar software will not include tools
+to read in data from these more complex and specialized file formats. However, 
+developers have often created extensions to the software (packages in R) 
+that can handle these more specialized file types. If a file format is 
+standardized and well-defined to the public, it allows people to write code
+that can access and load data in that format, even if it is very complex.
+[Where to find resources for more complex file formats]
+
+**Extracting scientifically-relevant measurement**
+
+Another common purpose of preprocessing is to translate the measurements that
+you directly collect into measurements that are meaningful for your scientific
+research question. Scientific research uses a variety of complex techniques and
+equipment to initially collect data. As a result of these inventions and
+processes, the data that are directly collected in the laboratory by a person or
+piece of equipment might require quite a bit of preprocessing to be translated
+into a measure that meaningfully describes a process of interest. A key element
+of preprocessing data are to translate the acquired data into a format that can
+more directly answer scientific questions.
+
+This type of preprocessing will vary substantially from assay to assay, with
+algorithms that are tied to the methodology of the assay itself. We'll describe
+some examples of this idea, moving from very simple translation to processes
+that are much more complex (and more typical of the data collected at present in
+many types of biomedical research assays).
+
+As a basic example, some assays will use equipment that can measure the 
+intensity of color of a sample or the sample's opacity. Some of these measures
+might be directly (or at least proportionally) interpretable. For example, 
+opacity might provide information about how high the concentration of 
+bacteria are in a sample. Others might need more interpretation, based on 
+the scientific underpinnings of the assay. For example, in ELISA, antibody 
+levels are detected as a measure of the intensity of color of a sample at
+various dilutions, but to interpret this correctly, you need to know the 
+exact process that was used for that ELISA (e.g., sandwich vs. ...).
+
+```{marginfigure, echo = TRUE}
+"Meaningful interpretation of sequencing data has become particularly
+important. Yet such interpretation relies heavily on complex computation---a new
+and unfamiliar domain to many of our biomedical colleagues---which, unlike
+data generation, is not universally accessible to everyone."
+
+[@nekrutenko2012next]
+```
+
+The complexity of this "translation" scales up as you move to data that are
+collected using more complex processes. Biomedical research today leverages
+extraordinarily complex equipment and measurement processes to learn more about
+health and disease. These invented processes of measurement can
+provide extraordinarily detailed and informative data, allowing us to "see"
+elements of biological processes that could not be seen at that level before.
+However, they all require steps to translate the data that are immediately
+recorded or read by equipment into data that are more scientifically meaningful.
+One example is flow cytometry, which can characterize immune cell populations 
+through a process that leverages the physics of lasers and fluorescence, as well
+as the biology of antibody specificity [@benoist2011flow]. 
+
+In flow cytometry, immune cells are characterized based on proteins that are
+present both within and on the surface of each cell, as well as properties like
+cell size and granularity [@maecker2012standardizing, @barnett2008cd4]. Flow
+cytometry identifies these proteins through a complicated process that involves
+lasers and fluorescent tags and that leverages a key biological process---that
+an antibody can have a very specific affinity for one specific protein
+[@barnett2008cd4]. 
+
+The process starts by identifying proteins that can help to
+identify specific immune cell populations (e.g., CD3 and CD4 proteins in
+combination can help identify helper T cells). This collection of proteins is
+the basis of a panel that's developed for that flow cytometry experiment. For
+each of the proteins on the panel, you will incorporate an antibody with a
+specific affinity for that protein. If that antibody sticks to the cell in a
+substantial number, it indicates the presence of its associated protein on the
+cell. To be able to measure which of the antibodies stick to which cells, each
+type of antibody is attached to a specific fluorescent tag (each of these is
+often referred to as a "color" in descriptions of flow cytometry)
+[@benoist2011flow]. 
+
+Each fluorescent tag included in the panel will emit wavelength in a certain
+well-defined range after it is exposed to light at wavelengths of a certain
+range. As each cell passes through the flow cytometer, lasers activate these
+fluorescent tags, and you can measure the intensity of light emitted at specific
+wavelengths to identify which proteins in the panel are present on or in each
+cell [@barnett2008cd4]. 
+
+This is an extraordinarily clever way to identify cells, but the complexity of
+the process means that a lot of preprocessing work must be done on the resulting
+data (intensity of light at different wavelengths) to back-calculate from that
+measure to a measure of which of the proteins on the panel are present in the
+cell. To interpret the data that are recorded by a flow cytometer---and to
+generate a characterization of immune cell populations from these data---you
+need to incorporate a number of steps of translation. These include steps that
+incorporate information about which fluorescent tags were attached to which
+antibodies, which proteins in the cell each of those antibodies attach to, which
+immune cells those proteins help characterize, what wavelength each fluorescent
+tag emits at, and so on. In some cases, the measuring equipment will provide
+software that performs some of this preprocessing before you get the first
+version of the data, but some may need to be performed by hand, especially if
+you need to customize based on your research question. Further, it's critical to
+understand to process, to decide if it's apporpriate for your specific
+scientific question.
+
+Similarly complex processes are used to collect data for many single-cell and
+high throughput assays, including transcriptomics, metabolomics, proteomics, 
+and single cell RNA-sequencing. It can require complex and sometimes lengthy
+algorithms and pipelines to extract direct scientifically-relevant measures 
+from the measures that the laboratory equipment captures in these cases.
+Depending on the assay, this preprocessing can include sequence alignment 
+and assembly (if sequencing data were collected) or peak identification and 
+alignment (if data was collected using mass spectrometry, for example).
+
+```{marginfigure, echo = TRUE}
+"To reap the full benefits of the omics revolution, we need information
+technology tools capable of making sense of the vast data sets generated by
+omics experiments. In fact, the development of such tools has become a
+discipline unto itself, called bioinformatics. And only with those tools can
+researchers hope to clear another obstacle to drug development: that posed by
+so-called emergent properties---behaviors of biological systems that cannot be
+predicted from the basic biochemical properties of their components."
+
+[@barry2009new]
+```
+
+```{marginfigure, echo = TRUE}
+"One thing that has not changed in the last 10 years is that the individual
+outputs of the sequence machines are essentially worthless by themselves. ...
+Fundamental to creating biological understanding from
+the increasing piles of sequence data is the development of analysis algorithms
+able to assess the success of the experiments and synthesize the data into
+manageable and understandable pieces."
+
+[@flicek2009sense]
+```
+
+The discipline of bioinformatics works to develop these types of algorithms
+[@barry2009new], and many of them are available through open-source, scripted
+software like R and Python. These types of preprocessing algorithms are often
+also available as proprietary software, sometimes sold by equipment
+manufacturers and sometimes separately. [Example: FlowJo]
+
+**Quality assessment and control**
+
+Another common step in preprocessing is to identify and resolve quality control
+issues. These are cases where some error or problem occurred in the data
+recording and measurement, or some of the samples are poor quality and need to
+be discarded. One way you can help to identify potential quality issues in
+research data is through basic exploratory analysis. Basic dot plots or
+scatterplots of the data, for example, can often help to identify unusual
+outliers, which may be the result of a data recording error or an oddity in one
+of the samples. 
+
+There are a variety of reasons why biomedical data might have quality control
+issues. First, when data are recorded "by hand" (including into a spreadsheet),
+the person who is recording the data can miss a number or mis-type a number. For
+example, if you are recording the weights of mice for an experiment, you may
+forget to include a decimal in one recorded value, or invert two numbers. These
+types of errors include recording errors (reading the value from the instrument
+incorrectly), typing errors (making a mistake when entering the value into a
+spreadsheet or other electronic record), and copying errors (introduced when
+copying from one record to another) [@chatfield1995problem]. 
+
+While some of these can be hard to identify later, in many cases you can
+identify and fix recording errors through exploratory analysis of the data. For
+example, if most recorded mouse weights are around [weight], but one is recorded
+as [x], you may be able to identify that the recorder missed a decimal point 
+when recorded one weight. In this case, you could identify the error as 
+an extreme outlier---in fact, beyond a value that would make physical sense.
+
+Other quality control issues may come in the form of missing data (e.g., you
+forget to measure one mouse at one time point), or larger issues, like a quality
+problem with a whole sample. In these cases, it is important to
+identify missingness in the data, so that as a next step you can try to
+determine why certain data points are missing (e.g., are they missing at random,
+or is there some process that makes certain data points more likely to be
+missing, in which case this missingness may bias later analysis), to help you
+decide how to handle those missing values [@chatfield1995problem].
+
+```{marginfigure, echo = TRUE}
+"It is important to
+find out why an observation is missing. This is best done by asking 'people in
+the field'. In particular, there is a world of difference between observations
+that are lost through random events, and situations where missing observations
+due to damage or loss are more likely to arise under certain conditions."
+
+[@chatfield1995problem]
+```
+
+Some quality control issues will be very specific to a type of data or assay. 
+For example, one common theme in quality control repeats across methods
+that measure data at the level of the single cell. Some examples of this type of
+single-cell resolution measurement include flow cytometry and single-cell
+RNA-seq. In these cases, some of the measurements might be made on cells that
+are in some way problematic. This can include cells that are dead or damaged
+[@ilicic2016classification], and it can also include cases where a measurement
+that was meant to be taken on a single cell was instead taken on two or more
+cells that were stuck together, or on a piece of debris or, in the case of
+droplet-based single cell RNA-seq, an empty droplet. 
+
+Quality control steps can help to identify and remove these problematic
+observations. For example, flow cytometry panels will often include a marker for
+dead cells, which can then be used when the data are gated to identify and
+exclude these cells, while the size measure made of the cells (forward scatter)
+can identify cases where two or more cells were stuck together and passed
+through the equipment at the same time. In scRNA-seq, low quality cells may be
+identified based on a relatively high mitochondrial DNA expression compared to
+expression of other genes, potentially because if a cell ruptured before it was
+lysed for the assay, much of the cytoplasm and its messenger RNA would have
+escaped, but not RNA from the mitochondria [@ilicic2016classification]. Cells
+can be removed in the preprocessing of scRNA-seq data based on this and related
+criteria (low number of detected genes, small relative library size)
+[@ilicic2016classification].
+
+
+
+**Addressing technical noise and bias**
 
 The second common purpose of preprocessing data is to address, to the extent
 that it is possible, unwanted noise in the data. When we collect biomedical
@@ -112,10 +360,24 @@ example, we may measure it in the hope that there is a meaningful difference in
 gene expression between a sample taken from an animal that is diseased versus
 one that is healthy, with the aim of finding a biomarker of the disease.
 
+[Technical noise versus bias]
+
 There are, however, several sources of variation in data we collect. The first
 of these is variation that comes from meaningful biological variation between
 different samples---the type of variation that we are trying to measure and 
 use to answer scientific questions. 
+
+> "Statistical models usually contain one or more ssytematic components as well
+as a random (or stochastic) component. The random component, sometimes called
+the noise, arises for a variety of reasons, and it is sometimes helpful to
+distinguish between (i) measurement error and (ii) natural random variability
+arising from differences between experimental units and from changes in
+experimental conditions which cannot be controlled. The systematic component,
+sometimes called the signal, may be deterministic, but there is increasing
+interest in the case where the signal evolves through time according to
+probabilistic laws. In engineering parlance, a statistical analysis can be
+regarded as extracting information about the signal in the presence of noise."
+[@chatfield1995problem]
 
 There are other sources of variation, however. These sources are irrelevant to our
 scientific question, and so we often call them "noise"---in other words, they
@@ -135,13 +397,127 @@ consider this growth-related variation as noise, even though it represents a
 biological process.
 
 The second source of noise is technical. Technical noise comes from variation
-that is introduced in the process of collecting data, rather than from 
+that is introduced in the process of collecting data, rather than from
 biological processes. For example, part of the process of single cell RNA-seq
-involves amplifying complementary DNA that are developed from the messenger
-RNA in each cell in the sample. How much the cDNA are amplified in this 
-process, however, varies from cell to cell. If this isn't addressed in 
-preprocessing, then this "amplification bias" prevents any meaningful 
-comparison across cells. 
+involves amplifying complementary DNA that are developed from the messenger RNA
+in each cell in the sample. How much the complementary DNA are amplified in this
+process, however, varies across cells [@perkel2017single]. If this isn't
+addressed in preprocessing, then this "amplification bias" prevents any
+meaningful comparison across cells.
+
+> "In many cases... the tools used in bulk RNA-seq can be applied to scRNA-seq.
+But fundamental differences in the data mean that this is not always possible.
+For one thing, single-cell data are noisier... With so little RNA to work with,
+small changes in amplification and capture efficiencies can produce large
+differences from cell to cell and day to day and have nothing to do with
+biology. Researchers must therefore be vigilant for 'batch effects', in which
+seemingly identical cells prepared on different days differ for purely technical
+reasons, and for 'dropouts'---genes that are expressed in the cell but not
+picked up in the sequence data. Another challenge is the scale... A typical bulk
+RNA-seq experiment involves a handful of samples, but scRNA-seq studies can
+involve thousands. Tools that can handle a dozen samples often slow to a crawl
+when confronted with ten or a hundred times as many." [@perkel2017single]
+
+> "Methods to quantify mRNA abundance introduce systematic sources of variation 
+that can obscure signals of interest. Consequently, an essential first step in 
+most mRNA-expression analyses is normalization, whereby systemic variations 
+are adjusted to make expression counts comparable across genes and / or samples.
+Within-sample normalization methods adjust for gene-specific features, such 
+as GC content and gene length, to facilitate comparisons of a gene's expression
+within an individual sample; whereas between-sample normalization methods adjust
+for sample-specific features, such as sequencing depth, to allow for comparisons of
+a gene's expression across samples." [@bacher2017scnorm]
+
+> "A number of methods are available for between-sample normalization in bulk
+RNA-seq experiments. Most of these methods calculate global scale factors (one
+factor is applied to each sample, and this same factor is applied to all genes
+in the sample) to adjust for sequencing depth. These methods demonstrate
+excellent performance in bulk RNA-seq, but they are compromised in the
+single-cell setting because of an abundance of zero-expression values and
+increased technical variability." [@bacher2017scnorm]
+
+> "scRNA-seq data show systematic variation in the relationship between
+transcript-specific expression and sequencing depth (which we refer to as the
+count-depth relationship) that is not accommodated by a single scale factor
+common to all genes in a cell. Global scale factors adjust for a count-depth
+relatinoship that is assumed to be common across genes. When this relationship
+is not common across genes, normalization via global scale factors leads to
+overcorrection for weakly and moderately expressed genes and, in some cases,
+undernormalization of highly expressed genes. To address this, SCnorm uses
+quantile regression to estimate the dependence of transcript expression on
+sequencing depth for every gene. Genes with similar dependence are then grouped,
+and a second quantile regression is used to estimate scale factors within each
+group. Within-group adjustment for sequencing depth is then performed using the
+estimated scale factors to provide normalized estimates of expression."
+[@bacher2017scnorm]
+
+In some cases, there are ways to reduce some of the variation that comes from
+processes that aren't of interest for your scientific question, either from
+biological or technical sources. Some of this variation might just lower the
+statistical power of the analysis, but some can go further and bias the results.
+
+One example of a process that can help adjust for unwanted variation is 
+normalization. Let's start with a very simple example to explain what 
+normalization does. Say that you wanted to measure the height of three people, 
+so you can compare to determine who is tallest and who is shortest. 
+However, rather than standing on an even surface, they are all standing on 
+ladders that are different heights. If you measure the height of the top of
+each person's head from the ground, you will not be able to compare their
+heights correctly, because each has the height of their ladder incorporated
+into the measure. If you knew the height of each person's ladder, though,
+you could normalize your measure by subtracting each ladder's height from 
+the total measurement, and then you could meaningfully compare the heights
+to determine which person is tallest. 
+
+Normalization plays a similar role in preprocessing many forms of biomedical
+data. One simple example is when comparing the weights of two groups of 
+mice. Often, a group of mice might be measured collectively in their cage, 
+rather than taken out and weighed individually. Say that you have three 
+treated mice in one cage and four control mice in another cage. You can 
+weigh both cages of mice, but to compare these weights, you will need to 
+normalize the measurement by dividing by the total number of mice that are
+in each cage (in other words, taking the average weight per mouse). This
+type of averaging is a very simple example of normalizing data.
+
+As another example, scRNA-seq data can be prone to something called
+amplification bias. This occurs because, while the different fragments are all
+amplified before their sequences are read, some fragments are amplified more
+times than others. If two fragments had the exact same abundence in the original
+cell, but one was amplified more than the other, that one would be measured as
+having a higher level in the sample if this amplification bias were not
+accounted for. One way to adjust for this is ... [Sequencing depth / read depth
+in other sequencing data analysis?]
+
+> "Normalization is critical to the development of analysis techniques on
+scRNA-seq and to counteract technical noise or bias. Before observed data can be
+used to identify differentially expressed genes or potential subpopulations, it
+must undergo these corrections, for what is observed is seldom exactly what is
+present within the data set." [@lytal2020normalization]
+
+> "The primary goal of single-cell normalization is to remove the influence
+of technical effects in the underlying molecular counts, while preserving
+true biological variation." [@hafemeister2019normalization]
+
+> "In general, the normalized expression level of a gene should not be 
+correlated with the total sequencing depth of a cell. Downstream analytical 
+tasks (dimension reduction, differential expression) should also not 
+be influenced by variation in sequencing depth." [@hafemeister2019normalization]
+
+> "Scaling normalization is typically required in RNA-seq data analysis to 
+remove biases caused by differences in sequencing depth, capture efficiency
+or composition effects between samples." [@mccarthy2017scater]
+
+> "Each count in a count matrix represents the successful capture, reverse transcription and sequencing of a molecule of cellular mRNA (Box 1). Count depths for identical cells can differ due to the variability inherent in each of these steps. Thus, when gene expres- sion is compared between cells based on count data, any difference may have arisen solely due to sampling effects. Normalization addresses this issue by e.g. scaling count data to obtain correct rela- tive gene expression abundances between cells." [@luecken2019current]
+
+Other normalization preprocessing might be used to adjust for sequencing 
+depth for gene expression data, so that you can meaningfully compare the 
+measures of a gene's expression in different samples or treatment 
+groups, which can be done by calculating and adjusting for a global 
+scale factor [@bacher2017scnorm].
+
+In scRNA-seq, processes like the use of UMIs can allow you to later account for
+amplification bias, in which some of the initial mRNA molecules are amplified
+more than others [@haque2017practical].
 
 Another example of technical noise comes from flow cytometry. In this 
 case, each of the fluorescent tags, rather than emitting at a single 
@@ -156,179 +532,44 @@ samples are run through the equipment at different times, it can introduce
 differences between the samples based on which "batch" they were measured
 with. ...
 
-**Data can have quality control issues**
+> "The steps in a typical flow cytometry experiment ... present several 
+variables that need to be controlled for effective standardization. These variables
+include the general areas of reagents, sample handling, instrument setup
+and data analysis... The effects of changes in these variables are largely 
+known. For example, the stabilization and control of staining reagents 
+through the use of pre-configured lyophilized-reagent plates, and centralized
+data analysis, have both been shown to decrease variability in a multi-site
+study. However, the wide-spread adoption of standards for controlling such 
+variables has not taken place. This is in contrast to other technologies, such 
+as gene expression microarrays, which have achieved a reasonable degree of 
+standardization in recent years. ... Of course, microarray data are less complex
+than flow cytometry data, which are based on many hierarchical gates. Still, 
+a reasonable degree of standardization of flow cytometry assays should be 
+possible to achieve." [@maecker2012standardizing]
 
-The third common reason for preprocessing is to identify and resolve quality
-control issues. These are cases where some error or problem occurred in the data
-recording and measurement.
+> "The biggest, the easiest way [for a biologist doing RNA-Seq to tell that
+better normalization of the data is needed]---the way that I discovered the
+importance of normalization in the microarray context---is the lack of
+reproducibility across different studies. You can have three studies that are
+all designed to study the same thing, and you just see basically no
+reproducibility, in terms of differentially expressed genes. And every time I
+encountered that, it could always be traced back to normalization. So, I'd say
+that the biggest sign and the biggest reason why you want to use normalization
+is to have a clear signal that's reproducible." [@mak2011john]
 
-One simple example comes from recording data, in the form of recording 
-errors. For example, if you are recording the weights of mice for an 
-experiment, you may forget to include a decimal in one recorded value, or
-invert two numbers. Other quality control issues may come in the form 
-of missing data (e.g., you forget to measure one mouse at one time 
-point), or larger issues, like a quality problem with a whole sample
-[example?]. 
+Some of these procedures can be separated into two groups, normalization
+processes and data correction processes, which might include batch correction
+and noise correction [@luecken2019current].
 
-One common theme in quality control of biomedical data repeats across 
-methods that measure data at the level of the single cell. Some examples of
-this type of single-cell resolution measurement include flow cytometry
-and single-cell RNA-seq. In these cases, some of the measurements might
-be made on cells that are in some way problematic. This can include cells that
-are dead or damaged, and it can also include cases where a measurment that
-was meant to be taken on a single cell was instead taken on two or
-more cells that were stuck together, or on a piece of debris or, in 
-the case of droplet-based single cell RNA-seq, an empty droplet.
-In these cases, quality control steps in preprocessing can help to 
-identify and remove these problematic measurements.
+Normalization in scRNA-seq can also include gene normalization:
 
-**Data can be high-dimensional**
+> "In the same way that cellular count data can be normalized to make them
+comparable between cells, gene counts can be scaled to improve comparisons
+between genes. Gene normalization constitutes scaling gene counts to have zero
+mean and unit vari- ance (z scores). ... There is currently no consensus on
+whether or not to perform normalization over genes." [@luecken2019current]
 
-Many types of biomedical data now are "high-dimensional"---they include
-measurements of a very large number of characteristics for each observation. For
-example, bulk transcriptomics data measure the expression of a large number of
-genes within each sample, metabolomics data measure the levels of a large number
-of metabolite features within each sample, proteomics measure the levels of a
-large number of peptides (?) within each sample, and so on.
-
-With these high-dimensional data, often many of the measured characteristics
-will be strongly correlated. For example, in metabolomics data many of the
-metabolite features may be strongly correlated with each other, either because
-they originally were pieces of the same metabolite (the process of measuring the
-features, for example through mass spectrometry, breaks the chemicals up into
-smaller components [?]) or because they are part of a common metabolic pathway
-[?]. It can be hard to explore and understand a set of data that measures
-thousands of characteristics of each sample, but patterns and correlations in 
-the data can be used to help you pull out and explore a few key dimensions of 
-variability in the data. Dimension reduction techniques---principal components
-analysis (PCA) is one very popular one---is therefore often a key element of 
-data preprocessing when working with high-dimensional biological data. 
-
-To get a basic idea of dimension reduction, consider this example. Say you 
-have conducted an experiment that includes two species of research mice, 
-C57 black 6 and BALB/C. You record information about each mouse, including 
-columns that record both which species the mouse is and what color its 
-coat is. Since C57 black 6 mice are always black, and BALB/C mice are always
-white, these two columns of data will be perfectly correlated. Therefore, 
-one of the two columns adds no information---once you have one of the 
-measurements for a mouse, you can perfectly deduce what the other measurement
-will be. You could therefore, without any lose of information, reduce
-the dimensions (number of columns) of the data you've collected in this 
-case by choosing only one of these two columns to keep and getting rid of 
-the other column. This same idea scales up to much more complex data---in 
-many high dimensional datasets, many of the measurements (e.g., levels
-of metabolite features in metabolomics data or levels of gene expression
-in gene expression data) will be highly correlated with each other, 
-essentially providing the same information across different measurements. 
-In this case, the complexity of the dataset can often be substantially 
-reduced by using a dimension reduction technique like PCA, and then conducting
-analysis to compare values in some of the main principle components of the
-data. 
-
-There are also some cases where data are large because of the number of
-observations, rather than (or in addition to) the number of measurements taken
-for each obsevation. If you envision a dataset as a two-dimensional table, with
-the observations as the rows and the characteristics measured for each
-observation as the columns, then high-dimensional data are large in terms of the
-number of columns in the table. A growing number of biomedical data now also are
-large in the number of observations they capture---in the number of rows in the
-table of data, in other words. A longer-standing example of this is flow
-cytometry data, where the observations are individual cells. Current experiments
-often capture in the range of [x] cells for each sample in flow cytometry,
-measuring for each characteristics that can be used to determine cell size,
-granularity, and surface proteins, all with the aim of characterizing the cells
-by cell type. A more recent example is with single cell RNA-sequencing. Again,
-with this technique, observations are taken at the level of the cell, with on
-the order of [x] cells processed per sample.
-
-As with high-dimensional data, again the sheer size of the data collected in
-this case can make it difficult to explore and generate knowledge from the data.
-For data with a large number of observations, clustering techniques can be
-helpful to explore large-scale patterns across the many observations. These are
-particularly helpful in data that both have a large number of observations and
-measure many characteristics of each observation, like single-cell
-transcriptomics.
-
-### Common steps in data preprocessing for biomedical research
-
-**Data input**
-
-When working with biomedical research data, you will typically have it 
-stored in some type of computer file. Computer files can have different 
-file formats, which define for the computer the way that the data are 
-stored in the file. For example, data that you enter and save in the Excel
-program may be saved to an "xls" or "xlsx" file format [?]. Some types of 
-equipment, like plate readers and [?], may also allow you to output data 
-in this file format, or in a simpler plain text format like a comma-separated
-file ("csv") format. 
-
-For other assays, especially those that involve more complicated equipment, 
-the file format might be more complex than a basic spreadsheet. For example, 
-mass spectrometers, which are used to collect data for proteomics and 
-metabolomics, often output data in [file format]. Flow cytometers often 
-output data in [file format]. In many cases, these file formats will be 
-well-defined and standardized across equipment, which makes it easier for
-open source developers to build functions to input data from those file 
-formats. 
-
-To be able to work with data in a program like R or Python, you'll need to 
-first load the data into the program. This means you will need to direct the
-program in how to access and load the data from within whatever file format
-it's in.
-
-Fortunately, there are a variety of functions, both in base R and in free
-extension packages, that can read in data from a variety of file formats. 
-Loading data with one of these functions will often be the first step in 
-a data pre-processing pipeline. 
-
-**Extracting information based on scientific principals**
-
-A key element of preprocessing data are to translate the acquired data into
-a format that can more directly answer scientific questions. For example, 
-for flow cytometry data, this translation might be from the emission intensities
-at different wavelengths to a measure of the proportion of different 
-types of immune cells in the sample. 
-
-This type of preprocessing will vary substantially from assay to assay, with 
-algorithms that are tied to the methodology of the assay itself. For the 
-example of flow cytometry, these algorithms would include at least the 
-following steps: 
-
-- A step to link emission at a certain wavelength to a certain fluorochrome
-used in the panel
-- A step that links each fluorochrome to the antibody it was bound to in the
-assay, and then to the immune cell protein to which that antibody has an 
-affinity
-- A series of steps that uses a "gating" process to identify groups of 
-immune cell types based on their levels of different proteins, as well 
-as measures taken of their cell size and granularity (forward and side 
-scatter measurements collected by the flow cytometer)
-
-The discipline of bioinformatics works to develop these types of algorithms, and
-many of them are available through open-source, scripted software like R and
-Python. These types of preprocessing algorithms are often also available as
-proprietary software, sometimes sold by equipment manufacturers and sometimes
-separately. [Example: FlowJo]
-
-**Quality assessment / quality control**
-
-Once data are loaded, a common next step is to check the data. In particular, 
-it's often necessary to identify and resolve any quality control issues within
-the data. For example, in assays that are run at the level of the cell 
-(flow cytometry, single cell RNA-seq), it is important to identify and 
-remove dead cells or sets of multiple cells that are stuck together and 
-so evaluated at the same time. 
-
-When data are recorded by hand (for example, into a spreadsheet), there is the
-possibility for recording errors. For example, when recording the weights of
-mice, someone might transpose two numbers, so that a weight of [x] is recorded
-as [x].
-
-When data are recorded and saved by equipment, it typically avoids recording 
-errors. However, there is still the possibility for data quality issues. 
-[...]
-
-Further, there can be patterns in the data that result from the way that the
+There can be patterns in the data that result from the way that the
 data are collected. For example, the data can have something called batch 
 effects if they have consistent differences based on who was doing the 
 measuring or which batch the sample was run with. For example, if two 
@@ -347,27 +588,123 @@ animals are run in one batch and all those for the treated animals in
 another batch, you would not be able to separate the batch effect from 
 the effect of treatment). 
 
-One way you can help to identify potential quality issues in research data is
-through basic exploratory analysis. Basic dot plots or scatterplots of the data,
-for example, can often help to identify unusual outliers, which may be the
-result of a data recording error or an oddity in one of the samples.
+There are some methods that adjust for batch effects by fitting a regression
+model that includes the batch as a factor, and then using the residuals from
+that model for the next steps of analysis ("regressing out" those batch effects)
+[@mccarthy2017scater]. You can also incorporate this directly into a statistical
+model that is being used for the main statistical hypothesis testing of interest
+[@mccarthy2017scater].
 
-**Data transformations**
+> "After scaling normalization, further correction is typically required to 
+ameliorate or remove batch effects. For example, in the case study dataset, 
+cells from two patients were each processed on two C1 machines. Although C1 
+machine is not one of the most important explanatory variables on a per-gene
+level, this factor is correlated with the first principal component of the 
+log-expression data. This effect cannot be removed by scaling normalization
+methods, which target cell-specific biases and are not sufficient for removing 
+large-scale batch effects that vary on a gene-by-gene basis. ... For the 
+dataset here, we fit a linear model to the scran normalized log-expression 
+values with the C1 machine as an explanatory factor. (We also use the log-total
+counts from the endogenous genes, percentage of counts from the top 100 most
+highly-expressed genes and percentage of counts from control genes as 
+additional covariates to control for these other unwanted technical effects.) 
+We then use the residuals from the fitted model for further analysis. This approach
+successfully removes the C1 machine effect as a major source of variation between
+cells." [@mccarthy2017scater]
+
+> "We emphasize that it is generally preferable to incorporate batch effects or 
+latent variables into statistical models used for inference. When this is not 
+possible (e.g., for visualization), directly regressing out these uninteresting 
+factors is required to obtain 'corrected' expression values for further analysis.
+Furthermore, a general risk of removing latent factors is that interesting 
+biological variation may be removed along with the presumed unwanted variation. 
+Users should therefore apply such methods with appropriate caution, particularly 
+when an analysis aims to discover biological conditions, such as new cell types."
+[@mccarthy2017scater]
+
+> "Once identified, important covariates and latent variables can be flagged for
+inclusion in downstream statistical models or their effects regressed out of 
+normalized expression values." [@mccarthy2017scater]
+
+**Transforming data**
 
 Scaling, normalization, log transformations, calculating time since start
-of experiment, etc. 
+of experiment, etc. Some transformations can help change data that have 
+a skewed distribution into a more normally-distributed dataset, which can 
+be helpful in meeting the assumptions that underlie some statistical 
+tests and models. Some transformations are also helpful in visualizing 
+the data. For example, if data are extremely right-skewed (that is, have 
+a few very large outliers), it can be hard to see overall patterns 
+when plotting the untransformed data, as those outliers force the scale
+to expand to fit them, squeezing the bulk of the data into a small 
+portion of the total scale of the plot. A log transformation can help to 
+spread the data more evenly across the plot area, so that you can 
+see patterns in the bulk of the data more easily.
+
+> "There are various reasons for making a transformation, which may also apply to 
+deriving a new variable: 1. to get a more meaningful variable (the best reason!); 
+2. to stabilize variance; 3. to achieve normality (or at least symmetry); 4. to 
+create additive effects (i.e. remove interaction effects); 5. to enable a linear
+model to be fitted." [@chatfield1995problem]
+
+> [For transformations] "Logarithms are often meaningful, particularly with
+economic data when proportional, rather than absolute, changes are of interest.
+Another application of the logarithmic transformation is ... to transform a
+severely skewed distribution to normality." [@chatfield1995problem]
 
 One critical process in this category is the process of *normalization*. ...
 
-**Dimension reduction and clustering**
+> "After normalization, data matrices are typically log(x+1)-trans- formed. This
+transformation has three important effects. Firstly, distances between
+log-transformed expression values represent log fold changes, which are the
+canonical way to measure changes in expression. Secondly, log transformation
+mitigates (but does not remove) the mean–variance relationship in single-cell
+data (Bren- necke et al, 2013). Finally, log transformation reduces the skew-
+ness of the data to approximate the assumption of many downstream analysis tools
+that the data are normally distributed. While scRNA-seq data are not in fact
+log-normally distributed (Vieth et al, 2017), these three effects make the log
+transformation a crude, but useful tool. This usefulness is highlighted by down-
+stream applications for differential expression testing (Finak et al, 2015;
+Ritchie et al, 2015) or batch correction (Johnson et al, 2006; Buttner et al,
+2019) that use log transformation for these purposes. It should however be noted
+that log transformation of normalized data can introduce spurious differential
+expression effects into the data (preprint: Lun, 2018). This effect is
+particularly pronounced when normalization size factor distributions differ
+strongly between tested groups." [@luecken2019current]
 
-Biomedical research has dramatically changed in the past couple of decades to 
+**Digesting complexity in datasets**
+
+Biomedical research has dramatically changed in the past couple of decades to
 include much more high-throughput data. These data often include measurements
-for each sample on hundreds of thousands of different parameters. For example, 
-gene expression data can include measurements for each sample on the expression 
-level of thousands [?] of different genes, metabolics data can include 
-measurements for thousands [?] of metabolite features, proteomics can 
-include measurements for thousands [?] of proteins, and so on. 
+for each sample on hundreds of thousands of different parameters. For example,
+gene expression data can include measurements for each sample on the expression
+level of tens of thousands of different genes [@perkel2017single], metabolics
+data can include measurements for thousands [?] of metabolite features,
+proteomics can include measurements for thousands [?] of proteins, and so on.
+
+There are also some cases where data are large because of the number of
+observations, rather than (or in addition to) the number of measurements taken
+for each obsevation. If you envision a dataset as a two-dimensional table, with
+the observations as the rows and the characteristics measured for each
+observation as the columns, then high-dimensional data are large in terms of the
+number of columns in the table. A growing number of biomedical data now also are
+large in the number of observations they capture---in the number of rows in the
+table of data, in other words. A longer-standing example of this is flow
+cytometry data, where the observations are individual cells. Current experiments
+often capture in the range of [x] cells for each sample in flow cytometry,
+measuring for each characteristics that can be used to determine cell size,
+granularity, and surface proteins, all with the aim of characterizing the cells
+by cell type. A more recent example is with single cell RNA-sequencing. Again,
+with this technique, observations are taken at the level of the cell, with on
+the order of [x] cells processed per sample.
+
+Whether data is large because it measures many features (high throughput data)
+or includes many observations (e.g., single-cell data), the sheer size of the
+data can require you to digest it somehow before you can use it to answer
+scientific questions. There are several preprocessing techniques that can be
+used to do this. The way that you digest this size and complexity depends on
+whether the data are large because they have many features or because they have
+many observations.
 
 For these types of high throughput data, the different measurements often 
 have strong correlation structures across samples. For example, a large 
@@ -379,16 +716,577 @@ of measurements that are made on each sample in high throughput data, it
 is often not the case that they are all providing separate information and
 insights. 
 
-To handle the complexity and size of high throughput data, it can be helpful 
-to try to either reduce the dimensions of the data, through a technique like
-principal components analysis, or to use the high dimensional data to cluster
-the data into groups of samples with similar patterns across the measurements. 
+In some cases, your data may have more measurements than samples. For example,
+if you run an assay that measures the level of thousands of metabolite features,
+with twenty samples for which you collect data, then you will end up with many
+more measurements (columns in your dataset, if it has a tidy structure) than
+observations (rows in a tidy data structure). In this case, you may have no
+choice but to resolve this before later steps of analysis. This is because a
+number of statistical techniques fail or provide meaningless results for
+datasets with more columns than rows [@chatfield1995problem].
 
-[dimension reduction]
+Dimension reduction techniques---principal components analysis (PCA) is one very
+popular one---is therefore often a key element of data preprocessing when
+working with high-dimensional biological data. Dimension reduction helps to
+collect the information that is captured by the dataset into fewer columns, or
+"dimensions"---to go, for instance, from columns that measure the expression of
+thousands of different genes down to a few "principal component" columns that
+capture the key sources of variation across these genes. One long-standing
+approach to dimension reduction is principal components analysis (PCA). Other
+newer techniques have been developed, as well, such as t-distributed stochastic
+neighbor embedding (t-SNE) [@perkel2017single]. Newer techniques often aim to
+improve on limitations of classic techniques like PCA under the conditions of
+current biomedical data---for example, some may help address problems that arise
+when applying dimension reduction techniques to very large datasets [?].
 
-[clustering]
+To get a basic idea of dimension reduction, consider this example. Say you have
+conducted an experiment that includes two species of research mice, C57 black 6
+and BALB/C. You record information about each mouse, including columns that
+record both which species the mouse is and what color its coat is. Since C57
+black 6 mice are always black, and BALB/C mice are always white, these two
+columns of data will be perfectly correlated. Therefore, one of the two columns
+adds no information---once you have one of the measurements for a mouse, you can
+perfectly deduce what the other measurement will be. You could therefore,
+without any lose of information, reduce the dimensions (number of columns) of
+the data you've collected in this case by choosing only one of these two columns
+to keep and getting rid of the other column.
 
-### Examples of biomedical data preprocessing
+This same idea scales up to much more complex data---in many high dimensional
+datasets, many of the measurements (e.g., levels of metabolite features in
+metabolomics data or levels of gene expression in gene expression data) will be
+highly correlated with each other, essentially providing the same information
+across different measurements. In this case, the complexity of the dataset can
+often be substantially reduced by using a dimension reduction technique, and
+then conducting analysis to compare values in some of the main principle
+components of the data.
+
+> "Most approaches seek to reduce these 'multi-dimensional data', with each 
+dimension being the expression of one gene, into a very small number of dimensions
+that can be more easily visualised and interpreted. Principal component analysis
+(PCA) is a mathematical algorithm that reduces the dimensionality of data, and
+is a basic and very useful tool for examining heterogeneity in scRNA-seq data."
+[@haque2017practical]
+
+> "Multivariate techniques may be used to reduce the dimensionality... It is
+potentially dangerous to allow the number of variables to exceed the number of
+observations because of non-uniqueness and singularity problems. Put simply, the
+unwary analyst may try to estimate more parameters than there are observations."
+[@chatfield1995problem]
+
+> "Principal component analysis rotates the p observed values to p new
+orthogonal variables, called principal components, which are linear combinations
+of the original variables and are chosen in turn to explain as much of the
+variation as possible. It is sometimes possible to confine attention to the
+first two or three components, which reduces the effective dimensionality of the
+problem. In particular, a scatter diagram of the first two components is often
+helpful in detecting clusters of individuals or outliers."
+[@chatfield1995problem]
+
+Another approach to digest the complexity of high dimensional data is to remove
+some of the features that were measured entirely, an approach that is more
+generally called "feature selection" in data science. One example is in
+preprocessing single-cell RNA-seq data. In this case, it is common to filter
+down to only some of the genes whose expression was measured. One filtering
+criterion is to filter out "low quality" genes. These might be genes with low
+abundance [?] on average across samples or high dropout rates (which happens if
+a transcript is present in the cell but either isn't captured or isn't amplified
+and so is not present in the sequencing reads) [@haque2017practical,
+@mccarthy2017scater]. Another criterion for filtering genes for single cell 
+RNA-sequencing is to focus on the genes that vary substantially across different
+cells [?], removing the "housekeeping" genes with similar expression regardless
+of the cell type. 
+
+> "For each gene, QC metrics such as the average expression level and the
+proportion of cells in which the gene is expressed are computed. This can be
+used to identify low-abundance genes or genes with high dropout rates that
+should be filtered out prior to downstream analyses." [@mccarthy2017scater]
+
+> "These approaches aim to identify, for a given dataset, a subset of features (for example, transcripts) that are meaningful or informative. These are signatures (that is, subsets of analytes detected by a given assay) that differentiate study groups, or that correlate with other analytes or study parameters of interest. Feature selection relies on arbitrary cut-offs that may be statistical (p values) or otherwise (for example, fold change). An alternative to the use of cut-offs is the rank ordering of analytes (for example, on the basis of fold change, r values, p values or other parameters)." [@chaussabel2014democratizing]
+
+For data with lots of observations, like single-cell data, again the sheer size
+of the data can make it difficult to explore and generate knowledge from it. 
+In this case, you can often reduce complexity by finding a way to group the 
+observations and then summarizing the size and other characteristics of each 
+group. 
+
+One way of doing this is with clustering techniques, which can be helpful
+to explore large-scale patterns across the many observations. 
+As one example, single cell RNA-seq measures messenger RNA expression for each
+cell in a sample of what can be [thousands?] of cells. One goal of scRNA-seq is
+to use gene expression patterns in each cell to identify distinct cell types in
+the sample, potentially include cell types that were not known prior to the
+experiment [@perkel2017single]. To do this, it needs to used measures of the
+expression of [hundreds or thousands] of genes in each cell to group the
+[hundreds or thousands] of cells into groups with similar patterns of gene
+expression. One common approach is to use clustering algorithms to group the
+cells based on patterns in their gene expression.
+
+One use of clustering techniques is to group cells into cell types, based
+on their gene expression profiles, through scRNA-seq [@haque2017practical].
+
+> "Dimensionality reduction and visualization are, in many cases, followed by 
+clustering of cells into subpopulations that represent biologically meaningful 
+trends in the data, such as functional similarity or developmental 
+relationship. Owing to the high dimensionality of scRNA-seq data, clustering
+often requires special consideration." [@haque2017practical]
+
+> "Cluster analysis aims to partition a group of individuals into groups or clusters
+which are in some sense 'close together'. There is a wide variety of possible 
+procedures. In my experience the clusters obtained depend to a large extent on the methods
+used (except where the clusters are really clear-cut) and users are now aware of
+the drawbacks and the precautions which need to be taken to avoid irrelevant or misleading
+results." [@chatfield1995problem]
+
+Flow cytometry often uses a different process to leverage the different measures
+taken on each cell to make sense of them. This process is referred to 
+as "gating". In gating, each measure taken on the cells is considered one or 
+two at a time. The cells with with characteristics on that measure or set of 
+measures that are consistent with a cell type of interest are retained. 
+The gating process steps through many of these "gates", filtering out cells and 
+each step and only retaining the cells with markers or characteristics 
+that align with a certain cell type, until the researcher is satisfied that they 
+have identified all the cells of a certain type in the sample (e.g., all 
+helper T cells in the sample). 
+
+### Tools for biomedical data preprocessing
+
+The previous parts of the module described some common themes and processes in 
+preprocessing biomedical data. These are often combined together into a pipeline
+(also called a workflow). These pipelines can become fairly long and complex 
+when you need to preprocess data that are complex. 
+
+While we've covered some key processes of preprocessing, we haven't talked 
+yet about the tools you can use to implement it. Most preprocessing will be 
+done on the computer, with software tools. An exception might be for very 
+simple preprocessing tasks---one example is generating the average cage weight
+for a group of mice based on the total cage weight and the number of mice. 
+However, even these simple processes can be done with a computer, and doing 
+so can help avoid errors and to provide a record of the calculation that was 
+used for the preprocessing. 
+
+You will have a choice about which type of software you use for preprocessing.
+There are two key dimensions that separate these choices---whether the software
+is point-and-click software versus script-based software, and whether the
+software is proprietary versus open-source software. It is important to note
+that, in some cases, it may make sense to develop a pipeline that chains
+together a few different software programs to complete the required
+preprocessing.
+
+In this section of the module, we'll talk about the advantages and disadvantages of these different types of software. For reproducibility and rigor, there
+are many advantages to using software that is script-based and open source for
+data preprocessing, and so in later modules, we'll provide more information on 
+how you can use this type of software for preprocessing biomedical data.
+
+**GUI versus code script**
+
+When you pick software for preprocessing, the first key dimension to consider
+is whether the software is point-and-click software or script-based software. 
+Let's start with a definition of each. 
+
+Point-and-click software is more formally known as GUI-based software [?], where
+GUI stand for "graphical user interface". These are programs where your hand is
+on your mouse most of the time, and you use the mouse to select actions and
+options from buttons and other widgets [?] that are shown by the software on the
+screen. This type of software is sometimes called "widget-based", as it is built
+around widgets like drop-down menus and slider bars [@perkel2018future].
+
+A basic example of GUI-based software is your computer's calendar application
+("application" is a common synonym for "software"). To navigate across dates on
+your calendar, you use your mouse to click on arrows or dates on the calendar.
+The software includes some text entry---for example, if you add something to
+your calendar, you can click on a textbox and enter a description of the
+activity using your keyboard. However, the basic way that you navigate and use
+the software is via your computer mouse. 
+
+Script-based software uses a script, rather than clickable buttons and graphics,
+as its main interface. A script, in this case, is a line-by-line set of
+instructions describing what actions you want the software to perform. With
+script-based software, you keep your keys on the keyboard more often than on the
+mouse. Many script-based software programs will also allow you to also send the
+lines of instructions one at a time in an area called a "console", which will
+then return the result from each line after you run it. Script-based software is
+also sometimes called software that is "used programatically"
+[@perkel2018future]. Script-based software in common use with biomedical 
+data include R, Python, and Unix bash scripts, as well as some less common 
+but emerging software programs like Julia. 
+
+When comparing point-and-click software to script-based software for
+preprocessing, there are a few advantages to point-and-click software, but
+many more to script-based software. In terms of code rigor and reproducibility, 
+script-based software comes out well ahead, especially when used to its 
+full advantage. 
+
+While we ultimately recommend script-based software, there are some appealing
+features of point-and-click software. These features likely contribute to 
+its wide popularity and to the fact that the vase majority of software that you 
+use in your day-to-day life is now point-and-click.
+
+First, point-and-click software is often easier to learn to use, at least in 
+terms of basic use. The visual icons help you navigate choices and actions in 
+the software. Most GUIs are designed to take the underlying processes and 
+make them easier for a new user to access and use. They do this through 
+an interface that is visual, rather than language- and script-based. 
+Further, many people are most familiar with point-and-click 
+software, since so many everyday applications are of this type, and so its 
+interface can feel more familiar to users. 
+They also are easier for a new user to pick up because they typically 
+provide a much smaller set of options that a full programming language does.
+
+By contrast, coding languages take more investment of time and energy to
+initially learn how to use that many GUI-based software programs. This is
+becuase a coding language is just that---a language. It is built on a set (often
+large) of vocabulary that you must learn to be proficient in it, as you must
+learn the names and options for a large set of functions within the language.
+Further, it has rules and logic you must learn in terms of options for how to
+structure and access data and how the inputs and outputs of different functions
+can be chained together to build pipelines for preprocessing and analysis.
+
+However, while there is a higher investment required to learn script-based 
+software versus point-and-click software, there is a very high payoff from 
+that effort. Script-based software creates a full framework for you to 
+combine tools in interesting ways and to build new tools when you need them. 
+With point-and-click software, there's always a layer between the user and 
+the computer logic, and you are constrained to only use tools that were 
+designed by the person who programmed the point-and-click software. By 
+contrast, with script-based software, you have more direct access to the 
+underlying computer logic, and with many popular script-based languages 
+(R, Python), you have extraordinary power and flexibility in what you can 
+ask the program to do.
+
+As an analogy, think about traveling to a country where you don't yet speak the
+language. You have a few choices in how you could communicate. You could
+memorize a few key phrases that you think you'll need, or get a phrase book that
+lists these key phrases. Another choice is to try to learn the language,
+including learning the grammar of the language, and how thoughts are put
+together into phrases. Learning the language, even at a basic level, will take
+much more time. However, it will allow you much greater ability to express
+yourself. If you only know set phrases, then you may know how to ask someone at
+a bakery for loaf of bread, if the person who wrote the phrase book decided to
+include that, but not how to ask at a hotel for an extra blanket, if that wasn't
+included. By contrast, if you've learned the language, you have learned how to
+form a question, and so you can extrapolate to express a great variety of
+things.
+
+Point-and-click software is often like using a phrase book for a foreign 
+language---if the person who developed the tool didn't imagine something that 
+you need, you're stuck. Scripted software is more like learning a language---you 
+have to learn the rules (grammar) and vocabulary (names of functions and 
+their parameters), but once you do, you can combine them to address a wide
+variety of tasks, including things no one else has yet thought of. 
+
+In the late 1990s, a famous computer scientist named Richard Hamming wrote 
+a book called, "The Art and Science of Engineering", in which he talks 
+a lot about the process of building things and the role that programming 
+can play in this process. He predicts that by 2020, it will be the experts in a particular field that do programming for that field, rather than experts in 
+computer programming trying to build tools for other fields [@hamming1997art].
+
+> "What is wanted in the long run, of course, is that the man with the problem 
+does the actual writing of the code with no human interface, as we all to often 
+have these days, between the person who knows the problem and the person who
+knows the programming language. This date is unfortunately too far off to 
+do much good immediately, but I would think by the year 2020 it would be
+fairly universal practice for the expert in the field of application to do 
+the actual program preparation rather than have experts in computers (and 
+ignorant in the field of application) do the program preparation." [@hamming1997art]
+
+The rise of open-source, scripted programs like Python and R has helped to 
+achieve this vision---scientists in a variety of fields now write their own
+small software programs and tools, building on the framework of larger
+open-source languages. Training programs in many scientific fields recommend
+or require at least one course in programming in these languages, often 
+taught in conjunction with data analysis and data management. 
+
+Another element that has helped make script-based software more accessible is 
+the development of programming languages that are easier to learn and use. 
+Very early programming languages required the programmer to understand a lot
+about how the computer was built and organized, including thinking about where
+and how data were stored in the computer's memory. As programming languages
+have developed, such "low-level" languages have remained in use, as they 
+often allow for unmatched speed in processing. However, more "higher-level"
+programming languages have also developed, and while these might be 
+somewhat slower in processing, they are much faster for humans to learn 
+and create tools with, as they abstract away many of the details that make
+low-level programming more difficult. 
+
+Because of the development of easier-to-learn high-level programming languages
+like R and Python, it is possible for a scientist to become proficient in using
+one of these script-based programs in about a year. Often, we find that one
+semester of a dedicated course or serious self-study, followed with several
+months of regularly applying the software to research data, is enough for a
+scientist to become comfortable using a script-based software like R or Python.
+With another year or so of regular use, scientists can often start making their
+own small software extensions to the language. In a 2017 article on analyzing
+scRNA-seq data, the author noted that "relatively few biologists are comfortable working in those environments", referring to Unix and R [@perkel2017single], 
+and noted that this was a barrier to using many of the available tools for
+working with scRNA-seq data at the time. However, we would argue that 
+becoming comfortable with these tools requires an investment, but is not
+an insurmountable barrier for biologists. 
+
+It is true that this is a substantially larger investment in training than a
+short course or workshop, which might be adequate for learning to start with
+many point-and-click software programs. There is a particularly high time
+investment required to learn to use scripted software well. This can be a
+critical barrier, especially for scientists who are advanced in their career and
+may have minimal time for further training. Further, it's more of a barrier in
+analyzing some types of biomedical data, due to the extreme size and complexity
+of the data.
+
+> "most biomedical researchers experience great difficulty carrying out
+computationally complex analyses on large data sets. " [@nekrutenko2012next]
+
+However, it is much less of a time investment than it takes to become an expert
+in a scientific field. It takes years of training to become an expert in
+cellular biology or immunology, for example. Richard Hamming's vision was that
+the experts can ask the best and most creative questions of the data, and that
+it is best to remove the barrier of a different computer programmer, so that the
+expert can directly create the program and leverage the full capabilities of the
+computer. Higher-level programming languages now are accessible enough that this
+vision is playing out across scientific fields.
+
+> "That a language is easy for the computer expert does not mean it is
+necessarily easy for the non-expert, and it is likely non-experts who will do
+the bulk of the programming (coding, if you wish) in the near future."
+[@hamming1997art]
+
+Another advantage of script-based software---and one that is related to the idea
+of experts in a scientific field directly programming---is that often the most
+cutting edge algorithms and pipelines will be available first in scripted
+languages, and only later be added into point-and-click software programs. This
+means that you may have earlier access to new algorithms and approaches if you
+are comfortable coding in a script-based language. 
+
+In some cases, biologists aim to analyze data that represents the cutting edge
+of equipment and measurement technology, or that is very specialized for a
+particular field. In these cases, scripted, open-source packages will often be
+the first place where algorithms working with the data are available. For
+example, an article about scRNA-seq from 2017 noted that, at the time, there
+were "very few, if any, 'plug-and-play' packages" for working with scRNA-seq
+data, and of those available, they were "user-friendly but have the drawback
+that they are to some extent a 'black box', with little transparency as to the
+precise algorithmic details and parameters employed." [@haque2017practical]
+Similarly, another article in the same year noted that at the time, "most
+scRNA-seq tools exist as Unix programs or packages in the programming language
+R", although "some ready-to-use pipelines have been developed"
+[@perkel2017single].
+
+Another key advantage of script-based software is that, in writing the 
+script, you are thoroughly documenting the steps you took to preprocess the 
+data. When you create a code script, the script itself includes all
+the steps and details of the process. In combination with information about the
+version of all software used and the raw data input to the pipeline, it creates 
+a fully reproducible record of the data preprocessing and analysis. 
+
+By contrast, while you could write down the steps that you took and the buttons
+you pressed when using a GUI, it's very easy to forget to record a step. When
+you use a code script, it will not run if you forget a step or a detail of that
+step. Some GUI-based programs are taking steps to try to ameliorate this,
+allowing a user to save or download a full record that records the steps taken
+in a given pipeline [more on this?]. As a note, there are some movements towards
+"integrative frameworks", which can help improve reproducibility for pipelines
+that span different types of software [?] (Galaxy, Gene Prof).
+
+> "The above challenges can be distilled into two main issues. First, most
+biomedical researchers experience great difficulty carrying out computationally
+complex analyses on large data sets. Second, there is a lack of mechanism for
+documenting analytical steps in detail. Recently, a number of solutions have
+been developed that, if widely adopted, would solve the bulk of these
+challenges. These solutions can collectively be called integrative frameworks,
+as they bring together diverse tools under the umbrella of a unified interface.
+These include BioExtract, Galaxy, GenePattern, Gene Prof, Mobyle, and others.
+These tools record all analysis metadata, including tools, versions and
+parameter settings used, ultimately transforming research provenance for a task
+that requires active tracking by the analyst to one that is completely
+automatic." [@nekrutenko2012next]
+
+The final key advantage of scripted software is that---and this is often a gain
+that fully pays back the investment in learning the software---it can make data
+preprocessing and analysis much more efficient over the long term. Code scripts
+often are easier to automate than a workflow through a GUI-based system. For
+example, if you need to process a number of files that all follow the same
+format, you can often develop a script using one of those files, check that
+script very carefully, and the apply it with minimal modifications to each of
+the files in the full set. This allows you to spend more time on the template
+script, making sure that it works as you expect, and then apply it quickly,
+whereas working through multiple files with point-and-click software may
+essentially boil down to a lot of time spent in repetition. This 
+kind of automation can also help in limited errors from human mistakes
+in by-hand processing [@gibb2014reproducibility].
+
+> "Another approach to maximizing reproducibility is to use automation to cut
+out sloppy, all-too-human mistakes." [@gibb2014reproducibility]
+
+
+*Examples of GUIs for data preprocessing*: FlowJo, ...
+
+Some GUI-based programs are proprietary and some are open-source. Examples 
+of GUI-based programs for scRNA-seq preprocessing and analysis include
+SeqGeq (proprietary), Ganatum (open source) and the Automated Single-cell
+Analysis Pipeline (ASAP, also open source) [@perkel2017single].
+
+
+*Advantages / disadvantages of code scripts*
+
+
+
+> "Appropriate methods are 'very data-set dependent'... The methods and tuning
+parameters may need to be adjusted to account for variable such as sequencing
+length. But John Marioni at Cancer Research UK in Cambridge says it's important not 
+to put complete faith in the pipeline. 'Just because the satellite navigation
+tells you to drive into the river, you don't drive into the river,' he says." 
+[@perkel2017single]
+
+Scripted-based approaches encourage the user to learn how the underlying process
+works. The approach encourages the user to think more like a car owner who gets
+under the hood from time to time than like one who only drives the car. This
+approach does take more time to learn and develop, but with the upside that the
+user will often have a much deeper understanding of what is happenening in each 
+step, as well as how to fix or adjust different steps to fix a pipeline or 
+adapt one pipeline to meet another analysis need.
+
+> "Complex equipment breaks, and when it breaks you need the technical expertise to 
+fix it, and you need replacement parts." [@johnson2011good]
+
+Many scripted languages are based on a Unix-style philosophy of creating small,
+simple tools that can be linked together in powerful ways. In this case, each
+tools (in R, this would be a function) might do something very simple on its
+own, but because you can "pipe" from one tool to another, you can combine these
+small tools into pipelines that do very powerful and complex tasks. In this
+context, a "pipe" allows you to take the output from one tool and send it
+directly into another (for example, in R, to send the output from one function
+call directly into another function) [@kernighan1984unix]. A "pipeline", then,
+is a linked set of these tools, linked with pipes to connect the output from one
+as the input to the next [@kernighan1984unix].
+
+
+**Free and open-source versus proprietary**
+
+*Examples of free and open-source tools*: Python, R, Julia, bash scripts, 
+Linux, git (version control)
+
+*Examples of proprietary software*: FlowJo (?), ...
+
+*Advantages / disadvantages of proprietary*
+
+The other dimension of software for preprocessing is whether it is open-source
+or proprietary. Open-source software is software where you can access, explore, 
+and build on all the underlying code for the software. By contrast, the code
+that powers proprietary software is typically kept private, so you can use the
+product but cannot explore the way that it is built or extend it in the same 
+way that you can open-source software. 
+
+In biomedical research, many script-based languages are open-source, while many
+point-and-click programs are proprietary. However, this is not a hard and fast
+rule, and there are examples of open-source point-and-click software (e.g., ...)
+as well as proprietary script-based software (e.g., Matlab [?]).
+
+There are advantages and disadvantages to both types of software, but in terms
+of rigor and reproducibility, open-source software often has the advantage.
+
+One facet where proprietary software has an advantage is that it will often have
+more comprehensive user support than open-source software. The companies that
+make and sell proprietary software will have a user support team to answer
+questions and help develop pipelines.
+
+Some open-source software also has robust user support. In some cases, this has
+developed as a result of a large community of users who help each other. 
+Message boards [?] like StackOverflow provides a forum for users to ask 
+and respond to questions. Some companies also exist that provide, as their 
+business model, user support for open-source software. While open-source 
+software is usually free, these companies make money by providing support
+for that software. 
+
+User support is sparser for some of smaller software packages that are developed
+as extensions of open-source software. For example, many of the packages for
+preprocessing types of biomedical data are built by small bioinformatics teams
+or individuals at academic or research institutions. Often this software is
+developed by a single person or very small team as one part of their job
+profile, with limited resources for user support and for providing training.
+These extensions build on larger, more supported open-source software (e.g., R
+or Python), but the extension itself is built and maintained by a very small
+team that may not have the capacity to respond quickly to user questions. Many
+open-source software developers try to create helpful documentation in the form
+of help files and package vignettes (tutorials on how to use the software they
+created), but from a practical point of view it is difficult for small
+open-source developers to provide the same level of user support that a large
+proprietary software company can.
+
+This is often the case with cutting-edge open-source software for biomedical
+preprocessing. These just-developed software packages are less likely to be
+comprehensively documented than longer-established software. Further, it can
+take a while for the community of software users to develop once software is
+available, and while this is a limitation of new software for both open source
+and proprietary languages, it can represent more of a problem for open-source
+software, where there is often not a helpline and so the community of users
+often represents one of the main sources for help and troubleshooting.
+
+For other facets, open-source software has important advantages over proprietary
+software. One key advantage is that all code is open in open-source software, so
+you can dig down to figure out exactly how each step of the program works.
+Often, for open-source scientific software the algorithms and their principles
+have gone through peer review as part of the academic publication process.
+
+With proprietary software, on the other hand, details of algorithms may be
+considered protected intellectual property, and so it may be hard to find out
+the details of how the underlying algorithms work. Also, the algorithms may not
+have gone through peer-review, if they are considered private intellectual
+property.
+
+> " Several commercial vendors now provide 'software as a service' analysis
+solutions for sequence data (such as DNAnexus and GenomeQuest); however, these
+solutions are built on proprietary platforms, raising concerns about
+transparency and vendor lock-in." [@nekrutenko2012next]
+
+Transparency is a key element of reproducibility. If the algorithms of software
+can be investigated, then scientists who are using two different programs (for
+example, one program in Python and one in R) can determine if their choice of
+program is causing differences in their results. By contrast, if two research
+groups use two different types of proprietary software, the algorithms that
+underlie the processing are often kept secret and so cannot be compared. In that
+case, if the two groups conduct the same experiment and get different results,
+it's impossible to rule out whether the difference was caused by the choice of
+software.
+
+> "Transparency and quality management are key to improving scientific rigor and 
+reproducibility. It is, therefore, good to see that the Open Science movement
+is gaining traction, and that research institutions increasingly view poor
+science as a reputation risk." [@neff2021past]
+
+> "Improved reproducibility comes from pinning down methods." [@lithgow2017long]
+
+> "As chemists, we have to be able to go to the literature, take a procedure, 
+and carry out a similar or identical transformation with our own hands. Frustratingly,
+this doesn't always happen, and the next-to-worst-case scenario possible is 
+when it's one of your own reactions that can't be reproduced by a lab 
+elsewhere. Unsurprisingly, one step worse than this is when you can't even 
+reproduce one of your own reactions in your own lab!" [@gibb2014reproducibility]
+
+> "If there is nothing wrong with the reagents and reproducibility is still an 
+issue, then as I like to tell students, there are two options: (1) the physical 
+constants of the universe and hence the laws of physics are in a state of flux 
+in their round-bottomed flask, or (2) the researcher is doing something wrong 
+and either doesn't know it or doesn't want to know it. Then I ask them which 
+explanation they think I'm leaning towards." [@gibb2014reproducibility]
+
+Another advantage of open-source software is that older versions of the software
+are often well-archived and easily available to reinstall and use if needed to
+reproduce an analysis that was done using an earlier version of the software
+than the current main version at the time of the replication.
+
+As a final advantage, open-source software is often free. This makes it 
+economical to test out, and it means that trainees from a lab will have no 
+problem continuing to use the software as they move to new positions. 
+The cost with open-source software, then, comes not with the price to buy 
+the software, but with the investment that is required to learn it. 
+
+With open-source, you can think of it as builing a collection of different
+tools, rather than a black box. The tools can come from different companies
+(like real tools)---you don't have to limit to consuming the tools created by a
+single producer (as with most proprietary software systems). For free and
+open-source software, you don't have to invest money to get more tools. Instead,
+the investment for each new tool is the time that it takes to learn how to use
+it in your workflow.
+
+### Discussion questions
 
 It can be helpful to walk through some examples some of these preprocessing
 steps, in the context of specific types of biomedical experiments. In this
@@ -410,10 +1308,17 @@ and then analyze it, to allow you to answer your original research
 question (how much the growth rate differs in the low-oxygen 
 environment). 
 
-Preprocessing steps: 
+[Module 2.5]
+
+Preprocessing and analysis steps: 
 
 - Input data from spreadsheet in which it was recorded in the laboratory
-- ...
+(preprocessing)
+- For each sampling time, use the date and time of the sampling to calculate
+the time since the start of the experiment (preprocessing)
+- Identify the period of exponential growth (preprocessing)
+- Calculate growth rate for each sample during this period of exponential 
+growth (analysis)
 
 **More complex example: Characterizing lung cell populations**
 
@@ -421,30 +1326,28 @@ The second example is when you have collected single-cell RNA-seq
 data from a sample with the aim of characterizing the cell populations
 in the animal's lungs.
 
-- Input data from [file format from equipment]
-- ...
+One example of a pipeline of pre-processing and analysis might include
+[@luecken2019current]:
 
-### Tools for biomedical data preprocessing
+- Read in raw sequencing data 
+- Generate count matrices from the raw sequencing data [what count matrices are]
+- Quality control to identify and remove low quality cells from further 
+analysis, as well as to remove some transcripts (e.g., those that appear in 
+only a few cells)
+- Normalization to allow meaningful comparisons across cells, accounting for differences across cells in capture efficiency, amplification (reverse transcription?), sequencing, etc. This may involve processes that assume the 
+number of mRNA molecules in each cell is the same, or alternatively that 
+half or fewer of the genes are differentially expressed across cells.
+- Batch collection
+- Dimension reduction, to focus only on highly variable genes and exclude
+from further analysis genes that have a similar expression across cells
+(e.g., "housekeeping" genes)
+- Clustering and cluster annotation, to identify different cell populations
+- Differential expression analysis, to determine which genes have different
+levels of expression in different cell populations [?]
+- Comparing cell populations across samples from different conditions (e.g., 
+treated versus control)
 
-**GUI versus code script**
 
-Examples of coding languages for data preprocessing: Python, R, Julia, bash scripts
-
-Examples of GUIs for data preprocessing: FlowJo, ...
-
-Advantages / disadvantages of GUIs
-
-Advantages / disadvantages of code scripts
-
-**Free and open-source versus proprietary**
-
-Examples of free and open-source tools: Python, R, Julia, bash scripts
-
-Examples of proprietary software: FlowJo (?), ...
-
-Advantages / disadvantages of proprietary
-
-Advantages / disadvantages of free and open-source
 
 ---------------------------------------------------------------------------------
 
@@ -709,16 +1612,7 @@ particular, there is a world of difference between observations that are lost th
 random events, and situations where missing observations due to damage or loss are
 more likely to arise under certain conditions." [@chatfield1995problem]
 
-> "There are various reasons for making a transformation, which may also apply to 
-deriving a new variable: 1. to get a more meaningful variable (the best reason!); 
-2. to stabilize variance; 3. to achieve normality (or at least symmetry); 4. to 
-create additive effects (i.e. remove interaction effects); 5. to enable a linear
-model to be fitted." [@chatfield1995problem]
 
-> [For transformations] "Logarithms are often meaningful, particularly with economic 
-data when proportional, rather than absolute, changes are of interest. Another 
-application of the logarithmic transformation is ... to transform a severely 
-skewed distribution to normality." [@chatfield1995problem]
 
 Some data collected through laboratory experiments is very straightforward and
 requires little or no pre-processing before it's used in analysis. For example,
@@ -1427,16 +2321,17 @@ spectometers, time of flight (TOF) mass spectrometers, and quadrupole 'ion traps
 signal intensity of the ion at each value of the m/z scale (which has units of daltons
 (Da) per charge)."
 
-> "At the beginning of the 1990s, researchers realized that the peptide-sequencing
-problem could be converted to a database-matching problem, which would be much 
-simpler to solve. The reason database searching is easier than de novo sequencing is 
-that only an infinitesimal fraction of the possible peptide amino-acid sequences
-actually occur in nature. A peptide-fragmentation spectrum might therefore not contain
-sufficient information to unambiguously derive the complete amino-acid sequence, but 
-it might still have sufficient information to match it uniquely to a peptide sequence
-in the database on the basis of the observed and expected fragment ions. There are 
-several different algorithms that are used to search sequence databases with tandem
-MS-spectra data, and they have names such as PeptideSearch, Sequest, Mascot, Sonar ms/ms, 
+> "At the beginning of the 1990s, researchers realized that the
+peptide-sequencing problem could be converted to a database-matching problem,
+which would be much simpler to solve. The reason database searching is easier
+than de novo sequencing is that only an infinitesimal fraction of the possible
+peptide amino-acid sequences actually occur in nature. A peptide-fragmentation
+spectrum might therefore not contain sufficient information to unambiguously
+derive the complete amino-acid sequence, but it might still have sufficient
+information to match it uniquely to a peptide sequence in the database on the
+basis of the observed and expected fragment ions. There are several different
+algorithms that are used to search sequence databases with tandem MS-spectra
+data, and they have names such as PeptideSearch, Sequest, Mascot, Sonar ms/ms,
 and ProteinProspector." [@steen2004abc]
 
 > "As a result of rapidly improving technology, the identification of hundreds of
@@ -3356,5 +4251,4 @@ Normalization can help adjust for technical bias across the samples:
 
 > "Normalizing features’ signal intensities is required, but at present not (yet) supported in xcms (some methods might be added in near future). It is advised to use the SummarizedExperiment returned by the quantify method for any further data processing, as this type of object stores feature definitions, sample annotations as well as feature abundances in the same object. For the identification of e.g. features with significant different intensities/abundances it is suggested to use functionality provided in other R packages, such as Bioconductor’s excellent limma package." [@smith2013lc]
 
-### Discussion questions
 
