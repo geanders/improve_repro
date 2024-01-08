@@ -8,7 +8,6 @@
 <meta property="og:title" content="3.3 Simplify scripted pre-processing through R’s ‘tidyverse’ tools | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
 <meta property="og:type" content="book" />
 
-
 <meta property="og:description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
 <meta name="github-repo" content="rstudio/bookdown-demo" />
 
@@ -26,7 +25,6 @@ MathJax.Hub.Config({
 
 <title>3.3 Simplify scripted pre-processing through R’s ‘tidyverse’ tools | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
 
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
 <link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
 
@@ -36,6 +34,7 @@ MathJax.Hub.Config({
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -70,7 +69,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -83,7 +82,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -133,10 +132,10 @@ div.csl-indent {
 <div class="col-sm-12">
 <div id="TOC">
 <ul>
-<li><a href="index.html#rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
-<li><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
-<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
-<li><a href="4-references.html#references"><span class="toc-section-number">4</span> References</a></li>
+<li><a href="index.html#rigor-and-reproducibility-in-computation" id="toc-rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
+<li><a href="2-experimental-data-recording.html#experimental-data-recording" id="toc-experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
+<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing" id="toc-experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
+<li><a href="4-references.html#references" id="toc-references"><span class="toc-section-number">4</span> References</a></li>
 </ul>
 </div>
 </div>
@@ -159,7 +158,7 @@ reproducibly pre-processing experimental data.</p>
 <li>Define R’s ‘tidyverse’ system</li>
 <li>Explain how the ‘tidyverse’ collection of packages can be both user-friendly
 and powerful in solving many complex tasks with data</li>
-<li>Describe the difference between base R and R’s ‘tidyverse.’</li>
+<li>Describe the difference between base R and R’s ‘tidyverse’.</li>
 </ul>
 <div id="what-are-data-structures-containers" class="section level3" number="3.3.1">
 <h3><span class="header-section-number">3.3.1</span> What are data structures / containers?</h3>
@@ -173,7 +172,7 @@ things with different types of data—for example, R can add together
 two pieces of data that are numbers, while for two pieces of data that are
 dates, it can tell which is the later date. For character strings, R can
 look for patterns in the string (for example, does it include any capital
-letters? Does is start with “b?”). All pieces of data are, at the deepest
+letters? Does is start with “b”?). All pieces of data are, at the deepest
 level, stored as a string of 0s and 1s. By assigning a data type like
 “character string” or “numeric” to each piece of data, R can make more
 sense of each piece of data in terms of what operations are reasonable to
@@ -198,7 +197,7 @@ Some types of data can be stored using fewer of these <em>bits</em> (<em>bi</em>
 Each measurement of logical data, for example, can be stored in a single bit,
 since it only can take one of two values (0 or 1, for FALSE and TRUE, respectively).
 For character strings, these can be divided into each character in the string
-for storage (for example, “cat” can be stored as “c,” “a,” “t”). There is a set
+for storage (for example, “cat” can be stored as “c”, “a”, “t”). There is a set
 of characters called the ASCII character set that includes the lowercase and
 uppercase of the letters and punctuation sets that you see on a standard
 US keyboard [?], and if the character strings only use these characters, they
@@ -219,7 +218,7 @@ numeric), and it holds together a one-dimensional string of pieces of data
 of that type. For example, a vector of the numbers one to five would be
 the string of those numbers—1, 2, 3, 4, 5—while a
 vector of the letters a to e would be the string of data with the “character”
-type—“a,” “b,” “c,” “d,” “e.”</p>
+type—“a”, “b”, “c”, “d”, “e”.</p>
 <p>One of the “building block”
 data structures in R is the vector. This data structure is one dimensional and
 can only contain data that have the same data type—you can think of this as a
@@ -297,7 +296,7 @@ highlighting some of the key elements of its structure. A dataframe stores data
 in a two-dimensional structure, combining rows and columns. Each column is
 constrained to have data of the same type—in other words, all values in a
 column could be numeric (e.g., 1, 4, 10), or all could be character strings
-(e.g., “Mouse 1,” “Mouse 3”), but the same column cannot combine some values
+(e.g., “Mouse 1”, “Mouse 3”), but the same column cannot combine some values
 that are numeric and some that are character strings. Across the dataframe, all
 columns must have the same length (i.e., if you printed out the full dataframe,
 it would look like a rectangle). All the column values should be lined up, so
@@ -434,7 +433,7 @@ can move the data into this tidy format, but at that point, you can continue wit
 analysis and visualization of your data using a tidyverse approach.</p>
 <p><strong>The tibble data structure</strong></p>
 <p>As a final note, there is a specialized data structure that is often
-associated with the tidyverse approach. It is called the “tibble,” and it is
+associated with the tidyverse approach. It is called the “tibble”, and it is
 a specialized version of the dataframe. What do we mean by it being a
 “specialized” version of a more common data structure? This means that there
 are a few functions that will give different results if the data are stored
@@ -444,7 +443,7 @@ structure (and most functions don’t), then the function will treat the object
 as a regular data frame. Some of the few functions that have specialized
 methods for tibbles include the <code>print</code> function, which is also the default
 function that is run if you just type an object’s name at the console and
-press “Enter.” The <code>print</code> function, when called with an object in the tibble
+press “Enter”. The <code>print</code> function, when called with an object in the tibble
 structure, will only print out the first few rows (whereas, with a generic
 dataframe, it will print out all rows, sometimes resulting in a very long
 print-out). Similarly, if there are many columns, it will only print out
@@ -626,13 +625,13 @@ becoming more clever at combining sets of simple functions in interesting
 ways.</p>
 <p><strong>Functions available through packages</strong></p>
 <p>The tidyverse functions do not come with base R, but rather are available
-through extensions to base R, commonly referred to as “packages.” Like base
+through extensions to base R, commonly referred to as “packages”. Like base
 R, these are all open-source and free. Many are available through a
 repository called CRAN, and you can download them directly from R using the
 <code>install.packages</code> function.</p>
 <p>The heart of the tidyverse functions are available through an umbrella
-package called “tidyverse.” This package includes a number of key tidyverse
-packages (e.g., “dplyr,” “tidyr,” “stringr,” “forcats” [?], “ggplot2”) and allows you
+package called “tidyverse”. This package includes a number of key tidyverse
+packages (e.g., “dplyr”, “tidyr”, “stringr”, “forcats” [?], “ggplot2”) and allows you
 to quickly install this set of packages on your computer. When you are coding
 in R, you will then need to load the package in your R session, which you can
 do using the <code>library</code> call (e.g., <code>library("tidyverse")</code>).</p>
@@ -686,7 +685,7 @@ file with commas, and these can be read into R with the <code>readr</code> funct
 <p>Some equipment in the laboratory may allow you to save results in a plain
 text format. When you export your data from laboratory equipment, you can
 check to see if there is an option to outload it to a format like “csv”
-or “txt,” which would allow you to use these <code>readr</code> functions to then
+or “txt”, which would allow you to use these <code>readr</code> functions to then
 read the data into R.</p>
 <p>There are other packages in the tidyverse that allow you to read in data
 from other types of file formats. For example, you may have data that
@@ -734,7 +733,7 @@ that’s easy to work with (e.g., a single large dataframe)</li>
 <p><strong>Tools for standardization and normalization</strong></p>
 <p>There are a range of ways to standardize and normalize different types of
 biomedical data, ranging from very simple to much more complex. At the simpler
-end is a process called “scaling,” where the observations for each feature or
+end is a process called “scaling”, where the observations for each feature or
 column are changed to have an overall mean of 0 and standard deviation of 1.
 This can be done by taking each value in a column and subtracting from it
 the column-wide mean, then dividing by the column-wide standard deviation [?].
@@ -761,7 +760,7 @@ it forms the heart of the tools for cleaning and exploring data that are stored
 in tidy dataframes. These functions can also be used for basic cleaning operations
 in a dataframe. For example, data that are recorded for colony-forming units
 may include “TNTC” in cells of the spreadsheet where so many bacteria had grown
-that the individual colonies were “too numerous to count.” When you read in the
+that the individual colonies were “too numerous to count”. When you read in the
 data, you may want to change these values to missing values so that you can
 run numerical calculations on the cells that include colony counts. This type
 of conversion can easily be done using functions from the <code>dplyr</code> package.
@@ -787,7 +786,7 @@ manipulations like scaling, you should take some time to learn a few other
 tools that can often be used to make your coding pipelines much more efficient.
 One of these is to learn how to work well with character strings. Character
 strings are strings of alphanumerical symbols that are stored inside
-quotation marks, like “Mouse-01” or “Control group.” Several tidyverse
+quotation marks, like “Mouse-01” or “Control group”. Several tidyverse
 packages help you work with this type of data more efficiently, either through
 finding and using regular patterns in the data (e.g., the number “01” stored in
 “Mouse-01”) or in treating these data as a marker of a set number of groups
@@ -814,11 +813,11 @@ subject (e.g., “Mouse 1A”). If some of the IDs were entered using upper
 case (e.g., “MOUSE 1A”), some with lower case (“mouse 1a”), and some with
 a mixture (e.g., “Mouse 1A”), then you may find that it is hard
 to write code that recognizes that “Mouse 1A” is the same as “mouse 1a” and
-“MOUSE 1A.” The functions in the <code>stringr</code> package would let you quickly
+“MOUSE 1A”. The functions in the <code>stringr</code> package would let you quickly
 convert everything to the same case and so work around this issue.
 As another example, you may want to extract certain elements from each
 subject ID—for example, you might want to create a column where you
-have changed “Mouse 1A” to just “1A” and “Mouse 2B” to just “2B.” The
+have changed “Mouse 1A” to just “1A” and “Mouse 2B” to just “2B”. The
 <code>stringr</code> package has functions that will let you do this in several
 ways. For example, it has a function that would let you remove “Mouse”
 from each character string, and another function that would let you
@@ -827,11 +826,11 @@ These types of tools can be invaluable when you need to preprocess or
 clean data from the format that it first enters R.</p>
 <p>Sometimes, you will want to treat character strings as discrete categories
 or values. For example, if part of your data records subject IDs
-(e.g., “Mouse 1A,” “Mouse 2B”), you may want to be able to link up all
+(e.g., “Mouse 1A”, “Mouse 2B”), you may want to be able to link up all
 of the observations that are recorded for each subject. Similarly, you
 may want to treat a variable that records treatment (e.g., “treated” / “control”)
 as a set of specific categories that each observation belongs to.</p>
-<p>In R, you can do this by treating that column as something called a “factor.”
+<p>In R, you can do this by treating that column as something called a “factor”.
 This data type looks like a character string (e.g., “treated”), but R has
 recorded that there are only a few set values that values in the column can have
 (e.g., “treated” or “control”), and when you summarize or plot the data, you can
@@ -1034,7 +1033,7 @@ quite trivial things in isolation, but, combined with other programs, become gen
 useful tools.” <span class="citation">(Kernighan and Pike 1984)</span></p>
 </blockquote>
 <blockquote>
-<p>“What is ‘Unix?’ In the narrowest sense, it is a time-sharing operating system <em>kernel</em>:
+<p>“What is ‘Unix’? In the narrowest sense, it is a time-sharing operating system <em>kernel</em>:
 a program that controls the resources of a computer and allocates them among its users.
 It lets users run their programs; it controls the peripheral devices (discs, terminals,
 printers, and the like) connected to the machine; and it provides a file system that
@@ -1137,7 +1136,7 @@ are fundamentals, and also develop the ability to learn new fields of knowledge
 when they arise so you will not be left behind…” <span class="citation">(Hamming 1997)</span></p>
 </blockquote>
 <blockquote>
-<p>“How are you to recognize ‘fundamentals?’ One test is that they have lasted a
+<p>“How are you to recognize ‘fundamentals’? One test is that they have lasted a
 long time. Another test is from the fundamentals all the rest of the field
 can be derived by using the standard methods in the field.” <span class="citation">(Hamming 1997)</span></p>
 </blockquote>

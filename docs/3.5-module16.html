@@ -8,7 +8,6 @@
 <meta property="og:title" content="3.5 Complex data types in R and Bioconductor | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
 <meta property="og:type" content="book" />
 
-
 <meta property="og:description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
 <meta name="github-repo" content="rstudio/bookdown-demo" />
 
@@ -26,7 +25,6 @@ MathJax.Hub.Config({
 
 <title>3.5 Complex data types in R and Bioconductor | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
 
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
 <link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
 
@@ -36,6 +34,7 @@ MathJax.Hub.Config({
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -70,7 +69,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -83,7 +82,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -133,10 +132,10 @@ div.csl-indent {
 <div class="col-sm-12">
 <div id="TOC">
 <ul>
-<li><a href="index.html#rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
-<li><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
-<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
-<li><a href="4-references.html#references"><span class="toc-section-number">4</span> References</a></li>
+<li><a href="index.html#rigor-and-reproducibility-in-computation" id="toc-rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
+<li><a href="2-experimental-data-recording.html#experimental-data-recording" id="toc-experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
+<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing" id="toc-experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
+<li><a href="4-references.html#references" id="toc-references"><span class="toc-section-number">4</span> References</a></li>
 </ul>
 </div>
 </div>
@@ -319,7 +318,7 @@ large to reasonably be stored in a dataframe structure, but instead will require
 a Bioconductor approach and the use of more complex data structures, while after
 pre-processing, the workflow can move into a tidyverse approach, centered on
 keeping the data in a dataframe structure.</p>
-<p>Many R data structures are built on a general structure called a “list.” This
+<p>Many R data structures are built on a general structure called a “list”. This
 data structure is a useful basic general data structure, because it is
 extraordinarily flexible. The list data structure is flexible in two
 important ways: it allows you to include data of different <em>types</em> in the
@@ -347,7 +346,7 @@ Some types of data can be stored using fewer of these <em>bits</em> (<em>bi</em>
 Each measurement of logical data, for example, can be stored in a single bit,
 since it only can take one of two values (0 or 1, for FALSE and TRUE, respectively).
 For character strings, these can be divided into each character in the string
-for storage (for example, “cat” can be stored as “c,” “a,” “t”). There is a set
+for storage (for example, “cat” can be stored as “c”, “a”, “t”). There is a set
 of characters called the ASCII character set that includes the lowercase and
 uppercase of the letters and punctuation sets that you see on a standard
 US keyboard [?], and if the character strings only use these characters, they
@@ -376,7 +375,7 @@ structure provides a bit more flexibility—you can expand into two dimensions,
 rather than one, and you can have different data types in different columns of
 the dataframe (although each column must itself have a single data type).</p>
 <p>The list data structure is much more flexible. It essentially allows you to
-create different “slots,” and you can store any type of data in each of these
+create different “slots”, and you can store any type of data in each of these
 slots. In each slot you can store any of the other types of data structures in
 R—for example, vectors, dataframes, or other lists. You can even store unusual
 things like R <em>environments</em> [?] or <em>pointers</em> that give the directions to where
@@ -550,7 +549,7 @@ other lists. This makes them fundamentally different from atomic vectors.”
 <p>“The two most important S3 vectors built on top of lists are data frames and
 tibbles. If you do data analysis in R, you’re going to be using data frames.
 A data frame is a named list of vectors with attributes for (column) <code>names</code>,
-<code>row.names</code>, and its class,”data.frame“… In contrast to a regular list, a
+<code>row.names</code>, and its class,”data.frame”… In contrast to a regular list, a
 data frame has an additional constraint: the length of each of its vectors must
 be the same. This gives data frames their rectangular structure…” <span class="citation">(Wickham 2019)</span></p>
 </blockquote>
@@ -760,7 +759,7 @@ organically over many years without a single guiding principle. Most of the time
 the distinction between objects and object-oriented objects is not important. But
 here we need to get into the nitty gritty details so we’ll use the terms
 <strong>base objects</strong> and <strong>OO objects</strong> to distinguish them. … Techinally, the difference
-between base and OO objects is that OO objects have a ‘class attribute.’”
+between base and OO objects is that OO objects have a ‘class attribute’.”
 <span class="citation">(Wickham 2019)</span></p>
 </blockquote>
 <blockquote>
@@ -908,7 +907,7 @@ are all there if and when you want to dig to figure out what’s going on.]</p>
 <p>[There are ways to fully package up and save the computer environment used to
 run a pipeline of pre-processing and analysis, including any system settings,
 all different software used in analysis steps, and so on. Some of the approaches
-that are being explored for this include the use of “containers,” including
+that are being explored for this include the use of “containers”, including
 Docker containers. This does allow, typically, for full reproducibility of
 the workflow. However, this approach isn’t very proactive in emphasizing the
 robustness of a workflow or its comprehensibility to others—instead, it
@@ -1910,7 +1909,7 @@ data containers.” <span class="citation">(Holmes and Huber 2018)</span></p>
 <blockquote>
 <p>“<code>IRanges</code> is a general container for mathematical intervals. We create the
 biological context with the next line [which uses <code>GRanges</code>]. [Footnote:
-‘The ’I in IRanges stands for ’interval,’ the ‘G’ in GRanges for ‘genomic’].”
+‘The ’I in IRanges stands for ’interval’, the ‘G’ in GRanges for ‘genomic’].”
 <span class="citation">(Holmes and Huber 2018)</span></p>
 </blockquote>
 <blockquote>
@@ -1952,7 +1951,7 @@ CDs (clusters of differentiation) and are collected by flow cytometry
 (using fluorescence…) or mass cytometry (using single-cell atomic mass
 spectrometry of heavy metal reporters). An example of a commonly used CD is
 CD4; this protein is expressed by helper T cells that are referred to as
-being ‘CD4+.’ Note, however, that some cells express CD4 (thus are CD4+)
+being ‘CD4+’. Note, however, that some cells express CD4 (thus are CD4+)
 but are not actually helper T cells. We start by loading some useful Bioconductor
 packages for flow cytometry, <code>flowCore</code> and <code>flowViz</code>.” <span class="citation">(Holmes and Huber 2018)</span></p>
 </blockquote>
@@ -2134,7 +2133,7 @@ even a proper way to express programmatically what ‘an object like <code>xldf<
 in the tidyverse. Object-oriented (OO) programming, and its incarnation S4 in R,
 solves such questions. For instance, the above-mentioned checks could be
 performed by a <code>validObject</code> method for a suitably defined class, and the class
-definition would formalize the notion of ’an object like <code>xldf</code>.’ Addressing
+definition would formalize the notion of ’an object like <code>xldf</code>’. Addressing
 such issues is behind the object-oriented design of the data structures in
 Bioconductor, such as the <code>SummarizedExperiment</code> class. Other potentially useful
 features of OO data representations include: 1. Abstraction of interface from
@@ -2149,7 +2148,7 @@ send programmatic queries to an object to ask for more information about itself.
 All of these make it easier to write high-level code that focuses on the ‘big
 picture’ functionality rather than on implementation details of the building
 blocks—albeit at the cost of more initial investment in infrastructure and
-‘bureaucracy.’” <span class="citation">(Holmes and Huber 2018)</span></p>
+‘bureaucracy’.” <span class="citation">(Holmes and Huber 2018)</span></p>
 </blockquote>
 <blockquote>
 <p>“<strong>Data provenance and metadata.</strong> THere is no obvious place in an object like
@@ -2164,7 +2163,7 @@ data classes in Bioconductor try to address this.” <span class="citation">(Hol
 structure, since a number of features (e.g., genes: conventionally, the rows of
 the matrix) are assayed on several samples (conventionally, the columns of the
 matrix). Unrolling the matrix into a long form like <code>xldf</code> makes some operations
-(say, PCA, SVD, clustering of features or samples) more awkward."
+(say, PCA, SVD, clustering of features or samples) more awkward.”
 <span class="citation">(Holmes and Huber 2018)</span></p>
 </blockquote>
 <blockquote>
@@ -2230,7 +2229,7 @@ output something interesting.</p>
 <p>The S4 system of object-oriented programming in R allows for something
 called <em>inheritance</em>. [More on this.]</p>
 <p>As you use R with the Bioconductor packages, you often might not notice
-how much S4 objects are being used “under the hood,” as you pre-process
+how much S4 objects are being used “under the hood”, as you pre-process
 and analyze data. By contrast, you may have learned the “tidyverse” approach
 in R, which is a powerful general approach for working with data. The
 tidyverse approach is centered on the object class is predominated uses,
@@ -2327,7 +2326,7 @@ data at every step.</p>
 store different elements of the data. They also are associated with specific
 functions that work with the way they store the data.</p>
 <blockquote>
-<p>“A programming language serves two related purposes: it provides a vehicle for the programmer to specify actions to be executed and a set of concepts for the programmer to use when thinking about what can be done. The first aspect ideally requires a language that is ‘close to the machine,’ so that all important aspects of a machine are handled simply and efficiently in a way that is reasonably obvious to the programmer. The C language was primarily designed with this in mind. The second aspect ideally requires a language that is ‘close to the problem to be solved’ so that the concepts of a solution can be expressed directly and concisely. The facilities added to C to create C++ were primarily designed with this in mind.”
+<p>“A programming language serves two related purposes: it provides a vehicle for the programmer to specify actions to be executed and a set of concepts for the programmer to use when thinking about what can be done. The first aspect ideally requires a language that is ‘close to the machine’, so that all important aspects of a machine are handled simply and efficiently in a way that is reasonably obvious to the programmer. The C language was primarily designed with this in mind. The second aspect ideally requires a language that is ‘close to the problem to be solved’ so that the concepts of a solution can be expressed directly and concisely. The facilities added to C to create C++ were primarily designed with this in mind.”
 — Bjarne Stroustrup, <em>The C++ Programming Language</em>, Addison-Wesley, 1986</p>
 </blockquote>
 <blockquote>
@@ -2494,7 +2493,7 @@ method of the generic function that matches the class of the argument. If such a
 match exists, then the method function is used. If there is no matching method
 or if the argument does not have a class, then the default method is used.
 Let’s get specific. The lm (linear model) function returns an object of class
-‘lm.’ Among the methods for print are print.lm and print.default. The
+‘lm’. Among the methods for print are print.lm and print.default. The
 result of a call to lm is printed with print.lm. The result of 1:10 is printed
 with print.default.”
 <span class="citation">(Burns 2011)</span></p>
@@ -2527,8 +2526,9 @@ getS3method(’median’, ’default’).” <span class="citation">(Burns 2011)
 <p>“The methods function lists the methods of a generic function [for classes loaded in the current session]. Alternatively
 given a class it returns the generic functions that have methods for the class.” <span class="citation">(Burns 2011)</span></p>
 </blockquote>
-<pre><code>## [1] &quot;print.acf&quot;         &quot;print.AES&quot;         &quot;print.anova&quot;      
-## [4] &quot;print.ansi_string&quot; &quot;print.ansi_style&quot;  &quot;print.aov&quot;</code></pre>
+<pre><code>## [1] &quot;print.acf&quot;               &quot;print.activeConcordance&quot;
+## [3] &quot;print.AES&quot;               &quot;print.anova&quot;            
+## [5] &quot;print.aov&quot;               &quot;print.aovlist&quot;</code></pre>
 <pre><code>## [1] ExpressionSet,environment-method ExpressionSet,matrix-method     
 ## [3] ExpressionSet,missing-method    
 ## see &#39;?methods&#39; for accessing help and source code</code></pre>
@@ -2563,7 +2563,7 @@ pieces (components) of the object are called slots. Slots are accessed by the <c
 operator.” <span class="citation">(Burns 2011)</span></p>
 </blockquote>
 <blockquote>
-<p>"By now you will have noticed that S4 methods are driven by the class
+<p>“By now you will have noticed that S4 methods are driven by the class
 attribute just as S3 methods are. This commonality perhaps makes the two
 systems appear more similar than they are. In S3 the decision of what method
 to use is made in real-time when the function is called. In S4 the decision is

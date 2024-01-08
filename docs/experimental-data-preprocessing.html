@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 3 Experimental Data Preprocessing | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
   <meta name="description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 3 Experimental Data Preprocessing | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
@@ -32,7 +31,6 @@
   
 <link rel="prev" href="experimental-data-recording.html"/>
 <link rel="next" href="references.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -50,14 +48,16 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
@@ -91,7 +91,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -104,7 +104,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -118,6 +118,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -181,8 +185,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="2.3" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#module3"><i class="fa fa-check"></i><b>2.3</b> The ‘tidy’ data format</a>
 <ul>
-<li class="chapter" data-level="2.3.1" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#what-makes-data-tidy"><i class="fa fa-check"></i><b>2.3.1</b> What makes data “tidy?”</a></li>
-<li class="chapter" data-level="2.3.2" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#why-make-your-data-tidy"><i class="fa fa-check"></i><b>2.3.2</b> Why make your data “tidy?”</a></li>
+<li class="chapter" data-level="2.3.1" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#what-makes-data-tidy"><i class="fa fa-check"></i><b>2.3.1</b> What makes data “tidy”?</a></li>
+<li class="chapter" data-level="2.3.2" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#why-make-your-data-tidy"><i class="fa fa-check"></i><b>2.3.2</b> Why make your data “tidy”?</a></li>
 <li class="chapter" data-level="2.3.3" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#using-tidyverse-tools-with-data-in-the-tidy-data-format"><i class="fa fa-check"></i><b>2.3.3</b> Using tidyverse tools with data in the “tidy data” format</a></li>
 </ul></li>
 <li class="chapter" data-level="2.4" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#module4"><i class="fa fa-check"></i><b>2.4</b> Designing templates for “tidy” data collection</a>
@@ -232,8 +236,10 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="2.9" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#module9"><i class="fa fa-check"></i><b>2.9</b> Harnessing version control for transparent data recording</a>
 <ul>
-<li class="chapter" data-level="2.9.1" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#what-is-version-control"><i class="fa fa-check"></i><b>2.9.1</b> What is version control?</a></li>
-<li class="chapter" data-level="2.9.2" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#recording-data-in-the-laboratoryfrom-paper-to-computers"><i class="fa fa-check"></i><b>2.9.2</b> Recording data in the laboratory—from paper to computers</a></li>
+<li class="chapter" data-level="2.9.1" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#challenges-of-collaborating-on-evolving-research-materials"><i class="fa fa-check"></i><b>2.9.1</b> Challenges of collaborating on evolving research materials</a></li>
+<li class="chapter" data-level="2.9.2" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#what-are-the-key-elements-of-version-control"><i class="fa fa-check"></i><b>2.9.2</b> What are the key elements of version control?</a></li>
+<li class="chapter" data-level="2.9.3" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#recording-data-in-the-laboratoryfrom-paper-to-computers"><i class="fa fa-check"></i><b>2.9.3</b> Recording data in the laboratory—from paper to computers</a></li>
+<li class="chapter" data-level="2.9.4" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#discussion-questions-1"><i class="fa fa-check"></i><b>2.9.4</b> Discussion questions</a></li>
 </ul></li>
 <li class="chapter" data-level="2.10" data-path="experimental-data-recording.html"><a href="experimental-data-recording.html#module10"><i class="fa fa-check"></i><b>2.10</b> Enhance the reproducibility of collaborative research with version control platforms</a>
 <ul>
@@ -256,7 +262,7 @@ div.csl-indent {
 <li class="chapter" data-level="3.1.1" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#what-is-data-preprocessing"><i class="fa fa-check"></i><b>3.1.1</b> What is data preprocessing?</a></li>
 <li class="chapter" data-level="3.1.2" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#common-themes-and-processes-in-data-preprocessing"><i class="fa fa-check"></i><b>3.1.2</b> Common themes and processes in data preprocessing</a></li>
 <li class="chapter" data-level="3.1.3" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#tools-for-biomedical-data-preprocessing"><i class="fa fa-check"></i><b>3.1.3</b> Tools for biomedical data preprocessing</a></li>
-<li class="chapter" data-level="3.1.4" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#discussion-questions-1"><i class="fa fa-check"></i><b>3.1.4</b> Discussion questions</a></li>
+<li class="chapter" data-level="3.1.4" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#discussion-questions-2"><i class="fa fa-check"></i><b>3.1.4</b> Discussion questions</a></li>
 <li class="chapter" data-level="3.1.5" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#example-dataset"><i class="fa fa-check"></i><b>3.1.5</b> Example dataset</a></li>
 <li class="chapter" data-level="3.1.6" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#what-is-pre-processing"><i class="fa fa-check"></i><b>3.1.6</b> What is pre-processing?</a></li>
 <li class="chapter" data-level="3.1.7" data-path="experimental-data-preprocessing.html"><a href="experimental-data-preprocessing.html#approaches-to-simple-preprocessing-tasks"><i class="fa fa-check"></i><b>3.1.7</b> Approaches to simple preprocessing tasks</a></li>
@@ -382,8 +388,8 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="experimental-data-preprocessing" class="section level1" number="3">
-<h1><span class="header-section-number">Chapter 3</span> Experimental Data Preprocessing</h1>
+<div id="experimental-data-preprocessing" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Experimental Data Preprocessing<a href="experimental-data-preprocessing.html#experimental-data-preprocessing" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>This section includes modules on:</p>
 <ul>
 <li><a href="experimental-data-preprocessing.html#module12">Module 3.1: Principles and benefits of scripted pre-processing of experimental data</a></li>
@@ -396,8 +402,8 @@ div.csl-indent {
 <li><a href="experimental-data-preprocessing.html#module19">Module 3.8: RMarkdown for creating reproducible data pre-processing protocols</a></li>
 <li><a href="experimental-data-preprocessing.html#module20">Module 3.9: Example: Creating a reproducible data pre-processing protocol</a></li>
 </ul>
-<div id="module12" class="section level2" number="3.1">
-<h2><span class="header-section-number">3.1</span> Principles and benefits of scripted pre-processing of experimental data</h2>
+<div id="module12" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Principles and benefits of scripted pre-processing of experimental data<a href="experimental-data-preprocessing.html#module12" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The experimental data collected for biomedical research often requires
 pre-processing before it can be analyzed. This stage of working with
 experimental data has critical implications for the reproducibility and rigor of
@@ -424,8 +430,8 @@ we’ll cover in much more detail in the next few modules. We’ll finish the mo
 with a couple of examples of the steps in specific preprocessing pipelines,
 along with a chance for discussion of how these steps align with common themes
 in preprocessing.</p>
-<div id="what-is-data-preprocessing" class="section level3" number="3.1.1">
-<h3><span class="header-section-number">3.1.1</span> What is data preprocessing?</h3>
+<div id="what-is-data-preprocessing" class="section level3 hasAnchor" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> What is data preprocessing?<a href="experimental-data-preprocessing.html#what-is-data-preprocessing" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In any scientific field, when you work with data, it will often take much more
 time to prepare the data for analysis than it takes to set up and run the
 statistical analysis itself <span class="citation">(D. Robinson 2014)</span>. This is certainly true with
@@ -467,8 +473,8 @@ Other preprocessing tasks are more housekeeping (e.g., reading data into memory
 so the software can use it) and others aim to digest complexity in the data or
 reduce or handle noise and bias in the data collection.</p>
 </div>
-<div id="common-themes-and-processes-in-data-preprocessing" class="section level3" number="3.1.2">
-<h3><span class="header-section-number">3.1.2</span> Common themes and processes in data preprocessing</h3>
+<div id="common-themes-and-processes-in-data-preprocessing" class="section level3 hasAnchor" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> Common themes and processes in data preprocessing<a href="experimental-data-preprocessing.html#common-themes-and-processes-in-data-preprocessing" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>This preprocessing will vary depending on the way the data were collected and
 the scientific questions you hope to answer, and often it will take a lot of
 work to develop a solid pipeline for preprocessing data from a specific assay.
@@ -540,12 +546,7 @@ the scientific underpinnings of the assay. For example, in ELISA, antibody
 levels are detected as a measure of the intensity of color of a sample at
 various dilutions, but to interpret this correctly, you need to know the
 exact process that was used for that ELISA (e.g., sandwich vs. …).</p>
-<pre class="marginfigure"><code>&quot;Meaningful interpretation of sequencing data has become particularly
-important. Yet such interpretation relies heavily on complex computation---a new
-and unfamiliar domain to many of our biomedical colleagues---which, unlike
-data generation, is not universally accessible to everyone.&quot;
-
-[@nekrutenko2012next]</code></pre>
+<p>Placeholder (you should not see this)</p>
 <p>The complexity of this “translation” scales up as you move to data that are
 collected using more complex processes. Biomedical research today leverages
 extraordinarily complex equipment and measurement processes to learn more about
@@ -605,23 +606,8 @@ from the measures that the laboratory equipment captures in these cases.
 Depending on the assay, this preprocessing can include sequence alignment
 and assembly (if sequencing data were collected) or peak identification and
 alignment (if data was collected using mass spectrometry, for example).</p>
-<pre class="marginfigure"><code>&quot;To reap the full benefits of the omics revolution, we need information
-technology tools capable of making sense of the vast data sets generated by
-omics experiments. In fact, the development of such tools has become a
-discipline unto itself, called bioinformatics. And only with those tools can
-researchers hope to clear another obstacle to drug development: that posed by
-so-called emergent properties---behaviors of biological systems that cannot be
-predicted from the basic biochemical properties of their components.&quot;
-
-[@barry2009new]</code></pre>
-<pre class="marginfigure"><code>&quot;One thing that has not changed in the last 10 years is that the individual
-outputs of the sequence machines are essentially worthless by themselves. ...
-Fundamental to creating biological understanding from
-the increasing piles of sequence data is the development of analysis algorithms
-able to assess the success of the experiments and synthesize the data into
-manageable and understandable pieces.&quot;
-
-[@flicek2009sense]</code></pre>
+<p>Placeholder (you should not see this)</p>
+<p>Placeholder (you should not see this)</p>
 <p>The discipline of bioinformatics works to develop these types of algorithms
 <span class="citation">(Barry and Cheung 2009)</span>, and many of them are available through open-source, scripted
 software like R and Python. These types of preprocessing algorithms are often
@@ -659,13 +645,7 @@ determine why certain data points are missing (e.g., are they missing at random,
 or is there some process that makes certain data points more likely to be
 missing, in which case this missingness may bias later analysis), to help you
 decide how to handle those missing values <span class="citation">(Chatfield 1995)</span>.</p>
-<pre class="marginfigure"><code>&quot;It is important to
-find out why an observation is missing. This is best done by asking &#39;people in
-the field&#39;. In particular, there is a world of difference between observations
-that are lost through random events, and situations where missing observations
-due to damage or loss are more likely to arise under certain conditions.&quot;
-
-[@chatfield1995problem]</code></pre>
+<p>Placeholder (you should not see this)</p>
 <p>Some quality control issues will be very specific to a type of data or assay.
 For example, one common theme in quality control repeats across methods
 that measure data at the level of the single cell. Some examples of this type of
@@ -744,7 +724,7 @@ But fundamental differences in the data mean that this is not always possible.
 For one thing, single-cell data are noisier… With so little RNA to work with,
 small changes in amplification and capture efficiencies can produce large
 differences from cell to cell and day to day and have nothing to do with
-biology. Researchers must therefore be vigilant for ‘batch effects,’ in which
+biology. Researchers must therefore be vigilant for ‘batch effects’, in which
 seemingly identical cells prepared on different days differ for purely technical
 reasons, and for ‘dropouts’—genes that are expressed in the cell but not
 picked up in the sequence data. Another challenge is the scale… A typical bulk
@@ -860,7 +840,7 @@ case, each of the fluorescent tags, rather than emitting at a single
 wavelength, has a distribution of wavelengths across which it emits.
 These distributions overlap somewhat for some of the fluorescent tags,
 especially when measuring many of these “colors” through a multicolor
-panel?, causing something called “spillover?” where emissions from
+panel?, causing something called “spillover”?, where emissions from
 one tag might be recorded as part of the signal for another tag.</p>
 <p>One key example of technical noise is known as “batch effects”—if different
 samples are run through the equipment at different times, it can introduce
@@ -1087,7 +1067,7 @@ often be substantially reduced by using a dimension reduction technique, and
 then conducting analysis to compare values in some of the main principle
 components of the data.</p>
 <blockquote>
-<p>“Most approaches seek to reduce these ‘multi-dimensional data,’ with each
+<p>“Most approaches seek to reduce these ‘multi-dimensional data’, with each
 dimension being the expression of one gene, into a very small number of dimensions
 that can be more easily visualised and interpreted. Principal component analysis
 (PCA) is a mathematical algorithm that reduces the dimensionality of data, and
@@ -1159,7 +1139,7 @@ often requires special consideration.” <span class="citation">(Haque et al. 20
 </blockquote>
 <blockquote>
 <p>“Cluster analysis aims to partition a group of individuals into groups or clusters
-which are in some sense ‘close together.’ There is a wide variety of possible
+which are in some sense ‘close together’. There is a wide variety of possible
 procedures. In my experience the clusters obtained depend to a large extent on the methods
 used (except where the clusters are really clear-cut) and users are now aware of
 the drawbacks and the precautions which need to be taken to avoid irrelevant or misleading
@@ -1167,17 +1147,17 @@ results.” <span class="citation">(Chatfield 1995)</span></p>
 </blockquote>
 <p>Flow cytometry often uses a different process to leverage the different measures
 taken on each cell to make sense of them. This process is referred to
-as “gating.” In gating, each measure taken on the cells is considered one or
+as “gating”. In gating, each measure taken on the cells is considered one or
 two at a time. The cells with with characteristics on that measure or set of
 measures that are consistent with a cell type of interest are retained.
-The gating process steps through many of these “gates,” filtering out cells and
+The gating process steps through many of these “gates”, filtering out cells and
 each step and only retaining the cells with markers or characteristics
 that align with a certain cell type, until the researcher is satisfied that they
 have identified all the cells of a certain type in the sample (e.g., all
 helper T cells in the sample).</p>
 </div>
-<div id="tools-for-biomedical-data-preprocessing" class="section level3" number="3.1.3">
-<h3><span class="header-section-number">3.1.3</span> Tools for biomedical data preprocessing</h3>
+<div id="tools-for-biomedical-data-preprocessing" class="section level3 hasAnchor" number="3.1.3">
+<h3><span class="header-section-number">3.1.3</span> Tools for biomedical data preprocessing<a href="experimental-data-preprocessing.html#tools-for-biomedical-data-preprocessing" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The previous parts of the module described some common themes and processes in
 preprocessing biomedical data. These are often combined together into a pipeline
 (also called a workflow). These pipelines can become fairly long and complex
@@ -1206,10 +1186,10 @@ how you can use this type of software for preprocessing biomedical data.</p>
 is whether the software is point-and-click software or script-based software.
 Let’s start with a definition of each.</p>
 <p>Point-and-click software is more formally known as GUI-based software [?], where
-GUI stand for “graphical user interface.” These are programs where your hand is
+GUI stand for “graphical user interface”. These are programs where your hand is
 on your mouse most of the time, and you use the mouse to select actions and
 options from buttons and other widgets [?] that are shown by the software on the
-screen. This type of software is sometimes called “widget-based,” as it is built
+screen. This type of software is sometimes called “widget-based”, as it is built
 around widgets like drop-down menus and slider bars <span class="citation">(J. M. Perkel 2018)</span>.</p>
 <p>A basic example of GUI-based software is your computer’s calendar application
 (“application” is a common synonym for “software”). To navigate across dates on
@@ -1223,7 +1203,7 @@ as its main interface. A script, in this case, is a line-by-line set of
 instructions describing what actions you want the software to perform. With
 script-based software, you keep your keys on the keyboard more often than on the
 mouse. Many script-based software programs will also allow you to also send the
-lines of instructions one at a time in an area called a “console,” which will
+lines of instructions one at a time in an area called a “console”, which will
 then return the result from each line after you run it. Script-based software is
 also sometimes called software that is “used programatically”
 <span class="citation">(J. M. Perkel 2018)</span>. Script-based software in common use with biomedical
@@ -1287,7 +1267,7 @@ have to learn the rules (grammar) and vocabulary (names of functions and
 their parameters), but once you do, you can combine them to address a wide
 variety of tasks, including things no one else has yet thought of.</p>
 <p>In the late 1990s, a famous computer scientist named Richard Hamming wrote
-a book called, “The Art and Science of Engineering,” in which he talks
+a book called, “The Art and Science of Engineering”, in which he talks
 a lot about the process of building things and the role that programming
 can play in this process. He predicts that by 2020, it will be the experts in a particular field that do programming for that field, rather than experts in
 computer programming trying to build tools for other fields <span class="citation">(Hamming 1997)</span>.</p>
@@ -1326,7 +1306,7 @@ months of regularly applying the software to research data, is enough for a
 scientist to become comfortable using a script-based software like R or Python.
 With another year or so of regular use, scientists can often start making their
 own small software extensions to the language. In a 2017 article on analyzing
-scRNA-seq data, the author noted that “relatively few biologists are comfortable working in those environments,” referring to Unix and R <span class="citation">(J. M. Perkel 2017)</span>,
+scRNA-seq data, the author noted that “relatively few biologists are comfortable working in those environments”, referring to Unix and R <span class="citation">(J. M. Perkel 2017)</span>,
 and noted that this was a barrier to using many of the available tools for
 working with scRNA-seq data at the time. However, we would argue that
 becoming comfortable with these tools requires an investment, but is not
@@ -1370,11 +1350,11 @@ the first place where algorithms working with the data are available. For
 example, an article about scRNA-seq from 2017 noted that, at the time, there
 were “very few, if any, ‘plug-and-play’ packages” for working with scRNA-seq
 data, and of those available, they were “user-friendly but have the drawback
-that they are to some extent a ‘black box,’ with little transparency as to the
+that they are to some extent a ‘black box’, with little transparency as to the
 precise algorithmic details and parameters employed.” <span class="citation">(Haque et al. 2017)</span>
 Similarly, another article in the same year noted that at the time, “most
 scRNA-seq tools exist as Unix programs or packages in the programming language
-R,” although “some ready-to-use pipelines have been developed”
+R”, although “some ready-to-use pipelines have been developed”
 <span class="citation">(J. M. Perkel 2017)</span>.</p>
 <p>Another key advantage of script-based software is that, in writing the
 script, you are thoroughly documenting the steps you took to preprocess the
@@ -1388,7 +1368,7 @@ you use a code script, it will not run if you forget a step or a detail of that
 step. Some GUI-based programs are taking steps to try to ameliorate this,
 allowing a user to save or download a full record that records the steps taken
 in a given pipeline [more on this?]. As a note, there are some movements towards
-“integrative frameworks,” which can help improve reproducibility for pipelines
+“integrative frameworks”, which can help improve reproducibility for pipelines
 that span different types of software [?] (Galaxy, Gene Prof).</p>
 <blockquote>
 <p>“The above challenges can be distilled into two main issues. First, most
@@ -1453,7 +1433,7 @@ own, but because you can “pipe” from one tool to another, you can combine th
 small tools into pipelines that do very powerful and complex tasks. In this
 context, a “pipe” allows you to take the output from one tool and send it
 directly into another (for example, in R, to send the output from one function
-call directly into another function) <span class="citation">(Kernighan and Pike 1984)</span>. A “pipeline,” then,
+call directly into another function) <span class="citation">(Kernighan and Pike 1984)</span>. A “pipeline”, then,
 is a linked set of these tools, linked with pipes to connect the output from one
 as the input to the next <span class="citation">(Kernighan and Pike 1984)</span>.</p>
 <p><strong>Free and open-source versus proprietary</strong></p>
@@ -1517,10 +1497,10 @@ the details of how the underlying algorithms work. Also, the algorithms may not
 have gone through peer-review, if they are considered private intellectual
 property.</p>
 <blockquote>
-<p>" Several commercial vendors now provide ‘software as a service’ analysis
+<p>” Several commercial vendors now provide ‘software as a service’ analysis
 solutions for sequence data (such as DNAnexus and GenomeQuest); however, these
 solutions are built on proprietary platforms, raising concerns about
-transparency and vendor lock-in." <span class="citation">(Nekrutenko and Taylor 2012)</span></p>
+transparency and vendor lock-in.” <span class="citation">(Nekrutenko and Taylor 2012)</span></p>
 </blockquote>
 <p>Transparency is a key element of reproducibility. If the algorithms of software
 can be investigated, then scientists who are using two different programs (for
@@ -1573,8 +1553,8 @@ open-source software, you don’t have to invest money to get more tools. Instea
 the investment for each new tool is the time that it takes to learn how to use
 it in your workflow.</p>
 </div>
-<div id="discussion-questions-1" class="section level3" number="3.1.4">
-<h3><span class="header-section-number">3.1.4</span> Discussion questions</h3>
+<div id="discussion-questions-2" class="section level3 hasAnchor" number="3.1.4">
+<h3><span class="header-section-number">3.1.4</span> Discussion questions<a href="experimental-data-preprocessing.html#discussion-questions-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>It can be helpful to walk through some examples some of these preprocessing
 steps, in the context of specific types of biomedical experiments. In this
 section, we’ll give an overview of the types of preprocessing steps you might
@@ -1630,8 +1610,8 @@ treated versus control)</li>
 </ul>
 <hr />
 </div>
-<div id="example-dataset" class="section level3" number="3.1.5">
-<h3><span class="header-section-number">3.1.5</span> Example dataset</h3>
+<div id="example-dataset" class="section level3 hasAnchor" number="3.1.5">
+<h3><span class="header-section-number">3.1.5</span> Example dataset<a href="experimental-data-preprocessing.html#example-dataset" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In this module and several of the following modules, we’ll use two example
 datasets that are based on real data collected from an immunology experiment.
 These data will help us to describe and motivate the steps of pre-processing
@@ -1727,7 +1707,7 @@ search for the study on the database by its accession number, GSE165190).
 This page includes data from single cell
 RNA sequencing for twelve samples from this study, three from each of the
 experimental conditions. You can download data for all the samples by clicking
-the link on the page to download the file named “GSE165190_RAW.tar.” This is
+the link on the page to download the file named “GSE165190_RAW.tar”. This is
 a compressed file, so once you download it, you will need to uncompress it,
 which will give you a folder with a number of data files. On a Mac, you can
 decompress the file by double-clicking on the file named “GSE165190_RAW.tar”
@@ -1833,8 +1813,8 @@ error. Another problem is analyzing the enormous amounts of data that result—n
 least because the tools can be unintuitive.” <span class="citation">(J. M. Perkel 2017)</span></p>
 </blockquote>
 </div>
-<div id="what-is-pre-processing" class="section level3" number="3.1.6">
-<h3><span class="header-section-number">3.1.6</span> What is pre-processing?</h3>
+<div id="what-is-pre-processing" class="section level3 hasAnchor" number="3.1.6">
+<h3><span class="header-section-number">3.1.6</span> What is pre-processing?<a href="experimental-data-preprocessing.html#what-is-pre-processing" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <blockquote>
 <p>“Assessing the structure of the data must also take account of the prior
 knowledge of the system in regard to such matters as the design of th experiment,
@@ -1851,7 +1831,7 @@ the data. Outliers arise for a variety of reasons and can create severe problems
 while an outlier may or may not be an error. … An outlier may be caused by an error,
 but it is important to consider the alternative possibility that the observation
 is a genuine extreme result from the ‘tail’ of the distribution. This usually happens
-when the distribution is skewed and the outlier comes from the long ‘tail.’”
+when the distribution is skewed and the outlier comes from the long ‘tail’.”
 <span class="citation">(Chatfield 1995)</span></p>
 </blockquote>
 <blockquote>
@@ -1884,7 +1864,7 @@ observations (called influential observations).” <span class="citation">(Chatf
 </blockquote>
 <blockquote>
 <p>“Missing observations arise for a variety of reasons. … It is important to find out
-why an observation is missing. This is best done by asking ‘people in the field.’ In
+why an observation is missing. This is best done by asking ‘people in the field’. In
 particular, there is a world of difference between observations that are lost through
 random events, and situations where missing observations due to damage or loss are
 more likely to arise under certain conditions.” <span class="citation">(Chatfield 1995)</span></p>
@@ -1966,7 +1946,7 @@ fundamental differences in the data mean that this is not always possible. For o
 thing, single-cell data are noisier… With so little RNA to work with, small
 changes in amplification and capture efficiencies can produce large differences from
 cell to cell and day to day and have nothing to do with biology. Researchers must
-therefore be vigilant for ‘batch effects,’ in which seemingly identical cells
+therefore be vigilant for ‘batch effects’, in which seemingly identical cells
 prepared on different days differ for purely technical reasons, and for
 ‘dropouts’—genes that are expressed in the cell but not picked up in the sequence
 data. Another challenge is the scale… A typical bulk RNA-seq experiment involves
@@ -1978,7 +1958,7 @@ times as many.” <span class="citation">(J. M. Perkel 2017)</span></p>
 <p>“Even the seemingly simple question of what constitutes a good cell preparation is
 complicated in the world of scRNA-seq. Lun’s workflow assumes that most of the
 cells have approximately equivalent RNA abundances. But ‘that assumption isn’t
-necessarily true,’ he says. For instance, he says, naive T cells, which have never
+necessarily true’, he says. For instance, he says, naive T cells, which have never
 been activated by an antigen and are relatively quiescent, tend to have less
 messenger RNA than other immune cells and could end up being removed during analysis
 because a program thinks there is insufficient RNA for processing.” <span class="citation">(J. M. Perkel 2017)</span></p>
@@ -2102,7 +2082,7 @@ identify these low quality cells <span class="citation">(Ilicic et al. 2016)</sp
 often result in the captured cells (whether chambers in microfluidic systems,
 microwell plates, or droplets) being stressed, broken, or killed. Moreover,
 some capture sites can be empty and some may contain multiple cells. We refer
-to all such cells as ‘low quality.’ These cells can lead to misinterpretation
+to all such cells as ‘low quality’. These cells can lead to misinterpretation
 of the data and therefore need to be excluded.” <span class="citation">(Ilicic et al. 2016)</span></p>
 </blockquote>
 <blockquote>
@@ -2193,7 +2173,7 @@ reported for example as the number of raw reads per cell.” <span class="citati
 calibrate measurements and account for technical variation” <span class="citation">(Haque et al. 2017)</span></p>
 </blockquote>
 <blockquote>
-<p>“Transcriptional bursting: A phenomenon, also known as ‘transcriptional pulsing,’
+<p>“Transcriptional bursting: A phenomenon, also known as ‘transcriptional pulsing’,
 of relatively short transcriptionally active periods being followed by longer silent
 periods, resulting in temporal fluctuation of transcript levels.” <span class="citation">(Haque et al. 2017)</span></p>
 </blockquote>
@@ -2516,7 +2496,7 @@ population under study.” <span class="citation">(Brennecke et al. 2013)</span>
 </blockquote>
 <p>[Principal component analysis]</p>
 <blockquote>
-<p>“Most approaches seek to reduce these ‘multi-dimensional data,’ with each
+<p>“Most approaches seek to reduce these ‘multi-dimensional data’, with each
 dimension being the expression of one gene, into a very small number of dimensions
 that can be more easily visualised and interpreted. Principal component analysis
 (PCA) is a mathematical algorithm that reduces the dimensionality of data, and
@@ -2573,7 +2553,7 @@ individuals or outliers.” <span class="citation">(Chatfield 1995)</span></p>
 </blockquote>
 <blockquote>
 <p>“Cluster analysis aims to partition a group of individuals into groups or clusters
-which are in some sense ‘close together.’ There is a wide variety of possible
+which are in some sense ‘close together’. There is a wide variety of possible
 procedures. In my experience the clusters obtained depend to a large extent on the methods
 used (except where the clusters are really clear-cut) and users are now aware of
 the drawbacks and the precautions which need to be taken to avoid irrelevant or misleading
@@ -2633,7 +2613,7 @@ modifications in an approach called ‘top-down’ protein sequencing.” <span 
 </blockquote>
 <blockquote>
 <p>“Digesting the protein into a set of peptides also means that the physico-chemical
-properties of the protein, such as solubility and ‘stickiness,’ become irrelevant.
+properties of the protein, such as solubility and ‘stickiness’, become irrelevant.
 As long as the protein generates a sequence of peptides, at least some of them can
 be sequenced by the mass spectrometer, even if the protein itself would have been
 unstable or insoluble under the conditions used.” <span class="citation">(Steen and Mann 2004)</span></p>
@@ -2650,7 +2630,7 @@ so that the peptide species elute in order of their hydrophobicity.” <span cla
 <p>“When a peptide species arrives at the end of the column, it flows through a
 needle. At the needle tip, the liquid is vaporized and the peptide is subsequently
 ionized by the action of a strong electric potential. This process is called
-‘electrospray ionization.’” <span class="citation">(Steen and Mann 2004)</span></p>
+‘electrospray ionization’.” <span class="citation">(Steen and Mann 2004)</span></p>
 </blockquote>
 <blockquote>
 <p>“Electrosprayed peptide ions enter the mass spectrometer through a small hole
@@ -2658,7 +2638,7 @@ or a transfer capillary. Once inside the vacuum system, they are guided and
 manipulated by electric fields. There are diverse types of mass spectrometer,
 which differ in how they determine the mass-to-charge (m/z) ratios of the peptides.
 Three main types of mass spectrometers are used in proteomics: quadrupole mass
-spectometers, time of flight (TOF) mass spectrometers, and quadrupole ‘ion traps.’
+spectometers, time of flight (TOF) mass spectrometers, and quadrupole ‘ion traps’.
 … Each of these instruments generates a mass spectrum, which is a recording of the
 signal intensity of the ion at each value of the m/z scale (which has units of daltons
 (Da) per charge).”</p>
@@ -2715,7 +2695,7 @@ experiments, but are attractive because proteins are the active agents of the ce
 whereas the mRNA population is often a poor indicator of protein levels. However,
 it is still difficult to identify and quantify all the low-abundance proteins,
 especially in the presence of highly abundant proteins. Furthermore, as in microarray
-experiments, the results are ‘noisy,’ because of the extremely large amounts of
+experiments, the results are ‘noisy’, because of the extremely large amounts of
 data, and it can be difficult to distil functional and mechanistic hypotheses
 from such global experiments.” <span class="citation">(Steen and Mann 2004)</span></p>
 </blockquote>
@@ -2775,7 +2755,7 @@ divided into many more; for example, naive CD4+ T lymphocytes, a priori consider
 a homogeneous population, are now split into more than 10 subsets.” <span class="citation">(Benoist and Hacohen 2011)</span></p>
 </blockquote>
 <blockquote>
-<p>“The secret is that, in flow cytometry, every cell acts as an independent ‘test tube.’”
+<p>“The secret is that, in flow cytometry, every cell acts as an independent ‘test tube’.”
 <span class="citation">(Benoist and Hacohen 2011)</span></p>
 </blockquote>
 <blockquote>
@@ -3089,7 +3069,7 @@ approaches to normalization. One of them I would call ‘unsupervised’ in that
 does not taken into account the study design. These are the most popular methods
 because they require the least amount of statistical modeling and knowledge of
 statistics. The other approach, which is one I strongly favor, is what I would
-call ‘supervised normalization.’ This approach directly takes into account the
+call ‘supervised normalization’. This approach directly takes into account the
 study design. I find this appealing because is one is trying to parse sources of
 variation, then it seems all sources of variation should be considered. If I
 perform an experiment with 20 microarrays, say 10 treated and 10 control, then
@@ -3137,7 +3117,7 @@ a consensus has emerged as to which algorithms work best for each step and how
 they should be run. As a result, ‘pipelines’ now exist that are, if not exactly
 plug-and-play, at least tractable for non-experts. To analyze differences in gene
 expression, says Aaron Lun, a computational biologist at Cancer Research UK in
-Cambridge, bulk RNA-seq is ‘pretty much a solved problem.’” <span class="citation">(J. M. Perkel 2017)</span></p>
+Cambridge, bulk RNA-seq is ‘pretty much a solved problem’.” <span class="citation">(J. M. Perkel 2017)</span></p>
 </blockquote>
 <p>Reproducibility of pre-processing:</p>
 <blockquote>
@@ -3165,7 +3145,7 @@ accessible to everyone.” <span class="citation">(Nekrutenko and Taylor 2012)</
 </blockquote>
 <blockquote>
 <p>“The entire field of NGS analysis is in constant flux, and there is little agreement
-on what is considered to be the ‘best practice.’ In this situation, it is especially
+on what is considered to be the ‘best practice’. In this situation, it is especially
 important to be able to reuse and to adopt various analytical approaches reported
 in the literature. Unfortunately, this is often difficult owing to the the lack of
 necessary details. Let us look at the first and most straightforward of the analyses
@@ -3388,13 +3368,13 @@ are arguably not science.” <span class="citation">(Stark 2018)</span></p>
 Robert Boyle put forth his controversial idea of a vacuum and tasked himself
 with providing descriptions of his work sufficient ‘that the person I addressed
 them to might, without mistake, and with as little trouble as possible, be able
-to repeat such unusual experiments.’ Much modern scientific communication falls
+to repeat such unusual experiments’. Much modern scientific communication falls
 short of this standard. Most papers fail to report many aspects of the
 experiment and analysis that we may not with advantage omit—things that are
 crucial to understanding the result and its limitations, and to repeating the
 work. We have no common language to describe this shortcoming. I’ve been in
 conferences where scientists argued about whether work was reproducible,
-replicable, repeatable, generalizable and other ‘-bles,’ and clearly meant quite
+replicable, repeatable, generalizable and other ‘-bles’, and clearly meant quite
 different things by identical terms. Contradictory meanings across disciplines
 are deeply entrenched.” <span class="citation">(Stark 2018)</span></p>
 </blockquote>
@@ -3403,7 +3383,7 @@ are deeply entrenched.” <span class="citation">(Stark 2018)</span></p>
 between situations in which there is not enough information to attempt
 repetition, and those in which attempts do not yield substantially the same
 outcome. To reduce confusion, I propose an intuitive, unambiguous neologism:
-‘preproducibility.’ An experiment or analysis is preproducible if it has been
+‘preproducibility’. An experiment or analysis is preproducible if it has been
 described in adequate detail for others to undertake it. Preproducibility is a
 prerequisite for reproducibility, and the idea makes sense across disciplines.”
 <span class="citation">(Stark 2018)</span></p>
@@ -3492,7 +3472,7 @@ assured.” <span class="citation">(Baker 2016)</span></p>
 </blockquote>
 <blockquote>
 <p>“Many think that antibodies are a major driver of what has been deemed a
-‘reproducibility crisis,’ a growing realization that the results of many
+‘reproducibility crisis’, a growing realization that the results of many
 biomedical experiments cannot be reproduced and that the conclusions based on
 them may be unfounded. Poorly characterized antibodies probably contribute more
 to the problem than any other laboratory tool, says Glenn Begley, chief
@@ -3642,7 +3622,7 @@ allow researchers to quality control (QC), analyse and interpret scRNA-seq
 data, although companies that sell the wet-lab hardware and reagents for
 scRNA-seq are increasingly offering free software (for example, Loupe from
 10x Genomics, and Singular from Fluidigm). These are user-friendly but have the
-drawback that they are to some extent a ‘black box,’ with little transparency
+drawback that they are to some extent a ‘black box’, with little transparency
 as to the precise algorithmic details and parameters employed.” <span class="citation">(Haque et al. 2017)</span></p>
 </blockquote>
 <p>The second approach is to conduct the pre-processing directly within general
@@ -3683,8 +3663,8 @@ extending to write a pre-processing protocol, you can further support the
 ease of adapting and re-using the pre-processing steps you take with one
 experiment when you run later experiments that are similar.</p>
 </div>
-<div id="approaches-to-simple-preprocessing-tasks" class="section level3" number="3.1.7">
-<h3><span class="header-section-number">3.1.7</span> Approaches to simple preprocessing tasks</h3>
+<div id="approaches-to-simple-preprocessing-tasks" class="section level3 hasAnchor" number="3.1.7">
+<h3><span class="header-section-number">3.1.7</span> Approaches to simple preprocessing tasks<a href="experimental-data-preprocessing.html#approaches-to-simple-preprocessing-tasks" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>There are several approaches for tackling this type of data preprocessing, to
 get from the data that you initial observe (or that is measured by a piece of
 laboratory equipment) to meaningful biological measurements that can be analyzed
@@ -3734,8 +3714,8 @@ experiments and projects, this can add up. This makes it particularly useful to
 write scripts for preprocessing tasks that you find yourself doing again and
 again in the lab.</p>
 </div>
-<div id="approaches-to-more-complex-preprocessing-tasks" class="section level3" number="3.1.8">
-<h3><span class="header-section-number">3.1.8</span> Approaches to more complex preprocessing tasks</h3>
+<div id="approaches-to-more-complex-preprocessing-tasks" class="section level3 hasAnchor" number="3.1.8">
+<h3><span class="header-section-number">3.1.8</span> Approaches to more complex preprocessing tasks<a href="experimental-data-preprocessing.html#approaches-to-more-complex-preprocessing-tasks" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Other preprocessing tasks can be much more complex, particularly those that need
 to conduct a number of steps to extract biologically meaningful measurements
 from the measurements made by a complex piece of laboratory equipment, as well
@@ -3788,8 +3768,8 @@ type of data you’re collecting, and you may want to explore the documentation 
 that particular step of preprocessing to determine what choice is best for your
 data, rather than relying on defaults.</p>
 </div>
-<div id="scripting-preprocessing-tasks" class="section level3" number="3.1.9">
-<h3><span class="header-section-number">3.1.9</span> Scripting preprocessing tasks</h3>
+<div id="scripting-preprocessing-tasks" class="section level3 hasAnchor" number="3.1.9">
+<h3><span class="header-section-number">3.1.9</span> Scripting preprocessing tasks<a href="experimental-data-preprocessing.html#scripting-preprocessing-tasks" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Code scripts can be developed for any open-source scripting languages, including
 Python, R, and Julia. These can be embedded in or called from literate programming
 documents, like RMarkdown and Julia, which are described in other modules. The
@@ -3824,7 +3804,7 @@ these steps would include … .</p>
 different researchers have made for R. Base R is a simpler collection of data
 processing and statistics tools, but the open-source framework of R has allowed
 users to make and share their own extensions. In R, these are often referred to
-as “packages.” Many of these are shared through the Comprehensive R Archive
+as “packages”. Many of these are shared through the Comprehensive R Archive
 Network (CRAN), and packages on CRAN can be directly installed using the
 <code>install.packages</code> function in R, along with the package’s names. While CRAN
 is the common spot for sharing general-purpose packages, there is a specialized
@@ -3843,7 +3823,7 @@ tailored to the format that the data takes once it is loaded. Later in the
 script, there will often be a transfer to using more general-purpose tools in
 that coding language. For example, once data is stored in a “dataframe” format
 in R, it can be processed using a powerful set of general purpose tools
-collected in a suite of packages called the “tidyverse.” This set of packages
+collected in a suite of packages called the “tidyverse”. This set of packages
 includes functions for filtering to specific subsets of the data, merging
 separate datasets, adding new measurements for each observation that are
 functions of the initial measurements, summarizing, and visualizing. The
@@ -3895,8 +3875,8 @@ using walnut oil instead of olive oil, or adding mustard) to tweak the
 recipe in slight ways each time you use it, and to get customized outputs.]</p>
 <p>[History of the mouse—enable GUIs, before everything was from the terminal.]</p>
 </div>
-<div id="potential-quotes" class="section level3" number="3.1.10">
-<h3><span class="header-section-number">3.1.10</span> Potential quotes</h3>
+<div id="potential-quotes" class="section level3 hasAnchor" number="3.1.10">
+<h3><span class="header-section-number">3.1.10</span> Potential quotes<a href="experimental-data-preprocessing.html#potential-quotes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <blockquote>
 <p>For bioinformatics, “all too often the software is developed without
 thought toward future interoperability with other software products. As a
@@ -4264,14 +4244,14 @@ for software and best practice workflows, especially if citable, would be a
 start.” — James Taylor in <span class="citation">(Altschul et al. 2013)</span></p>
 </blockquote>
 <blockquote>
-<p>" Now there are a lot of strong, young, faculty members who label themselves
+<p>” Now there are a lot of strong, young, faculty members who label themselves
 as computational analysts, yet very often want wet-lab space. They’re not
 content just working off data sets that come from other people. They want to be
 involved in data generation and experimental design and mainstreaming
 computation as a valid research tool. Just as the boundaries of biochemistry and
 cell biology have kind of blurred, I think the same will be true of
 computational biology. It’s going to be alongside biochemistry, or molecular
-biology or microscopy as a core component." — Richard Durbin in
+biology or microscopy as a core component.” — Richard Durbin in
 <span class="citation">(Altschul et al. 2013)</span></p>
 </blockquote>
 <blockquote>
@@ -4294,7 +4274,7 @@ essential as brushing your teeth. If you want some kind of a competitive edge,
 you’re going to want to make as much use of that computer as you can. The
 complexity of the task at hand will mean that canned solutions don’t exist. It
 means that if you’re using a canned solution, you’re not at the edge of
-research." — Martin Krzywinski in <span class="citation">(Altschul et al. 2013)</span></p>
+research.” — Martin Krzywinski in <span class="citation">(Altschul et al. 2013)</span></p>
 </blockquote>
 <blockquote>
 <p>“Although we are tackling many different types of data, questions, and
@@ -4344,7 +4324,7 @@ CDs (clusters of differentiation) and are collected by flow cytometry
 (using fluorescence…) or mass cytometry (using single-cell atomic mass
 spectrometry of heavy metal reporters). An example of a commonly used CD is
 CD4; this protein is expressed by helper T cells that are referred to as
-being ‘CD4+.’ Note, however, that some cells express CD4 (thus are CD4+)
+being ‘CD4+’. Note, however, that some cells express CD4 (thus are CD4+)
 but are not actually helper T cells. We start by loading some useful Bioconductor
 packages for flow cytometry, <code>flowCore</code> and <code>flowViz</code>. …
 First we load the table data that reports the mapping between isotopes and
@@ -4514,7 +4494,7 @@ have to collect preliminary data to estimate them.” <span class="citation">(Ho
 </blockquote>
 <blockquote>
 <p>“Our treatment conditions may have undesired but hard-to-avoid side effects;
-our measurements may be overlaid with interfering signals or ‘background noise.’”
+our measurements may be overlaid with interfering signals or ‘background noise’.”
 <span class="citation">(Holmes and Huber 2018)</span></p>
 </blockquote>
 <blockquote>
@@ -4626,7 +4606,7 @@ to write emails or code comments explaining to others (or to yourself) how to us
 some functionality. Assembling existing code into an R package is not hard, and it
 offers you many goodies, including standardized ways of composing documentation,
 showing code usage examples, code testing, versioning and provision to others.
-And quite likely you’ll soon appreciate the benefits of using namespaces."
+And quite likely you’ll soon appreciate the benefits of using namespaces.”
 <span class="citation">(Holmes and Huber 2018)</span></p>
 </blockquote>
 <blockquote>
@@ -4686,7 +4666,7 @@ spectrum-spotting, another iteration allows us to borrow strength from the
 other samples to spot spectra that may have been overlooked (or looked like
 noise) before.” <span class="citation">(Holmes and Huber 2018)</span></p>
 </blockquote>
-<p>Try to avoid adding in supplementary / meta data “by hand.” For example, if you
+<p>Try to avoid adding in supplementary / meta data “by hand”. For example, if you
 need to add information about the ID of each sample, and this information is
 included somewhere in the filename, it will be more robust to use regular
 expressions to extract this information from the file names, rather than
@@ -4725,8 +4705,8 @@ on the equipment when the samples were run.
 
 </div>
 </div>
-<div id="module13" class="section level2" number="3.2">
-<h2><span class="header-section-number">3.2</span> Introduction to scripted data pre-processing in R</h2>
+<div id="module13" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Introduction to scripted data pre-processing in R<a href="experimental-data-preprocessing.html#module13" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We will show how to implement scripted pre-processing of experimental data
 through R scripts. We will demonstrate the difference between interactive coding
 and code scripts, using R for examples. We will then demonstrate how to create,
@@ -4740,8 +4720,8 @@ coding in R</li>
 <li>Run an R script</li>
 <li>List some popular packages in R for pre-processing biomedical data</li>
 </ul>
-<div id="what-is-a-code-script" class="section level3" number="3.2.1">
-<h3><span class="header-section-number">3.2.1</span> What is a code script?</h3>
+<div id="what-is-a-code-script" class="section level3 hasAnchor" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> What is a code script?<a href="experimental-data-preprocessing.html#what-is-a-code-script" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Interactive coding you can do in what’s called the console. With this style of
 coding, you enter a single command or function call at the cursor in the
 console, tell the program to execute that one element of code (for example, by
@@ -4782,8 +4762,8 @@ writing one of these code scripts, as well as look at an example script for a
 simple task in biomedical data preprocessing, calculating the rate of growth of
 bacteria under different growing conditions.</p>
 </div>
-<div id="how-code-scripts-improve-reproducibility-of-preprocessing" class="section level3" number="3.2.2">
-<h3><span class="header-section-number">3.2.2</span> How code scripts improve reproducibility of preprocessing</h3>
+<div id="how-code-scripts-improve-reproducibility-of-preprocessing" class="section level3 hasAnchor" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> How code scripts improve reproducibility of preprocessing<a href="experimental-data-preprocessing.html#how-code-scripts-improve-reproducibility-of-preprocessing" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In the introduction to this book, we provide the definition for computational
 reproducibility. Specifically, computational reproducibility typically means
 that another researcher could get the exact results of the original study from
@@ -4822,7 +4802,7 @@ script, you can find and read through all the underlying code that defines all
 the functions used in the script. In other words, the open-source nature of the
 code means that you can, if you want, dig into the algorithms underlying any
 step of the process, and so you do not have to consider any step of the script
-as a “black box.”</p>
+as a “black box”.</p>
 <p>In other words, in the course of writing an executable script to preprocess
 data, you are thoroughly documenting each step that you take in that process,
 creating one of the key components (clear instructions on how the data were
@@ -4856,8 +4836,8 @@ as, for example, changing data formats. Such scripts must be made accessible as
 any other part of the analysis.” <span class="citation">(Nekrutenko and Taylor 2012)</span></p>
 </blockquote>
 </div>
-<div id="how-to-write-an-r-code-script" class="section level3" number="3.2.3">
-<h3><span class="header-section-number">3.2.3</span> How to write an R code script</h3>
+<div id="how-to-write-an-r-code-script" class="section level3 hasAnchor" number="3.2.3">
+<h3><span class="header-section-number">3.2.3</span> How to write an R code script<a href="experimental-data-preprocessing.html#how-to-write-an-r-code-script" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In this section, we’ll go through some basics to help you get started writing a code
 script in R. The process of writing a code script is similar in many other interpreted
 languages, like Python and Julia. If you are familiar with writing code scripts in R,
@@ -4876,7 +4856,7 @@ covered in these modules.</p>
 <p><strong>What is an R object?</strong></p>
 <p>First, you’ll need to understand where R “keeps” data while you’re working with
 it. When you work in R, any piece of data that you work with will be available
-in something called an “object.” The simplest way to think of this R object is
+in something called an “object”. The simplest way to think of this R object is
 simply as a container for data. Different objects can be structured in different
 ways, in terms of how they arrange the data—which has implications about how
 you can access the data from that object—but regardless of this structure, all
@@ -4945,7 +4925,7 @@ based on specified inputs.</p>
 <p>This line of code is calling the function <code>read_excel</code>, which is a tool for inputting
 data from an Excel file into an R object with a specific data structure. By running
 this line of code, either at the console or in an R script, you are asking R to input
-data from the file named “my_recorded_data.xlsx,” which is the R object that you’re
+data from the file named “my_recorded_data.xlsx”, which is the R object that you’re
 giving as an input to the function. This particular call would only read the data in—it
 won’t assign the resulting object to a name, but instead will just print out the data
 at the R console.</p>
@@ -5052,7 +5032,7 @@ allows you to open and edit your scripts in a nice environment, one that include
 console area where you can test out pieces of code, a pane for viewing figures, and
 so on.</p>
 <p>In RStudio, you can create a new R script by going to the “File” menu at the top
-of the screen, choosing “New File” and then choosing “R Script.” This will open
+of the screen, choosing “New File” and then choosing “R Script”. This will open
 a new plain text file that, by default, will have the file extension “.R” (e.g.,
 “my_file.R”), which is the standard file extension for R scripts. Once you’ve created
 an R script file, you can begin writing your script. In the next section, we’ll walk
@@ -5066,8 +5046,8 @@ they operate. Later in this module, we’ll provide an R script for a basic labo
 data preprocessing task and walk you through it, so you can use that as a starting point
 to understand how it would work to create, edit, and run your own R script.</p>
 </div>
-<div id="how-to-run-code-in-an-r-script" class="section level3" number="3.2.4">
-<h3><span class="header-section-number">3.2.4</span> How to run code in an R script</h3>
+<div id="how-to-run-code-in-an-r-script" class="section level3 hasAnchor" number="3.2.4">
+<h3><span class="header-section-number">3.2.4</span> How to run code in an R script<a href="experimental-data-preprocessing.html#how-to-run-code-in-an-r-script" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Once you’ve written code in an R script, you can run (execute) that code in a number of
 ways. First, you can run all the code in the script at once, which is known as <em>batch
 execution</em>. When you do this, all the code in the script will be executed by R, and while
@@ -5119,8 +5099,8 @@ it. First, there is a “Source” button in the top right of the R script file 
 you open it in RStudio. You can click on this button and it will run the entire
 script as a batch. There is also an R command that you can use to source a file
 based on its file name, <code>source</code>. If you have a file in your working directory
-named “my_pipeline.R,” for example, you can execute the code in it in a batch by
-running `source(“my_pipeline.R).”</p>
+named “my_pipeline.R”, for example, you can execute the code in it in a batch by
+running `source(“my_pipeline.R)”.</p>
 <p>[Figure—how to execute an R script as a batch]</p>
 <p>To get started, it’s probably easiest to just use the buttons “Run” and “Source”
 that RStudio provides in the window for the R script file. As you do more work, you
@@ -5128,8 +5108,8 @@ may find some of these other methods help you work faster, or allow you to do
 more interesting things, so it’s good to know they’re there, but you don’t need
 to try to navigate them all as you learn how to run code in an R script.</p>
 </div>
-<div id="tips-and-guidelines-for-writing-code-scripts" class="section level3" number="3.2.5">
-<h3><span class="header-section-number">3.2.5</span> Tips and guidelines for writing code scripts</h3>
+<div id="tips-and-guidelines-for-writing-code-scripts" class="section level3 hasAnchor" number="3.2.5">
+<h3><span class="header-section-number">3.2.5</span> Tips and guidelines for writing code scripts<a href="experimental-data-preprocessing.html#tips-and-guidelines-for-writing-code-scripts" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Learning to code can seem daunting, but it’s not any more difficult than
 learning any new language. Many people from a variety of disciplines have
 learned to code to help with their research. Doing so can pay big dividends in
@@ -5167,7 +5147,7 @@ scholar Brian Arthur calls <em>deep craft</em>—the ability to know intimately
 the various functionalities and how to effectively combine them. ‘It
 consists in [knowing] what is likely not to work, what methods to use,
 whom to talk to, what theories to look to, and above all of how to
-manipulate phenomena that may be freshly discovered and poorly understood,’
+manipulate phenomena that may be freshly discovered and poorly understood’,
 Arthur writes. Systems-engineering approaches that underline the
 efficiency and reliability of failure-tolerance products like ATMs and
 airplanes have a strong connection to deep craft.” <span class="citation">(Madhavan 2015)</span></p>
@@ -5198,11 +5178,11 @@ walks you through the major functionality of the package, showing how to use the
 key functions in the package in an extended example. Some packages will have multiple
 vignettes, showing a range of things that you can do with the package.</p>
 <p>To find out if there is a vignette for a package that you’re using, you can google the
-package name and “vignette.” You can also find out from the console in R using the
+package name and “vignette”. You can also find out from the console in R using the
 function <code>vignette</code>. For example, to find out if the package <code>readxl</code>, which we used
 in the earlier code example, has any vignettes, you can run <code>vignette(package = "readxl")</code>.
 This will tell you that the package has two, one called “cell-and-column-types” and
-one called “sheet-geometry.” To open one of these, you can again use the <code>vignette</code>
+one called “sheet-geometry”. To open one of these, you can again use the <code>vignette</code>
 function. For example, <code>vignette("cell-and-column-types", package = "readxl")</code> would
 open the first of the two vignettes.</p>
 <p>To open the helpfile for any function in R, at the console type a question mark and then
@@ -5519,8 +5499,8 @@ can run in a fresh environment like this, then any R user should be able to reru
 in the script themselves (although they may need to install a few new libraries first if they
 don’t have all the required libraries yet).</p>
 </div>
-<div id="exercise" class="section level3" number="3.2.6">
-<h3><span class="header-section-number">3.2.6</span> Exercise</h3>
+<div id="exercise" class="section level3 hasAnchor" number="3.2.6">
+<h3><span class="header-section-number">3.2.6</span> Exercise<a href="experimental-data-preprocessing.html#exercise" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Simple example—Bacterial growth rate</strong></p>
 <p>As we mentioned earlier, it can be helpful to start by dissecting and
 reverse engineering someone else’s script. We’ll give an example of that
@@ -5530,8 +5510,8 @@ discussed in this module.</p>
 <p>(A simple example of writing a code script for data preprocessing)</p>
 <hr />
 </div>
-<div id="compiled-versus-interpreted-programming-languages" class="section level3" number="3.2.7">
-<h3><span class="header-section-number">3.2.7</span> Compiled versus interpreted programming languages</h3>
+<div id="compiled-versus-interpreted-programming-languages" class="section level3 hasAnchor" number="3.2.7">
+<h3><span class="header-section-number">3.2.7</span> Compiled versus interpreted programming languages<a href="experimental-data-preprocessing.html#compiled-versus-interpreted-programming-languages" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>When computers were first being developed, they were very tricky to program,
 as they required humans to translate appropriate logic down to a very granular
 level that the computers of the time could process. As computer development
@@ -5546,7 +5526,7 @@ you must write the full set of instructions for the computer to run. This
 full set of instructions is then sent through a programmer called a <em>compiler</em>,
 which translates the instructions for the computer, and then the program can
 be run, either once or repeatedly. By contrast, interpreted languages do this
-type of compiling (translating for the computer) “on the fly,” and so they
+type of compiling (translating for the computer) “on the fly”, and so they
 allow you to run each step of the instructions as you write them, and then
 check the output a step at a time.</p>
 <p>It may be easier to understand this difference with an analogy, so we’ll make a
@@ -5569,19 +5549,19 @@ popular first language. Other interpreted languages include Julia and R, with
 R being particularly popular for data science in general and for bioinformatics
 and other biological research in particular.</p>
 </div>
-<div id="code-scripts-versus-interactive-coding" class="section level3" number="3.2.8">
-<h3><span class="header-section-number">3.2.8</span> Code scripts versus interactive coding</h3>
+<div id="code-scripts-versus-interactive-coding" class="section level3 hasAnchor" number="3.2.8">
+<h3><span class="header-section-number">3.2.8</span> Code scripts versus interactive coding<a href="experimental-data-preprocessing.html#code-scripts-versus-interactive-coding" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>When you use an interactive programming language, like R, you will likely
 start to explore your data by working interactively, running one call, looking
 at the results, and then running the next call, adapting as needed based on the
 results you see at each step.</p>
 </div>
-<div id="process-of-building-a-code-script" class="section level3" number="3.2.9">
-<h3><span class="header-section-number">3.2.9</span> Process of building a code script</h3>
+<div id="process-of-building-a-code-script" class="section level3 hasAnchor" number="3.2.9">
+<h3><span class="header-section-number">3.2.9</span> Process of building a code script<a href="experimental-data-preprocessing.html#process-of-building-a-code-script" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>A code script is essentially a recipe for cleaning and analyzing data.</p>
 </div>
-<div id="section" class="section level3" number="3.2.10">
-<h3><span class="header-section-number">3.2.10</span> Section</h3>
+<div id="section" class="section level3 hasAnchor" number="3.2.10">
+<h3><span class="header-section-number">3.2.10</span> Section<a href="experimental-data-preprocessing.html#section" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <blockquote>
 <p>“Every maker needs to give themselves the space to screw up in the pursuit of
 perfecting a new skill or in learning something they’ve never tried before.
@@ -5600,7 +5580,7 @@ the unknown.” <span class="citation">(Savage 2020)</span></p>
 <p>“If you expect to nail it the first go round every time you build something
 new—or worse, you demand it of yourself and you punish yourself when you come
 up short—you will never be happy with what you make and making will never
-make you happy.” <span class="citation">(Savage 2020)</span></p>
+make you happy”. <span class="citation">(Savage 2020)</span></p>
 </blockquote>
 <p>BioC Conference</p>
 <blockquote>
@@ -5717,8 +5697,8 @@ thoughts. The trick is to get more parts on the table.” <span class="citation"
 
 </div>
 </div>
-<div id="module14" class="section level2" number="3.3">
-<h2><span class="header-section-number">3.3</span> Simplify scripted pre-processing through R’s ‘tidyverse’ tools</h2>
+<div id="module14" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Simplify scripted pre-processing through R’s ‘tidyverse’ tools<a href="experimental-data-preprocessing.html#module14" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The R programming language now includes a collection of ‘tidyverse’ extension
 packages that enable user-friendly yet powerful work with experimental data,
 including pre-processing and exploratory visualizations. The principle behind
@@ -5733,10 +5713,10 @@ reproducibly pre-processing experimental data.</p>
 <li>Define R’s ‘tidyverse’ system</li>
 <li>Explain how the ‘tidyverse’ collection of packages can be both user-friendly
 and powerful in solving many complex tasks with data</li>
-<li>Describe the difference between base R and R’s ‘tidyverse.’</li>
+<li>Describe the difference between base R and R’s ‘tidyverse’.</li>
 </ul>
-<div id="what-are-data-structures-containers" class="section level3" number="3.3.1">
-<h3><span class="header-section-number">3.3.1</span> What are data structures / containers?</h3>
+<div id="what-are-data-structures-containers" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> What are data structures / containers?<a href="experimental-data-preprocessing.html#what-are-data-structures-containers" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Data types versus data structures</strong></p>
 <p>You can think of <em>data structures</em> as containers that hold your data in R,
 holding it in a way that lets you access and work with the data.</p>
@@ -5747,7 +5727,7 @@ things with different types of data—for example, R can add together
 two pieces of data that are numbers, while for two pieces of data that are
 dates, it can tell which is the later date. For character strings, R can
 look for patterns in the string (for example, does it include any capital
-letters? Does is start with “b?”). All pieces of data are, at the deepest
+letters? Does is start with “b”?). All pieces of data are, at the deepest
 level, stored as a string of 0s and 1s. By assigning a data type like
 “character string” or “numeric” to each piece of data, R can make more
 sense of each piece of data in terms of what operations are reasonable to
@@ -5772,7 +5752,7 @@ Some types of data can be stored using fewer of these <em>bits</em> (<em>bi</em>
 Each measurement of logical data, for example, can be stored in a single bit,
 since it only can take one of two values (0 or 1, for FALSE and TRUE, respectively).
 For character strings, these can be divided into each character in the string
-for storage (for example, “cat” can be stored as “c,” “a,” “t”). There is a set
+for storage (for example, “cat” can be stored as “c”, “a”, “t”). There is a set
 of characters called the ASCII character set that includes the lowercase and
 uppercase of the letters and punctuation sets that you see on a standard
 US keyboard [?], and if the character strings only use these characters, they
@@ -5793,7 +5773,7 @@ numeric), and it holds together a one-dimensional string of pieces of data
 of that type. For example, a vector of the numbers one to five would be
 the string of those numbers—1, 2, 3, 4, 5—while a
 vector of the letters a to e would be the string of data with the “character”
-type—“a,” “b,” “c,” “d,” “e.”</p>
+type—“a”, “b”, “c”, “d”, “e”.</p>
 <p>One of the “building block”
 data structures in R is the vector. This data structure is one dimensional and
 can only contain data that have the same data type—you can think of this as a
@@ -5871,7 +5851,7 @@ highlighting some of the key elements of its structure. A dataframe stores data
 in a two-dimensional structure, combining rows and columns. Each column is
 constrained to have data of the same type—in other words, all values in a
 column could be numeric (e.g., 1, 4, 10), or all could be character strings
-(e.g., “Mouse 1,” “Mouse 3”), but the same column cannot combine some values
+(e.g., “Mouse 1”, “Mouse 3”), but the same column cannot combine some values
 that are numeric and some that are character strings. Across the dataframe, all
 columns must have the same length (i.e., if you printed out the full dataframe,
 it would look like a rectangle). All the column values should be lined up, so
@@ -6008,7 +5988,7 @@ can move the data into this tidy format, but at that point, you can continue wit
 analysis and visualization of your data using a tidyverse approach.</p>
 <p><strong>The tibble data structure</strong></p>
 <p>As a final note, there is a specialized data structure that is often
-associated with the tidyverse approach. It is called the “tibble,” and it is
+associated with the tidyverse approach. It is called the “tibble”, and it is
 a specialized version of the dataframe. What do we mean by it being a
 “specialized” version of a more common data structure? This means that there
 are a few functions that will give different results if the data are stored
@@ -6018,7 +5998,7 @@ structure (and most functions don’t), then the function will treat the object
 as a regular data frame. Some of the few functions that have specialized
 methods for tibbles include the <code>print</code> function, which is also the default
 function that is run if you just type an object’s name at the console and
-press “Enter.” The <code>print</code> function, when called with an object in the tibble
+press “Enter”. The <code>print</code> function, when called with an object in the tibble
 structure, will only print out the first few rows (whereas, with a generic
 dataframe, it will print out all rows, sometimes resulting in a very long
 print-out). Similarly, if there are many columns, it will only print out
@@ -6059,8 +6039,8 @@ printout of a tibble will also include some interesting annotations to help you
 see what’s in the data, including the dimensions of the full dataframe and the
 data type of each column in the data.</p>
 </div>
-<div id="an-overview-of-the-tidyverse-approach" class="section level3" number="3.3.2">
-<h3><span class="header-section-number">3.3.2</span> An overview of the “tidyverse” approach</h3>
+<div id="an-overview-of-the-tidyverse-approach" class="section level3 hasAnchor" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> An overview of the “tidyverse” approach<a href="experimental-data-preprocessing.html#an-overview-of-the-tidyverse-approach" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Once data are in the “tidy” data format, you can create a pipeline of code that
 uses small tools, each of which does one simple thing, to work with the data.
 This work can include cleaning the data, adding values that are functions of the
@@ -6200,13 +6180,13 @@ becoming more clever at combining sets of simple functions in interesting
 ways.</p>
 <p><strong>Functions available through packages</strong></p>
 <p>The tidyverse functions do not come with base R, but rather are available
-through extensions to base R, commonly referred to as “packages.” Like base
+through extensions to base R, commonly referred to as “packages”. Like base
 R, these are all open-source and free. Many are available through a
 repository called CRAN, and you can download them directly from R using the
 <code>install.packages</code> function.</p>
 <p>The heart of the tidyverse functions are available through an umbrella
-package called “tidyverse.” This package includes a number of key tidyverse
-packages (e.g., “dplyr,” “tidyr,” “stringr,” “forcats” [?], “ggplot2”) and allows you
+package called “tidyverse”. This package includes a number of key tidyverse
+packages (e.g., “dplyr”, “tidyr”, “stringr”, “forcats” [?], “ggplot2”) and allows you
 to quickly install this set of packages on your computer. When you are coding
 in R, you will then need to load the package in your R session, which you can
 do using the <code>library</code> call (e.g., <code>library("tidyverse")</code>).</p>
@@ -6217,8 +6197,8 @@ or others on his team, while others are created by other R programmers but
 follow the standards of the tidyverse approach. Some of the most helpful of
 these for working with biomedical data include …</p>
 </div>
-<div id="useful-tidyverse-tools-for-data-preprocessing" class="section level3" number="3.3.3">
-<h3><span class="header-section-number">3.3.3</span> Useful tidyverse tools for data preprocessing</h3>
+<div id="useful-tidyverse-tools-for-data-preprocessing" class="section level3 hasAnchor" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> Useful tidyverse tools for data preprocessing<a href="experimental-data-preprocessing.html#useful-tidyverse-tools-for-data-preprocessing" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>As you learn to code, a good strategy is to start collecting “tools” for
 your “toolbox” in R—functions that you have learned to use very well and
 that you understand thoroughly. This will help make you proficient in R more
@@ -6260,7 +6240,7 @@ file with commas, and these can be read into R with the <code>readr</code> funct
 <p>Some equipment in the laboratory may allow you to save results in a plain
 text format. When you export your data from laboratory equipment, you can
 check to see if there is an option to outload it to a format like “csv”
-or “txt,” which would allow you to use these <code>readr</code> functions to then
+or “txt”, which would allow you to use these <code>readr</code> functions to then
 read the data into R.</p>
 <p>There are other packages in the tidyverse that allow you to read in data
 from other types of file formats. For example, you may have data that
@@ -6308,7 +6288,7 @@ that’s easy to work with (e.g., a single large dataframe)</li>
 <p><strong>Tools for standardization and normalization</strong></p>
 <p>There are a range of ways to standardize and normalize different types of
 biomedical data, ranging from very simple to much more complex. At the simpler
-end is a process called “scaling,” where the observations for each feature or
+end is a process called “scaling”, where the observations for each feature or
 column are changed to have an overall mean of 0 and standard deviation of 1.
 This can be done by taking each value in a column and subtracting from it
 the column-wide mean, then dividing by the column-wide standard deviation [?].
@@ -6335,7 +6315,7 @@ it forms the heart of the tools for cleaning and exploring data that are stored
 in tidy dataframes. These functions can also be used for basic cleaning operations
 in a dataframe. For example, data that are recorded for colony-forming units
 may include “TNTC” in cells of the spreadsheet where so many bacteria had grown
-that the individual colonies were “too numerous to count.” When you read in the
+that the individual colonies were “too numerous to count”. When you read in the
 data, you may want to change these values to missing values so that you can
 run numerical calculations on the cells that include colony counts. This type
 of conversion can easily be done using functions from the <code>dplyr</code> package.
@@ -6361,7 +6341,7 @@ manipulations like scaling, you should take some time to learn a few other
 tools that can often be used to make your coding pipelines much more efficient.
 One of these is to learn how to work well with character strings. Character
 strings are strings of alphanumerical symbols that are stored inside
-quotation marks, like “Mouse-01” or “Control group.” Several tidyverse
+quotation marks, like “Mouse-01” or “Control group”. Several tidyverse
 packages help you work with this type of data more efficiently, either through
 finding and using regular patterns in the data (e.g., the number “01” stored in
 “Mouse-01”) or in treating these data as a marker of a set number of groups
@@ -6388,11 +6368,11 @@ subject (e.g., “Mouse 1A”). If some of the IDs were entered using upper
 case (e.g., “MOUSE 1A”), some with lower case (“mouse 1a”), and some with
 a mixture (e.g., “Mouse 1A”), then you may find that it is hard
 to write code that recognizes that “Mouse 1A” is the same as “mouse 1a” and
-“MOUSE 1A.” The functions in the <code>stringr</code> package would let you quickly
+“MOUSE 1A”. The functions in the <code>stringr</code> package would let you quickly
 convert everything to the same case and so work around this issue.
 As another example, you may want to extract certain elements from each
 subject ID—for example, you might want to create a column where you
-have changed “Mouse 1A” to just “1A” and “Mouse 2B” to just “2B.” The
+have changed “Mouse 1A” to just “1A” and “Mouse 2B” to just “2B”. The
 <code>stringr</code> package has functions that will let you do this in several
 ways. For example, it has a function that would let you remove “Mouse”
 from each character string, and another function that would let you
@@ -6401,11 +6381,11 @@ These types of tools can be invaluable when you need to preprocess or
 clean data from the format that it first enters R.</p>
 <p>Sometimes, you will want to treat character strings as discrete categories
 or values. For example, if part of your data records subject IDs
-(e.g., “Mouse 1A,” “Mouse 2B”), you may want to be able to link up all
+(e.g., “Mouse 1A”, “Mouse 2B”), you may want to be able to link up all
 of the observations that are recorded for each subject. Similarly, you
 may want to treat a variable that records treatment (e.g., “treated” / “control”)
 as a set of specific categories that each observation belongs to.</p>
-<p>In R, you can do this by treating that column as something called a “factor.”
+<p>In R, you can do this by treating that column as something called a “factor”.
 This data type looks like a character string (e.g., “treated”), but R has
 recorded that there are only a few set values that values in the column can have
 (e.g., “treated” or “control”), and when you summarize or plot the data, you can
@@ -6490,8 +6470,8 @@ continue working with the output.</p>
 package [?] aims to create a common interface …</p>
 <p>[tidymodels package]</p>
 </div>
-<div id="resources-to-learn-more-on-tidyverse-tools" class="section level3" number="3.3.4">
-<h3><span class="header-section-number">3.3.4</span> Resources to learn more on tidyverse tools</h3>
+<div id="resources-to-learn-more-on-tidyverse-tools" class="section level3 hasAnchor" number="3.3.4">
+<h3><span class="header-section-number">3.3.4</span> Resources to learn more on tidyverse tools<a href="experimental-data-preprocessing.html#resources-to-learn-more-on-tidyverse-tools" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Here we have introduced the tidyverse approach, as well as covered some key
 tools within it for biomedical data preprocessing. However, we strongly
 recommend that you continue to learn more in this approach. In this section,
@@ -6560,8 +6540,8 @@ exercises (<a href="https://jrnold.github.io/r4ds-exercise-solutions/" class="ur
 <p><em>Modern Statistics for Modern Biology</em>, which is available at …, covers …</p>
 <hr />
 </div>
-<div id="subsection-1" class="section level3" number="3.3.5">
-<h3><span class="header-section-number">3.3.5</span> Subsection 1</h3>
+<div id="subsection-1" class="section level3 hasAnchor" number="3.3.5">
+<h3><span class="header-section-number">3.3.5</span> Subsection 1<a href="experimental-data-preprocessing.html#subsection-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <blockquote>
 <p>“There is a now-old trope in the world of programming. It’s called the ‘worse is
 better’ debate; it seeks to explain why the Unix operating systems (which include
@@ -6608,7 +6588,7 @@ quite trivial things in isolation, but, combined with other programs, become gen
 useful tools.” <span class="citation">(Kernighan and Pike 1984)</span></p>
 </blockquote>
 <blockquote>
-<p>“What is ‘Unix?’ In the narrowest sense, it is a time-sharing operating system <em>kernel</em>:
+<p>“What is ‘Unix’? In the narrowest sense, it is a time-sharing operating system <em>kernel</em>:
 a program that controls the resources of a computer and allocates them among its users.
 It lets users run their programs; it controls the peripheral devices (discs, terminals,
 printers, and the like) connected to the machine; and it provides a file system that
@@ -6711,21 +6691,21 @@ are fundamentals, and also develop the ability to learn new fields of knowledge
 when they arise so you will not be left behind…” <span class="citation">(Hamming 1997)</span></p>
 </blockquote>
 <blockquote>
-<p>“How are you to recognize ‘fundamentals?’ One test is that they have lasted a
+<p>“How are you to recognize ‘fundamentals’? One test is that they have lasted a
 long time. Another test is from the fundamentals all the rest of the field
 can be derived by using the standard methods in the field.” <span class="citation">(Hamming 1997)</span></p>
 </blockquote>
 </div>
-<div id="subsection-2" class="section level3" number="3.3.6">
-<h3><span class="header-section-number">3.3.6</span> Subsection 2</h3>
+<div id="subsection-2" class="section level3 hasAnchor" number="3.3.6">
+<h3><span class="header-section-number">3.3.6</span> Subsection 2<a href="experimental-data-preprocessing.html#subsection-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 </div>
-<div id="practice-quiz" class="section level3" number="3.3.7">
-<h3><span class="header-section-number">3.3.7</span> Practice quiz</h3>
+<div id="practice-quiz" class="section level3 hasAnchor" number="3.3.7">
+<h3><span class="header-section-number">3.3.7</span> Practice quiz<a href="experimental-data-preprocessing.html#practice-quiz" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 
 </div>
 </div>
-<div id="module15" class="section level2" number="3.4">
-<h2><span class="header-section-number">3.4</span> Complex data types in experimental data pre-processing</h2>
+<div id="module15" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Complex data types in experimental data pre-processing<a href="experimental-data-preprocessing.html#module15" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Raw data from many biomedical experiments, especially those that use
 high-throughput techniques, can be very large and complex. Because of the scale
 and complexity of these data, software for pre-processing the data in R often
@@ -6772,7 +6752,7 @@ It is helpful to understand how the Bioconductor approach differs from
 the tidyverse approach, to start developing a framework and tools for
 navigating both approaches.</p>
 <p>The primary difference between the two approaches is how the data objects
-are structured. When you work with data in R, it is kept in an “object,”
+are structured. When you work with data in R, it is kept in an “object”,
 which you can think of as a structured container for the data. In the
 tidyverse approach, the primary data container is the dataframe. A
 dataframe is made up of a set of object types called vectors (each column
@@ -6792,8 +6772,8 @@ where the <code>sf</code> package, and related tools, now make it possible to st
 a tidyverse framework when working with large and complex geospatial data.
 We will end this module by discussing the outlook for similar developments
 in the area of biomedical data.</p>
-<div id="how-the-bioconductor-and-tidyverse-approaches-differ" class="section level3" number="3.4.1">
-<h3><span class="header-section-number">3.4.1</span> How the Bioconductor and tidyverse approaches differ</h3>
+<div id="how-the-bioconductor-and-tidyverse-approaches-differ" class="section level3 hasAnchor" number="3.4.1">
+<h3><span class="header-section-number">3.4.1</span> How the Bioconductor and tidyverse approaches differ<a href="experimental-data-preprocessing.html#how-the-bioconductor-and-tidyverse-approaches-differ" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The heart of the difference between the tidyverse and Bioconductor approaches
 comes down to how data are structured within pipelines in the two approaches.
 There are more differences than this one, but most of the other differences
@@ -6855,8 +6835,8 @@ understand, and they are often much more customized to a specific action,
 which means that you have to learn more functions (since each does one
 specific thing).</p>
 </div>
-<div id="why-is-the-bioconductor-approach-designed-as-it-is" class="section level3" number="3.4.2">
-<h3><span class="header-section-number">3.4.2</span> Why is the Bioconductor approach designed as it is?</h3>
+<div id="why-is-the-bioconductor-approach-designed-as-it-is" class="section level3 hasAnchor" number="3.4.2">
+<h3><span class="header-section-number">3.4.2</span> Why is the Bioconductor approach designed as it is?<a href="experimental-data-preprocessing.html#why-is-the-bioconductor-approach-designed-as-it-is" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>It can be helpful to understand why the Bioconductor approach is designed
 in the way it is. First, there are some characteristics of complex data
 that can make it unsuitable for a tidyverse approach. In the next section
@@ -6952,8 +6932,8 @@ drawing that is connected across the different parts, but can be completely
 independent within each part (and unrelated to other parts). Collaborative,
 combines different parts made by different people.]</p>
 </div>
-<div id="why-is-it-sometimes-necessary-to-use-a-bioconductor-approach-with-biomedical-data" class="section level3" number="3.4.3">
-<h3><span class="header-section-number">3.4.3</span> Why is it sometimes necessary to use a Bioconductor approach with biomedical data</h3>
+<div id="why-is-it-sometimes-necessary-to-use-a-bioconductor-approach-with-biomedical-data" class="section level3 hasAnchor" number="3.4.3">
+<h3><span class="header-section-number">3.4.3</span> Why is it sometimes necessary to use a Bioconductor approach with biomedical data<a href="experimental-data-preprocessing.html#why-is-it-sometimes-necessary-to-use-a-bioconductor-approach-with-biomedical-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>There are a few characteristics that can make data unsuitable for a tidyverse
 approach. Biomedical data often have these characteristics.</p>
 <p>The dataframe structure has the advantage of being simple to understand and use.
@@ -6987,7 +6967,7 @@ working with massive data in R.</p>
 in R? There are a variety of characteristics that could cause this. First,
 if data is extremely large, it may exceed a size that is reasonable for a
 dataframe structure. Some of the more complex data structures in R allow
-much of the data to stay “on disc,” rather than be loaded into RAM,
+much of the data to stay “on disc”, rather than be loaded into RAM,
 when the data are structured to provide access from R.</p>
 <p>Other datasets may not fit well within the two-dimensional, non-ragged structure
 that is characteristic of the dataframe structure. For example, some biomedical
@@ -7000,25 +6980,8 @@ that you can connect the data that characterizes a gene with the data that
 provides measures of the level of expression of that gene in each sample—these
 data do not naturally have a two-dimensional structure and so do not fit
 naturally into a dataframe structure.</p>
-<pre class="marginfigure"><code>&quot;Big data is encountered in genomics for two reasons: the size of the genome
-and the heterogeneity of populations. Complex organisms, such as plants and
-animals, have genomes on the order of billions of base pairs (the human genome
-consists of over three billion base pairs). The diversity of populations,
-whether of organisms, tissues or cells, means we need to sample deeply to detect
-low frequency events. To interrogate long and/or numerous genomic sequences,
-many measurements are necessary. For example, a typical whole genome sequencing
-experiment will consist of over one billion reads of 75–100 bp each. The reads
-are aligned across billions of positions, most of which have been annotated in
-some way. This experiment may be repeated for thousands of samples. Such a data
-set does not fit within the memory of a current commodity computer, and is not
-processed in a timely and interactive manner. To successfully wrangle a large
-data set, we need to intimately understand its structure and carefully consider
-the questions posed of it.&quot; 
-
-[@lawrence2014scalable]</code></pre>
-<pre class="marginfigure"><code>&quot;A major challenge in the analysis of scRNA-seq data is the scalability of analysis methods as datasets increase in size over time. This is particularly problematic as experiments now frequently produce millions of cells [50–53], possibly across multiple batches, making it challenging to even load the data into memory and perform downstream analyses including quality control, batch correction and dimensionality reduction. Providing analysis methods, such as unsupervised clustering, that do not require data to be loaded into memory is an imperative step for scalable analyses. While large-scale scRNA-seq data are now routinely stored in on-disk data formats (e.g. HDF5 files), the methods to process and analyze these data are lagging.&quot;
-
-[@hicks2021mbkmeans]</code></pre>
+<p>Placeholder (you should not see this)</p>
+<p>Placeholder (you should not see this)</p>
 <p>There’s a second reason why dataframe structures don’t always work for data from
 biological experiments, which has to do with the size of data (and so how much
 memory it requires). A computer has several ways that it can store data. The
@@ -7064,61 +7027,17 @@ worry about these memory management issues, but instead can just gain from
 everything going smoothly, even as datasets get very large <span class="citation">(Gatto 2013)</span>.</p>
 <p>[Data size, on-disk backends for files, like HDF5 and netCDF—used for flow
 cytometry file format?]</p>
-<pre class="marginfigure"><code>&quot;Reading in a large dataset for which you do not have enough RAM is one easy way to freeze up your computer (or at least your R session). This is usually an unpleasant experience that usually requires you to kill the R process, in the best case scenario, or reboot your computer, in the worst case.&quot; 
-
-[@peng2016r]</code></pre>
-<pre class="marginfigure"><code>&quot;If you use too much memory, R will complain. The key issue is that R holds
-all the data in RAM. This is a limitation if you have huge datasets. The up-side
-is flexibility—in particular, R imposes no rules on what data are like.&quot;
-
-[@burns2011r] </code></pre>
-<pre class="marginfigure"><code>&quot;Random access memory (RAM) is a type of computer memory that can be accessed
-randomly: any byte of memory can be accessed without touching the preceding
-bytes. RAM is found in computers, phones, tablets and even printers. The amount
-of RAM R has access to is incredibly important. Since R loads objects into RAM,
-the amount of RAM you have available can limit the size of data set you can
-analyse.&quot; 
-
-[@gillespie2016efficient]</code></pre>
-<pre class="marginfigure"><code>&quot;A rough rule of thumb is that your RAM should be three times the size of your
-data set.&quot; 
-
-[@gillespie2016efficient]</code></pre>
-<pre class="marginfigure"><code>&quot;RAM is cheap and thinking hurts.&quot; 
-
-Uwe Ligges (about memory requirements in R) R-help (June 2007)</code></pre>
-<pre class="marginfigure"><code>&quot;The strengths of R are also its weaknesses: the R API encourages users to
-store entire data sets in memory as vectors. These vectors are implicitly and
-silently copied to achieve copy-on-write semantics, contribuing to high memory
-usage and poor performance.&quot; 
-
-[@lawrence2014scalable]</code></pre>
-<pre class="marginfigure"><code>&quot;Our ultimate goal is to process and summarize a large data set in its
-entirety, and iteration enables this by limiting the resource commitment at a
-given point in time. Limiting resource consumption generalizes beyond iteration
-and is a fundamental technique for computing with big data. In many cases, it
-may render iteration unnecessary. Two effective approaches for being frugal with
-data are restriction and compression. Restriction means controlling which data
-are loaded and lets us avoid wasting resources on irrelevant or excessive data.
-Compression helps by representing the same data with fewer resources.&quot;
-
-[@lawrence2014scalable]</code></pre>
-<pre class="marginfigure"><code>&quot;The Bioconductor project distributes the software as a number of different R
-packages, including Rsamtools, IRanges, GenomicRanges, GenomicAlignments,
-Biostrings, rtracklayer, biovizBase and BiocParallel. The software enables the
-analyst to conserve computational resources, iteratively generate summaries and
-visualize data at arbitrary levels of detail. These advances have helped to
-ensure that R and Bioconductor remain relevant in the age of high-throughput
-sequencing. We plan to continue in this direction by designing and implementing
-abstractions that enable user code to be agnostic to the mode of data storage,
-whether it be memory, files or databases. This will bring much needed agility to
-resource allocation and will enable the user to be more resourceful, without the
-burden of increased complexity.&quot; 
-
-[@lawrence2014scalable]</code></pre>
+<p>Placeholder (you should not see this)</p>
+<p>Placeholder (you should not see this)</p>
+<p>Placeholder (you should not see this)</p>
+<p>Placeholder (you should not see this)</p>
+<p>Placeholder (you should not see this)</p>
+<p>Placeholder (you should not see this)</p>
+<p>Placeholder (you should not see this)</p>
+<p>Placeholder (you should not see this)</p>
 </div>
-<div id="outlook-for-a-tidyverse-approach-to-biomedical-data" class="section level3" number="3.4.4">
-<h3><span class="header-section-number">3.4.4</span> Outlook for a tidyverse approach to biomedical data</h3>
+<div id="outlook-for-a-tidyverse-approach-to-biomedical-data" class="section level3 hasAnchor" number="3.4.4">
+<h3><span class="header-section-number">3.4.4</span> Outlook for a tidyverse approach to biomedical data<a href="experimental-data-preprocessing.html#outlook-for-a-tidyverse-approach-to-biomedical-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>[Potential future direction—developments of tidyverse based front ends for
 data stored in databases or on-disk file formats—<code>sergeant</code> package is one
 example, also running tidyverse commands on data in database, <code>matter</code> package?,
@@ -7213,8 +7132,8 @@ However, these principles also apply to other programming languages,
 particularly those that can be used in an interactive format, including Python
 and Julia.</p>
 </div>
-<div id="what-are-complex-data-structures" class="section level3" number="3.4.5">
-<h3><span class="header-section-number">3.4.5</span> What are complex data structures?</h3>
+<div id="what-are-complex-data-structures" class="section level3 hasAnchor" number="3.4.5">
+<h3><span class="header-section-number">3.4.5</span> What are complex data structures?<a href="experimental-data-preprocessing.html#what-are-complex-data-structures" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>An open source programming environment is like Andy Warhol’s studio—the
 door is always open, and people are free to walk in off the street and
 chip in to help create new things <span class="citation">(Judkins 2016)</span>. This means, though,
@@ -7296,7 +7215,7 @@ preprocessing and analysis pipeline.</p>
 in R? There are a variety of characteristics that could cause this. First,
 if data is extremely large, it may exceed a size that is reasonable for a
 dataframe structure. Some of the more complex data structures in R allow
-much of the data to stay “on disc,” rather than be loaded into RAM,
+much of the data to stay “on disc”, rather than be loaded into RAM,
 when the data are structured to provide access from R.</p>
 <p>Other datasets
 may not fit well within the two-dimensional, non-ragged structure that
@@ -7346,7 +7265,7 @@ pieces of data later. The list, in this case, allows us to store all these
 different types of data from an experiment in the same structure in R, so
 we can make sure we keep the data together in a single structure, even though
 it’s too complex to fit in a simple dataframe.</p>
-<p>Many R data structures are built on a general structure called a “list.” This
+<p>Many R data structures are built on a general structure called a “list”. This
 data structure is a useful basic general data structure, because it is
 extraordinarily flexible. The list data structure is flexible in two
 important ways: it allows you to include data of different <em>types</em> in the
@@ -7356,7 +7275,7 @@ structures—within the list structure. We’ll cover each of these points a bit
 more below and describe why they’re helpful in making the list a very good
 general purpose data structure.</p>
 <p>The list data structure is much more flexible than the vector or dataframe. It essentially allows you to
-create different “slots,” and you can store any type of data in each of these
+create different “slots”, and you can store any type of data in each of these
 slots. In each slot you can store any of the other types of data structures in
 R—for example, vectors, dataframes, or other lists. You can even store unusual
 things like R <em>environments</em> [?] or <em>pointers</em> that give the directions to where
@@ -7446,8 +7365,8 @@ types the data in each slot should have.</p>
 <p><strong>S3 and S4 objects in R</strong></p>
 <p>Many complex data structures in R are defined as S3 or S4 objects.</p>
 </div>
-<div id="advantages-of-complex-data-structures" class="section level3" number="3.4.6">
-<h3><span class="header-section-number">3.4.6</span> Advantages of complex data structures</h3>
+<div id="advantages-of-complex-data-structures" class="section level3 hasAnchor" number="3.4.6">
+<h3><span class="header-section-number">3.4.6</span> Advantages of complex data structures<a href="experimental-data-preprocessing.html#advantages-of-complex-data-structures" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Bundling and aligning</strong></p>
 <p>One characteristic that can make data complex is if it includes measurements
 that are taken at several different levels of observation. For example, a single
@@ -7487,7 +7406,7 @@ For example, the equipment might record not only the measurements taken for the
 sample, but also information about the setting that were applied to the equipment
 while the measurements were taken, the date of the measurements, and other metadata
 that may be useful to access when preprocessing the data. Each piece of data may
-have different “dimensions.” For example, the measurements might provide one
+have different “dimensions”. For example, the measurements might provide one
 measurement per metabolite feature or per marker. Some metadata might also be
 provided with these dimensions (e.g., metadata about the markers for flow
 cytometry data), but other metadata might be provided a single time per sample
@@ -7531,25 +7450,8 @@ Figure 3.2: An example of different components of data that may need to be store
 </div>
 <p><strong>Handling large data</strong></p>
 <p>Two approaches for this are on disc and through R environments.</p>
-<pre class="marginfigure"><code>&quot;Big data is encountered in genomics for two reasons: the size of the genome
-and the heterogeneity of populations. Complex organisms, such as plants and
-animals, have genomes on the order of billions of base pairs (the human genome
-consists of over three billion base pairs). The diversity of populations,
-whether of organisms, tissues or cells, means we need to sample deeply to detect
-low frequency events. To interrogate long and/or numerous genomic sequences,
-many measurements are necessary. For example, a typical whole genome sequencing
-experiment will consist of over one billion reads of 75–100 bp each. The reads
-are aligned across billions of positions, most of which have been annotated in
-some way. This experiment may be repeated for thousands of samples. Such a data
-set does not fit within the memory of a current commodity computer, and is not
-processed in a timely and interactive manner. To successfully wrangle a large
-data set, we need to intimately understand its structure and carefully consider
-the questions posed of it.&quot; 
-
-[@lawrence2014scalable]</code></pre>
-<pre class="marginfigure"><code>&quot;A major challenge in the analysis of scRNA-seq data is the scalability of analysis methods as datasets increase in size over time. This is particularly problematic as experiments now frequently produce millions of cells [50–53], possibly across multiple batches, making it challenging to even load the data into memory and perform downstream analyses including quality control, batch correction and dimensionality reduction. Providing analysis methods, such as unsupervised clustering, that do not require data to be loaded into memory is an imperative step for scalable analyses. While large-scale scRNA-seq data are now routinely stored in on-disk data formats (e.g. HDF5 files), the methods to process and analyze these data are lagging.&quot;
-
-[@hicks2021mbkmeans]</code></pre>
+<p>Placeholder (you should not see this)</p>
+<p>Placeholder (you should not see this)</p>
 <p>There’s a second reason why dataframe structures don’t always work for data from
 biological experiments, which has to do with the size of data (and so how much
 memory it requires). A computer has several ways that it can store data. The
@@ -7599,58 +7501,14 @@ cytometry file format?]</p>
 data stored in databases or on-disk file formats—<code>sergeant</code> package is one
 example, also running tidyverse commands on data in database, <code>matter</code> package?,
 <code>disk.frame</code> package?]</p>
-<pre class="marginfigure"><code>&quot;Reading in a large dataset for which you do not have enough RAM is one easy way to freeze up your computer (or at least your R session). This is usually an unpleasant experience that usually requires you to kill the R process, in the best case scenario, or reboot your computer, in the worst case.&quot; 
-
-[@peng2016r]</code></pre>
-<pre class="marginfigure"><code>&quot;If you use too much memory, R will complain. The key issue is that R holds
-all the data in RAM. This is a limitation if you have huge datasets. The up-side
-is flexibility—in particular, R imposes no rules on what data are like.&quot;
-
-[@burns2011r] </code></pre>
-<pre class="marginfigure"><code>&quot;Random access memory (RAM) is a type of computer memory that can be accessed
-randomly: any byte of memory can be accessed without touching the preceding
-bytes. RAM is found in computers, phones, tablets and even printers. The amount
-of RAM R has access to is incredibly important. Since R loads objects into RAM,
-the amount of RAM you have available can limit the size of data set you can
-analyse.&quot; 
-
-[@gillespie2016efficient]</code></pre>
-<pre class="marginfigure"><code>&quot;A rough rule of thumb is that your RAM should be three times the size of your
-data set.&quot; 
-
-[@gillespie2016efficient]</code></pre>
-<pre class="marginfigure"><code>&quot;RAM is cheap and thinking hurts.&quot; 
-
-Uwe Ligges (about memory requirements in R) R-help (June 2007)</code></pre>
-<pre class="marginfigure"><code>&quot;The strengths of R are also its weaknesses: the R API encourages users to
-store entire data sets in memory as vectors. These vectors are implicitly and
-silently copied to achieve copy-on-write semantics, contribuing to high memory
-usage and poor performance.&quot; 
-
-[@lawrence2014scalable]</code></pre>
-<pre class="marginfigure"><code>&quot;Our ultimate goal is to process and summarize a large data set in its
-entirety, and iteration enables this by limiting the resource commitment at a
-given point in time. Limiting resource consumption generalizes beyond iteration
-and is a fundamental technique for computing with big data. In many cases, it
-may render iteration unnecessary. Two effective approaches for being frugal with
-data are restriction and compression. Restriction means controlling which data
-are loaded and lets us avoid wasting resources on irrelevant or excessive data.
-Compression helps by representing the same data with fewer resources.&quot;
-
-[@lawrence2014scalable]</code></pre>
-<pre class="marginfigure"><code>&quot;The Bioconductor project distributes the software as a number of different R
-packages, including Rsamtools, IRanges, GenomicRanges, GenomicAlignments,
-Biostrings, rtracklayer, biovizBase and BiocParallel. The software enables the
-analyst to conserve computational resources, iteratively generate summaries and
-visualize data at arbitrary levels of detail. These advances have helped to
-ensure that R and Bioconductor remain relevant in the age of high-throughput
-sequencing. We plan to continue in this direction by designing and implementing
-abstractions that enable user code to be agnostic to the mode of data storage,
-whether it be memory, files or databases. This will bring much needed agility to
-resource allocation and will enable the user to be more resourceful, without the
-burden of increased complexity.&quot; 
-
-[@lawrence2014scalable]</code></pre>
+<p>Placeholder (you should not see this)</p>
+<p>Placeholder (you should not see this)</p>
+<p>Placeholder (you should not see this)</p>
+<p>Placeholder (you should not see this)</p>
+<p>Placeholder (you should not see this)</p>
+<p>Placeholder (you should not see this)</p>
+<p>Placeholder (you should not see this)</p>
+<p>Placeholder (you should not see this)</p>
 <p><strong>Allow software development across large, diverse teams</strong></p>
 <p>Robert Gentleman, one of the creators of Bioconductor [?], highlights
 this as a key reason for using these more complex data structures.
@@ -7740,8 +7598,8 @@ this structure, and there are a large number of functions that are built to be
 used with dataframes, providing enormous flexibility in what you can do with
 data stored in this structure.</p>
 </div>
-<div id="biomedical-data-preprocessing-with-complex-data-structures" class="section level3" number="3.4.7">
-<h3><span class="header-section-number">3.4.7</span> Biomedical data preprocessing with complex data structures</h3>
+<div id="biomedical-data-preprocessing-with-complex-data-structures" class="section level3 hasAnchor" number="3.4.7">
+<h3><span class="header-section-number">3.4.7</span> Biomedical data preprocessing with complex data structures<a href="experimental-data-preprocessing.html#biomedical-data-preprocessing-with-complex-data-structures" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>As we noted briefly earlier, the Bioconductor project is one area of
 R programming where complex data structures, rather than a tidyverse
 approach, tends to dominate (although there does seem to be an evolution
@@ -7800,8 +7658,8 @@ understand, and they are often much more customized to a specific action,
 which means that you have to learn more functions (since each does one
 specific thing).</p>
 </div>
-<div id="disadvantages-of-complex-data-structures" class="section level3" number="3.4.8">
-<h3><span class="header-section-number">3.4.8</span> Disadvantages of complex data structures</h3>
+<div id="disadvantages-of-complex-data-structures" class="section level3 hasAnchor" number="3.4.8">
+<h3><span class="header-section-number">3.4.8</span> Disadvantages of complex data structures<a href="experimental-data-preprocessing.html#disadvantages-of-complex-data-structures" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Harder to see all the data</strong></p>
 <p>A first limitation of storing data in a complex structure is that it can
 make it trickier for you to explore the data as you work with it. When data
@@ -7886,7 +7744,7 @@ large data output from complex laboratory equipment. However, once this pre-proc
 is completed, there is a big advantage in moving the data into a simple format
 and then continuing coding, data analysis, and visualization using tools that
 work with this simple format. This is the approach taken by a suite of R packages
-called the “tidyverse,” as well as extensions that build off the approach that
+called the “tidyverse”, as well as extensions that build off the approach that
 this suite of tools embraces. This “tidyverse” approach is described in the
 next section.</p>
 <p>In the previous parts of this module, we’ve highlighted some of the ways that
@@ -7932,7 +7790,7 @@ data structure, it may not work for data stored in a different data structure.
 By contrast, when data are stored in a common structure (like a dataframe), the
 same functions can always be used, across any step in the pipeline.</p>
 <p>There are some approaches that programmers have taken to get around this limitation,
-using what are called “methods.” Methods are functions that run differently
+using what are called “methods”. Methods are functions that run differently
 depending on what type of data structure they are given. One example in R is
 the <code>summary</code> function, which outputs a summary of the object you input. This
 function first checks the class of the object (i.e., the data structure) and
@@ -7946,12 +7804,7 @@ Bioconductor data structures). However, many of these methods are geared toward
 providing “final” output—a final summary or plot that you might read and
 interpret directly, but not output that serves as a “step” in a longer workflow,
 so not output that will become input to another function.</p>
-<pre class="marginfigure"><code>&quot;There is a cost to the free lunch. That `print` is generic means that what
-you see is not what you get (sometimes). In the printing of an object you may
-see a number that you want---an R-squared for example---but don’t know how
-to grab that number.&quot;
-
-[@burns2011r]</code></pre>
+<p>Placeholder (you should not see this)</p>
 <p>Therefore, even the approach of methods can’t get around another way that
 specialized data structures and their use of specialized functions constrain you
 when pre-processing and analyzing data. When data are stored in specialized data
@@ -8256,13 +8109,13 @@ create your own series of steps, as the tidyverse approach does.</p>
 <!-- > "For example, a normalized scRNA-seq dataset carries around two matrices: the raw counts and the normalized expression values. You might have enough RAM to load one of these a time but not both at once. With a HDF5-backed SingleCellExperiment you can easily just load into memory the matrix you actually need at a given step in the analysis." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/ -->
 <!-- > "Don’t use a DelayedArray if you can avoid it! ... If you can load your data into memory and still compute on it then you’re always going to have a better time doing it that way. Analyses will be faster, simpler, and you will have more options available to you. But when this isn’t an option then the DelayedArray framework is a powerful set of packages to help you get your work done. I find it pretty remarkable that a first-class single-cell analysis workflow can so seamlessly support the use of in-memory and disk-backed data." http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/DelayedArrayWorkshop__Effectively_using_the_DelayedArray_framework_for_users/ -->
 </div>
-<div id="practice-quiz-1" class="section level3" number="3.4.9">
-<h3><span class="header-section-number">3.4.9</span> Practice quiz</h3>
+<div id="practice-quiz-1" class="section level3 hasAnchor" number="3.4.9">
+<h3><span class="header-section-number">3.4.9</span> Practice quiz<a href="experimental-data-preprocessing.html#practice-quiz-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 
 </div>
 </div>
-<div id="module16" class="section level2" number="3.5">
-<h2><span class="header-section-number">3.5</span> Complex data types in R and Bioconductor</h2>
+<div id="module16" class="section level2 hasAnchor" number="3.5">
+<h2><span class="header-section-number">3.5</span> Complex data types in R and Bioconductor<a href="experimental-data-preprocessing.html#module16" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Many R extension packages for pre-processing experimental data use complex
 (rather than ‘tidy’) data formats within their code, and many output data in
 complex formats. Very recently, the <em>broom</em> and <em>biobroom</em> R
@@ -8282,8 +8135,8 @@ structures</li>
 <li>Describe what the <em>broom</em> and <em>biobroom</em> R packages can do</li>
 <li>Explain how converting data to a ‘tidy’ format can improve reproducibility</li>
 </ul>
-<div id="bioconductor-data-structures" class="section level3" number="3.5.1">
-<h3><span class="header-section-number">3.5.1</span> Bioconductor data structures</h3>
+<div id="bioconductor-data-structures" class="section level3 hasAnchor" number="3.5.1">
+<h3><span class="header-section-number">3.5.1</span> Bioconductor data structures<a href="experimental-data-preprocessing.html#bioconductor-data-structures" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>When you are writing scripts in R to work with your code, if you are at a
 point in your pipeline when you can use a “tidyverse” approach, then you will
 “keep” your data in a dataframe, as your data structure, throughout your
@@ -8312,12 +8165,12 @@ keeping the data in a dataframe structure.</p>
 <p><strong>Generic versus structure-specific functions</strong></p>
 <p><strong>How to access data in a complex structure</strong></p>
 </div>
-<div id="exampleseurat-data-structure" class="section level3" number="3.5.2">
-<h3><span class="header-section-number">3.5.2</span> Example—Seurat data structure</h3>
+<div id="exampleseurat-data-structure" class="section level3 hasAnchor" number="3.5.2">
+<h3><span class="header-section-number">3.5.2</span> Example—Seurat data structure<a href="experimental-data-preprocessing.html#exampleseurat-data-structure" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>A tour of the Seurat data structure</strong></p>
 </div>
-<div id="other-popular-bioconductor-data-structures" class="section level3" number="3.5.3">
-<h3><span class="header-section-number">3.5.3</span> Other popular Bioconductor data structures</h3>
+<div id="other-popular-bioconductor-data-structures" class="section level3 hasAnchor" number="3.5.3">
+<h3><span class="header-section-number">3.5.3</span> Other popular Bioconductor data structures<a href="experimental-data-preprocessing.html#other-popular-bioconductor-data-structures" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Some object classes in BioConductor:</p>
 <ul>
 <li><code>eSet</code> from <code>Biobase</code></li>
@@ -8341,8 +8194,8 @@ keeping the data in a dataframe structure.</p>
 <p><strong>Structures for single-cell gene expression data</strong></p>
 <p><strong>BiocViews to find more tools</strong></p>
 </div>
-<div id="working-with-data-in-bioconductor-structures" class="section level3" number="3.5.4">
-<h3><span class="header-section-number">3.5.4</span> Working with data in Bioconductor structures</h3>
+<div id="working-with-data-in-bioconductor-structures" class="section level3 hasAnchor" number="3.5.4">
+<h3><span class="header-section-number">3.5.4</span> Working with data in Bioconductor structures<a href="experimental-data-preprocessing.html#working-with-data-in-bioconductor-structures" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>How to explore data in Bioconductor structures</strong></p>
 <p>While it is a bit trickier to explore your data when it is stored in a
 list—either a general list you created, or one that forms the base for a
@@ -8409,12 +8262,12 @@ rather than through the slot name in the object.</p>
 <p><strong>Finding functions that work with a data structure</strong></p>
 <p><strong>Chaining together preprocessing steps with Bioconductor structures</strong></p>
 </div>
-<div id="examplepreprocessing-single-cell-rna-sequencing-data" class="section level3" number="3.5.5">
-<h3><span class="header-section-number">3.5.5</span> Example—Preprocessing single cell RNA sequencing data</h3>
+<div id="examplepreprocessing-single-cell-rna-sequencing-data" class="section level3 hasAnchor" number="3.5.5">
+<h3><span class="header-section-number">3.5.5</span> Example—Preprocessing single cell RNA sequencing data<a href="experimental-data-preprocessing.html#examplepreprocessing-single-cell-rna-sequencing-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <hr />
 </div>
-<div id="rs-list-data-structure-and-list-based-structures" class="section level3" number="3.5.6">
-<h3><span class="header-section-number">3.5.6</span> R’s list data structure and list-based structures</h3>
+<div id="rs-list-data-structure-and-list-based-structures" class="section level3 hasAnchor" number="3.5.6">
+<h3><span class="header-section-number">3.5.6</span> R’s list data structure and list-based structures<a href="experimental-data-preprocessing.html#rs-list-data-structure-and-list-based-structures" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>When you are writing scripts in R to work with your code, if you are at a
 point in your pipeline when you can use a “tidyverse” approach, then you will
 “keep” your data in a dataframe, as your data structure, throughout your
@@ -8437,7 +8290,7 @@ large to reasonably be stored in a dataframe structure, but instead will require
 a Bioconductor approach and the use of more complex data structures, while after
 pre-processing, the workflow can move into a tidyverse approach, centered on
 keeping the data in a dataframe structure.</p>
-<p>Many R data structures are built on a general structure called a “list.” This
+<p>Many R data structures are built on a general structure called a “list”. This
 data structure is a useful basic general data structure, because it is
 extraordinarily flexible. The list data structure is flexible in two
 important ways: it allows you to include data of different <em>types</em> in the
@@ -8465,7 +8318,7 @@ Some types of data can be stored using fewer of these <em>bits</em> (<em>bi</em>
 Each measurement of logical data, for example, can be stored in a single bit,
 since it only can take one of two values (0 or 1, for FALSE and TRUE, respectively).
 For character strings, these can be divided into each character in the string
-for storage (for example, “cat” can be stored as “c,” “a,” “t”). There is a set
+for storage (for example, “cat” can be stored as “c”, “a”, “t”). There is a set
 of characters called the ASCII character set that includes the lowercase and
 uppercase of the letters and punctuation sets that you see on a standard
 US keyboard [?], and if the character strings only use these characters, they
@@ -8494,7 +8347,7 @@ structure provides a bit more flexibility—you can expand into two dimensions,
 rather than one, and you can have different data types in different columns of
 the dataframe (although each column must itself have a single data type).</p>
 <p>The list data structure is much more flexible. It essentially allows you to
-create different “slots,” and you can store any type of data in each of these
+create different “slots”, and you can store any type of data in each of these
 slots. In each slot you can store any of the other types of data structures in
 R—for example, vectors, dataframes, or other lists. You can even store unusual
 things like R <em>environments</em> [?] or <em>pointers</em> that give the directions to where
@@ -8668,7 +8521,7 @@ other lists. This makes them fundamentally different from atomic vectors.”
 <p>“The two most important S3 vectors built on top of lists are data frames and
 tibbles. If you do data analysis in R, you’re going to be using data frames.
 A data frame is a named list of vectors with attributes for (column) <code>names</code>,
-<code>row.names</code>, and its class,”data.frame“… In contrast to a regular list, a
+<code>row.names</code>, and its class,”data.frame”… In contrast to a regular list, a
 data frame has an additional constraint: the length of each of its vectors must
 be the same. This gives data frames their rectangular structure…” <span class="citation">(Wickham 2019)</span></p>
 </blockquote>
@@ -8716,8 +8569,8 @@ state… This property is also used to implement the R6 object-oriented
 programming system…” <span class="citation">(Wickham 2019)</span></p>
 </blockquote>
 </div>
-<div id="exploring-and-extracting-data-from-r-list-data-structures" class="section level3" number="3.5.7">
-<h3><span class="header-section-number">3.5.7</span> Exploring and extracting data from R list data structures</h3>
+<div id="exploring-and-extracting-data-from-r-list-data-structures" class="section level3 hasAnchor" number="3.5.7">
+<h3><span class="header-section-number">3.5.7</span> Exploring and extracting data from R list data structures<a href="experimental-data-preprocessing.html#exploring-and-extracting-data-from-r-list-data-structures" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>To feel comfortable exploring your data at any stage during the preprocessing
 steps, you should learn how to investigate and explore data that’s stored
 in a list structure in R. Because the list structure is the building block
@@ -8878,7 +8731,7 @@ organically over many years without a single guiding principle. Most of the time
 the distinction between objects and object-oriented objects is not important. But
 here we need to get into the nitty gritty details so we’ll use the terms
 <strong>base objects</strong> and <strong>OO objects</strong> to distinguish them. … Techinally, the difference
-between base and OO objects is that OO objects have a ‘class attribute.’”
+between base and OO objects is that OO objects have a ‘class attribute’.”
 <span class="citation">(Wickham 2019)</span></p>
 </blockquote>
 <blockquote>
@@ -8956,8 +8809,8 @@ S3 is no better, but the lack is less painful because S3 is much simpler.)”
 <span class="citation">(Wickham 2019)</span></p>
 </blockquote>
 </div>
-<div id="interfacing-between-object-based-and-tidyverse-workflows" class="section level3" number="3.5.8">
-<h3><span class="header-section-number">3.5.8</span> Interfacing between object-based and tidyverse workflows</h3>
+<div id="interfacing-between-object-based-and-tidyverse-workflows" class="section level3 hasAnchor" number="3.5.8">
+<h3><span class="header-section-number">3.5.8</span> Interfacing between object-based and tidyverse workflows<a href="experimental-data-preprocessing.html#interfacing-between-object-based-and-tidyverse-workflows" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The tidyverse approach in R is based on keeping data in a dataframe structure.
 By keeping this common structure, the tidyverse allows for straightforward but
 powerful work with your data by chaining together simple, single-purpose
@@ -9014,8 +8867,8 @@ structure of the list, you can assign these specific pieces to their own R objec
 using typical R assignment (e.g., with the <em>gets arrow</em>, <code>&lt;-</code>, or with <code>=</code>, depending
 on your preferred R programming style). …</p>
 </div>
-<div id="extras" class="section level3" number="3.5.9">
-<h3><span class="header-section-number">3.5.9</span> Extras</h3>
+<div id="extras" class="section level3 hasAnchor" number="3.5.9">
+<h3><span class="header-section-number">3.5.9</span> Extras<a href="experimental-data-preprocessing.html#extras" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>[Comparison of complexity of biological systems versus complexity of code and
 algorithms for data pre-processing—for the later, nothing is unknowable or even
 unknown. Someone somewhere is guaranteed to know exactly how it works, what it’s
@@ -9026,7 +8879,7 @@ are all there if and when you want to dig to figure out what’s going on.]</p>
 <p>[There are ways to fully package up and save the computer environment used to
 run a pipeline of pre-processing and analysis, including any system settings,
 all different software used in analysis steps, and so on. Some of the approaches
-that are being explored for this include the use of “containers,” including
+that are being explored for this include the use of “containers”, including
 Docker containers. This does allow, typically, for full reproducibility of
 the workflow. However, this approach isn’t very proactive in emphasizing the
 robustness of a workflow or its comprehensibility to others—instead, it
@@ -10028,7 +9881,7 @@ data containers.” <span class="citation">(Holmes and Huber 2018)</span></p>
 <blockquote>
 <p>“<code>IRanges</code> is a general container for mathematical intervals. We create the
 biological context with the next line [which uses <code>GRanges</code>]. [Footnote:
-‘The ’I in IRanges stands for ’interval,’ the ‘G’ in GRanges for ‘genomic’].”
+‘The ’I in IRanges stands for ’interval’, the ‘G’ in GRanges for ‘genomic’].”
 <span class="citation">(Holmes and Huber 2018)</span></p>
 </blockquote>
 <blockquote>
@@ -10070,7 +9923,7 @@ CDs (clusters of differentiation) and are collected by flow cytometry
 (using fluorescence…) or mass cytometry (using single-cell atomic mass
 spectrometry of heavy metal reporters). An example of a commonly used CD is
 CD4; this protein is expressed by helper T cells that are referred to as
-being ‘CD4+.’ Note, however, that some cells express CD4 (thus are CD4+)
+being ‘CD4+’. Note, however, that some cells express CD4 (thus are CD4+)
 but are not actually helper T cells. We start by loading some useful Bioconductor
 packages for flow cytometry, <code>flowCore</code> and <code>flowViz</code>.” <span class="citation">(Holmes and Huber 2018)</span></p>
 </blockquote>
@@ -10252,7 +10105,7 @@ even a proper way to express programmatically what ‘an object like <code>xldf<
 in the tidyverse. Object-oriented (OO) programming, and its incarnation S4 in R,
 solves such questions. For instance, the above-mentioned checks could be
 performed by a <code>validObject</code> method for a suitably defined class, and the class
-definition would formalize the notion of ’an object like <code>xldf</code>.’ Addressing
+definition would formalize the notion of ’an object like <code>xldf</code>’. Addressing
 such issues is behind the object-oriented design of the data structures in
 Bioconductor, such as the <code>SummarizedExperiment</code> class. Other potentially useful
 features of OO data representations include: 1. Abstraction of interface from
@@ -10267,7 +10120,7 @@ send programmatic queries to an object to ask for more information about itself.
 All of these make it easier to write high-level code that focuses on the ‘big
 picture’ functionality rather than on implementation details of the building
 blocks—albeit at the cost of more initial investment in infrastructure and
-‘bureaucracy.’” <span class="citation">(Holmes and Huber 2018)</span></p>
+‘bureaucracy’.” <span class="citation">(Holmes and Huber 2018)</span></p>
 </blockquote>
 <blockquote>
 <p>“<strong>Data provenance and metadata.</strong> THere is no obvious place in an object like
@@ -10282,7 +10135,7 @@ data classes in Bioconductor try to address this.” <span class="citation">(Hol
 structure, since a number of features (e.g., genes: conventionally, the rows of
 the matrix) are assayed on several samples (conventionally, the columns of the
 matrix). Unrolling the matrix into a long form like <code>xldf</code> makes some operations
-(say, PCA, SVD, clustering of features or samples) more awkward."
+(say, PCA, SVD, clustering of features or samples) more awkward.”
 <span class="citation">(Holmes and Huber 2018)</span></p>
 </blockquote>
 <blockquote>
@@ -10348,7 +10201,7 @@ output something interesting.</p>
 <p>The S4 system of object-oriented programming in R allows for something
 called <em>inheritance</em>. [More on this.]</p>
 <p>As you use R with the Bioconductor packages, you often might not notice
-how much S4 objects are being used “under the hood,” as you pre-process
+how much S4 objects are being used “under the hood”, as you pre-process
 and analyze data. By contrast, you may have learned the “tidyverse” approach
 in R, which is a powerful general approach for working with data. The
 tidyverse approach is centered on the object class is predominated uses,
@@ -10445,7 +10298,7 @@ data at every step.</p>
 store different elements of the data. They also are associated with specific
 functions that work with the way they store the data.</p>
 <blockquote>
-<p>“A programming language serves two related purposes: it provides a vehicle for the programmer to specify actions to be executed and a set of concepts for the programmer to use when thinking about what can be done. The first aspect ideally requires a language that is ‘close to the machine,’ so that all important aspects of a machine are handled simply and efficiently in a way that is reasonably obvious to the programmer. The C language was primarily designed with this in mind. The second aspect ideally requires a language that is ‘close to the problem to be solved’ so that the concepts of a solution can be expressed directly and concisely. The facilities added to C to create C++ were primarily designed with this in mind.”
+<p>“A programming language serves two related purposes: it provides a vehicle for the programmer to specify actions to be executed and a set of concepts for the programmer to use when thinking about what can be done. The first aspect ideally requires a language that is ‘close to the machine’, so that all important aspects of a machine are handled simply and efficiently in a way that is reasonably obvious to the programmer. The C language was primarily designed with this in mind. The second aspect ideally requires a language that is ‘close to the problem to be solved’ so that the concepts of a solution can be expressed directly and concisely. The facilities added to C to create C++ were primarily designed with this in mind.”
 — Bjarne Stroustrup, <em>The C++ Programming Language</em>, Addison-Wesley, 1986</p>
 </blockquote>
 <blockquote>
@@ -10612,7 +10465,7 @@ method of the generic function that matches the class of the argument. If such a
 match exists, then the method function is used. If there is no matching method
 or if the argument does not have a class, then the default method is used.
 Let’s get specific. The lm (linear model) function returns an object of class
-‘lm.’ Among the methods for print are print.lm and print.default. The
+‘lm’. Among the methods for print are print.lm and print.default. The
 result of a call to lm is printed with print.lm. The result of 1:10 is printed
 with print.default.”
 <span class="citation">(Burns 2011)</span></p>
@@ -10645,8 +10498,9 @@ getS3method(’median’, ’default’).” <span class="citation">(Burns 2011)
 <p>“The methods function lists the methods of a generic function [for classes loaded in the current session]. Alternatively
 given a class it returns the generic functions that have methods for the class.” <span class="citation">(Burns 2011)</span></p>
 </blockquote>
-<pre><code>## [1] &quot;print.acf&quot;         &quot;print.AES&quot;         &quot;print.anova&quot;      
-## [4] &quot;print.ansi_string&quot; &quot;print.ansi_style&quot;  &quot;print.aov&quot;</code></pre>
+<pre><code>## [1] &quot;print.acf&quot;               &quot;print.activeConcordance&quot;
+## [3] &quot;print.AES&quot;               &quot;print.anova&quot;            
+## [5] &quot;print.aov&quot;               &quot;print.aovlist&quot;</code></pre>
 <pre><code>## [1] ExpressionSet,environment-method ExpressionSet,matrix-method     
 ## [3] ExpressionSet,missing-method    
 ## see &#39;?methods&#39; for accessing help and source code</code></pre>
@@ -10681,7 +10535,7 @@ pieces (components) of the object are called slots. Slots are accessed by the <c
 operator.” <span class="citation">(Burns 2011)</span></p>
 </blockquote>
 <blockquote>
-<p>"By now you will have noticed that S4 methods are driven by the class
+<p>“By now you will have noticed that S4 methods are driven by the class
 attribute just as S3 methods are. This commonality perhaps makes the two
 systems appear more similar than they are. In S3 the decision of what method
 to use is made in real-time when the function is called. In S4 the decision is
@@ -10689,11 +10543,11 @@ made when the code is loaded into the R session—there is a table that charts
 the relation. <span class="citation">(Burns 2011)</span></p>
 </blockquote>
 </div>
-<div id="subsection-2-1" class="section level3" number="3.5.10">
-<h3><span class="header-section-number">3.5.10</span> Subsection 2</h3>
+<div id="subsection-2-1" class="section level3 hasAnchor" number="3.5.10">
+<h3><span class="header-section-number">3.5.10</span> Subsection 2<a href="experimental-data-preprocessing.html#subsection-2-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 </div>
-<div id="applied-exercise-3" class="section level3" number="3.5.11">
-<h3><span class="header-section-number">3.5.11</span> Applied exercise</h3>
+<div id="applied-exercise-3" class="section level3 hasAnchor" number="3.5.11">
+<h3><span class="header-section-number">3.5.11</span> Applied exercise<a href="experimental-data-preprocessing.html#applied-exercise-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>[Example data in a basic list]</li>
 <li>[Example data in a Bioconductor list-based class]</li>
@@ -10707,8 +10561,8 @@ Try using this with further tidyverse code to create a nice table/visualization.
 
 </div>
 </div>
-<div id="module17" class="section level2" number="3.6">
-<h2><span class="header-section-number">3.6</span> Example: Converting from complex to ‘tidy’ data formats</h2>
+<div id="module17" class="section level2 hasAnchor" number="3.6">
+<h2><span class="header-section-number">3.6</span> Example: Converting from complex to ‘tidy’ data formats<a href="experimental-data-preprocessing.html#module17" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We will provide a detailed example of a case where data pre-processing in R
 results in a complex, ‘untidy’ data format. We will walk through an example of
 applying automated gating to flow cytometry data. We will demonstrate the
@@ -10719,13 +10573,13 @@ experimental data from one of our Co-Is research on the immunology of
 tuberculosis.</p>
 <p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
 <ul>
-<li>Describe how tools like  were used in this real research
+<li>Describe how tools like were used in this real research
 example to convert from the complex data format from pre-processing to a format
 better for further data analysis and visualization</li>
 <li>Understand how these tools would fit in their own research pipelines</li>
 </ul>
-<div id="pipelines-that-combine-complex-and-tidy-data-structures" class="section level3" number="3.6.1">
-<h3><span class="header-section-number">3.6.1</span> Pipelines that combine complex and tidy data structures</h3>
+<div id="pipelines-that-combine-complex-and-tidy-data-structures" class="section level3 hasAnchor" number="3.6.1">
+<h3><span class="header-section-number">3.6.1</span> Pipelines that combine complex and tidy data structures<a href="experimental-data-preprocessing.html#pipelines-that-combine-complex-and-tidy-data-structures" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The tidyverse approach in R is based on keeping data in a dataframe structure.
 By keeping this common structure, the tidyverse allows for straightforward but
 powerful work with your data by chaining together simple, single-purpose
@@ -10786,14 +10640,14 @@ on your preferred R programming style). …</p>
 <p><strong>Converting along the way for exploration</strong></p>
 <p><strong>May “drop” some data when converting</strong></p>
 </div>
-<div id="techniques-for-connecting-from-complex-to-tidy-data-in-a-pipeline" class="section level3" number="3.6.2">
-<h3><span class="header-section-number">3.6.2</span> Techniques for connecting from complex to tidy data in a pipeline</h3>
+<div id="techniques-for-connecting-from-complex-to-tidy-data-in-a-pipeline" class="section level3 hasAnchor" number="3.6.2">
+<h3><span class="header-section-number">3.6.2</span> Techniques for connecting from complex to tidy data in a pipeline<a href="experimental-data-preprocessing.html#techniques-for-connecting-from-complex-to-tidy-data-in-a-pipeline" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Accessor functions</strong></p>
 <p><strong>broom and biobroom</strong></p>
 <p><strong>“tidy” data structures for single cell gene expression data</strong></p>
 </div>
-<div id="examplecomplex-to-tidy-pipeline-for-scrna-seq-data-analysis" class="section level3" number="3.6.3">
-<h3><span class="header-section-number">3.6.3</span> Example—Complex to tidy pipeline for scRNA-Seq data analysis</h3>
+<div id="examplecomplex-to-tidy-pipeline-for-scrna-seq-data-analysis" class="section level3 hasAnchor" number="3.6.3">
+<h3><span class="header-section-number">3.6.3</span> Example—Complex to tidy pipeline for scRNA-Seq data analysis<a href="experimental-data-preprocessing.html#examplecomplex-to-tidy-pipeline-for-scrna-seq-data-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>These data come from a study related to vaccine development for COVID-19 <span class="citation">(Ragan et al. 2021)</span>. This studied tested a COVID-19 vaccine candidate
 using hamsters as the animal model. It included as an assay single-cell
 RNA-sequencing, with the goal of clarifying immunological responses in
@@ -10811,8 +10665,8 @@ example, to determine if there are differences in the immune cells populations
 within an animal that is vaccinated versus one that is not.</p>
 <hr />
 </div>
-<div id="combining-bioconductor-and-tidyverse-approaches-in-a-workflow" class="section level3" number="3.6.4">
-<h3><span class="header-section-number">3.6.4</span> Combining Bioconductor and tidyverse approaches in a workflow</h3>
+<div id="combining-bioconductor-and-tidyverse-approaches-in-a-workflow" class="section level3 hasAnchor" number="3.6.4">
+<h3><span class="header-section-number">3.6.4</span> Combining Bioconductor and tidyverse approaches in a workflow<a href="experimental-data-preprocessing.html#combining-bioconductor-and-tidyverse-approaches-in-a-workflow" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In the previous modules, we have talked about two topics. First we have talked about the convenience and power of tidyverse tools. These tools can be used at points in your workflow when the data can be stored in a simple standard format: the tidy dataframe format. We have also talked about reasons why there are advantages to using more complex data storage formats earlier in the process.</p>
 <p>Work with research data will typically require a series of steps for
 pre-processing, analysis, exploration, and visualization. Collectively, these
@@ -10872,8 +10726,8 @@ data to be stored in a way that both accounts for complexity early and
 pre-processing of these data but also allows for a more natural integration with
 the wealth of powerful tools available through the tidyverse approach.</p>
 </div>
-<div id="the-biobroom-package" class="section level3" number="3.6.5">
-<h3><span class="header-section-number">3.6.5</span> The <code>biobroom</code> package</h3>
+<div id="the-biobroom-package" class="section level3 hasAnchor" number="3.6.5">
+<h3><span class="header-section-number">3.6.5</span> The <code>biobroom</code> package<a href="experimental-data-preprocessing.html#the-biobroom-package" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The <code>biobroom</code> package includes three main generic functions (methods), which
 can be used on a number of Bioconductor object classes. When applied to object
 stored in one of these Bioconductor classes, these functions will extract part
@@ -10927,17 +10781,17 @@ the right container for operations from <code>edgeR</code>. Then functions from 
 data. The result is an object in the <code>DGEExact</code> class, which is defined
 by the <code>edgeR</code> package. To extract data from this class in a tidy format,
 you can use the <code>tidy</code> and <code>glance</code> functions from <code>biobroom</code>.]</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="experimental-data-preprocessing.html#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biobroom)</span>
-<span id="cb78-2"><a href="experimental-data-preprocessing.html#cb78-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Biobase)</span>
-<span id="cb78-3"><a href="experimental-data-preprocessing.html#cb78-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(edgeR)</span>
-<span id="cb78-4"><a href="experimental-data-preprocessing.html#cb78-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb78-5"><a href="experimental-data-preprocessing.html#cb78-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(hammer)</span>
-<span id="cb78-6"><a href="experimental-data-preprocessing.html#cb78-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb78-7"><a href="experimental-data-preprocessing.html#cb78-7" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(hammer)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="experimental-data-preprocessing.html#cb9-1" tabindex="-1"></a><span class="fu">library</span>(biobroom)</span>
+<span id="cb9-2"><a href="experimental-data-preprocessing.html#cb9-2" tabindex="-1"></a><span class="fu">library</span>(Biobase)</span>
+<span id="cb9-3"><a href="experimental-data-preprocessing.html#cb9-3" tabindex="-1"></a><span class="fu">library</span>(edgeR)</span>
+<span id="cb9-4"><a href="experimental-data-preprocessing.html#cb9-4" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="experimental-data-preprocessing.html#cb9-5" tabindex="-1"></a><span class="fu">data</span>(hammer)</span>
+<span id="cb9-6"><a href="experimental-data-preprocessing.html#cb9-6" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="experimental-data-preprocessing.html#cb9-7" tabindex="-1"></a><span class="fu">class</span>(hammer)</span></code></pre></div>
 <pre><code>## [1] &quot;ExpressionSet&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;Biobase&quot;</code></pre>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="experimental-data-preprocessing.html#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(hammer)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="experimental-data-preprocessing.html#cb11-1" tabindex="-1"></a><span class="fu">tidy</span>(hammer)</span></code></pre></div>
 <pre><code>## # A tibble: 236,128 × 3
 ##    gene               sample    value
 ##    &lt;chr&gt;              &lt;chr&gt;     &lt;int&gt;
@@ -10951,22 +10805,22 @@ you can use the <code>tidy</code> and <code>glance</code> functions from <code>b
 ##  8 ENSRNOG00000000017 SRX020102     4
 ##  9 ENSRNOG00000000021 SRX020102     7
 ## 10 ENSRNOG00000000024 SRX020102    86
-## # … with 236,118 more rows</code></pre>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="experimental-data-preprocessing.html#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Example from `biobroom` help documentation</span></span>
-<span id="cb82-2"><a href="experimental-data-preprocessing.html#cb82-2" aria-hidden="true" tabindex="-1"></a>hammer.counts <span class="ot">&lt;-</span> <span class="fu">exprs</span>(hammer)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb82-3"><a href="experimental-data-preprocessing.html#cb82-3" aria-hidden="true" tabindex="-1"></a>hammer.treatment <span class="ot">&lt;-</span> <span class="fu">phenoData</span>(hammer)<span class="sc">$</span>protocol[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb82-4"><a href="experimental-data-preprocessing.html#cb82-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb82-5"><a href="experimental-data-preprocessing.html#cb82-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(<span class="at">counts=</span>hammer.counts,<span class="at">group=</span>hammer.treatment)</span>
-<span id="cb82-6"><a href="experimental-data-preprocessing.html#cb82-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(y)</span>
-<span id="cb82-7"><a href="experimental-data-preprocessing.html#cb82-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateCommonDisp</span>(y)</span>
-<span id="cb82-8"><a href="experimental-data-preprocessing.html#cb82-8" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateTagwiseDisp</span>(y)</span>
-<span id="cb82-9"><a href="experimental-data-preprocessing.html#cb82-9" aria-hidden="true" tabindex="-1"></a>et <span class="ot">&lt;-</span> <span class="fu">exactTest</span>(y)</span>
-<span id="cb82-10"><a href="experimental-data-preprocessing.html#cb82-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb82-11"><a href="experimental-data-preprocessing.html#cb82-11" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(et)</span></code></pre></div>
+## # ℹ 236,118 more rows</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="experimental-data-preprocessing.html#cb13-1" tabindex="-1"></a><span class="do">## Example from `biobroom` help documentation</span></span>
+<span id="cb13-2"><a href="experimental-data-preprocessing.html#cb13-2" tabindex="-1"></a>hammer.counts <span class="ot">&lt;-</span> <span class="fu">exprs</span>(hammer)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb13-3"><a href="experimental-data-preprocessing.html#cb13-3" tabindex="-1"></a>hammer.treatment <span class="ot">&lt;-</span> <span class="fu">phenoData</span>(hammer)<span class="sc">$</span>protocol[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb13-4"><a href="experimental-data-preprocessing.html#cb13-4" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="experimental-data-preprocessing.html#cb13-5" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(<span class="at">counts=</span>hammer.counts,<span class="at">group=</span>hammer.treatment)</span>
+<span id="cb13-6"><a href="experimental-data-preprocessing.html#cb13-6" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(y)</span>
+<span id="cb13-7"><a href="experimental-data-preprocessing.html#cb13-7" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateCommonDisp</span>(y)</span>
+<span id="cb13-8"><a href="experimental-data-preprocessing.html#cb13-8" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateTagwiseDisp</span>(y)</span>
+<span id="cb13-9"><a href="experimental-data-preprocessing.html#cb13-9" tabindex="-1"></a>et <span class="ot">&lt;-</span> <span class="fu">exactTest</span>(y)</span>
+<span id="cb13-10"><a href="experimental-data-preprocessing.html#cb13-10" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="experimental-data-preprocessing.html#cb13-11" tabindex="-1"></a><span class="fu">class</span>(et)</span></code></pre></div>
 <pre><code>## [1] &quot;DGEExact&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;edgeR&quot;</code></pre>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="experimental-data-preprocessing.html#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(et)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="experimental-data-preprocessing.html#cb15-1" tabindex="-1"></a><span class="fu">tidy</span>(et)</span></code></pre></div>
 <pre><code>## # A tibble: 29,516 × 4
 ##    gene               estimate  logCPM    p.value
 ##    &lt;chr&gt;                 &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;
@@ -10980,8 +10834,8 @@ you can use the <code>tidy</code> and <code>glance</code> functions from <code>b
 ##  8 ENSRNOG00000000017   2.42    1.11   0.0000638 
 ##  9 ENSRNOG00000000021  -2.02    0.211  0.0373    
 ## 10 ENSRNOG00000000024   0.133   3.97   0.508     
-## # … with 29,506 more rows</code></pre>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="experimental-data-preprocessing.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(et)</span></code></pre></div>
+## # ℹ 29,506 more rows</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="experimental-data-preprocessing.html#cb17-1" tabindex="-1"></a><span class="fu">glance</span>(et)</span></code></pre></div>
 <pre><code>##   significant     comparison
 ## 1        6341 control/L5 SNL</code></pre>
 <p>The creator of the <code>broom</code> package listed some of the common ways that
@@ -11055,7 +10909,7 @@ tools.</p>
 ##  8 ENSRNOG00000000017 SRX020102     4
 ##  9 ENSRNOG00000000021 SRX020102     7
 ## 10 ENSRNOG00000000024 SRX020102    86
-## # … with 236,118 more rows</code></pre>
+## # ℹ 236,118 more rows</code></pre>
 <p>This output is a tidy dataframe object, with three columns providing the
 gene name, the sample identifier, and the expression level. In this format,
 the data can easily be explored and visualized with tidyverse tools. For example,
@@ -11079,7 +10933,7 @@ the <code>ExpressionSet</code> object by specifying <code>addPheno = TRUE</code>
 ##  8 ENSRNOG00000000017 SRX02… SRX020102             1 control  Sprag… 2 mo…     4
 ##  9 ENSRNOG00000000021 SRX02… SRX020102             1 control  Sprag… 2 mo…     7
 ## 10 ENSRNOG00000000024 SRX02… SRX020102             1 control  Sprag… 2 mo…    86
-## # … with 236,118 more rows</code></pre>
+## # ℹ 236,118 more rows</code></pre>
 <p>With this addition, visualizations can easily be changed to also show the
 experimental group of each sample:</p>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
@@ -11163,7 +11017,7 @@ hard-to-access rownames:</p>
 ##  8 ENSRNOG00000000017   2.42    1.11   0.0000638 
 ##  9 ENSRNOG00000000021  -2.02    0.211  0.0373    
 ## 10 ENSRNOG00000000024   0.133   3.97   0.508     
-## # … with 29,506 more rows</code></pre>
+## # ℹ 29,506 more rows</code></pre>
 <p>Now that the data are in this tidy format, tools from the tidyverse can
 be easily applied. For example, you could use functions from the <code>dplyr</code>
 package to see the genes for which the differential expression analysis
@@ -11182,7 +11036,7 @@ across the experimental groups:</p>
 ##  8 ENSRNOG00000001476     4.25   3.76 1.45e- 47
 ##  9 ENSRNOG00000004805     4.05   6.64 2.51e-185
 ## 10 ENSRNOG00000014327     3.85   4.51 5.39e- 63
-## # … with 793 more rows</code></pre>
+## # ℹ 793 more rows</code></pre>
 <p>Other exploratory analysis will also be straightforward with the data
 using tidyverse tools, now that they are in a “tidy” format.</p>
 <p>The <code>glance</code> method can also be applied to data that are stored in a
@@ -11203,13 +11057,13 @@ plot of the data with highlighting of noteworthy genes on the plot:</p>
 object class, you could do so by calling help in R (<code>?</code>) using the name of the
 method, a dot, and then the name of the object class, e.g., <code>?tidy.DGEExact</code>.</p>
 </div>
-<div id="the-ggbio-package" class="section level3" number="3.6.6">
-<h3><span class="header-section-number">3.6.6</span> The <code>ggbio</code> package</h3>
+<div id="the-ggbio-package" class="section level3 hasAnchor" number="3.6.6">
+<h3><span class="header-section-number">3.6.6</span> The <code>ggbio</code> package<a href="experimental-data-preprocessing.html#the-ggbio-package" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 </div>
-<div id="subsection-2-2" class="section level3" number="3.6.7">
-<h3><span class="header-section-number">3.6.7</span> Subsection 2</h3>
+<div id="subsection-2-2" class="section level3 hasAnchor" number="3.6.7">
+<h3><span class="header-section-number">3.6.7</span> Subsection 2<a href="experimental-data-preprocessing.html#subsection-2-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <blockquote>
-<p>“The biobroom package contains methods for converting standard objects in Bioconductor into a ‘tidy format.’ It serves as a complement to the popular broom package, and follows the same division (tidy/augment/glance) of tidying methods.”
+<p>“The biobroom package contains methods for converting standard objects in Bioconductor into a ‘tidy format’. It serves as a complement to the popular broom package, and follows the same division (tidy/augment/glance) of tidying methods.”
 <span class="citation">(Bass et al. 2020)</span></p>
 </blockquote>
 <blockquote>
@@ -11315,7 +11169,7 @@ biological replication.” <span class="citation">(Chen et al. 2014)</span></p>
 <p>“edgeR performs differential abundance analysis for pre-defined genomic
 features. Although not strictly necessary, it usually desirable that these
 genomic features are non-overlapping. For simplicity, we will hence-forth refer
-to the genomic features as ‘genes,’ although they could in principle be
+to the genomic features as ‘genes’, although they could in principle be
 transcripts, exons, general genomic intervals or some other type of feature. For
 ChIP-seq experiments, abundance might relate to transcription factor binding or
 to histone mark occupancy, but we will henceforth refer to abundance as in terms
@@ -11505,13 +11359,13 @@ but you can combine them in different ways across your pipeline, because no
 matter how much you’ve cut or glued or written on your paper at any given point,
 it’s still paper, and so you can still use paper-focused tools.</p>
 </div>
-<div id="applied-exercise-4" class="section level3" number="3.6.8">
-<h3><span class="header-section-number">3.6.8</span> Applied exercise</h3>
+<div id="applied-exercise-4" class="section level3 hasAnchor" number="3.6.8">
+<h3><span class="header-section-number">3.6.8</span> Applied exercise<a href="experimental-data-preprocessing.html#applied-exercise-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 
 </div>
 </div>
-<div id="module18" class="section level2" number="3.7">
-<h2><span class="header-section-number">3.7</span> Introduction to reproducible data pre-processing protocols</h2>
+<div id="module18" class="section level2 hasAnchor" number="3.7">
+<h2><span class="header-section-number">3.7</span> Introduction to reproducible data pre-processing protocols<a href="experimental-data-preprocessing.html#module18" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Reproducibility tools can be used to create reproducible data pre-processing
 protocols—documents that combine code and text in a “knitted” document, which
 can be re-used to ensure data pre-processing is consistent and reproducible
@@ -11529,8 +11383,8 @@ pre-processing</li>
 <li>Understand how a “knitted” document can be used to combine text and
 executable code to create a reproducible data pre-processing protocol</li>
 </ul>
-<div id="introducing-reproducible-data-pre-processing-protocols" class="section level3" number="3.7.1">
-<h3><span class="header-section-number">3.7.1</span> Introducing reproducible data pre-processing protocols</h3>
+<div id="introducing-reproducible-data-pre-processing-protocols" class="section level3 hasAnchor" number="3.7.1">
+<h3><span class="header-section-number">3.7.1</span> Introducing reproducible data pre-processing protocols<a href="experimental-data-preprocessing.html#introducing-reproducible-data-pre-processing-protocols" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>If you have ever worked in a laboratory, you are likely familiar with protocols.
 For a wet lab, protocols are used as “recipes” for conducting certain
 experiments or processes. They are written to be clear enough that everyone in
@@ -11541,13 +11395,7 @@ Protocols are similarly used for medical procedures and
 tests, as well as for clinical trials. In all cases, they help to define in
 detail the steps of the procedure, so they can be done in a way that is
 comparable from one case to the next and with high precision.</p>
-<pre class="marginfigure"><code>On clinical imaging protocols: &quot;When one is composing a protocol, it is helpful
-to imagine that all the technologists at the facility won the
-lottery and quit. What would a newly hired technologist
-need to know to image a patient in the exact same manner
-as in the past to produce the same results?&quot;
-
-[@thomas2015write]</code></pre>
+<p>Placeholder (you should not see this)</p>
 <p>You can apply a similar idea to pre-processing and analyzing the data that you
 collect in a laboratory. Just as a wet lab protocol can help standardize your
 data collection to the point that the data are recorded, a separate protocol
@@ -11580,7 +11428,7 @@ so can improve the reproducibility of the experiment.
 Not only do data-focused protocols help with improving quality and reproducibility,
 but they also help improve efficiency. These protocols should include
 clearly defined steps, as well as explanations for each step, and they should illustrate
-these with example data. By having this “recipe,” a new lab member can quickly
+these with example data. By having this “recipe”, a new lab member can quickly
 learn how to do the data pre-processing, and a long-term lab member remember
 the exact steps more quickly.</p>
 <p>You can create a data pre-processing protocol using any document processing
@@ -11694,8 +11542,8 @@ data-focused protocols can be useful.</p>
 <!-- processing the new sample should be done differently from the standard process. -->
 <!-- ... -->
 </div>
-<div id="using-knitted-documents-for-protocols" class="section level3" number="3.7.2">
-<h3><span class="header-section-number">3.7.2</span> Using knitted documents for protocols</h3>
+<div id="using-knitted-documents-for-protocols" class="section level3 hasAnchor" number="3.7.2">
+<h3><span class="header-section-number">3.7.2</span> Using knitted documents for protocols<a href="experimental-data-preprocessing.html#using-knitted-documents-for-protocols" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>When it comes to protocols that are focused on data pre-processing and
 analysis, there are big advantages to creating them as something called
 <strong>knitted documents</strong>. In this section, we’ll walk through what a knitted
@@ -11747,7 +11595,7 @@ square brackets and ignores the rest of the document. Next, Kristina sends the
 document, with her additions, to an assistant, Tom, to type up the document. Tom
 types the full document, paying attention to any indications that are included
 for formatting. For example, he sees that “Results” is meant to be a section
-heading, since it is on a line that starts with “#,” your team’s convention for
+heading, since it is on a line that starts with “#”, your team’s convention for
 section headings. He therefore types this on a line by itself in larger font. He
 also sees that “Mycobacterium tuberculosis” is surrounded by asterisks, so he
 types this in italics.</p>
@@ -11835,18 +11683,11 @@ to serve the purposes normally served by things like italics and bold in formatt
 surround it with asterisks, like:</p>
 <pre><code>I just read a *really* interesting article!</code></pre>
 <p>In this early prototype for a markup language, the reader’s mind was doing
-the “rendering,” interpreting these markers as a sign that part of the text
+the “rendering”, interpreting these markers as a sign that part of the text
 was emphasized. In Markdown, the text can be rendered into more attractive
 output documents, like PDF, where the rendering process has actually
 changed the words between asterisks to print in italics.</p>
-<pre class="marginfigure"><code>&quot;Markdown originates from the simple formatting conventions used in plain-text 
-emails. Long before HTML crept into email, emails were embellished with simple
-markup for emphasis, lists, and blocks of text. Over time, this became a defacto
-plain-text email formatting scheme. This scheme is very intuitive: underscores or 
-asterisks that flank text indicate emphasis, and lists are simply lines of text 
-beginning with dashes.&quot; 
-
-[@buffalo2015bioinformatics]</code></pre>
+<p>Placeholder (you should not see this)</p>
 <p>The Markdown language has developed a set of these types of marks—like
 asterisks—that are used to “mark up” the plain text with the formatting that
 should be applied when the text is rendered. There are marks that you can use
@@ -11861,8 +11702,8 @@ through a program that interprets this formatting markup (a markup renderer),
 which will format the document based on any of the mark up indications and will
 output an attractive document in a format like PDF, Word, or HTML.</p>
 </div>
-<div id="advantages-of-using-knitted-documents-for-data-focused-protocols" class="section level3" number="3.7.3">
-<h3><span class="header-section-number">3.7.3</span> Advantages of using knitted documents for data-focused protocols</h3>
+<div id="advantages-of-using-knitted-documents-for-data-focused-protocols" class="section level3 hasAnchor" number="3.7.3">
+<h3><span class="header-section-number">3.7.3</span> Advantages of using knitted documents for data-focused protocols<a href="experimental-data-preprocessing.html#advantages-of-using-knitted-documents-for-data-focused-protocols" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>There are several advantages to using knitted documents when writing code to
 pre-process or analyze research data. These include improvements in terms of
 reliability, efficiency, transparency, and reproducibility.</p>
@@ -11923,8 +11764,8 @@ citations in code comments. A knitted document allows you to write the
 documentation in a format that is clear and attractive for humans to read, while
 including code that is clear and easy for a computer to execute.</p>
 </div>
-<div id="how-knitted-documents-work" class="section level3" number="3.7.4">
-<h3><span class="header-section-number">3.7.4</span> How knitted documents work</h3>
+<div id="how-knitted-documents-work" class="section level3 hasAnchor" number="3.7.4">
+<h3><span class="header-section-number">3.7.4</span> How knitted documents work<a href="experimental-data-preprocessing.html#how-knitted-documents-work" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Now that we’ve gotten a top-level view of the idea of knitted documents, let’s take a
 closer look at how they work. We’ll wrap up this module by covering some of
 the mechanics of how all knitted documents work, and then in the next module (3.8)
@@ -12090,7 +11931,7 @@ Figure 3.7: The original plain text for a knitted document and the final output,
 </p>
 </div>
 <p>You can look for several formatting elements here. First, the section is headed
-“Initial data inspection.” You can see that in the original plain text document,
+“Initial data inspection”. You can see that in the original plain text document,
 this is marked using a <code>#</code> to start the line with the text for the header. You
 can also see that words or phrases that are formatted in a computer-style font
 in the final document—to indicate that they are values from computer code,
@@ -12124,8 +11965,8 @@ original plain text document.</p>
 
 </div>
 </div>
-<div id="module19" class="section level2" number="3.8">
-<h2><span class="header-section-number">3.8</span> RMarkdown for creating reproducible data pre-processing protocols</h2>
+<div id="module19" class="section level2 hasAnchor" number="3.8">
+<h2><span class="header-section-number">3.8</span> RMarkdown for creating reproducible data pre-processing protocols<a href="experimental-data-preprocessing.html#module19" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The R extension package RMarkdown can be used to create documents that combine
 code and text in a ‘knitted’ document, and it has become a popular tool for
 improving the computational reproducibility and efficiency of the data analysis
@@ -12144,8 +11985,8 @@ projects at the data pre-processing phase</li>
 <li>Describe more advanced features of Rmarkdown and where you can find out more
 about them</li>
 </ul>
-<div id="creating-knitted-documents-in-r" class="section level3" number="3.8.1">
-<h3><span class="header-section-number">3.8.1</span> Creating knitted documents in R</h3>
+<div id="creating-knitted-documents-in-r" class="section level3 hasAnchor" number="3.8.1">
+<h3><span class="header-section-number">3.8.1</span> Creating knitted documents in R<a href="experimental-data-preprocessing.html#creating-knitted-documents-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In the last module (3.7), we described what knitted documents are, as well as the
 advantages of using knitted documents to create data pre-processing protocols
 for common pre-processing tasks in your research group. We also described the
@@ -12169,7 +12010,7 @@ use the Rstudio IDE as the text editor when creating and editing an R markdown
 document, as this IDE has incorporated some helpful functionality for working
 with plain text documents for Rmarkdown. In RStudio, you can create a number of
 types of new files through the “File” menu. To create a new R markdown file,
-open RStudio and then choose “New File,” then choose “Rmarkdown” from the
+open RStudio and then choose “New File”, then choose “Rmarkdown” from the
 choices in that menu. Figure <a href="experimental-data-preprocessing.html#fig:rmarkdownnewfile">3.8</a> shows an example of
 what this menu option looks like.</p>
 <div class="figure"><span style="display:block;" id="fig:rmarkdownnewfile"></span>
@@ -12239,8 +12080,8 @@ Figure 3.12: Example of the template Rmarkdown document, highlighting buttons in
 <p>You will also notice, after you first render the document, that your working
 directory has a new file with this output document. For example, if you are
 working to create an HTML document using an Rmarkdown file called
-“my_report.Rmd,” once you knit your Rmarkdown file, you will notice a new file
-in your working directory called “my_report.html.” This new file is your output
+“my_report.Rmd”, once you knit your Rmarkdown file, you will notice a new file
+in your working directory called “my_report.html”. This new file is your output
 file, the one that you would share with colleagues as a report. You should
 consider this output document to be read only—in other words, you can read and
 share this document, but you should not make any changes directly to this
@@ -12253,14 +12094,14 @@ created when you render this example document (Figure
 <a href="experimental-data-preprocessing.html#fig:rmarkdownoriginalfinal">3.11</a>, right), you can notice how different elements
 align with pieces in the original Rmarkdown file (Figure
 <a href="experimental-data-preprocessing.html#fig:rmarkdownoriginalfinal">3.11</a>). For example, the output document includes a
-header with the text “R Markdown.” This second-level header is created by the
+header with the text “R Markdown”. This second-level header is created by the
 Markdown notation in the original file of:</p>
 <pre><code>## R Markdown</code></pre>
 <p>This header is formatted in a larger font than other text, and on a separate
 line—the exact formatting is specified within the style file for the Rmarkdown
 document, and will be applied to all second-level headers in the document. You
 can also see formatting specified through things like bold font for the word
-“Knit,” through the Markdown syntax <code>**Knit**</code>, and a clickable link specified
+“Knit”, through the Markdown syntax <code>**Knit**</code>, and a clickable link specified
 through the syntax <code>&lt;http://rmarkdown.rstudio.com&gt;</code>. At the beginning of the
 original document, you can see how elements like the title, author, date, and
 output format are specified in the YAML. Finally, you can see that special
@@ -12268,8 +12109,8 @@ character combinations demarcate sections of executable code.</p>
 <p>Let’s look a little more closely in the next part of the module at how these
 elements of the Rmarkdown document work.</p>
 </div>
-<div id="formatting-text-with-markdown-in-rmarkdown" class="section level3" number="3.8.2">
-<h3><span class="header-section-number">3.8.2</span> Formatting text with Markdown in Rmarkdown</h3>
+<div id="formatting-text-with-markdown-in-rmarkdown" class="section level3 hasAnchor" number="3.8.2">
+<h3><span class="header-section-number">3.8.2</span> Formatting text with Markdown in Rmarkdown<a href="experimental-data-preprocessing.html#formatting-text-with-markdown-in-rmarkdown" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>If you remember from the last module, one element of knitted documents is
 that they are written in plain text, with all the formatting specified
 using a markup language.
@@ -12315,8 +12156,8 @@ basic formatting rules for Markdown are also covered in some more
 extensive resources for Rmarkdown that we will point you to later in this
 module.</p>
 </div>
-<div id="preambles-in-rmarkdown-documents" class="section level3" number="3.8.3">
-<h3><span class="header-section-number">3.8.3</span> Preambles in Rmarkdown documents</h3>
+<div id="preambles-in-rmarkdown-documents" class="section level3 hasAnchor" number="3.8.3">
+<h3><span class="header-section-number">3.8.3</span> Preambles in Rmarkdown documents<a href="experimental-data-preprocessing.html#preambles-in-rmarkdown-documents" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In the previous module, we explained how knitted documents include a
 preamble to specify some metadata about the document, including elements
 like the title, authors, and output format. In R, this preamble is
@@ -12369,8 +12210,8 @@ also a talk that Yihui Xie, the creator of RMarkdown, gave on this topic at a
 past RStudio conference, available at
 <a href="https://rstudio.com/resources/rstudioconf-2017/customizing-extending-r-markdown/" class="uri">https://rstudio.com/resources/rstudioconf-2017/customizing-extending-r-markdown/</a>.</p>
 </div>
-<div id="executable-code-in-rmarkdown-files" class="section level3" number="3.8.4">
-<h3><span class="header-section-number">3.8.4</span> Executable code in Rmarkdown files</h3>
+<div id="executable-code-in-rmarkdown-files" class="section level3 hasAnchor" number="3.8.4">
+<h3><span class="header-section-number">3.8.4</span> Executable code in Rmarkdown files<a href="experimental-data-preprocessing.html#executable-code-in-rmarkdown-files" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In the previous module, we described how knitted documents use special markers
 to indicate where sections of executable code start and stop. In RMarkdown,
 the markers you will use to indicate executable code look like this:</p>
@@ -12430,8 +12271,8 @@ like an upward-pointing arrow over a rectangle, will execute all code that comes
 before this chunk in the document. This can be very helpful in making sure that
 you have set up your environment to run this particular chunk of code.</p>
 </div>
-<div id="more-advanced-rmarkdown-functionality" class="section level3" number="3.8.5">
-<h3><span class="header-section-number">3.8.5</span> More advanced Rmarkdown functionality</h3>
+<div id="more-advanced-rmarkdown-functionality" class="section level3 hasAnchor" number="3.8.5">
+<h3><span class="header-section-number">3.8.5</span> More advanced Rmarkdown functionality<a href="experimental-data-preprocessing.html#more-advanced-rmarkdown-functionality" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The details and resources that we have covered so far focus on the basics of
 Rmarkdown. You can get a lot done just with these basics. However, the Rmarkdown
 system is very rich and allows complex functionality beyond these basics. In
@@ -12554,7 +12395,7 @@ you’d use <code>[@fox2021]</code>.</p>
 <pre><code>This technique follows earlier work [@fox2020].</code></pre>
 <p>In the output from rendering that RMarkdown document you’d get:</p>
 <blockquote>
-<p>``This technique follows earlier work (Fox et al. 2020)."</p>
+<p>``This technique follows earlier work (Fox et al. 2020).”</p>
 </blockquote>
 <p>The full paper details will then be included at the end of the document, in a reference
 section.</p>
@@ -12582,16 +12423,18 @@ Figure 3.14: Example of a website created using blogdown, leveraging the Rmarkdo
 </div>
 <p>With Rmarkdown, you can also create reports that are more customized than the
 default style that we explored above. First, you can create templates that add
-customized styling to the document. In fact, many journals have created journal-specific
-templates that you can use in Rmarkdown. With these templates, you can write
-up your research results in a reproducible way, using Rmarkdown, and submit the
-resulting document directly to the journal, in the correct format. An example of the first page of an article created in Rmarkdown using
-one of these article templates is shown in Figure <a href="experimental-data-preprocessing.html#fig:rticleexample">3.15</a>. The <code>rticles</code>
-package in R provides these templates for several different journal families.</p>
+customized styling to the document. In fact, many journals have created
+journal-specific templates that you can use in Rmarkdown. With these templates,
+you can write up your research results in a reproducible way, using Rmarkdown,
+and submit the resulting document directly to the journal, in the correct
+format. An example of the first page of an article created in Rmarkdown using
+one of these article templates is shown in Figure <a href="experimental-data-preprocessing.html#fig:rticleexample">3.15</a>
+<span class="citation">(Wendt and Anderson 2022)</span>. The <code>rticles</code> package in R provides these templates for several
+different journal families.</p>
 <div class="figure"><span style="display:block;" id="fig:rticleexample"></span>
-<img src="figures/rticles_example.png" alt="Example of a manuscript written in Rmarkdown using a templat. This figure shows the first page of an article written for submission to PLoS Computation Biology, written in Rmarkdown while using the PLoS template from the `rticles` package. The full article, including the Rmarkdown input and final pdf, are available on GitHub at https://github.com/cjwendt/plos_ten." width="\textwidth" />
+<img src="figures/rticles_example.png" alt="Example of a manuscript written in Rmarkdown using a templat. This figure shows the first page of an article written for submission to PLoS Computation Biology, written in Rmarkdown while using the PLoS template from the `rticles` package (Wendt and Anderson 2022)." width="\textwidth" />
 <p class="caption">
-Figure 3.15: Example of a manuscript written in Rmarkdown using a templat. This figure shows the first page of an article written for submission to PLoS Computation Biology, written in Rmarkdown while using the PLoS template from the <code>rticles</code> package. The full article, including the Rmarkdown input and final pdf, are available on GitHub at <a href="https://github.com/cjwendt/plos_ten" class="uri">https://github.com/cjwendt/plos_ten</a>.
+Figure 3.15: Example of a manuscript written in Rmarkdown using a templat. This figure shows the first page of an article written for submission to PLoS Computation Biology, written in Rmarkdown while using the PLoS template from the <code>rticles</code> package (Wendt and Anderson 2022).
 </p>
 </div>
 <p>Rmarkdown also has some features that make it easy to run code that is
@@ -12642,8 +12485,8 @@ with the package, one if the output will be in pdf
 and one if it will be in HTML
 (<a href="https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html" class="uri">https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html</a>).</p>
 </div>
-<div id="learning-more-about-rmarkdown." class="section level3" number="3.8.6">
-<h3><span class="header-section-number">3.8.6</span> Learning more about Rmarkdown.</h3>
+<div id="learning-more-about-rmarkdown." class="section level3 hasAnchor" number="3.8.6">
+<h3><span class="header-section-number">3.8.6</span> Learning more about Rmarkdown.<a href="experimental-data-preprocessing.html#learning-more-about-rmarkdown." class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>To learn more about RMarkdown, you can explore a number of excellent resources.
 The most comprehensive are shared by RStudio, where RMarkdown’s developer
 and maintainer, Yihui Xie, works. These resources are all freely available
@@ -12682,8 +12525,8 @@ find a “recipe” in this book to do that.</p>
 
 </div>
 </div>
-<div id="module20" class="section level2" number="3.9">
-<h2><span class="header-section-number">3.9</span> Example: Creating a reproducible data pre-processing protocol</h2>
+<div id="module20" class="section level2 hasAnchor" number="3.9">
+<h2><span class="header-section-number">3.9</span> Example: Creating a reproducible data pre-processing protocol<a href="experimental-data-preprocessing.html#module20" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We will walk through an example of creating a reproducible data pre-processing
 protocol. As an example, we will look at how to pre-process and analyze data
 that are collected in the laboratory to estimate bacterial load in samples.
@@ -12703,8 +12546,8 @@ replace manual or point-and-click data pre-processing tools</li>
 <li>Apply techniques in RMarkdown to develop your own reproducible data
 pre-processing protocols</li>
 </ul>
-<div id="introduction-and-example-data" class="section level3" number="3.9.1">
-<h3><span class="header-section-number">3.9.1</span> Introduction and example data</h3>
+<div id="introduction-and-example-data" class="section level3 hasAnchor" number="3.9.1">
+<h3><span class="header-section-number">3.9.1</span> Introduction and example data<a href="experimental-data-preprocessing.html#introduction-and-example-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In this module, we’ll provide advice and an example of how you can use the
 tools for knitted documents to create a reproducible data preprocessing
 protocol. This module builds on ideas and techniques that were introduced
@@ -12778,8 +12621,8 @@ For example, this process could be used to create data pre-processing protocols
 for automated gating of flow cytometry data or for pre-processing data
 collected through single cell RNA sequencing.</p>
 </div>
-<div id="advice-on-designing-a-pre-processing-protocol" class="section level3" number="3.9.2">
-<h3><span class="header-section-number">3.9.2</span> Advice on designing a pre-processing protocol</h3>
+<div id="advice-on-designing-a-pre-processing-protocol" class="section level3 hasAnchor" number="3.9.2">
+<h3><span class="header-section-number">3.9.2</span> Advice on designing a pre-processing protocol<a href="experimental-data-preprocessing.html#advice-on-designing-a-pre-processing-protocol" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Before you write your protocol in a knitted document, you should decide on the
 content to include in the protocol. This section provides tips on this design
 process. In this section, we’ll describe some key steps in designing a
@@ -12886,7 +12729,7 @@ Columns are included with values for the experimental group of the sample
 (<code>group</code>), the specific ID of the sample within that experimental group
 (<code>replicate</code>, e.g., <code>2-A</code> is mouse A in experimental group 2), and the
 colony-forming units (CFUs) counted at each of several dilutions. If a cell has
-the value “TNTC,” this indicates that CFUs were too numerous to count for that
+the value “TNTC”, this indicates that CFUs were too numerous to count for that
 sample at that dilution.</p>
 <p>When you have identified the input data type you will use for the protocol,
 as well as selected an example dataset of this type to use to create the
@@ -12950,7 +12793,7 @@ you are planning to cite articles and other references, you can include a BibTeX
 file, with the bibliographical information for each source you plan to cite (see module 3.8).
 Finally, if you would like to include photographs or graphics, you can include
 these image files in the project directory. Often, you might want to group these
-together in a subdirectory of the project named something like “figures.”</p>
+together in a subdirectory of the project named something like “figures”.</p>
 <p>Once you run the RMarkdown file for the protocol, you will generate additional
 files in the project. Two typical files you will generate will be the output
 file for the protocol (in the example, this is output to a pdf file). Usually,
@@ -13037,8 +12880,8 @@ future experiments. This can help you adapt the code in the protocol in
 thoughtful ways as you apply it in the future to new data collected
 for new studies and projects.</p>
 </div>
-<div id="writing-data-pre-processing-protocols" class="section level3" number="3.9.3">
-<h3><span class="header-section-number">3.9.3</span> Writing data pre-processing protocols</h3>
+<div id="writing-data-pre-processing-protocols" class="section level3 hasAnchor" number="3.9.3">
+<h3><span class="header-section-number">3.9.3</span> Writing data pre-processing protocols<a href="experimental-data-preprocessing.html#writing-data-pre-processing-protocols" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Now that you have planned out the key components of the pre-processing protocol,
 you can use RMarkdown’s functionality to flesh it out into a full pre-processing
 protocol. This gives you the chance to move beyond a simple code script, and
@@ -13073,13 +12916,7 @@ that each step in the process is carefully considered, and so helps to
 ensure that each step of this process is conducted as carefully as the
 steps taken in designing the experiment as a whole and each wet lab technique
 conducted for the experiment.</p>
-<pre class="marginfigure"><code>&quot;Writing a research proposal is probably one of the most challenging and
-difficult task as research is a new area for the majority of postgraduates and
-new researchers. ... Protocol writing allows the researcher to review and
-critically evaluate the published literature on the interested topic, plan and
-review the project steps and serves as a guide throughout the investigation.&quot;
-
-[@al2016protocol]</code></pre>
+<p>Placeholder (you should not see this)</p>
 <p>A data-preprocessing protocol, in the sense we use it here, is essentially an
 annotated recipe for each step in preparing your data from the initial, “raw”
 state that is output from the laboratory equipment (or collected by hand) to a
@@ -13109,9 +12946,7 @@ generation, e.g., Monte Carlo methods). This idea—being able to exactly
 re-create the computational results from an earlier project—is referred to as
 <strong>computational reproducibility</strong> and is considered a key component in
 ensuring that research is fully reproducible.</p>
-<pre class="marginfigure"><code>&quot;Now, all scientific research involves the use of powerful computers, whether it is for the data collection, the data analysis, or both. ... We are all computational scientists now, and thus the concept of reproducibility is relevant to all scientists.&quot;
-
-[@peng2021reproducible]</code></pre>
+<p>Placeholder (you should not see this)</p>
 <p>By creating the data pre-processing protocol as a knitted document
 using a tool like RMarkdown (modules 3.7 and 3.8), you can ensure that the protocol is
 computationally reproducible. In an RMarkdown document, you include the code
@@ -13127,7 +12962,7 @@ that’s how you yourself created that form of the data).</p>
 <p>Figure <a href="experimental-data-preprocessing.html#fig:protocoloutput">3.20</a> provides an example from the example protocol
 for this module. The RMarkdown file for the protocol includes code to write out
 the final, pre-processed data to a comma-separated plain text file called
-“processed_cfu_estimates.csv.” This code writes the output file into the same
+“processed_cfu_estimates.csv”. This code writes the output file into the same
 directory where you’ve saved the RMarkdown file. Each time the RMarkdown file is
 rendered to create the pdf version of the protocol, the input data will be
 pre-processed from scratch, using the code throughout the protocol, and this
@@ -13258,8 +13093,8 @@ Figure 3.24: Example of using more advanced RMarkdown functionality within a dat
 </p>
 </div>
 </div>
-<div id="applied-exercise-5" class="section level3" number="3.9.4">
-<h3><span class="header-section-number">3.9.4</span> Applied exercise</h3>
+<div id="applied-exercise-5" class="section level3 hasAnchor" number="3.9.4">
+<h3><span class="header-section-number">3.9.4</span> Applied exercise<a href="experimental-data-preprocessing.html#applied-exercise-5" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>To wrap up this module, try downloading both the source file and the output of this example
 data pre-processing protocol. Again, you can find the source code (the RMarkdown file)
 <a href="https://raw.githubusercontent.com/geanders/improve_repro/master/data/bactcountr_example_data/example_protocol.Rmd">here</a> and the output file <a href="https://github.com/geanders/improve_repro/raw/master/data/bactcountr_example_data/example_protocol.pdf">here</a>. If you would like to try re-running the file, you can get all the additional files
@@ -13337,7 +13172,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

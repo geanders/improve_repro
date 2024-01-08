@@ -8,7 +8,6 @@
 <meta property="og:title" content="2.5 Example: Creating a template for “tidy” data collection | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
 <meta property="og:type" content="book" />
 
-
 <meta property="og:description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
 <meta name="github-repo" content="rstudio/bookdown-demo" />
 
@@ -26,7 +25,6 @@ MathJax.Hub.Config({
 
 <title>2.5 Example: Creating a template for “tidy” data collection | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
 
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
 <link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
 
@@ -36,6 +34,7 @@ MathJax.Hub.Config({
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -70,7 +69,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -83,7 +82,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -133,10 +132,10 @@ div.csl-indent {
 <div class="col-sm-12">
 <div id="TOC">
 <ul>
-<li><a href="index.html#rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
-<li><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
-<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
-<li><a href="4-references.html#references"><span class="toc-section-number">4</span> References</a></li>
+<li><a href="index.html#rigor-and-reproducibility-in-computation" id="toc-rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
+<li><a href="2-experimental-data-recording.html#experimental-data-recording" id="toc-experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
+<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing" id="toc-experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
+<li><a href="4-references.html#references" id="toc-references"><span class="toc-section-number">4</span> References</a></li>
 </ul>
 </div>
 </div>
@@ -318,7 +317,7 @@ read in, it’s even simpler to use simpler column names in the original data co
 template, and this will save some extra coding further along in the analysis pipeline.
 Two general rules for creating easy-to-use column names in a data collection template
 are: (1) start each column name with a letter and (2) for the rest of the column
-name, use only letters, numbers, or the underscore character ("_“). For example,”aerated1" would work well, but “1–aerated” would not.</p>
+name, use only letters, numbers, or the underscore character (“_“). For example,”aerated1” would work well, but “1–aerated” would not.</p>
 <p>Within the cell values below the column names, there is more flexibility. For example,
 if you have a column that gives the IDs of different samples, it would be fine to include
 spaces and other characters in those IDs.</p>
@@ -337,10 +336,10 @@ quotation marks when entering it (as shown in Figure <a href="2.5-module5.html#f
 <p>Finally, consider using a format to record the date that is unambiguous and so less likely
 to have recording errors. Dates, for example, are sometimes recorded using only numbers—for
 example, the first date of “July 9, 2019” in the example data could be recorded as
-“7/9/2019” or “7/9/19,” to be even more concise. However, this format has some ambiguity.
+“7/9/2019” or “7/9/19”, to be even more concise. However, this format has some ambiguity.
 It can be unclear if this refers to July 9 or to September 7, both of which could be
-written as “7/9.” For the version that uses two digits for the year, it can be unclear
-if the date is for 2019 or 1919 (or any other century). Using the format “July 9, 2019,”
+written as “7/9”. For the version that uses two digits for the year, it can be unclear
+if the date is for 2019 or 1919 (or any other century). Using the format “July 9, 2019”,
 as done in the latest version of the sample template, avoids this potential ambiguity.</p>
 <p>Figure <a href="2.5-module5.html#fig:growthsimple2">2.16</a> shows the template for the example experiment after the
 column names have been revised to avoid any problematic characters. This template is now in
@@ -452,7 +451,7 @@ Figure 2.19: Code to add a column to the data that gives the time since the star
 </div>
 <p>Another key step is to plot results from the data. In R, there is a package
 called <code>ggplot2</code> that provides tools for visualization. The tools in this
-package work by building a plot using “layers,” adding on small elements
+package work by building a plot using “layers”, adding on small elements
 line by line through simple functions that each do one simple thing.
 While the resulting code can be long, each step is simple, and so it
 becomes simple to learn these different “layers” and learn how to combine

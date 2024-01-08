@@ -8,7 +8,6 @@
 <meta property="og:title" content="3.6 Example: Converting from complex to ‘tidy’ data formats | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
 <meta property="og:type" content="book" />
 
-
 <meta property="og:description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
 <meta name="github-repo" content="rstudio/bookdown-demo" />
 
@@ -26,7 +25,6 @@ MathJax.Hub.Config({
 
 <title>3.6 Example: Converting from complex to ‘tidy’ data formats | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
 
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
 <link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
 
@@ -36,6 +34,7 @@ MathJax.Hub.Config({
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -70,7 +69,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -83,7 +82,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -133,10 +132,10 @@ div.csl-indent {
 <div class="col-sm-12">
 <div id="TOC">
 <ul>
-<li><a href="index.html#rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
-<li><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
-<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
-<li><a href="4-references.html#references"><span class="toc-section-number">4</span> References</a></li>
+<li><a href="index.html#rigor-and-reproducibility-in-computation" id="toc-rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
+<li><a href="2-experimental-data-recording.html#experimental-data-recording" id="toc-experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
+<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing" id="toc-experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
+<li><a href="4-references.html#references" id="toc-references"><span class="toc-section-number">4</span> References</a></li>
 </ul>
 </div>
 </div>
@@ -155,7 +154,7 @@ experimental data from one of our Co-Is research on the immunology of
 tuberculosis.</p>
 <p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
 <ul>
-<li>Describe how tools like  were used in this real research
+<li>Describe how tools like were used in this real research
 example to convert from the complex data format from pre-processing to a format
 better for further data analysis and visualization</li>
 <li>Understand how these tools would fit in their own research pipelines</li>
@@ -363,17 +362,17 @@ the right container for operations from <code>edgeR</code>. Then functions from 
 data. The result is an object in the <code>DGEExact</code> class, which is defined
 by the <code>edgeR</code> package. To extract data from this class in a tidy format,
 you can use the <code>tidy</code> and <code>glance</code> functions from <code>biobroom</code>.]</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="3.6-module17.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biobroom)</span>
-<span id="cb9-2"><a href="3.6-module17.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Biobase)</span>
-<span id="cb9-3"><a href="3.6-module17.html#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(edgeR)</span>
-<span id="cb9-4"><a href="3.6-module17.html#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="3.6-module17.html#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(hammer)</span>
-<span id="cb9-6"><a href="3.6-module17.html#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="3.6-module17.html#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(hammer)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="3.6-module17.html#cb9-1" tabindex="-1"></a><span class="fu">library</span>(biobroom)</span>
+<span id="cb9-2"><a href="3.6-module17.html#cb9-2" tabindex="-1"></a><span class="fu">library</span>(Biobase)</span>
+<span id="cb9-3"><a href="3.6-module17.html#cb9-3" tabindex="-1"></a><span class="fu">library</span>(edgeR)</span>
+<span id="cb9-4"><a href="3.6-module17.html#cb9-4" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="3.6-module17.html#cb9-5" tabindex="-1"></a><span class="fu">data</span>(hammer)</span>
+<span id="cb9-6"><a href="3.6-module17.html#cb9-6" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="3.6-module17.html#cb9-7" tabindex="-1"></a><span class="fu">class</span>(hammer)</span></code></pre></div>
 <pre><code>## [1] &quot;ExpressionSet&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;Biobase&quot;</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="3.6-module17.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(hammer)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="3.6-module17.html#cb11-1" tabindex="-1"></a><span class="fu">tidy</span>(hammer)</span></code></pre></div>
 <pre><code>## # A tibble: 236,128 × 3
 ##    gene               sample    value
 ##    &lt;chr&gt;              &lt;chr&gt;     &lt;int&gt;
@@ -387,22 +386,22 @@ you can use the <code>tidy</code> and <code>glance</code> functions from <code>b
 ##  8 ENSRNOG00000000017 SRX020102     4
 ##  9 ENSRNOG00000000021 SRX020102     7
 ## 10 ENSRNOG00000000024 SRX020102    86
-## # … with 236,118 more rows</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="3.6-module17.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Example from `biobroom` help documentation</span></span>
-<span id="cb13-2"><a href="3.6-module17.html#cb13-2" aria-hidden="true" tabindex="-1"></a>hammer.counts <span class="ot">&lt;-</span> <span class="fu">exprs</span>(hammer)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb13-3"><a href="3.6-module17.html#cb13-3" aria-hidden="true" tabindex="-1"></a>hammer.treatment <span class="ot">&lt;-</span> <span class="fu">phenoData</span>(hammer)<span class="sc">$</span>protocol[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb13-4"><a href="3.6-module17.html#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="3.6-module17.html#cb13-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(<span class="at">counts=</span>hammer.counts,<span class="at">group=</span>hammer.treatment)</span>
-<span id="cb13-6"><a href="3.6-module17.html#cb13-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(y)</span>
-<span id="cb13-7"><a href="3.6-module17.html#cb13-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateCommonDisp</span>(y)</span>
-<span id="cb13-8"><a href="3.6-module17.html#cb13-8" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateTagwiseDisp</span>(y)</span>
-<span id="cb13-9"><a href="3.6-module17.html#cb13-9" aria-hidden="true" tabindex="-1"></a>et <span class="ot">&lt;-</span> <span class="fu">exactTest</span>(y)</span>
-<span id="cb13-10"><a href="3.6-module17.html#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-11"><a href="3.6-module17.html#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(et)</span></code></pre></div>
+## # ℹ 236,118 more rows</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="3.6-module17.html#cb13-1" tabindex="-1"></a><span class="do">## Example from `biobroom` help documentation</span></span>
+<span id="cb13-2"><a href="3.6-module17.html#cb13-2" tabindex="-1"></a>hammer.counts <span class="ot">&lt;-</span> <span class="fu">exprs</span>(hammer)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb13-3"><a href="3.6-module17.html#cb13-3" tabindex="-1"></a>hammer.treatment <span class="ot">&lt;-</span> <span class="fu">phenoData</span>(hammer)<span class="sc">$</span>protocol[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb13-4"><a href="3.6-module17.html#cb13-4" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="3.6-module17.html#cb13-5" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(<span class="at">counts=</span>hammer.counts,<span class="at">group=</span>hammer.treatment)</span>
+<span id="cb13-6"><a href="3.6-module17.html#cb13-6" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(y)</span>
+<span id="cb13-7"><a href="3.6-module17.html#cb13-7" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateCommonDisp</span>(y)</span>
+<span id="cb13-8"><a href="3.6-module17.html#cb13-8" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateTagwiseDisp</span>(y)</span>
+<span id="cb13-9"><a href="3.6-module17.html#cb13-9" tabindex="-1"></a>et <span class="ot">&lt;-</span> <span class="fu">exactTest</span>(y)</span>
+<span id="cb13-10"><a href="3.6-module17.html#cb13-10" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="3.6-module17.html#cb13-11" tabindex="-1"></a><span class="fu">class</span>(et)</span></code></pre></div>
 <pre><code>## [1] &quot;DGEExact&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;edgeR&quot;</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="3.6-module17.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(et)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="3.6-module17.html#cb15-1" tabindex="-1"></a><span class="fu">tidy</span>(et)</span></code></pre></div>
 <pre><code>## # A tibble: 29,516 × 4
 ##    gene               estimate  logCPM    p.value
 ##    &lt;chr&gt;                 &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;
@@ -416,8 +415,8 @@ you can use the <code>tidy</code> and <code>glance</code> functions from <code>b
 ##  8 ENSRNOG00000000017   2.42    1.11   0.0000638 
 ##  9 ENSRNOG00000000021  -2.02    0.211  0.0373    
 ## 10 ENSRNOG00000000024   0.133   3.97   0.508     
-## # … with 29,506 more rows</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="3.6-module17.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(et)</span></code></pre></div>
+## # ℹ 29,506 more rows</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="3.6-module17.html#cb17-1" tabindex="-1"></a><span class="fu">glance</span>(et)</span></code></pre></div>
 <pre><code>##   significant     comparison
 ## 1        6341 control/L5 SNL</code></pre>
 <p>The creator of the <code>broom</code> package listed some of the common ways that
@@ -491,7 +490,7 @@ tools.</p>
 ##  8 ENSRNOG00000000017 SRX020102     4
 ##  9 ENSRNOG00000000021 SRX020102     7
 ## 10 ENSRNOG00000000024 SRX020102    86
-## # … with 236,118 more rows</code></pre>
+## # ℹ 236,118 more rows</code></pre>
 <p>This output is a tidy dataframe object, with three columns providing the
 gene name, the sample identifier, and the expression level. In this format,
 the data can easily be explored and visualized with tidyverse tools. For example,
@@ -515,7 +514,7 @@ the <code>ExpressionSet</code> object by specifying <code>addPheno = TRUE</code>
 ##  8 ENSRNOG00000000017 SRX02… SRX020102             1 control  Sprag… 2 mo…     4
 ##  9 ENSRNOG00000000021 SRX02… SRX020102             1 control  Sprag… 2 mo…     7
 ## 10 ENSRNOG00000000024 SRX02… SRX020102             1 control  Sprag… 2 mo…    86
-## # … with 236,118 more rows</code></pre>
+## # ℹ 236,118 more rows</code></pre>
 <p>With this addition, visualizations can easily be changed to also show the
 experimental group of each sample:</p>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
@@ -599,7 +598,7 @@ hard-to-access rownames:</p>
 ##  8 ENSRNOG00000000017   2.42    1.11   0.0000638 
 ##  9 ENSRNOG00000000021  -2.02    0.211  0.0373    
 ## 10 ENSRNOG00000000024   0.133   3.97   0.508     
-## # … with 29,506 more rows</code></pre>
+## # ℹ 29,506 more rows</code></pre>
 <p>Now that the data are in this tidy format, tools from the tidyverse can
 be easily applied. For example, you could use functions from the <code>dplyr</code>
 package to see the genes for which the differential expression analysis
@@ -618,7 +617,7 @@ across the experimental groups:</p>
 ##  8 ENSRNOG00000001476     4.25   3.76 1.45e- 47
 ##  9 ENSRNOG00000004805     4.05   6.64 2.51e-185
 ## 10 ENSRNOG00000014327     3.85   4.51 5.39e- 63
-## # … with 793 more rows</code></pre>
+## # ℹ 793 more rows</code></pre>
 <p>Other exploratory analysis will also be straightforward with the data
 using tidyverse tools, now that they are in a “tidy” format.</p>
 <p>The <code>glance</code> method can also be applied to data that are stored in a
@@ -645,7 +644,7 @@ method, a dot, and then the name of the object class, e.g., <code>?tidy.DGEExact
 <div id="subsection-2-2" class="section level3" number="3.6.7">
 <h3><span class="header-section-number">3.6.7</span> Subsection 2</h3>
 <blockquote>
-<p>“The biobroom package contains methods for converting standard objects in Bioconductor into a ‘tidy format.’ It serves as a complement to the popular broom package, and follows the same division (tidy/augment/glance) of tidying methods.”
+<p>“The biobroom package contains methods for converting standard objects in Bioconductor into a ‘tidy format’. It serves as a complement to the popular broom package, and follows the same division (tidy/augment/glance) of tidying methods.”
 <span class="citation">(Bass et al. 2020)</span></p>
 </blockquote>
 <blockquote>
@@ -751,7 +750,7 @@ biological replication.” <span class="citation">(Chen et al. 2014)</span></p>
 <p>“edgeR performs differential abundance analysis for pre-defined genomic
 features. Although not strictly necessary, it usually desirable that these
 genomic features are non-overlapping. For simplicity, we will hence-forth refer
-to the genomic features as ‘genes,’ although they could in principle be
+to the genomic features as ‘genes’, although they could in principle be
 transcripts, exons, general genomic intervals or some other type of feature. For
 ChIP-seq experiments, abundance might relate to transcription factor binding or
 to histone mark occupancy, but we will henceforth refer to abundance as in terms

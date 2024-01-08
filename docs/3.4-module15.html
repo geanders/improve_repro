@@ -8,7 +8,6 @@
 <meta property="og:title" content="3.4 Complex data types in experimental data pre-processing | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
 <meta property="og:type" content="book" />
 
-
 <meta property="og:description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
 <meta name="github-repo" content="rstudio/bookdown-demo" />
 
@@ -26,7 +25,6 @@ MathJax.Hub.Config({
 
 <title>3.4 Complex data types in experimental data pre-processing | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
 
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
 <link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
 
@@ -36,6 +34,7 @@ MathJax.Hub.Config({
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -70,7 +69,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -83,7 +82,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -133,10 +132,10 @@ div.csl-indent {
 <div class="col-sm-12">
 <div id="TOC">
 <ul>
-<li><a href="index.html#rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
-<li><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
-<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
-<li><a href="4-references.html#references"><span class="toc-section-number">4</span> References</a></li>
+<li><a href="index.html#rigor-and-reproducibility-in-computation" id="toc-rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
+<li><a href="2-experimental-data-recording.html#experimental-data-recording" id="toc-experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
+<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing" id="toc-experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
+<li><a href="4-references.html#references" id="toc-references"><span class="toc-section-number">4</span> References</a></li>
 </ul>
 </div>
 </div>
@@ -191,7 +190,7 @@ It is helpful to understand how the Bioconductor approach differs from
 the tidyverse approach, to start developing a framework and tools for
 navigating both approaches.</p>
 <p>The primary difference between the two approaches is how the data objects
-are structured. When you work with data in R, it is kept in an “object,”
+are structured. When you work with data in R, it is kept in an “object”,
 which you can think of as a structured container for the data. In the
 tidyverse approach, the primary data container is the dataframe. A
 dataframe is made up of a set of object types called vectors (each column
@@ -406,7 +405,7 @@ working with massive data in R.</p>
 in R? There are a variety of characteristics that could cause this. First,
 if data is extremely large, it may exceed a size that is reasonable for a
 dataframe structure. Some of the more complex data structures in R allow
-much of the data to stay “on disc,” rather than be loaded into RAM,
+much of the data to stay “on disc”, rather than be loaded into RAM,
 when the data are structured to provide access from R.</p>
 <p>Other datasets may not fit well within the two-dimensional, non-ragged structure
 that is characteristic of the dataframe structure. For example, some biomedical
@@ -419,9 +418,33 @@ that you can connect the data that characterizes a gene with the data that
 provides measures of the level of expression of that gene in each sample—these
 data do not naturally have a two-dimensional structure and so do not fit
 naturally into a dataframe structure.</p>
-<p><label for="tufte-mn-49" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-49" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Big data is encountered in genomics for two reasons: the size of the genome and the heterogeneity of populations. Complex organisms, such as plants and animals, have genomes on the order of billions of base pairs (the human genome consists of over three billion base pairs). The diversity of populations, whether of organisms, tissues or cells, means we need to sample deeply to detect low frequency events. To interrogate long and/or numerous genomic sequences, many measurements are necessary. For example, a typical whole genome sequencing experiment will consist of over one billion reads of 75–100 bp each. The reads are aligned across billions of positions, most of which have been annotated in some way. This experiment may be repeated for thousands of samples. Such a data set does not fit within the memory of a current commodity computer, and is not processed in a timely and interactive manner. To successfully wrangle a large data set, we need to intimately understand its structure and carefully consider the questions posed of it.”</span>
+<p><label for="tufte-mn-49" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-49" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Big data is encountered in genomics for two reasons: the size of the
+genome and the heterogeneity of populations. Complex organisms, such as
+plants and animals, have genomes on the order of billions of base pairs
+(the human genome consists of over three billion base pairs). The
+diversity of populations, whether of organisms, tissues or cells, means
+we need to sample deeply to detect low frequency events. To interrogate
+long and/or numerous genomic sequences, many measurements are necessary.
+For example, a typical whole genome sequencing experiment will consist
+of over one billion reads of 75–100 bp each. The reads are aligned
+across billions of positions, most of which have been annotated in some
+way. This experiment may be repeated for thousands of samples. Such a
+data set does not fit within the memory of a current commodity computer,
+and is not processed in a timely and interactive manner. To successfully
+wrangle a large data set, we need to intimately understand its structure
+and carefully consider the questions posed of it.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Lawrence and Morgan 2014)</span></span></span></span></p>
-<p><label for="tufte-mn-50" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-50" class="margin-toggle"><span class="marginnote"><span style="display: block;">“A major challenge in the analysis of scRNA-seq data is the scalability of analysis methods as datasets increase in size over time. This is particularly problematic as experiments now frequently produce millions of cells [50–53], possibly across multiple batches, making it challenging to even load the data into memory and perform downstream analyses including quality control, batch correction and dimensionality reduction. Providing analysis methods, such as unsupervised clustering, that do not require data to be loaded into memory is an imperative step for scalable analyses. While large-scale scRNA-seq data are now routinely stored in on-disk data formats (e.g. HDF5 files), the methods to process and analyze these data are lagging.”</span>
+<p><label for="tufte-mn-50" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-50" class="margin-toggle"><span class="marginnote"><span style="display: block;">“A major challenge in the analysis of scRNA-seq data is the
+scalability of analysis methods as datasets increase in size over time.
+This is particularly problematic as experiments now frequently produce
+millions of cells [50–53], possibly across multiple batches, making it
+challenging to even load the data into memory and perform downstream
+analyses including quality control, batch correction and dimensionality
+reduction. Providing analysis methods, such as unsupervised clustering,
+that do not require data to be loaded into memory is an imperative step
+for scalable analyses. While large-scale scRNA-seq data are now
+routinely stored in on-disk data formats (e.g. HDF5 files), the methods
+to process and analyze these data are lagging.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Hicks et al. 2021)</span></span></span></span></p>
 <p>There’s a second reason why dataframe structures don’t always work for data from
 biological experiments, which has to do with the size of data (and so how much
@@ -468,21 +491,57 @@ worry about these memory management issues, but instead can just gain from
 everything going smoothly, even as datasets get very large <span class="citation">(Gatto 2013)</span>.</p>
 <p>[Data size, on-disk backends for files, like HDF5 and netCDF—used for flow
 cytometry file format?]</p>
-<p><label for="tufte-mn-51" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-51" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Reading in a large dataset for which you do not have enough RAM is one easy way to freeze up your computer (or at least your R session). This is usually an unpleasant experience that usually requires you to kill the R process, in the best case scenario, or reboot your computer, in the worst case.”</span>
+<p><label for="tufte-mn-51" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-51" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Reading in a large dataset for which you do not have enough RAM is
+one easy way to freeze up your computer (or at least your R session).
+This is usually an unpleasant experience that usually requires you to
+kill the R process, in the best case scenario, or reboot your computer,
+in the worst case.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(R. D. Peng 2016)</span></span></span></span></p>
-<p><label for="tufte-mn-52" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-52" class="margin-toggle"><span class="marginnote"><span style="display: block;">“If you use too much memory, R will complain. The key issue is that R holds all the data in RAM. This is a limitation if you have huge datasets. The up-side is flexibility—in particular, R imposes no rules on what data are like.”</span>
+<p><label for="tufte-mn-52" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-52" class="margin-toggle"><span class="marginnote"><span style="display: block;">“If you use too much memory, R will complain. The key issue is that R
+holds all the data in RAM. This is a limitation if you have huge
+datasets. The up-side is flexibility—in particular, R imposes no rules
+on what data are like.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Burns 2011)</span></span></span></span></p>
-<p><label for="tufte-mn-53" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-53" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Random access memory (RAM) is a type of computer memory that can be accessed randomly: any byte of memory can be accessed without touching the preceding bytes. RAM is found in computers, phones, tablets and even printers. The amount of RAM R has access to is incredibly important. Since R loads objects into RAM, the amount of RAM you have available can limit the size of data set you can analyse.”</span>
+<p><label for="tufte-mn-53" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-53" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Random access memory (RAM) is a type of computer memory that can be
+accessed randomly: any byte of memory can be accessed without touching
+the preceding bytes. RAM is found in computers, phones, tablets and even
+printers. The amount of RAM R has access to is incredibly important.
+Since R loads objects into RAM, the amount of RAM you have available can
+limit the size of data set you can analyse.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Gillespie and Lovelace 2016)</span></span></span></span></p>
-<p><label for="tufte-mn-54" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-54" class="margin-toggle"><span class="marginnote"><span style="display: block;">“A rough rule of thumb is that your RAM should be three times the size of your data set.”</span>
+<p><label for="tufte-mn-54" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-54" class="margin-toggle"><span class="marginnote"><span style="display: block;">“A rough rule of thumb is that your RAM should be three times the
+size of your data set.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Gillespie and Lovelace 2016)</span></span></span></span></p>
 <p><label for="tufte-mn-55" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-55" class="margin-toggle"><span class="marginnote"><span style="display: block;">“RAM is cheap and thinking hurts.”</span>
 <span style="display: block;">Uwe Ligges (about memory requirements in R) R-help (June 2007)</span></span></p>
-<p><label for="tufte-mn-56" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-56" class="margin-toggle"><span class="marginnote"><span style="display: block;">“The strengths of R are also its weaknesses: the R API encourages users to store entire data sets in memory as vectors. These vectors are implicitly and silently copied to achieve copy-on-write semantics, contribuing to high memory usage and poor performance.”</span>
+<p><label for="tufte-mn-56" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-56" class="margin-toggle"><span class="marginnote"><span style="display: block;">“The strengths of R are also its weaknesses: the R API encourages
+users to store entire data sets in memory as vectors. These vectors are
+implicitly and silently copied to achieve copy-on-write semantics,
+contribuing to high memory usage and poor performance.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Lawrence and Morgan 2014)</span></span></span></span></p>
-<p><label for="tufte-mn-57" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-57" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Our ultimate goal is to process and summarize a large data set in its entirety, and iteration enables this by limiting the resource commitment at a given point in time. Limiting resource consumption generalizes beyond iteration and is a fundamental technique for computing with big data. In many cases, it may render iteration unnecessary. Two effective approaches for being frugal with data are restriction and compression. Restriction means controlling which data are loaded and lets us avoid wasting resources on irrelevant or excessive data. Compression helps by representing the same data with fewer resources.”</span>
+<p><label for="tufte-mn-57" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-57" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Our ultimate goal is to process and summarize a large data set in
+its entirety, and iteration enables this by limiting the resource
+commitment at a given point in time. Limiting resource consumption
+generalizes beyond iteration and is a fundamental technique for
+computing with big data. In many cases, it may render iteration
+unnecessary. Two effective approaches for being frugal with data are
+restriction and compression. Restriction means controlling which data
+are loaded and lets us avoid wasting resources on irrelevant or
+excessive data. Compression helps by representing the same data with
+fewer resources.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Lawrence and Morgan 2014)</span></span></span></span></p>
-<p><label for="tufte-mn-58" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-58" class="margin-toggle"><span class="marginnote"><span style="display: block;">“The Bioconductor project distributes the software as a number of different R packages, including Rsamtools, IRanges, GenomicRanges, GenomicAlignments, Biostrings, rtracklayer, biovizBase and BiocParallel. The software enables the analyst to conserve computational resources, iteratively generate summaries and visualize data at arbitrary levels of detail. These advances have helped to ensure that R and Bioconductor remain relevant in the age of high-throughput sequencing. We plan to continue in this direction by designing and implementing abstractions that enable user code to be agnostic to the mode of data storage, whether it be memory, files or databases. This will bring much needed agility to resource allocation and will enable the user to be more resourceful, without the burden of increased complexity.”</span>
+<p><label for="tufte-mn-58" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-58" class="margin-toggle"><span class="marginnote"><span style="display: block;">“The Bioconductor project distributes the software as a number of
+different R packages, including Rsamtools, IRanges, GenomicRanges,
+GenomicAlignments, Biostrings, rtracklayer, biovizBase and BiocParallel.
+The software enables the analyst to conserve computational resources,
+iteratively generate summaries and visualize data at arbitrary levels of
+detail. These advances have helped to ensure that R and Bioconductor
+remain relevant in the age of high-throughput sequencing. We plan to
+continue in this direction by designing and implementing abstractions
+that enable user code to be agnostic to the mode of data storage,
+whether it be memory, files or databases. This will bring much needed
+agility to resource allocation and will enable the user to be more
+resourceful, without the burden of increased complexity.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Lawrence and Morgan 2014)</span></span></span></span></p>
 </div>
 <div id="outlook-for-a-tidyverse-approach-to-biomedical-data" class="section level3" number="3.4.4">
@@ -664,7 +723,7 @@ preprocessing and analysis pipeline.</p>
 in R? There are a variety of characteristics that could cause this. First,
 if data is extremely large, it may exceed a size that is reasonable for a
 dataframe structure. Some of the more complex data structures in R allow
-much of the data to stay “on disc,” rather than be loaded into RAM,
+much of the data to stay “on disc”, rather than be loaded into RAM,
 when the data are structured to provide access from R.</p>
 <p>Other datasets
 may not fit well within the two-dimensional, non-ragged structure that
@@ -714,7 +773,7 @@ pieces of data later. The list, in this case, allows us to store all these
 different types of data from an experiment in the same structure in R, so
 we can make sure we keep the data together in a single structure, even though
 it’s too complex to fit in a simple dataframe.</p>
-<p>Many R data structures are built on a general structure called a “list.” This
+<p>Many R data structures are built on a general structure called a “list”. This
 data structure is a useful basic general data structure, because it is
 extraordinarily flexible. The list data structure is flexible in two
 important ways: it allows you to include data of different <em>types</em> in the
@@ -724,7 +783,7 @@ structures—within the list structure. We’ll cover each of these points a bit
 more below and describe why they’re helpful in making the list a very good
 general purpose data structure.</p>
 <p>The list data structure is much more flexible than the vector or dataframe. It essentially allows you to
-create different “slots,” and you can store any type of data in each of these
+create different “slots”, and you can store any type of data in each of these
 slots. In each slot you can store any of the other types of data structures in
 R—for example, vectors, dataframes, or other lists. You can even store unusual
 things like R <em>environments</em> [?] or <em>pointers</em> that give the directions to where
@@ -855,7 +914,7 @@ For example, the equipment might record not only the measurements taken for the
 sample, but also information about the setting that were applied to the equipment
 while the measurements were taken, the date of the measurements, and other metadata
 that may be useful to access when preprocessing the data. Each piece of data may
-have different “dimensions.” For example, the measurements might provide one
+have different “dimensions”. For example, the measurements might provide one
 measurement per metabolite feature or per marker. Some metadata might also be
 provided with these dimensions (e.g., metadata about the markers for flow
 cytometry data), but other metadata might be provided a single time per sample
@@ -899,9 +958,33 @@ Figure 3.2: An example of different components of data that may need to be store
 </div>
 <p><strong>Handling large data</strong></p>
 <p>Two approaches for this are on disc and through R environments.</p>
-<p><label for="tufte-mn-59" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-59" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Big data is encountered in genomics for two reasons: the size of the genome and the heterogeneity of populations. Complex organisms, such as plants and animals, have genomes on the order of billions of base pairs (the human genome consists of over three billion base pairs). The diversity of populations, whether of organisms, tissues or cells, means we need to sample deeply to detect low frequency events. To interrogate long and/or numerous genomic sequences, many measurements are necessary. For example, a typical whole genome sequencing experiment will consist of over one billion reads of 75–100 bp each. The reads are aligned across billions of positions, most of which have been annotated in some way. This experiment may be repeated for thousands of samples. Such a data set does not fit within the memory of a current commodity computer, and is not processed in a timely and interactive manner. To successfully wrangle a large data set, we need to intimately understand its structure and carefully consider the questions posed of it.”</span>
+<p><label for="tufte-mn-59" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-59" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Big data is encountered in genomics for two reasons: the size of the
+genome and the heterogeneity of populations. Complex organisms, such as
+plants and animals, have genomes on the order of billions of base pairs
+(the human genome consists of over three billion base pairs). The
+diversity of populations, whether of organisms, tissues or cells, means
+we need to sample deeply to detect low frequency events. To interrogate
+long and/or numerous genomic sequences, many measurements are necessary.
+For example, a typical whole genome sequencing experiment will consist
+of over one billion reads of 75–100 bp each. The reads are aligned
+across billions of positions, most of which have been annotated in some
+way. This experiment may be repeated for thousands of samples. Such a
+data set does not fit within the memory of a current commodity computer,
+and is not processed in a timely and interactive manner. To successfully
+wrangle a large data set, we need to intimately understand its structure
+and carefully consider the questions posed of it.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Lawrence and Morgan 2014)</span></span></span></span></p>
-<p><label for="tufte-mn-60" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-60" class="margin-toggle"><span class="marginnote"><span style="display: block;">“A major challenge in the analysis of scRNA-seq data is the scalability of analysis methods as datasets increase in size over time. This is particularly problematic as experiments now frequently produce millions of cells [50–53], possibly across multiple batches, making it challenging to even load the data into memory and perform downstream analyses including quality control, batch correction and dimensionality reduction. Providing analysis methods, such as unsupervised clustering, that do not require data to be loaded into memory is an imperative step for scalable analyses. While large-scale scRNA-seq data are now routinely stored in on-disk data formats (e.g. HDF5 files), the methods to process and analyze these data are lagging.”</span>
+<p><label for="tufte-mn-60" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-60" class="margin-toggle"><span class="marginnote"><span style="display: block;">“A major challenge in the analysis of scRNA-seq data is the
+scalability of analysis methods as datasets increase in size over time.
+This is particularly problematic as experiments now frequently produce
+millions of cells [50–53], possibly across multiple batches, making it
+challenging to even load the data into memory and perform downstream
+analyses including quality control, batch correction and dimensionality
+reduction. Providing analysis methods, such as unsupervised clustering,
+that do not require data to be loaded into memory is an imperative step
+for scalable analyses. While large-scale scRNA-seq data are now
+routinely stored in on-disk data formats (e.g. HDF5 files), the methods
+to process and analyze these data are lagging.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Hicks et al. 2021)</span></span></span></span></p>
 <p>There’s a second reason why dataframe structures don’t always work for data from
 biological experiments, which has to do with the size of data (and so how much
@@ -952,21 +1035,57 @@ cytometry file format?]</p>
 data stored in databases or on-disk file formats—<code>sergeant</code> package is one
 example, also running tidyverse commands on data in database, <code>matter</code> package?,
 <code>disk.frame</code> package?]</p>
-<p><label for="tufte-mn-61" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-61" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Reading in a large dataset for which you do not have enough RAM is one easy way to freeze up your computer (or at least your R session). This is usually an unpleasant experience that usually requires you to kill the R process, in the best case scenario, or reboot your computer, in the worst case.”</span>
+<p><label for="tufte-mn-61" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-61" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Reading in a large dataset for which you do not have enough RAM is
+one easy way to freeze up your computer (or at least your R session).
+This is usually an unpleasant experience that usually requires you to
+kill the R process, in the best case scenario, or reboot your computer,
+in the worst case.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(R. D. Peng 2016)</span></span></span></span></p>
-<p><label for="tufte-mn-62" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-62" class="margin-toggle"><span class="marginnote"><span style="display: block;">“If you use too much memory, R will complain. The key issue is that R holds all the data in RAM. This is a limitation if you have huge datasets. The up-side is flexibility—in particular, R imposes no rules on what data are like.”</span>
+<p><label for="tufte-mn-62" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-62" class="margin-toggle"><span class="marginnote"><span style="display: block;">“If you use too much memory, R will complain. The key issue is that R
+holds all the data in RAM. This is a limitation if you have huge
+datasets. The up-side is flexibility—in particular, R imposes no rules
+on what data are like.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Burns 2011)</span></span></span></span></p>
-<p><label for="tufte-mn-63" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-63" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Random access memory (RAM) is a type of computer memory that can be accessed randomly: any byte of memory can be accessed without touching the preceding bytes. RAM is found in computers, phones, tablets and even printers. The amount of RAM R has access to is incredibly important. Since R loads objects into RAM, the amount of RAM you have available can limit the size of data set you can analyse.”</span>
+<p><label for="tufte-mn-63" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-63" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Random access memory (RAM) is a type of computer memory that can be
+accessed randomly: any byte of memory can be accessed without touching
+the preceding bytes. RAM is found in computers, phones, tablets and even
+printers. The amount of RAM R has access to is incredibly important.
+Since R loads objects into RAM, the amount of RAM you have available can
+limit the size of data set you can analyse.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Gillespie and Lovelace 2016)</span></span></span></span></p>
-<p><label for="tufte-mn-64" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-64" class="margin-toggle"><span class="marginnote"><span style="display: block;">“A rough rule of thumb is that your RAM should be three times the size of your data set.”</span>
+<p><label for="tufte-mn-64" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-64" class="margin-toggle"><span class="marginnote"><span style="display: block;">“A rough rule of thumb is that your RAM should be three times the
+size of your data set.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Gillespie and Lovelace 2016)</span></span></span></span></p>
 <p><label for="tufte-mn-65" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-65" class="margin-toggle"><span class="marginnote"><span style="display: block;">“RAM is cheap and thinking hurts.”</span>
 <span style="display: block;">Uwe Ligges (about memory requirements in R) R-help (June 2007)</span></span></p>
-<p><label for="tufte-mn-66" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-66" class="margin-toggle"><span class="marginnote"><span style="display: block;">“The strengths of R are also its weaknesses: the R API encourages users to store entire data sets in memory as vectors. These vectors are implicitly and silently copied to achieve copy-on-write semantics, contribuing to high memory usage and poor performance.”</span>
+<p><label for="tufte-mn-66" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-66" class="margin-toggle"><span class="marginnote"><span style="display: block;">“The strengths of R are also its weaknesses: the R API encourages
+users to store entire data sets in memory as vectors. These vectors are
+implicitly and silently copied to achieve copy-on-write semantics,
+contribuing to high memory usage and poor performance.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Lawrence and Morgan 2014)</span></span></span></span></p>
-<p><label for="tufte-mn-67" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-67" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Our ultimate goal is to process and summarize a large data set in its entirety, and iteration enables this by limiting the resource commitment at a given point in time. Limiting resource consumption generalizes beyond iteration and is a fundamental technique for computing with big data. In many cases, it may render iteration unnecessary. Two effective approaches for being frugal with data are restriction and compression. Restriction means controlling which data are loaded and lets us avoid wasting resources on irrelevant or excessive data. Compression helps by representing the same data with fewer resources.”</span>
+<p><label for="tufte-mn-67" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-67" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Our ultimate goal is to process and summarize a large data set in
+its entirety, and iteration enables this by limiting the resource
+commitment at a given point in time. Limiting resource consumption
+generalizes beyond iteration and is a fundamental technique for
+computing with big data. In many cases, it may render iteration
+unnecessary. Two effective approaches for being frugal with data are
+restriction and compression. Restriction means controlling which data
+are loaded and lets us avoid wasting resources on irrelevant or
+excessive data. Compression helps by representing the same data with
+fewer resources.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Lawrence and Morgan 2014)</span></span></span></span></p>
-<p><label for="tufte-mn-68" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-68" class="margin-toggle"><span class="marginnote"><span style="display: block;">“The Bioconductor project distributes the software as a number of different R packages, including Rsamtools, IRanges, GenomicRanges, GenomicAlignments, Biostrings, rtracklayer, biovizBase and BiocParallel. The software enables the analyst to conserve computational resources, iteratively generate summaries and visualize data at arbitrary levels of detail. These advances have helped to ensure that R and Bioconductor remain relevant in the age of high-throughput sequencing. We plan to continue in this direction by designing and implementing abstractions that enable user code to be agnostic to the mode of data storage, whether it be memory, files or databases. This will bring much needed agility to resource allocation and will enable the user to be more resourceful, without the burden of increased complexity.”</span>
+<p><label for="tufte-mn-68" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-68" class="margin-toggle"><span class="marginnote"><span style="display: block;">“The Bioconductor project distributes the software as a number of
+different R packages, including Rsamtools, IRanges, GenomicRanges,
+GenomicAlignments, Biostrings, rtracklayer, biovizBase and BiocParallel.
+The software enables the analyst to conserve computational resources,
+iteratively generate summaries and visualize data at arbitrary levels of
+detail. These advances have helped to ensure that R and Bioconductor
+remain relevant in the age of high-throughput sequencing. We plan to
+continue in this direction by designing and implementing abstractions
+that enable user code to be agnostic to the mode of data storage,
+whether it be memory, files or databases. This will bring much needed
+agility to resource allocation and will enable the user to be more
+resourceful, without the burden of increased complexity.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Lawrence and Morgan 2014)</span></span></span></span></p>
 <p><strong>Allow software development across large, diverse teams</strong></p>
 <p>Robert Gentleman, one of the creators of Bioconductor [?], highlights
@@ -1203,7 +1322,7 @@ large data output from complex laboratory equipment. However, once this pre-proc
 is completed, there is a big advantage in moving the data into a simple format
 and then continuing coding, data analysis, and visualization using tools that
 work with this simple format. This is the approach taken by a suite of R packages
-called the “tidyverse,” as well as extensions that build off the approach that
+called the “tidyverse”, as well as extensions that build off the approach that
 this suite of tools embraces. This “tidyverse” approach is described in the
 next section.</p>
 <p>In the previous parts of this module, we’ve highlighted some of the ways that
@@ -1249,7 +1368,7 @@ data structure, it may not work for data stored in a different data structure.
 By contrast, when data are stored in a common structure (like a dataframe), the
 same functions can always be used, across any step in the pipeline.</p>
 <p>There are some approaches that programmers have taken to get around this limitation,
-using what are called “methods.” Methods are functions that run differently
+using what are called “methods”. Methods are functions that run differently
 depending on what type of data structure they are given. One example in R is
 the <code>summary</code> function, which outputs a summary of the object you input. This
 function first checks the class of the object (i.e., the data structure) and
@@ -1263,7 +1382,10 @@ Bioconductor data structures). However, many of these methods are geared toward
 providing “final” output—a final summary or plot that you might read and
 interpret directly, but not output that serves as a “step” in a longer workflow,
 so not output that will become input to another function.</p>
-<p><label for="tufte-mn-69" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-69" class="margin-toggle"><span class="marginnote"><span style="display: block;">“There is a cost to the free lunch. That <code>print</code> is generic means that what you see is not what you get (sometimes). In the printing of an object you may see a number that you want—an R-squared for example—but don’t know how to grab that number.”</span>
+<p><label for="tufte-mn-69" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-69" class="margin-toggle"><span class="marginnote"><span style="display: block;">“There is a cost to the free lunch. That <code>print</code> is
+generic means that what you see is not what you get (sometimes). In the
+printing of an object you may see a number that you want—an R-squared
+for example—but don’t know how to grab that number.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Burns 2011)</span></span></span></span></p>
 <p>Therefore, even the approach of methods can’t get around another way that
 specialized data structures and their use of specialized functions constrain you

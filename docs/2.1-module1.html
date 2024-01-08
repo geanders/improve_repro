@@ -8,7 +8,6 @@
 <meta property="og:title" content="2.1 Separating data recording and analysis | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
 <meta property="og:type" content="book" />
 
-
 <meta property="og:description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
 <meta name="github-repo" content="rstudio/bookdown-demo" />
 
@@ -26,7 +25,6 @@ MathJax.Hub.Config({
 
 <title>2.1 Separating data recording and analysis | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
 
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
 <link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
 
@@ -36,6 +34,7 @@ MathJax.Hub.Config({
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -70,7 +69,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -83,7 +82,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -133,10 +132,10 @@ div.csl-indent {
 <div class="col-sm-12">
 <div id="TOC">
 <ul>
-<li><a href="index.html#rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
-<li><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
-<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
-<li><a href="4-references.html#references"><span class="toc-section-number">4</span> References</a></li>
+<li><a href="index.html#rigor-and-reproducibility-in-computation" id="toc-rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
+<li><a href="2-experimental-data-recording.html#experimental-data-recording" id="toc-experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
+<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing" id="toc-experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
+<li><a href="4-references.html#references" id="toc-references"><span class="toc-section-number">4</span> References</a></li>
 </ul>
 </div>
 </div>
@@ -235,7 +234,7 @@ Spreadsheets use the visual metaphore of a traditional gridded ledger sheet
 <span class="citation">(Levy 1984)</span>, providing an interface that is easy for users to
 immediately understand and create a mental map of <span class="citation">(Birch, Lyford-Smith, and Guo 2018; Barga et al. 2011)</span>. This visually clear interface also means that
 spreadsheets can be printed or incorporated into other documents (Word files,
-PowerPoint presentations) “as-is,” as a workable and understandable table of
+PowerPoint presentations) “as-is”, as a workable and understandable table of
 data values. In fact, some of the most popular plug-in software packages for the
 early spreadsheet program Lotus 1-2-3 were programs for printing and publishing
 spreadsheets <span class="citation">(Campbell-Kelly 2007)</span>. This “What You See Is What You Get”
@@ -271,7 +270,7 @@ that raw data. One study of operational spreadsheets noted that:</p>
 way to check it. Even the original developer would have difficulty checking the
 data.” <span class="citation">(S. G. Powell, Baker, and Lawson 2009)</span></p>
 </blockquote>
-<p>Further, data in a spreadsheet is typically not saved as “read-only,” so it is
+<p>Further, data in a spreadsheet is typically not saved as “read-only”, so it is
 possible for it to be accidentally overwritten: in situations where spreadsheets
 are shared among multiple users, original cell values can easily be accidentally
 written over, and it may not be clear who last changed a value, when it was
@@ -394,7 +393,7 @@ interpreted. This is particularly problematic in projects where the spreadsheet
 will be shared for collaboration or adapted to be used in a future project, as
 is often done in scientific research groups. One survey of neuroscience
 researchers at a UK institute, for example, found that “on average, 2–5
-researchers share the same spreadsheet.” <span class="citation">(AlTarawneh and Thorne 2017)</span> In this case, it
+researchers share the same spreadsheet”. <span class="citation">(AlTarawneh and Thorne 2017)</span> In this case, it
 can be hard to “onboard” new people to use the file, and much of the work and
 knowledge about the spreadsheet can be lost when that person moves on from the
 business or laboratory group <span class="citation">(Creeth 1985; Myneni and Patel 2010)</span>. If you share a spreadsheet with numerous and complex
@@ -423,7 +422,7 @@ into spreadsheet programming to try to help limit errors, including a tool
 called assertions that allows users to validate data or test logic within their
 spreadsheets <span class="citation">(Hermans et al. 2016)</span>. However, these are often not
 implemented, in part perhaps because many spreadsheet users see themselves as
-“end-users,” creating spreadsheets for their own personal use rather than as
+“end-users”, creating spreadsheets for their own personal use rather than as
 something robust to future use by others, and so don’t seek out strategies
 adopted by “programmers” when creating stable tools for others to use
 <span class="citation">(Hermans et al. 2016)</span>. In practice, though, often a spreadsheet is used
@@ -486,7 +485,7 @@ software can more easily undertake calculations with dates, like calculating the
 number of days between two dates or which of two dates is earlier.
 Bioinformatics researchers at the National Institutes of Health found that Excel
 was doing this type of automatic and irreversible date conversion for 30 gene
-names, including “MAR3” and “APR-4,” resulting in these gene names being lost
+names, including “MAR3” and “APR-4”, resulting in these gene names being lost
 for further analysis <span class="citation">(Zeeberg et al. 2004)</span>.</p>
 <p>Avoiding this automatic date conversion required specifying that columns with
 columns susceptible to these problems, including columns of gene names, should

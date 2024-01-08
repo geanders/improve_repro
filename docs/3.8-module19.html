@@ -8,7 +8,6 @@
 <meta property="og:title" content="3.8 RMarkdown for creating reproducible data pre-processing protocols | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
 <meta property="og:type" content="book" />
 
-
 <meta property="og:description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
 <meta name="github-repo" content="rstudio/bookdown-demo" />
 
@@ -26,7 +25,6 @@ MathJax.Hub.Config({
 
 <title>3.8 RMarkdown for creating reproducible data pre-processing protocols | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
 
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
 <link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
 
@@ -36,6 +34,7 @@ MathJax.Hub.Config({
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -70,7 +69,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -83,7 +82,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -133,10 +132,10 @@ div.csl-indent {
 <div class="col-sm-12">
 <div id="TOC">
 <ul>
-<li><a href="index.html#rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
-<li><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
-<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
-<li><a href="4-references.html#references"><span class="toc-section-number">4</span> References</a></li>
+<li><a href="index.html#rigor-and-reproducibility-in-computation" id="toc-rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
+<li><a href="2-experimental-data-recording.html#experimental-data-recording" id="toc-experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
+<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing" id="toc-experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
+<li><a href="4-references.html#references" id="toc-references"><span class="toc-section-number">4</span> References</a></li>
 </ul>
 </div>
 </div>
@@ -188,7 +187,7 @@ use the Rstudio IDE as the text editor when creating and editing an R markdown
 document, as this IDE has incorporated some helpful functionality for working
 with plain text documents for Rmarkdown. In RStudio, you can create a number of
 types of new files through the “File” menu. To create a new R markdown file,
-open RStudio and then choose “New File,” then choose “Rmarkdown” from the
+open RStudio and then choose “New File”, then choose “Rmarkdown” from the
 choices in that menu. Figure <a href="3.8-module19.html#fig:rmarkdownnewfile">3.8</a> shows an example of
 what this menu option looks like.</p>
 <div class="figure"><span style="display:block;" id="fig:rmarkdownnewfile"></span>
@@ -258,8 +257,8 @@ Figure 3.12: Example of the template Rmarkdown document, highlighting buttons in
 <p>You will also notice, after you first render the document, that your working
 directory has a new file with this output document. For example, if you are
 working to create an HTML document using an Rmarkdown file called
-“my_report.Rmd,” once you knit your Rmarkdown file, you will notice a new file
-in your working directory called “my_report.html.” This new file is your output
+“my_report.Rmd”, once you knit your Rmarkdown file, you will notice a new file
+in your working directory called “my_report.html”. This new file is your output
 file, the one that you would share with colleagues as a report. You should
 consider this output document to be read only—in other words, you can read and
 share this document, but you should not make any changes directly to this
@@ -272,14 +271,14 @@ created when you render this example document (Figure
 <a href="3.8-module19.html#fig:rmarkdownoriginalfinal">3.11</a>, right), you can notice how different elements
 align with pieces in the original Rmarkdown file (Figure
 <a href="3.8-module19.html#fig:rmarkdownoriginalfinal">3.11</a>). For example, the output document includes a
-header with the text “R Markdown.” This second-level header is created by the
+header with the text “R Markdown”. This second-level header is created by the
 Markdown notation in the original file of:</p>
 <pre><code>## R Markdown</code></pre>
 <p>This header is formatted in a larger font than other text, and on a separate
 line—the exact formatting is specified within the style file for the Rmarkdown
 document, and will be applied to all second-level headers in the document. You
 can also see formatting specified through things like bold font for the word
-“Knit,” through the Markdown syntax <code>**Knit**</code>, and a clickable link specified
+“Knit”, through the Markdown syntax <code>**Knit**</code>, and a clickable link specified
 through the syntax <code>&lt;http://rmarkdown.rstudio.com&gt;</code>. At the beginning of the
 original document, you can see how elements like the title, author, date, and
 output format are specified in the YAML. Finally, you can see that special
@@ -573,7 +572,7 @@ you’d use <code>[@fox2021]</code>.</p>
 <pre><code>This technique follows earlier work [@fox2020].</code></pre>
 <p>In the output from rendering that RMarkdown document you’d get:</p>
 <blockquote>
-<p>``This technique follows earlier work (Fox et al. 2020)."</p>
+<p>``This technique follows earlier work (Fox et al. 2020).”</p>
 </blockquote>
 <p>The full paper details will then be included at the end of the document, in a reference
 section.</p>
@@ -601,17 +600,19 @@ Figure 3.14: Example of a website created using blogdown, leveraging the Rmarkdo
 </div>
 <p>With Rmarkdown, you can also create reports that are more customized than the
 default style that we explored above. First, you can create templates that add
-customized styling to the document. In fact, many journals have created journal-specific
-templates that you can use in Rmarkdown. With these templates, you can write
-up your research results in a reproducible way, using Rmarkdown, and submit the
-resulting document directly to the journal, in the correct format. An example of the first page of an article created in Rmarkdown using
-one of these article templates is shown in Figure <a href="3.8-module19.html#fig:rticleexample">3.15</a>. The <code>rticles</code>
-package in R provides these templates for several different journal families.</p>
+customized styling to the document. In fact, many journals have created
+journal-specific templates that you can use in Rmarkdown. With these templates,
+you can write up your research results in a reproducible way, using Rmarkdown,
+and submit the resulting document directly to the journal, in the correct
+format. An example of the first page of an article created in Rmarkdown using
+one of these article templates is shown in Figure <a href="3.8-module19.html#fig:rticleexample">3.15</a>
+<span class="citation">(Wendt and Anderson 2022)</span>. The <code>rticles</code> package in R provides these templates for several
+different journal families.</p>
 <div class="figure"><span style="display:block;" id="fig:rticleexample"></span>
 <p class="caption marginnote shownote">
-Figure 3.15: Example of a manuscript written in Rmarkdown using a templat. This figure shows the first page of an article written for submission to PLoS Computation Biology, written in Rmarkdown while using the PLoS template from the <code>rticles</code> package. The full article, including the Rmarkdown input and final pdf, are available on GitHub at <a href="https://github.com/cjwendt/plos_ten" class="uri">https://github.com/cjwendt/plos_ten</a>.
+Figure 3.15: Example of a manuscript written in Rmarkdown using a templat. This figure shows the first page of an article written for submission to PLoS Computation Biology, written in Rmarkdown while using the PLoS template from the <code>rticles</code> package (Wendt and Anderson 2022).
 </p>
-<img src="figures/rticles_example.png" alt="Example of a manuscript written in Rmarkdown using a templat. This figure shows the first page of an article written for submission to PLoS Computation Biology, written in Rmarkdown while using the PLoS template from the `rticles` package. The full article, including the Rmarkdown input and final pdf, are available on GitHub at https://github.com/cjwendt/plos_ten." width="\textwidth"  />
+<img src="figures/rticles_example.png" alt="Example of a manuscript written in Rmarkdown using a templat. This figure shows the first page of an article written for submission to PLoS Computation Biology, written in Rmarkdown while using the PLoS template from the `rticles` package (Wendt and Anderson 2022)." width="\textwidth"  />
 </div>
 <p>Rmarkdown also has some features that make it easy to run code that is
 computationally expensive or code that is written in another programming

@@ -8,7 +8,6 @@
 <meta property="og:title" content="2.10 Enhance the reproducibility of collaborative research with version control platforms | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
 <meta property="og:type" content="book" />
 
-
 <meta property="og:description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
 <meta name="github-repo" content="rstudio/bookdown-demo" />
 
@@ -26,7 +25,6 @@ MathJax.Hub.Config({
 
 <title>2.10 Enhance the reproducibility of collaborative research with version control platforms | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
 
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
 <link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
 
@@ -36,6 +34,7 @@ MathJax.Hub.Config({
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -70,7 +69,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -83,7 +82,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -133,10 +132,10 @@ div.csl-indent {
 <div class="col-sm-12">
 <div id="TOC">
 <ul>
-<li><a href="index.html#rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
-<li><a href="2-experimental-data-recording.html#experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
-<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
-<li><a href="4-references.html#references"><span class="toc-section-number">4</span> References</a></li>
+<li><a href="index.html#rigor-and-reproducibility-in-computation" id="toc-rigor-and-reproducibility-in-computation"><span class="toc-section-number">1</span> Rigor and reproducibility in computation</a></li>
+<li><a href="2-experimental-data-recording.html#experimental-data-recording" id="toc-experimental-data-recording"><span class="toc-section-number">2</span> Experimental Data Recording</a></li>
+<li><a href="3-experimental-data-preprocessing.html#experimental-data-preprocessing" id="toc-experimental-data-preprocessing"><span class="toc-section-number">3</span> Experimental Data Preprocessing</a></li>
+<li><a href="4-references.html#references" id="toc-references"><span class="toc-section-number">4</span> References</a></li>
 </ul>
 </div>
 </div>
@@ -182,7 +181,16 @@ collaboration is often used in scientific research, as well: one study found,
 “Team members regularly pass data files back and forth by hand, by email, and by
 using shared lab or project servers, websites, and databases.”
 <span class="citation">(Edwards et al. 2011)</span></p>
-<p><label for="tufte-mn-34" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-34" class="margin-toggle"><span class="marginnote"><span style="display: block;">“The most primitive (but still very common) method [of version control] is all hand-hacking. You snapshot the project periodically by manually copying everything in it to a backup. You include history comments in source files. You make verbal or email arrangements with other developers to keep their hands off certain files while you hack them. … The hidden costs of this hand-hacking method are high, especially when (as frequently happens) it breaks down. The procedures take time and concentration; they’re prone to error, and tend to get slipped under pressure or when the project is in trouble—that is exactly when they are needed.”</span>
+<p><label for="tufte-mn-34" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-34" class="margin-toggle"><span class="marginnote"><span style="display: block;">“The most primitive (but still very common) method [of version
+control] is all hand-hacking. You snapshot the project periodically by
+manually copying everything in it to a backup. You include history
+comments in source files. You make verbal or email arrangements with
+other developers to keep their hands off certain files while you hack
+them. … The hidden costs of this hand-hacking method are high,
+especially when (as frequently happens) it breaks down. The procedures
+take time and concentration; they’re prone to error, and tend to get
+slipped under pressure or when the project is in trouble—that is exactly
+when they are needed.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(E. S. Raymond 2003)</span></span></span></span></p>
 <p>These practices make it very difficult to keep track of all project files,
 and in particular, to track which version of each file is the most current.
@@ -215,14 +223,16 @@ on projects with sensitive data, and also can store data directly on the server
 you would like to use to store large project datasets or to run
 computationally-intensive pre-processing or analysis. Finally, most version
 control platforms include tools that help you manage and track the project.
-These include “Issue Trackers,” tools for exploring the history of each file
+These include “Issue Trackers”, tools for exploring the history of each file
 and each change, and features to assign project tasks to specific team members.
 The next section will describe the features of version control platforms that
 make them helpful as a tool for collaborating on scientific research. These
 systems are being leveraged by some scientists, both to manage research projects
 and also to collaborate on writing scientific manuscripts and grant proposals
 <span class="citation">(Perez-Riverol et al. 2016)</span>.</p>
-<p><label for="tufte-mn-35" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-35" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Using GitHub or any similar versioning / tracking system is not a replacement for good project management; it is an extension, an improvement for good project and file management.”</span>
+<p><label for="tufte-mn-35" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-35" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Using GitHub or any similar versioning / tracking system is not a
+replacement for good project management; it is an extension, an
+improvement for good project and file management.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Perez-Riverol et al. 2016)</span></span></span></span></p>
 <p>Version control platforms are always used in conjunction with version control
 software, like the <em>git</em> software described in the last module. Version control
@@ -242,7 +252,9 @@ popular for scientific research are GitHub (<a href="https://github.com/" class=
 (<a href="https://about.gitlab.com/" class="uri">https://about.gitlab.com/</a>). Both provide free options for scientific
 researchers, including the capabilities for using both public and private
 repositories in collaboration with other researchers.</p>
-<p><label for="tufte-mn-36" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-36" class="margin-toggle"><span class="marginnote"><span style="display: block;">Resources like GitHub are “essential for collaborative software projects because they enable the organization and sharing of programming tasks between different remote contributors.”</span>
+<p><label for="tufte-mn-36" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-36" class="margin-toggle"><span class="marginnote"><span style="display: block;">Resources like GitHub are “essential for collaborative software
+projects because they enable the organization and sharing of programming
+tasks between different remote contributors.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Perez-Riverol et al. 2016)</span></span></span></span></p>
 </div>
 <div id="why-use-version-control-platforms" class="section level3" number="2.10.2">
@@ -281,7 +293,14 @@ learning these techniques in the first few weeks of class. This would be
 practically unimaginable without the user-friendly interface of a version
 control platform as a wrapper for the power of the version control software
 itself.</p>
-<p><label for="tufte-mn-37" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-37" class="margin-toggle"><span class="marginnote"><span style="display: block;">“One reason for GitHub’s success is that it offers more than a simple source code hosting service. It provides developers and researchers with a dynamic and collaborative environment, often referred to as a social coding platform, that supports peer review, commenting, and discussion. A diverse range of efforts, ranging from individual to large bioinformatics projects, laboratory repositories, as well as global collaborations, have found GitHub to be a productive place to share code and ideas and collaborate.”</span>
+<p><label for="tufte-mn-37" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-37" class="margin-toggle"><span class="marginnote"><span style="display: block;">“One reason for GitHub’s success is that it offers more than a simple
+source code hosting service. It provides developers and researchers with
+a dynamic and collaborative environment, often referred to as a social
+coding platform, that supports peer review, commenting, and discussion.
+A diverse range of efforts, ranging from individual to large
+bioinformatics projects, laboratory repositories, as well as global
+collaborations, have found GitHub to be a productive place to share code
+and ideas and collaborate.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Perez-Riverol et al. 2016)</span></span></span></span></p>
 <p>The first strength of using version control—and a version control
 platform—to collaborate on scientific projects is its ability to track every
@@ -299,7 +318,12 @@ ever need to get them back, they’ll be right there in the commit history for
 your project, with their own commit message about why they were cut (hopefully a
 nice clear one that will make it easy to find that commit if you ever need those
 paragraphs again).</p>
-<p><label for="tufte-mn-38" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-38" class="margin-toggle"><span class="marginnote"><span style="display: block;">“[Version control systems] are a huge boon to productivity and code quality in many ways, even for small single-developer projects. They automate away many procedures that are just tedious work. They help a lot in recovering from mistakes. Perhaps most importantly, they free programmers to experiment by guarnateeing that reversion to a known-good state will always be easy.”</span>
+<p><label for="tufte-mn-38" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-38" class="margin-toggle"><span class="marginnote"><span style="display: block;">“[Version control systems] are a huge boon to productivity and code
+quality in many ways, even for small single-developer projects. They
+automate away many procedures that are just tedious work. They help a
+lot in recovering from mistakes. Perhaps most importantly, they free
+programmers to experiment by guarnateeing that reversion to a known-good
+state will always be easy.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(E. S. Raymond 2003)</span></span></span></span></p>
 <p>These capacities to track changes and histories of project files becomes even
 more important when working in collaboration on a project. As the proverb about
@@ -318,7 +342,16 @@ projects with a heavier concentration of text-based files, and so they fit in
 nicely in a scientific research / data analysis workflow that is based on data
 stored in plain text formats and data analysis scripts written in plain text
 files, tools we discuss in other parts of this book.</p>
-<p><label for="tufte-mn-39" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-39" class="margin-toggle"><span class="marginnote"><span style="display: block;">“In a medium-sized project, it often happens that a (relatively small) number of people work simultaneously on a single set of files, the ‘program’ or the ‘project.’ Often these people have additional tasks, causing their working speeds to differ greatly. One person may be working a steady ten hours a day on the project, a second may have barely time to dabble in the project enough to keep current, while a third participant may be sent off on an urgent temporary assignment just before finishing a modification. It would be nice if each participant could be abstracted from the vicissitudes of the lives of the others.”</span>
+<p><label for="tufte-mn-39" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-39" class="margin-toggle"><span class="marginnote"><span style="display: block;">“In a medium-sized project, it often happens that a (relatively
+small) number of people work simultaneously on a single set of files,
+the ‘program’ or the ‘project’. Often these people have additional
+tasks, causing their working speeds to differ greatly. One person may be
+working a steady ten hours a day on the project, a second may have
+barely time to dabble in the project enough to keep current, while a
+third participant may be sent off on an urgent temporary assignment just
+before finishing a modification. It would be nice if each participant
+could be abstracted from the vicissitudes of the lives of the
+others.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Grune 1986)</span></span></span></span></p>
 <p>Modern version control systems like <em>git</em> take a distributed approach to
 collaboration on project files. Under the distributed model, all team members
@@ -342,7 +375,7 @@ local directory with everyone else’s to share changes and updates.</p>
 this work—merging files that started the same but were edited in different
 ways and now need to be put back together, bringing along any changes made from
 the original version. This step is called <em>merging</em> the files. While this is
-typically described using the plural, “files,” at a higher-level, you can think
+typically described using the plural, “files”, at a higher-level, you can think
 of this as just merging the <em>changes</em> that two people have made as they edited a
 single file, a file where they both started out with identical copies.</p>
 <p>Think of the file broken up into each of its separate lines. There will be some
@@ -366,7 +399,10 @@ lines to use in the integrated version of the file, or write in some compromise
 version of those lines that brings in elements from both people’s changes, and
 then delete all the symbols denoting that was a conflict and save this latest
 version of the file.</p>
-<p><label for="tufte-mn-40" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-40" class="margin-toggle"><span class="marginnote"><span style="display: block;">“You will likely share your code with multiple lab mates or collaborators, and they may have suggestions on how to improve it. If you email the code to multiple people, you will have to manually incorporate all the changes each of them sends.”</span>
+<p><label for="tufte-mn-40" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-40" class="margin-toggle"><span class="marginnote"><span style="display: block;">“You will likely share your code with multiple lab mates or
+collaborators, and they may have suggestions on how to improve it. If
+you email the code to multiple people, you will have to manually
+incorporate all the changes each of them sends.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Blischak, Davenport, and Wilson 2016)</span></span></span></span></p>
 <p>There are a number of other features of version control that make it useful for
 collaborating on file-based projects with teams. First, these systems allow you
@@ -391,7 +427,10 @@ person’s message or messages about why each change might help. Even better, da
 or months later, when team members are trying to figure out why a certain change
 was made in that part of the file, can go back and read these messages to get an
 explanation.</p>
-<p><label for="tufte-mn-41" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-41" class="margin-toggle"><span class="marginnote"><span style="display: block;">“You know your code has changed; do you know why? It’s easy to forget the reasons for changes, and step on them later. If you have collaborators on a project, how do you know what they have changed while you weren’t looking, and who was responsible for each change?”</span>
+<p><label for="tufte-mn-41" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-41" class="margin-toggle"><span class="marginnote"><span style="display: block;">“You know your code has changed; do you know why? It’s easy to forget
+the reasons for changes, and step on them later. If you have
+collaborators on a project, how do you know what they have changed while
+you weren’t looking, and who was responsible for each change?”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(E. S. Raymond 2003)</span></span></span></span></p>
 <p>In recent years, some complementary tools have been developed that make the
 process of collaborating together using version control software easier. These
@@ -425,7 +464,13 @@ see not only the final product, but also the history of the development of the
 code and data for the project, providing more transparency in the development
 process, but without jeopardizing the novelty of the research results prior to
 publication.</p>
-<p><label for="tufte-mn-42" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-42" class="margin-toggle"><span class="marginnote"><span style="display: block;">“The traditional way to promote scientific software is by publishing an associated paper in the peer-reviewed scientific literature, though, as pointed out by Buckheir and Donoho, this is just advertising. Additional steps can boost the visibility of an organization. For example, GitHub Pages are simple websites freely hosted by GitHub. Users can create and host blog websites, help pages, manuals, tutorials, and websites related to specific projects.”</span>
+<p><label for="tufte-mn-42" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-42" class="margin-toggle"><span class="marginnote"><span style="display: block;">“The traditional way to promote scientific software is by publishing
+an associated paper in the peer-reviewed scientific literature, though,
+as pointed out by Buckheir and Donoho, this is just advertising.
+Additional steps can boost the visibility of an organization. For
+example, GitHub Pages are simple websites freely hosted by GitHub. Users
+can create and host blog websites, help pages, manuals, tutorials, and
+websites related to specific projects.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Perez-Riverol et al. 2016)</span></span></span></span></p>
 <p>With GitHub, while only collaborators on a public project can directly change
 the code, anyone else can <em>suggest</em> changes through a process of copying a
@@ -444,7 +489,11 @@ particularly helpful in ensuring that a software or research project won’t be
 instead can be picked up and continued by other interested researchers.
 Copyright statements and licenses within code projects help to clarify
 attribution and rights in these cases.</p>
-<p><label for="tufte-mn-43" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-43" class="margin-toggle"><span class="marginnote"><span style="display: block;">“The astonishment was that you might want to make even your tiny hacks to other people’s code public. Before GitHub, we tended to keep those on our own computer. Nowadays, it is so easy to make a fork, or even edit the code directly in your browser, that potentially anyone can find even your least polished bug fixes immediately.”</span>
+<p><label for="tufte-mn-43" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-43" class="margin-toggle"><span class="marginnote"><span style="display: block;">“The astonishment was that you might want to make even your tiny
+hacks to other people’s code public. Before GitHub, we tended to keep
+those on our own computer. Nowadays, it is so easy to make a fork, or
+even edit the code directly in your browser, that potentially anyone can
+find even your least polished bug fixes immediately.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Irving 2011)</span></span></span></span></p>
 <p>Finally, version control platforms help in providing additional back-up for
 project files. As you collaborate with others using version control under
@@ -455,7 +504,15 @@ are using the GitHub platform, this will be GitHub’s servers; if you use
 GitLab, you can set up the system on your own server. Each time you push
 or pull from the remote copy of the project repository, you are syncing your
 copy of the project files with those on other computers.</p>
-<p><label for="tufte-mn-44" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-44" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Backup, backup, backup—this is the main action you can take to care for your computers and your data. Many PIs assume that backup systems are inherently permanent and foolproof, and it often takes a loss to remind one that materials break, systems fail, and humans make mistakes. Even if your data are backed up at work, have at least one other backup system. Keep at least one backup off site, in case of a diaster in the lab (yes, fires and floods do happen). It doesn’t make much sense to have two separate backup systems stored next to each other in a drawer.”</span>
+<p><label for="tufte-mn-44" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-44" class="margin-toggle"><span class="marginnote"><span style="display: block;">“Backup, backup, backup—this is the main action you can take to care
+for your computers and your data. Many PIs assume that backup systems
+are inherently permanent and foolproof, and it often takes a loss to
+remind one that materials break, systems fail, and humans make mistakes.
+Even if your data are backed up at work, have at least one other backup
+system. Keep at least one backup off site, in case of a diaster in the
+lab (yes, fires and floods do happen). It doesn’t make much sense to
+have two separate backup systems stored next to each other in a
+drawer.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(LEIPS 2010)</span></span></span></span></p>
 </div>
 <div id="how-to-use-github" class="section level3" number="2.10.3">
