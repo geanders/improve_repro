@@ -1478,54 +1478,72 @@ common spreadsheet template or a more proscriptive standardized data format.</p>
 </div>
 <div id="module3" class="section level2 hasAnchor" number="2.3">
 <h2><span class="header-section-number">2.3</span> The ‘tidy’ data format<a href="experimental-data-recording.html#module3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The “tidy” data format is one implementation of a tabular, two-dimensional
+<p>In the previous module, we explained the benefits of saving data in a structured
+format, and in particular using a two-dimensional format saved to a plain text
+file when possible. In this section, we’ll talk about the “tidy data” format.
+The “tidy” data format is one implementation of a tabular, two-dimensional
 structured data format that has quickly gained popularity among statisticians
 and data scientists since it was defined in a 2014 paper <span class="citation">(Wickham 2014)</span>.
-The “tidy” data format plugs into R’s <em>tidyverse</em> framework, which enables
-powerful and user-friendly data management, processing, and analysis by
-combining simple tools to solve complex, multi-step problems
-<span class="citation">(Ross, Wickham, and Robinson 2017; Silge and Robinson 2016; Wickham 2016; Wickham and Grolemund 2016)</span>.
-Since the <em>tidyverse</em> tools are simple and share a common interface, they are
-easier to learn, use, and combine than tools created in the traditional base R
-framework <span class="citation">(Ross, Wickham, and Robinson 2017; Lowndes et al. 2017; <strong>reviewer2017review?</strong>; McNamara 2016)</span>. This <em>tidyverse</em> framework is quickly becoming the standard
-taught in introductory R courses and books <span class="citation">(Hicks and Irizarry 2017; B. Baumer 2015; Kaplan 2018; Stander and Dalla Valle 2017; <strong>reviewer2017review?</strong>; McNamara 2016)</span>, ensuring ample training resources for researchers new to
-programming, including books (e.g., <span class="citation">(B. S. Baumer, Kaplan, and Horton 2017; Irizarry and Love 2016; Wickham and Grolemund 2016)</span>), massive open online courses (MOOCs), on-site university courses
-<span class="citation">(B. Baumer 2015; Kaplan 2018; Stander and Dalla Valle 2017)</span>, and Software
-Carpentry workshops <span class="citation">(Wilson 2014; Pawlik et al. 2017)</span>. Further, tools
-that extend the <em>tidyverse</em> have been created to enable high-quality data
-analysis and visualization in several domains, including text mining
-<span class="citation">(Silge and Robinson 2017)</span>, microbiome studies <span class="citation">(McMurdie and Holmes 2013)</span>, natural language
-processing <span class="citation">(Arnold 2017)</span>, network analysis <span class="citation">(Tyner, Briatte, and Hofmann 2017)</span>, ecology
-<span class="citation">(Hsieh, Ma, and Chao 2016)</span>, and genomics <span class="citation">(Yin, Cook, and Lawrence 2012)</span>. In this section, we will
-explain what characteristics determine if a dataset is “tidy” and how use of the
-“tidy” implementation of a structure data format can improve the ease and
-efficiency of “Team Science”.</p>
+These principles cover some basic rules for ordering the data, and even if you
+haven’t heard the term “tidy data”, you may already be implementing many of its
+standards in your own datasets. Datasets in this format tend to be very easily
+to work with, including to further clean, model, and visualize the data, as well
+as to integrate the data with other datasets. In particular, this data format is
+compatible with a collection of open-source tools on the R platform called the
+“tidyverse”. These characteristics mean that, if you are planning to use a
+standardized data format for recording experimental data in your research group,
+you may want to consider creating one that adheres to the “tidy data” rules.</p>
 <p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
 <ul>
 <li>List characteristics defining the “tidy” structured data format</li>
+<li>Understand how to reformat a dataset to make it follow the “tidy” format</li>
 <li>Explain the difference between the a structured data format (general concept)
 and the ‘tidy’ data format (one popular implementation)</li>
+<li>Understand benefits of recording data in a “tidy” format</li>
 </ul>
-<p>In the previous module, we explained the benefits of saving data in a structured
-format, and in particular using a two-dimensional format saved to a plain text
-file when possible. In this section, we’ll talk about the “tidy text” format—a
-set of principles to use when structuring two-dimensional tabular data. These
-principles cover some basic rules for ordering the data, and the resulting
-datasets can be very easily worked with, including to further clean, model, and
-visualize the data, and to integrate the data with other datasets, using a
-series of open-source tools on the R platform called the “tidyverse”. These
-characteristics mean that, if you are planning to use a standardized data format
-for recording experimental data in your research group, you may want to consider
-creating one that adheres to the “tidy data” rules.</p>
-<p>We’ll start by describing what rules a dataset’s format must follow for it to be
-“tidy”, and try to clarify how you can set up your data recording to follow
-these rules. In a later part of this module, we’ll talk more about the tidyverse
-tools that you can use with this data, as well as give some resources for
-finding out more about the tidyverse and how to use its tools.</p>
-<p>Since a key advantage of the “tidy data” format is that it works so well with
-R’s “tidyverse” tools, we’ll also talk a bit in this section about the use of
-scripting languages like R, and how using them to analyze and visualize the
-data you collect can improve the overall reproducibility of your research.</p>
+<p>Adam Savage has built a career out of making things. He became famous as the
+host of the TV show <em>Mythbusters</em>, where a crew builds contraptions to test
+urban myths. For many years before that, he created models and special effects
+for movies. He has thought a lot about how to effectively work in teams to make
+things, and in 2019 he published a book about his life as a maker called <em>Every
+Tool is a Hammer</em> <span class="citation">(Savage 2020)</span>.</p>
+<p>Among many other insights, Savage focuses on the importance
+of tidying up as part of the creation process, saying “It’s time, when taken,
+that you might feel is slowing you down in the moment, but in fact is saving you
+time in the long run.” <span class="citation">(Savage 2020)</span> He introduces a new word for the
+process of straightening up tools and materials—“knolling”. He borrowed the
+term from an artist, Tom Sachs, whose rules for his own workshop include,
+“Always Be Knolling”.</p>
+<p>The idea of “knolling” includes a few key principles. First, only have what you
+need out. Put everything else somewhere else. Removing any extras makes it
+faster to find what you need when you need it. Second, for things you need, make
+sure they’re out and available. “Drawers are where things go to die,” Savage
+says, highlighting inefficiency when you have to look
+for things that are hidden from site as you work. Finally, organize the things
+that you have out. Put like things together, and arrange everything neatly,
+aligning things in parallel or perpendicular patterns, rather than piling it
+haphazardly.</p>
+<p>Just as organizing tools and materials improves efficiency in a workshop,
+organizing your data can dramatically improve the efficiency of data
+preprocessing, analysis, and visualization. Indeed, “tidying up” your data
+can give such dramatic improvements that a number of researchers have
+developed systems and written papers that describe good organization schemes
+to use to tidy up data (e.g., <span class="citation">(Wickham 2014)</span>).</p>
+<p>The principles for tidying up data follow some of the principles for knolling.
+For example, you want to make sure that you’re saving data in a file or
+spreadsheet that only includes the data, removing any of the extras. Lab groups
+will sometimes design spreadsheets for data collection that include a space for
+recording data, but also space for notes, embedded calculations, and plots.
+These extra elements can make it hard to extract and use the data itself. One
+way to tidy up a dataset is to remove any of these extra elements. While you can
+do this after you’ve collected your data, it’s more efficient to design a way to
+record your data in the first place without extra elements in the file or
+spreadsheet.</p>
+<p>We’ll start this module by describing rules a dataset format must follow for it
+to be “tidy” and clarifying how you can set up your data recording to follow
+these rules. In later parts of this module, we’ll talk more about why it’s
+helpful to use a tidy data format, as well as a bit about the tidyverse tools
+that you can use with data in this format.</p>
 <div id="what-makes-data-tidy" class="section level3 hasAnchor" number="2.3.1">
 <h3><span class="header-section-number">2.3.1</span> What makes data “tidy”?<a href="experimental-data-recording.html#what-makes-data-tidy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The “tidy” data format describes one way to structure tabular data. The name
@@ -1538,111 +1556,114 @@ could be saved in a file in a way that is either “tidy” (in the sense of
 <span class="citation">(Wickham 2014)</span>) or untidy, depending only on how the data are organized
 across columns and rows.</p>
 <p>Placeholder (you should not see this)</p>
-<p>The rules for making data “tidy” are pretty simple, and they are defined in
-detail, and with extended examples, in the journal article that originally
-defined the data format <span class="citation">(Wickham 2014)</span>. Here, we’ll go through those rules, with
-the hope that you’ll be able to understand what makes a dataset follow the
-“tidy” data format. If so, you’ll be able to set up your data recording
-template to follow this template, and you’ll be able to tell if other data you
-get is in this format and, if it’s not, restructure it so that it does. In
-the next part of this module, we’ll explain why it’s so useful to have your
-data in this format.</p>
+<p>Let’s start with a checklist of rules that make a dataset “tidy”. Some of these
+are drawn directly from the journal article that originally
+defined the data format <span class="citation">(Wickham 2014)</span>. Other rules are based on common
+“untidy” patterns that show up in data recording templates for laboratory
+research. The checklist is:</p>
+<ul>
+<li>Data are recorded in a tabular, two-dimensional format</li>
+<li>The data collection file or spreadsheet does <strong>not</strong> include extra elements
+like plots or embedded equations in the file</li>
+<li>Each observation forms a row</li>
+<li>Each variable forms a column</li>
+<li>Column headers are variable names, not values</li>
+<li>Each type of observational unit forms its own table</li>
+<li>A single variable is not spread across multiple columns</li>
+<li>Multiple variables are not stored in one column</li>
+<li>Data types are consistent within a column</li>
+<li>Files are named with a consistent naming convention</li>
+<li>Column names are informative and follow a consistent naming convention</li>
+<li>Missing values are noted in a consistent way (e.g., as “NA”)</li>
+</ul>
+<p>In previous modules, we’ve discussed the first two principles, highlighting how
+important it is to separate data collection from further steps of data
+processing and analysis. In this section of the module, we’ll go through other
+items in this checklist, to help you understand what makes a dataset follow the
+“tidy” data format. If so, you’ll be able to set up your data recording template
+to follow this template, and you’ll be able to tell when you work with data that
+others collect, if it is in this format and restructure it if not. In the next
+part of this module, we’ll explain why it’s so useful to have your data in this
+format.</p>
 <p>Tidy data, first, must be in a tabular (i.e., two-dimensional, with columns and
-rows, and with all rows and columns of the same length—nothing “ragged”). If
+rows, and with all rows and columns of the same length—nothing “ragged”),
+without any “extras”, like embedded plots and calculations in a spreadsheet. If
 you recorded data in a spreadsheet using a very basic strategy of saving a
 single table per spreadsheet, with the first row giving the column names (as
 described in the previous module), then your data will be in a tabular format.
-It should not be saved in a hierarchical structure, like XML (although there are
-now tools for converting data from XML to a “tidy” format, so you may still be
-able to take advantage of the tidyverse even if you must use XML for your data
-recording). In general, if your recorded data looks “boxy”, it’s probably in a
+In general, if your recorded data looks “boxy”, it’s probably in a
 two-dimensional tabular format.</p>
+<p>Placeholder (you should not see this)</p>
 <p>There are some additional criteria for the “tidy” data format, though, and so
 not every structured, tabular dataset is in a “tidy” format. The first of these
 rules are that each row of a “tidy” dataset records the values for a single
-observation, and that each column provides characteristics or measurements of a
-certain type, in the order of the observations given by the rows
-<span class="citation">(Wickham 2014)</span>. For example, if you have collected data from several
-experimental samples and plated each sample at several dilutions to count
-viable bacteria, then you could record the results using one row per
-dilution—specifying each dilution for each sample as your level of
-observation for the data—to save the data in a tidy format.</p>
+observation, and that each column records values of a variable: that is,
+characteristics or measurements of a certain type, in the order of the
+observations given by the rows <span class="citation">(Wickham 2014)</span>.</p>
+<p>To figure out if your data format follows these rules, it’s important to
+determine the <em>unit of observation</em> of that data, which is the unit at which you
+take measurements <span class="citation">(Sedgwick 2014)</span>. This idea is different than the <em>unit of
+analysis</em>, which is the unit that you’re focusing on in your study hypotheses
+and conclusions (this is sometimes also called the “sampling unit” or “unit of
+investigation”) <span class="citation">(Altman and Bland 1997)</span>. In some cases, these two might be equivalent
+(the same unit is both the unit of observation and the unit of measurement), but
+often they are not <span class="citation">(Sedgwick 2014)</span>.</p>
 <p>Placeholder (you should not see this)</p>
-<p>To be able to decide if your data is tidy, then, you need to know what forms a
-single observation in the data you’re collecting. The <em>unit of observation</em> of a
-dataset is the unit at which you take measurements <span class="citation">(Sedgwick 2014)</span>. This
-idea is different than the <em>unit of analysis</em>, which is the unit that you’re
-focusing on in your study hypotheses and conclusions (this is sometimes also
-called the “sampling unit” or “unit of investigation”) <span class="citation">(Altman and Bland 1997)</span>. In
-some cases, these two might be equivalent (the same unit is both the unit of
-observation and the unit of measurement), but often they are not <span class="citation">(Sedgwick 2014)</span>. Again, in the example of plating samples at several
-dilutions each, the unit of observation for the resulting data might be
-at the level of each dilution for each sample, where the unit of analysis
-that you are ultimately interested in is simply each sample.</p>
-<p>Placeholder (you should not see this)</p>
-<p>As another example, say you are testing how the immune system of mice responds
-to a certain drug over time. You may have several replicates of mice measured at
-several time points, and those mice might be in separate groups (for example,
-infected with a disease versus uninfected). In this case, if a separate mouse
-(replicate) is used to collect each observation, and a mouse is never measured
-twice (i.e., at different time points, or for a different infection status),
-then the unit of measurement is the mouse. There should be one and only one row
-in your dataset for each mouse, and that row should include two types of
-information: first, information about the unit being measured (e.g., the time
-point, whether the mouse was infected, and a unique mouse identifier) and,
-second, the results of that measurement (e.g., the weight of the mouse when it
-was sacrificed, the levels of different immune cell populations in the mouse, a
-measure of the extent of infection in the mouse if it was infected, and perhaps
-some notes about anything of note for the mouse, like if it appeared noticeably
-sick). In this case, the <em>unit of analysis</em> might be the drug, or a combination
-of drug and dose—ultimately, you may want to test something like if one drug
-is more effective than another. However, the <em>unit of observation</em>, the level at
-which each data point is collected, is the mouse, with each mouse providing a
+<p>As an example, say you are testing how the immune system of mice responds to a
+certain drug over time. In this case, the <em>unit of analysis</em> might be the drug,
+or a combination of drug and dose—ultimately, you may want to test something
+like if one drug is more effective than another. To answer this research
+question, you likely have several replicates of mice in each treatment group. If
+a separate mouse (replicate) is used to collect each observation, and a mouse is
+never measured twice (i.e., at different time points, or for a different
+infection status), then the <em>unit of measurement</em>—the level at which each data
+point is collected—is the mouse. This is because each mouse is providing a
 single observation to help answer the larger research question.</p>
 <p>As another example, say you conducted a trial on human subjects, to see how the
 use of a certain treatment affects the speed of recovery, where each study
 subject was measured at different time points. In this case, the unit of
 observation is the combination of study subject and time point (while the unit
-of analysis is the study subject, if the treatments are randomized to the study
-subjects). That means that Subject 1’s measurement at Time 1 would be one
+of analysis is the treatment). That means that Subject 1’s measurement at Time 1 would be one
 observation, and the same person’s measurement at Time 2 would be a separate
 observation. For a dataset to comply with the “tidy” data format, these two
 observations would need to be recorded on separate lines in the data. If the
 data instead had different columns to record each study subject’s measurements
 at different time points, then the data would still be tabular, but it would not
 be “tidy”.</p>
-<p>In this second example, you may initially find the “tidy” format unappealing,
-because it seems like it would lead to a lot of repeated data. For example, if
-you wanted to record each study subject’s sex, it seems like the “tidy” format
-would require you to repeat that information in each separate line of data
-that’s used to record the measurements for that subject for different time
-points. This isn’t the case—instead, with a “tidy” data format, different
-“levels” of data observations should be recorded in separate tables <span class="citation">(Wickham 2014)</span>.
-So, if you have some data on each study subject that does not change across the
-time points of the study—like the subject’s ID, sex, and age at
-enrollment—those form a separate dataset, one where the unit of observation is
-the study subject, so there should be just one row of data per study subject in
-that data table, while the measurements for each time point should be recorded
-in a separate data table. A unique identifier, like a subject ID, should be
-recorded in each data table so it can be used to link the data in the two
-tables. If you are using a spreadsheet to record data, this would mean that the
-data for these separate levels of observation should be recorded in separate
-sheets, and not on the same sheet of a spreadsheet file. Once you read the data
-into a scripting language like R or Python, it will be easy to link the larger
-and smaller “tidy” datasets as needed for analysis, visualizations, and reports.</p>
 <p>Once you have divided your data into separate datasets based on the level of
 observation, and structured each row to record data for a single observation
 based on the unit of observation within that dataset, each column should be used
 to measure a separate characteristic or measurement (a <em>variable</em>) for each
-measurment <span class="citation">(Wickham 2014)</span>. A column could either give characteristics of the data
-that were pre-defined by the study design—for example, the treatment assigned
-to a mouse, or the time point at which a measurement was taken if the study
-design defined the time points when measurements would be taken. These types of
-column values are also sometimes called <em>fixed variables</em> <span class="citation">(Wickham 2014)</span>. Other
-columns will record observed measurements—values that were not set prior to
-the experiment. These might include values like the level of infection measured
-in an animal and are sometimes called <em>measured variables</em> <span class="citation">(Wickham 2014)</span>.</p>
+measurment <span class="citation">(Wickham 2014)</span>. A column could either give characteristics of
+the data that were pre-defined by the study design—for example, the treatment
+assigned to a mouse (a type of variable called a <em>fixed variable</em>, since its
+value was fixed before the start of the experiment) or observed measurements,
+like the level of infection measured in an animal (a type of variable called a
+<em>measured variable</em>, since its value is determine through the experiment)
+<span class="citation">(Wickham 2014)</span>.</p>
 <p>Placeholder (you should not see this)</p>
+<p>In the example of human subjects measured at repeated time points, you may
+initially find the “tidy” format unappealing, because it seems like it would
+lead to a lot of repeated data. For example, if you wanted to record each study
+subject’s sex, it seems like the “tidy” format would require you to repeat that
+information in each separate line of data that’s used to record the measurements
+for that subject for different time points. This isn’t the case—instead, with
+a “tidy” data format, different “levels” of data observations should be recorded
+in separate tables <span class="citation">(Wickham 2014)</span>. In other words, you should design a
+separate table for each unit of observation if you have data at several of these
+units for your experiment. For example, if you have some data on each study
+subject that does not change across the time points of the study—like the
+subject’s ID, sex, and age at enrollment—those form a separate dataset, one
+where the unit of observation is the study subject, so there should be just one
+row of data per study subject in that data table, while the measurements for
+each time point should be recorded in a separate data table. A unique
+identifier, like a subject ID, should be recorded in each data table so it can
+be used to link the data in the two tables. If you are using a spreadsheet to
+record data, this would mean that the data for these separate levels of
+observation should be recorded in separate sheets, and not on the same sheet of
+a spreadsheet file. Once you read the data into a scripting language like R or
+Python, it will be easy to link the larger and smaller “tidy” datasets as needed
+for analysis, visualizations, and reports.</p>
 </div>
 <div id="why-make-your-data-tidy" class="section level3 hasAnchor" number="2.3.2">
 <h3><span class="header-section-number">2.3.2</span> Why make your data “tidy”?<a href="experimental-data-recording.html#why-make-your-data-tidy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1651,66 +1672,57 @@ bother if you already have it in a structured, tabular format? It turns out
 that, once you get the hang of what gives data a “tidy” format, it’s pretty
 simple to design recording formats that comply with these rules. What’s more,
 when data is in a “tidy” format, it can be directly input into a collection
-of tools in R that belong to something called the “tidyverse”. This collection
+of tools in R that belong to something called the “tidyverse”.</p>
+<p>R’s <em>tidyverse</em> framework enables powerful and user-friendly data management,
+processing, and analysis by combining simple tools to solve complex, multi-step
+problems <span class="citation">(Ross, Wickham, and Robinson 2017; Silge and Robinson 2016; Wickham 2016; Wickham and Grolemund 2016)</span>. Since the <em>tidyverse</em> tools are simple and share a common
+interface, they are easier to learn, use, and combine than tools created in the
+traditional base R framework <span class="citation">(Ross, Wickham, and Robinson 2017; Lowndes et al. 2017; <strong>reviewer2017review?</strong>; McNamara 2016)</span>. This <em>tidyverse</em> framework is quickly becoming the standard
+taught in introductory R courses and books <span class="citation">(Hicks and Irizarry 2017; B. Baumer 2015; Kaplan 2018; Stander and Dalla Valle 2017; McNamara 2016)</span>, ensuring ample training resources for researchers new to
+programming, including books (e.g., <span class="citation">(B. S. Baumer, Kaplan, and Horton 2017; Irizarry and Love 2016; Wickham and Grolemund 2016)</span>), massive open online courses (MOOCs), on-site university courses
+<span class="citation">(B. Baumer 2015; Kaplan 2018; Stander and Dalla Valle 2017)</span>, and Software
+Carpentry workshops <span class="citation">(Wilson 2014; Pawlik et al. 2017)</span>. Further, tools
+that extend the <em>tidyverse</em> have been created to enable high-quality data
+analysis and visualization in several domains, including text mining
+<span class="citation">(Silge and Robinson 2017)</span>, microbiome studies <span class="citation">(McMurdie and Holmes 2013)</span>, natural language
+processing <span class="citation">(Arnold 2017)</span>, network analysis <span class="citation">(Tyner, Briatte, and Hofmann 2017)</span>, ecology
+<span class="citation">(Hsieh, Ma, and Chao 2016)</span>, and genomics <span class="citation">(Yin, Cook, and Lawrence 2012)</span>.
+This collection
 of tools is very straightforward to use and so powerful that it’s well worth
 making an effort to record data in a format that works directly with the
 tools, if possible. Outside of cases of very complex or very large data, it
 should be possible.</p>
 <p>Placeholder (you should not see this)</p>
 <p>Placeholder (you should not see this)</p>
-<p>The “tidyverse” is a collection of tools united by a common philosophy: <strong>very
-complex things can be done simply and efficiently with small, sharp tools
-that share a common interface</strong>.</p>
 <p>Placeholder (you should not see this)</p>
-<p>The tidyverse isn’t the only popular system that follows this philosophy—one
-other favorite is Legos. Legos are small, plastic bricks, with small studs on
-top and tubes for the studs to fit into on the bottom. The studs all have the
-same, standardized size and are all spaced the same distance apart. Therefore,
-the bricks can be joined together in any combination, since each brick uses the
-same <em>input format</em> (studs of the standard size and spaced at the standard
-distance fit into the tubes on the bottom of the brick) and the same <em>output
-format</em> (again, studs of the standard size and spaced at the standard distance
-at the top of the brick).</p>
-<p>This is true if you want to build with bricks of different colors or different
-heights or different widths or depths. It even allows you to include bricks at
-certain spots that either don’t require input (for example, a solid sheet that
-serves as the base) or that don’t give output (for example, the round smooth
-bricks with painted “eyes” that are used to create different creatures). With
-Legos, even though each “tool” (brick) is very simple, the tools can be combined
-in infinite variations to create very complex structures.</p>
-<p>The tools in the “tidyverse” operate on a similar principle. They all input one
-of a few very straightforward data types, and they (almost) all output data in
-the same format they input it. For most of the tools, their required format for
-input and output is the “tidy data” format <span class="citation">(Wickham 2014)</span>, called a tidy
+<p>The “tidyverse” collection of tools united by a common philosophy: very complex
+things can be done simply and efficiently with small, sharp tools that share a
+common interface. The tidyverse isn’t the only popular system that follows this
+philosophy—one other favorite is Legos. Legos are small, plastic bricks, with
+small studs on top and tubes for the studs to fit into on the bottom. The studs
+all have the same, standardized size and are all spaced the same distance apart.
+Therefore, the bricks can be joined together in any combination, since each
+brick uses the same <em>input format</em> (studs of the standard size and spaced at the
+standard distance fit into the tubes on the bottom of the brick) and the same
+<em>output format</em> (again, studs of the standard size and spaced at the standard
+distance at the top of the brick). Because of this design, bricks can be joined
+regardless of whether the bricks are different colors or different heights or
+different widths or depths. With Legos, even though each “tool” (brick) is very
+simple, the tools can be combined in infinite variations to create very complex
+structures.</p>
+<p>The tools in the “tidyverse” operate on a similar principle. They all input a
+tidy dataset (or a column from a tidy dataset) and they (almost) all output data
+in the same format they input it. For most of the tools, their required format
+for input and output is the “tidy data” format <span class="citation">(Wickham 2014)</span>, called a tidy
 <em>dataframe</em> in R—this is a dataframe that follows the rules detailed earlier
 in this section.</p>
-<p>Some of the tools require input and output of <em>vectors</em> instead of tidy
-dataframes <span class="citation">(Wickham 2014)</span>; a <em>vector</em> in R is a one-dimensional string of values,
-all of which are of the same data type (e.g., all numbers, or all character
-strings, like names). In a tidy dataframe, each column is a vector, and the
-dataframe is essentially several vectors of the same length stuck together to
-make a table. Having functions that input and output vectors, then, means that
-you can use those functions to make changes to the columns in a tidy dataframe.</p>
-<p>A few functions in the “tidyverse” input a tidy dataframe but output data in a
-different format. For example, visualizations are created using a function
-called <code>ggplot</code>, as well as its helper functions and extensions. This function
-inputs data in a tidy dataframe but outputs it in a type of R object called a
-“ggplot object”. This object encodes the plot the code created, so in this case
-the fact that the output is in a different format from the endpoint is similar
-to with the “eye” blocks in Legos, where it’s meant as a final output step, and
-you don’t intend to do anything further in the code once you move into that
-step.</p>
 <p>This common input / output interface, and the use of small tools that follow
 this interface and can be combined in various ways, is what makes the tidyverse
 tools so powerful. However, there are other good things about the tidyverse that
 make it so popular. One is that it’s fairly easy to learn to use the tools, in
 comparison to learning how to write code for other R tools <span class="citation">(D. Robinson 2017; Peng 2018)</span>. The developers who have created the tidyverse tools have
 taken a lot of effort to try to make sure that they have a clear and consistent
-<em>user interface</em> across tools <span class="citation">(Wickham 2017; Bryan and Wickham 2017)</span>. So far, we’ve
-talked about the interface between functions, and how a common <em>input / output
-interface</em> means the functions can be chained together more easily. But there’s
-another interface that’s important for software tools: the rules for how a
-computer users employ that tool, or the <em>user interface</em>.</p>
+<em>user interface</em> <span class="citation">(Wickham 2017; Bryan and Wickham 2017)</span>.</p>
 <p>To help understand a user interface, and how having a consistent user interface
 across tools is useful, let’s think about a different example—cars. When you
 drive a car, you get the car to do what you want through the steering wheel, the
@@ -1736,12 +1748,10 @@ car, when you get in a new car, the gas pedal, brake, and steering wheel are
 almost guaranteed to be in about the same place and to operate about the same
 way as in the car you learned to drive in. The exceptions are rare enough to be
 memorable—think how many movies have a laughline from a character trying to
-drive a car with the driver side on the right if they’re used to the left or
-vice versa.</p>
+drive a car with the driver side on the opposite side of what they’re used to.</p>
 <p>The tidyverse tools are similarly designed so that they all have a very similar
 user interface. For example, many of the tidyverse functions use a parameter
-named “.data” to refer to the tidy dataframe to input into the function, and
-this parameter is often the first listed for functions. Similarly, parameters
+named “.data” to refer to the input data. Similarly, parameters
 named “.vars” and “.funs” are repeatedly used over tidyverse functions, with the
 same meaning in each case. What’s more, the tidyverse functions are typically given names
 that very clearly describe the action that the function does, like <code>filter</code>,
@@ -1754,11 +1764,10 @@ to other sets of functions in scripting languages, and pretty easy to expand
 your knowledge of once you know some of its functions. Several people who teach
 R programming now focus on first teaching the tidyverse, given these
 characteristics <span class="citation">(D. Robinson 2017; Peng 2018)</span>, and it’s often a
-first focus for online courses and workshops on R programming. Since it’s main
+first focus for online courses and workshops on R programming. Since its main
 data structure is the “tidy data” structure, it’s often well worth recording
 data in this format so that all these tools can easily be used to explore and
 model the data.</p>
-<p>Placeholder (you should not see this)</p>
 </div>
 <div id="using-tidyverse-tools-with-data-in-the-tidy-data-format" class="section level3 hasAnchor" number="2.3.3">
 <h3><span class="header-section-number">2.3.3</span> Using tidyverse tools with data in the “tidy data” format<a href="experimental-data-recording.html#using-tidyverse-tools-with-data-in-the-tidy-data-format" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -5239,10 +5248,11 @@ to improve the transparency and reproducibility of research, particularly for
 data recording.</p>
 <p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
 <ul>
-<li>Describe version control<br />
+<li>Define “versions” and “version control”<br />
 </li>
-<li>Explain how version control can be used to improve reproducibility
-for data recording</li>
+<li>Identify examples of versioning both in a digital context (data, code, files) and for non-digital needs (protocols, lot numbers, intra lab standards)</li>
+<li>Describe strategies and tools to save and refer to specific versions of data and other files or directories</li>
+<li>Discuss how version control principles can improve collaboration in scientific projects</li>
 </ul>
 <div id="challenges-of-collaborating-on-evolving-research-materials" class="section level3 hasAnchor" number="2.9.1">
 <h3><span class="header-section-number">2.9.1</span> Challenges of collaborating on evolving research materials<a href="experimental-data-recording.html#challenges-of-collaborating-on-evolving-research-materials" class="anchor-section" aria-label="Anchor link to header"></a></h3>
