@@ -158,35 +158,28 @@ pre-processed experimental data.</p>
 </ul>
 <p>In previous modules, we’ve discussed how you can separate the steps of data
 collection from steps of data cleaning, management, pre-processing, and
-analysis. In the case of data recorded in a laboratory, this separation
-will often result in moving from a single file (for example, a spreadsheet),
-that combines all the steps to using separate files for the different
-steps. As you move to separate data recording and analysis, then, it
-is very important to store the set of files for a project in a way that
-is clear and easy to manage. If the file directory for the project is
-well-designed, it can even allow you to create software tools and report templates
-that can be reused over many experiments. In the next few modules, we’ll
-discuss how you can organize the files for an experiment using R’s “Project”
-system. The modules will discuss the advantages of well-designed project
-directories, tips for arranging files within a project directory,
-and how to create templates for R Projects that allow you to use consistent
-file organization across many experiments.</p>
+analysis. In the case of data recorded in a laboratory, this separation will
+often result in moving from a single file that combines all steps (for example,
+a spreadsheet) to a collection of files, with separate files for the different
+steps. that combines all the steps to using separate files for the different
+steps. As you move to separate data recording and analysis, then, it is very
+important to store the set of files for a project in a way that is clear and
+easy to manage. If the file directory for the project is well-designed, it can
+even allow you to create software tools and report templates that can be reused
+over many experiments. In the next few modules, we’ll discuss how you can
+organize the files for an experiment using R’s “Project” system. The modules
+will discuss the advantages of well-designed project directories, tips for
+arranging files within a project directory, and how to create templates for R
+Projects that allow you to use consistent file organization across many
+experiments.</p>
 <div id="organizing-project-files" class="section level3" number="2.6.1">
 <h3><span class="header-section-number">2.6.1</span> Organizing project files</h3>
 <p>In earlier modules, we discussed how to separate data collection from data
 analysis. By separating data collection and analysis into separate files, we can
-make the file for each step simpler. Further, by separating, we can save the
+make the file for each step simpler. Further, by separating steps into different files, we can save the
 files in plain text, which makes it easier to track them using version
-controlled (discussed in later modules), which helps create a record of changes
-made to the data or analysis code during the research process. As we continue
-work on a project, we’ll likely generate more types of files. These can include
-other data files (both “raw” data—directly output from measurement equipment
-or directly recorded from observations, as well as any “cleaned” version of this
-data, after steps have been taken to preprocess the data to prepare it for
-visualization and analysis in papers and reports). These files also include the
-files with writing and presentations (posters and slides) associated with the
-project, as well as code scripts for preprocessing data, for conducting data
-analysis, and for creating and sharing final figures and tables.</p>
+control software (discussed in later modules). This helps create a record of changes
+made to the data or analysis code during the research process.</p>
 <p>While this process helps in reproducibility, it results in more files being
 collected for an experiment. Instead of data and its analysis collected within a
 single spreadsheet file, you may end up with multiple files of data collected
@@ -195,24 +188,28 @@ analyzing, and visualizing the data. With more complex experiments, there may be
 different data files with the data collected from different assays. For example,
 you may run an experiment where you collect data from each research animal on
 bacterial load, as well as flow cytometry data, as well as a measure of antibody
-levels through ELISA. As a result, you may have one raw data file each from the
-bacterial load (CFUs) assay and the ELISA analysis, as well as one file per
-animal from the flow cytometry analysis.</p>
+levels through ELISA. As a result, you may have one raw data file from each
+assay and, for some assays, even one file per study subject (e.g., flow
+cytometry). The files for a research project will also include files with
+writing and presentations (posters and slides) associated with the project, as
+well as code scripts for preprocessing data, for conducting data analysis, and
+for creating and sharing final figures and tables.</p>
+<p>In an earlier module, we introduced Adam Savage’s idea of “knolling” to keep a
+workspace tidy (Module 2.3). He was talking about a physical workspace. When
+you are working with data, computer files and directories are your workspace.</p>
 <p>As the files for a project accumulate, do you have a clear plan for keeping them
 organized? Based on one analysis, many biomedical researchers do not. One study,
 for example, surveyed over 250 biomedical researchers at the University of
-Washington. They noted that, “a common theme surrounding data management and
-analysis was that may researchers preferred to utilize their own individual
-methods to organize data. The varied ways of managing data were accepted as
-functional for most present needs. Some researchers admitted to having no
+Washington. They noted that, “Some researchers admitted to having no
 organizational methodology at all, while others used whatever method best suited
 their individual needs” <span class="citation">(Anderson et al. 2007)</span>. One respondent answered, “They’re
 not organized in any way—they’re just thrown into files under different
 projects,” while another said “I grab them when I need them, they’re not
 organized in any decent way,” and another, “It’s not even organized—a file on
 a central computer of protocols that we use, common lab protocols but those are
-just individual Word files within a folder so it’s not searchable per se”
-<span class="citation">(Anderson et al. 2007)</span>.</p>
+just individual Word files within a folder so it’s not searchable <em>per se</em>”
+<span class="citation">(Anderson et al. 2007)</span>. Similarly, in an article on organizing project files
+for research, Marwick notes:</p>
 <blockquote>
 <p>“Virtually all researchers use computers as a central tool in their
 workflow. However, our formal education rarely includes any training in
@@ -224,32 +221,19 @@ This may be one of the reasons that so many requests for details about
 method, including requests for data and code, are turned down or go
 unanswered.” <span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
 </blockquote>
-<p>Computer files and directories are the workspace that you use when you are
-working with data, including preprocessing and analyzing it. There are many
-reasons why you will benefit from keeping this “workspace” well-organized. Adam
-Savage, famous from the TV show <em>Mythbusters</em>, talks about why it is so critical
-to keep an organized work space for any project when you are trying to complete a
-substantial or complex project. He has a specific name for the process of
-organizing and cleaning up his work space, “knolling”. He notes that,</p>
-<blockquote>
-<p>“Beyond giving my brain the space to more easily take in what I am working with,
-knolling my work space throughout the day also reduces the likelihood that I’ll
-lose things, and increases the likelihood that I will find them quickly when they
-do go missing. … By forcing me to slow down (which I’ve learned actually allows
-me to work faster), the whole process saves me time on the other end of my work
-process.” <span class="citation">(Savage 2020)</span></p>
-</blockquote>
-<p>He goes even further, to discuss how important work space organization is in
-other cases where teams are trying to do substantial or complex projects:</p>
-<blockquote>
-<p>“There’s one group of makers who understand intuitively, perhaps more than
-anyone else, the multifaceted value proposition that knolling represents: chefs.
-They call it <em>mise en place</em>. Coined in the late nineteenth century by famed
-French chef August Escoffier, <em>mise en place</em> translates roughly to ‘everything
-in its place’. The principle behind it, cribbed from Escoffier’s military
-service during the Franco-Prussian War, is really about order and discipline.”
-<span class="citation">(Savage 2020)</span></p>
-</blockquote>
+<p>You gain in many ways when you organize your workspace of files and directories,
+especially when you do it consistently. First, you know where to find things.
+You know where to find things when you come back to a project after a while away
+from it (for example, while the paper was out for review). You can teach someone
+else how to find things quickly and consistently across your multiple projects,
+as well as where to put things if they’re contributing to one of them. You have
+a place for everything.</p>
+<p>An organized work space can also help foster organized thinking. Adam Savage
+describes how important this is in another type of working, fine cooking,
+describing how this idea of an organized workspace is captured by the technique
+of <em>mise en place</em>—of laying out all the elements needed for the work ahead of
+time and in an organized way—introduced by the famous French chef August
+Escoffier:</p>
 <blockquote>
 <p>“Kitchens are pressure cookers in which wasted movement and hasty technique
 can ruin a dish, slice an artery, burn a hand, land you in the weeds, and
@@ -257,35 +241,46 @@ ultimately kill a restaurant. <em>Mise en place</em> is the only way to reliably
 a perfect dish, to exact specifications, over and over again, night after night,
 for paying customers who demand nothing less.” <span class="citation">(Savage 2020)</span></p>
 </blockquote>
-<blockquote>
-<p>“For all the alchemy that goes into building something, the magic of making is
-only possible because of the many repetitive processes we endure in preparation
-for final assembly, and then the deliberate way we put it all together. And the
-only way to get that prep right, to get your <em>mise</em> in its proper <em>place</em> is to
-slow down, address your work properly, and lock your shit down.”
-<span class="citation">(Savage 2020)</span></p>
-</blockquote>
-<p>You gain in many ways when you organize your work space, especially when you do
-it consistently. You know where to find things. You know where to find things
-when you come back to a project after a while away from it (for example, while
-the paper was out for review). You can teach someone else how to find things
-quickly and consistently across your multiple projects, as well as where to put
-things if they’re contributing to one of them. You have a place for everything.
-An organized work space can help foster organized thinking.</p>
+<p>For any type of work, the design of the workspace plays a critical role in
+how the workers approach tasks and solve problems. Rod Judkins, who is a
+lecturer at St Martin’s College of Art, highlights this in a book on
+creative thinking:</p>
 <blockquote>
 <p>“Your working environment, whether it’s a supermarket, office, studio, or
 building site, persuades you to work and think in certain ways. The more aware
 you are of that, and the more you understand your medium, the more you can use
 it to your advantage.” <span class="citation">(Judkins 2016)</span></p>
 </blockquote>
+<p>The same principle applies when you are working in a digital environment, with
+computer files and analysis. Good organization of your files can encourage clear
+thinking and help in reasoning through how to analyze data. One article notes
+that “mundane issues such as organizing files and directories and documenting
+progress … are important because poor organizational choices can lead to
+significantly slower research progress.” <span class="citation">(Noble 2009)</span> In fact, if files are
+organized in a consistent way across multiple projects, this can even allow you
+to start automating some necessary tasks through code that is built to work with
+that consistent structure <span class="citation">(Buffalo 2015)</span>.</p>
+<p>Finally, when your research files are kept in one place and well-organized, it
+makes it easier for you to share those as a supplement to articles you write
+about the research <span class="citation">(Marwick, Boettiger, and Mullen 2018)</span>, and also more likely to do so. One
+article noted:</p>
 <blockquote>
-<p>“I started to clean up before heading upstairs at the end of the day, and lo and
-behold the shop became a far more efficient and well-oiled maching to work in. The
-freed-up space in my mind and the open work space at my fingertips allowed me a lot
-of room, both mental and physical, to pursue a wide variety of projects, and I finally
-started to understand how much benefit was to be gained by taking the time to clean.”
-<span class="citation">(Savage 2020)</span></p>
+<p>“There are many barriers to sharing reproducible code and corresponding
+computational results. One barrier is simply that keeping code and results
+sufficiently organized and documented is difficult—it is burdensome even for
+experienced programmers who are well-trained in relevant computational tools
+such as version control… and even harder for the many domain scientists who
+write code with little formal training in computing and informatics.”
+<span class="citation">(Blischak, Carbonetto, and Stephens 2019)</span></p>
 </blockquote>
+<p>Sharing data and code is crucial to research reproducibility, especially for
+projects that include extensive proprocessing and complex analysis of data, as
+many biomedical research projects now do. As a further bonus, research articles
+that include data with the publication may be more impactful, as measured by
+citations that the paper receives <span class="citation">(Marwick, Boettiger, and Mullen 2018)</span>.</p>
+</div>
+<div id="how-to-organize-project-files" class="section level3" number="2.6.2">
+<h3><span class="header-section-number">2.6.2</span> How to organize project files</h3>
 <blockquote>
 <p>“A research compendium should organize its files according to the prevailing
 conventions of the scholarly community, whether that be an academic discipline
@@ -305,27 +300,6 @@ sequences stored in separate FASTA files with a script is trivial if
 these files are organized in a single directory and are consistently
 named.”</span>
 <span style="display: block;"><span class="citation"><span class="citation">(Buffalo 2015)</span></span></span></span></p>
-<blockquote>
-<p>“Using research compendia has benefits both for you as a researcher, and for the community that you work in. Among the most important of these benefits is that a research compendium is a convenient way to publicly share data and code (McKiernan et al. Citation2016). Papers with publicly available datasets may receive a higher number of citations than similar studies without available data (Piwowar, Day, and Fridsma Citation2007; Piwowar and Vision Citation2013; Henneken and Accomazzi Citation2011; Dorch Citation2012; Sears Citation2011; Gleditsch and Strand Citation2003).” <span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
-</blockquote>
-<blockquote>
-<p>“In our own experience as researchers, we enjoy benefits of increased efficiency through simplified file management and streamlined analytical workflows. These help us to work more transparently and efficiently. While reproducibility is no guarantee of correctness, making our results reproducible lets us inspect our own work for errors. Because we follow the same pattern in multiple projects, the startup and reentry costs for each project are significantly reduced. The result is that we save time, and minimize the risk of errors that might result from results which cannot be reproduced. A compendium makes it easier to communicate our work with others, including collaborators and (not least of all) our future selves. As members of research communities, by including compendia with our published papers we benefit from increased impact and visibility of our research among our peers.”
-<span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
-</blockquote>
-<blockquote>
-<p>“There are many barriers to sharing reproducible code and corresponding computational results14. One barrier is simply that
-keeping code and results sufficiently organized and documented
-is difficult—it is burdensome even for experienced programmers who are well-trained in relevant computational tools
-such as version control (discussed later), and even harder for
-the many domain scientists who write code with little formal
-training in computing and informatics15” <span class="citation">(Blischak, Carbonetto, and Stephens 2019)</span></p>
-</blockquote>
-<blockquote>
-<p>“I will not describe profound issues such as how to formulate hypotheses, design experiments, or draw conclusions. Rather, I will focus on relatively mundane issues such as organizing files and directories and documenting progress. These issues are important because poor organizational choices can lead to significantly slower research progress.” <span class="citation">(Noble 2009)</span></p>
-</blockquote>
-</div>
-<div id="how-to-organize-project-files" class="section level3" number="2.6.2">
-<h3><span class="header-section-number">2.6.2</span> How to organize project files</h3>
 <p>First, and at a minimum, you should get in the habit of storing all of the files
 for an experiment in the same place. First, they should all be on the same
 computer. The files should <strong>not</strong> be spread across multiple computers. Second,
