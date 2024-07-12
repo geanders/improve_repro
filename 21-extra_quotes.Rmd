@@ -3496,4 +3496,1028 @@ body's own attempts to rid itself of the infection that causes the most damage.
 For example, the white blood cells of the immune system create the cavities in the
 lungs where TB gets walled off." [@lehrman2013diabolical]
 
+One important distinction is between data structures and data types. A 
+*data type* refers to the characteristic of the data. Is it a date, for
+example, or a number, or a character string? R can do different types of
+things with different types of data---for example, R can add together 
+two pieces of data that are numbers, while for two pieces of data that are
+dates, it can tell which is the later date. For character strings, R can 
+look for patterns in the string (for example, does it include any capital 
+letters? Does is start with "b"?). All pieces of data are, at the deepest
+level, stored as a string of 0s and 1s. By assigning a data type like 
+"character string" or "numeric" to each piece of data, R can make more 
+sense of each piece of data in terms of what operations are reasonable to 
+perform on the data, helping to translate those 0s and 1s into something
+more meaningful. 
+
+In R, your data can be stored as different *types* of data: whole numbers can be
+stored as an *integer* data type, continuous [?] numbers through a few types of
+*floating* data types, character strings as a *character* data type, and logical
+data (which can only take the two values of "TRUE" and "FALSE") as a *logical*
+data type. More complex data types can be built using these---for example,
+there's a special data type for storing dates that's based on a combination of
+an [integer?] data type, with added information counting the number of days [?]
+from a set starting date (called the [Unix epoch?]), January 1, 1970. (This
+set-up for storing dates allows them to be printed to look like dates, rather
+than numbers, but at the same time allows them to be manipulated through
+operations like finding out which date comes earliest in a set, determining the
+number of days between two dates, and so on.) R uses these different data types
+for several reasons. First, by using different data types, R can improve its 
+efficiency [?] in storing data. Each piece of data must---as you go deep in the
+heart of how the computer works---as a series of binary digits (0s and 1s). 
+Some types of data can be stored using fewer of these *bits* (*bi*nary dig*its*).
+Each measurement of logical data, for example, can be stored in a single bit, 
+since it only can take one of two values (0 or 1, for FALSE and TRUE, respectively).
+For character strings, these can be divided into each character in the string 
+for storage (for example, "cat" can be stored as "c", "a", "t"). There is a set
+of characters called the ASCII character set that includes the lowercase and 
+uppercase of the letters and punctuation sets that you see on a standard 
+US keyboard [?], and if the character strings only use these characters, they 
+can be stored in [x] bits per character. For numeric data types, integers can 
+typically be stores in [x] bits per number, while continuous [?] numbers, 
+stored in single or double floating point notation [?], are stored in [x] 
+and [x] bits respectively. When R stores data in specific types, it can be
+more memory efficient by packing the types of data that can be stored in less
+space (like logical data) into very compact structures.
+
+One of the "building block"
+data structures in R is the vector. This data structure is one dimensional and
+can only contain data that have the same data type---you can think of this as a
+bead string of values, each of the same type. For example, you could have a
+vector that gives a series of names of study sites (each a character string), or
+a vector that gives the dates of time points in a study (each a date data type),
+or a vector that gives the weights of mice in a study (each a numeric data
+type). You cannot, however, have a vector that includes some study site names
+and then some dates and then some weights, since these should be in different
+data types. Further, you can't arrange the data in any structure except a
+straight, one-dimensional series if you are using a vector. The dataframe
+structure provides a bit more flexibility---you can expand into two dimensions, 
+rather than one, and you can have different data types in different columns of
+the dataframe (although each column must itself have a single data type). 
+
+
+To be able to understand some key differences in the Bioconductor approach and the tidyverse approach, you first need to understand how programming uses **data structures** to store data, and that there can be numerous different data structures available within a programming language to handle different types of data. 
+
+When you process data using a programming language, there will be different
+structures that you can use to store data as you work with it. You can think of
+these data structures as containers where you keep your data in the programming
+environment while you work with it, and different structures organize the data
+in different ways.
+
+If you've read the earlier modules, you've already seen one example of a data
+structure. In other modules, we've discussed the "tidyverse" approach to
+processing data in R---this approach emphasizes the *dataframe* as a way to
+store data while you're working with it (in other words, a data structure). In
+fact, the use of the dataframe as data structure for data storage is one of the
+defining features of the "tidyverse" approach. We mentioned in earlier modules
+that the tidyverse approach is based on using a common interface, so that you
+can mix and match small functions in different ways---the common interface is
+the dataframe. The tidyverse approach is built on the use of a common structure
+for storing data, the dataframe---almost all functions take data in this
+structure and almost all return data in this structure.
+
+Figure \@ref(fig:dfdatastructure) shows an annotated example of a dataframe,
+highlighting some of the key elements of its structure. A dataframe stores data
+in a two-dimensional structure, combining rows and columns. Each column is
+constrained to have data of the same type---in other words, all values in a
+column could be numeric (e.g., 1, 4, 10), or all could be character strings
+(e.g., "Mouse 1", "Mouse 3"), but the same column cannot combine some values
+that are numeric and some that are character strings. Across the dataframe, all
+columns must have the same length (i.e., if you printed out the full dataframe,
+it would look like a rectangle). All the column values should be lined up, so
+that as you are reading across a row, the values in the column cells are from
+the same observation or unit.
+
+```{r dfdatastructure, echo = FALSE, out.width = "\\textwidth", fig.cap = "An example of the dataframe data structure. This data structure is the most frequently used data structure within the tidyverse approach, and its use is in fact a defining element of the approach.", fig.fullwidth = TRUE}
+knitr::include_graphics("figures/dataframe.png")
+```
+
+
+
+We just covered two of the most common data structures in R: the vector and 
+the dataframe. You will come across a number of other structures as you work 
+in R. 
+
+One other very common data structure is the list. This is a very flexible 
+data structure, and it allows enormous flexibility in collecting other types
+of data structures (including other lists) into a single R object. 
+
+In addition to dataframes, there are a number of other simple, general purpose
+data structures that are often used to store data in R, and that you're likely
+to come across as you work in R. These include **vectors**, which are used to
+store one-dimensional strings of data of a single type (e.g., all numeric, or
+all character strings; as a note, you can think of each column in a dataframe as
+a vector), **matrices**, which are also used to store data of a single type, but
+with a two-dimensional structure, and **arrays**, which, like matrices and
+vectors, store data of a single type, but in three dimensions. Another common
+general purpose data structure in R is the *list*, which allows you to combine
+data stored in any type of structure to create a single R object, giving
+enormous flexibility (but minimal set structure from one object to another).
+This data structure is the building block for some of the more complex specific
+data structures, which we'll cover next. 
+The list structure in R has enormous
+flexibility in terms of storing lots of data in lots of possible places. This
+data can have different types and even different substructures. Some data
+structures in R are very constrained in what type of data they can store and
+what structure they use to store it. 
+
+There are a number of simple,
+general purpose data structures that are often used to store data in R. These
+include **vectors**, which are used to store one-dimensional strings of data of
+a single type (e.g., all numeric, or all character strings), **matrices**, which
+are also used to store data of a single type, but with a two-dimensional
+structure, and **dataframes**, which are used to store multiple vectors of the
+same length, and so allow for storing measurements of different data types for
+multiple observations.
+
+[Figure: examples of these three structures]
+
+Other data structures are more customized for specific types of data. For 
+example, there are a number of specialized data structures that are commonly 
+used in Bioconductor packages to store specific types of genomic [?] data. 
+These structures have been specially designed to meaningfully arrange the 
+types of data that are commonly generated in certain types of experiments [?]. 
+While the common types of data structures the we mentioned before (vectors, 
+dataframes, and lists) are all provided as part of base R, many of these more
+specialized data structures are defined in R extensions (packages that you 
+install once you've installed base R), and so you cannot access those data
+structures until you have installed additional packages. 
+
+In a later module, we will go into more depth about some of these specialized
+data structures in R, and how in certain cases they are powerful tools for 
+complex analysis or for working with complex data.  
+
+**Link between functions and object classes**
+
+In a language like R, you will find that data structures can be closely tied
+to data structures and data types. In many cases, a function is designed to 
+only work with data that is of a certain type or that is stored in a certain 
+data structure. 
+
+For example, the package named `lubridate` provides helpful functions for 
+working with data that represent dates. Most of the functions in this package
+will only work on a vector (the data structure) that contains pieces of 
+data that are dates (the data type). There are functions in this package 
+that can do things like extract the year, month, or day of month from a date, 
+but only if you input a vector of data in with the date data type. 
+
+Many other functions require that you input a dataframe. For example, there 
+are functions in the `dplyr` package that allow you to extract a subset of 
+a dataframe---for example, to extract a smaller dataframe with only certain 
+rows or certain columns from the original. These functions require that you 
+input data in a dataframe structure. 
+
+For more complex or customized data structures, like the data structures
+within the Bioconductor project, there will often be a whole suite of 
+customized data structures, and functions associated with those data structures, 
+that are used during a pipeline of analyzing data from a certain type of 
+experiment. For example, there are data structures, and functions associated
+with those structures, that are customized to work with flow cytometry data, 
+and other collections of data structures and functions for working with 
+metabolomics data, and so on. 
+
+As a note, there are a few functions that are "generics"---they have been coded
+in such a way that they will work with a variety of data structures. For 
+these functions, they will often output different things depending on the type
+of data structure that is input when the function is called. For example, 
+the `summary` function is a generic function---you can input objects with a
+variety of data structures and the function will work, providing some type
+of summary of the object in each case. If you input an object with a vector
+data structure, the `summary` function will provide a summary of the contents
+of that vector---if the data type is numeric, it will give values like the 
+median, the range, and the number of missing values, while if the data type
+is logical (TRUE or FALSE for each data piece), it will give a count of the 
+number of TRUE and FALSE values in the vector. If you input an object instead
+that is a dataframe, the `summary` function will output a summary of each of
+the columns in the dataframe. Although there are such generic functions that
+work with different data structures, the general rule in R is that a 
+function is typically designed to work with a certain data structure (in 
+fact, the generic functions are coded to have different functions that work 
+with each type of data structure, and so a structure-specific function is 
+called "under the hood" once one of the generic functions is called). 
+
+Regardless of the tools that you use to read data from your files into R, there
+is one other tools for data input that is very powerful and useful to learn.
+Once you've figured out the code to read in data from a single file, R's
+programmable structure allows you to expand that code to read in data from many
+different files of the same type and structure and combine that data into a
+single large object in your R session. This process can often streamline your
+data workflow substantially and so is well worth the time to learn.
+
+Doing this combines three steps: 
+
+1. Developing the code to read in and process data from a single file of
+that type and structure and encapsulate that code into a function
+2. Create an object that lists all the files you'd like to read in (for 
+example, all the files in a certain subdirectory)
+3. Use functions from the `purrr` package to apply the input function you 
+created to all those files and then reformat the input into a structure
+that's easy to work with (e.g., a single large dataframe)
+
+
+------------------------------------------------------------------------
+
+### Example set of projects
+
+As a motivating example, we'll use an example based on a set of real immunology
+experiments. This example highlights how a research laboratory will often
+conduct a similar type of experiment many times, so it lets us demonstrate how
+the design of the project's files within a project directory can be reused
+across similar experiments. It will allow us to show you how you can move from
+designing a file directory for a single experiment to designing one that can be
+used repeatedly, and then how you can take advantage of consistency in the
+directory structure across projects to make tools and templates that can be
+reused.
+
+> "To say that scientists erred in assuming that the first-line drugs from the 
+1950s would be sufficient to combat TB is a profound understatement." [@barry2009new]
+
+> "The current treatment course, which was developed in the 1960s, is a
+demanding regimen consisting of four first-line drugs created in the 1950s and
+1960s: isoniazid, ethambutol, pyrazinamide, and rifampin. Patients who follow
+the regimen as directed take an average of 130 doses of the drugs, ideally under
+direct observation by a health care worker. This combination is extremely
+effective against active, drug-susceptible TB as long as patients are compliant
+and complete the entire six- to nine-month course. Drug-resistant strains
+develop when patients do not complete the full protocol, whether because they
+start to feel better or because their drug supply is interrupted for some
+reason. Inconsistent use of antibiotics gives the bacteria time to evolve into a
+drug-resistant form. Once a drug-resistant strain has developed in one person,
+that individual can spread the resistant version to others. ... According to the
+World Health Organization [as of 2009], nearly 5 percent of the roughly eight
+million new TB cases that occur each year involve strains of Mtb that are
+resistant to the two most commonly used drugs in the current first-line regimen:
+isoniazip and rifampin. Most cases of this so-called multidrug-resistant TB
+(MDR-TB) are treatable, but they require therapy for up to two years with
+second-line anti-TB drugs that produce severe side effects. Moreover, MDR-TB
+treatment can cost up to 1,400 times more than regular treatment. ... Worst of
+all, over the past few years health surveys have revealed an even more ominous
+threat, that of extensively drug-resistant TB (XDR-TB). This type ... is
+resistant to virtually all the highly-effective drugs used in second-line
+therapy." [@barry2009new]
+
+The examples for this and the next few modules are based on a collection of
+studies that were conducted with similar designs and similar goals---all aimed
+to test candidate treatments for tuberculosis. Most studies in this set tested
+one or more treatments as well as one or more controls. The controls could
+include negative controls, like saline solution, or positive controls, like a
+drug already in use to treat the disease, isoniazid. A few of the studies tested
+only controls, to help in developing baseline expectations for things like the
+bacterial load in different mouse strains used in studies in the set. The
+set of studies tested some treatments that were monotherapies (only one drug
+given to the animal) as well as some that were combinations of two or three
+different drugs. For many of the drugs that were tested, they were tested at
+different doses and, in some cases, different methods of delivery or different
+mouse models.
+
+Each of the treatments were given to several mice that had been infected with
+*Mycobacterium tuberculosis*. During the treatment, the mice were weighed
+regularly. This weight measurement helps to determine if a particular treatment
+is well-tolerated by the animals---if not, it may show through the treated mice
+losing weight during treatment. After a period of
+time, the mice were sacrificed and one lobe from their lungs was used to
+determine each mouse's bacterial load, through plating the material from the
+lobe and counting the colony forming units (CFUs). One aim of the data analysis
+is to compare the bacterial load of mice under various treatments to the
+bacterial load of mice in the control group.
+
+The full set of studies included 19 different studies. These were conducted at
+different times, but the data for all of the studies can be collected using a
+common format. In this module, as well as the following two, we'll be exploring
+how you can use RStudio's Project functionality to organize data from one or
+more studies. We'll particularly focus on how, by using a common format for data
+collection, you can create tools that can be used repeatedly for different
+experiments to ensure that methods are the same across all studies of a similar
+type, as well as to improve the reproducibility of the studies. 
+
+Let's walk
+through the types of data that were collected for each study.
+First, there was some metadata recorded for each study. Figure
+\@ref(fig:metadata) gives an example. This includes information about the strain
+of mouse that was used in the study, treatment details (including the method of
+giving the drug or drugs, how often they were given each week, and for how many
+weeks), how much bacteria the animals were exposed to (measured both in terms of
+the inoculum they were given and their bacterial load one day after they were
+given that inoculum, which was based on sacrificing one animal the day after
+challenging all the animals with the bacteria), and, if the study included a
+novel drug as part of the tested treatment, the batch number of that drug.
+
+```{r metadata1, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of recording metadata for a study in the set of example studies for this module."}
+knitr::include_graphics("figures/project_metadata.png")
+```
+
+Next, the researchers recorded some information about each treatment group
+within the experiment. This typically included at least one negative control. In
+some cases, there was also a positive control, in which the animals were treated
+with a drug that's in standard use against tuberculosis already (e.g.,
+isoniazid). Most studies would also test one or more treatments, which could
+include monotherapies or combined therapies. Figure \@ref(fig:treatmentdetails)
+shows an example of the data that were recorded on each treatment in the study.
+These data include the names and doses of up to three drugs in each treatment,
+as well as a column where the researcher can provide detailed specifications of
+the treatment.
+
+```{r treatmentdetails1, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of recording treatment details for a study in the set of example studies for this module."}
+knitr::include_graphics("figures/project_treatment_details.png")
+```
+
+Once the animals were challenged with the bacteria, treatment began, and two
+main types of data were measured and recorded. First, the mice were weighed once
+a week. For convenience, the mice were not weighed
+individually. Instead, mice with the same treatment were kept in a single cage,
+and the entire cage was weighed, the weight of the cage itself factored out, and
+the average weight of mice for that treatment determined by dividing the weight
+of all mice in the cage by the number of mice in the cage. These weights were converted to a measure of the percent change in
+weight since the start of treatment. If the animals' weights decrease during the
+treatment, it is a marker that the treatment is not well-tolerated by the
+animals. Figure \@ref(fig:mouseweight) shows an example of how these data were
+recorded. All animals within a treatment group were kept in the same cage, and
+this cage was measured once a week. By dividing the weight of all animals in the
+cage by the number of animals, the researchers could estimate the average weight
+of animals in that treatment group, which is recorded as shown in Figure
+\@ref(fig:mouseweights).
+
+```{r mouseweight1, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of recording weekly weights of mice in each treatment group for the example set of studies."}
+knitr::include_graphics("figures/project_mouse_weights.png")
+```
+
+Finally, after the treatment period, the mice were sacrificed and a portion of
+each mouse's lung was used to estimate the bacterial load in that mouse. Figure
+\@ref(fig:bacterialload) shows an example of how the data on the bacterial load
+in each mouse was recorded.
+
+```{r bacterialload1, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of recording the bacterial load in the lungs of each mouse at the end of treatment for the example set of studies."}
+knitr::include_graphics("figures/project_bacterial_load.png")
+```
+
+As you can see, these data were all recorded using templates that were designed
+for the tidy collection of laboratory data (see modules 2.4 and 2.5). These
+spreadsheets were used only to record the data, and then processing, analysis,
+and visualization were done in a separate file. Specifically, for this set of
+studies a preliminary report was designed, with an example shown in Figure [x].
+This report uses the first page to provide a nicely format version of the
+metadata for the study, including a table with overall details and a table with
+details for each specific treatment that was tested. The second page provides a
+graph that shows the percent weight change for mice in each treatment group
+compared to the weight of that group at the start of treatment. The third page
+provides a graph that shows the bacterial loads in each mouse, grouped by
+treatment, as well as the results of running a statistical test to test, for
+each treatment group, the hypothesis that the mean of a transformed version of
+the measure of bacterial load (log-10) for the group was the same as for the
+untreated control group.
+
+```{r prelimreport1, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of the preliminary report generated for each study in the set of example studies for this module. The first page includes metadata on the study, as well as details on each treatment that was tested. The second page shows how mouse weights in each treatment group changed over the course of treatment, to help identify if a treatment was well-tolerated. The third page graphs the bacterial load in each mouse, grouped by treatment, and gives the result of a statistical analysis to test which treatment groups had outcomes that were significantly different from the untreated control group."}
+knitr::include_graphics("figures/project_prelim_report.png")
+```
+
+Let's take a closer look at a few of these elements. For example, Figure
+\@ref(fig:studytable) shows the tables from the first page of the report shown
+in Figure \@ref(fig:prelimreport). If you look back to the data collection for
+this study (e.g., Figures \@ref(fig:metadata) and \@ref(fig:treatmentdetails)),
+you can see that all of the information in these tables was pulled from data
+recorded at the start of the study.
+
+```{r studytable1, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of one element of the preliminary report generated for each study in the set of example studies for this module. The first page provides tables with metadata about the study and details about each treatment that was tested."}
+knitr::include_graphics("figures/project_study_info_table.png")
+```
+
+Figure \@ref(fig:mouseweightsplot) shows the second page of the report. This
+figure has taken the mouse weights---which were recorded in one of the data
+collection templates for the project (Figure \@ref(fig:mouseweights))---and used
+them to generate a plot of how average mouse weight in each treatment group
+changed over the course of the treatment.
+
+```{r mouseweightsplot1, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of one element of the preliminary report generated for each study in the set of example studies for this module. The second page provides a plot of how the weights of mice in each treatment changed over the course of treatment."}
+knitr::include_graphics("figures/project_mouse_weights_graph.png")
+```
+
+Figure \@ref(fig:bactcompare) shows the last page of the report. This page
+starts with a figure that shows the bacterial load in the lungs of each mouse in
+the study at the end of the treatment period. In this figure, the measurement
+for each mouse is shown with a point, and these points are grouped by the
+treatment group of the mouse. Boxplots are added to show the distribution across
+the mice in each group. The color is used to show whether the treatment was a
+negative control, a positive control, a monotherapy, or a combined therapy. The
+second part of the page gives a table with the results from running a
+statistical analysis to compare the bacterial load for mice in each treatment
+group to the bacterial load in the mice in the untreated control group. Color is
+added to the table to highlight treatments that had a large difference in
+bacterial load from the untreated control, as well as treatments for which the
+difference from the untreated control was estimated to be statistically
+significant. All the data for these results, including the labels for the plot,
+are from the data collected in the data collection templates shown earlier.
+
+```{r bactcompare1, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of one element of the preliminary report generated for each study in the set of example studies for this module. The third page provides results on how bacterial load in the lungs compares among treatments at the end of the treatment period."}
+knitr::include_graphics("figures/project_bact_compare_plot.png")
+```
+
+
+
+### Designing the template for the example set of projects
+
+In the example project that we just described, you can see that we ended up 
+with a lot of different files. We used separate files for collecting data and
+for creating a preliminary report on that data. For collecting the data, we could
+either use separate sheets in one spreadsheet file, or entirely separate files, 
+or some combination. The end result is that we have several project files, 
+in comparison to if we had used a single sheet of a spreadsheet file to
+both record and work with the data. 
+
+Figure [x] gives an example of a project directory organization that might make
+sense for the example set of studies described at the beginning of this module. ... 
+In the report, we'll design the script for the report (the RMarkdown file) so
+that it can leverage the order in how we've arranged files in the file system,
+since this is enforced by the project directory template and so is the same
+across different projects. This will let us repeat and reuse code scripts across
+all the projects that use this template. This strategy is used often in handling
+complex bioinformatics data [@buffalo2015bioinformatics], but it can also be
+leveraged to improve the reproducibility and reliability when only using less
+complex data recorded in the laboratory, as with the data shown in the example
+for this module.
+
+### Creating and using the project directory template
+
+
+Figure \@ref(fig:replacingplaceholdermetadata) gives an example of this process. One
+of the files that is included in the example template directory shown earlier is
+a spreadsheet to record metadata on the experiment. This spreadsheet file has two
+sheets, one that records overall metadata on the study (for example, the weeks of 
+treatment given and the strain of mouse used) and one that records details on each 
+of the treatments that was tested. In the file in the template directory, these
+spreadsheet pages include placeholder data. These are formatted in red, so that 
+they visually can be identified as placeholders. By including these placeholder data, 
+the researcher can see an example of the format that you expect to be used in recording
+data in this file. Once the project template is copied, the researcher will replace
+these data with the real data, and then change the font color to black to indicate that
+the placeholder data have been replaced (Figure \@ref(fig:replacingplaceholdermetadata)).
+
+```{r replacingplaceholdermetadata1, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "The template includes a file with experiment metadata, with a sheet for recording the overall details of the experiment. A user can open this file and replace the placeholder values (in red) with real values for the experiment. By changing the text color to black, the user can have a visual confirmation that the placeholder data have been replaced with real study data."}
+knitr::include_graphics("figures/project_replace_placeholder_metadata.png")
+```
+
+Another sheet of this spreadsheet allows the researcher to record the details of 
+each of the treatments that were tested in the experiment. Again, placeholder data are
+included in the template in a red font to help show the researcher how to record the
+data, and these are meant to be replaced with real data from the specific experiment
+(Figure \@ref(fig:replacingplaceholdertreatment2)). A similar format is used in the 
+template file to record data from the experiment, including the weights of each animal
+over each week of treatment and the final bacterial load in each animal at the end
+of treatment. Again, there are placeholder values in the template file, which the 
+researcher will replace with real data after copying the project template for a new
+experiment.
+
+```{r replacingplaceholdertreatment3, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "The template includes a file with experiment metadata, with a sheet for recording the details of each treatment. A user can open this file and replace the placeholder values (in red) with real values for the treatments in the experiment. By changing the text color to black, the user can have a visual confirmation that the placeholder data have been replaced with real study data."}
+knitr::include_graphics("figures/project_replacing_placeholder_treatment_data.png")
+```
+
+The project template also includes a file that provides a template to create a report
+based on the data from the experiment. This file is created using the RMarkdown format, 
+which combines text with executable code. You can create this template so that it 
+inputs the experimental data from the file formats created for the data recording
+files in the project template. By doing this, the researcher should be able to "knit" 
+this report for a new experiment, and it should recreate the report based on the 
+data recorded for that experiment (Figure \@ref(fig:makingareport)). By knitting
+this template report, you can create a nicely formatted version of the report for
+the experimental data (Figure \@ref(fig:examplereport1)).
+
+```{r makingareport1, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of how a user can create a report from the template. The template includes an example report, which is written using RMarkdown. The user can open this template report file and use the 'Knit' button in RStudio to render the file. As long as the experimental data are recorded using the data template files, the code for this report can process the data to generate a report from the data. The user can also make changes and additions to the template report."}
+knitr::include_graphics("figures/project_opening_and_running_report.png")
+```
+
+```{r examplereport2, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of the output from 'knitting' a report from the project template"}
+knitr::include_graphics("figures/project_example_report_study001.png")
+```
+
+
+---------------------------------------------------------------------------
+
+
+As a reminder,
+this example set of studies covers a group of studies to explore novel
+treatments for tuberculosis. Each study investigates how mice that are
+challenged with tuberculosis respond to different treatments, both in terms of
+how well they handle the treatment (assessed by checking if their weight
+decreases notably while on treatment) and also how well the treatment manages to
+limit the growth of tuberculosis in the mouse's lungs.
+
+We will walk through the process of creating a project directory template that could
+be used to manage and analyze data from any of the specific studies in this set of 
+studies. We'll cover two ways that you could do this. The first is simpler---it involves
+creating a basic file directory with the desired template files and file directory 
+structure and then copying this file directory every time you want to start a new
+project for a study in this set of studies. The second way is a bit more complex and 
+time-consuming to set up, but has the benefit of providing a very nice interface for 
+members of your laboratory group to use when they start a new project. This second way
+is to create a full R Project template that can be accessed from RStudio anytime you 
+create a new R Project. This type of template may not be worth the extra set-up time
+for project types that your research group only uses rarely, but for types of projects
+that your group conducts time and time again, it can be a powerful way to enforce a common
+project directory structure, and this in turn will allow your group to create reusable
+tools that work in coordination with this project structure. 
+
+### Creating and using a basic template
+
+Let's start by looking at the more basic way to create a project template. This involves 
+no fancy tools---in fact, it's so straightforward that at first it might seem to simple 
+to be useful. For this basic approach, you will create an example file directory that 
+includes template files and that captures you desired project directory structure, and
+then members of your group will copy and rename that template every time they start a 
+new project of that type. 
+
+Figure \@ref(fig:basicprojecttemplateuse) gives a basic walk-through of the
+simple steps you'll use to start a new project directory once you've created
+this type of template. First, you will find the project directory template in
+your computer's file system, copy it to where you'd like to save the files for
+the new project, and rename the directory to your new project's name. At this
+point, you can use RStudio to make this directory an RStudio Project. Next,
+you'll open the data collection template files and replace the placeholder
+example data in the template (shown in red font) with the real data from your
+study. The placeholder data can help you remember the format you should use to
+record the real data. Finally, once you've recorded the data for the study or 
+experiment, you can open the example report template file. If you've designed
+this report template well, it should run with the new data you've recorded to 
+create a report for the experiment. At this stage, you can add to the report 
+or customize it for the new project by changing the Rmarkdown file and re-rendering
+it to update the report. 
+
+```{r basicprojecttemplateuse3, fig.cap = "Steps in using a basic project directory template that you have created for a type of study or experiment.", fig.fullwidth = TRUE, out.width = "\\textwidth"}
+knitr::include_graphics("figures/project_template_basic_use.png")
+```
+
+There are a few steps you'll need to take to create this type of basic project directory 
+template: 
+
+1. List the data you typically collect or files you create for that type of study or experiment
+2. Create template files for any data collection that is typical for that type of study 
+or experiment. Use example or placeholder data to create examples of those files.
+3. Create a directory structure that divides the types of files into subdirectories of similar 
+types.
+4. Create one or more templates of report files that access and report on the data in the
+project template
+
+In modules [x], we showed how you can create tidy data collection templates to use to 
+collect data, and how these can be paired with reproducible reporting tools to separate
+the steps of data collection and reporting (modules [x] go into much more depth on these
+reproducible reporting tools). Once you have decided on the types of data that you will 
+usually collect for the type of study that this template is for, you can use that process
+to create tidy data collection templates for each type of data.
+
+In addition to the data that you record in the laboratory by hand, the type of study may 
+also typically have data that's generated and recorded by laboratory equipment. For example, 
+the type of study may often include data collected from flow cytometry, to measure certain 
+cell populations in samples, or from mass spectometry, to measure levels of certain molecules. 
+For these data, the recording format will typically be determined by the equipment, and 
+so you won't need to create data collection templates for the data. However, you should store 
+these data files in your project directory as well, where they are easy to access and integrate
+with other data as you analyze the data for the study. 
+
+The recorded data files and the files that come directly from equipment can all be considered
+raw data files. In addition, you may typically create some files with pre-processed data. 
+For example, if you have sequencing data [?], you may initially get large [what type] files
+from the [what type] equipment. You may use a program like [what] to pre-process these files
+to [do what]. In addition to saving the raw [what type] data files, you'll also want to 
+save the processed data files in your project directory, since these are the files that you'll
+analyze and integrate with other data from the project. 
+
+Once you have determined the types of files that you'll normally include in your
+project, you can decide how to organize them into subdirectories in a project
+file directory. As you do this, it will be helpful to have example or template
+files for each file type. For data that you will record yourself, these can be
+the templates that you developed to collect the data in a tidy format (modules
+[x]), while for data from equipment, these can just be one or more example files
+from the equipment that you have collected for a past project. Having these example files
+will help you to develop a template project report that can input the type of data that
+you typically collect for this type of project. 
+
+For the example set of studies for this module, there are a few types of data
+that we plan to typically collect for each study. First, we will be recording
+metadata for each experiment. This will include a study ID, as well as details
+like the mouse strain that we used in that experiment, the route used to
+administer the treatment, the treatments per week and total weeks of treatment,
+the inoculum used for the challenge, and so on. Second, we'll be recording some
+details about each experimental group that was tested. This includes the drug or
+drugs that were tested, doses of each, and some exact details about the
+treatment regimen for that group. Both of these types of data can be recorded at
+the beginning of the study. Two other types of data will also be recorded, both
+of them during the study rather than at the start. The first is weights of the
+mice each week. These weights will be recorded for each treatment group each
+week of treatment, to help see if there are drugs that are poorly tolerated by
+the mice (which can show up through weight decreases in mice in that group). The
+second is the bacterial load in the lungs of each mouse at the end of the
+treatment period.
+
+To create the project directory template for these studies, then, we'll create
+data collection templates for each of these types of data. We'll create a
+separate spreadsheet for each type of data, but we can group them into files if
+we'd like. In our example, we created two files to store this type of data, one
+for the metadata that are recorded at the start of the experiment (overall
+experiment details and the details of each tested treatment) and one for the
+data that are collected over the course of the experiment (mouse weights and
+bacterial loads). Within each file, we've used separate sheets to record the 
+different types of data. This allows us to keep similar types of data together
+in the same file, while having a tidy collection format for each specific type
+of data. [Figure] 
+
+```{r projectdatacollection1, fig.cap = "Data collection templates for the example project directory template. These templates were created in two files, one for metadata, which is saved in the main directory of the project, and one for data collected in the laboratory during the experiment, which is saved in the 'data' subdirectory. Each file is saved as a spreadsheet file, with two sheets in each file to store different types of data.", fig.fullwidth = TRUE, out.width = "\\textwidth"}
+knitr::include_graphics("figures/project_data_collection.png")
+```
+
+All of these data collection files are designed using the principles of tidy data
+collection (modules [x]). This will ensure that it will be easy to read these
+recorded data in a programming language like R for analysis and visualization. 
+Specifically, when we designed these template files, we thought a lot about 
+things like using a two-dimensional structure (one row of header names and then
+values within each of the columns), using column names that would be easy for
+a programming language to parse (e.g., no special characters or spaces in the
+column names), and so on. 
+
+Now that we have these data collection templates for this type of study, we can 
+decide how to organize the project directory into subdirectories with the different
+types of data. In this case, we'll use a simple structure. We'll save the metadata
+file in the top level of the project directory, since it provides metadata on the 
+project as a whole. For the data that are collected during the experiment, we'll 
+move that data collection file into a subdirectory called "data", with its own 
+subdirectory for "recorded_data" (indicating that we recorded it by hand in the 
+laboratory). If you had other types of data, you could create other subdirectories
+for each type. For example, you could have a "flow_data" subdirectory for data
+collected through flow cytometry. 
+
+If you had raw data that required pre-processing, you could create
+subdirectories both for the raw data and for the processed data that result from
+pre-processing steps. For example, if you had data from [RNA sequencing?], you might
+have [initial files] and [processed files], as well as a [bash?] script that you used
+to generate the processed files from the initial raw data. You could create a directory 
+called "raw_data" to use to store both the initial raw data and the script used to 
+process that data, then a "rna_seq_data" subdirectory in the "data" subdirectory to 
+store the smaller pre-processed files. 
+
+```{r projecttemplatecomplex2, fig.cap = "Example of a more complex project directory structure that could be created, with directories added to store data collected through flow cytometry and single cell RNA sequencing.", fig.fullwidth = FALSE, out.width = "\\textwidth"}
+knitr::include_graphics("figures/project_template_morecomplex.png")
+```
+
+With the previous steps, you will have determined the types of files you normally 
+have for this type of study, as well as structured the project directory to organize
+these files. The next step is to create a template report. You can create this using
+tools for reproducible reports---in R, a key tool for this is RMarkdown. Here, we'll 
+cover using this tool for creating a report briefly, but there are many more details 
+in modules [x]. 
+
+When it comes to project directories, it turns out that you can use the
+directory structure in your favor when you create script-based reports, like
+RMarkdown reports. There are functions in R, for example, that will allow you to
+print all the files in a specified subdirectory. Say that you have several flow
+cytometry files in a subdirectory of the "data" subdirectory called "flow_data".
+You could use this function in R to create a list of all the files in that
+subdirectory, and then you can run other functions to do the same operations on
+all of those files.
+
+When you create a project directory template, we recommend that you create a
+subdirectory named something like "reports" to use to store any Rmarkdown report
+files for the project. This organization will make it clear where you've stored your
+reports in the project directory. You'll be able to use file and directory pathnames
+to access all the data in the project, so it will be easy to use the study's data
+in the report even if they're in separate subdirectories. There's only one tool 
+you'll need to do this---you'll need to learn how to use relative pathnames 
+within R code to access files in a different part of your project directory. 
+
+A pathname gives the directions to a file that is stored somewhere, for example
+on your computer or a server. There are two ways to state a pathname---you can 
+state it as either an absolute pathname or a relative pathname. An absolute 
+pathname gives the directions to the file from the root directory of the 
+computer where it's stored. In other words, it gives the directions starting 
+from the very earliest point in the file directory for that computer. A relative
+pathname, on the other hand, gives the directions to the file from something 
+called the current working directory---that is, the directory that your current
+program is currently operating from. 
+
+You have likely already used relative pathnames extensively. If you read in a file
+to a statistical program like R or Python, if that file is in the current working 
+directory, you only have to give its file name to point the program to the file. 
+You may not have realized it, but in this case, you were using the simplest type of 
+relative pathname---since the file is already in your working directory, you 
+don't need to give directions that move through different directories to get from
+your current working directory to the file. 
+
+If you have a file in a subdirectory of the current working directory, you can
+use a relative pathname to access it by giving the direction through the
+subdirectories to get to the file. For example, if you want to read in a file
+named "bacterial_counts.xlsx" that is in a subdirectory of the current working
+directory called "data", you could point to that file using the relative
+pathname "data/bacterial_counts.xlsx". Instead, if you want to point to a file
+with the same name that's in a subdirectory called "reported_data" of the "data"
+subdirectory, you'd use the relative pathname
+"data/reported_data/bacterial_counts.xlsx". 
+
+You can use relative pathnames to navigate, too, to files that aren't in a 
+subdirectory for the current file. To do this, you can use [abbreviations?]
+for filenames. One of the most useful is ".", which stands for the parent 
+(i.e., one above) the current working directory. For example, if you have 
+a project directory, and you've put an RMarkdown file in the "reports" 
+subdirectory, but within the code in that file you want to read in data from 
+the "data" subdirectory of the same project, you could do so with a relative 
+pathname like "./data/bacterial_counts.xlsx". This pathname says to move up 
+one directory from the current working directory (in other words, to the 
+directory that the current work directory is a subdirectory of) and then
+look for a different subdirectory of that parent directory called "data", 
+then read a file from that subdirectory. 
+
+This strategy is necessary when you're using RMarkdown for your reports
+and have created a project directory template with different subdirectories
+for your data versus your reports. In an RMarkdown document, the code will 
+run using the directory where the RMarkdown file is stored as the working
+directory [correct even with Projects?]. Therefore, if you organize your 
+project directory in the type of structure we've recommended, then you'll
+need to use this type of relative pathname to access data elsewhere in 
+the project directory when you write code for the report. 
+
+We can take a look at how this works in the project directory template we
+created for the example set of studies. In module [x] we gave details on 
+what is included in the template report for this project directory template. 
+Briefly, it is a file that will generate a couple of tables with metadata
+on the experiment (overall experiment details as well as details on each 
+of the treatments), then a graph showing mouse weights over time, then a 
+graph showing the bacterial load at the end of the study in mice grouped 
+by treatment, and finally a table giving the results of comparing the 
+bacterial load in each treatment group to the bacterial load in the control
+group.
+
+We created an Rmarkdown file that does this analysis and visualization and
+included it in the project template directory. This means that the report file
+will be copied and available each time someone copies the project template
+directory at the start of a new project. We wrote the code in a way that will
+input data that are stored in the data collection files that also come with the
+project directory template. Since we named those files in the directory
+template, we can refer to them with the same name in the code for the report. We
+wrote the code in the report in a way that it will still run if there are more
+or fewer observations in any of the data collection files, so the report
+template has some flexibility in terms of how each study in the set of studies
+might vary. For example, in the example set of studies, some of the experiments
+were run using only a control group of mice, while others were run to test as
+many as [x] different treatment groups. The report template can accommodate
+these differences across studies in the set of studies.
+
+...
+
+In many cases, you may have a more complex design for your project directory. For
+example, if you were collecting flow cytometry data for the project as well, then 
+you would want a subdirectory in the project that is specifically designed to 
+store files from the flow cytometry component of the experiment. This subdirectory
+would likely include several files, rather than just one. Further, you would not
+know ahead of time what the name of these files would be (as you do with the data
+collection template files that are included in the template directory). However, 
+you can still easily write code for a template report file that will work with 
+multiple files of a similar type, even if you don't know what the names will be, 
+as long as you know what the name of their subdirectory will be. There are functions
+in R like `list.files` that can be used to list all the file names for the files 
+in a given directory. You can use this function to create a vector of all the file
+names. For example, you could run: 
+
+```{r eval = FALSE}
+flow_filepaths <- list.files("../data/flow_data", full.names = TRUE)
+```
+
+to get an object (`flow_filepaths`) that lists each of the filepaths for the files
+stored in the "flow_data" subdirectory within the "data" subdirectory of the 
+project. You could then "map" a function or group of functions across these
+files to read them in, process them, and join them into a single dataframe in R. 
+By using this process, you can write template code in the report for the project
+that should work in most cases for the data that you collect for a given type of 
+study. 
+
+The report template is included in the project directory template, so it will be
+copied and available for you to use anytime you start a new project using that 
+template. However, you are not obligated to keep the report identical to the template. 
+Instead, the template report serves as a starting point, and you can add to it or
+adapt it as you work on a study. 
+
+For example, in our example template report, we've included the results of
+applying a statistical test that compares each treatment group to the control
+group. Instead, for a specific study of this type, you may want to control
+treatments against each other. For example, some of the studies in this example
+set of studies include a positive control group, where the mice are treated with
+a drug that is already in common use for the disease. In some cases, the
+researcher may want to control the bacterial load in groups treated with a novel
+drug to groups treated with the positive control. You could easy add to the
+report template in that case, adding statistical tests where you compare
+different treatment groups to each other.
+
+### Creating an R Project template
+
+In the previous section, we covered a very basic way to make a project directory 
+template: you make an example directory of project files, and then anytime you 
+start a project for that type of study, you copy, rename, and use that example 
+directory as a template. 
+
+There is a second way to make project templates for your research group. This
+method requires a lot more work at the beginning. However, it makes it very easy
+for anyone in your group to use the template once it's been created. This method
+is to create an R Studio Project template. To be clear, with the basic method
+covered in the last chapter, you can create a project directory based on you
+basic template and then convert it to an RStudio Project within RStudio.
+However, with this second method, you will gain the option to create a new
+project based on your template from within RStudio, and many of the details of
+creating the template are encapsulated within the process, so you're more likely
+to be able to enforce a common project directory structure across projects. 
+
+This method does require a good bit of familiarity with R programming, as it
+requires you to create a new R package. In this section, we'll go over the
+process, using the example set of studies for this module as a motivating
+example. ...
+
+...
+
+There are several steps that you'll take to create the RStudio Project
+template: 
+
+1. Decide on project directory structure
+2. Create templates for recording data
+3. Create a template for a report for the project
+4. Create an R package to implement the Project template
+5. Move the templates for data recording and the report into the "inst" 
+directory of the Project package 
+6. Write code in the package to create project structure and copy in templates
+7. Customize the Project Wizard for the Project in the package code
+8. Build the Project template package and share it with your research group
+
+Several of these are the same as the steps to create a basic project directory
+template. Specifically, steps 1--3 are the same steps that you would take to 
+create a basic project directory template. 
+
+The novel steps for this process come from step 4 and later. Rather than
+creating a file directory that your research group will copy and rename, we'll
+put all the elements of the project template within an R package that you can
+build and then share with your research group. They will be able to install this
+package, and then whenever they start a project, they will be able to initialize
+it as this special type of project from within RStudio, as described in the
+previous module.
+
+Under this method, the template is put together and shared as an R package. An R
+package is a collection of R code and data that extend the functionality of base
+R. If you have coded with R, you've likely used these types of packages to get
+access to useful functions. For example, the "tidyverse" (module [x]) is a suite
+of popular R packages with functions for working with data. Anyone can create
+and share an R package, either broadly and publicly by submitting it to a
+repository like Bioconductor (in which case it will need to follow some
+additional constraints and pass some checks) or privately as a compressed file
+that anyone you share it with can download to their computer and install.
+
+The new steps in this process start with step 4, which is to create an R package
+to implement the Project template. You can create the framework for an R package
+very easily in R study. Open RStudio, go to "File", and select "New Project", as
+you would if you were creating any type of RStudio Project. Choose "New Directory", 
+but then instead of choosing the generic "New Project", choose "R Package". This 
+will create an open a new Project directory for you package, one that includes
+templates for many of the files that you need to start a new R package. (As a note, 
+this is using a special R project template, just like you'll be creating!)
+
+[More on the initial package directory]
+
+...
+
+For most R packages, you create them to use to share new R functions. 
+Therefore, the package directory is focused on new R scripts. However, 
+the R package structure is very flexible, and it can be effectively used
+to share other things as well. For example, R packages can be created
+to share datasets, with very few or no new functions included. Similarly, 
+the R package that we'll make with your template will allow you to share
+a directory structure and some "starter" files to go into that structure, 
+rather than R code. 
+
+Since we're using the R package structure for this alternative use, it may
+at first seem a bit confusing why we need to put certain files in certain
+places or write code that moves files around. Briefly, R packages are 
+created and shared essentially as file directories, but these file 
+directories must follow a very specific structure, with specific names
+for different subdirectories and files within the structure. We'll need
+to follow these rules as we organize the template files within our R package
+for our Project template. We will explain as we move through this section 
+where you should save everything in your R package directory, but this is 
+just to clarify that there is a reason that the structure might seem a 
+bit convoluted---we're leveraging a structure normally meant for a bit of 
+a different use. 
+
+You can make as many template files as you'd like to include in your Project
+template. When you make the R project with your template, you'll store these all
+in a special directory that you should call "inst". In an R package, the "inst"
+directory can act as a bit of a catch-all, where you can store files that you
+would like to be included when someone installs your package, but that don't 
+naturally fit in another part of the package directory. 
+
+Within this "inst" subdirectory, you can create as many subdirectories as you'd
+like, to help you organize your template files. The only rule is that there are
+a handful of names that you should avoid for these subdirectory names. This is
+because, when the package is installed, all the subdirectories in this "inst"
+subdirectory will be moved up to the main package directory, and so you should
+avoid directory names that have a specific meaning in an R package. Namely, you
+should avoid naming any subdirectories in the "inst" subdirectory any of the
+following: "data", "R", "src", "man", "demo", "tests", "exec", "po", "tools",
+"vignettes" [?], "build" [?], "share" [?], "licenses" [?].
+
+In the template for the example set of studies for this module, for example, we
+created three subdirectories in the "inst" subdirectory to use to store
+templates for this type of Project: "data_collection_templates", where we stored
+an Excel file with the template for collecting data during each experiment
+(i.e., the mice weights and final bacterial loads), "metadata_templates", which
+includes an Excel file with the template for collecting metadata on the
+experiment on a whole and on each of the tested treatments, and
+"report_templates", where we stored an RMarkdown file with the template report
+for the project. For any templates that include code, keep in mind that you'll
+need to be careful in setting the pathnames to access any data in the project
+directory. [More on this?]
+
+Once you've added any templates to the "inst" directory, the next step is to 
+write code in the template package. For this type of package, which aims to 
+set up a new Project structure, you'll only include R code for one purpose---the
+R code will run when someone first opens a new Project of this type, and it 
+will operate to set up the initial project structure. R can be used to do 
+many different things---while you may have mostly used it before to read in and
+analyze data, it can also be used to do things like make new directories on 
+you computer, or to copy files from one place in your computer's file directory 
+to another. We'll be using these types of commands in this template R package, 
+as it will allow us to move the template files that you created into the 
+right place in a user's new project directory when they chose to use your 
+template to make a new project. 
+
+There are four key R functions that we'll be using to do these tasks. The first
+is the `dir.create` function. This can be used to create new directories on
+the user's computer. You can include the name that you'd like to use as the 
+new subdirectory. We'll use this function to create the subdirectories in the 
+new project, and so this function will let us create a structure within the
+user's subdirectory.
+
+The second key R function that we'll use is `file.copy`. This function allows
+us to copy a file from one place in the user's computer to another spot. When 
+the user installs our package, all of the template files will be included with
+that installation. With `file.copy`, we'll be able to copy these template files
+into the right spot on each user's computer each time they open a new Project
+with this template. 
+
+The third key R function also helps with this process of copying the template
+files. In order to copy the files, we need to be able to find where they're 
+stored on the user's computer. Since they've been installed with the package, 
+the template files will be located on the user's computer based on where that
+user stores their installed R packages. This location can differ by user, 
+but fortunately there's a function called `system.file` that lets us figure out
+the file path for any file that's stored in an R package that the user has
+installed, on that user's computer. This function will therefore allow us to 
+get the original filepath for each of the template files, so we can copy them
+into the new Project. 
+
+Finally, the fourth key R function is `file.path`. This function can create a
+file path, and it's helpful because it can allow you to write code that will
+generate the full path to a file or subdirectory on the user's computer, based
+on the relationship of that file or subdirectory to the working directory of the
+project they've created. We'll use this function, for example, to create the
+file path for the new subdirectories that should go in the Project when the user
+opens it. Even though each user could be storing their project in a different
+part of their computer's file directory, this function can determine the path we
+should use for each subcomponent in the project.
+
+[How to create directories and move in the template files]
+
+Using these functions, we'll create the subdirectory structure of the project
+and then move any template files into the right place in that structure. This 
+will happen in an R function---in many cases, this might be the only R function
+that you'll include in the package that defines the Project template. You
+can name this R function anything you'd like (later, we'll show how you can 
+connect this function so that it's automatically run when someone makes their
+new Project with the template). You should save the code for the function in the
+R subdirectory of your package directory. 
+
+In the example for this module, we've named the function `create_project` and 
+stored the code for it in a file called "create_project.R" in the R 
+subdirectory of our package. This function should take at least two inputs: 
+`path`, which will be the filepath to the project's directory, and `...`
+(which we'll call "dots"), which allows other arguments to pass into the 
+function. 
+
+Within the function, we've included code that will create all the subdirectories
+for this type of project, as well as code that moves the template files into the
+right place in those subdirectories. First, ...
+
+[How to customize the Project Wizard for the project]
+
+As you work on the package, you can build it and test it on your own computer. 
+If you are working in RStudio, you can use a "Build" Pane that is available
+when you're working on a R Project that is a package. In this pane, there
+is a "Install and Reload" button [doublecheck]---if you click this button, 
+it will build the package and install it on your computer in the same 
+place that other R packages are installed (for example, packages that you 
+install from CRAN). 
+
+Once you've built and installed your package, give it a try. You can go 
+up to the "File" menu in RStudio and select "New Project". Select 
+"New Directory", and this will take you to a menu with the different types
+of R Projects you can create. You should now see your Project template
+as one of the options. Click on this, and you can test out if the template's 
+working like you hoped it would. 
+
+[How a different user can download and install a package that isn't on CRAN]
+
+If you would like to create one of these RStudio Project templates for studies
+in your research group, there are more details on the process at ... In addition, 
+since this method requires building an R package, you may find resources on creating
+R packages to be useful. One excellent book on the topic, which is available for
+free online, is [R Packages] by Hadley Wickham and Jenny Bryan.
+
 

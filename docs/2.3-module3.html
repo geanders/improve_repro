@@ -32,7 +32,7 @@ MathJax.Hub.Config({
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -102,6 +102,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -530,6 +531,138 @@ plots (<code>igraph</code>), phytogenetic trees (<code>ggtree</code>) and anatog
 “tidy data” format, and they all provide similar user interfaces, making it
 easier to learn a large set of tools to do a range of data analysis and
 visualization, compared to if the set of tools lacked this coherence.</p>
+<hr />
+<p>You can think of <em>data structures</em> as containers that hold your data in R,
+holding it in a way that lets you access and work with the data.</p>
+<p>Data structures, on the other hand, allow you to keep together, as well as
+refer to, data that you have loaded into R. A single object can contain
+pieces of data with different data types, and the object’s data structure
+defines how all the pieces of data in the object are organized and how you
+can access and work with the data in the structure. For example, one of the
+simplest data structures in R is the vector—this data structure requires
+that all the data stored in it have the same data type (e.g., all be
+numeric), and it holds together a one-dimensional string of pieces of data
+of that type. For example, a vector of the numbers one to five would be
+the string of those numbers—1, 2, 3, 4, 5—while a
+vector of the letters a to e would be the string of data with the “character”
+type—“a”, “b”, “c”, “d”, “e”.</p>
+<p>A second key data structure in R, the
+dataframe, provides a structure that stores one or more of these vectors,
+and so it allows you to store data with different types in the same object.
+For example, you could create an object with a dataframe structure that
+contains one column with a vector of the numbers one to five and another
+with the letters a through e. This structure would look something like this:</p>
+<pre><code>##   numbers letters
+## 1       1       a
+## 2       2       b
+## 3       3       c
+## 4       4       d
+## 5       5       e</code></pre>
+<p>While the dataframe structure can combine vectors with data in different types
+(in the example, the <code>numbers</code> column has a numeric data type and the <code>letters</code>
+column has a character data type), it does have a rule for combining different
+vectors. They all must be the same length. This means that the dataframe
+structure is always rectangular, with each column having the same number of
+rows. In the example above, both the <code>numbers</code> and <code>letters</code> columns are
+vectors with five values, so the dataframe ends up having two columns and
+five rows.</p>
+<p>The two-dimensional structure of a dataframe keeps the values
+measured for each observation lined up with each other, and lets you keep them
+aligned as you work with the data. You could also store data for each value as
+separate objects, in one-dimensional vectors, which you can visualize as strings
+of values of the same data type, like the dates that each observation was made,
+or the weight of each study subject. However, when the data is in separate
+vectors, it is easy to make coding mistakes, and coding is often less efficient.
+If you want to remove one observation, for example, because you find it is a
+duplicate, you would need to carefully make sure you remove it correctly from
+each vector. When data are stored in a dataframe, you can remove the row for
+that observation with one command, and you can be sure that you’ve removed the
+value you meant to from each of the measured values.</p>
+<p><strong>“Tidy” data and data structures</strong></p>
+<p>In this module, we aim to introduce you to something called the “tidyverse”
+approach to programming in R. This is a powerful approach, and we will
+detail it more extensively in the next section. Here, we want to introduce
+a key element of the approach—it is based on storing data in a single
+data structure throughout your pipeline of code. Specifically, it focuses
+on tools and techniques that work when you use a dataframe structure to
+store data as you work with the data, with a set of functions that both
+input and output objects that use the dataframe structure (as well as
+functions that input and output vectors, which are used to perform
+operations on the data in the columns within the dataframe—if you recall,
+each column in a dataframe has a vector data structure).</p>
+<p>The tidyverse approach requires one step beyond the data structure, and that
+is how the data are arranged within that structure. You can store data in
+a dataframe structure as long as you can put it in two dimensions (rows and
+columns), with the same type of data in each column. With the same set of
+data, there are often many different arrangements you could make that satisfy
+these constraints. The “tidy” part of the “tidy data” structure—which is
+at the heart of the tidyverse approach—are a set of standards describing
+exactly how you arrange the data within the dataframe structure.</p>
+<p>The R object class—dataframe, and more specifically, tibble—of the standard
+format for data for a tidyverse approach is just the first part of the standard
+data format for the tidyverse approach. The second part of the standard format is
+how you organize your data in this format. To easily work with tidyverse functions,
+you’ll want to make sure that your data is stored within that dataframe following
+“tidy” data principals. These are fully described in an earlier module in this
+book [which module]. If you use this data format to initially collect your
+data, as described in an earlier module, you will find it very easy to read the
+data into R and work within the tidyverse approach. When working with larger and
+more complex data collected from laboratory equipment, you may find you need to
+do some preprocessing of the data using an object-oriented approach before you
+can move the data into this tidy format, but at that point, you can continue with
+analysis and visualization of your data using a tidyverse approach.</p>
+<p><strong>The tibble data structure</strong></p>
+<p>As a final note, there is a specialized data structure that is often
+associated with the tidyverse approach. It is called the “tibble”, and it is
+a specialized version of the dataframe. What do we mean by it being a
+“specialized” version of a more common data structure? This means that there
+are a few functions that will give different results if the data are stored
+in a tibble structure rather than the more generic dataframe structure.
+However, if a function does not have a specialized method for the tibble
+structure (and most functions don’t), then the function will treat the object
+as a regular data frame. Some of the few functions that have specialized
+methods for tibbles include the <code>print</code> function, which is also the default
+function that is run if you just type an object’s name at the console and
+press “Enter”. The <code>print</code> function, when called with an object in the tibble
+structure, will only print out the first few rows (whereas, with a generic
+dataframe, it will print out all rows, sometimes resulting in a very long
+print-out). Similarly, if there are many columns, it will only print out
+a certain number and just provide summaries for the rest (again, with a
+generic dataframe, everything would be printed). It also provides some nice
+summaries of the dataframe as a whole, as well as of the type of data in each
+column. Overall, the <code>print</code> method for a tibble structure provides a clearer
+and typically more useful overview of the data in the object than does the
+<code>print</code> method for a generic dataframe structure. All this being said, as
+you first begin to work in the tidyverse approach, you often may not notice
+whether your data is stored in a more generic dataframe structure or the
+more specialized tibble version, and it often won’t matter much which of the
+two structures is being used, since the tibble structure in most cases
+(i.e., for most functions) is just treated as the more generic dataframe
+structure.</p>
+<p>Sometimes, you’ll see that data in a tidyverse approach are stored in a special
+type of dataframe called a “tibble”—this isn’t very different from a
+dataframe, and in fact is a special type of dataframe. It’s only differences in
+practice are that it has a slightly different <code>print</code> method. The <code>print</code> method
+is the method that’s run, by default, when you just type the R object’s name
+at the console. A tibble prints more nicely than a basic dataframe. By default,
+it will only print the first few lines. By contrast, a dataframe will, by default,
+print everything—if you have a lot of data, this can create an overwhelming
+amount of output when you just want to check out what the data looks like. The
+printout of a tibble will also include some interesting annotations to help you
+see what’s in the data, including the dimensions of the full dataframe and the
+data type of each column in the data.</p>
+<p>Sometimes, you’ll see that data in a tidyverse approach are stored in a special
+type of dataframe called a “tibble”—this isn’t very different from a
+dataframe, and in fact is a special type of dataframe. It’s only differences in
+practice are that it has a slightly different <code>print</code> method. The <code>print</code> method
+is the method that’s run, by default, when you just type the R object’s name
+at the console. A tibble prints more nicely than a basic dataframe. By default,
+it will only print the first few lines. By contrast, a dataframe will, by default,
+print everything—if you have a lot of data, this can create an overwhelming
+amount of output when you just want to check out what the data looks like. The
+printout of a tibble will also include some interesting annotations to help you
+see what’s in the data, including the dimensions of the full dataframe and the
+data type of each column in the data.</p>
 <!-- ### Practice quiz -->
 <!-- Question 1: What is a fundamental characteristic of tidy data?  -->
 <!-- a) All data are stored in a single column  -->

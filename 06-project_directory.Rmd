@@ -13,38 +13,19 @@ pre-processed experimental data.
 - Describe a 'Project' directory, including common components and subdirectories 
 - List how a single 'Project' directory improves reproducibility
 
-In previous modules, we've discussed how you can separate the steps of data
-collection from steps of data cleaning, management, pre-processing, and
-analysis. In the case of data recorded in a laboratory, this separation will
-often result in moving from a single file that combines all steps (for example,
-a spreadsheet) to a collection of files, with separate files for the different
-steps. that combines all the steps to using separate files for the different
-steps. As you move to separate data recording and analysis, then, it is very
-important to store the set of files for a project in a way that is clear and
-easy to manage. If the file directory for the project is well-designed, it can
-even allow you to create software tools and report templates that can be reused
-over many experiments. In the next few modules, we'll discuss how you can
-organize the files for an experiment using R's "Project" system. The modules
-will discuss the advantages of well-designed project directories, tips for
-arranging files within a project directory, and how to create templates for R
-Projects that allow you to use consistent file organization across many
-experiments.
-
-### Organizing project files 
-
 In earlier modules, we discussed how to separate data collection from data
 analysis. By separating data collection and analysis into separate files, we can
-make the file for each step simpler. Further, by separating steps into different files, we can save the
-files in plain text, which makes it easier to track them using version
-control software (discussed in later modules). This helps create a record of changes
-made to the data or analysis code during the research process. 
+make the file for each step simpler. Further, by separating steps into different
+files, we can save the files in plain text, which makes it easier to track them
+using version control software (discussed in later modules). This helps create a
+record of changes made to the data or analysis code during the research process.
 
 While this process helps in reproducibility, it results in more files being
 collected for an experiment. Instead of data and its analysis collected within a
 single spreadsheet file, you may end up with multiple files of data collected
 from the experiment, as well as separate files with scripts for processing,
 analyzing, and visualizing the data. With more complex experiments, there may be
-different data files with the data collected from different assays. For example,
+different data files containing the data collected from different assays. For example,
 you may run an experiment where you collect data from each research animal on
 bacterial load, as well as flow cytometry data, as well as a measure of antibody
 levels through ELISA. As a result, you may have one raw data file from each
@@ -54,9 +35,14 @@ writing and presentations (posters and slides) associated with the project, as
 well as code scripts for preprocessing data, for conducting data analysis, and
 for creating and sharing final figures and tables.
 
-In an earlier module, we introduced Adam Savage's idea of "knolling" to keep a
-workspace tidy (Module 2.3). He was talking about a physical workspace. When
-you are working with data, computer files and directories are your workspace.
+In the next few modules, we'll discuss how you can organize the files for an
+experiment using a single directory that is designed to follow a similar format
+across all your projects. The modules will discuss the advantages
+of well-designed project directories, tips for arranging files within a project
+directory, and how to create a directory template that allows you to use
+consistent file organization across many experiments.
+
+### Organizing project files 
 
 As the files for a project accumulate, do you have a clear plan for keeping them
 organized? Based on one analysis, many biomedical researchers do not. One study,
@@ -69,8 +55,10 @@ projects," while another said "I grab them when I need them, they're not
 organized in any decent way," and another, "It's not even organized---a file on
 a central computer of protocols that we use, common lab protocols but those are
 just individual Word files within a folder so it's not searchable *per se*"
-[@anderson2007issues]. Similarly, in an article on organizing project files
-for research, Marwick notes:
+[@anderson2007issues]. 
+
+Similarly, in an article on organizing project files for research, Marwick
+notes:
 
 > "Virtually all researchers use computers as a central tool in their 
 workflow. However, our formal education rarely includes any training in 
@@ -82,40 +70,9 @@ This may be one of the reasons that so many requests for details about
 method, including requests for data and code, are turned down or go 
 unanswered." [@marwick2018packaging]
 
-You gain in many ways when you organize your workspace of files and directories,
-especially when you do it consistently. First, you know where to find things.
-You know where to find things when you come back to a project after a while away
-from it (for example, while the paper was out for review). You can teach someone
-else how to find things quickly and consistently across your multiple projects,
-as well as where to put things if they're contributing to one of them. You have
-a place for everything. As one article notes, with good organization, "methods
-and data sections in papers practically write themselves, with no time wasted in
-frenzied hunting for missing information." [@baker2016quality] An article on
-organizing computational biology projects also highlights how good organization
-can improve your efficiency: 
-
-> "Everything you do, you will probably have to do over again. Inevitably, you
-will discover some flaw in your initial preparation of the data being analyzed,
-or you will get access to new data, or you will decide that your
-parameterization of a particular model was not broad enough. This means that the
-experiment you did last week, or even the set of experiments you've been working
-on over the past month, will probably need to be redone. If you have organized
-and documented your work clearly, then repeating the experiment with the new
-data or the new parameterization will be much, much easier." [@noble2009quick]
-
-An organized work space can also help foster organized thinking. Adam Savage
-describes how important this is in another type of working, fine cooking,
-describing how this idea of an organized workspace is captured by the technique
-of *mise en place*---of laying out all the elements needed for the work ahead of
-time and in an organized way---introduced by the famous French chef August
-Escoffier:
-
-> "Kitchens are pressure cookers in which wasted movement and hasty technique
-can ruin a dish, slice an artery, burn a hand, land you in the weeds, and
-ultimately kill a restaurant. *Mise en place* is the only way to reliably create
-a perfect dish, to exact specifications, over and over again, night after night,
-for paying customers who demand nothing less." [@savage2020every]
-
+In an earlier module, we introduced Adam Savage's idea of "knolling" to keep a
+workspace tidy (Module 2.3). He was talking about a physical workspace. When
+you are working with data, computer files and directories are your workspace.
 For any type of work, the design of the workspace plays a critical role in 
 how the workers approach tasks and solve problems. Rod Judkins, who is a 
 lecturer at St Martin's College of Art, highlights this in a book on 
@@ -126,15 +83,48 @@ building site, persuades you to work and think in certain ways. The more aware
 you are of that, and the more you understand your medium, the more you can use 
 it to your advantage." [@judkins2016art]
 
-The same principle applies when you are working in a digital environment, with
-computer files and analysis. Good organization of your files can encourage clear
-thinking and help in reasoning through how to analyze data. One article notes
-that "mundane issues such as organizing files and directories and documenting
-progress ... are important because poor organizational choices can lead to
-significantly slower research progress." [@noble2009quick] In fact, if files are
-organized in a consistent way across multiple projects, this can even allow you
-to start automating some necessary tasks through code that is built to work with
-that consistent structure [@buffalo2015bioinformatics].
+Adam Savage describes how important this is in another type of working, gourmet
+cooking, describing how this idea of an organized workspace is captured by the
+technique of *mise en place*---of laying out all the elements needed for the
+work ahead of time and in an organized way---introduced by the famous French
+chef August Escoffier:
+
+> "Kitchens are pressure cookers in which wasted movement and hasty technique
+can ruin a dish, slice an artery, burn a hand, land you in the weeds, and
+ultimately kill a restaurant. *Mise en place* is the only way to reliably create
+a perfect dish, to exact specifications, over and over again, night after night,
+for paying customers who demand nothing less." [@savage2020every]
+
+Good organization of your files can similarly encourage clear thinking and help
+in reasoning through how to analyze data. One article notes that "mundane issues
+such as organizing files and directories and documenting progress ... are
+important because poor organizational choices can lead to significantly slower
+research progress." [@noble2009quick] In fact, if files are organized in a
+consistent way across multiple projects, this can even allow you to start
+automating some necessary tasks through code that is built to work with that
+consistent structure [@buffalo2015bioinformatics].
+
+Organization also helps you know where to find things. You even know where to
+find things when you come back to a project after a while away from it (for
+example, while the paper was out for review). You can teach someone else how to
+find things quickly and consistently across your multiple projects, as well as
+where to put things if they're contributing to one of them. You have a place for
+everything. 
+
+As one article notes, with good organization, "methods and data sections in
+papers practically write themselves, with no time wasted in frenzied hunting for
+missing information." [@baker2016quality] An article on organizing computational
+biology projects also highlights how good organization can improve your
+efficiency:
+
+> "Everything you do, you will probably have to do over again. Inevitably, you
+will discover some flaw in your initial preparation of the data being analyzed,
+or you will get access to new data, or you will decide that your
+parameterization of a particular model was not broad enough. This means that the
+experiment you did last week, or even the set of experiments you've been working
+on over the past month, will probably need to be redone. If you have organized
+and documented your work clearly, then repeating the experiment with the new
+data or the new parameterization will be much, much easier." [@noble2009quick]
 
 Finally, when your research files are kept in one place and well-organized, it
 makes it easier for you to share those as a supplement to articles you write
@@ -369,15 +359,6 @@ Similarly, you can customize the report as you go to help it work well for this
 specific experiment. However, you will aim to keep to the standard format as
 much as possible, since it's the standardization across projects that provides
 many of the advantages.
-
-You can have different templates to use when you create a new project. A
-template will provide a basic set-up for the project. For example, R packages
-are created within a directory, and package developers now often use an R
-Project for that directory. Since R packages have a consistent set of usual
-subdirectories---including subdirectories for R code, data, and documentation
-and a file for metadata---there is now a Project Template specificially for R
-package development, and this sets up a directory with some of the typical
-subdirectories and files needed for these projects. 
 
 In the next module, we will walk through the steps of designing a project
 template that you can use across experiments for your laboratory group. In
