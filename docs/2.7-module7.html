@@ -14,12 +14,6 @@
 <meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, and Gregory Robertson" />
 
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  TeX: { equationNumbers: { autoNumber: "AMS" } }
-});
-</script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <meta name="description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing.">
 
@@ -176,10 +170,60 @@ preprocessing, like calculating colony-forming units in a sample based on data
 from plating at different dilutions, or the output from gating flow cytometry
 data), “reports” (for writing, posters, and presentation slides), and “R” (for
 common scripts that you use for preprocessing, visualization, and data
-analysis). Creating and using a common template for you directory structure for
+analysis). Creating and using a common template for your directory structure for
 projects will help create consistency across projects in the directory
 structure, which can facilitate the use and re-use of automated tools like code
 scripts across different experiments.</p>
+<p>Here are some key goals to consider when designing a template:</p>
+<ul>
+<li>Keeping data collection and analysis separate</li>
+<li>Using simple file formats and tidy structures for recording data whenever
+possible (a larger number of simple files is easier to organize and work
+with than a smaller number of complex files)</li>
+<li>Create reports and analysis that incorporate data from different assays
+for an experiment</li>
+<li>Make it easy to share all project files across the team</li>
+<li>Make it easy to share project files on a public repository</li>
+<li>Make it easy to track changes to files for a project</li>
+</ul>
+<p>To “define the problem” <span class="citation">(Osann, Mayer, and Wiele 2020)</span>:</p>
+<ul>
+<li>Files for the project need to be stored in a single directory</li>
+<li>That directory needs to be easy to understand and navigate</li>
+<li>We want to have the same structure for many different projects,
+so it needs to be flexible enough to accommodate that</li>
+<li>Be able to find things easily</li>
+</ul>
+<blockquote>
+<p>“The goal of a research compendium is to provide a standard and easily
+recognizable way for organizing the digital materials of a project to enable
+others to inspect, reproduce, and extend the research. There are three generic
+principles that define research compendia, independent of particular software
+tools, and disciplinary contexts. 1. A research compendium should organize its
+files according to the prevailing conventions of the scholarly community,
+whether that be an academic discipline or a lab group. Following these
+conventions will help other people recognize the structure of the project, and
+also support tool building which takes advantage of the shared structure. 2. A
+research compendium should maintain a clear separation of data, method, and
+output, while unambiguously expressing the relationship between those three. In
+practice, this means data files must be separate from code files. This is
+important to let others easily identify how the original researcher operated on
+the data to generate the results. Keeping data and method separate treats the
+data as ‘read-only,’ so that the original data are untouched and all
+modifications are transparently documented in the code. The output files should
+be considered as disposable, with a mindset that one can always easily
+regenerate the output using the code and data. The relationship between which
+code operates on which data in which order to produce which outputs must be
+specified as well. In his advice to industry data scientists, Ben Baumer’s
+article in this collection similarly highlights the importance of keeping data
+separate from the presentation of data, or research outputs. 3. A research
+compendium should specify the computational environment that was used for the
+original analysis. At its most basic, this could be a plain text file that
+includes a short list of the names and version numbers of the software and other
+critical tools used for the analysis. In more complex approaches, described
+below, the computational environment can be automatically preserved or
+reproduced as well.” <span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
+</blockquote>
 <div class="figure"><span style="display:block;" id="fig:templatedirectory"></span>
 <p class="caption marginnote shownote">
 Figure 2.23: A research group can create a file directory that will serve as a template for all the experiments of a certain type in your laboratory. The template can include templates of files for data recording and for generating reports. To start recording data for a new experiment, a researcher can copy and rename this template directory.
@@ -297,20 +341,9 @@ executes the code and formats the text meant for humans, producing a document in
 an easy-to-read format like Word or PDF.</p>
 <p>Once you have determined the types of files that you’ll normally include in your
 project, you can decide how to organize them into subdirectories in a project
-file directory. As you do this, it will be helpful to have example or template
-files for each file type. For data that you will record yourself, these can be
-the templates that you developed to collect the data in a tidy format (modules
-2.3 through 2.5), while for data from equipment, these can just be one or more
-example files from the equipment that you have collected for a past project.
-Having these example files will help you to develop a template project report
-that can input the type of data that you typically collect for this type of
-project.</p>
-<div class="figure"><span style="display:block;" id="fig:projecttemplatecomplex"></span>
-<p class="caption marginnote shownote">
-Figure 2.24: Example of a more complex project directory structure that could be created, with directories added to store data collected through flow cytometry and single cell RNA sequencing.
-</p>
-<img src="figures/project_template_morecomplex.png" alt="Example of a more complex project directory structure that could be created, with directories added to store data collected through flow cytometry and single cell RNA sequencing." width="\textwidth"  />
-</div>
+file directory. You want to design a structure that will be clear and also
+easy to work within, as you continue work on your project. As Adam Savage
+notes:</p>
 <blockquote>
 <p>“Not all organizational methodologies are created equal. One could be spotlessly
 organized, with everything put away and labeled and color coded, and it could feel
@@ -318,17 +351,151 @@ like a prison with the walls closing in around you. Another could be equally org
 but a bit more open and exposed, and it could untap creative genius like no other space
 you’ve worked in.” <span class="citation">(Savage 2020)</span></p>
 </blockquote>
-<blockquote>
-<p>“What truly unifies my shops, especially as I got more experienced, is that they are
-each built on two, simple philosophical pillars: 1) I want to be able to see everything
-easily; and 2) I want to be able to reach everything easily.” <span class="citation">(Savage 2020)</span></p>
-</blockquote>
+<p>As you do decide how to organize a project directory into subdirectories, it
+will be helpful to have example or template files for each file type. For data
+that you will record yourself, these can be the templates that you developed to
+collect the data in a tidy format (modules 2.3 through 2.5), while for data from
+equipment, these can just be one or more example files from the equipment that
+you have collected for a past project. Having these example files will help you
+to develop a template project report that can input the type of data that you
+typically collect for this type of project.</p>
+<div class="figure"><span style="display:block;" id="fig:projecttemplatecomplex"></span>
+<p class="caption marginnote shownote">
+Figure 2.24: Example of a more complex project directory structure that could be created, with directories added to store data collected through flow cytometry and single cell RNA sequencing.
+</p>
+<img src="figures/project_template_morecomplex.png" alt="Example of a more complex project directory structure that could be created, with directories added to store data collected through flow cytometry and single cell RNA sequencing." width="\textwidth"  />
+</div>
 <p>When you create a project directory template, we recommend that you create a
 subdirectory named something like “reports” to use to store any Rmarkdown report
 files for the project. This organization will make it clear where you’ve stored
 your reports in the project directory. You’ll be able to use file and directory
 pathnames to access all the data in the project, so it will be easy to use the
 study’s data in the report even if they’re in separate subdirectories.</p>
+<p>In general, as you design the structure of subdirectories, as well as pick
+naming conventions for both subdirectories and files, keep in mind that a key
+aim is to create a structure that is general enough that you can use it
+consistently for many projects, but also clear enough that you can quickly
+find things within the directory. Adam Savage describes a similar aim when
+he designs the layout and organization of his shops:</p>
+<blockquote>
+<p>“What truly unifies my shops, especially as I got more experienced, is that they are
+each built on two, simple philosophical pillars: 1) I want to be able to see everything
+easily; and 2) I want to be able to reach everything easily.” <span class="citation">(Savage 2020)</span></p>
+</blockquote>
+<p>As you design, keep in mind that you want to organize and to do it consistently:</p>
+<ul>
+<li>Put all code, data, and output for a project in a single directory</li>
+<li>Organize those directories into subdirectories</li>
+<li>Name those subdirectories consistently</li>
+<li>Use meaningful file names</li>
+<li>Remove unnecessary files</li>
+</ul>
+<p>A number of researchers have put a lot of thought into how to organize project
+directories for scientific research.</p>
+<p>One paper suggests structuring research project
+files as R packages, with the following subdirectories in a project
+directory <span class="citation">(Vuorre and Crump 2021)</span>:</p>
+<ul>
+<li>data: Processed R datasets</li>
+<li>data-raw: Raw starting data, in any machine-readable format</li>
+<li>docs</li>
+<li>experiments: I think this is to write surveys, etc., that would run online?</li>
+<li>man: Help files for the R functions</li>
+<li>manuscript: Paper for the project, starting in a mark-up language and rendering to pdf</li>
+<li>model: Code for running models, can be rendered to pdf or HTML</li>
+<li>posters: Code for creating posters with RMarkdown (posterdown), renders to pdf or HTML</li>
+<li>R: Code for project-specific functions</li>
+<li>slides: Code for creating slides with RMarkdown, render to HTML</li>
+<li>vignettes</li>
+</ul>
+<p>Here is the suggestion from another paper <span class="citation">(Marwick, Boettiger, and Mullen 2018)</span>:</p>
+<blockquote>
+<p>“An ideal package-based file organization for a more complex project would look like this:</p>
+</blockquote>
+<blockquote>
+<p>. A README.md file that describes the overall project and where to get started. It can be helpful to include graphical summary of the interlocking pieces of the project.</p>
+</blockquote>
+<blockquote>
+<p>. Script files with reusable functions go in the R/ directory. If these functions are documented using Roxygen, then the documentation will be automatically generated in a man/ directory.</p>
+</blockquote>
+<blockquote>
+<p>.Raw data files are kept in the data/ directory. If your data are very large, or streaming, an alternative is to include a small-sample dataset so that people can try out the techniques without having to run very expensive computations.</p>
+</blockquote>
+<blockquote>
+<p>. Analysis scripts and reports files go in the analysis/ directory. In many cases it can be useful to give the analysis scripts ascending names, for example 001-load.R, 002-clean.R etc. This kind of file-naming helps with organisation, but it does not capture the full tree of dependencies in the way a Makefile or an R Markdown file does. To manage more complex workflows, the analysis/ directory could include either an R markdown file, a Makefile or a Makefile.R file. These files are important because they control the order of the code execution. In more complex projects, careful use of caching or a Makefile can save time by only running code that has not changed since it was last run.</p>
+</blockquote>
+<blockquote>
+<p>. A DESCRIPTION file in the project root provides formally structured, machine- and human-readable information about the authors, the project license, the software dependencies, and other metadata of the compendium. When a DESCRIPTION file is included along with the other items above, then the compendium is also a formal, installable R package. When your compendium is an R package, you can take advantage of many time-saving tools for package development, testing, and sharing (e.g., the devtools package that we noted above). R’s built-in citation() function can use that metadata, along with references to any publications that result from the project, to provide users with the necessary information to cite your work.</p>
+</blockquote>
+<p>They provide some more details on some subdirectories:</p>
+<blockquote>
+<p>“The R/ directory contains custom functions that are used repeatedly throughout the project. The man/ directory contains the manual (i.e., documentation) for the use of the functions.” <span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
+</blockquote>
+<p>Another project (workflowr) suggests the following subdirectories <span class="citation">(Blischak, Carbonetto, and Stephens 2019)</span>:</p>
+<ul>
+<li>analysis: Rmd files with code to visualize, model, etc.</li>
+<li>code: “intended for longer-running scripts, compiled code (e.g., C++)
+and other source code supporting the data analysis” <span class="citation">(Blischak, Carbonetto, and Stephens 2019)</span></li>
+<li>data: “for storing raw data files” <span class="citation">(Blischak, Carbonetto, and Stephens 2019)</span></li>
+<li>docs: Generated results from Rmd files (HTMLs that can be posted online)</li>
+<li>output: “for saving processed data files and other outputs generated by
+the scripts and analyses” <span class="citation">(Blischak, Carbonetto, and Stephens 2019)</span></li>
+</ul>
+<p>They note that you want a directory setup that is “flexible and configurable”
+<span class="citation">(Blischak, Carbonetto, and Stephens 2019)</span>.</p>
+<p>Another paper notes some of the key characteristics that can help make
+a project reproducible:</p>
+<blockquote>
+<p>“Using this literature as a guideline, we identify several key features of reproducible work. These recommendations are a matter of opinion—due to the lack of agreement on which components of reproducibility are most important, we select those that are mentioned most often, as well as some that are mentioned less but that we view as important.
+1. A well-designed file structure:
+1. a. Separate folders for different file types.
+1. b. No extraneous files.
+1. c. Minimal clutter.
+2. Good documentation:
+2. a. Files are clearly named, preferably in a way where the order in which they should be run is clear.
+2. b. A README is present.
+2. c. Dependencies are noted.
+2. d. Code files contain descriptive comments.
+3. Reproducible file paths:
+3. a. No absolute paths, or paths leading to locations outside of a project’s directory, are used in code—only portable (relative) paths.
+[Others not related to directory structure].” <span class="citation">(Bertin and Baumer 2021)</span></p>
+</blockquote>
+<p>One R package, designed to set-up a project directory structure, suggests
+including a README file not only in the top-level directory, but also in
+each subdirectory <span class="citation">(Johnston 2022)</span>. That project incorporates the following
+subdirectories:</p>
+<ul>
+<li>R, “Should contain the R scripts and functions used for the analysis”</li>
+<li>data, “If relevant, is where the processed (or simulated) data that is
+used for the project as well as the results of the project’s analysis”</li>
+<li>data-raw “If relevant, is where the scripts that process the raw data
+into the usable data are kept and, optionally where the raw data is
+also kept”</li>
+<li>doc, “Should contain the files related to presenting the project’s
+scientific output. Already has the report / manuscript inside”. Can
+include the report, but also slides and other reporting output.</li>
+</ul>
+<blockquote>
+<p>“Within a given project, I use a top-level organization that is logical, with chronological organization at the next level, and logical organization below that. A sample project, called msms, is shown in Figure 1. At the root of most of my projects, I have a data directory for storing fixed data sets, a results directory for tracking computational experiments peformed on that data, a doc directory with one subdirectory per manuscript, and directories such as src for source code and bin for compiled binaries or scripts. Within the data and results directories, it is often tempting to apply a similar, logical organization. For example, you may have two or three data sets against which you plan to benchmark your algorithms, so you could create one directory for each of them under data. In my experience, this approach is risky, because the logical structure of your final set of experiments may look drastically different from the form you initially designed. This is particularly true under the results directory, where you may not even know in advance what kinds of experiments you will need to perform. If you try to give your directories logical names, you may end up with a very long list of directories with names that, six months from now, you no longer know how to interpret.
+Instead, I have found that organizing my data and results directories chronologically makes the most sense. Indeed, with this approach, the distinction between data and results may not be useful. Instead, one could imagine a top-level directory called something like experiments, with subdirectories with names like 2008-12-19. Optionally, the directory name might also include a word or two indicating the topic of the experiment therein. In practice, a single experiment will often require more than one day of work, and so you may end up working a few days or more before creating a new subdirectory. Later, when you or someone else wants to know what you did, the chronological structure of your work will be self-evident.
+Below a single experiment directory, the organization of files and directories is logical, and depends upon the structure of your experiment. In many simple experiments, you can keep all of your files in the current directory. If you start creating lots of files, then you should introduce some directory structure to store files of different types. This directory structure will typically be generated automatically from a driver script, as discussed below.” <span class="citation">(Noble 2009)</span></p>
+</blockquote>
+<p>This project also incorporates “TODO.md” in the top level of the project
+directory, as well as a “DESCRIPTION” file that “includes metadata about
+your project, in a machine readable format, and that also stores a list
+of the R packages your project depends on” <span class="citation">(Johnston 2022)</span>.</p>
+<blockquote>
+<p>“<strong>Centralize the location of the raw data files and automate the derivation of
+intermediate data.</strong> Store the input data on a centralized file server that is
+profesionally backed up. Mark the files as read-only. Have a clear and linear
+workflow for computing the derived data (e.g., normalized, summarized, transformed,
+etc.) from the raw files, and store these in a separate directory. Anticipate that
+this workflow will need to be run several times, and version it. Use the
+<code>BiocFileCache</code> package to mirror these files on your personal computer.
+[footnote: A more basic alternative is the rsync utility. A popular solution offered
+by some organizations is based on ownCloud. Commercial options are Dropbox,
+Google Drive and the like].” <span class="citation">(Holmes and Huber 2018)</span></p>
+</blockquote>
 </div>
 <div id="creating-and-using-a-project-template" class="section level3" number="2.7.2">
 <h3><span class="header-section-number">2.7.2</span> Creating and using a project template</h3>
@@ -385,9 +552,6 @@ reporting tools to separate the steps of data collection and reporting (modules
 Once you have decided on the types of data that you will usually collect for the
 type of study that this template is for, you can use that process to create tidy
 data collection templates for each type of data.</p>
-<blockquote>
-<p>“In parallel with this chronological directory structure, I find it useful to maintain a chronologically organized lab notebook. This is a document that resides in the root of the results directory and that records your progress in detail. Entries in the notebook should be dated, and they should be relatively verbose, with links or embedded images or tables displaying the results of the experiments that you performed. In addition to describing precisely what you did, the notebook should record your observations, conclusions, and ideas for future work. Particularly when an experiment turns out badly, it is tempting simply to link the final plot or table of results and start a new experiment. Before doing that, it is important to document how you know the experiment failed, since the interpretation of your results may not be obvious to someone else reading your lab notebook.” <span class="citation">(Noble 2009)</span></p>
-</blockquote>
 <p>Once you set up this template, a researcher in your group can initialize a project
 for a new experiment by copying the template directory and renaming it to the name
 of the experiment. They can then open the directory and replace any placeholder
@@ -545,173 +709,9 @@ detailed guide to creating your own project template at
 <a href="https://rstudio.github.io/rstudio-extensions/rstudio_project_templates.html" class="uri">https://rstudio.github.io/rstudio-extensions/rstudio_project_templates.html</a>.
 This topic has also been discussed through a short talk at the
 yearly RStudio::conf: <a href="https://rstudio.com/resources/rstudioconf-2020/rproject-templates-to-automate-and-standardize-your-workflow/" class="uri">https://rstudio.com/resources/rstudioconf-2020/rproject-templates-to-automate-and-standardize-your-workflow/</a>.</p>
-<blockquote>
-<p>“RStudio v1.1 introduces support for custom, user-defined project templates.
-Project templates can be used to create new projects with a pre-specified
-structure.” <span class="citation">(<span>“<span>RStudio Project Templates</span>”</span> 2021)</span></p>
-</blockquote>
-<blockquote>
-<p>“R packages are the primary vehicle through which RStudio project templates
-are distributed. Package authors can provide a small bit of metadata describing
-the template functions available in their package—RStudio will discover these
-project templates on start up, and make them available in the New Project…
-dialog.” <span class="citation">(<span>“<span>RStudio Project Templates</span>”</span> 2021)</span></p>
-</blockquote>
-<blockquote>
-<p>“R experts keep all the files associated with a project together—input data,
-R scripts, analytical results, figures. This is such a wise and common practice
-that RStudio has built-in support for this via <strong>projects</strong>.” <span class="citation">(Wickham and Grolemund 2016)</span></p>
-</blockquote>
 </div>
 <div id="discussion-questions" class="section level3" number="2.7.5">
 <h3><span class="header-section-number">2.7.5</span> Discussion questions</h3>
-<hr />
-<blockquote>
-<p>“The goal of a research compendium is to provide a standard and easily
-recognizable way for organizing the digital materials of a project to enable
-others to inspect, reproduce, and extend the research. There are three generic
-principles that define research compendia, independent of particular software
-tools, and disciplinary contexts. 1. A research compendium should organize its
-files according to the prevailing conventions of the scholarly community,
-whether that be an academic discipline or a lab group. Following these
-conventions will help other people recognize the structure of the project, and
-also support tool building which takes advantage of the shared structure. 2. A
-research compendium should maintain a clear separation of data, method, and
-output, while unambiguously expressing the relationship between those three. In
-practice, this means data files must be separate from code files. This is
-important to let others easily identify how the original researcher operated on
-the data to generate the results. Keeping data and method separate treats the
-data as ‘read-only,’ so that the original data are untouched and all
-modifications are transparently documented in the code. The output files should
-be considered as disposable, with a mindset that one can always easily
-regenerate the output using the code and data. The relationship between which
-code operates on which data in which order to produce which outputs must be
-specified as well. In his advice to industry data scientists, Ben Baumer’s
-article in this collection similarly highlights the importance of keeping data
-separate from the presentation of data, or research outputs. 3. A research
-compendium should specify the computational environment that was used for the
-original analysis. At its most basic, this could be a plain text file that
-includes a short list of the names and version numbers of the software and other
-critical tools used for the analysis. In more complex approaches, described
-below, the computational environment can be automatically preserved or
-reproduced as well.” <span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
-</blockquote>
-<blockquote>
-<p>“A third influential approach to organising research compendia can be found in lessons developed by the Reproducible-Research-Curriculum community (Curriculum Citation2016), the Data Carpentry (Teal et al. Citation2015) and Software Carpentry (Wilson Citation2013) organisations, Jenny Bryan’s (Citationn.d.) materials for her STAT545 course, and Karl Broman’s tutorials (Citation2016). These lessons are less prescriptive than Gandrud (Citation2013) and ProjectTemplate, focusing more on high-level guidance similar to the generic principles we described above.”
-<span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
-</blockquote>
-<p>Here are some key goals to consider when designing a template:</p>
-<ul>
-<li>Keeping data collection and analysis separate</li>
-<li>Using simple file formats and tidy structures for recording data whenever
-possible (a larger number of simple files is easier to organize and work
-with than a smaller number of complex files)</li>
-<li>Create reports and analysis that incorporate data from different assays
-for an experiment</li>
-<li>Make it easy to share all project files across the team</li>
-<li>Make it easy to share project files on a public repository</li>
-<li>Make it easy to track changes to files for a project</li>
-</ul>
-<p>To “define the problem” <span class="citation">(Osann, Mayer, and Wiele 2020)</span>:</p>
-<ul>
-<li>Files for the project need to be stored in a single directory</li>
-<li>That directory needs to be easy to understand and navigate</li>
-<li>We want to have the same structure for many different projects,
-so it needs to be flexible enough to accomodate that</li>
-<li>Be able to find things easily</li>
-</ul>
-<p>One paper (which goes even further and suggests structuring research project
-files as R packages) suggests the following subdirectories in a project
-directory <span class="citation">(Vuorre and Crump 2021)</span>:</p>
-<ul>
-<li>data: Processed R datasets</li>
-<li>data-raw: Raw starting data, in any machine-readable format</li>
-<li>docs</li>
-<li>experiments: I think this is to write surveys, etc., that would run online?</li>
-<li>man: Help files for the R functions</li>
-<li>manuscript: Paper for the project, starting in a mark-up language and rendering to pdf</li>
-<li>model: Code for running models, can be rendered to pdf or HTML</li>
-<li>posters: Code for creating posters with RMarkdown (posterdown), renders to pdf or HTML</li>
-<li>R: Code for project-specific functions</li>
-<li>slides: Code for creating slides with RMarkdown, render to HTML</li>
-<li>vignettes</li>
-</ul>
-<p>Here is the suggestion from another paper <span class="citation">(Marwick, Boettiger, and Mullen 2018)</span>:</p>
-<blockquote>
-<p>“An ideal package-based file organization for a more complex project would look like this:</p>
-</blockquote>
-<blockquote>
-<p>. A README.md file that describes the overall project and where to get started. It can be helpful to include graphical summary of the interlocking pieces of the project.</p>
-</blockquote>
-<blockquote>
-<p>. Script files with reusable functions go in the R/ directory. If these functions are documented using Roxygen, then the documentation will be automatically generated in a man/ directory.</p>
-</blockquote>
-<blockquote>
-<p>.Raw data files are kept in the data/ directory. If your data are very large, or streaming, an alternative is to include a small-sample dataset so that people can try out the techniques without having to run very expensive computations.</p>
-</blockquote>
-<blockquote>
-<p>. Analysis scripts and reports files go in the analysis/ directory. In many cases it can be useful to give the analysis scripts ascending names, for example 001-load.R, 002-clean.R etc. This kind of file-naming helps with organisation, but it does not capture the full tree of dependencies in the way a Makefile or an R Markdown file does. To manage more complex workflows, the analysis/ directory could include either an R markdown file, a Makefile or a Makefile.R file. These files are important because they control the order of the code execution. In more complex projects, careful use of caching or a Makefile can save time by only running code that has not changed since it was last run.</p>
-</blockquote>
-<blockquote>
-<p>. A DESCRIPTION file in the project root provides formally structured, machine- and human-readable information about the authors, the project license, the software dependencies, and other metadata of the compendium. When a DESCRIPTION file is included along with the other items above, then the compendium is also a formal, installable R package. When your compendium is an R package, you can take advantage of many time-saving tools for package development, testing, and sharing (e.g., the devtools package that we noted above). R’s built-in citation() function can use that metadata, along with references to any publications that result from the project, to provide users with the necessary information to cite your work.</p>
-</blockquote>
-<p>They provide some more details on some subdirectories:</p>
-<blockquote>
-<p>“The R/ directory contains custom functions that are used repeatedly throughout the project. The man/ directory contains the manual (i.e., documentation) for the use of the functions.” <span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
-</blockquote>
-<p>Another project (workflowr) suggests the following subdirectories <span class="citation">(Blischak, Carbonetto, and Stephens 2019)</span>:</p>
-<ul>
-<li>analysis: Rmd files with code to visualize, model, etc.</li>
-<li>code: “intended for longer-running scripts, compiled code (e.g., C++)
-and other source code supporting the data analysis” <span class="citation">(Blischak, Carbonetto, and Stephens 2019)</span></li>
-<li>data: “for storing raw data files” <span class="citation">(Blischak, Carbonetto, and Stephens 2019)</span></li>
-<li>docs: Generated results from Rmd files (HTMLs that can be posted online)</li>
-<li>output: “for saving processed data files and other outputs generated by
-the scripts and analyses” <span class="citation">(Blischak, Carbonetto, and Stephens 2019)</span></li>
-</ul>
-<p>They note that you want a directory setup that is “flexible and configurable”
-<span class="citation">(Blischak, Carbonetto, and Stephens 2019)</span>.</p>
-<p>Another paper notes some of the key characteristics that can help make
-a project reproducible:</p>
-<blockquote>
-<p>“Using this literature as a guideline, we identify several key features of reproducible work. These recommendations are a matter of opinion—due to the lack of agreement on which components of reproducibility are most important, we select those that are mentioned most often, as well as some that are mentioned less but that we view as important.
-1. A well-designed file structure:
-1. a. Separate folders for different file types.
-1. b. No extraneous files.
-1. c. Minimal clutter.
-2. Good documentation:
-2. a. Files are clearly named, preferably in a way where the order in which they should be run is clear.
-2. b. A README is present.
-2. c. Dependencies are noted.
-2. d. Code files contain descriptive comments.
-3. Reproducible file paths:
-3. a. No absolute paths, or paths leading to locations outside of a project’s directory, are used in code—only portable (relative) paths.
-[Others not related to directory structure].” <span class="citation">(Bertin and Baumer 2021)</span></p>
-</blockquote>
-<p>One R package, designed to set-up a project directory structure, suggests
-including a README file not only in the top-level directory, but also in
-each subdirectory <span class="citation">(Johnston 2022)</span>. That project incorporates the following
-subdirectories:</p>
-<ul>
-<li>R, “Should contain the R scripts and functions used for the analysis”</li>
-<li>data, “If relevant, is where the processed (or simulated) data that is
-used for the project as well as the results of the project’s analysis”</li>
-<li>data-raw “If relevant, is where the scripts that process the raw data
-into the usable data are kept and, optionally where the raw data is
-also kept”</li>
-<li>doc, “Should contain the files related to presenting the project’s
-scientific output. Already has the report / manuscript inside”. Can
-include the report, but also slides and other reporting output.</li>
-</ul>
-<blockquote>
-<p>“Within a given project, I use a top-level organization that is logical, with chronological organization at the next level, and logical organization below that. A sample project, called msms, is shown in Figure 1. At the root of most of my projects, I have a data directory for storing fixed data sets, a results directory for tracking computational experiments peformed on that data, a doc directory with one subdirectory per manuscript, and directories such as src for source code and bin for compiled binaries or scripts. Within the data and results directories, it is often tempting to apply a similar, logical organization. For example, you may have two or three data sets against which you plan to benchmark your algorithms, so you could create one directory for each of them under data. In my experience, this approach is risky, because the logical structure of your final set of experiments may look drastically different from the form you initially designed. This is particularly true under the results directory, where you may not even know in advance what kinds of experiments you will need to perform. If you try to give your directories logical names, you may end up with a very long list of directories with names that, six months from now, you no longer know how to interpret.
-Instead, I have found that organizing my data and results directories chronologically makes the most sense. Indeed, with this approach, the distinction between data and results may not be useful. Instead, one could imagine a top-level directory called something like experiments, with subdirectories with names like 2008-12-19. Optionally, the directory name might also include a word or two indicating the topic of the experiment therein. In practice, a single experiment will often require more than one day of work, and so you may end up working a few days or more before creating a new subdirectory. Later, when you or someone else wants to know what you did, the chronological structure of your work will be self-evident.
-Below a single experiment directory, the organization of files and directories is logical, and depends upon the structure of your experiment. In many simple experiments, you can keep all of your files in the current directory. If you start creating lots of files, then you should introduce some directory structure to store files of different types. This directory structure will typically be generated automatically from a driver script, as discussed below.” <span class="citation">(Noble 2009)</span></p>
-</blockquote>
-<p>This project also incorporates “TODO.md” in the top level of the project
-directory, as well as a “DESCRIPTION” file that “includes metadata about
-your project, in a machine readable format, and that also stores a list
-of the R packages your project depends on” <span class="citation">(Johnston 2022)</span>.</p>
 
 </div>
 </div>

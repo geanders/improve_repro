@@ -5768,3 +5768,643 @@ person can only see enough to connect, and so on. This results in writing or a
 drawing that is connected across the different parts, but can be completely
 independent within each part (and unrelated to other parts). Collaborative, 
 combines different parts made by different people.]
+
+---------------------------------------------------------------------------
+
+You can think of *data structures* as containers that hold your data in R, 
+holding it in a way that lets you access and work with the data. 
+
+
+Data structures, on the other hand, allow you to keep together, as well as
+refer to, data that you have loaded into R. A single object can contain 
+pieces of data with different data types, and the object's data structure
+defines how all the pieces of data in the object are organized and how you 
+can access and work with the data in the structure. For example, one of the
+simplest data structures in R is the vector---this data structure requires
+that all the data stored in it have the same data type (e.g., all be 
+numeric), and it holds together a one-dimensional string of pieces of data
+of that type. For example, a vector of the numbers one to five would be 
+the string of those numbers---1, 2, 3, 4, 5---while a 
+vector of the letters a to e would be the string of data with the "character"
+type---"a", "b", "c", "d", "e". 
+
+A second key data structure in R, the 
+dataframe, provides a structure that stores one or more of these vectors, 
+and so it allows you to store data with different types in the same object. 
+For example, you could create an object with a dataframe structure that 
+contains one column with a vector of the numbers one to five and another 
+with the letters a through e. This structure would look something like this:
+
+```{r echo = FALSE}
+letters_numbers <- data.frame(numbers = 1:5, letters = c("a", "b", "c", "d", "e"))
+letters_numbers
+```
+
+While the dataframe structure can combine vectors with data in different types
+(in the example, the `numbers` column has a numeric data type and the `letters`
+column has a character data type), it does have a rule for combining different
+vectors. They all must be the same length. This means that the dataframe 
+structure is always rectangular, with each column having the same number of 
+rows. In the example above, both the `numbers` and `letters` columns are 
+vectors with five values, so the dataframe ends up having two columns and 
+five rows. 
+
+The two-dimensional structure of a dataframe keeps the values
+measured for each observation lined up with each other, and lets you keep them
+aligned as you work with the data. You could also store data for each value as
+separate objects, in one-dimensional vectors, which you can visualize as strings
+of values of the same data type, like the dates that each observation was made,
+or the weight of each study subject. However, when the data is in separate
+vectors, it is easy to make coding mistakes, and coding is often less efficient.
+If you want to remove one observation, for example, because you find it is a
+duplicate, you would need to carefully make sure you remove it correctly from
+each vector. When data are stored in a dataframe, you can remove the row for
+that observation with one command, and you can be sure that you've removed the
+value you meant to from each of the measured values. 
+
+**"Tidy" data and data structures**
+
+In this module, we aim to introduce you to something called the "tidyverse" 
+approach to programming in R. This is a powerful approach, and we will 
+detail it more extensively in the next section. Here, we want to introduce 
+a key element of the approach---it is based on storing data in a single
+data structure throughout your pipeline of code. Specifically, it focuses
+on tools and techniques that work when you use a dataframe structure to 
+store data as you work with the data, with a set of functions that both 
+input and output objects that use the dataframe structure (as well as 
+functions that input and output vectors, which are used to perform 
+operations on the data in the columns within the dataframe---if you recall, 
+each column in a dataframe has a vector data structure). 
+
+The tidyverse approach requires one step beyond the data structure, and that
+is how the data are arranged within that structure. You can store data in 
+a dataframe structure as long as you can put it in two dimensions (rows and 
+columns), with the same type of data in each column. With the same set of 
+data, there are often many different arrangements you could make that satisfy 
+these constraints. The "tidy" part of the "tidy data" structure---which is 
+at the heart of the tidyverse approach---are a set of standards describing
+exactly how you arrange the data within the dataframe structure. 
+
+The R object class---dataframe, and more specifically, tibble---of the standard
+format for data for a tidyverse approach is just the first part of the standard 
+data format for the tidyverse approach. The second part of the standard format is 
+how you organize your data in this format. To easily work with tidyverse functions, 
+you'll want to make sure that your data is stored within that dataframe following
+"tidy" data principals. These are fully described in an earlier module in this
+book [which module]. If you use this data format to initially collect your
+data, as described in an earlier module, you will find it very easy to read the
+data into R and work within the tidyverse approach. When working with larger and
+more complex data collected from laboratory equipment, you may find you need to 
+do some preprocessing of the data using an object-oriented approach before you 
+can move the data into this tidy format, but at that point, you can continue with
+analysis and visualization of your data using a tidyverse approach. 
+
+**The tibble data structure**
+
+As a final note, there is a specialized data structure that is often 
+associated with the tidyverse approach. It is called the "tibble", and it is 
+a specialized version of the dataframe. What do we mean by it being a 
+"specialized" version of a more common data structure? This means that there 
+are a few functions that will give different results if the data are stored
+in a tibble structure rather than the more generic dataframe structure. 
+However, if a function does not have a specialized method for the tibble 
+structure (and most functions don't), then the function will treat the object
+as a regular data frame. Some of the few functions that have specialized
+methods for tibbles include the `print` function, which is also the default
+function that is run if you just type an object's name at the console and 
+press "Enter". The `print` function, when called with an object in the tibble
+structure, will only print out the first few rows (whereas, with a generic 
+dataframe, it will print out all rows, sometimes resulting in a very long
+print-out). Similarly, if there are many columns, it will only print out 
+a certain number and just provide summaries for the rest (again, with a 
+generic dataframe, everything would be printed). It also provides some nice
+summaries of the dataframe as a whole, as well as of the type of data in each 
+column. Overall, the `print` method for a tibble structure provides a clearer
+and typically more useful overview of the data in the object than does the
+`print` method for a generic dataframe structure. All this being said, as 
+you first begin to work in the tidyverse approach, you often may not notice
+whether your data is stored in a more generic dataframe structure or the 
+more specialized tibble version, and it often won't matter much which of the
+two structures is being used, since the tibble structure in most cases 
+(i.e., for most functions) is just treated as the more generic dataframe
+structure. 
+
+Sometimes, you'll see that data in a tidyverse approach are stored in a special
+type of dataframe called a "tibble"---this isn't very different from a
+dataframe, and in fact is a special type of dataframe. It's only differences in
+practice are that it has a slightly different `print` method. The `print` method
+is the method that's run, by default, when you just type the R object's name 
+at the console. A tibble prints more nicely than a basic dataframe. By default, 
+it will only print the first few lines. By contrast, a dataframe will, by default, 
+print everything---if you have a lot of data, this can create an overwhelming
+amount of output when you just want to check out what the data looks like. The
+printout of a tibble will also include some interesting annotations to help you 
+see what's in the data, including the dimensions of the full dataframe and the 
+data type of each column in the data. 
+
+Sometimes, you'll see that data in a tidyverse approach are stored in a special
+type of dataframe called a "tibble"---this isn't very different from a
+dataframe, and in fact is a special type of dataframe. It's only differences in
+practice are that it has a slightly different `print` method. The `print` method
+is the method that's run, by default, when you just type the R object's name 
+at the console. A tibble prints more nicely than a basic dataframe. By default, 
+it will only print the first few lines. By contrast, a dataframe will, by default, 
+print everything---if you have a lot of data, this can create an overwhelming
+amount of output when you just want to check out what the data looks like. The
+printout of a tibble will also include some interesting annotations to help you 
+see what's in the data, including the dimensions of the full dataframe and the 
+data type of each column in the data. 
+
+> "In parallel with this chronological directory structure, I find it useful to maintain a chronologically organized lab notebook. This is a document that resides in the root of the results directory and that records your progress in detail. Entries in the notebook should be dated, and they should be relatively verbose, with links or embedded images or tables displaying the results of the experiments that you performed. In addition to describing precisely what you did, the notebook should record your observations, conclusions, and ideas for future work. Particularly when an experiment turns out badly, it is tempting simply to link the final plot or table of results and start a new experiment. Before doing that, it is important to document how you know the experiment failed, since the interpretation of your results may not be obvious to someone else reading your lab notebook." [@noble2009quick]
+
+---------------------------------------------------------------------------------
+
+
+It can be helpful to walk through some examples some of these preprocessing
+steps, in the context of specific types of biomedical experiments. In this
+section, we'll give an overview of the types of preprocessing steps you might 
+need in two example experiments. In later modules, we'll go more in depth
+into how this could be done in coded scripts using open-source software. 
+
+**Simpler example: Measuring bacterial growth rates**
+
+The first example is when you have collected data to measure bacterial 
+growth rates. For example, you may be interested in how different the 
+growth rate of *Mycobacterium tuberculosis* is in an environment with 
+ample oxygen compared to low-oxygen environments, as this may have 
+important implications for how fast the bacteria grow in certain parts
+of the human body. You can collect this data by ..., saving data on 
+... in a spreadsheet or other file. Once you have collected the 
+data, you would then need to take a set of steps to preprocess it
+and then analyze it, to allow you to answer your original research 
+question (how much the growth rate differs in the low-oxygen 
+environment). 
+
+[Module 2.5]
+
+Preprocessing and analysis steps: 
+
+- Input data from spreadsheet in which it was recorded in the laboratory
+(preprocessing)
+- For each sampling time, use the date and time of the sampling to calculate
+the time since the start of the experiment (preprocessing)
+- Identify the period of exponential growth (preprocessing)
+- Calculate growth rate for each sample during this period of exponential 
+growth (analysis)
+
+**More complex example: Characterizing lung cell populations**
+
+The second example is when you have collected single-cell RNA-seq
+data from a sample with the aim of characterizing the cell populations
+in the animal's lungs.
+
+One example of a pipeline of pre-processing and analysis might include
+[@luecken2019current]:
+
+- Read in raw sequencing data 
+- Generate count matrices from the raw sequencing data [what count matrices are]
+- Quality control to identify and remove low quality cells from further 
+analysis, as well as to remove some transcripts (e.g., those that appear in 
+only a few cells)
+- Normalization to allow meaningful comparisons across cells, accounting for differences across cells in capture efficiency, amplification (reverse transcription?), sequencing, etc. This may involve processes that assume the 
+number of mRNA molecules in each cell is the same, or alternatively that 
+half or fewer of the genes are differentially expressed across cells.
+- Batch collection
+- Dimension reduction, to focus only on highly variable genes and exclude
+from further analysis genes that have a similar expression across cells
+(e.g., "housekeeping" genes)
+- Clustering and cluster annotation, to identify different cell populations
+- Differential expression analysis, to determine which genes have different
+levels of expression in different cell populations [?]
+- Comparing cell populations across samples from different conditions (e.g., 
+treated versus control)
+
+
+
+
+### Example dataset
+
+In this module and several of the following modules, we'll use two example 
+datasets that are based on real data collected from an immunology experiment. 
+These data will help us to describe and motivate the steps of pre-processing
+data using code scripts, as well as explaining the use of tidyverse tools
+and the discussion of complex versus tidy data formats in R. 
+
+The first dataset was introduced in module [x]. ...
+
+The second dataset have not yet been introduced. They come from an experiment to
+test a novel vaccine for COVID-19, and we'll be focusing on data collected
+during this experiment that measured single-cell transcriptomics---in other
+words, it characterizes the levels of messenger RNA with each of thousands of
+cells collected from animals in different experimental groups. In this section,
+we'll give you more details to help you understand this example dataset, as well
+as instructions on how to download the data on your own computer, if you would
+like to follow along with examples.
+
+The results of this experiment have been published [ref], and so you can read
+the full details in the published paper, but we'll provide an overview here.
+This experiment tested a potential vaccine called SolaVAX. There are numerous
+ways to make vaccines; this one uses an attenuated (in other words, weakened)
+version of the full virus, and it is novel in that it attenuates the virus using
+a light-activated ... (hence the "Sola" in "SolaVAX"). 
+
+This experiment tested how well this vaccine worked, not only by itself, but
+also when it was given in conjunction with something called an adjuvant. In the
+context of vaccines, an adjuvant is a substance that is meant to shape the
+body's immune response as it "learns" from a vaccine. For example, an adjuvant
+can be something as simple as a substance that triggers a larger immune response
+than the vaccine by itself, to ensure that the immune system responds at a
+sufficient scale to the core components of the vaccine---that is, the components
+of the vaccine that the immune system needs to recognize in the future to mount
+a fast defense against that pathogen. This experiment tested two adjuvants
+in conjunction with the SolaVAX vaccine, both of which the researchers were 
+hoping might help in switching which type of T helper immune cells would 
+drive the later response to COVID after vaccination. Specifically, they 
+hypothesized that the adjuvants would bring about a later response that was
+driven more by a type of T helper cell called Th2 rather than one called 
+Th1. [Why this would be good.]
+
+To run the experiment, the researchers used Golden Hamsters as a model 
+animal. [Why?] They created four experimental groups: one control group, 
+one group vaccinated with only SolaVAX, one vaccinated with SolaVAX plus
+an adjuvant called [x], and one vaccinated with SolaVAX plus an adjuvant
+called [y]. There were eight hamsters in each of these groups, and these
+were further divided into two groups of four, so that the vaccine could 
+be tested using two routes of administration: [the two routes]. 
+
+The hamsters were vaccinated, and then after a period of time, they were
+challenged with COVID. This allowed the researchers to see how successful 
+each vaccination type was, in terms of how well the animals could limit
+the replication of COVID in their bodies, and also to explore how the 
+animals' immune systems responded as they tried to limit COVID replication
+after exposure. Therefore, this experiment could help not only in seeing
+which vaccine strategies were successful, but also to explore how and why 
+they did or didn't work, at the level of the immune response. 
+
+[x] days after the animals were exposed to COVID, they were sacrificed, 
+and the researchers took samples from several areas to use to measure
+levels of COVID as well as the immune response to the challenge. In tissue
+samples from the lungs of the animals, they measured things like the 
+[viral numbers?] to see the extent of COVID replication in that animal, 
+and [histopathology], to see the extent of damage that the infection had
+done to the animal's lungs. If the vaccine were successful, it would have
+spurred a fast and powerful immune response, which you'd see through 
+lower [viral numbers] and less damage to the animal's lungs.
+They also used part of the lung sample to measure immune cell populations.
+These measures can help to determine things like whether the immune 
+response was driven more by the innate immune response (which you'd 
+expect in an unvaccinated animal) or the adaptive immune response 
+(which you hope to see in a vaccinated animal, as a sign that the vaccine
+helped in allowing for the immediate immune response to be much more 
+specific than that achieved by the innate immune system). 
+
+Out of the many types of data that were collected for this experiment, we'll
+focus on one type in our examples in this and following modules---data that were
+collected that measured the single-cell transcriptomics of samples collected
+from the lungs of each animal. While every cell in a body has the same genome,
+the cells differ in which of those genes they express at a given time. The
+expression of different genes in the genome can be measured based on the number
+of messenger RNAs that are in the cell from each gene. This is what single cell
+RNA sequencing aims to measure---the number of mRNAs from each of a large number
+of genes, measuring the number in each cell in the sample separately. Because
+different types of cells express different patterns and levels of genes, these
+data can be used to help sort the cells into different types. For example, the
+data can be used to help identify cells that are from the innate immune system
+versus those that are hallmarks of an adaptive immune response. The data can
+also help in categorizing cells within very specific cell categories---for
+example, identifying Th1 versus Th2 cells out of the group of helper T cells,
+which can help to address the hypothesis that these researchers had about how
+the adjuvants might work. Finally, the data can help to identify how certain
+types of cells work differently under different experimental conditions. For
+example, do adaptive immune cells tend to express different genes (or different
+levels of a gene) when the vaccination included an adjuvant versus when only the
+vaccine was given?
+
+These single cell RNA sequencing data were shared by the researchers through 
+one of NIH's [?] databases for biological data. To get a copy of these 
+data, go to the study's page on the Gene Expression Omnibus (GEO) database: 
+https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE165190 (you can also 
+search for the study on the database by its accession number, GSE165190). 
+This page includes data from single cell
+RNA sequencing for twelve samples from this study, three from each of the 
+experimental conditions. You can download data for all the samples by clicking
+the link on the page to download the file named "GSE165190_RAW.tar". This is 
+a compressed file, so once you download it, you will need to uncompress it, 
+which will give you a folder with a number of data files. On a Mac, you can 
+decompress the file by double-clicking on the file named "GSE165190_RAW.tar"
+in the Finder program. On a Windows computer, [how to do it. From R?]
+
+Among the data files, there are three files for each sample. One includes
+"barcodes" in the file name, one includes "features" in the file name, and one
+includes "matrix" in the file name. For each sample, the "barcodes" file gives
+..., the "features" file gives ..., and the "matrix" file gives ... . 
+
+[More about working with these files?]
+
+Collectively, these data provide a count that is related to the number of 
+messanger RNA particles [?] from each of approximately [x] genes within each
+cell in the sample. These counts can be used to group the cells into 
+groups of similar cell types, identify those cell types, and explore how 
+the gene expression within a cell type varies across experimental conditions. 
+
+These data can therefore be used to answer interesting scientific questions.
+However, before they can, it is important to do some pre-processing on the raw
+data. This preprocessing serves several purposes. First, there are patterns
+in the data that can be introduced as a result of the data collection process. 
+These need to be corrected or otherwise accounted for to move the data into
+a format where it can be meaningfully compared, for example across different
+cells in a sample or across different samples. Second, some of the pre-processing
+will help identify and resolve any issues related to quality control. For 
+example, while the process of collecting these data will normally result in 
+isolating single cells, in some cases the values for a cell might be for a 
+poor-quality cell (for example, a dying cell) or might be a case where two 
+cells were captured together [true for this platform?]. Pre-processing can 
+help to identify and exclude these low-quality data points, so that the 
+analysis can focus on the higher-quality data collected for the sample. 
+Finally, some of the pre-processing will help us to prepare the data to be
+used in analysis algorithms. For example, since the data is high dimensional
+(that is, measurements are included for many genes [?]), we will often include
+a step of dimension reduction in our analysis, to help pull out key patterns
+in the data. Many of the dimension reduction algorithms will need to data to 
+be scaled, so that the mean value of each measurement in a type of measurement
+has an average of zero and a standard deviation [? variance?] of one. 
+
+> "As a proxy for studying the proteome, many researchers have turned to 
+protein-encoding, mRNA molecules (collectively termed the 'transcriptome'), 
+whose expression correlates well with cellular traits and changes in 
+cellular state. Transcriptomics was initially conducted on ensembles of 
+millions of cells, firstly with hybridization-based microarrays, and later
+with next-generation sequencing (NGS) techniques referred to as RNA-seq. 
+RNA-seq on pooled cells has yielded a vast amount of information that 
+continues to fuel discovery and innovation in biomedicine. ... 
+Nevertheless, the averaging that occurs in pooling large numbers of 
+cells does not allow detailed assessment of the fundamental biological 
+unit---the cell---or the individual nuclei that package the genome.
+Since the first scRNA-seq study was published in 2009, there has been 
+increasing interest in conducting such studies. Perhaps one of the most
+compelling reasons for doing so is that scRNA-seq can describe RNA molecules
+in individual cells with high resolution and on a genomic scale." 
+[@haque2017practical]
+
+> "scRNA-seq permits comparison of the transcriptomes of individual cells.
+Therefore, a major use of scRNA-seq has been to assess transcriptional
+similarities and differences within a population of cells, with early reports
+revealing unappreciated levels of heterogeneity... Thus, heterogeneity analysis
+remains a core reason for embarking on scRNA-seq studies. Similarly, assessments
+of transcriptional differences between individual cells have been used to
+identiy rare cell populations that would otherwise go undetected in analyses of
+pooled cells, for example malignant tumour cells within a seemingly homogeneous
+group. ... In addition to resolving cellular heterogeneity, scRNA-seq can also
+provide important informaiton about fundamental characteristics of gene
+expression... Importantly, studying gene co-expression patterns at the
+single-cell level might allow identification of co-regulated gene modules and
+even inference of gene-regulatory networks that underlie functional
+heterogeneity and cell-type specification." [@haque2017practical]
+
+> "Single-cell RNA sequencing (scRNA-seq) is a recent and powerful technology 
+developed as an alternative to previously existing bulk RNA sequencing methods. 
+Bulk sequencing methods analyzed the average genetic content for individual 
+genes across a large population of input cells within a sample (e.g., a tissue), 
+potentially obscuring transcriptional features and other differences among 
+individual cells. Conversely, scRNA-seq is able to discern such heterogeneous properties
+within a sample and has great potential to reveal novel subpopulations and 
+cell types." [@lytal2020normalization]
+
+> "Single-cell RNA sequencing is widely used for high-resolution gene expression 
+studies investigating the behavior of individual cells." [@mccarthy2017scater]
+
+> "While scRNA-seq data can provide substantial biological insights, the complexity
+and noise of the data is also much greater than that of conventional bulk RNA-seq.
+Thus, rigorous analysis of scRNA-seq data requires careful quality control to remove
+low-quality cells and genes, as well as normalization to adjust for biases and 
+batch effects in the expression data. Failure to carry out these procedures 
+correctly is likely to compromise the validity of all downstream analyses."
+[@mccarthy2017scater]
+
+> "Conventional 'bulk' methods of RNA sequencing (RNA-seq) process hundreds of
+thousands of cells at a time and average out the differences. But no two cells
+are exactly alike, and scRNA-seq can reveal the subtle changes that make each 
+one unique. It can even reveal entirely new cell types." [@perkel2017single]
+
+> "It's much more difficult to manipulate individual cells than large populations, 
+and because each cell yields only a tiny amount of RNA, there's no room for 
+error. Another problem is analyzing the enormous amounts of data that result---not
+least because the tools can be unintuitive." [@perkel2017single]
+
+### Scripting preprocessing tasks
+
+Code scripts can be developed for any open-source scripting languages, including
+Python, R, and Julia. These can be embedded in or called from literate programming
+documents, like RMarkdown and Julia, which are described in other modules. The 
+word "script" is a good one here---it really is as if you are providing the script
+for a play. In an interactive mode, you can send requests to run in the programming
+language step by step using a console, while in a script you provide the whole list
+of all of your "lines" in that conversation, and the programming language will run 
+them all in order without you needing to interact from the console. 
+
+For preprocessing the data, the script will have a few predictible parts. First,
+you'll need to read the data in. There are different functions that can be used
+to read in data from different file formats. For example, data that is stored in
+an Excel spreadsheet can be loaded into R using functions in a package called
+`readxl`. Data that is stored in a plain-text delimited format (like a csv file)
+can be loaded into R using functions in the `readr` package.
+
+When preprocessing data from complex equipment, you can determine how to read the
+data into R by investigating the file type that is output by the equipment. 
+Fortunately, many types of scientific equipment follow standardized file formats. 
+This means that open-source developers can develop a single package that can 
+load data from equipment from multiple manufacturers. For example, flow cytometry 
+data is often stored in [file format]. Other biological datasets use file 
+formats that are appropriate for very large datasets and that allow R to work 
+with parts of the data at a time, without loading the full data in. [netCDF?]
+In these cases, the first step in a script might not be to load in all the data, 
+but rather to provide R with a connection to the larger datafile, so it can 
+pull in data as it needs it. 
+
+Once the data is loaded or linked in the script, the script can proceed through
+steps required to preprocess this data. These steps will often depend on the type
+of data, especially the methods and equipment used to collect it. For example, for
+mass spectrometry data, these steps will include ... . For flow cytometry data, 
+these steps would include ... . 
+
+The functions for doing these steps will often come from extensions that
+different researchers have made for R. Base R is a simpler collection of data
+processing and statistics tools, but the open-source framework of R has allowed
+users to make and share their own extensions. In R, these are often referred to
+as "packages". Many of these are shared through the Comprehensive R Archive
+Network (CRAN), and packages on CRAN can be directly installed using the
+`install.packages` function in R, along with the package's names. While CRAN
+is the common spot for sharing general-purpose packages, there is a specialized
+repository that is used for many genomics and other biology-related R packages
+called Bioconductor. These packages can also be easily installed through a call 
+in R, but in this case it requires an installation function from the `BiocManager`
+package. Many of the functions that are useful for preprocessing biological 
+data from laboratory experiments are available through Bioconductor.
+
+Table [x] includes some of the primary R packages on Bioconductor that can be
+used in preprocessing different types of biological data. There are often
+multiple choices, developed by different research groups, but this list provides
+a starting point of several of the standard choices that you may want to
+consider as you start developing code.
+
+Much of the initial preprocessing might use very specific functions that are
+tailored to the format that the data takes once it is loaded. Later in the
+script, there will often be a transfer to using more general-purpose tools in
+that coding language. For example, once data is stored in a "dataframe" format
+in R, it can be processed using a powerful set of general purpose tools
+collected in a suite of packages called the "tidyverse". This set of packages
+includes functions for filtering to specific subsets of the data, merging
+separate datasets, adding new measurements for each observation that are
+functions of the initial measurements, summarizing, and visualizing. The
+tidyverse suite of R tools is very popular in general R use and is widely
+taught, including through numerous free online resources. By moving from
+specific tools to these more general tools as soon as possible in the script, a
+researcher can focus his or her time in learning these general purpose tools
+well, as these can be widely applied across many types of data.
+
+By the end of the script, data will be in a format that has extracted
+biologically relevant measurements. Ideally, this data will be in a general
+purpose format, like a dataframe, to make it easier to work with using general
+purpose tools in the scripting language when the data is used in further data
+analysis or to create figures for reports, papers, and presentations. Often, you 
+will want to save a version of this preprocessed version of the data in your 
+project files, and so the last step of the script might be to write out the 
+cleaned data in a file that can be loaded in later scripts for analysis and 
+visualization. This is especially useful if these data preprocessing steps are 
+time consuming, as is often the case for the large raw datasets output by 
+laboratory equipment like flow cytometers and mass spectrometers.
+
+Figure [x] gives an example of a data preprocessing script, highlighting these
+different common areas that often show up in these scripts.
+
+[Some data may be incorporated into the preprocessing by downloading it from 
+databases or other online sources. These data downloads can be automated and 
+recorded by using scripted code for the download in many cases, as long as the 
+database or online source offers web services or another API for this type of
+scripted data access. In this case, you can incorporate the script in a 
+RMarkdown document to record the date the data was downloaded, as well as the
+code used to download it. R is able to run system calls, and one of these
+will provide the current date, so this can be included in an RMarkdown file
+to record the date the file is run. Further, there may be a call that can 
+be made to the online data source's API that returns the working version of 
+the database or source, and if so this can also be included in the RMarkdown
+code used to access the data.]
+
+RMarkdown files can be used to combine both code and more manual document
+(for example, a record of which collaborator provided each type of data file).
+While traditionally this more manual documentation was recommended to be 
+recorded in plain-text README files in a project's directory and subdirectories
+[@buffalo2015bioinformatics], RMarkdown files provide some advantages over
+this traditional approach. First, RMarkdown files are themselves in plain
+text, and so they offer the advantages of simple plain text documentation 
+files (e.g., ones never rendered to another format) in terms of being able
+to use script-based tools to search them. Further, they can be rendered into
+attractive formatted documents that may be easier to share with project
+team members who do not code. 
+
+[Example of a function: recipe for making a vinaigrette. There will be a 
+"basic" way that the function can run, which uses its default parameters. 
+However, you can also specify and customize certain inputs (for example, 
+using walnut oil instead of olive oil, or adding mustard) to tweak the 
+recipe in slight ways each time you use it, and to get customized outputs.]
+
+[History of the mouse---enable GUIs, before everything was from the terminal.]
+
+> For bioinformatics, "all too often the software is developed without
+thought toward future interoperability with other software products. As a 
+result, the bioinformatics software landscape is currently characterized
+by fragmentation and silos, in which each research group develops and uses
+only the tools created within their lab." [@barga2011bioinformatics]
+
+> "The group also noted the lack of agility. Although they may be aware of
+a new or better algorithm they cannot easily integrate it into their 
+analysis pipelines given the lack of standards across both data formats
+and tools. It typically requires a complete rewrite of the code in order
+to take advntge of a new technique or algorithm, requiring time and often
+funding to hire developers." [@barga2011bioinformatics]
+
+> "*Software* is the general term for sequences of instructions that make a computer
+do something useful. It's 'soft' in contrast with 'hard' hardware, because it's 
+intangible, not easy to put your hands on. Hardware is quite tangible: if you drop
+a computer on your foot, you'll notice. Not true for software." [@kernighan2011d]
+
+
+
+> "Modern system increasingly use general purpose hardware---a processor, some memory, 
+and connections to the environment---and create specific behaviors by software. The
+conventional wisdom is that software is cheaper, more flexible, and easier to change than
+hardware is (especially once some device has left the factory)." [@kernighan2011d]
+
+
+> "An algorithm is a precise and unambiguous recipe. It's expressed in terms of a fixed 
+set of basic operations whose meanings are completely known and specified; it spells out
+a sequence of steps using those operations, with all possible situations covered; it's 
+guaranteed to stop eventually. On the other hand, a *program* is the opposite of 
+abstract---it's a concrete statement of the steps that a real computer must perform to 
+accomplish a task. The distinction between an algorithm and a program is like the difference
+between a blueprint and a building; one is an idealization and the other is the real thing."
+[@kernighan2011d]
+
+> "One way to view a program is as one or more algorithms expressed in a form that a computer
+can process directly. A program has to worry about practical problems like inadequate memory, 
+limited processor speed, invalid and even malicious input data, faulty hardware, broken 
+network connections, and (in the background and often exacerbating the other problems)
+human frailty. So if an algorithm is an idealized recipe, a program is the instructions for 
+a cooking robot preparing a month of meals for an army while under enemy attack." [@kernighan2011d]
+
+
+
+
+> "A function has a name and a set of input data values that it needs to do its job; it does 
+a computation and returns a result to the part of the program that called it. ... Functions
+make it possible to create a program by building on components that have been created separately
+and can be used as necessary by all programmers. A collection of related functions is usually 
+called a *library*. ... The services that a function library provides are described to programmers
+in terms of an *Application Programming Interface*, or *API*, which lists the functions, what
+they do, how to use them in a program, what input data they require, and what values they 
+produce. The API might also describe data structures---the organization of data that is passed
+back and forth---and various other bits and pieces that all together define what a programmer
+has to do to request services and what will be computed as a result. This specification must
+be detailed and precise, since in the end the program will be interpreted by a dumb literal 
+computer, not by a friendly and accomodating human." [@kernighan2011d]
+
+> "An *operating system* is the software underpinning that manages the hardware of a 
+computer and makes it possible to run other programs, which are called *applications*.
+... It's a clumsy but standard terminology for programs that are more or less self-contained
+and focused on a single task." [@kernighan2011d]
+
+> "Programming languages share certain basic ideas, since they are all notations for spelling
+out a computation as a sequence of steps. Every programming language thus will provide ways
+to get input data upon which to compute; do arithmetic; store and retrieve intermediate 
+values as computation proceeds; display results along the way; decide how to proceed on the basis 
+of previous computations; and save results when the computation is finished. Languages have
+*syntax*, that is, rules that define what is grammatically legal and what is not. 
+Programming languages are picky on the grammatical side: you have to say it right or there
+will be a complaint. Languages also have *semantics*, that is, a defined meaning for every 
+construction in the language." [@kernighan2011d]
+
+> "In programming, a *library* is a collection of related pieces of code. A library typically 
+includes the code in compiled form, along with needed source code declarations [for C++]. 
+Libraries can include stand-alone functions, classes, type declarations, or anything else that
+can appear in code." [@spraul2012think]
+
+> "It's a good idea to avoid referring to specific dataframe rows in your analysis code. 
+This would produce code fragile to row permutations or new rows that may be generated
+by rerunning a previous analysis step. In every case in which you might need to refer
+to a specific row, it's avoidable by using subsetting... Similarly, it's a good idea
+to refer to columns by their column name, *not* their position. While columns may be 
+less likely to change across dataset versions than rows, it still happens. Column names
+are more specific than positions, and also lead to more readable code."
+[@buffalo2015bioinformatics]
+
+
+> "One of the fundamental contributions of the Unix system [is] the idea of a *pipe*.
+A pipe is a way to connect the output of one program to the input of another program
+without any temporary file; a *pipeline* is a connection of two or more programs through
+pipes. ... Any program that reads from a terminal can read from a pipe instead; any program
+that writes on the terminal can write to a pipe. ... The programs in a pipeline actually 
+run at the same time, not one after another. This means that the programs in a pipeline
+can be interactive; the kernel looks after whatever scheduling and synchronization is needed
+to make it all work. As you probably suspect by now, the shell arranges things when you
+ask for a pipe; the individual programs are oblivious to the redirection." [@kernighan1984unix]
+

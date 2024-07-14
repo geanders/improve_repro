@@ -23,6 +23,250 @@ there are approachable techniques. If you already know how to code, these tips
 and guidelines can help in improving that code and give you some new directions
 in how to code efficiently and reproducibly.
 
+**Write code for computers, rewrite it for humans**
+
+Even when code for a project is available, it can be hard to understand and 
+reproduce the analysis. One common culprit is that the code isn't written for
+humans to read. One way to improve the reproducibility of your code, therefore, 
+is to make sure you edit it so that it's clear for humans, not just computers. 
+
+During World War I and World War II, the British and US used a special type of
+camouflage on some of their ships called "dazzle camouflage". This type of 
+camouflage uses large geometric shapes, often in black and white, and it makes
+the ships look a bit like zebras. Unlike other types of camouflage, this type
+doesn't conceal the ship---it's still very clear that it's there. However, to 
+be able to hit a ship at sea, people needed to know not only where it was, but
+also where it was going. This is because the ship will move some between the 
+time that a ballistic is fired and when it lands, and so the people needed to 
+calibrate for that movement and aim at where the ship would be by the time 
+the ballistic got to it. Dazzle camouflage makes it much harder to make out 
+where the ship is headed. 
+
+Often, people will write code for research projects that looks like it's using
+dazzle camouflage. It's easy to see that there's something there when you look
+at the code script, but it's very hard to figure out what it's doing or where
+it's trying to go. This type of code will be hard for others
+to figure out, and also it will be hard for you to figure out when you come 
+back to the code in the future. 
+
+The best way to avoid this type of code is to get into the practice of editing
+your code. When you first write code, you don't want to write it slowly and
+carefully---rather, you'll usually be best at figuring out how to get something
+to work if you get in the flow and get down some code without worrying about 
+how clear it is. This is fine, but get in the habit of thinking of this as 
+just the first step: in your initial coding, you're getting the code to work 
+for the computer, but later you will need to go back and clean up the code so
+it's clear for humans, too. Editing the code will make it easier to understand
+(both by others and by you) and will also make the code easier to maintain and
+extend in the future. 
+
+This idea is similar to writing. Many writing experts recommend that you consider
+your writing process as having several stages. First, you want to write in a 
+drafting process, where you get your ideas on paper but without editing yourself
+much. This is a stage of getting the ideas out. In a separate stage, you can 
+edit, and at this stage you want to have your audience clearly in mind, editing 
+to make the writing clear for them. By separating this, you can use your mind
+in a more creative, less constrained way as you create ideas, and then in a 
+more critical way as you refine those ideas for your audience. 
+
+While this practice is familiar to many writers, it's less well known as a
+process that benefits coders, especially those who are not professional
+programmers but rather who code as a small part of their larger work, like
+researchers. If you don't already, try adding in editing stages as you develop
+your code. It is most helpful to take time to edit code if you're still within a
+day or two of writing it, so it's helpful to work in this editing stage fairly
+frequently. Since it often requires less energy and brain power than the initial 
+stage (getting the code to work with the computer), it can be helpful to 
+incorporate editing time at times in your day when your energy is otherwise low. 
+For example, taking ten or fifteen minutes to edit existing code can be a good
+way to start coding for the day, before you get to the heavier lifting of 
+writing new code. 
+
+As you edit your code, there are a few specific things that you can do to make 
+it clearer for humans to read. Some editing steps that we will cover in this 
+module are: 
+
+- Improve the names you're using within the code
+- Break up monolithic code
+- Add useful comments
+- Remove dead-end code
+
+Let's take a closer look at how you can do each of these steps. 
+
+One important step when editing your code is to use better names for things like
+data objects and columns within dataframes. When you're coding quickly, you 
+might often use "placeholder" types of names for objects. For example, a coder 
+might tend to name objects "df" (for "dataframe") or "ex" as they're first 
+getting the code to work. 
+
+There's no problem in using these types of generic names as you initially 
+develop your code. In fact, there's a rich history of these placeholder 
+object names, and they even have a fancy name, *metasyntactic variables*. 
+Different coding languages have developed different ones that are popular, 
+as have coders in different countries. For example, many C programmers will 
+name things "foo" and "bar" as they initially work on their code, while 
+Italians often use the Italian words for different Disney characters
+("pippo", "pluto", "paperino"). 
+
+The problem isn't in using these placeholder names; the problem is when you 
+don't later edit your code to use better names. These generic types of names
+will tell you nothing about what's stored in each object when you go back 
+and read the code later. With better names for each object, you can read through
+the code and in some ways it will document itself, without even needing to 
+read the code comments to figure out what's going on. 
+
+There is a style guide that is focused on the tidyverse approach available
+at https://style.tidyverse.org/syntax.html. It includes guidance on how to 
+select good names for objects in R within its section on "Syntax". Generally, 
+some good principles include that the name of the object should give you an
+idea of what's contained in the object. For example, if you have a dataframe
+that has the weights of mice from your experiment, it's much better to name
+it "mouse_weights" rather than something generic like "foo". Some of the 
+other guidance will help make your life easier as a coder, including things
+like using only lowercase letters. 
+
+You can also edit the names of columns within dataframes, which can help improve
+the clarity of your code, especially since code will often reference specific
+columns by name. Similar principles apply to column names: ideally, you want
+their names to describe what they contain. There are also some rules that will
+make it easier to work with the column names. For example, column names can
+include spaces, but if they do, it makes using them within R harder. Each time
+you refer to that column name, you have to surround the name in backticks so R
+will process its full name as a single name, rather than thinking its name ends
+at the first space. This becomes a pain as you write a lot of code that refers
+to that column. It's also helpful to keep column names fairly short, so you can
+see the full name as you work with the dataset and resulting output.
+
+When it comes to column names, some of your editing might be to improve on names
+that you quickly wrote yourself as you coded. However, a common reason for 
+ungainly column names is that you've read in data from a file format like Excel, 
+where it was easy for the person who entered the data to include spaces and 
+special characters in the column names. In this case, there are some tools in 
+R that can help you quickly improve the column names. In particular, the 
+`janitor` package has a function called `clean_names` that will do a lot of the
+work for you, including converting the name to lowercase, removing special 
+characters (like "*" and "&"), and replacing spaces with underscores. If you 
+need to make more targeted changes to column names, you can do so using the 
+`rename` function from the `dplyr` package. 
+
+The next thing you can do to edit your code is to break up "monolithic" code---
+that is, code that isn't clearly divided to show sections or steps in the 
+process. When you're first creating your code, you won't want to take the time
+to nicely organize it into logical sections. However, once you are ready to 
+edit your code, you will find that breaking into clear sections and labeling 
+them will help you and others navigate the code first at a higher level 
+(understanding the big picture of how it works by looking at the major
+steps it takes) and only diving into the details of each section once the 
+big picture is clear. 
+
+Again, this process mimics the process used by many writers. It's common to 
+create drafts and notes that lack clear organization, but instead are just 
+collecting the raw material that will be shaped into a final article or book. 
+However, this raw material then needs to be organized and edited to make it 
+into something that others can navigate and make sense of. The writer Robert
+Caro famously wrote massive books about political figures like Robert Moses and
+Lyndon Johnson. To wrangle all his research into books, he noted that, 
+"I can't start writing until I've thought it through and can see it whole 
+in my mind."
+
+In a similar way, once you've gotten code to work, you should make sure you have
+a clear picture of the whole process and how it tackles the problem at a 
+"big picture" level. One of these steps might be something like reading in 
+and cleaning the data, while another step might be identifying and addressing
+outliers in the data. Once you've identified the big steps, try as much as
+possible to group the code into these big steps, then you can use code comments
+and blank lines in your code to separate these sections and label them to 
+describe what they're doing. 
+
+As you do this, you might find that you move some of your code around in the 
+script, which is fine as long as it doesn't affect the computer being able to 
+process the script. For example, one of your big steps might be loading in 
+packages you'll need. Rather than having a lot of `library` calls sprinkled
+throughout your code, you can group these all together at the start of your
+script in a section called something like "Loading packages". This will 
+clean up these calls from other parts of your script; also, by having all 
+your library calls at the start of the code script, another person could 
+immediately see which packages they'll need to have installed to run your code.
+
+Another way that you can break up monolithic code is to split it into more lines. 
+R will process the code whether it's all on one line or split into separate 
+lines: R just keeps reading until it gets to the end of the function call
+either way. This means that you can use the "Return" key to break up your code
+lines so you're always able to see the full line of code without scrolling. 
+
+One common standard is to keep all of your lines of code to 80 characters or 
+fewer. RStudio has the functionality to reformat your code to meet this 
+standard. In the RStudio menus, if you go to the "Code" menu, you can select
+to "Reformat Code". This can help clean up long lines of code in your editing 
+process. 
+
+As you are breaking up monolithic code, it can also be helpful to use 
+code comments to add notes about why you are doing certain things. In R, you 
+can add a code comment anytime after a `#` on a line; R won't read anything 
+that comes after that symbol on a line. You can use this to add small messages
+for humans that describes your code. 
+
+As you add these comments, keep in mind that it's often more useful to 
+describe why you're doing something rather than what you're doing. With a lot 
+of R code---especially in the tidyverse approach---the functions often have
+names that clearly describe what they do. For example, the function that 
+you use to rename a column is called `rename`, while the function that you 
+use to select certain columns is called `select`. Therefore, your code should 
+do a fairly good job of self-documenting in terms of describing what it's 
+doing. 
+
+Instead, you can use code comments to remind yourself or others of 
+why you're implementing certain steps. For example, rather than having a code
+comment that says "Rename columns", you could say, "The columns that come
+from the Excel file generated by the cytometer include a lot of special 
+characters, which we need to remove to make it easier to work with the data in 
+R." By explaining why you're doing something, you'll also help yourself when it's
+time to maintain or extend your code. You'll be able to tell, for example, 
+whether changing or deleting a certain line of code will cause a big problem 
+in other areas of code. 
+
+Another useful step when you edit your code is to edit out pieces we'll call
+"dead-end code". These are pieces of code that aren't contributing to the 
+process of your script. 
+
+There are two main types of this dead-end code that we often see. First, there's
+code that you use during your interactive coding process to check on things. For
+example, you might use the `View` function to take a look at a data frame at a
+certain step in your process, or use functions like `summary` and `str` to
+explore what's in different objects.
+
+It's great to do this kind of exploration as you code; in fact, one of the 
+advantages of interactive software like R is that you can explore as you 
+develop your scripts. However, these are tools that help you develop a script, 
+but not ones that are necessary for the final script to run. Instead, they just
+gunk up the code that's doing the real work. 
+
+There are two things you can do regarding this type of dead-end code. The first
+is that you can get in the habit of running it in your console, rather than 
+having it in your script, even when you're developing the code. However, this 
+does require switching between the console and the script as you write code, 
+which can interrupt your flow. An alternative is to run these in a script as 
+you write the code, but then delete any of these exploratory calls as you 
+edit your script. 
+
+There's also a second type of dead-end code. This is code that you were trying 
+out to solve a particular problem, but that ultimately didn't work (or that 
+was superseded by a better approach). Often, you may have worked a long time 
+on that piece of code, or it might contain some really clever approach that 
+you're proud of. However, leaving it your script, if it isn't contributing to 
+the ultimate process you ended up with, will only get it the way of understanding
+your primary code. It will lead a reader down a rabbit hole, rather than allowing
+them to move step by step through your logic. 
+
+In writing, there are similarly areas that aren't contributing to the forward
+movement of a piece but that authors are reluctant to remove because they love
+them for one reason or another. This has resulted in the famous advice to 
+authors (from Stephen King, among others) to "murder your darlings". In other 
+words, be brave enough to edit out anything that isn't contributing to the 
+necessary progress of your piece. Coders should take this advice in a similar 
+way when it comes to pieces of code in their scripts that don't ultimately 
+contribute to the pipeline they've developed. 
+
 **Find favorite tools and get to know them**
 
 The best thing that you can do to smooth the path as you learn a coding language
@@ -60,6 +304,89 @@ efficiency and reliability of failure-tolerance products like ATMs and
 airplanes have a strong connection to deep craft." [@madhavan2015applied]
 
 **Modify rather than start from scratch**
+
+As you code, keep in mind that you shouldn't reinvent the wheel. There are 
+excellent resources available that can help provide you with a starting 
+point for many of the coding tasks you'll need to do. For example, most
+packages have tutorials called vignettes that provide a starting point
+in how to use the package, and helpfiles often include short example code
+that you can adapt to your own purposes. Online resources like StackOverflow
+also provide advice and example code for many challenges you might come up 
+against as you're coding. Google can also be used to help you solve coding 
+problems, espeically if you become familiar with some of its special 
+operators, which can help you refine your search (see https://support.google.com/websearch/answer/2466433?hl=en for more on this). 
+
+There's no problem with using any of these as starting points as you develop
+your own code. However, it's often tempting for a coder to leave some lines
+of code "as-is" if they've found an example solution that works. Instead, it's 
+critical that you make sure you fully understand why each line of code in your
+script works the way it does. Further, if you're adapting example code to 
+your own problem, you should edit it if possible to use the set of tools you're
+most familar with. 
+
+When you find a piece of example code that you think will help with something
+you need to do in your own code, you'll first want to make sure that you can 
+get it to work with any example data it came with, before you try it out with 
+your own data. If it won't run with its own data, there are a few trouble-shooting
+steps you can take. First, make sure you have all the required packages 
+installed and loaded. Second, make sure that you've saved the example data
+to the right place on your computer if the example code reads in data from 
+a file. Finally, make sure that you have the same versions of 
+packages and of R. If the code still doesn't work after you've resolved these
+issues, you may want to move on to finding other example code. 
+
+Once you've gotten the code to run on the example data, walk through it line
+by line to understand what it does. For each step, make sure you understand 
+what the input looks like and what the output looks like. If code is nested
+(function calls are placed within function calls), be sure that you understand
+the code at each level of nesting. If the code uses piping to move the output
+of one call to the input of the next, make sure you've worked through each 
+of the lines in the pipe individually. 
+
+There are two tools that can help as you dissect the code in this way. First,
+when you work in R study, you can highlight code in a script and then use the
+"Run" button to run only that code. This functionality allows you to run a
+nested function call without running the whole line of code, or to run only part
+of a series of piped calls (by highlighting everything up to the piping symbol
+on a line and then running it). The other tool that's useful is a function in
+the `dplyr` package called `pull`. This function allows you to extract a column
+from a dataframe as a vector. This is helpful when you're dissecting nested
+calls in piped code, as often a function will operate on a single column of the
+dataframe. This function allows you to pull out that column and then test the
+function call to see what it's doing with that column.
+
+Once you figure out what the example code does on the data it comes with, you 
+can adapt it to work with your own data. As you do, pay close attention to 
+how your data are similar or different to the example data. At this stage, your
+goal will be to get the example code to work with your data. 
+
+Many researchers stop at this step---they've gotten example code to work with 
+their own data (and hopefully worked through it to understand why). However, 
+example code often follows a very different style than code you write yourself. 
+For example, you may use the tidyverse approach, while the example might use
+code written in a base R style. Further, different coders think about and 
+tackle problems in different ways, which can lead to the case where any 
+example code that you've adapted in your script feels different from your usual
+code. 
+
+This can result in spots of your code that you will later be very worried to 
+change, because while it works, you don't understand why well enough to feel 
+comfortable making any change. This can make your code fragile and hard to 
+maintain. Instead, take a moment to adapt the logic that you've learned from 
+the example to use your own set of tools. For example, if the example code is 
+written in base R but you prefer tidyverse tools, rewrite the code's logic 
+to use tidyverse tools. 
+
+You gain several advantages when you adapt code to use the tools you're familiar
+with. For example, bugs will be less likely, and if there are bugs, you'll 
+catch them more quickly, since you're familiar with the tools that the code is
+using. The code will also be much easier for you to understand and maintain in 
+the future. 
+
+> "The sandbox of the budding builder is not *making* as much as it is 
+modification: taking something that exists and making it better, either 
+functionally or aesthetically or both. Often that involves attaching and 
+securing parts that were not originally intended to go together." [@savage2020every]
 
 As you start learning to write code in R, don't force yourself to stare at an 
 empty R script file and try to come up with a full script from scratch. One of the 
@@ -147,6 +474,25 @@ likely that a script for a particular problem has been already written. Ask
 around through existing resources such as SEQanswers43 and BioStar44."
 [@nekrutenko2012next]
 
+> "If you're going to build a house today, you don't start by cutting down trees to make 
+lumber and digging clay to make your own bricks. Instead, you buy prefabricated pieces like
+doors, windows, plumbing fixtures, a furnace, and a water heater. House construction is still
+a big job, but it's manageable because you can build on the work of many others and rely 
+on an infrastructure, indeed an entire industry, that will help. The same is true of 
+programming. Hardly any significant program is created from nothing. Many components written
+by others can be taken off the shelf and used. For instance, if you're writing a program for
+Windows or a Mac, there are libraries of prefabricated menus, buttons, text editors, graphics, 
+network connections, database access, and so on. Much of the job is understanding the components
+and gluing them together in your own way. Of course, many of these components in turn rest on
+other simpler and more basic ones, often for several layers. Below that, everything runs on 
+the operating system, a program that manages the hardware and controls everything that happens."
+[@kernighan2011d]
+
+> "There is also a problem with discovering software that exists; often people
+reinvent the wheel just because they don’t know any better. Good repositories
+for software and best practice workflows, especially if citable, would be a
+start." --- James Taylor in [@altschul2013anatomy]
+
 **Modular, not monolithic**
 
 Another key thing to remember as you develop R scripts is that they are all,
@@ -200,6 +546,13 @@ they solved each puzzle at a subsystems level before they moved to the
 next layer of the assembly, and along the way they invented new instruments and
 measurement techniques." [@madhavan2015applied]
 
+> "Very little of what I've built over the years is monolithic---just a single chunk.
+Most of the time, I build things in components, then attach those pieces together 
+as I go. So yes, the component parts are pieces that have been made small in 
+precise ways from larger chunks of material, but eventually they will be assembled
+to create much larger and more complex objects than any of the raw source materials."
+[@savage2020every]
+
 **Iterate!**
 
 Code is something that you develop over multiple drafts---it's the kind of thing
@@ -248,6 +601,31 @@ forms, new expections, and new offshoots of technologies. Prototypes are
 the starting points toward our ultimate creative destinations." [@madhavan2015applied]
 
 > "Tweaking and prototyping are basic human habits." [@madhavan2015applied]
+
+> "Programming in the real world tends to happen on a large scale. The strategy is similar
+to what one might use to write a book or undertake any other big project: figure out what
+to do, starting with a broad specification that is broken into smaller and smaller pieces, 
+then work on the pieces separately, while making sure that they hang together. In programming, 
+pieces tend to be of a size such that one person can write the precise computational steps
+in some programming language. Ensuring that the pieces written by different programmers
+work together is challenging, and failing to get this right is a major source of errors. 
+For instance, NASA's Mars Climate Orbiter failed in 1999 because the flight system software
+used metric units for thrust, but course correction data was entered in English units, 
+causing an erroneous trajectory that brought the Orbiter too close to the planet's 
+surface." [@kernighan2011d]
+
+> "Developing code in R is a back-and-forth between writing code in a rerunnable script
+and exploring data interactively in the R interpreter. To be reproducible, all steps 
+that lead to results you'll use later must be recorded in the R script that accompanies
+your analysis and interactive work. While R can save a history of the commands you've
+entered in the interpreter during a session (with the command `savehistory()`), 
+storing your steps in a well-commented R script makes your life much easier when you 
+need to backtrack to understand what you did or change your analysis." [@buffalo2015bioinformatics]
+
+> "People not doing the computational work tend to think that you can write a
+program very fast. That, I think, is frankly not true. It takes a lot of time to
+implement a prototype. Then it actually takes a lot of time to really make it
+better." --- Heng Li in [@altschul2013anatomy]
 
 **Do not repeat yourself**
 
@@ -312,6 +690,35 @@ online book "R for Data Science" with guidance on this topic
 (https://r4ds.had.co.nz/functions.html). If you'd like to learn more about tools
 for iteration, the same book also has a chapter on that
 (https://r4ds.had.co.nz/iteration.html).
+
+> "Software, like many other things in computing, is organized into layers, analogous to 
+geological strata, that separate one concern from another. Layering is one of the important
+ideas that help programmers to manage complexity." [@kernighan2011d]
+
+> "At the simplest level, programming languages provide a mechanism called functions that make
+it possible for one programmer to write code that performs a useful a useful task, then package
+it in a form that other programmers can use in their programs without having to know how it 
+works." [@kernighan2011d]
+
+> "**Use functions.** It's better than copy-pasting (or repeatedly source-ing)
+stretches of code." [@holmes2018modern]
+
+> **Use the R package system.** Soon you'll note recurring function or variable
+definitions that you want to share between your different scripts. It is fine to 
+use the R function `source` to manage them initially, but it is never too early 
+to move them into your own package---at the latest when you find yourself staring
+to write emails or code comments explaining to others (or to yourself) how to use
+some functionality. Assembling existing code into an R package is not hard, and it 
+offers you many goodies, including standardized ways of composing documentation, 
+showing code usage examples, code testing, versioning and provision to others. 
+And quite likely you'll soon appreciate the benefits of using namespaces." 
+[@holmes2018modern]
+
+Some tools that can help you avoid repetition include: 
+
+- Faceting in `ggplot2`
+- The `map` family of functions in the `purrr` package
+- The `group_by` and `summarize` / `mutate` workflow in the `dplyr` package
 
 **Scripts are for humans to read, not just computers**
 
@@ -379,6 +786,23 @@ making." [@judkins2016art]
 
 > "You might not write well every day, but you can always edit a bad page. 
 You can't edit a blank page." -- Jodi Picoult, cited in [@judkins2016art]
+
+> "That a language is easy for the computer expert does not mean it is 
+necessarily easy for the non-expert, and it is likely non-experts who will do the
+bulk of the programming (coding, if you wish) in the near future." [@hamming1997art]
+
+> "The code that a programmer writes, whether in assembly language or (much more likely) in 
+a high-level language, is called *source code*. ... Source code is readable by other programmers, 
+though perhaps with some effort, so it can be studied and adapted, and any innovations or ideas
+it contains are visible." [@kernighan2011d]
+
+> "*Document your methods and workflows.* This should include full command lines (copied
+and pasted) that are run through the shell that generate data or intermediate results. 
+Even if you use the default values in software, be sure to write these values down; 
+later versions of the program may use different default values. Scripts naturally 
+document all steps and parameters ..., but be sure to document any command-line options
+used to run this script. In general, any command that produces results in your work needs
+to be documented somewhere." [@buffalo2015bioinformatics]
 
 **Some things belong in the console, not the script**
 
@@ -567,4 +991,28 @@ fewer innovations that environments that encourage exploration." [@johnson2011go
 ensuring that you're not just recycling the same old ingredients. ... The trick to 
 having good ideas is not to sit around in glorious isolation and try to think big 
 thoughts. The trick is to get more parts on the table." [@johnson2011good]
+
+> "*Document the version of the software that you ran.* This may seem unimportant, but
+remember the example from 'Reproducible Research' on page 6 where my colleagues and I 
+traced disagreeing results down to a single piece of software being updated. These 
+details matter. Good bioinformatices software usually has a command-line option to 
+return the current version. Software managed with a version control system such as 
+Git has explicit identifiers to every version, which can be used to document the 
+precise version you ran... If no version information is available, a release date, 
+link to the software, and download date will suffice." [@buffalo2015bioinformatics]
+
+
+> "*Document when you downloaded data.* It's important to include when the data was downloaded, 
+as the external data source (such as a website or server) might change in the future. For example, 
+a script that downloads data directly from a database might produce different results if 
+rerun after the external database is updated. Consequently, it's important to document
+when data came into your repository." [@buffalo2015bioinformatics]
+
+> "All of this [documentation] information is best stored in plain-text README files.
+Plain text can easily be read, searched, and edited directly from the command line, 
+making it the perfect choice for portable and accessible README files. It's also available
+on all computer systems, meaning you can document your steps when working directly on 
+a server or computer cluster. Plain text also lacks complex formatting, which can create
+issues when copying and pasting commands from your documentation back into the command 
+line." [@buffalo2015bioinformatics]
 

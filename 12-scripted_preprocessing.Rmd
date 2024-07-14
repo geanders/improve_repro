@@ -8,11 +8,9 @@ This section includes modules on:
 - [Module 3.4: Tips for improving reproducibility when writing R scripts](#module13a)
 - [Module 3.5: Simplify scripted pre-processing through R's 'tidyverse' tools](#module14)
 - [Module 3.6: Complex data types in experimental data pre-processing](#module15)
-- [Module 3.7: Complex data types in R and Bioconductor](#module16)
-- [Module 3.8: Example: Converting from complex to 'tidy' data formats](#module17)
-- [Module 3.9: Introduction to reproducible data pre-processing protocols](#module18)
-- [Module 3.10: RMarkdown for creating reproducible data pre-processing protocols](#module19)
-- [Module 3.11: Example: Creating a reproducible data pre-processing protocol](#module20)
+- [Module 3.7: Introduction to reproducible data pre-processing protocols](#module18)
+- [Module 3.8: RMarkdown for creating reproducible data pre-processing protocols](#module19)
+- [Module 3.9: Example: Creating a reproducible data pre-processing protocol](#module20)
 
 ## Principles of pre-processing experimental data {#module12}
 
@@ -34,6 +32,45 @@ stage of working with biomedical data.
 processes in their own pipelines
 
 ### What is data preprocessing?
+
+When you are conducting an experiment that involves work in the wet lab, you 
+will do a lot of work before you have any data ready for the computer. You may
+have conducted an extensive period of work that involved working with laboratory
+animals and cell cultures. In many cases, you will have run some samples through 
+very advanced equipment, like cytometers or sequencers. Once you have completed
+this long and hard process, you may ask yourself, "I ran the experiment, and I 
+ran the equipment... What now?". 
+
+For certain types of data, you may be able to proceed directly to analysis of 
+the data. For example, if you collected the weights of lab animals, you are 
+probably directly using those data to answer questions like whether those 
+weights were different between treatment groups. However, with a lot of biomedical
+data, you will not be able to move directly to analyzing the data. Instead, 
+you will need to start with a stage of *pre-processing* the data: that is, 
+taking computational steps to prepare the data before it's in an appropriate 
+format to be used in statistical analysis. 
+
+There are several reasons that pre-processing is often necessary. The first is 
+that many biomedical data are collected using extremely complex equipment and 
+scientific principles. The pre-processing in this case is used to extract scientific
+meaning from data that might have been collected using measurements that are 
+more closely linked to the complex process than to the final scientific question. 
+Next, there will be some cases where practical concerns made it easier to 
+collect data in one way and pre-process it later to get it to a format that 
+aligns with the scientific question. For example, if you want the average weight
+of mice in different treatment groups, it may be more practical to weigh the 
+cage that contains all the mice in each treatment group rather than weigh
+each mouse individually. This makes life in the lab easier, but means you'll need
+to do some more computational pre-processing of the data to make sense of it 
+appropriately. Finally, there are now frequent cases where an assay generates
+a very large set of measures---for example, expression levels of thousands of
+genes for each sample---and some pre-processing might help in digesting the 
+complexity inherent in this type of high-dimensional data. 
+
+All in all, pre-processing aims to extract useful information from the measurments
+that you've collected from your experiment, so that this information can then 
+be used within statistical analysis and visualization to test important hypotheses
+that provide insights on your scientific question. 
 
 Let's start by talking about what data pre-processing is, as well as why
 biomedical data often need preprocessing. When you run an assay, you are aiming
@@ -799,4 +836,521 @@ each step and only retaining the cells with markers or characteristics
 that align with a certain cell type, until the researcher is satisfied that they 
 have identified all the cells of a certain type in the sample (e.g., all 
 helper T cells in the sample). 
+
+-----------------------------------------------------------------------------
+
+> "The three main types of problem data are errors, outliers, and missing
+observations. ... An error is an observation which is incorrect, perhaps
+because it has been copied or typed incorrectly at some stage. An outlier is a 'wild'
+or extreme observation which does not appear to be consistent with the rest of
+the data. Outliers arise for a variety of reasons and can create severe problems.
+... Errors and outliers are often confused. An error may or may not be an outlier, 
+while an outlier may or may not be an error. ... An outlier may be caused by an error, 
+but it is important to consider the alternative possibility that the observation 
+is a genuine extreme result from the 'tail' of the distribution. This usually happens
+when the distribution is skewed and the outlier comes from the long 'tail'."
+[@chatfield1995problem]
+
+
+> "There are several types of error..., including the following: 1. A recording error
+arises, for example, when an instrument is misread. 2. A typing error arises when an 
+observation is typed incorrectly. 3. A transcription error arises when an observation
+is copied incorrectly, and so it is advisable to keep the amount of copying to a 
+minimum. ..." [@chatfield1995problem
+
+Some data collected through laboratory experiments is very straightforward and
+requires little or no pre-processing before it's used in analysis. For example,
+if you are regularly weighing the animals in an experiment, then the data may
+require no pre-processing (in other words, you'll directly use the weight
+recorded from the scale) or very minimal pre-processing (for example, if you are
+keeping all animals for a treatment group in the same cage, you may weigh the
+cage as a whole, in which case you could divide that weight by the number of
+animals in the cage as a pre-processing step to estimate the average weight per
+animal). 
+
+Other data collected in the laboratory may require some pre-processing that
+takes a few more steps, but is still fairly straightforward. For example, if you
+plate bacteria from a sample at a variety of dilutions, you might count each
+plate and determine a measure of Colony Forming Units from the set of plates
+with different dilutions by deciding which dilution provides the clearest count
+and then back-calculating based on its dilution to get the total number of
+colony-forming units in the original sample. Pre-processing these data typically
+will also involve transforming data, to get them in a format that is easier to
+visualize or more appropriate for statistical analysis, for example, a log
+transformation.
+
+This step of pre-processing data can become much more complex with data that was
+collected using complex equipment, like a flow cytometer, mass spectrometer, or
+sequencer. In these cases, there are often steps required to extract from the
+machine's readings a biologically-relevant measurement.
+
+> "For beginners, caution is warrented. Bioinformatics tools can almost always yield
+an answer; the question is, does that answer mean anything? Dudoit's advice is do 
+some exploratory analysis, and verify that the assumptions underlying your chosen
+algorithms make sense." [@perkel2017single]
+
+> "We designed three features based on the assumption that broken cells contain a 
+lower and multiple cells a higher number of transcripts compared to a typical 
+high quality single cell. For the first feature we calculated the number of 
+highly expressed and highly variable genes. For the second feature we calculated the
+variance across genes. Lastly, we hypothesized that the number of genes expressed
+at a particular level would differ between cells. Thus we binned normalized 
+read counts into intervals (very low to very high) and counted the number of genes
+in each interval. ... Overall, our results show that technical features [like the 
+number of detected genes and the percent of mapped reads] can help distinguish
+low and high quality cells." [@ilicic2016classification]
+
+> "Before further analyses, scRNA-seq data typically require a number of bio-informatic
+QC checks, where poor-quality data from single cells (arising as a result of many 
+possible reasons, including poor cell viability at the time of lysis, poor mRNA
+recovery and low efficiency of cDNA production) can be justifiably excluded from 
+subsequent analysis. Currently, there is no consensus on exact filtering 
+strategies, but most widely used criteria include relative library size, number
+of detected genes and fraction of reads mapped to mitochondria-encoded genes or
+synthetic spike-in RNAs. ... Other considerations are whether single cells have
+actually been isolated or whether indeed two or more cells have been mistakenly 
+assessed in a particular sample." [@haque2017practical]
+
+> "For each gene, QC metrics such as the average expression level and the proportion of
+cells in which the gene is expressed are computed. This can be used to identify 
+low-abundance genes or genes with high dropout rates that should be filtered out 
+prior to downstream analyses." [@mccarthy2017scater]
+
+> "Methods to quantify mRNA abundance introduce systematic sources of variation 
+that can obscure signals of interest. Consequently, an essential first step in 
+most mRNA-expression analyses is normalization, whereby systemic variations 
+are adjusted to make expression counts comparable across genes and / or samples.
+Within-sample normalization methods adjust for gene-specific features, such 
+as GC content and gene length, to facility comparisons of a gene's expression
+within an individual sample; whereas between-sample normalization methods adjust
+for sample-specific features, such as sequencing depth, to allow for comparisons of
+a gene's expression across samples." [@bacher2017scnorm]
+
+> "A number of methods are available for between-sample normalization in bulk RNA-seq
+experiments. Most of these methods calculate global scale factors (one factor is
+applied to each sample, and this same factor is applied to all genes in the sample) 
+to adjust for sequencing depth. These methods demonstrate excellent performance in 
+bulk RNA-seq, but they are compromised in the single-cell setting because of an 
+abundance of zero-expression values and increased technical variability." [@bacher2017scnorm]
+
+> "Normalization is critical to the development of analysis techniques on scRNA-seq and 
+to counteract technical noise or bias. Before observed data can be used to identify 
+differentially expressed genes or potential subpopulations, it must undergo these 
+corrections, for what is observed is seldom exactly what is present within the data set."
+[@lytal2020normalization]
+
+> "Scaling normalization is typically required in RNA-seq data analysis to 
+remove biases caused by differences in sequencing depth, capture efficiency
+or composition effects between samples." [@mccarthy2017scater]
+
+
+> "The primary goal of single-cell normalization is to remove the influence
+of technical effects in the underlying molecular counts, while preserving
+true biological variation." [@hafemeister2019normalization]
+
+There are also cases where pre-processing steps could be used to 
+remove patterns from technical noise or even from biological patterns that 
+are unrelated to the scientific question of interest. In terms of technical 
+noise, for example, there are cases where pre-processing steps could be used 
+to help remove variation that's introduced by running the experimental samples
+in different batches. In terms of biological patterns, one pattern that may 
+be desirable to remove through pre-processing is gene expression related to 
+a cell's phase in the cell cycle.
+
+> "We emphasize that it is generally preferable to incorporate batch effects or 
+latent variables into statistical models used for inference. When this is not 
+possible (e.g., for visualization), directly regressing out these uninteresting 
+factors is required to obtain 'corrected' expression values for further analysis.
+Furthermore, a general risk of removing latent factors is that interesting 
+biological variation may be removed along with the presumed unwanted variation. 
+Users should therefore apply such methods with appropriate caution, particularly 
+when an analysis aims to discover biological conditions, such as new cell types."
+[@mccarthy2017scater]
+
+> "Once identified, important covariates and latent variables can be flagged for
+inclusion in downstream statistical models or their effects regressed out of 
+normalized expression values." [@mccarthy2017scater]
+
+> "Most approaches seek to reduce these 'multi-dimensional data', with each 
+dimension being the expression of one gene, into a very small number of dimensions
+that can be more easily visualised and interpreted. Principal component analysis
+(PCA) is a mathematical algorithm that reduces the dimensionality of data, and
+is a basic and very useful tool for examining heterogeneity in scRNA-seq data."
+[@haque2017practical]
+
+> "One common type of single-cell analysis, for instance, is dimension reduction. 
+This process simplifies data sets to facilitate the identification of similar 
+cells. ... scRNA-seq data represent each cell as 'a list of 20,000 gene-expression
+values.' Dimensionality-reduction algorithms such as principal components analysis
+(PCA) and t-distributed stochastic neighbour embedding (t-SNE) effectively project
+those shapes into two or three dimensions, making clusters of similar cells apparent." 
+[@perkel2017single]
+
+> "Multivariate techniques may be used to reduce the dimensionality... It is potentially
+dangerous to allow the number of variables to exceed the number of observations
+because of non-uniqueness and singularity problems. Put simply, the unwary analyst 
+may try to estimate more parameters than there are observations." [@chatfield1995problem]
+
+> "Principal component analysis rotates the p observed values to p new orthogonal 
+variables, called principal components, which are linear combinations of the original
+variables and are chosen in turn to explain as much of the variation as possible.
+It is sometimes possible to confine attention to the first two or three components, 
+which reduces the effective dimensionality of the problem. In particular, a scatter
+diagram of the first two components is often helpful in detecting clusters of 
+individuals or outliers." [@chatfield1995problem]
+
+> "In multicellular organisms, cells carry out a diverse array of complex, specialized
+functions. This specialization occurs mostly through the expression of cell type--specific
+genes and proteins that generate the appropriate structures and molecular networks. 
+A central challenge in the biomedical sciences, however, has been to identify the 
+distinct lineages and phenotypes of the specialized cells in organ systems, and track 
+their molecular evolution during differentiation." [@benoist2011flow]
+
+> "Since the 1970s, fluoresence-based flow cytometry has been the leading technique
+for studying and sorting cell populations. It involves passing cells through 
+flow chambers at high rates (> 20,000 cells/s) and using lasers to excite fluorescent
+tags ('fluorochromes') that are usually attached to antibodies; different antibodies
+are tagged with different colors, enabling researchers to quantify molecules that 
+define cell subtypes or reflect activation of specific pathways. Progess in instrument
+design, multi-laser combinations, and novel fluorochromes has led to experimental
+configurations that simultaneously measure up to 15 markers. This has enabled very 
+detailed description of cell subtypes, perhaps most extensively in the immune
+system, where the Immunological Genome Project is profiling >200 distinct cell typles.
+Fluorescence cytometry seems to have reached a technical plateau, however: In practice, 
+researchers typically measure only 6 to 10 cell markers because they are limited by 
+the specral overlap between fluorochromes." [@benoist2011flow]
+
+> "In 1954, Wallace Coulter developed an instrument that could measure cell size and
+count the absolute number of cells, and thus the discipline of flow cytometry was
+born. Further developments enabled the production of instruments that could measure
+cell size and nucleic acid content using a two-dimensional approach that compared
+light scatter and light absorption. These instruments were cumbersome and required
+specialist operators, but immunologists began to use them to investigate the 
+functions of immune cells. ... By the mid-1980s, bench-top flow cytometers were 
+available and as the technology advanced the instruments became progressively 
+smaller. Coupled with the availability of monoclonal antibodies, the increasing 
+number of available fluorochromes (compounds that emit light at a greater wavelength
+than the light source they are excited with) and computer improvements, flow
+cytometers are now accessible for almost every clinical laboratory." [@barnett2008cd4]
+
+> "Flow cytometry enables the examination of microscopic particles (such as cells) that
+are suspended in a stream of fluid which is termed sheath fluid. This fluid is 
+focused hydrodynamically such that the cells flow in single file through a flow cell
+in which a beam of light (usually a laser) is focused. As the cells pass through the 
+laser beam they scatter the light so that forward scatter (FSC) and side scatter (SSC)
+light is captured; this enables the size and granularity of the cells to be determined.
+In addition, if a cell is labelled with antibodies that carry a fluorochrome, as the 
+cell passed in front of the laser beam the fluorochrome emits light at a wavelength
+that is higher than the single wavelength light source and which can be detected by 
+fluorescence detectors. The flow cytometers that are in clinical use can analyse at
+least four fluorochromes simultaneously, in addition to the FSC and SSC. This is known 
+as multiparametric analysis. The information that is generated is computer analysed
+so that specific analysis regions (known as gates) can be created, which allows
+the user to build up a profile of the size, granularity and antigen profile of
+the target cell population." [@barnett2008cd4]
+
+> "T cells have an essential role in protection against a variety of infections. Indeed, 
+the development of successful vaccines against HIV, malaria or tuberculosis will 
+require the generation of potent and durable T-cell responses. ... As T cells are
+functionally heterogeneous and mediate their effects through a variety of mechanisms, 
+a major hurdle in quantifying protective T-cell responses has been the technical 
+limitations in assessing the complexity of such responses. Methods to define the 
+full characteristics of T cells are crucial for developing preventative and 
+therapeutic vaccines for infections and cancer." [@seder2008t]
+
+> "Flow cytometry has increasingly become a tool of choice for the analysis of 
+cellular phenotype and function in the immune system. It is arguably the most 
+powerful technology available for probing human immune phenotypes, because it 
+measures multiple parameters on many individual cells. Flow cytometry thus 
+allows for the characterization of many subsets of cells, including rare subsets, 
+in a complex mixture such as blood. And because of the wide array of antibody 
+reagents and protocols available, flow cytometry can be used to assess not only 
+the expression of cell-surface proteins, but also that of intracellular 
+phosphoproteins and cytokines, as well as other functional readouts."
+[@maecker2012standardizing]
+
+> "Immune phenotypes: Measurable aspects of the immune system, such as the 
+proportions of various cell subsets or measures of cellular immune function."
+[@maecker2012standardizing]
+
+> "Gates: Sequential filters that are applied to a set of flow cytometry data to 
+focus the analysis on particular cell subsets of interest." [@maecker2012standardizing]
+
+> "One of the main roles that statistics play in science is explaining variation---variation
+of observed data. That variation can actually be true signal that you're interested in, 
+but there can also be variations due to noise or confounding signal. So I think of
+statistical modeling as the process of explaining variation in the data according 
+to concrete variables that have been measured." [@mak2011john]
+
+> "This process of accounting for, and possibly removing, sources of variation that
+are not of biological interest is called normalization. There are two distinct 
+approaches to normalization. One of them I would call 'unsupervised' in that it 
+does not taken into account the study design. These are the most popular methods
+because they require the least amount of statistical modeling and knowledge of 
+statistics. The other approach, which is one I strongly favor, is what I would
+call 'supervised normalization'. This approach directly takes into account the 
+study design. I find this appealing because is one is trying to parse sources of 
+variation, then it seems all sources of variation should be considered. If I 
+perform an experiment with 20 microarrays, say 10 treated and 10 control, then 
+I want to utilize this information when separating and removing technical 
+sources of variation. Another component of normalization, which is gaining 
+popularity, is normalizing by principal components. Again, I think this should
+be done in the context of the study design, which was the goal of a recent 
+method I worked on called 'surrogate variable analysis.'" [@mak2011john]
+
+> "Let's say you are doing an RNA-Seq experiment. The sequencer may produce a 
+different number of total reads from lane to lane, and that is more likely 
+driven by technology, not biology. And so, normalization would be about 
+accounting for those differences. Unsupervised normalization might involve
+simply just dividing by the number of lanes and taking each gene as a percentage
+of the reads in the lane. Why is that less than ideal? Suppose you have two batches
+of data, one flow cell that was done in November and another flow cell that was
+done in December. If you're actually accounting for this variation in the
+total number of reads per lane, my inclination would be to take into account the 
+fact that these two flow cells were processed in different months. And it can 
+be more complicated than that, too. Maybe you've taken clinical samples and there
+were some differences in the clinical conditions under which they were taken. 
+In supervised normalization, you would take that information into account. For 
+example, the adjustment made to the raw reads may be based on a model that includes
+the total number of reads per lane as well as the information about the study 
+design, such as batch and biological variables." [@mak2011john]
+
+> "The biggest, the easiest way [for a biologist doing RNA-Seq to tell that 
+better normalization of the data is needed]---the way that I discovered the 
+importance of normalization in the microarray context---is the lack of 
+reproducibility across different studies. You can have three studies that are
+all designed to study the same thing, and you just see basically no reproducibility, 
+in terms of differentially expressed genes. And every time I encountered that, it
+could always be traced back to normalization. So, I'd say that the biggest sign and 
+the biggest reason why you want to use normalization is to have a clear signal
+that's reproducible." [@mak2011john]
+
+> "Data-analysis pipelines are replete with configuration decisions, assumptions, 
+dependencies and contingencies that move quickly beyond documentation, making 
+troubleshooting incrediably difficult. ... Teams had to visit each others' labs more
+than once to understand and fully implement computational-analysis pipelines for
+large microscopy datasets." [@raphael2020controlled]
+
+> "Improved reproducibility comes from pinning down methods." [@lithgow2017long]
+
+> "Our first task, to develop a protocol, seemed straightforward. But subtle disparities
+were endless. In one particularly painful teleconference, we spent an hour debating
+the proper procedure for picking up worms and placing them on new agar plates. Some
+batches of worms lived a full day longer with gentler techniques. Because a worm's 
+lifespan is only about 20 days, this is a big deal. Hundreds of e-mails and many 
+teleconferences later, we converged on a technique but still had a stupendous three-day
+difference in lifespan between labs. The problem, it turned out, was notation---one
+lab determined age on the basis of when an egg hatched, others on when it was laid." 
+[@lithgow2017long]
+
+> "Ushering in the Enlightenment era in the late seventeenth century, chemist
+Robert Boyle put forth his controversial idea of a vacuum and tasked himself
+with providing descriptions of his work sufficient 'that the person I addressed
+them to might, without mistake, and with as little trouble as possible, be able
+to repeat such unusual experiments'. Much modern scientific communication falls
+short of this standard. Most papers fail to report many aspects of the
+experiment and analysis that we may not with advantage omit---things that are
+crucial to understanding the result and its limitations, and to repeating the
+work. We have no common language to describe this shortcoming. I’ve been in
+conferences where scientists argued about whether work was reproducible,
+replicable, repeatable, generalizable and other '-bles', and clearly meant quite
+different things by identical terms. Contradictory meanings across disciplines
+are deeply entrenched." [@stark2018before]
+
+> "The distinction between a preproducible scientific report and current common
+practice is like the difference between a partial list of ingredients and a
+recipe. To bake a good loaf of bread, it isn’t enough to know that it contains
+flour. It isn't even enough to know that it contains flour, water, salt and
+yeast. The brand of flour might be omitted from the recipe with advantage, as
+might the day of the week on which the loaf was baked. But the ratio of
+ingredients, the operations, their timing and the temperature of the oven
+cannot. Given preproducibility---a 'scientific recipe'---we can attempt to make
+a similar loaf of scientific bread. If we follow the recipe but do not get the
+same result, either the result is sensitive to small details that cannot be
+controlled, the result is incorrect or the recipe was not precise enough (things
+were omitted to disadvantage). Depending on the discipline, preproducibility
+might require information about materials (including organisms and their care),
+instruments and procedures; experimental design; raw data at the instrument
+level; algorithms used to process the raw data; computational tools used in
+analyses, including any parameter settings or ad hoc choices; code, processed
+data and software build environments; or analyses that were tried and
+abandoned." [@stark2018before]
+
+> "If I publish an advertisement for my work (that is, a paper long on results
+but short on methods) and it's wrong, that makes me untrustworthy. If I say:
+'here’s my work' and it's wrong, I might have erred, but at least I am honest.
+If you and I get different results, preproducibility can help us to identify
+why---and the answer might be fascinating." [@stark2018before]
+
+> "As chemists, we have to be able to go to the literature, take a procedure, 
+and carry out a similar or identical transformation with our own hands. Frustratingly,
+this doesn't always happen, and the next-to-worst-case scenario possible is 
+when it's one of your own reactions that can't be reproduced by a lab 
+elsewhere. Unsurprisingly, one step worse than this is when you can't even 
+reproduce one of your own reactions in your own lab!" [@gibb2014reproducibility]
+
+> "If there is nothing wrong with the reagents and reproducibility is still an 
+issue, then as I like to tell students, there are two options: (1) the physical 
+constants of the universe and hence the laws of physics are in a state of flux 
+in their round-bottomed flask, or (2) the researcher is doing something wrong 
+and either doesn't know it or doesn't want to know it. Then I ask them which 
+explanation they think I'm leaning towards." [@gibb2014reproducibility]
+
+> "Another approach to maximizing reproducibility is to use automation to cut
+out sloppy, all-too-human mistakes." [@gibb2014reproducibility]
+
+> "Consider a set of measurements that reflect some underlying true values
+(say, species represented by DNA sequences from their genomes) but
+have been degraded by technical noise. Clustering can be used to remove 
+such noise." [@holmes2018modern]
+
+> "In many cases, different variables are measured in different units, so they
+have different baselines and different scales. [Footnote: 'Common measures of
+scale are the range and the standard deviation...'] For PCA and many other
+methods, we therefore need to transform the numeric values to some common scale
+in order to make comparisons meaningful. Centering means subtracting the mean,
+so that the mean of the centered data is at the origin. Scaling or standardizing
+then means dividing by the standard deviation, so that the new standard
+deviation is 1. ... To perform these operations, there is the R function
+`scale`, whose default behavior when given a matrix or a dataframe is to make
+each column have a mean of 0 and a standard deviation of 1. ... We have already
+encountered other data transformation choices in Chapters 4 and 5, where we used
+the log and asinh functions. The aim of these transformations is (usually)
+variance stabilization, i.e., to make the variances of the replicate
+measurements of one and the same variable in different parts of the dynamic
+range more similar. In contrast, the standardizing transformation described
+above aims to make the scale (as measured by mean and standard deviation) of
+*different* variables the same. Sometimes it is preferable to leave variables at
+different scales because they are truely of different importance. If their
+original scale is relevant, then we can (and should) leave the data alone. In
+other cases, the variables have different precisions known a priori. We will see
+in Chapter 9 that there are several ways of weighting such variables. After
+preprocessing the data, we are ready to undertake data simplification through
+dimension reduction." [@holmes2018modern]
+
+> With data that give the number of reads for each gene in a sample, "The 
+data have a large dynamic range, starting from zero up to millions. The 
+variance and, more generally, the distribution shape of the data in different
+parts of the dynamic range are very different. We need to take this 
+phenomenon, called heteroscedascity, into account. The data are non-negative
+integers, and their distribution is not symmetric---thus normal or log-normal
+distribution models may be a poor fit. We need to understand the systematic
+sampling biases and adjust for them. Confusingly, such adjustment is often 
+called normalization. Examples are the total sequencing depth of an experiment
+(even if the true abundance of a gene in two libraries is the same, we expect
+different numbers of reads for it depending on the total number of reads
+sequenced) and differing sampling probabilities (even if the true abundance of 
+two genes within a biological sample is the same, we expect different numbers
+of reads for them if they have differing biophysical properties, such as length, 
+GC content, secondary structure, binding partners)." [@holmes2018modern]
+
+> "Often, systematic biases affect the data generation and are worth taking
+into account. Unfortunately, the term normalization is commonly used for that
+aspect of the analysis, even though it is misleading; it has nothing to do 
+with the normal distribution, nor does it involve a data transformation. 
+Rather, what we aim to do is identify the nature and magnitude of 
+systematic biases and take them into account in our model-based analysis of the
+data. The most important systematic bias [for count data from high-throughput
+sequencing applications like RNA-Seq] stems from variations in the total number
+of reads in each sample. If we have more reads for one library than for another, 
+then we might assume that, everything else being equal, the counts are 
+proportional to each other with some proportionality factor *s*. Naively, 
+we could propose that a decent estimate of *s* for each sample is simply 
+given by the sum of the counts of all genes. However, it turns out that we 
+can do better..." [@holmes2018modern]
+
+> "When testing for differential expression, we operate on raw counts and
+use discrete distributions. For other downstream analyses---e.g., for 
+visualization or clustering---it can be useful to work with transformed versions
+of the count data. Maybe the most obvious choice of transformation is the 
+logarithm. However, since count values for a gene can be zero, some analysts
+advocate the use of pseudocounts, i.e., transformations of the form
+y = log2(n + 1) or more generally y = log2(n + n0)." [@holmes2018modern]
+
+> "The data sometimes contain isolated instances of very large counts that
+are apparently unrelated to the experimental or study design and may be
+considered outliers. Outliers can arise for many reasons, including rare 
+technical or experimental artifacts, read mapping problems in the case of
+genetically differing samples, and genuine but rare biological events. In 
+many cases, users appear primarily interested in genes that show consistent 
+behavior, and this is the reason why, by default, genes that are affected by such 
+outliers are set aside by `DESeq`. The function calculates, for every gene
+and for every sample, a diagnostic test for outliers called Cook's distance. 
+Cook's distance is a measure of how much a single sample is influencing the
+fitted coefficients for a gene, and a large value of Cook's distance is 
+intended to indicate an outlier count. `DESeq2` automatically flags genes
+with Cook's distance above a cutoff and sets their p-values and adjusted
+p-values to NA. ... With many degrees of freedom---i.e., many more samples
+than number of parameters to be estimated---it might be undesirable to remove
+entire genes from the analysis just becuase their data include a single 
+count outlier. An alternative strategy is to replace the outlier counts with 
+the trimmed mean over all sample, adjusted by the size factor for that
+sample. This approach is conservative: it will not lead to false positives, 
+as it replaces the outlier value with the value predicted by the null hypothesis." [@holmes2018modern]
+
+> "Since the sampling depthy is typically different for different sequencing
+runs (replicates), we need to estimate the effect of this variable parameter
+and take it into account in our model. ... Often this part of the analysis 
+is called normalization (the term is not particularly descriptive, but 
+unfortunately it is now well established in the literature)." [@holmes2018modern]
+
+> "Sometimes we explicitly know about factors that cause bias, for instance, when
+different reagent batches were used in different phases of the experiment. We
+call these batch effects (Leek et al., 2010). At other times, we may expect that
+such factors are at work but have no explicit record of them. We call these
+latent factors. We can treat them as adding to the noise, and in Chapter 
+4 we saw how to use mixture models to do so. But this may not be enough; with 
+high-dimensional data, noise caused by latent factors tends to be correlated, 
+and this can lead to faulty inference (Leek et al., 2010). The good news is that
+these same correlations can be exploited to estimate latent factors from 
+the data, model them as bias, and thus reduce the noise (Leek and Storey 2007; 
+Stegle et al. 2010)." [@holmes2018modern]
+
+> "Regular noise can be modeled by simple probability models such as independent
+normal distributions or Poissons, or by mixtures such as the gamma-Poisson or
+Laplace. We can use relatively straightforward methods to take such noise into
+account in our data analyses and to compute the probability of extraordinarily 
+large or small values. In the real world, this is only part of the story: 
+measurements can be completely off-scale (a sample swap, a contamination, or 
+a software bug), and they can all go awry at the same time (a whole microtiter
+plate went bad, affecting all data measured from it). Such events are hard to model
+or even correct for---our best chance of dealing with them is data quality 
+assessment, outlier detection, and documented removal." [@holmes2018modern]
+
+> "We distinguis between data quality assessment (QA)---steps taken to measure
+and monitor data quality---and quality control---the removal of bad data. 
+These activities pervade all phases of an analysis, from assembling the raw 
+data over transformation, summarization, model fitting, hypothesis testing or
+screening for 'hits' to interpretation. QA-related questions include: 
+1. How do the marginal distributions of the variables look (histograms, 
+ECDF plots)? 2. How do their joint distributions look (scatterplots, pair plots)?
+3. How well do replicated agree (as compared to different biological conditions)?
+Are the magnitudes of different between several conditions plausible?
+4. Is there evidence of batch effects? These could be of a categorical (stepwise)
+or continuous (gradual) nature, e.g., due to changes in experimental reagents, 
+protocols or environmental factors. Factors associated with such effects may 
+be explicitly known, or unknown and latent, and often they are somewhere in 
+between (e.g., when a measurement apparatus slowly degrades over time, and 
+we have recorded the times, but don't really know exactly when the degradation
+becomes bad). For the last two sets of questions, heatmaps, principal components
+plots, and other ordination plots (as we have seen in Chapters 7 and 9) are 
+useful." [@holmes2018modern]
+
+> "It's not easy to define quality, and the word is used with many meanings. The
+most pertinent for us is fitness for purpose, and this contrasts with other 
+definitions that are based on normative specifications. For instance, in 
+differential expression analysis with RNA-Seq data, our purpose may be the 
+detection of differentially expressed genes between two biological conditions. 
+We can check specificiations such as the number of reads, read length, base
+calling quality and fraction of aligned reads, but ultimately these measures in 
+isolation have little bearing on our purpose. More to the point will be the 
+identification of samples that are not behaving as expected, e.g., because of 
+a sample swap or degradation, or genes that were not measured properly. 
+... Useful plots include ordination plots ... and heatmaps ...
+A quality metric is any value that we use to measure quality, and having 
+explicit quality metrics helps in automating QA/QC." [@holmes2018modern]
+
+> "Getting data ready for analysis or visualization often involves a lot of 
+shuffling until they are in the right shape and format for an analytical 
+algorithm or a graphics routine." [@holmes2018modern]
 
