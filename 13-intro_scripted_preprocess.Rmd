@@ -80,13 +80,13 @@ In the introduction to this book, we provide the definition for computational
 reproducibility. Specifically, computational reproducibility typically means
 that another researcher could get the exact results of the original study from
 the original data collected from a study [@stark2018before]. Computational
-reproducibility, then, requires a few things: the original data and very
+reproducibility, then, requires two main things: the original data and very
 thorough instructions that describe how those data were processed and analyzed
 [@nekrutenko2012next].
 
 Neither of these elements is trivial to provide in a thorough way for a complex
 biomedical experiment. Raw datasets are often extremely large and complex. To
-provide thorough instructions on the processing and analyis requires "access to
+provide thorough instructions on the processing and analysis requires "access to
 ... source code or binaries of exact versions of software used to carry out the
 initial analysis (this includes all helper scripts that are used to convert
 formats, groom data, and so on) and knowing all parameter settings exactly as
@@ -125,20 +125,20 @@ supplement the base R functions).
 In this section, we'll go through some basics to help you get started writing a
 code script in R. The process of writing a code script is similar in many other
 interpreted languages, like Python and Julia. If you are familiar with writing
-code scripts in R, find the next module---where we provide some tips on
+code scripts in R, you may find the next module---where we provide some tips on
 improving reproducibility when writing scripts---more helpful.
 
 We'll start with a few basics of the conventions of the R programming language.
 If you have never used R before, it is critical to understand these basic
 pieces---just enough so you can understand how an R code script is put together
 and run. In later modules, we'll go into some more detail about some helpful
-tools in R, including Bioconductor data structures and the suite of "tidyverse"
+tools in R, including the suite of "tidyverse"
 tools that are now taught in most beginner R programming courses. We will, of
 course, not have room to provide a full course on how to program in R, but we
 are aiming to give you enough of a view that you can understand how R
-programming can fit in to the data preprocessing and analysis pipeline for
+programming can fit into a data preprocessing and analysis pipeline for
 laboratory-based biomedical research projects, as well as how you can navigate
-an R script that someone else has written. In a later module, we'll provide
+an R script that someone else has written. In module 3.4, we'll provide
 directions to more resources if you would like to continue developing your
 expertise in R programming beyond the basics covered in these modules.
 
@@ -165,8 +165,8 @@ To keep track of the objects you have in your R session, you typically assign
 each object a name. Any time you want to use the data in that object, or work 
 with the object in any way, you can then refer to it by that name, rather than 
 needing to repeat all the code you used to initially create it. You can assign 
-an object its name using a special function in R called the "gets arrow" or 
-assignment operator. It's an arrow made of the less than and hyphen keys, with 
+an object its name using a special function in R called the *gets arrow* or 
+*assignment operator*. It's an arrow made of the less than and hyphen keys, with 
 no spaces between the two (`<-`). You'll put the name you want to give the object
 to the left of this arrow and the code to create the object (for example, to read
 in data from a file) to the right. Therefore, the beginning of your R script
@@ -179,11 +179,11 @@ my_data <- read_excel("my_recorded_data.xlsx")
 In this example, the line of code is reading in data from an Excel file named
 "my_recorded_data.xlsx" and storing in an R object that is assigned the name 
 `my_data`. When you want to work with these data later in the code pipeline, you 
-can do so by referencing `my_data`, which now stores the data from that file. 
+can do so with the name `my_data`, which now stores the data from that file. 
 
 In addition to creating objects from the data that you initially read in, you will 
 likely create more intermediate objects along the way. For example, if you take
-your initial data and filter it down to a subset, then you might assign that version 
+your initial data and filter it to a subset, then you might assign that version 
 of the data to a separate object name, so you can work with that version later in 
 your code. Alternatively, in some cases you'll just overwrite the original object
 with the new version, using the same object name (for example, creating a subset of
@@ -244,7 +244,7 @@ a name. For this, you'll use the gets arrow that we described earlier. This is a
 special type of function in R. Most R functions consist of the function's name,
 followed by parentheses inside of which you put the objects to input to the
 function (e.g., `read_excel("my_recorded_dat.xlsx"`). The gets arrow is a
-different type of function called an operator. These functions go between two
+different type of function called an *operator*. These functions go between two
 objects, both of which are input to the operator function. They're used often
 for arithmetic (for example, the `+` operator adds the values in the objects
 before and after it, so that you can call `1 + 2` to add one and two). For the
@@ -262,7 +262,7 @@ output from the second function (that the data in the Excel file is stored in
 an object assigned the name `my_data`). 
 
 As you write an R script, you will use function calls to work through the 
-preprocessing steps. You can use different function calls to do things like
+steps in your pipeline. You can use different function calls to do things like
 apply a transformation, average values across groups, or reduce dimensions of
 a high-dimensional dataset. Once you've preprocessed the data, you can also use 
 function calls to run statistical tests with the data and to visualize results
@@ -278,13 +278,13 @@ refine the script, editing it down to the essential steps and making sure each
 function call within those steps is operating as you intend. While it can be
 intimidating to start with a blank file and develop some code---just like it is
 with a blank piece of paper when writing a manuscript---just like with writing,
-you are able to start with something rough and then iterate until you arrive at
+you can start with something rough and then iterate until you arrive at
 the version you want.
 
 This process might seem a bit overwhelming when you first learn it, but it
 suffices at this point if you understand that, in R code, you'll be working with
 objects (your materials) and functions (your tools). As we look through R
-scripts in later parts of this module, we'll see these two pieces---objects and
+scripts in the video exercise of this module, we'll see these two pieces---objects and
 functions---used again and again in the scripts. They are the building blocks
 for your R scripts.
 
@@ -295,11 +295,11 @@ the rest of this module and the next few modules. That's the idea of an R packag
 fortunately, it's a pretty straightforward one. 
 
 We just talked about how functions in R are tools, which you can use to do interesting 
-things with your data (including all the preprocessing steps we talked about in the
-last module). However, the version of R that you initially install to your computer
+things with your data (including all the preprocessing steps we talked about in 
+modules 3.1). However, the version of R that you initially install to your computer
 (available for free for all major operating systems at https://cran.r-hub.io/) doesn't
 include all the tools that you will likely want to use. The initial download gives you 
-the base of the programming language, which is called base R, as well as a few 
+the base of the programming language, which is called *base R*, as well as a few 
 extensions of this for very common tasks, like fitting some common statistical models. 
 
 Because R is an open-source software, people who use R can build on top of this
@@ -340,7 +340,7 @@ an R session, you'd need to run:
 library("readxl")
 ```
 
-While you only need to *install* a package once, you need to *load* it every
+While you only need to install a package once, you need to load it every
 time you open a new R session to do work, if you want to use its functions in
 that R session. Therefore, you'll often see a lot of calls to the `library`
 function in R scripts. You can use this call anywhere in the script as long as
@@ -350,7 +350,7 @@ your R script. That way, if you share the script with someone else, they can
 quickly check to see if they'll need to install any new packages before they can
 run the code in the script.
 
-**Using a plain text file, edited in a plain text editor (can open in RStudio IDE)**
+**Creating a script**
 
 Based on the points that we've just discussed, hopefully you can envision now
 that an R script will ultimately include a number of lines of code, covering a
@@ -380,10 +380,10 @@ from scratch, but instead by starting with someone else's and walking through
 that. You can explore how it works (reverse engineer it). Then you can try
 changing small parts, to see if it acts as you expect when you do. This process
 will help you get a feel for how these scripts are organized and how they
-operate. Later in this module, we'll provide an R script for a basic laboratory
-data preprocessing task and walk you through it, so you can use that as a
-starting point to understand how it would work to create, edit, and run your own
-R script.
+operate. In the video exercise for this module, we'll provide an R script for a
+basic laboratory data preprocessing task and walk you through it, so you can use
+that as a starting point to understand how it would work to create, edit, and
+run your own R script.
 
 ### How to run code in an R script
 
@@ -392,8 +392,8 @@ number of ways. First, you can run all the code in the script at once, which is
 known as *batch execution*. When you do this, all the code in the script will be
 executed by R, and while it's executed by R one line at a time, you won't have
 the chance to make changes along the way. If you compare it to the idea of a
-code script as like a play script, you can think of this as being like when the
-play is performed for an audience---you start the play, but then you don't have
+code script to a play script, you can think of this as being like when the
+play is performed for an audience---once you start the play, you don't have
 the chance to stop and work on it as it's going. Instead, it will go straight
 through to the end. If there is an error somewhere along the way, then the code
 will stop running at that point and you'll get an error message, but otherwise
@@ -423,7 +423,7 @@ can do that. In RStudio, you can open your code script (a file ending in ".R"),
 and you will still be able to see the console, which is a space for submitting
 function calls to R. To execute the code in the script one line at a time,
 there's a few quick ways that you can tell RStudio to send that line in the
-script to the console to run. Start by putting your cursor on that line of code.
+script to the console and run it. Start by putting your cursor on that line of code.
 One way to now execute this line (i.e., send it to the console to run) is to
 click on the "Run" button in the top right-hand corner of the script file. If
 you try this, you should see that this line of code gets sent to the console
@@ -434,14 +434,14 @@ Even quicker is a keyboard shortcut that does the same thing. (Keyboard
 shortcuts are short control sequences that you type in your keyboard to run a
 command. They're faster than clicking buttons because you can do them without
 taking your hands off the keyboard. Ctrl-C is one very common one that you might
-have used before, which in most programs will copy the current selection.) With your
-cursor on the line of the function call that you want to execute, use the keyboard
-shortcut Ctrl-Enter (depending on your operating system, you may need to use
-Command rather than Ctrl).
+have used before, which in most programs will copy the current selection.) For
+running a line of R code, with your cursor on the line of the function call that
+you want to execute, use the keyboard shortcut Ctrl-Return (depending on your
+operating system, you may need to use Command rather than Ctrl).
 
 You can use a similar method to run a few lines of code at once. All you have to 
 do is highlight the code that you want to run, and then you can use either of 
-the two methods (click the "Run" button or use the Ctrl-Enter keyboard shortcut). 
+the two methods (click the "Run" button or use the Ctrl-Return keyboard shortcut). 
 We will show you examples of how to do this in the video exercise at the end
 of this module.
 
@@ -471,42 +471,8 @@ captures some of the elements discussed in this module.
 
 [Video of exercise]
 
----------------------------------------------------------------------------
-
-> "Languages have
-*syntax*, that is, rules that define what is grammatically legal and what is not. 
-Programming languages are picky on the grammatical side: you have to say it right or there
-will be a complaint." [@kernighan2011d]
 
 
 
-> "One way to write R code is simply to enter it interactively at the command line... This 
-interactivity is beneficial for experimenting with R or for exploring a data set in a casual
-manner. ... However, interactively typing code at the R command line is a very bad approach from 
-the perspective of recording and documenting code because the code is lost when R is shut down. 
-A superior approach in general is to write R code in a file and get R to read the code from the file." [@murrell2009introduction]
 
-> "The good news is that a computer is a general-purpose machine, capable of performing 
-any computation. Although it only has a few kinds of instructions to work with, it can 
-do them blazingly fast, and it can largely control its own operation. The bad news is 
-that it doesn't do anything itself unless someone tells it what to do, in excruciating
-detail. A computer is the ultimate sorcere's apprentice, able to follow instructions
-tirelessly and without error, but requiring painstaking accuracy in the 
-specification of what to do." [@kernighan2011d]
 
-> "The features of R are organized into separate bundles called *packages*. The standard R 
-installation includes about 25 of those packages, but many more can be downloaded from CRAN and
-installed to expand the things that R can do. ... Once a package is installed, it must be 
-*loaded* within an R session to make the extra features available. ... Of the 25 packages
-that are installed by default, nine packages are *loaded* by default when we start a new
-R session; these provide the basic functionality of R. All other packages must be loaded
-before the relevant features can be used." [@murrell2009introduction]
-
-> "The R environment is the software used to run R code." [@murrell2009introduction]
-
-> "Programming in R is carried out, primarily, by manipulating and modifying data structures.
-These different transformations are carried out using functions and operators. In R, 
-virtually every operation is a function call, and though we separate our discussion into
-operators and function calls, the distinction is not strong ... The R evaluator and
-many functions are written in C but most R functions are written in R itself." 
-[@gentleman2008r]

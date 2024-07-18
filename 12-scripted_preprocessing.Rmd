@@ -33,22 +33,22 @@ processes in their own pipelines
 
 ### What is data preprocessing?
 
-When you are conducting an experiment that involves work in the wet lab, you 
-will do a lot of work before you have any data ready for the computer. You may
-have conducted an extensive period of work that involved working with laboratory
-animals and cell cultures. In many cases, you will have run some samples through 
+When you are conducting an experiment that involves work in the wet lab, you
+will do a lot of work before you have any data ready for the computer. You may,
+for example, have conducted an extensive period of work that involved laboratory
+animals or cell cultures. In many cases, you will have run some samples through
 very advanced equipment, like cytometers or sequencers. Once you have completed
-this long and hard process, you may ask yourself, "I ran the experiment, and I 
-ran the equipment... What now?". 
+this long and hard process, you may ask yourself, "I ran the experiment, I ran
+the equipment... Aren't I done with the hard work?".
 
-For certain types of data, you may be able to proceed directly to analysis of 
-the data. For example, if you collected the weights of lab animals, you are 
-probably directly using those data to answer questions like whether those 
-weights were different between treatment groups. However, with a lot of biomedical
-data, you will not be able to move directly to analyzing the data. Instead, 
-you will need to start with a stage of *pre-processing* the data: that is, 
-taking computational steps to prepare the data before it's in an appropriate 
-format to be used in statistical analysis. 
+For certain types of data, you may be able to proceed directly to statistical
+analysis. For example, if you collected the weights of lab animals, you are
+probably directly using those data to answer questions like whether they
+differed between treatment groups. However, with a lot of
+biomedical data, you will not be able to move directly to analyzing the data.
+Instead, you will need to start with a stage of *pre-processing* the data: that
+is, taking computational steps to prepare the data before it's in an appropriate
+format to be used in statistical analysis.
 
 There are several reasons that pre-processing is often necessary. The first is 
 that many biomedical data are collected using extremely complex equipment and 
@@ -62,48 +62,25 @@ of mice in different treatment groups, it may be more practical to weigh the
 cage that contains all the mice in each treatment group rather than weigh
 each mouse individually. This makes life in the lab easier, but means you'll need
 to do some more computational pre-processing of the data to make sense of it 
-appropriately. Finally, there are now frequent cases where an assay generates
+appropriately. Third, there are now frequent cases where an assay generates
 a very large set of measures---for example, expression levels of thousands of
 genes for each sample---and some pre-processing might help in digesting the 
-complexity inherent in this type of high-dimensional data. 
+complexity inherent in this type of high-dimensional data. Finally, preprocessing
+is often necessary to check for and resolve quality control issues within the
+data.
 
-All in all, pre-processing aims to extract useful information from the measurments
-that you've collected from your experiment, so that this information can then 
-be used within statistical analysis and visualization to test important hypotheses
-that provide insights on your scientific question. 
+In this module, we'll talk more about what preprocessing is. As part of this
+discussion, we'll describe several common themes when preprocessing
+scientific data. 
 
-Let's start by talking about what data pre-processing is, as well as why
-biomedical data often need preprocessing. When you run an assay, you are aiming
-to gain knowledge and insights on a scientific question. For example, does a new
-drug help in curing a disease? There are some measures that you can collect that
-are directly linked to the scientific question. For example, if you track people
-who take a drug versus a placebo for a terminal disease, the length of time that
-each subject survives might be a direct measure of the success of that drug.
-When you have direct measurements like this, your data may not require much
-preprocessing before you incorporate it in a statistical analysis.
-
-However, there are often cases where we collect data that are not as immediately
-linked to the scientific question. Instead, these data may require
-preprocessing before they can be used to test meaningful scientific hypotheses.
-Data *preprocessing* is a term that covers steps must be done after data are
+All in all, pre-processing aims to extract useful information from the
+measurments that you've collected from your experiment, so that this information
+can then be used within statistical analysis and visualization to test important
+hypotheses that provide insights on your scientific question. Data
+*preprocessing*, then, is a term that covers steps must be done after data are
 collected but before they are used for further analysis. After the data are
-appropriately pre-processed, you can use them for statistical tests---for
-example, to determine if metabolite profiles are different between experimental
-groups---and also combine them with other data collected from the
-experiment---for example, to see whether certain metabolite levels are
-correlated with the bacterial load in a sample.
-
-Some types of preprocessing fulfill the need of translating from the equipment
-measurements to measures that are directly relevant to the scientific question.
-Other preprocessing tasks are more housekeeping (e.g., reading data into memory
-so the software can use it) and others aim to digest complexity in the data or
-reduce or handle noise and bias in the data collection. It is particularly
-common that pre-processing is necessary for data extracted using complex
-equipment. Equipment like mass spectrometers and flow cytometers leverage
-physics, chemistry, and biology in clever ways to help us derive more
-information from samples, but one tradeoff is that the data from such equipment
-often require a bit of work to move into a format that is useful for answering
-scientific questions.
+appropriately pre-processed, you can use them for statistical tests and also
+combine them with other data collected from the experiment.
 
 In any scientific field, when you work with data, it will often take much more
 time to prepare the data for analysis than it takes to set up and run the
@@ -112,7 +89,23 @@ complex biomedical data, including data for flow cytometry, transcriptomics,
 proteomics, and metabolomics. It is a worthwhile investment of time to learn
 strategies to make preprocessing of this data more efficient and reproducible,
 and it is critical---for the rigor of the entire experiment---to ensure that the
-preprocessing is done correctly.
+preprocessing is done correctly and can be repeated by others.
+
+These preprocessing steps, in fact, should be as clear and practical to follow
+as the types of protocols you would follow for a wet lab procedure. Key to 
+reproducibility is that a procedure is described in enough detail that others
+can follow it exactly. In a commentary for *Nature*, Lithgow and coauthors
+describe how critical it is to share these details: 
+
+> "Our first task, to develop a protocol, seemed straightforward. But subtle disparities
+were endless. In one particularly painful teleconference, we spent an hour debating
+the proper procedure for picking up worms and placing them on new agar plates. Some
+batches of worms lived a full day longer with gentler techniques. Because a worm's 
+lifespan is only about 20 days, this is a big deal. Hundreds of e-mails and many 
+teleconferences later, we converged on a technique but still had a stupendous three-day
+difference in lifespan between labs. The problem, it turned out, was notation---one
+lab determined age on the basis of when an egg hatched, others on when it was laid." 
+[@lithgow2017long]
 
 ### Common themes and processes in data preprocessing
 
@@ -120,68 +113,22 @@ This preprocessing will vary depending on the way the data were collected and
 the scientific questions you hope to answer, and often it will take a lot of
 work to develop a solid pipeline for preprocessing data from a specific assay.
 However, there are some common themes that drive the need for such preprocessing
-of data, as well as some common steps in preprocessing that come up for many
-datasets, across types of data collection and research questions. These common
-themes provide a framework that can help as you design data
-preprocessing pipelines, or as you interpret and apply pipelines that were 
-developed by other researchers. The rest of this module will describe 
-several of the most common themes and process in data preprocessing.
-
-**Data input**
-
-To be able to work with data---whether to preprocess it or to analyze it---you
-will first need to provide a way for the software to access the data. For some
-software programs, this will require reading the data into memory for the
-program. Other software might be able to access data in a streaming fashion,
-working with only part in memory at a time, or be able to read into memory
-specific pieces from a file while leaving most of the data on disk. Regardless
-of the method, the software needs some kind of access the data. Providing 
-this access is typically the first step in most data preprocessing pipelines.
-
-When working with biomedical research data, you will typically have it stored in
-some type of computer file. Computer files are saved in various file formats.
-File formats define for the computer the way that the data are stored in the
-file, and different formats are used for biomedical data. For example, data that
-you enter and save in Excel may be saved to an ".xls" or ".xlsx" file
-format. Some types of equipment, like plate readers, may also allow you to
-output data in this file format. An even more basic file format is a plain text
-file, in which data can be "delimited" (divided into sections, like columns)
-using commas or other marks. These files often have an extension like ".csv" (if
-commas are used as the delimiter) or ".tsv" (if tabs are used as the delimiter), 
-or a more generic file extension, like ".txt".
-It is usually straightforward to read data from these simper file formats 
-into R and other similar software. In later modules, we'll provide examples
-of how to read in from these types of file formats. 
-
-For other assays, especially those that involve more complicated equipment, the
-file format will be more complex than a basic spreadsheet or other tabular
-format. For example, mass spectrometers, which are used to collect data for
-proteomics and metabolomics, often output data in specific file formats, like
-the mzML file format [@deutsch2012file]. Flow cytometers often output data in
-the Flow Cytometry Standard (FCS) file format [@spidlen2021data]. In many cases,
-these file formats will be well-defined and standardized across equipment, which
-makes it easier for open source developers to build functions to input data from
-those file formats.
-
-Often, the initial download of R or similar software will not include tools
-to read in data from these more complex and specialized file formats. However, 
-developers have often created extensions to the software (packages in R) 
-that can handle these more specialized file types. If a file format is 
-standardized and well-defined to the public, it allows people to write code
-that can access and load data in that format, even if it is very complex.
-For example, the Bioconductor project includes extensions that help read data
-into R from some of the specific file formats for biomedical data. 
+of data across types of data collection and research questions. These common
+themes provide a framework that can help as you design data preprocessing
+pipelines, or as you interpret and apply pipelines that were developed by other
+researchers. The rest of this module will describe several of the most common
+themes in data preprocessing.
 
 **Extracting scientifically-relevant measurement**
 
-Another common purpose of preprocessing is to translate the measurements that
+One common purpose of preprocessing is to translate the measurements that
 you directly collect into measurements that are meaningful for your scientific
 research question. Scientific research uses a variety of complex techniques and
 equipment to initially collect data. As a result of these inventions and
 processes, the data that are directly collected in the laboratory by a person or
 piece of equipment might require quite a bit of preprocessing to be translated
 into a measure that meaningfully describes a process of interest. A key element
-of preprocessing data are to translate the acquired data into a format that can
+of preprocessing data is to translate the acquired data into a format that can
 more directly answer scientific questions.
 
 This type of preprocessing will vary substantially from assay to assay, with
@@ -190,30 +137,21 @@ some examples of this idea, moving from very simple translation to processes
 that are much more complex (and more typical of the data collected at present in
 many types of biomedical research assays).
 
-As a basic example, some assays will use equipment that can measure the 
+As a basic example, some assays will use equipment that can measure the
 intensity of color of a sample or the sample's opacity. Some of these measures
-might be directly (or at least proportionally) interpretable. For example, 
-opacity might provide information about how high the concentration of 
-bacteria are in a sample. Others might need more interpretation, based on 
-the scientific underpinnings of the assay. For example, in ELISA, antibody 
-levels are detected as a measure of the intensity of color of a sample at
-various dilutions, but to interpret this correctly, you need to know the 
-exact process that was used for that assay, as well as the dilutions that were
-measured.
-
-```{marginfigure, echo = TRUE}
-"Meaningful interpretation of sequencing data has become particularly
-important. Yet such interpretation relies heavily on complex computation---a new
-and unfamiliar domain to many of our biomedical colleagues---which, unlike
-data generation, is not universally accessible to everyone."
-
-[@nekrutenko2012next]
-```
+might be directly (or at least proportionally) interpretable. For example,
+opacity might provide information about how high the concentration of bacteria
+are in a sample. Others might need more interpretation, based on the scientific
+underpinnings of the assay. For example, in an enzyme-linked immunosorbent assay
+(ELISA), antibody levels are detected as a measure of the intensity of color of
+a sample at various dilutions, but to interpret this correctly, you need to know
+the exact process that was used for that assay, as well as the dilutions that
+were measured.
 
 The complexity of this "translation" scales up as you move to data that are
 collected using more complex processes. Biomedical research today leverages
 extraordinarily complex equipment and measurement processes to learn more about
-health and disease. These invented processes of measurement can
+health and disease. These invented processes of measuring can
 provide extraordinarily detailed and informative data, allowing us to "see"
 elements of biological processes that could not be seen at that level before.
 However, they all require steps to translate the data that are directly
@@ -235,17 +173,17 @@ the basis of a panel that's developed for that flow cytometry experiment. For
 each of the proteins on the panel, you will incorporate an antibody with a
 specific affinity for that protein. If that antibody sticks to the cell in a
 substantial number, it indicates the presence of its associated protein on the
-cell. To be able to measure which of the antibodies stick to which cells, each
-type of antibody is attached to a specific fluorescent tag (each of these is
-often referred to as a "color" in descriptions of flow cytometry)
-[@benoist2011flow]. 
+cell. 
 
+To be able to measure which of the antibodies stick to which cells, each type of
+antibody is attached to a specific fluorescent tag (each of these is often
+referred to as a "color" in descriptions of flow cytometry) [@benoist2011flow].
 Each fluorescent tag included in the panel will emit wavelength in a certain
 well-defined range after it is exposed to light at wavelengths of a certain
 range. As each cell passes through the flow cytometer, lasers activate these
 fluorescent tags, and you can measure the intensity of light emitted at specific
 wavelengths to identify which proteins in the panel are present on or in each
-cell [@barnett2008cd4]. 
+cell [@barnett2008cd4].
 
 This is an extraordinarily clever way to identify cells, but the complexity of
 the process means that a lot of preprocessing work must be done on the resulting
@@ -260,7 +198,7 @@ tag emits at, and so on. In some cases, the measuring equipment will provide
 software that performs some of this preprocessing before you get the first
 version of the data, but some may need to be performed by hand, especially if
 you need to customize based on your research question. Further, it's critical to
-understand to process, to decide if it's apporpriate for your specific
+understand the process, to decide if it's appropriate for your specific
 scientific question.
 
 Similarly complex processes are used to collect data for many single-cell and
@@ -272,31 +210,27 @@ Depending on the assay, this preprocessing can include sequence alignment
 and assembly (if sequencing data were collected) or peak identification and 
 alignment (if data was collected using mass spectrometry, for example).
 
-```{marginfigure, echo = TRUE}
-"To reap the full benefits of the omics revolution, we need information
-technology tools capable of making sense of the vast data sets generated by
-omics experiments. In fact, the development of such tools has become a
-discipline unto itself, called bioinformatics. And only with those tools can
-researchers hope to clear another obstacle to drug development: that posed by
-so-called emergent properties---behaviors of biological systems that cannot be
-predicted from the basic biochemical properties of their components."
+As Anton Nekrutenko and Taylor James note in an article on the reproducibility 
+of next-generation sequencing: 
 
-[@barry2009new]
-```
+> "Meaningful interpretation of sequencing data has become particularly
+important. Yet such interpretation relies heavily on complex computation---a new
+and unfamiliar domain to many of our biomedical colleagues---which, unlike
+data generation, is not universally accessible to everyone."
+[@nekrutenko2012next]
 
-```{marginfigure, echo = TRUE}
-"One thing that has not changed in the last 10 years is that the individual
+In another article, Paul Flicek and Ewan Birney also capture this idea: 
+
+> "One thing that has not changed in the last 10 years is that the individual
 outputs of the sequence machines are essentially worthless by themselves. ...
 Fundamental to creating biological understanding from
 the increasing piles of sequence data is the development of analysis algorithms
 able to assess the success of the experiments and synthesize the data into
 manageable and understandable pieces."
-
 [@flicek2009sense]
-```
 
 The discipline of bioinformatics works to develop these types of algorithms
-[@barry2009new], and many of them are available through open-source, scripted
+[@barry2009new]. Many of them are available through open-source, scripted
 software like R and Python. These types of preprocessing algorithms are often
 also available as proprietary software, sometimes sold by equipment
 manufacturers and sometimes separately.
@@ -306,11 +240,7 @@ manufacturers and sometimes separately.
 Another common step in preprocessing is to identify and resolve quality control
 issues. These are cases where some error or problem occurred in the data
 recording and measurement, or some of the samples are poor quality and need to
-be discarded. One way you can help to identify potential quality issues in
-research data is through basic exploratory analysis. Basic distribution plots or
-scatterplots of the data, for example, can often help to identify unusual
-outliers, which may be the result of a data recording error or an oddity in one
-of the samples. 
+be discarded. 
 
 There are a variety of reasons why biomedical data might have quality control
 issues. First, when data are recorded "by hand" (including into a spreadsheet),
@@ -363,10 +293,15 @@ can be removed in the preprocessing of scRNA-seq data based on this and related
 criteria (low number of detected genes, small relative library size)
 [@ilicic2016classification].
 
-**Addressing technical noise**
+**Addressing practical concerns and limitations in data collection**
 
-The second common purpose of preprocessing data is to address, to the extent
-that it is possible, unwanted noise in the data. When we collect biomedical
+Another common reason for preprocessing is related to addressing things you 
+did while collecting the data---specifically, things you did for 
+practical purposes or under practical limitations. These will they need to 
+be handled, when possible, in computational preprocessing. 
+
+More generally, this type of preprocessing addresses something called 
+*noise* in the data. When we collect biomedical
 research data, we are often collecting data in the hope that it will measure
 some meaningful biological variation between two or more conditions. For
 example, we may measure it in the hope that there is a meaningful difference in
@@ -374,21 +309,10 @@ gene expression between a sample taken from an animal that is diseased versus
 one that is healthy, with the aim of finding a biomarker of the disease.
 
 There are, however, several sources of variation in data we collect. The first
-of these is variation that comes from meaningful biological variation between
-different samples---the type of variation that we are trying to measure and 
-use to answer scientific questions. 
-
-> "Statistical models usually contain one or more ssytematic components as well
-as a random (or stochastic) component. The random component, sometimes called
-the noise, arises for a variety of reasons, and it is sometimes helpful to
-distinguish between (i) measurement error and (ii) natural random variability
-arising from differences between experimental units and from changes in
-experimental conditions which cannot be controlled. The systematic component,
-sometimes called the signal, may be deterministic, but there is increasing
-interest in the case where the signal evolves through time according to
-probabilistic laws. In engineering parlance, a statistical analysis can be
-regarded as extracting information about the signal in the presence of noise."
-[@chatfield1995problem]
+of these is variation that comes from *meaningful* biological variation between
+samples---the type of variation that we are trying to measure and 
+use to answer scientific questions. We often call this the signal in the 
+data [@chatfield1995problem]. 
 
 There are other sources of variation, however. These sources are irrelevant to our
 scientific question, and so we often call them "noise"---in other words, they
@@ -409,7 +333,12 @@ biological process.
 
 The second source of noise is technical. Technical noise comes from variation
 that is introduced in the process of collecting data, rather than from
-biological processes. For example, part of the process of single cell RNA-seq
+biological processes. In the introduction to the module, we brought up the 
+example of weighing mice by cage rather than individually; one example of 
+technical noise in this case would be the differences across the samples that's 
+based on the number of mice in each cage. 
+
+As another example, part of the process of single cell RNA-seq
 involves amplifying complementary DNA that are developed from the messenger RNA
 in each cell in the sample. How much the complementary DNA are amplified in this
 process, however, varies across cells [@perkel2017single]. If this isn't
@@ -1196,8 +1125,7 @@ in their round-bottomed flask, or (2) the researcher is doing something wrong
 and either doesn't know it or doesn't want to know it. Then I ask them which 
 explanation they think I'm leaning towards." [@gibb2014reproducibility]
 
-> "Another approach to maximizing reproducibility is to use automation to cut
-out sloppy, all-too-human mistakes." [@gibb2014reproducibility]
+
 
 > "Consider a set of measurements that reflect some underlying true values
 (say, species represented by DNA sequences from their genomes) but

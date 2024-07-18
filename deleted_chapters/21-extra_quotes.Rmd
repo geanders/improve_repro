@@ -6408,3 +6408,248 @@ can be interactive; the kernel looks after whatever scheduling and synchronizati
 to make it all work. As you probably suspect by now, the shell arranges things when you
 ask for a pipe; the individual programs are oblivious to the redirection." [@kernighan1984unix]
 
+> "The features of R are organized into separate bundles called *packages*. The standard R 
+installation includes about 25 of those packages, but many more can be downloaded from CRAN and
+installed to expand the things that R can do. ... Once a package is installed, it must be 
+*loaded* within an R session to make the extra features available. ... Of the 25 packages
+that are installed by default, nine packages are *loaded* by default when we start a new
+R session; these provide the basic functionality of R. All other packages must be loaded
+before the relevant features can be used." [@murrell2009introduction]
+
+> "The R environment is the software used to run R code." [@murrell2009introduction]
+
+> "Programming in R is carried out, primarily, by manipulating and modifying data structures.
+These different transformations are carried out using functions and operators. In R, 
+virtually every operation is a function call, and though we separate our discussion into
+operators and function calls, the distinction is not strong ... The R evaluator and
+many functions are written in C but most R functions are written in R itself." 
+[@gentleman2008r]
+
+
+> "One way to write R code is simply to enter it interactively at the command line... This 
+interactivity is beneficial for experimenting with R or for exploring a data set in a casual
+manner. ... However, interactively typing code at the R command line is a very bad approach from 
+the perspective of recording and documenting code because the code is lost when R is shut down. 
+A superior approach in general is to write R code in a file and get R to read the code from the file." [@murrell2009introduction]
+
+> "Languages have
+*syntax*, that is, rules that define what is grammatically legal and what is not. 
+Programming languages are picky on the grammatical side: you have to say it right or there
+will be a complaint." [@kernighan2011d]
+
+
+> "That a language is easy for the computer expert does not mean it is
+necessarily easy for the non-expert, and it is likely non-experts who will do
+the bulk of the programming (coding, if you wish) in the near future."
+[@hamming1997art]
+
+> "What is wanted in the long run, of course, is that the man with the problem 
+does the actual writing of the code with no human interface, as we all to often 
+have these days, between the person who knows the problem and the person who
+knows the programming language. This date is unfortunately too far off to 
+do much good immediately, but I would think by the year 2020 it would be
+fairly universal practice for the expert in the field of application to do 
+the actual program preparation rather than have expers in computers (and 
+ignorant in the field of application) do the program preparation." [@hamming1997art]
+
+-------------------------------------------------------------------------------
+
+**Data pre-processing**
+
+When we take measurements of experimental samples, we do so with the goal of
+using the data we collect to gain scientific knowledge. The data are direct
+measurement of something, but need to be interpreted to gain knowledge.
+Sometimes direct measurements line up very closely with a research
+question---for example if you are conducting a study that investigates the
+mortality status of each test subject then whether or not each subject to dies
+is a data point that is directly related to the research question you are aiming
+to answer. In this case these data may go directly into a statistical analysis
+model without extensive pre-processing. However, there are often cases where we
+collect data that are not as immediately linked to the scientific question.
+Instead, these data may require pre-processing before they can be used to test
+meaningful scientific hypotheses. This is often the case for data extracted
+using complex equipment. Equipment like mass spectrometers and flow cytometers
+leverage physics, chemistry, and biology in clever ways to help us derive more
+information from samples, but one tradeoff is that the data from such equipment
+often require a bit of work to move into a format that is useful for answering
+scientific questions.
+
+In the research process, these pre-processing steps should be done before
+the data are used for further analysis. There are the first step in working
+with the data after they are collected by the equipment (or by laboratory 
+personal, in the case of data from simpler process, like plating samples
+and counting colony-forming units). After the data are appropriately 
+pre-processed, you can use them for statistical tests---for example, to 
+determine if metabolite profiles are different between experimental groups---and
+also combine them with other data collected from the experiment---for example, 
+to see whether certain metabolite levels are correlated with the bacterial
+load in a sample.
+
+**Approaches for pre-processing data.**
+
+There are two main approaches for pre-processing experimental data in this 
+way. First,  The interface will typically 
+be a graphical-user interface (GUI), where you will use pull-down menus and
+point-and-click interfaces to work through the pre-processing steps. You 
+often will be able to export a pre-processed version of the data in a 
+common file format, like a delimited file or an Excel file, and that version
+of the data can then be read into more general data analysis software, like
+Excel or R.
+
+In the simplest case, the point-and-click interface that is used for this
+approach to pre-processing could be Excel or another version of spreadsheet
+software. An Excel spreadsheet might be used with data recorded "by hand" in the
+laboratory, with the researcher using embedded equations (or calculating and
+entering new values by hand) for steps like calculating values based on the raw
+data (for example, determining the time since the start of an experiment based
+on the time stamp of each data collection timepoint).
+
+> "There are currently [2017] very few, if any, 'plug-and-play' packages that 
+allow researchers to quality control (QC), analyse and interpret scRNA-seq 
+data, although companies that sell the wet-lab hardware and reagents for 
+scRNA-seq are increasingly offering free software (for example, Loupe from 
+10x Genomics, and Singular from Fluidigm). These are user-friendly but have the
+drawback that they are to some extent a 'black box', with little transparency 
+as to the precise algorithmic details and parameters employed." [@haque2017practical]
+
+The second approach is to conduct the pre-processing directly within general
+data analysis software like R or Python. These programs are both open-source,
+and include extensions that were created and shared by users around the world.
+Through these extensions, there are often powerful tools that you can use to
+pre-process complex experimental data. In fact, the algorithms used in
+proprietary software are sometimes extended from algorithms first shared through
+R or Python. With this approach, you will read the data into the program (R, 
+for example) directly from the file output from the equipment. You can 
+record all the code that you use to read in and pre-process the data in a 
+code script, allowing you to reproduce this pre-processing work. You can 
+also go a step further, and incorporate your code into a pre-processing 
+protocol, which combines nicely formatted text with executable code, and
+which we'll describe in much more detail later in this module and in the 
+following two modules.
+
+There are advantages to taking the second approach---using scripted code in an
+open-source program---rather than the first---using proprietary software with a
+GUI interface. The use of codes scripts ensures that the steps of pre-processing
+are reproducible. 
+Also, when you use scripted code to pre-process biomedical data, you will find
+that the same script can often be easily adapted and re-used in later projects
+that use the same type of data. You may need to change small elements, like the
+file names of files with data you want to use, or some details about the methods
+used for certain pre-processing steps. However, often almost all of the
+pre-processing steps will repeat over different experiments that you do. By 
+extending to write a pre-processing protocol, you can further support the 
+ease of adapting and re-using the pre-processing steps you take with one 
+experiment when you run later experiments that are similar.
+
+### Approaches to simple preprocessing tasks
+
+There are several approaches for tackling this type of data preprocessing, to
+get from the data that you initial observe (or that is measured by a piece of
+laboratory equipment) to meaningful biological measurements that can be analyzed
+and presented to inform explorations of a scientific hypothesis. While there are
+a number of approaches that don't involve writing code scripts for this
+preprocessing, there are some large advantages to scripting preprocessing any
+time you are preprocessing experimental data prior to including it in figures or
+further analysis. In this section, we'll describe some common non-scripted
+approaches and discuss the advantages that would be brought by instead using a
+code script. In the next module, we'll walk through an example of how scripts
+for preprocessing can be created and applied in laboratory research.
+
+In cases where the pre-processing is mathematically straightforward and the
+dataset is relatively small, many researchers do the preprocessing by hand in a
+laboratory notebook or through an equation or macro embedded in a spreadsheet.
+For example, if you have plated samples at different dilutions and are trying to
+calculate from these the CFUs in the original sample, this calculation is simple
+enough that it could be done by hand. However, there are advantages to instead
+writing a code script to do this simple preprocessing.
+
+
+### Approaches to more complex preprocessing tasks
+
+Other preprocessing tasks can be much more complex, particularly those that need
+to conduct a number of steps to extract biologically meaningful measurements
+from the measurements made by a complex piece of laboratory equipment, as well
+as steps to make sure these measurements can be meaningfully compared across
+samples.
+
+For these more complex tasks, the equipment manufacturer will often provide
+software that can be used for the preprocessing. 
+It can take a while to develop a code script for preprocessing the raw data from
+a piece of complex equipment like a mass spectrometer. However, the process of
+developing this script requires a thoughtful consideration of the steps of
+preprocessing, and so this is often time well-spent. Again, this initial time
+investment will pay off later, as the script can then be efficiently applied to
+future data you collect from the equipment, saving you time in pointing and
+clicking through the GUI software. Further, it's easier to teach someone else
+how to conduct the preprocessing that you've done, and apply it to future 
+experiments, because the script serves as a recipe. 
+
+When you conduct data preprocessing in a script, this also gives you access to
+all the other tools in the scripting language. For example, as you work through
+preprocessing steps for a dataset, if you are doing it through an R script, you
+can use any of the many visualization tools that are available through R. By
+contrast, in GUI software, you are restricted to the visualization and other
+tools included in that particular set of software, and those software developers
+may not have thought of something that you'd like to do. Open-source scripting
+languages like R, Python, and Julia include a huge variety of tools, and once
+you have loaded your data in any of these platforms, you can use any of these
+tools.
+
+If you have developed a script for preprocessing your raw data, it also becomes
+much easier to see how changes in choices in preprocessing might influence your
+final results. It can be tricky to guess whether your final results are sensitive, 
+for example, to what choice you make for a particular tranform for part of your
+data, or in how you standardize data in one sample to make different samples 
+easier to compare. If the preprocessing is in a script, then you can test making 
+these changes and running all preprocessing and analysis scripts, to see if it 
+makes a difference in the final conclusions. If it does, then it helps you 
+identify parts of preprocessing that need to be deeply thought through for the 
+type of data you're collecting, and you may want to explore the documentation on 
+that particular step of preprocessing to determine what choice is best for your
+data, rather than relying on defaults.
+
+> "One way to write R code is simply to enter it interactively at the command line... This 
+interactivity is beneficial for experimenting with R or for exploring a data set in a casual
+manner. ... However, interactively typing code at the R command line is a very bad approach from 
+the perspective of recording and documenting code because the code is lost when R is shut down. 
+A superior approach in general is to write R code in a file and get R to read the code from the file." [@murrell2009introduction]
+
+
+> "One way to write R code is simply to enter it interactively at the command line... This 
+interactivity is beneficial for experimenting with R or for exploring a data set in a casual
+manner. ... However, interactively typing code at the R command line is a very bad approach from 
+the perspective of recording and documenting code because the code is lost when R is shut down. 
+A superior approach in general is to write R code in a file and get R to read the code from the file." [@murrell2009introduction]
+
+> "One way to write R code is simply to enter it interactively at the command line... This 
+interactivity is beneficial for experimenting with R or for exploring a data set in a casual
+manner. ... However, interactively typing code at the R command line is a very bad approach from 
+the perspective of recording and documenting code because the code is lost when R is shut down. 
+A superior approach in general is to write R code in a file and get R to read the code from the file." [@murrell2009introduction]
+
+Some types of preprocessing fulfill the need of translating from the equipment
+measurements to measures that are directly relevant to the scientific question.
+Other preprocessing tasks are more housekeeping (e.g., reading data into memory
+so the software can use it) and others aim to digest complexity in the data or
+reduce or handle noise and bias in the data collection. It is particularly
+common that pre-processing is necessary for data extracted using complex
+equipment. Equipment like mass spectrometers and flow cytometers leverage
+physics, chemistry, and biology in clever ways to help us derive more
+information from samples, but one tradeoff is that the data from such equipment
+often require a bit of work to move into a format that is useful for answering
+scientific questions.
+
+"To reap the full benefits of the omics revolution, we need information
+technology tools capable of making sense of the vast data sets generated by
+omics experiments. In fact, the development of such tools has become a
+discipline unto itself, called bioinformatics. And only with those tools can
+researchers hope to clear another obstacle to drug development: that posed by
+so-called emergent properties---behaviors of biological systems that cannot be
+predicted from the basic biochemical properties of their components."
+[@barry2009new]
+
+One way you can help to identify potential quality issues in
+research data is through basic exploratory analysis. Basic distribution plots or
+scatterplots of the data, for example, can often help to identify unusual
+outliers, which may be the result of a data recording error or an oddity in one
+of the samples. 
