@@ -41,14 +41,14 @@ very advanced equipment, like cytometers or sequencers. Once you have completed
 this long and hard process, you may ask yourself, "I ran the experiment, I ran
 the equipment... Aren't I done with the hard work?".
 
-For certain types of data, you may be able to proceed directly to statistical
-analysis. For example, if you collected the weights of lab animals, you are
-probably directly using those data to answer questions like whether they
-differed between treatment groups. However, with a lot of
-biomedical data, you will not be able to move directly to analyzing the data.
-Instead, you will need to start with a stage of *pre-processing* the data: that
-is, taking computational steps to prepare the data before it's in an appropriate
-format to be used in statistical analysis.
+For certain types of data, you may be, and you may be able to proceed directly to
+statistical analysis. For example, if you collected the weights of lab animals,
+you are probably directly using those data to answer questions like whether weight
+differed between treatment groups. However, with a lot of biomedical data, you
+will not be able to move directly to analyzing the data. Instead, you will need
+to start with a stage of *pre-processing* the data: that is, taking
+computational steps to prepare the data before it's in an appropriate format to
+be used in statistical analysis.
 
 There are several reasons that pre-processing is often necessary. The first is 
 that many biomedical data are collected using extremely complex equipment and 
@@ -69,19 +69,6 @@ complexity inherent in this type of high-dimensional data. Finally, preprocessin
 is often necessary to check for and resolve quality control issues within the
 data.
 
-In this module, we'll talk more about what preprocessing is. As part of this
-discussion, we'll describe several common themes when preprocessing
-scientific data. 
-
-All in all, pre-processing aims to extract useful information from the
-measurments that you've collected from your experiment, so that this information
-can then be used within statistical analysis and visualization to test important
-hypotheses that provide insights on your scientific question. Data
-*preprocessing*, then, is a term that covers steps must be done after data are
-collected but before they are used for further analysis. After the data are
-appropriately pre-processed, you can use them for statistical tests and also
-combine them with other data collected from the experiment.
-
 In any scientific field, when you work with data, it will often take much more
 time to prepare the data for analysis than it takes to set up and run the
 statistical analysis itself [@robinson2014broom]. This is certainly true with
@@ -94,30 +81,19 @@ preprocessing is done correctly and can be repeated by others.
 These preprocessing steps, in fact, should be as clear and practical to follow
 as the types of protocols you would follow for a wet lab procedure. Key to 
 reproducibility is that a procedure is described in enough detail that others
-can follow it exactly. In a commentary for *Nature*, Lithgow and coauthors
-describe how critical it is to share these details: 
-
-> "Our first task, to develop a protocol, seemed straightforward. But subtle disparities
-were endless. In one particularly painful teleconference, we spent an hour debating
-the proper procedure for picking up worms and placing them on new agar plates. Some
-batches of worms lived a full day longer with gentler techniques. Because a worm's 
-lifespan is only about 20 days, this is a big deal. Hundreds of e-mails and many 
-teleconferences later, we converged on a technique but still had a stupendous three-day
-difference in lifespan between labs. The problem, it turned out, was notation---one
-lab determined age on the basis of when an egg hatched, others on when it was laid." 
-[@lithgow2017long]
+can follow it exactly. 
 
 ### Common themes and processes in data preprocessing
 
-This preprocessing will vary depending on the way the data were collected and
-the scientific questions you hope to answer, and often it will take a lot of
-work to develop a solid pipeline for preprocessing data from a specific assay.
-However, there are some common themes that drive the need for such preprocessing
-of data across types of data collection and research questions. These common
-themes provide a framework that can help as you design data preprocessing
-pipelines, or as you interpret and apply pipelines that were developed by other
-researchers. The rest of this module will describe several of the most common
-themes in data preprocessing.
+Exactly what preprocessing you will need to do will vary depending on the way the data
+were collected and the scientific questions you hope to answer, and often it
+will take a lot of work to develop a solid pipeline for preprocessing data from
+a specific assay. However, there are some common themes that drive the need for
+such preprocessing of data across types of data collection and research
+questions. These common themes provide a framework that can help as you design
+data preprocessing pipelines, or as you interpret and apply pipelines that were
+developed by other researchers. The rest of this module will describe several of
+the most common themes in data preprocessing.
 
 **Extracting scientifically-relevant measurement**
 
@@ -127,7 +103,7 @@ research question. Scientific research uses a variety of complex techniques and
 equipment to initially collect data. As a result of these inventions and
 processes, the data that are directly collected in the laboratory by a person or
 piece of equipment might require quite a bit of preprocessing to be translated
-into a measure that meaningfully describes a process of interest. A key element
+into a measure that meaningfully describes a scientific process. A key element
 of preprocessing data is to translate the acquired data into a format that can
 more directly answer scientific questions.
 
@@ -251,18 +227,17 @@ gene expression between a sample taken from an animal that is diseased versus
 one that is healthy, with the aim of finding a biomarker of the disease.
 
 There are, however, several sources of variation in data we collect. The first
-of these is variation that comes from *meaningful* biological variation between
+of these is variation that comes from meaningful biological variation between
 samples---the type of variation that we are trying to measure and 
-use to answer scientific questions. We often call this the signal in the 
+use to answer scientific questions. We often call this the "signal" in the 
 data [@chatfield1995problem]. 
 
-There are other sources of variation, however. These sources are irrelevant to our
-scientific question, and so we often call them "noise"---in other words, they
-cause our data to change from one sample to the next in a way that might blur
-the signal that we care about (variation from meaningful biological
-differences). We therefore often take steps in preprocessing to try to limit or
-remove this varation to help us see the meaningful biological variation more
-clearly.
+There are other sources of variation, however. These sources are irrelevant to
+our scientific question, and so we often call them "noise"---in other words,
+they cause our data to change from one sample to the next in a way that might
+blur the signal that we care about. We therefore often take steps in
+preprocessing to try to limit or remove this varation to help us see the
+meaningful biological variation more clearly.
 
 There are two main sources of this other variation or noise: biological and
 technical. Biological noise in data comes from biological processes, but from
@@ -292,11 +267,6 @@ amplification bias were not accounted for. If this isn't addressed in
 preprocessing, then this "amplification bias" prevents any meaningful comparison
 across cells.
 
-In some cases, there are ways to reduce some of the variation that comes from
-processes that aren't of interest for your scientific question, either from
-biological or technical sources. Some of this variation might just lower the
-statistical power of the analysis, but some can go further and bias the results.
-
 Another source of technical noise is something called *batch effects*. These
 occur when data have consistent differences based on who was doing the measuring
 or which batch the sample was run with, or which equipment was used for the 
@@ -308,7 +278,13 @@ differently. Similarly, settings or conditions can change in subtle ways between
 different runs on a piece of equipment, and so the samples run in different
 batches might have some differences in output based on the batch. 
 
-These batch effects can often be addressed through statistical modeling, 
+In some cases, there are ways to reduce some of the variation that comes from
+processes that aren't of interest for your scientific question, either from
+biological or technical sources. This is important to consider doing, because
+while some of this variation might just lower the statistical power of the
+analysis, some can go further and bias the results.
+
+For example, batch effects can often be addressed through statistical modeling, 
 as long as they are identified and are not aligned with a difference you 
 are trying to measure (in other words, if all the samples for the control 
 animals are run in one batch and all those for the treated animals in 
@@ -348,20 +324,9 @@ measurement by dividing by the total number of mice that are in each cage (in
 other words, taking the average weight per mouse). This type of averaging is a
 very simple example of normalizing data.
 
-> "Scaling normalization is typically required in RNA-seq data analysis to 
-remove biases caused by differences in sequencing depth, capture efficiency
-or composition effects between samples." [@mccarthy2017scater]
-
 Other normalization preprocessing might be used to adjust for sequencing depth
 for gene expression data, so that you can meaningfully compare the measures of a
-gene's expression in different samples or treatment groups. As one article 
-notes: 
-
-> "Let's say you are doing an RNA-Seq experiment. The sequencer may produce a 
-different number of total reads from lane to lane, and that is more likely 
-driven by technology, not biology. And so, normalization would be about 
-accounting for those differences." [@mak2011john]
-
+gene's expression in different samples or treatment groups. 
 This can be done in bulk RNA sequencing by calculating and adjusting for a
 global scale factor [@bacher2017scnorm]. One article highlights the critical 
 role of normalization in RNA sequencing in the context of reproducibility: 
