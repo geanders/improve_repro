@@ -26,18 +26,44 @@ reproducibly pre-processing experimental data.
 and powerful in solving many complex tasks with data
 - Describe the difference between base R and R's 'tidyverse'.
 
-### An overview of the "tidyverse" approach
+[Anecdote about tools]
 
-The "tidyverse" approach is an approach to using R that has grown enormously 
-in popularity in recent years. Most R courses and workshops for beginning 
-programmers are now structured around this approach. It provides a powerful
-yet flexible approach for working with data in R, and it one of the easier
-ways to start learning R. In this section, we'll cover the philosophy that
-provides a framework for this approach. In the following sections of the 
-modules, we'll go deeper into specific tools under this approach that can 
-be used for common data preprocessing tasks when working with biomedical 
-data, as well as provide information on more resources that can be used to
-continue learning this approach. 
+
+> "Similar to early many, beginner makers start with a rudimentary set of tools for
+basic creative tasks: a hammer (of course), a set of screwdrivers, scissors, 
+some pliers, maybe a crescent wrench, and some kind of cutting device. Almost
+everyone who has strived to make things has some combination of this list. Then, 
+as we get more experienced, we seek out better versions of the tools we already 
+have as well as new tools that can facilitate the learning of new techniques---new
+ways of cutting things apart, and new ways of putting them back together." [@savage2020every]
+
+> "Once we start to expand past the basic complement of tools, what to add to our 
+collections becomes a multifactor calculus based on reliability, cost, space, time, 
+repairability, skill, and need. These choices are nontrivial, because the tools we use
+are extensions of our hands and our minds. The best tools 'wear in' to fit you based
+on how you use them, they get smooth where you grab them. They tell the story of their
+utility with their patina of use. A toolbox of tools you know well and use lovingly is
+a magnificent thing." [@savage2020every]
+
+> "The reality is that tool choice is both less important and more important than you 
+think it is. It is less important to the extent that tool usage is entirely 
+subjective, which means there is no one right way to do things. But it is more
+important, because the best tool for any job is the one you're most comfortable with, 
+the one that you can make do what you want it to do, whose movements you fully 
+understand." [@savage2020every]
+
+The "tidyverse" approach is an approach to using R that has grown enormously in
+popularity in recent years. Most R courses and workshops for beginning
+programmers are now structured around this approach. It provides a powerful yet
+flexible approach for working with data in R, and it one of the easier ways to
+start learning R. In a previous module (module 2.3) we described the tidyverse
+approach in conjunction with talking about the power of the tidy data format. In
+this module, we'll go deeper into specific tools under this approach that can be
+used for common data preprocessing tasks when working with biomedical data, as
+well as provide information on more resources that can be used to continue
+learning this approach.
+
+### The "tidyverse" approach
 
 The term "elegance" often captures styles and approaches that are beautiful and
 functional without unneeded extras or complexity. Engineers and scientists
@@ -71,63 +97,46 @@ in order you want. By contrast, when functions input and output data in differen
 object types, they can only be joined in a specified order, because you can only 
 apply certain functions to certain object types. 
 
-Since the "tidyverse" tools can be strung together in any order, they can be
-used very flexibly to build up to do interesting tasks. The tidyverse tools
-generally each do very small and simple things. For example, one function
-(`select`) just limits the data to a subset of its original columns; another
-(`mutate`) adds or changes values in columns of the dataset, while another
-(`distinct`) limits the dataframe to remove any rows that are duplicates. These
-small, simple steps can be combined together in different patterns to add up to
-complex operations on the data, while keeping each step very simple and clear.
-Since the data stays in a standard and simple object type, it is easy to check
-in on your data at any stage, as the common visualization tools for this
-approach (from the `ggplot2` package and its extensions) can be always be
-applied to data stored in a tidy dataframe.
+Since the functions in the tidyverse approach are designed to work in a modular
+way---in other words, to be combined in interesting ways to solve larger
+problems, rather than solving a large problem with a single function---each of
+the functions tends to be a small, simple tool. In other words, each function
+tends to do one thing simply but well. For example, one function (`select`) just
+limits the data to a subset of its original columns; another (`mutate`) adds or
+changes values in columns of the dataset, while another (`distinct`) limits the
+dataframe to remove any rows that are duplicates.
 
-> "After they've been built in, mechanical fasteners make everything after that 
-easier. They allow for disassembly, reconfiguration, as well as replacement."
-[@savage2020every]
+This makes it fairly easy to start learning the tidyverse approach, as each of
+the functions that you learn as you begin does one thing that is fairly
+straightforward. These small, simple steps can be combined together in different
+patterns to add up to complex operations on the data, while keeping each step
+very simple and clear. Since the data stays in a standard and simple object
+type, it is easy to check in on your data at any stage, as the common
+visualization tools for this approach (from the `ggplot2` package and its
+extensions) can be always be applied to data stored in a tidy dataframe.
+As you get better and better as coding using this approach, you often find that
+it is not because you are using more complex functions, but rather that you're
+becoming more clever at combining sets of simple functions in interesting ways.
 
-> "That's the reason I prefer mechanical solutions. They can be undone. Whatever
-I'm putting together can be pulled apart again without damaging the construction. 
-... it takes more engineering, more fiddling, and definitely more time. But the 
-trade-off is more options. And I want options. That's the space I like to exist in 
-as a maker." [@savage2020every]
+### Useful tidyverse tools for data preprocessing
 
-> "Standards are for products what grammar is for language. People sometimes
-criticize standards for making life a matter of routine rather than inspiration.
-Some argue that standards hinder creativity and keep us slaves to the past. 
-But try imagining a world without standards. From tenderloin beef cuts to 
-the geometric design of highways, standards may diminish variety and 
-authenticity, but they improve efficiency. From street signs to nutrition 
-labels, standards provide a common language of reason. From Internet 
-protocols to MP3 audio formats, standards enable systems to work together. 
-From paper sizes ... to George Laurer's Universal Product Code, standards
-offer the convenience of comparability." [@madhavan2015applied]
+As you learn to code, a good strategy is to start collecting "tools" for
+your "toolbox" in R---functions that you have learned to use very well and 
+that you understand thoroughly. This will help make you proficient in R more
+quickly, and it will also limit the chance of bugs and errors in your code, 
+making your data work more robust and rigorous. In this section, we'll cover
+some tidyverse tools that we have found helpful for preprocessing biological 
+data. These are not exhaustive, but may help you to identify some sets of 
+tools to focus on learning well for data preprocessing and analysis of 
+biological data. 
 
-> "The lawmakers of the growing nation [Canada] were eager to establish
-a coast-to-coast railway system within the decade. ... Throughout his 
-surveys, Fleming relied to crude geometric calculations based on 
-longitude, as there was no uniform time across the regions. 'There was
-no system. Like the rail lines, the different times touched or overlapped
-at 300 points in the country.' ... Even regionally, timekeeping was in 
-disarray. If it was 12:13 in Boston, it was 12:27 in Philadelphia and 
-12:32 in Buffalo. in 1832 the United States had about 229 miles of 
-railroads. By 1880, the country had increased its rail infrastructure 
-to close to 95,000 miles. To perserve the sanity of the train driver, 
-each railroad company began to maintain its own time. Clocks had up 
-to six dials, and train stations displayed the time in various 
-citis. A train going from Baltimore, Maryland, to Scranton, Pennsylvania, 
-in those days might follow Baltimore time, creating the danger of collisions
-when trains operated on a single track." [@madhavan2015applied]
+Some key tools from the tidyverse for pre-processing laboratory data: 
 
-> "Simplicity is not about stripping features down to a bare minimum. 
-It's about achieving elegance while maintaining performance." [@madhavan2015applied]
-
-> "The essence of good technology is that it's intuitive, and it evolves. 
-Ideally, you don't even want to know it's there." [@madhavan2015applied]
-
-**Functions available through packages**
+- Tools for data input 
+- Tools for changing columns or creating new columns
+- Tools for working with character strings
+- Tools for working with dates and times
+- Tools for statistical modeling
 
 The tidyverse functions do not come with base R, but rather are available 
 through extensions to base R, commonly referred to as "packages". Like base 
@@ -151,123 +160,7 @@ these extensions that is specifically created for working with biomedical data
 is the `tidybulk` package [@mangiola2021tidybulk], for working with 
 transcriptomics data. 
 
-**Uses the same data structure throughout**
-
-The centralizing principal of the tidyverse approach is the format in which data
-is stored throughout "tidyverse" coding---the tidy dataframe. Briefly, you can
-think of this format in two parts. First, there's the R object type that the
-data should be stored in---a basic "dataframe" object. The dataframe object type
-is a very basic two-dimensional format for storing data in R. When you print it
-out, it will remind you of looking at data in a spreadsheet. The two
-dimensions---rows and columns---allow you to include data for one or more
-observations, with different values that were measured for each.
-
-The tidyverse approach hinges on using the same data structure throughout your
-coding pipeline---specifically, the tidy dataframe structure (see module 2.3 for
-more details on this structure). By insisting on the same data structure
-throughout, this approach is able to offer small functions that can be chained
-together to solve complex problems.
-
-This idea rests on the idea of the power of modularity. You can think of this 
-in terms of children's toys---building bricks like Legos are powerful because
-they are modular, while a toy like a stuffed animal is not. Each individual 
-Lego is small and simple, and would be pretty boring by itself. However, 
-because the blocks can be combined in different ways, they can be used to 
-create very complex and interesting structures. By contrast, something that is 
-not modular, like a stuffed animal, always retains the same structure. While it
-might be more interesting and complex to start with than a single Lego block, 
-it will not evolve or contribute to something more interesting. 
-
-This modularity works in the same way that it does for Lego bricks. Lego 
-bricks can be combined in interesting ways because they all take the same input
-and give the same output---the shape of the tubes on the bottom of each brick
-accept the shape of the studs at the top of each brick, so they can be
-put together in essentially infinite combinations. The tidyverse approach 
-in R works in a similar way---the functions in this approach almost all 
-input data that are in a dataframe structure (or in a vector structure, for 
-functions that operate on columns in the dataframe) and they almost all output
-data in the same structure that they input it. As a result, the functions can 
-be chained together in interesting ways, where the output of one function 
-can feed directly into the input of another. 
-
-> "A common observation is that more of the data scientist’s time is occupied
-with data cleaning, manipulation, and 'munging' than it is with actual
-statistical modeling (Rahm and Do, 2000; Dasu and Johnson, 2003). Thus, the
-development of tools for manipulating and transforming data is necessary for
-efficient and effective data analysis. One important choice for a data scientist
-working in R is how data should be structured, particularly the choice of
-dividing observations across rows, columns, and multiple tables. The concept of
-'tidy data,' introduced by Wickham (2014a), offers a set of guidelines for
-organizing data in order to facilitate statistical analysis and visualization. ... This framework makes it easy for analysts to reshape, combine, group and otherwise manipulate data. Packages such as ggplot2, dplyr, and many built-in R modeling and plotting functions require the input to be in a tidy form, so keeping the data in this form allows multiple tools
-to be used in sequence in a seamless analysis pipeline (Wickham, 2009; Wickham and Francois,
-2014)."
-[@robinson2014broom]
-
-**Small, simple tools**
-
-Since the functions in the tidyverse approach are designed to work in a modular
-way---in other words, to be combined in interesting ways to solve larger
-problems, rather than solving a large problem with a single function---each of
-the functions tends to be a small, simple tool. In other words, each function
-tends to do one thing simply but well. This makes it fairly easy to start
-learning the tidyverse approach, as each of the functions that you learn as you
-begin does one thing that is fairly straightforward. As you get better and
-better as coding using this approach, you often find that it is not because you
-are using more complex functions, but rather that you're becoming more clever at
-combining sets of simple functions in interesting ways.
-
- > "Even though the Unix system introduces a number of innovative programs and techniques, 
-no single program or idea makes it work well. Instead, what makes it effective is an approach
-to programming, a philosophy of using the computer. Although that philosophy can't be written
-down in a single sentence, at its heart is the idea that the power of a system comes more from
-the relationships among programs than from the programs themselves. Many Unix programs do 
-quite trivial things in isolation, but, combined with other programs, become general and 
-useful tools." [@kernighan1984unix]
-
-### Useful tidyverse tools for data preprocessing
-
-As you learn to code, a good strategy is to start collecting "tools" for
-your "toolbox" in R---functions that you have learned to use very well and 
-that you understand thoroughly. This will help make you proficient in R more
-quickly, and it will also limit the chance of bugs and errors in your code, 
-making your data work more robust and rigorous. In this section, we'll cover
-some tidyverse tools that we have found helpful for preprocessing biological 
-data. These are not exhaustive, but may help you to identify some sets of 
-tools to focus on learning well for data preprocessing and analysis of 
-biological data. 
-
-> "Similar to early many, beginner makers start with a rudimentary set of tools for
-basic creative tasks: a hammer (of course), a set of screwdrivers, scissors, 
-some pliers, maybe a crescent wrench, and some kind of cutting device. Almost
-everyone who has strived to make things has some combination of this list. Then, 
-as we get more experienced, we seek out better versions of the tools we already 
-have as well as new tools that can facilitate the learning of new techniques---new
-ways of cutting things apart, and new ways of putting them back together." [@savage2020every]
-
-> "Once we start to expand past the basic complement of tools, what to add to our 
-collections becomes a multifactor calculus based on reliability, cost, space, time, 
-repairability, skill, and need. These choices are nontrivial, because the tools we use
-are extensions of our hands and our minds. The best tools 'wear in' to fit you based
-on how you use them, they get smooth where you grab them. They tell the story of their
-utility with their patina of use. A toolbox of tools you know well and use lovingly is
-a magnificent thing." [@savage2020every]
-
-> "The reality is that tool choice is both less important and more important than you 
-think it is. It is less important to the extent that tool usage is entirely 
-subjective, which means there is no one right way to do things. But it is more
-important, because the best tool for any job is the one you're most comfortable with, 
-the one that you can make do what you want it to do, whose movements you fully 
-understand." [@savage2020every]
-
-Some key tools from the tidyverse for pre-processing laboratory data: 
-
-- Tools for data input 
-- Tools for changing columns or creating new columns
-- Tools for working with character strings
-- Tools for working with dates and times
-- Tools for statistical modeling
-
-**Tools for data input**
+### Tools for data input
 
 To be able to work with data in R, you first must load it into your R 
 session. Data will typically be saved in some type of file or files, and 
@@ -329,26 +222,26 @@ each package. You can find those at:
 - `readr`: https://readr.tidyverse.org/
 - `readxl`: https://readxl.tidyverse.org/
 
-**Tools for changing or creating columns**
+### Tools for changing or creating columns
 
 There are many preprocessing tasks that require creating columns that are 
 mathematical functions of existing columns. One example is when you are 
 scaling or normalizing data. 
 
-There are a range of ways to standardize and normalize different types of 
+There are a range of ways to standardize and normalize different types of
 biomedical data, ranging from very simple to much more complex. At the simpler
-end is a process called "scaling", where the observations for each feature or
-column are changed to have an overall mean of 0 and standard deviation of 1. 
-This can be done by taking each value in a column and subtracting from it 
-the column-wide mean, then dividing by the column-wide standard deviation [?]. 
-This type of scaling is often required before using some of the techniques
-for dimension reduction (e.g., principal components analysis) or clustering, 
-to ensure that the unit of measurement of each column does not influence 
-its weight in later analysis. For example, if you were clustering observations
-using measurements for each subject that included their weight, you don't 
-want to get different results depending on whether their weight is measured
-in grams versus pounds, and this type of scaling can help avoid any of those
-differences based on the units used for measurements. 
+end is a method called z-score normalization, where the observations for each
+feature or column are changed to have an overall mean of 0 and standard
+deviation of 1. This can be done by taking each value in a column and
+subtracting from it the column-wide mean, then dividing by the standard
+deviation. This type of scaling is often required before using some of the
+techniques for dimension reduction (e.g., principal components analysis) or
+clustering, to ensure that the unit of measurement of each column does not
+influence its weight in later analysis. For example, if you were clustering
+observations using measurements for each subject that included their weight, you
+don't want to get different results depending on whether their weight is
+measured in grams versus pounds, and this type of scaling can help avoid any of
+those differences based on the units used for measurements.
 
 There are also more complex methods for scaling and normalization. All similarly
 require mathematical algorithms or functions to be applied to the original 
@@ -388,7 +281,7 @@ once.
 You can learn more about the `dplyr` package through its vignette, which is 
 available at: https://dplyr.tidyverse.org/. 
 
-**Tools for working with character strings**
+### Tools for working with character strings
 
 Once you have learned the basic tools for inputting data, as well as basic
 manipulations on columns with the `dplyr` tools, you should take some time to
@@ -470,16 +363,7 @@ The vignettes for the `stringr` and `forcats` packages are available at:
 - `stringr`: https://stringr.tidyverse.org/
 - `forcats`: https://forcats.tidyverse.org/
 
-> "In bioinformatics, we often need to extract data from strings. R has several 
-functions to manipulate strings that are handy when working with bioinformatics data in 
-R. Note, however, that for most bioinformatics text-processing tasks, R is *not*
-the preferred language to use for a few reasons. First, R works with all data stored
-in memory; many bioinformatics text-processing tasks are best tackled with the 
-stream-based approaches..., which explicityly avoid loading all data in memory at
-once. Second, R's string processing functions are admittedly a bit clunky compared 
-to Python's." [@buffalo2015bioinformatics]
-
-**Tools for working with dates and times**
+### Tools for working with dates and times
 
 Another handy set of tools are those for working with dates and times. Often, you
 will record the date that an observation is collected, or the date and time if
@@ -513,7 +397,7 @@ once you read the recorded data into R.
 To find out more about the `lubridate` package, you can read its vignette 
 at https://lubridate.tidyverse.org/. 
 
-**Tools for statistical modeling**
+### Tools for statistical modeling
 
 Often, analysis of biomedical data will include some statistical hypothesis
 testing or model building. For example, if you have collected bacterial 
