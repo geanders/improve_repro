@@ -7328,4 +7328,383 @@ additional advantages. First, this combination of tools
 aids in collaboration across a research group, as we discuss in depth in the next
 chapter. 
 
+> **On the root causes for irreproducibility in biomedical research:** "First, 
+a lack of standards for data generation leads to problems with the comparability 
+and integration of data sets." [@waltemath2016modeling]
+
+
+
+
+Finally, there are huge benefits further down the data analysis pipeline that
+come with always recording data in the same format. If your group is working
+with a statistician or data analyst, it becomes much easier for that person to
+quickly understand a new file if it follows the same format as previous files.
+Further, if you work with a statistician or data analyst, he or she probably
+creates code scripts to read in, re-format, analyze, and visualize the data
+you've shared. If you always record data using the same format, these scripts
+can be reused with very little modification. This saves valuable time, and it
+helps make more time for more interesting statistical analysis if your
+collaborator can trim time off reading in and reformatting the data in their
+statistical programming language.
+
+For most statistical programs, data can be easily read in from a spreadsheet if
+the computer can parse it in the following way: first, read in the first row,
+and assign each cell in that row as the *name* of a column. Then, read in the
+second row, and put each cell in the column the corresponds with the name of the
+cell in the same position in the first row. Also, set the data type for that
+column (e.g., number, character) based on the data type in this cell. Then, keep
+reading in rows until getting to a row that's completely blank, and that will be
+the end of the data. If any of the rows has more cell than the first row, then
+that means that something went wrong, and should result in stopping or giving a
+warning. If any of the rows have fewer cells than the first row, then that means
+that there are missing data in that row, and should probably be recorded as
+missing values for any cells the row is "short" compared to the first row.
+
+"Tabular plain-text data formats are used extensively in computing. The basic
+format is incrediably simple: each row (also known as a record) is kept on its
+own line, and each column (also known as a field) is separate by some delimiter."
+[@buffalo2015bioinformatics]
+
+"Cleaning data is a short-term solution, and preventing errors is promoted as
+a permanent solution. The drawback to cleaning data is that the process never
+ends, is costly, and may allow many errors to avoid detection."
+[@keller2017evolution]
+
+"Solutions to integrating the new generation of large-scale data sets require
+approaches akin to those used in physics, climatology and other quantitative
+disciplines that have mastered the collection of large data sets."
+[@schadt2010computational]
+
+This
+specific spreadsheet allowed the researcher who was conducting the experiment to
+(1) calculate the amount of initial inoculum (cell culture) to add to each tube
+to begin the study, (2) record the raw data absorbance measurements, (3) graph
+the data on both a log and linear scale, and (4) calculate doubling time in two
+phases of growth using the equation listed above.
+
+Finally, when you are designing the data collection template, you should try to
+avoid using formats that may be "auto-converted" by the spreadsheet program. For
+example, if you enter a value like "7-9-19" into a cell, the spreadsheet may try
+to automatically convert it to a date. Perhaps it is a date, but even if it is,
+the spreadsheet algorithm might make problematic assumptions in the conversion.
+For example, it might assume that "7-9-19" means July 9, 2019, when you meant
+for it to represent September 7, 1919. Further, there are cases where you might
+enter a value that is not a date, but that the spreadsheet thinks is based on
+its formatting. This was found to be a problem, for example, for some gene
+names. To avoid potential autoconversion by the spreadsheet, consider putting
+any character stings, including entries with dates and identifiers, inside 
+quotation marks when you enter them in the spreadsheet program. The spreadsheet 
+program will respect this as a sign to leave the entry as-is, rather than 
+attempting automatic formatting into a date or other special class of data.
+
+For example, take a look at the graph in the top left corner on the second page
+of the report shown in Figure \@ref(fig:growthreport1). This figure shows the
+growth curve from the collected data, and it adds a shaded area to show the time
+range that was used to estimate doubling times for each sample. This provides a
+helpful quality check for this experiment. Bacterial growth goes through several
+phases, including an initial lag phase, an exponential growth phase (when the
+bacteria are regularly doubling), a stationary phase (when growth starts to slow
+down, because of exhaustion of nutrients or buildup of waste), and a dying
+phase. The doubling time should be calculated only during the exponential phase 
+of growth, as the equation used to calculate it relies on describing growth during
+a period of regular doubling. When the growth curve is plotted with a log scale on 
+the y-axis, the growth curve will look approximately linear in this exponential 
+growth region. By including the plot on the top left of the second page in 
+Figure \@ref(fig:growthreport1), the researcher can quickly see that, in this 
+experiment, the selected time range for calculating doubling time might not be 
+appropriate---for the low oxygen condition, in particular, this time range looks
+like it included some measurements made during the transition into the stationary 
+phase of growth. By quickly being able to assess this, the researcher 
+can reassess whether a different time range should be use to calculate the 
+doubling time for this experiment.
+
+The report shown in Figure \@ref(fig:growthreport1) provides results that are 
+very similar to those calculated in the original spreadsheet, to show that 
+you don't need to give up fast and clear summaries and visuals if you simplify 
+the template for collecting data. However, this report template could easily be 
+made more sophisticated. For example, you could add code into the report that
+would perform quality control checks. In the example case, the cell growth is 
+measured using optical density, and while this measure is proportional to cell
+density in many cases, the measurement can be prone to error once the optical 
+density is very high. Therefore, you could, for example, add a check into the report to 
+highlight any measures of optical density that are higher than a certain value.
+
+> "Get a new repository in the directory you are working in via: `git init`. Ok, you 
+now have a revision control system in place. You might not see it, because Git stores
+all its files in a directory names `.git`, where the dot means that all the usual
+utilities like `ls` will take it to be hidden. You can look for it via, e.g., 
+`ls -a` or via a show hidden files option in your favorite file manager. ...
+Given that all the data about a repository is in the `.git\ subdirectory of your
+project directory, the analog to freeing a repository is simple: `rm -rf .git`." 
+[@klemens201421st]
+
+> "Calling `git commit -a` writes a new commit object to the repostiory based on 
+all the changes the index was able to track, and clears the index. Having saved your
+work, you can now continue to add more. Further---and this is the real, major 
+benefit of revision control so far---you can delete whatever you want, confident
+that it can be recovered if you need it back. Don't clutter up the code with large
+blocks of commented-out obsolete routines---delete!" [@klemens201421st]
+
+> "Having generated a commit object, your interactions with it will mostly consist of 
+looking at its contents... The key metadata is the name of the object, which is
+assigned via an unpleasant but sensible naming convention: the SHA1 has, a 
+40-digit hexadecimal number that can be assigned to an object, in a manner that
+lets us assume that no two objects will have the same hash, and that the same object
+will have the same name in every copy of the repository. When you commit your files, 
+you'll see the first few digits of the hash on the screen... Fortunately, you 
+need only as much of the hash as will uniquely identify your commit."
+[@klemens201421st]
+
+> "Lists aren't external to the creative process, they are intrinsic to it. They are
+a natural part of any project of scale, whether we like it or not." [@savage2020every]
+
+> "The maker in me knows that this is where lists really shine, that it is their capacity 
+for simplifying the complex that sets them apart from all other planning tools. 
+Not just at the beginning of a project, either, but at every step along the 
+creative process, because no matter how exacting the list you make at the outset, 
+there will always be things that you missed or, more frequently, that change. It's 
+like trying to measure a coastline: it's fractal." [@savage2020every]
+
+> "The value of a list is that it frees you up to think more creatively, by 
+defining a project's scope and scale for you on the page, so your brain doesn't
+have to hold on to so much information. The beauty of the checkbox is that it
+does the same thing with regard to progress, allowing you to monitor the status
+of your project, without having to mentally keep track of everything." [@savage2020every]
+
+> "The best part of making a list is, you guessed it, crossing things off. But when you 
+physically cross them out, like with a pen, you can make them harder to read, which 
+destroys their informational value beyond that single project and, to me at least, makes
+the whole thing feel incomplete. The checkbox allowed me to cross something off my list, 
+to see clearly *that* I'd crossed it off, and at the same time retain all its 
+information while not also adding to the cognitive load of interpreting the list." 
+[@savage2020every]
+
+> "**Use version control.** An example is git. This takes time to learn, but the
+time is well invested. In the long run, it will be infinitely better than all your
+self-grown attempts at managing evolving code with version numbers, switches,
+and the like. Moreover, this is the sanest option for collaborative work on code,
+and it provides an extra backup of your codebase, especially if the server is
+distinct from your personal computer." [@holmes2018modern]
+
+In addition to the data that you record in the laboratory by hand, the type of
+study may also typically have data that's generated and recorded by laboratory
+equipment. For example, the type of study may often include data collected from
+flow cytometry, to measure certain cell populations in samples, or from mass
+spectometry, to measure levels of certain molecules. For these data, the
+recording format will typically be determined by the equipment, and so you won't
+need to create data collection templates for the data. However, you should store
+these data files in your project directory as well, where they are easy to
+access and integrate with other data as you analyze the data for the study.
+
+Let's look at a more basic way to create a project template. This
+involves no fancy tools---in fact, it's so straightforward that at first it
+might seem to simple to be useful. For this basic approach, you will create an
+example file directory that includes template files and that captures you
+desired project directory structure, and then members of your group will copy
+and rename that template every time they start a new project of that type.
+
+### Step 4: Testing the project template and refining it
+
+- Edge cases: For example, sometimes only one treatment condition, so not 
+possible to run a statistical test comparing conditions
+- Didn't think of something: Maybe they add an assay?
+- Iterative process to refine what goes in the report. What do we need 
+to know from each experiment?
+
+
+
+The report template is included in the project directory template, so it will be
+copied and available for you to use anytime you start a new project using that 
+template. However, you are not obligated to keep the report identical to the template. 
+Instead, the template report serves as a starting point, and you can add to it or
+adapt it as you work on a study. 
+
+For example, in our example template report, we've included the results of
+applying a statistical test that compares each treatment group to the control
+group. Instead, for a specific study of this type, you may want to control
+treatments against each other. For example, some of the studies in this example
+set of studies include a positive control group, where the mice are treated with
+a drug that is already in common use for the disease. In some cases, the
+researcher may want to control the bacterial load in groups treated with a novel
+drug to groups treated with the positive control. You could easily add to the
+report template in that case, adding statistical tests where you compare
+different treatment groups to each other.
+
+In the example, there was one clear edge case that came up a few times. 
+For some experiments, only only treatment group was used. In these cases, 
+we can create a report with most of the usual elements, but we can't 
+run a statistical analysis that compares groups because there is only 
+one group. 
+
+We discovered this edge case as we tried applying our project template to 
+multiple experiments. Once we identified it, there were a few approaches
+we could take. First, we could adapt the reports by hand in cases where
+this happens. To do this, we just need to open the Rmd report for the
+report file for those projects and remove the part that compares across 
+groups. If this edge case happens rarely, this can be a reasonable 
+approach. 
+
+Another approach is to write code in the report template that addresses 
+these cases. Because the full report is in code, we can write in code 
+that checks how many treatment groups were included and only runs the 
+statistical analysis if it was more than one group. This is the 
+approach we took in this example. 
+
+### Step 5: Using the project template
+
+- Value comes from using it consistently
+- This example is for a set of very similar studies---the same idea can 
+apply for developing project templates for a wider range of studies, but 
+it will require more thought to have something that works across more
+variety
+
+Figure \@ref(fig:basicprojecttemplateuse) gives a basic walk-through of the
+simple steps you'll use to start a new project directory once you've created
+this type of template. First, you will find the project directory template in
+your computer's file system, copy it to where you'd like to save the files for
+the new project, and rename the directory to your new project's name. At this
+point, you can use RStudio to make this directory an RStudio Project. Next,
+you'll open the data collection template files and replace the placeholder
+example data in the template (shown in red font) with the real data from your
+study. The placeholder data can help you remember the format you should use to
+record the real data. Finally, once you've recorded the data for the study or 
+experiment, you can open the example report template file. If you've designed
+this report template well, it should run with the new data you've recorded to 
+create a report for the experiment. At this stage, you can add to the report 
+or customize it for the new project by changing the Rmarkdown file and re-rendering
+it to update the report. 
+
+```{r basicprojecttemplateuse2, fig.cap = "Steps in using a basic project directory template that you have created for a type of study or experiment.", fig.fullwidth = TRUE, out.width = "\\textwidth"}
+knitr::include_graphics("figures/project_template_basic_use.png")
+```
+
+All in all, pre-processing aims to extract useful information from the
+measurments that you've collected from your experiment, so that this information
+can then be used within statistical analysis and visualization to test important
+hypotheses that provide insights on your scientific question. Data
+*preprocessing*, then, is a term that covers steps must be done after data are
+collected but before they are used for further analysis. After the data are
+appropriately pre-processed, you can use them for statistical tests and also
+combine them with other data collected from the experiment.
+
+In a commentary for *Nature*, Lithgow and coauthors
+describe how critical it is to share these details: 
+
+> "Our first task, to develop a protocol, seemed straightforward. But subtle disparities
+were endless. In one particularly painful teleconference, we spent an hour debating
+the proper procedure for picking up worms and placing them on new agar plates. Some
+batches of worms lived a full day longer with gentler techniques. Because a worm's 
+lifespan is only about 20 days, this is a big deal. Hundreds of e-mails and many 
+teleconferences later, we converged on a technique but still had a stupendous three-day
+difference in lifespan between labs. The problem, it turned out, was notation---one
+lab determined age on the basis of when an egg hatched, others on when it was laid." 
+[@lithgow2017long]
+
+-------------------------------------------------------------------------------
+
+> "The benefit of working with a programming language is that you have the code in
+a file. This means that you can easily reuse that code. If the code has
+parameters it can even be applied to problems that follow a similar pattern."
+[@janssens2014data]
+
+> "Data exploration in spreadsheet software is typically conducted via menus and
+dialog boxes, which leaves no record of the steps taken." [@murrell2009introduction]
+
+> "One reason Unix developers have been cool toward GUI interfaces is that, in their
+designers' haste to make them 'user-friendly' each one often becomes frustratingly 
+opaque to anyone who has to solve user problems---or, indeed, interact with it anywhere
+outside the narrow range predicted by the user-interface designer." [@raymond2003art]
+
+> "Many operating systems touted as more 'modern' or 'user friendly' than Unix achieve their
+surface glossiness by locking users and developers into one interface policy, and offer an
+application-programming interface that for all its elaborateness is rather narrow and rigid. 
+On such systems, tasks the designers have anticipated are very easy---but tasks they have
+not anticipated are often impossible or at best extremely painful. Unix, on the other hand, has
+flexibility in depth. The many ways Unix provides to glue together programs means that components
+of its basic toolkit can be combined to produce useful effects that the designers of the individual
+toolkit parts never anticipated." [@raymond2003art]
+
+> "During the late 1950s and early 1960s, another step was taken towards getting the 
+computer to do more for programmers, arguably the most important step in the history of 
+programming. This was the development of 'high-level' programming languages that were
+independent of any particular CPU architecture. High-level languages make it possible to 
+express computations in terms that are closer to the way a person might express them." 
+[@kernighan2011d]
+
+> "In early times, most software was developed by companies and most source code was 
+unavailable, a trade secret of whoever developed it." [@kernighan2011d]
+
+> "I think that it's important for a well-informed person to know something about 
+programming, perhaps only that it can be surprisingly difficult to get very simple
+programs working properly. There is nothing like doing battle with a computer to teach 
+this lesson, but also to give people a taste of the wonderful feeling of accomplishment
+when a program does work for the first time. It may also be valuable to have enough 
+programming experience that you are cautious when someone says that programming is easy, 
+or that there are no errors in a program. If you have trouble making 10 lines of code 
+work after a day of struggle, you might be legitimately skeptical of someone who claims
+that a million-line program will be delivered on time and bug-free." [@kernighan2011d]
+
+> "Computer code is the preferred approach to communicating our instructions to the 
+computer. The approach allows us to be precise and expressive, it provides a complete
+record of our actions, and it allows others to replicate our work." [@murrell2009introduction]
+
+> "Many biologists are first exposed to the R language by following a cookbook-type
+approach to conduct a statistical analysis like a t-test or an analysis of 
+variance (ANOVA). ALthough R excels at these and more complicated statistical 
+tests, R's real power is as a data programming lanugage you can use to explore and
+understand data in an open-ended, highly interactive, iterative way. Learning R as a 
+data programming language will give you the freedom to experiment and problem solve
+during data analysis---exactly what we need as bioinformaticians." [@buffalo2015bioinformatics]
+
+> "Quite often, users don’t appreciate the opportunities. Noncomputational
+biologists don’t know when to complain about the status quo. With modest amounts
+of computational consulting, long or impossible jobs can become much shorter or
+richer." --- Barry Demchak in [@altschul2013anatomy]
+
+> "Now there are a lot of strong, young, faculty members who label themselves
+as computational analysts, yet very often want wet-lab space. They're not
+content just working off data sets that come from other people. They want to be
+involved in data generation and experimental design and mainstreaming
+computation as a valid research tool. Just as the boundaries of biochemistry and
+cell biology have kind of blurred, I think the same will be true of
+computational biology. It’s going to be alongside biochemistry, or molecular
+biology or microscopy as a core component." --- Richard Durbin in
+[@altschul2013anatomy]
+
+> "I would say that computation is now as important to biology as chemistry is.
+Both are useful background knowledge. Data manipulation and use of information
+are part of the technology of biology research now. Knowing how to program also
+gives people some idea about what's going on inside data analysis. It helps them
+appreciate what they can and can't expect from data analysis software." ---
+Richard Durbin in [@altschul2013anatomy]
+
+> "**Does every new biology PhD student need to learn how to program?** To some,
+the answer might be “no” because that’s left to the experts, to the people
+downstairs who sit in front of a computer. But a similar question would be: does
+every graduate student in biology need to learn grammar? Clearly, yes. Do they
+all need to learn to speak? Clearly, yes. We just don't leave it to the
+literature experts. That’s because we need to communicate. Do students need to
+tie their shoes? Yes. It has now come to the point where using a computer is as
+essential as brushing your teeth. If you want some kind of a competitive edge,
+you’re going to want to make as much use of that computer as you can. The
+complexity of the task at hand will mean that canned solutions don’t exist. It
+means that if you’re using a canned solution, you’re not at the edge of
+research." --- Martin Krzywinski in [@altschul2013anatomy]
+
+> "Although we are tackling many different types of data, questions, and 
+statistical methods hands-on, we maintain a consistent computational approach 
+by keeping all the computation under one roof: the R programming language and
+statistical environment, enhanced by the biological data infrastructure and 
+specialized method packages from the Bioconductor project." [@holmes2018modern]
+
+> "The availablility of over 10,000 packages [in R] ensures that almost all 
+statistical methods are available, including the most recent developments. 
+Moreover, there are implementations of or interfaces to many methods from 
+computer science, mathematics, machine learning, data management, visualization
+and internet technologies. This puts thousands of person-years of work by 
+experts at your fingertips." [@holmes2018modern]
+
+
+
+
 
