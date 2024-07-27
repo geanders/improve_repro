@@ -7990,3 +7990,153 @@ those files.
 subdirectories of similar types.
 4. Create one or more templates of report files that access and report on the
 data in the project template
+
+There are a few factors that could keep data
+from being suited for a tidyverse approach. We will discuss these 
+characteristics in detail in this module, to help you understand when 
+you might need another approach in part of your pipeline. 
+
+Next, we will describe how you can tackle data preprocessing and analysis 
+even if your data is not suited to using the tidyverse. In many cases, 
+this can be done using a collection of packages available for R through 
+a platform called Bioconductor. In many cases, you'll be able to combine
+the two approaches, using Bioconductor when needed and the tidyverse
+approach for steps in your pipeline when the data is more suited to this
+approach. This is a powerful combination, as it leverages the efficiency 
+and power of the tidyverse approach with more customized tools that are 
+necessary to tackle more complex processes. 
+
+> "Big data is encountered in genomics for two reasons: the size of the genome
+and the heterogeneity of populations. Complex organisms, such as plants and
+animals, have genomes on the order of billions of base pairs (the human genome
+consists of over three billion base pairs). The diversity of populations,
+whether of organisms, tissues or cells, means we need to sample deeply to detect
+low frequency events. To interrogate long and/or numerous genomic sequences,
+many measurements are necessary. For example, a typical whole genome sequencing
+experiment will consist of over one billion reads of 75–100 bp each. The reads
+are aligned across billions of positions, most of which have been annotated in
+some way. This experiment may be repeated for thousands of samples. Such a data
+set does not fit within the memory of a current commodity computer, and is not
+processed in a timely and interactive manner. To successfully wrangle a large
+data set, we need to intimately understand its structure and carefully consider
+the questions posed of it." [@lawrence2014scalable]
+
+> "A major challenge in the analysis of scRNA-seq data is the scalability of analysis methods as datasets increase in size over time. This is particularly problematic as experiments now frequently produce millions of cells [50–53], possibly across multiple batches, making it challenging to even load the data into memory and perform downstream analyses including quality control, batch correction and dimensionality reduction. Providing analysis methods, such as unsupervised clustering, that do not require data to be loaded into memory is an imperative step for scalable analyses. While large-scale scRNA-seq data are now routinely stored in on-disk data formats (e.g. HDF5 files), the methods to process and analyze these data are lagging." [@hicks2021mbkmeans]
+
+> "If you use too much memory, R will complain. The key issue is that R holds
+all the data in RAM. This is a limitation if you have huge datasets. The up-side
+is flexibility—in particular, R imposes no rules on what data are like."
+[@burns2011r] 
+
+> "Random access memory (RAM) is a type of computer memory that can be accessed
+randomly: any byte of memory can be accessed without touching the preceding
+bytes. RAM is found in computers, phones, tablets and even printers. The amount
+of RAM R has access to is incredibly important. Since R loads objects into RAM,
+the amount of RAM you have available can limit the size of data set you can
+analyse." 
+[@gillespie2016efficient]
+
+> "A rough rule of thumb is that your RAM should be three times the size of your
+data set." 
+[@gillespie2016efficient]
+
+> "RAM is cheap and thinking hurts." 
+Uwe Ligges (about memory requirements in R) R-help (June 2007)
+
+> "The strengths of R are also its weaknesses: the R API encourages users to
+store entire data sets in memory as vectors. These vectors are implicitly and
+silently copied to achieve copy-on-write semantics, contribuing to high memory
+usage and poor performance." 
+[@lawrence2014scalable]
+
+> "Our ultimate goal is to process and summarize a large data set in its
+entirety, and iteration enables this by limiting the resource commitment at a
+given point in time. Limiting resource consumption generalizes beyond iteration
+and is a fundamental technique for computing with big data. In many cases, it
+may render iteration unnecessary. Two effective approaches for being frugal with
+data are restriction and compression. Restriction means controlling which data
+are loaded and lets us avoid wasting resources on irrelevant or excessive data.
+Compression helps by representing the same data with fewer resources."
+[@lawrence2014scalable]
+
+In the previous modules and sections of this module, we have talked about two
+topics. First we have talked about the convenience and power of tidyverse tools.
+These tools can be used at points in your workflow when the data can be stored
+in a simple standard format: the tidy dataframe format. We have also talked
+about reasons why there are advantages to using more complex data storage
+formats earlier in the process.
+
+> "**Out-of memory data and chunking.** Some datasets are too big to load 
+into random access memory (RAM) and manipulate all at once. Chunking means
+splitting the data into manageable portions ('chunks') and then sequentially 
+loading each portion, computing on it, storing the results and removing it
+from memory before loading the next portion. R also offers infrastructure
+for working with large datasets that are stored on disk in a relational 
+database management systems (the DBI package) or in HDF5 (the rhdf5 package).
+The Bioconductor project provides the class `SummarizedExperiment`, which 
+can store big data matrices either in RAM or in an HDF5 backend in a manner 
+that is transparent to the user of objects of this class." [@holmes2018modern]
+
+> "Big data is encountered in genomics for two reasons: the size of the genome
+and the heterogeneity of populations. Complex organisms, such as plants and
+animals, have genomes on the order of billions of base pairs (the human genome
+consists of over three billion base pairs). The diversity of populations,
+whether of organisms, tissues or cells, means we need to sample deeply to detect
+low frequency events. To interrogate long and/or numerous genomic sequences,
+many measurements are necessary. For example, a typical whole genome sequencing
+experiment will consist of over one billion reads of 75–100 bp each. The reads
+are aligned across billions of positions, most of which have been annotated in
+some way. This experiment may be repeated for thousands of samples. Such a data
+set does not fit within the memory of a current commodity computer, and is not
+processed in a timely and interactive manner. To successfully wrangle a large
+data set, we need to intimately understand its structure and carefully consider
+the questions posed of it." [@lawrence2014scalable]
+
+
+> "A major challenge in the analysis of scRNA-seq data is the scalability of analysis methods as datasets increase in size over time. This is particularly problematic as experiments now frequently produce millions of cells [50–53], possibly across multiple batches, making it challenging to even load the data into memory and perform downstream analyses including quality control, batch correction and dimensionality reduction. Providing analysis methods, such as unsupervised clustering, that do not require data to be loaded into memory is an imperative step for scalable analyses. While large-scale scRNA-seq data are now routinely stored in on-disk data formats (e.g. HDF5 files), the methods to process and analyze these data are lagging." [@hicks2021mbkmeans]
+
+
+> "Reading in a large dataset for which you do not have enough RAM is one easy way to freeze up your computer (or at least your R session). This is usually an unpleasant experience that usually requires you to kill the R process, in the best case scenario, or reboot your computer, in the worst case." [@peng2016r]
+
+> "If you use too much memory, R will complain. The key issue is that R holds
+all the data in RAM. This is a limitation if you have huge datasets. The up-side
+is flexibility—in particular, R imposes no rules on what data are like." [@burns2011r] 
+
+
+> "Random access memory (RAM) is a type of computer memory that can be accessed
+randomly: any byte of memory can be accessed without touching the preceding
+bytes. RAM is found in computers, phones, tablets and even printers. The amount
+of RAM R has access to is incredibly important. Since R loads objects into RAM,
+the amount of RAM you have available can limit the size of data set you can
+analyse." [@gillespie2016efficient]
+
+> "A rough rule of thumb is that your RAM should be three times the size of your
+data set."  [@gillespie2016efficient]
+
+> "RAM is cheap and thinking hurts." Uwe Ligges (about memory requirements in R) R-help (June 2007)
+
+> "The strengths of R are also its weaknesses: the R API encourages users to
+store entire data sets in memory as vectors. These vectors are implicitly and
+silently copied to achieve copy-on-write semantics, contribuing to high memory
+usage and poor performance." [@lawrence2014scalable]
+
+> "Our ultimate goal is to process and summarize a large data set in its
+entirety, and iteration enables this by limiting the resource commitment at a
+given point in time. Limiting resource consumption generalizes beyond iteration
+and is a fundamental technique for computing with big data. In many cases, it
+may render iteration unnecessary. Two effective approaches for being frugal with
+data are restriction and compression. Restriction means controlling which data
+are loaded and lets us avoid wasting resources on irrelevant or excessive data.
+Compression helps by representing the same data with fewer resources." [@lawrence2014scalable]
+
+> "There is a cost to the free lunch. That `print` is generic means that what
+you see is not what you get (sometimes). In the printing of an object you may
+see a number that you want---an R-squared for example---but don’t know how
+to grab that number." [@burns2011r]
+
+> "Bioconductor packages support the reading of many of the data types and formats
+produced by measurement instruments used in modern biology, as well as the 
+needed technology-specific 'preprocessing' routines. This community is 
+actively keeping these up-to-date with the rapid developments in the 
+instrument market." [@holmes2018modern]
+
