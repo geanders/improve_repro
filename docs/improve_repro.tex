@@ -1577,17 +1577,17 @@ common spreadsheet template or a more proscriptive standardized data format.
 \section{The `tidy' data format}\label{module3}
 
 In the previous module, we explained the benefits of saving data in a structured
-format, and in particular using a two-dimensional format saved to a plain text
-file when possible. In this section, we'll talk about the ``tidy'' data format.
-The tidy data format is one implementation of a tabular, two-dimensional
-structured data format that has quickly gained popularity among statisticians
-and data scientists since it was defined in a 2014 paper \citep{wickham2014tidy}.
-These principles cover some basic rules for ordering the data, and even if you
-haven't heard the term \emph{tidy data}, you may already be implementing many of its
-standards in your own datasets. Datasets in this format tend to be very easily
-to work with, including to further clean, model, and visualize the data, as well
-as to integrate the data with other datasets. In particular, this data format is
-compatible with a collection of open-source tools on the R platform called the
+format, and in particular one that follows standards for your discipline. In
+this section, we'll talk about the ``tidy'' data format. The tidy data format is
+one implementation of a tabular, two-dimensional structured data format that has
+quickly gained popularity among statisticians and data scientists since it was
+defined in a 2014 paper \citep{wickham2014tidy}. These principles cover some basic
+rules for ordering the data, and even if you haven't heard the term \emph{tidy data},
+you may already be implementing many of its standards in your own datasets.
+Datasets in this format tend to be very easily to work with, including to
+further clean, model, and visualize the data, as well as to integrate the data
+with other datasets. In particular, this data format is compatible with a
+collection of open-source tools on the R platform called the
 \emph{tidyverse}. These characteristics mean that, if you are planning to use a
 standardized data format for recording experimental data in your research group,
 you may want to consider creating one that adheres to the tidy data format.
@@ -1682,10 +1682,10 @@ hours struggling to get such datasets organized in a way that makes data
 analysis possible, let alone easy.'' \citep{wickham2014tidy}
 \end{quote}
 
-To help you understand the tidy data format the Wickham developed, let's start
+To help you understand the tidy data format that Wickham developed, let's start
 with a checklist of rules that make a dataset tidy. Some of these are drawn
 directly from the journal article that originally defined the data format
-\citep{wickham2014tidy}. Other rules are based on common ``untidy'' patterns that show
+\citep{wickham2014tidy}. Other rules are based on common untidy patterns that show
 up in data recording templates for laboratory research. The checklist is:
 
 \begin{itemize}
@@ -1693,7 +1693,7 @@ up in data recording templates for laboratory research. The checklist is:
 \item
   Data are recorded in a tabular, two-dimensional format
 \item
-  The data collection file or spreadsheet does \textbf{not} include extra elements
+  The data collection file or spreadsheet avoids extra elements
   like plots or embedded equations in the file
 \item
   Each observation forms a row
@@ -1704,40 +1704,33 @@ up in data recording templates for laboratory research. The checklist is:
 \item
   Each type of observational unit forms its own table
 \item
-  A single variable is not spread across multiple columns
+  A single variable is in a single column, not spread across multiple columns
 \item
-  Multiple variables are not stored in one column
+  A column contains only one variable; multiple variables are not stored in one column
 \item
   Data types are consistent within a column
-\item
-  Files are named with a consistent naming convention
-\item
-  Column names are informative and follow a consistent naming convention
-\item
-  Missing values are noted in a consistent way (e.g., as ``NA'')
 \end{itemize}
 
-In previous modules, we've discussed the first two principles, highlighting how
+In module 2.1, we discussed the first two principles, highlighting how
 important it is to separate data collection from further steps of data
 processing and analysis. In this section of the module, we'll go through other
 items in this checklist, to help you understand what makes a dataset follow the
-``tidy'' data format. If so, you'll be able to set up your data recording template
+tidy data format. If so, you'll be able to set up your data recording template
 to follow this template, and you'll be able to tell when you work with data that
-others collect, if it is in this format and restructure it if not. In the next
+others collect if it is in this format, and restructure it if not. In the next
 part of this module, we'll explain why it's so useful to have your data in this
 format.
 
 Tidy data, first, must be in a tabular (i.e., two-dimensional, with columns and
-rows, and with all rows and columns of the same length---nothing ``ragged''),
-without any ``extras'', like embedded plots and calculations in a spreadsheet. If
-you recorded data in a spreadsheet using a very basic strategy of saving a
-single table per spreadsheet, with the first row giving the column names (as
-described in the previous module), then your data will be in a tabular format.
-In general, if your recorded data looks ``boxy'', it's probably in a
-two-dimensional tabular format.
+rows, and with all rows and columns of the same length---nothing ``ragged''). If
+it's in a spreadsheet, it should be stored without any ``extras'', like embedded
+plots and calculations. If you record data in a spreadsheet using a very basic
+strategy of saving a single table per spreadsheet, with the first row giving the
+column names, then your data will be in a tabular format. In general, if your
+recorded data looks ``boxy'', it's probably in a two-dimensional tabular format.
 
-There are some additional criteria for the ``tidy'' data format, though, and so
-not every structured, tabular dataset is in a ``tidy'' format. As Wickham notes
+There are some additional criteria for the tidy data format, though, and so
+not every structured, tabular dataset is in a tidy format. As Wickham notes
 in his paper defining the format,
 
 \begin{quote}
@@ -1747,7 +1740,7 @@ Real datasets can, and often do, violate the three precepts of tidy data in
 almost every way imaginable.'' \citep{wickham2014tidy}
 \end{quote}
 
-The first of these rules are that each row of a ``tidy'' dataset records the
+The first of these rules are that each row of a tidy dataset records the
 values for a single observation, and that each column records values of a
 variable: that is, characteristics or measurements of a certain type, in the
 order of the observations given by the rows \citep{wickham2014tidy}.
@@ -1771,27 +1764,27 @@ information is analysed and conclusions are made.'' \citep{sedgwick2014unit}
 \end{quote}
 
 As an example, say you are testing how the immune system of mice responds to a
-certain drug over time. In this case, the \emph{unit of analysis} might be the drug,
+certain drug over time. In this case, the unit of analysis might be the drug,
 or a combination of drug and dose---ultimately, you may want to test something
 like if one drug is more effective than another. To answer this research
 question, you likely have several replicates of mice in each treatment group. If
 a separate mouse (replicate) is used to collect each observation, and a mouse is
 never measured twice (i.e., at different time points, or for a different
-infection status), then the \emph{unit of measurement}---the level at which each data
+infection status), then the unit of measurement---the level at which each data
 point is collected---is the mouse. This is because each mouse is providing a
 single observation to help answer the larger research question.
 
-As another example, say you conducted a trial on human subjects, to see how the
-use of a certain treatment affects the speed of recovery, where each study
+As another example, say you conducted a trial on human subjects, to see how
+a certain treatment affects the speed of recovery, where each study
 subject was measured at different time points. In this case, the unit of
 observation is the combination of study subject and time point (while the unit
 of analysis is the treatment). That means that Subject 1's measurement at Time 1 would be one
 observation, and the same person's measurement at Time 2 would be a separate
-observation. For a dataset to comply with the ``tidy'' data format, these two
+observation. For a dataset to comply with the tidy data format, these two
 observations would need to be recorded on separate lines in the data. If the
 data instead had different columns to record each study subject's measurements
 at different time points, then the data would still be tabular, but it would not
-be ``tidy''.
+be tidy.
 
 Once you have divided your data into separate datasets based on the level of
 observation, and structured each row to record data for a single observation
@@ -1806,12 +1799,12 @@ like the level of infection measured in an animal (a type of variable called a
 \citep{wickham2014tidy}.
 
 In the example of human subjects measured at repeated time points, you may
-initially find the ``tidy'' format unappealing, because it seems like it would
+initially find the tidy format unappealing, because it seems like it would
 lead to a lot of repeated data. For example, if you wanted to record each study
-subject's sex, it seems like the ``tidy'' format would require you to repeat that
+subject's sex, it seems like the tidy format would require you to repeat that
 information in each separate line of data that's used to record the measurements
 for that subject for different time points. This isn't the case---instead, with
-a ``tidy'' data format, different ``levels'' of data observations should be recorded
+a tidy data format, different ``levels'' of data observations should be recorded
 in separate tables \citep{wickham2014tidy}. In other words, you should design a
 separate table for each unit of observation if you have data at several of these
 units for your experiment. For example, if you have some data on each study
@@ -1825,16 +1818,16 @@ be used to link the data in the two tables. If you are using a spreadsheet to
 record data, this would mean that the data for these separate levels of
 observation should be recorded in separate sheets, and not on the same sheet of
 a spreadsheet file. Once you read the data into a scripting language like R or
-Python, it will be easy to link the larger and smaller ``tidy'' datasets as needed
+Python, it will be easy to link the larger and smaller tidy datasets as needed
 for analysis, visualizations, and reports.
 
-\subsection{Why make your data ``tidy''?}\label{why-make-your-data-tidy}
+\subsection{Why make your data tidy?}\label{why-make-your-data-tidy}
 
-This may all seem like a lot of extra work, to make a dataset ``tidy'', and why
+This may all seem like a lot of extra work to make a dataset tidy, and why
 bother if you already have it in a structured, tabular format? It turns out
-that, once you get the hang of what gives data a ``tidy'' format, it's pretty
+that, once you get the hang of what gives data a tidy format, it's pretty
 simple to design recording formats that comply with these rules. What's more,
-when data is in a ``tidy'' format, it can be directly input into a collection
+when data is in a tidy format, it can be directly input into a collection
 of tools in R that belong to something called the ``tidyverse''.
 
 R's \emph{tidyverse} framework enables powerful and user-friendly data management,
@@ -1864,7 +1857,7 @@ be interested in. It makes organizing, developing, and sharing data a lot
 easier. It's how I recommend most people share data.'' \citep{leek2017toward}
 \end{quote}
 
-The ``tidyverse'' collection of tools united by a common philosophy: very complex
+The tidyverse is a collection of tools united by a common philosophy: very complex
 things can be done simply and efficiently with small, sharp tools that share a
 common interface. Zev Ross, in an article about tidy tools and how they can
 declutter a workflow, notes:
@@ -1891,10 +1884,10 @@ different widths or depths. With Legos, even though each ``tool'' (brick) is ver
 simple, the tools can be combined in infinite variations to create very complex
 structures.
 
-The tools in the ``tidyverse'' operate on a similar principle. They all input a
+The tools in the tidyverse operate on a similar principle. They all input a
 tidy dataset (or a column from a tidy dataset) and they (almost) all output data
 in the same format they input it. For most of the tools, their required format
-for input and output is the ``tidy data'' format \citep{wickham2014tidy}, called a tidy
+for input and output is the tidy data format \citep{wickham2014tidy}, called a tidy
 \emph{dataframe} in R---this is a dataframe that follows the rules detailed earlier
 in this section.
 
@@ -1978,11 +1971,11 @@ Many people who teach
 R programming now focus on first teaching the tidyverse, given these
 characteristics \citep{robinson2017teach, peng2018teaching}, and it's often a
 first focus for online courses and workshops on R programming. Since its main
-data structure is the ``tidy data'' structure, it's often well worth recording
+data structure is the tidy data structure, it's often well worth recording
 data in this format so that all these tools can easily be used to explore and
 model the data.
 
-\subsection{Using tidyverse tools with data in the ``tidy data'' format}\label{using-tidyverse-tools-with-data-in-the-tidy-data-format}
+\subsection{Using tidyverse tools with data in the tidy data format}\label{using-tidyverse-tools-with-data-in-the-tidy-data-format}
 
 The tidyverse includes tools for many of the tasks you might need to
 do while managing and working with experimental data. When you download
@@ -2008,16 +2001,18 @@ including tools to parse dates and times (\texttt{lubridate}) and tools to work 
 character strings, including using regular expressions as a powerful way to find
 and use certain patterns in strings (\texttt{stringr}). Finally, the tidyverse
 includes powerful functions for visualizing data, based around the \texttt{ggplot2}
-package, which implements a ``grammar of graphics'' within R.
+package, which implements a ``grammar of graphics'' within R. We cover some
+tidyverse tools you may find helpful for pre-processing biomedical data in
+module 3.5.
 
 You can install and load any of these tidyverse packages one-by-one using the
 \texttt{install.packages} and \texttt{library} functions with the package name from within R.
 If you are planning on using many of the tidyverse packages, you can also
 install and load many of the tidyverse functions by installing a package called
-``tidyverse'', which serves as an umbrella for many of the tidyverse packages.
+tidyverse, which serves as an umbrella for many of the tidyverse packages.
 
 In addition to the original tools in the tidyverse, many people have developed
-\emph{tidyverse} extensions---R packages that build off the tools and principles in
+\emph{tidyverse extensions}---R packages that build off the tools and principles in
 the tidyverse. These often bring the tidyverse conventions into tools for
 specific areas of science. For example, the \texttt{tidytext} package provides tools to
 analyze large datasets of text, including books or collections of tweets, using
@@ -2028,7 +2023,7 @@ specifically. These include \emph{ggplot extensions} that allow users to create
 things like calendar plots (\texttt{sugrrants}), gene arrow maps (\texttt{gggene}), network
 plots (\texttt{igraph}), phytogenetic trees (\texttt{ggtree}) and anatogram images
 (\texttt{gganatogram}). These extensions all allow users to work with data that's in a
-``tidy data'' format, and they all provide similar user interfaces, making it
+tidy data format, and they all provide similar user interfaces, making it
 easier to learn a large set of tools to do a range of data analysis and
 visualization, compared to if the set of tools lacked this coherence.
 
@@ -2991,8 +2986,9 @@ a central computer of protocols that we use, common lab protocols but those are
 just individual Word files within a folder so it's not searchable \emph{per se}''
 \citep{anderson2007issues}.
 
-Similarly, in an article on organizing project files for research, Marwick
-notes:
+This lack of organization can make scientists reluctant to share their research
+files, impeding reproducibility. In an article on organizing project files for
+research, Marwick notes:
 
 \begin{quote}
 ``Virtually all researchers use computers as a central tool in their
@@ -3005,6 +3001,12 @@ This may be one of the reasons that so many requests for details about
 method, including requests for data and code, are turned down or go
 unanswered.'' \citep{marwick2018packaging}
 \end{quote}
+
+Sharing data and code is crucial to research reproducibility, especially for
+projects that include extensive proprocessing and complex analysis of data, as
+many biomedical research projects now do. As a further bonus, research articles
+that include data with the publication may be more impactful, as measured by
+citations that the paper receives \citep{marwick2018packaging}.
 
 In an earlier module, we introduced Adam Savage's idea of ``knolling'' to keep a
 workspace tidy (Module 2.3). He was talking about a physical workspace. When
@@ -3035,27 +3037,28 @@ a perfect dish, to exact specifications, over and over again, night after night,
 for paying customers who demand nothing less.'' \citep{savage2020every}
 \end{quote}
 
-Good organization of your files can similarly encourage clear thinking and help
-in reasoning through how to analyze data. One article notes that ``mundane issues
-such as organizing files and directories and documenting progress \ldots{} are
-important because poor organizational choices can lead to significantly slower
-research progress.'' \citep{noble2009quick} In fact, if files are organized in a
-consistent way across multiple projects, this can even allow you to start
-automating some necessary tasks through code that is built to work with that
-consistent structure \citep{buffalo2015bioinformatics}.
+Good organization of your files can similarly encourage clear thinking, and it
+can help you in reasoning through how to analyze data. One article notes that
+``mundane issues such as organizing files and directories and documenting
+progress \ldots{} are important because poor organizational choices can lead to
+significantly slower research progress.'' \citep{noble2009quick} In fact, if files are
+organized in a consistent way across multiple projects, this can even allow you
+to start automating some necessary tasks through code that is built to work with
+that consistent structure \citep{buffalo2015bioinformatics}.
 
-Organization also helps you know where to find things. You even know where to
-find things when you come back to a project after a while away from it (for
-example, while the paper was out for review). You can teach someone else how to
-find things quickly and consistently across your multiple projects, as well as
-where to put things if they're contributing to one of them. You have a place for
-everything.
+Organization also helps you in finding things, and finding them quickly. You
+even know where to find things when you come back to a project after a while
+away from it (for example, while the paper was out for review). You can teach
+someone else how to find things quickly and consistently across your multiple
+projects, as well as where to put things they're contributing.
+You have a place for everything.
 
-As one article notes, with good organization, ``methods and data sections in
-papers practically write themselves, with no time wasted in frenzied hunting for
-missing information.'' \citep{baker2016quality} An article on organizing computational
-biology projects also highlights how good organization can improve your
-efficiency:
+This will also help you find information you need when it's time to write up
+your results. As one article notes, with good organization, ``methods and data
+sections in papers practically write themselves, with no time wasted in frenzied
+hunting for missing information.'' \citep{baker2016quality} An article on organizing
+computational biology projects also highlights how good organization can improve
+your efficiency:
 
 \begin{quote}
 ``Everything you do, you will probably have to do over again. Inevitably, you
@@ -3068,47 +3071,22 @@ and documented your work clearly, then repeating the experiment with the new
 data or the new parameterization will be much, much easier.'' \citep{noble2009quick}
 \end{quote}
 
-Finally, when your research files are kept in one place and well-organized, it
-makes it easier for you to share those as a supplement to articles you write
-about the research, and are also more likely to do so. One article notes:
-
-\begin{quote}
-Without clear instructions, many researchers struggle to avoid chaos in their
-file structures, and so are understandably reluctant to expose their workflow
-for others to see. This may be one of the reasons that so many requests for
-details about method, including requests for data and code, are turned down or
-go unanswered''. \citep{marwick2018packaging}
-\end{quote}
-
-Sharing data and code is crucial to research reproducibility, especially for
-projects that include extensive proprocessing and complex analysis of data, as
-many biomedical research projects now do. As a further bonus, research articles
-that include data with the publication may be more impactful, as measured by
-citations that the paper receives \citep{marwick2018packaging}.
-
 \subsection{How to organize project files}\label{how-to-organize-project-files}
 
 First, and at a minimum, you should get in the habit of storing all of the files
 for an experiment in the same place. Specifically, project files should all be
-in a single directory within the file system of a computer \citep{noble2009quick}.
-While this can be an individual's computer, it may also be on a dedicated
-server or through an online, cloud-based program.
+in a single directory within the file system of a computer \citep{noble2009quick, buffalo2015bioinformatics}. While this can be an individual's computer, it may
+also be on a dedicated server or through an online, cloud-based program.
 
 There are a number of advantages to keeping all files related to a single
 project inside a dedicated file directory. First, this provides
 a clear and obvious place to search for all project files throughout your work
 on the project, including after lulls in activity (like waiting for reviews from
-a paper submission). As one article notes:
+a paper submission).
 
-\begin{quote}
-``During the course of a project, you'll have amassed data files, notes,
-scripts, and so on---if these were scattered all over your hard drive (or worse,
-across many computers' hard drives), it would be a nightmare to keep track of
-everything.'' \citep{buffalo2015bioinformatics}
-\end{quote}
-
-Another article highlights how helpful this organization was for a project
-involving a large group:
+One article about the reproducibility of scientific papers talks about how helpful
+this organization can be, describing the experience for a project that involved
+a large research group:
 
 \begin{quote}
 ``Instead of squirrelling away data in individual folders and lab books,
@@ -3121,25 +3099,23 @@ they save time and worry by having their data organized and archived.''
 \end{quote}
 
 Second, by keeping all project files within a single directory, you also make it
-easier to share the collection those files. There are several reasons you might
-want to share these files. An obvious one is that you likely will want to share
+easier to share those files as a unit. There are several reasons you might
+want to share these files. An obvious one is that you to share
 the project files across members in your research team, so they can collaborate
-together on the project. However, there are also other reasons you'd need to
+on the project. However, there are also other reasons you'd need to
 share files, and one that is growing in importance is that you may be asked to
 share files (data, code scripts, etc.) when you publish a paper describing your
 results.
 
 When files are all stored in one directory, the directory can be compressed and
-shared as an email attachment or through a file sharing platform like Google
-Drive. When all the materials for a project are stored in a single directory, it
-also makes it easier to share the set of files through version control and
-online version control platforms \citep{vuorre2021sharing}. (This also helps you to
-track changes to files across the project \citep{vuorre2021sharing}). In later
-modules in this book, we will introduce \texttt{git} version control software and the
-GitHub platform for sharing files under this type of version control---this is
-one example of this more dynamic way of sharing files within a directory.
-Further, services like Google Drive and Microsoft Teams are steadily advancing
-in their capabilities for versioning and tracking changes across shared files.
+shared as an email attachment (if the file size is small enough) or through a
+file sharing platform like Google Drive. When all the materials for a project
+are stored in a single directory, it also makes it easier to share the set of
+files through version control and online version control platforms
+\citep{vuorre2021sharing}. In later modules in this book, we will introduce
+git version control software and the GitHub platform for sharing files under
+this type of version control---this is one example of this more dynamic way of
+sharing files, but requires them to be stored in a single directory.
 
 To gain the advantages of directory-based project file organization, all the
 files need to be within a single directory, but they don't all have to be within
@@ -3152,22 +3128,22 @@ project.
 
 This will help limit the number of files in each ``level'' of the directory, so
 none becomes an overwhelming collection of files of different types. It can help
-you navigate the files in the directory, and also help someone you share the
-directory with figure out what's in it and where everything is. However,
+you navigate the files in the directory, and also help someone else quickly
+figure out what's in it and where everything is. However,
 to leverage these gains, you need to be thoughtful about exactly how you
 organize the files into subdirectories.
 
 As you decide how to organize files, keep in mind a concept called
-``discoverability''. In the classic design book \emph{The Design of Everyday
+\emph{discoverability}. In the classic design book \emph{The Design of Everyday
 Things}, Don Norman presents discoverability as a key principle of good design,
 explaining as the ability for a user to be able to figure out, from the design
 of something, how to use that thing quickly, easily, and correctly. He
-illustrates this with an example of discoverability in the design of doors.
-For a door, the location of a pull handle and a push bar immediately shows
-someone how to use the door: pull where you see a pull handle and push where you
-see a push bar. If the door is lacking these, it makes it harder for a user
-to ``discover'' how to use it at first glance, and they might try to push when
-they need to pull or vice-versa.
+illustrates this with an example of discoverability in the design of doors. For
+a door, the location of a pull handle and a push bar immediately shows someone
+how to use the door: pull on the side of the door where you see a pull handle
+and push where you see a push bar. If the door is lacking these, it makes it
+harder for a user to ``discover'' how to use it at first glance, and they might
+try to push when they need to pull or vice-versa.
 
 The same idea applies to designing the way to organize research project files
 within a directory. You want to make sure that a new user (or you in the future)
@@ -3176,10 +3152,9 @@ One article on organizing research project files notes that, when it comes to
 deciding how to organize your files, ``The core guiding principle is simple:
 Someone unfamiliar with your project should be able to look at your computer
 files and understand in detail what you did and why.'' \citep{noble2009quick} Another
-notes, ``Regardless of the particular project you're working on, your project
-directory should be laid out in a consistent and understandable fashion. Clear
-project organization makes it easier for both you and collaborators to figure
-out exactly where and what everything is.'' \citep{buffalo2015bioinformatics}
+notes, ``The key principle is to organize the {[}project directory{]} so that another
+person can know what to expect from the plain meaning of the file and directory
+names.'' \citep{marwick2018packaging}
 
 One way to improve discoverability is to name your files and subdirectories
 in meaningful ways. The computer will give you wide flexibility in setting
@@ -3194,55 +3169,55 @@ include some people outside your field, for whom some shorthand common in the
 field might be unclear. For example, in some studies of infectious bacterial
 disease, the bacterial load is measured in an assay that counts colony forming
 units. Among bench scientists in this field, the assay is often called ``CFUs''.
-If you are collaborating with a biostatistician, however, they may find the
+If you are collaborating with a statistician, however, they may find the
 files more discoverable if you named the subdirectory with these files something
 like ``bacterial\_load'' rather than ``cfus'', as they may not be familiar with that
 shorthand.
 
 One way to improve discoverability is to follow any standards that exist for
-organizing project files \citep{marwick2018packaging}. As an example of how standards
-can help discoverability, think about the design of cars. Most cars, regardless
-of the manufacturer, will have the steering wheel, accelerator, and brake in
-approximately the same position relative to the driver. By following this
-standard, it's easier (and safer) for a driver to learn to use a car they
-haven't driven before. When it comes to project file organization, these
-standards will come in the form of which subdirectories are included, how
-they're organized hierarchically, and how subdirectories and files are named.
+organizing project files \citep{marwick2018packaging}. The use of standards or
+conventions tend to make it easier for users to navigate (``discover'') new
+instances of a certain type of thing. In module 2.2, we discussed this role of
+standards when it comes to the format you use to record your data. When it comes
+to project file organization, standards will come in the form of the
+subdirectories that are included, how they're organized hierarchically, and how
+subdirectories and files are named.
 
-These standards could exist as several levels: for your discipline, for your lab
-group, or even for you as an individual. For example, when people develop R
-packages, the package consists of a set of files, and there is a very clear and
-highly enforced standard for how these files are arranged in a directory and how
-the subdirectories are named. By enforcing this standard, many different people
-can create packages and have them work in a similar way. On the opposite end of
-the spectrum, if there are not clear standards at the level of your discipline,
-you could create a clear standard that you plan to follow either for your lab
-group or even for your individual work. If you're consistent in organizing your
-files using that standard, it will make it easier to navigate files as you move
-from one project to another. One article notes,
+These standards could exist as several levels: at a top level for your
+discipline, but also just for your lab group, or even for you as an individual.
+It is very helpful when standards exist at a discipline-wide level, as following
+this type of high-level standard will immediately make your work discoverable
+(in the design sense) to a wide group of people. As one article notes,
+``Using widely held conventions\ldots{} will help other people to understand how your
+files relate to each other without having to ask you.'' \citep{marwick2018packaging}
 
-\begin{quote}
-``The key principle is to organize the compendium so that another person can
-know what to expect from the plain meaning of the file and directory names.
-Using widely held conventions\ldots{} will help other people to understand how your
-files relate to each other without having to ask you. Naming objects is
-difficult to do well, so it is worth to put some effort into a logical and
-systematic file naming convention if you have a complex project with many files
-and directories (e.g., a multi-experiment study where each experiment has
-numerous data and code files).'' \citep{marwick2018packaging}
-\end{quote}
+As an example of this, when people develop R packages, the package consists of a
+set of files, and there is a very clear and highly enforced standard for how
+these files are arranged in a directory and how the subdirectories are named. By
+enforcing this standard, many different people can create packages and have them
+work in a similar way.
+
+On the opposite end of the spectrum, if there are not clear
+standards at the level of your discipline, you could create a clear standard
+that you plan to follow either for your lab group or even for your individual
+work. If you're consistent in organizing your files using that standard, it will
+make it easier to navigate files as you move from one project to another.
 
 As an added bonus, subdirectory organization can also be used in clever ways
 within code scripts applied to files in the directory. For example, there are
 functions in all scripting languages that will list all the files in a specified
 subdirectory. If you keep all your raw data files of a certain type (for
-example, all output from running flow cytometry for the project) within a single
+example, all output from flow cytometry for the project) within a single
 subdirectory, you can use this type of function with code scripts to list all
 the files in that directory and then apply code that you've developed to
 preprocess or visualize the data across all those files. This code would
 continue to work as you added files to that directory, since it starts by
 looking in that subdirectory each time it runs and working with all files there
-as of that moment. One article notes:
+as of that moment.
+
+This type of automation can be a huge efficiency boost for your project.
+One article describes how this type of automation can increase efficiency
+with a comparison to a simpler task in working with computer files:
 
 \begin{quote}
 ``Organizing data files into a single directory with consistent filenames
@@ -3256,18 +3231,31 @@ organization, you can do the same programatically using the Unix shell and other
 programming languages.'' \citep{buffalo2015bioinformatics}
 \end{quote}
 
+Another way to improve your directory organization is to make sure the directory
+is not cluttered with unnecessary files. Unnecessary files can include old versions
+of project files, which have been superseded by newer versions. In later modules
+(modules 2.9--2.11), we'll describe how version control can help avoid this clutter
+from old versions of files while retaining information from older versions as
+files evolve.
+
 \subsection{What is a project template?}\label{what-is-a-project-template}
 
 Louis Pastuer famously said that ``Luck favors the prepared mind.'' In file
 organization, as with so much else, time spent preparing can pay off
 exponentially later. In this case, the next step is to not only use a structured
 directory for each project or experiment, but to start using the same,
-standardized structure for every one of your projects and experiments. This
-takes more work, in particular to design a structure that can be used across
-many projects. However, the gains in terms of organization and efficiency can be
-extraordinary. We have not run across many people who have taken the time to set
-this up. However, among the people we know who have, we haven't run across many
-who ever went back once they started using this type of system.
+standardized structure for every one of your projects and experiments---in other
+words, to create a standard for file organziation and to use it consistently.
+
+In other modules, we talk about how templates can be used to improve the rigor
+and reproducibility of collecting and reporting on data. Just as it's possible
+to create templates for data collection and for reports, it's also possible to
+create a template for how you organize file directories for your scientific
+projects, creating and applying standards for things like which subdirectories
+are included and how files are named. This takes more work---to design a
+structure that can be used across many projects, rather than to set something
+up \emph{ad hoc} as you start each new experiment. However, the gains in terms of
+organization and efficiency can be extraordinary.
 
 This involves first designing a common template for the directory structure for
 your projects. Once you have decided on a structure for this template, you can
@@ -3275,10 +3263,11 @@ create a version of it on your computer---a file directory with all the
 subdirectories included, but without any files (or only template files you'd
 want to use as a starting point in each project, like templates for data
 collection and reports as presented in Modules 2.4 and 2.5). When you start a
-new project, you can then just copy this template and rename it. If you are
-using R and begin to use R Projects (described in the next section), you can
-also create an R Studio Project template to serve as this kind of starting point
-each time you start a new project.
+new project, you can then just copy this template directory, rename it, and
+start using it for your new research project. If you are using R and begin to
+use R Projects (described in the next section), you can also create an R Studio
+Project template to serve as this kind of starting point each time you start a
+new project.
 
 In other areas of science and engineering, this idea of standardized directory
 structures has allowed the development of powerful techniques for open-source
@@ -3311,6 +3300,13 @@ Similarly, you can customize the report as you go to help it work well for this
 specific experiment. However, you will aim to keep to the standard format as
 much as possible, since it's the standardization across projects that provides
 many of the advantages.
+
+Across these modules, we have covered several types of templates, as templates
+can be a powerful tool to improve reproducibility. The types of templates have
+included templates for data collection, templates for generating reports, and
+now templates for how project directories are organized. This last type of template---
+for project directories---can include nested within it the other types of
+templates, for data collection and generating reports.
 
 In the next module, we will walk through the steps of designing a project
 template that you can use across experiments for your laboratory group. In
@@ -3362,77 +3358,6 @@ projects will help create consistency across projects in the directory
 structure, which can facilitate the use and re-use of automated tools like code
 scripts across different experiments.
 
-Here are some key goals to consider when designing a template:
-
-\begin{itemize}
-\tightlist
-\item
-  Keeping data collection and analysis separate
-\item
-  Using simple file formats and tidy structures for recording data whenever
-  possible (a larger number of simple files is easier to organize and work
-  with than a smaller number of complex files)
-\item
-  Create reports and analysis that incorporate data from different assays
-  for an experiment
-\item
-  Make it easy to share all project files across the team
-\item
-  Make it easy to share project files on a public repository
-\item
-  Make it easy to track changes to files for a project
-\end{itemize}
-
-To ``define the problem'' \citep{osann2020design}:
-
-\begin{itemize}
-\tightlist
-\item
-  Files for the project need to be stored in a single directory
-\item
-  That directory needs to be easy to understand and navigate
-\item
-  We want to have the same structure for many different projects,
-  so it needs to be flexible enough to accommodate that
-\item
-  Be able to find things easily
-\end{itemize}
-
-\begin{quote}
-``The goal of a research compendium is to provide a standard and easily
-recognizable way for organizing the digital materials of a project to enable
-others to inspect, reproduce, and extend the research. There are three generic
-principles that define research compendia, independent of particular software
-tools, and disciplinary contexts. 1. A research compendium should organize its
-files according to the prevailing conventions of the scholarly community,
-whether that be an academic discipline or a lab group. Following these
-conventions will help other people recognize the structure of the project, and
-also support tool building which takes advantage of the shared structure. 2. A
-research compendium should maintain a clear separation of data, method, and
-output, while unambiguously expressing the relationship between those three. In
-practice, this means data files must be separate from code files. This is
-important to let others easily identify how the original researcher operated on
-the data to generate the results. Keeping data and method separate treats the
-data as `read-only,' so that the original data are untouched and all
-modifications are transparently documented in the code. The output files should
-be considered as disposable, with a mindset that one can always easily
-regenerate the output using the code and data. The relationship between which
-code operates on which data in which order to produce which outputs must be
-specified as well. In his advice to industry data scientists, Ben Baumer's
-article in this collection similarly highlights the importance of keeping data
-separate from the presentation of data, or research outputs. 3. A research
-compendium should specify the computational environment that was used for the
-original analysis. At its most basic, this could be a plain text file that
-includes a short list of the names and version numbers of the software and other
-critical tools used for the analysis. In more complex approaches, described
-below, the computational environment can be automatically preserved or
-reproduced as well.'' \citep{marwick2018packaging}
-\end{quote}
-
-\begin{figure}
-\includegraphics[width=\textwidth]{figures/project_template_directory} \caption[A research group can create a file directory that will serve as a template for all the experiments of a certain type in your laboratory]{A research group can create a file directory that will serve as a template for all the experiments of a certain type in your laboratory. The template can include templates of files for data recording and for generating reports. To start recording data for a new experiment, a researcher can copy and rename this template directory.}\label{fig:templatedirectory}
-\end{figure}
-
 Designing a project template will include two parts---first, designing a
 \emph{conceptual} template for your file organization and, second, creating a
 \emph{physical} implementation of that concept. The conceptual template will
@@ -3443,20 +3368,62 @@ adapt each time you start a new project.
 
 This is a process of \emph{designing}, and so you will find it helpful to follow
 principles that facilitate the design process. For example, as you design, it's
-useful to keep in mind the resources that you have available \citep{osann2020design}.
-In this case, the key resources are the file directory and organization system,
-as well as simple file types, that are available through modern
-computer operating systems. Many of these are based on the Unix file directory
-system and file designs.
+useful to start by defining the problem \citep{osann2020design}. What are you aiming
+to achieve with your file organization system?
+
+Here are some key goals to consider for a research project directory template,
+based on our own experiences and the advice of others \citep{marwick2018packaging, bertin2021creating}:
+
+\begin{itemize}
+\tightlist
+\item
+  Keeps data collection and analysis separate (see module 2.1)
+\item
+  Uses simple file formats and tidy structures for recording data whenever
+  possible (a larger number of simple files is typically easier to organize and work
+  with than a smaller number of complex files)
+\item
+  Keeps all files for a research project within a single directory
+\item
+  Facilites creation of reports and analysis that incorporate data from different assays
+  for an experiment
+\item
+  Treats data files as read-only
+\item
+  Uses meaningful names for files and subdirectories
+\item
+  Avoids or removes unneccessary files
+\item
+  Uses subdirectories to organize files into a hierarchical structure
+\item
+  Makes it easy to share all project files across the team
+\item
+  Makes it easy to share project files on a public repository
+\item
+  Makes it easy to track changes to files for a project
+\item
+  Allows easy navigation and discoverability (module 2.6) by a new user
+\item
+  Incorporates enough flexibility to be used with minimal changes across many
+  research projects
+\end{itemize}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{figures/project_template_directory} \caption[A research group can create a file directory that will serve as a template for all the experiments of a certain type in your laboratory]{A research group can create a file directory that will serve as a template for all the experiments of a certain type in your laboratory. The template can include templates of files for data recording and for generating reports. To start recording data for a new experiment, a researcher can copy and rename this template directory.}\label{fig:templatedirectory}
+\end{figure}
 
 \subsection{Designing a project template}\label{designing-a-project-template}
+
+{[}Anecdotes / examples for prototyping{]}
 
 One critical step in the design process is to iterate: make a first version of
 something (a prototype) and then try it out to see how it works, then revise and
 improve based on what you find out in practice \citep{osann2020design}. In this case,
 that means creating a project directory template, but considering it a first
 draft until you try it in practice. You can refine this template once you've
-tried it and identified where it works and where it doesn't.
+tried it and identified where it works and where it doesn't. A prototype doesn't
+have to be fully refined, just built out enough that the users can test it out
+\citep{osann2020design}.
 
 Before you open your computer to make a ``physical'' template, you should design
 it. This involves deciding what types of data will go into a project directory,
@@ -3485,6 +3452,15 @@ type of file, so you can customize the directory structure to some degree for
 these types of cases, but it is still a big advantage to include as many common
 elements as possible across all your projects.
 
+It can also be helpful to have an example of each file type, to help capture
+what the typical size, structure, and contents of each type of file will be. For
+data that you will record yourself, these can be the templates that you
+developed to collect the data in a tidy format (modules 2.3 through 2.5), while
+for data from equipment, these can just be one or more example files from the
+equipment that you have collected for a past project. Having these example files
+will help you to develop a template project report that can input the type of
+data that you typically collect for this type of project.
+
 One of the best ways to get an idea of what your research
 group needs within a project directory is to take a survey of past research
 projects from your group. Make a list of what types of data were collected and
@@ -3505,29 +3481,7 @@ way, you could create a template for data collection, for example as a CSV file.
 This idea of creating data collection templates is described in detail in
 modules 2.4 and 2.5.
 
-With a data collection template for collecting a certain type of data, each
-researcher in your lab could copy and rename this file each time they collect a
-new set of data---by ensuring a common structure when collecting the data,
-including file format, column names, and so on, you can build code scripts that
-will work on data collected for all your experiments. You may also have some
-standard reports that you want to create with types of data you commonly
-collect, and so you could include templates for those reports in your R Project
-template. Again, these can be copied and adapted within the project---the
-template serves as a starting point so you don't have to start with a blank
-slate with every project, but it is not restrictive and can be adapted to each
-project as you work on that project.
-
-In addition to the data that you record in the laboratory by hand, you may also
-typically have data that's generated and recorded by laboratory equipment. For
-example, the type of study may often include data collected from flow cytometry,
-to measure certain cell populations in samples, or from mass spectometry, to
-measure levels of certain molecules. For these data, the recording format will
-typically be determined by the equipment, and so you won't need to create data
-collection templates for the data. However, you should store these data files in
-your project directory as well, where they are easy to access and integrate with
-other data as you analyze the data for the study.
-
-The recorded data files and the files that come directly from equipment can all
+{[}Data{]} The recorded data files and the files that come directly from equipment can all
 be considered raw data files. In addition, you may typically create some files
 with pre-processed data. For example, if you have flow cytometry data, you may
 initially get large files in a format specific to flow cytometry (``fcs'' files)
@@ -3544,7 +3498,7 @@ pre-processing steps. For example, you might want to store the raw fcs files
 within a subdirectory called ``data\_raw'' and the processed (gated) csv files
 within a subdirectory called ``data''.
 
-With the previous steps, you will have determined the types of files you
+{[}Reports{]} With the previous steps, you will have determined the types of files you
 normally have for this type of study, as well as structured the project
 directory to organize these files. The next step is to create a template report.
 You can create this using tools for reproducible reports---in R, a key tool for
@@ -3555,11 +3509,46 @@ single, plain text document. This document can then be rendered, a process that
 executes the code and formats the text meant for humans, producing a document in
 an easy-to-read format like Word or PDF.
 
+\textbf{Decide on file name conventions}
+
+Some things to keep in mind as you decide on file names are:
+
+\begin{itemize}
+\tightlist
+\item
+  Discoverability {[}More on this, module 2.6{]}
+\item
+  Design them in a way that you can later use regular expressions {[}more
+  about this, refer to module 3.5 where we talk about tools for regular
+  expressions{]}
+\item
+  When you use the filenames, plan to use their relative file paths, rather
+  than their absolute filepaths {[}More on relative versus absolute paths{]}
+\end{itemize}
+
+\begin{quote}
+``In many cases it can be useful to give the analysis scripts ascending names, for example 001-load.R, 002-clean.R etc. This kind of file-naming helps with organisation'' \citep{marwick2018packaging}
+\end{quote}
+
+\begin{quote}
+``2. a. Files are clearly named, preferably in a way where the order in which they should be run is clear.
+\ldots{}
+3. a. No absolute paths, or paths leading to locations outside of a project's directory, are used in code---only portable (relative) paths.'' \citep{bertin2021creating}
+\end{quote}
+
+\textbf{Determine which subdirectories you'll include and how you'll name them}
+
 Once you have determined the types of files that you'll normally include in your
 project, you can decide how to organize them into subdirectories in a project
 file directory. You want to design a structure that will be clear and also
-easy to work within, as you continue work on your project. As Adam Savage
-notes:
+easy to work within, as you continue work on your project.
+
+Adam Savage, the host of the \emph{Mythbusters} television show who we introduced in
+module 2.3, has spent a lot of time thinking about how to organize a work space
+to make his process more efficient and pleasant. One interesting thing that he
+found is that the neatest organization isn't always the best; rather, the best
+organization is one that not only helps you find what you need but also encourages
+your creativity in solving problems. He notes:
 
 \begin{quote}
 ``Not all organizational methodologies are created equal. One could be spotlessly
@@ -3569,18 +3558,136 @@ but a bit more open and exposed, and it could untap creative genius like no othe
 you've worked in.'' \citep{savage2020every}
 \end{quote}
 
-As you do decide how to organize a project directory into subdirectories, it
-will be helpful to have example or template files for each file type. For data
-that you will record yourself, these can be the templates that you developed to
-collect the data in a tidy format (modules 2.3 through 2.5), while for data from
-equipment, these can just be one or more example files from the equipment that
-you have collected for a past project. Having these example files will help you
-to develop a template project report that can input the type of data that you
-typically collect for this type of project.
+He continues:
+
+\begin{quote}
+``What truly unifies my shops, especially as I got more experienced, is that they are
+each built on two, simple philosophical pillars: 1) I want to be able to see everything
+easily; and 2) I want to be able to reach everything easily.'' \citep{savage2020every}
+\end{quote}
+
+{[}Is Figure \ref{fig:projecttemplatecomplex} an orphan?{]}
 
 \begin{figure}
 \includegraphics[width=\textwidth]{figures/project_template_morecomplex} \caption[Example of a more complex project directory structure that could be created, with directories added to store data collected through flow cytometry and single cell RNA sequencing]{Example of a more complex project directory structure that could be created, with directories added to store data collected through flow cytometry and single cell RNA sequencing.}\label{fig:projecttemplatecomplex}
 \end{figure}
+
+In general, as you design the structure of subdirectories, keep in mind that a
+key aim is to create a structure that is general enough that you can use it
+consistently for many projects, but also clear enough that you can quickly find
+things within the directory. As one paper notes, you want a directory setup that
+is ``flexible and configurable'' \citep{blischak2019creating}.
+
+A number of researchers have put a lot of thought into how to organize project
+directories for scientific research \citep{vuorre2021sharing, prodigenr, blischak2019creating, marwick2018packaging, noble2009quick}. A common theme
+across these papers is to include subdirectories to store files in four main
+areas:
+
+\begin{itemize}
+\tightlist
+\item
+  data
+\item
+  code
+\item
+  reports
+\item
+  meta-documentation
+\end{itemize}
+
+We'll go through each of these to discuss what might be included in each
+of these areas, as well as how it might make sense to name subdirectories
+in each of the areas.
+
+\textbf{Data subdirectories}
+
+Data should be saved in an area that is separate from any code for analysis.
+See module 2.1 for a deeper discussion on the benefits of separating data
+from analysis to improve reproducibility.
+
+The raw data should also be treated as ``read-only''---in other words, the raw
+data should never be edited or changed. To work with the data, including any
+necessary quality control, pre-processing, or analysis, these raw data should be
+read in to a separate program for analysis. That way, you can work with the
+data (and even create and save intermediary, ``processed'' versions of the
+data), while maintaining the original raw files without alteration.
+
+There are different recommendations on how to name subdirectories with data.
+Several papers recommend having separate subdirectories for the raw data versus
+intermediate data. Some researchers have suggested naming the subdirectory for
+raw data as ``data-raw'' and the one for intermediate data as ``data''
+\citep{vuorre2021sharing, prodigenr}. Others have suggested naming the raw data
+subdirectory as ``data'' and the one for intermediate data ``outputs''
+\citep{blischak2019creating}. Either or these choices---or a reasonable
+alternative---is fine, as long as you use your naming scheme consistently across
+projects. In some cases, the raw data directory may also keep the code scripts
+that you used to create the intermediate data from those raw data \citep{prodigenr}.
+
+One article suggested a solution if you are working with raw data files that
+are extremely large, as in this case you may not have room on your personal
+computer to store the full set of raw data \citep{marwick2018packaging}. It
+suggests that, in that case, you store a smaller example dataset in your
+project directory that can be used to test or demonstrate the analysis code,
+while storing the full set of raw data files on a computer with adequate
+storage capacity. The article notes:
+
+\begin{quote}
+``If your data are very large, or streaming, an alternative is to include a
+small-sample dataset so that people can try out the techniques without having to
+run very expensive computations.'' \citep{marwick2018packaging}
+\end{quote}
+
+\textbf{Code subdirectories}
+
+Next, you'll want to include one or more subdirectories for code. Again, this
+structure helps in separating data collection from data analysis (module 2.1).
+
+This code may include data for cleaning and pre-processing the data, although
+some researchers choose to put code for these steps in the ``raw-data''
+subdirectory, as separate files from the raw data files but within the same
+section of the project directory.
+
+This code will also include code to analyze and visualize the data. In some
+cases, in might include code for functions that you plan to reuse within
+different code scripts in the project or even across projects.
+
+One article recommended having a single code subdirectory, named
+``code'' \citep{blischak2019creating}. This subdirectory can
+store any code scripts (outside of any code running as part of a report
+RMarkdown file; see modules 3.7--3.9). Another recommends that, if you
+have both compiled code (like C code) and code scripts (for a language
+like R), you may want to have separate subdirectories for source code (``src'')
+versus compiled code or scripts (``bin'') \citep{noble2009quick}.
+
+Other researchers have recommended having an ``R'' subdirectory that is only used
+for code that you write for reusable R functions, ones that you plan to use
+several times across other code scripts in your project \citep{vuorre2021sharing, marwick2018packaging}. For the code that runs data analysis, they recommend a
+separate subdirectory named ``model'' \citep{vuorre2021sharing} or ``analysis''
+\citep{marwick2018packaging}.
+
+\textbf{Report subdirectories}
+
+Ideally, you will use a tool like RMarkdown to create reports that can run
+analysis directly from your processed data. We discuss these kinds of tools
+in more depth in modules 3.7--3.9.
+
+Whether you use these tools or not, though, you should have a space in your
+project directory to keep the documents you create to report your findings.
+These will include paper articles, but they can also include documents like
+conference abstracts, posters, and presentations.
+
+You could use a single subdirectory for these report files, named something like
+``doc'' \citep{prodigenr, noble2009quick}. Alternatively, if you are using RMarkdown
+files, you could keep these files (the ones you should work on by hand) in one
+subdirectory and have another subdirectory to store the output of those
+RMarkdown files (the generated reports in a format like PDF or Word, which you
+should treat as read-only if they were generated from an RMarkdown file)
+\citep{blischak2019creating}. These two subdirectories could be named ``analysis'' and
+``output'', respectively \citep{blischak2019creating}. Another article recommends
+using separate subdirectories for different types of report outputs, for
+example ``posters'', ``manuscript'', and ``slides'' \citep{vuorre2021sharing}.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 When you create a project directory template, we recommend that you create a
 subdirectory named something like ``reports'' to use to store any Rmarkdown report
@@ -3589,200 +3696,69 @@ your reports in the project directory. You'll be able to use file and directory
 pathnames to access all the data in the project, so it will be easy to use the
 study's data in the report even if they're in separate subdirectories.
 
-In general, as you design the structure of subdirectories, as well as pick
-naming conventions for both subdirectories and files, keep in mind that a key
-aim is to create a structure that is general enough that you can use it
-consistently for many projects, but also clear enough that you can quickly
-find things within the directory. Adam Savage describes a similar aim when
-he designs the layout and organization of his shops:
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Meta-documentation subdirectories or files}
+
+The final major area to cover in your project directory are files for metadata
+and ``meta-documentation''. This is information that describes your project as
+a whole. In some cases you might store this information in subdirectories,
+but in many cases, this information might alternatively go in a single file
+at the main level of the project directory.
+
+There are a number of pieces of information that you may want to include
+in this metadocumentation. It could include, for example, information about
+the experiment that the project covers, things like which type of model animal
+you were using or which treatment you were testing.
+
+It can also include information
+related to the code analysis. One piece of information that's very important,
+for example, is a list of the dependencies and versions of software. For
+example, if you used R for analysis, which version of R did you use, and which
+packages did you use to supplement the base R distribution? For the packages,
+which version of each did you use?
+
+The metadocumentation can also provide some information on who was involved
+in the project, what role each person had, and the conditions for reusing
+elements of the project, like code and data. If the project directory will
+be shared once you complete the information, these details on reuse will be
+particularly helpful. This might include information, for example, about the
+license under which you are sharing any code within the project.
+
+Several articles suggest sharing this metadocumentation through a type of file
+called a ``README'' file \citep{marwick2018packaging, bertin2021creating, prodigenr}.
+{[}More about README files{]}
+
+If you are planning to use GitHub as a way to share the project directory
+(see modules 3.10 and 3.11), you will find it useful to create the README file
+using a file format called ``Markdown''. {[}more about this{]} {[}Automatically
+renders in a nice format when you put it on GitHub{]}
+
+As one article notes:
 
 \begin{quote}
-``What truly unifies my shops, especially as I got more experienced, is that they are
-each built on two, simple philosophical pillars: 1) I want to be able to see everything
-easily; and 2) I want to be able to reach everything easily.'' \citep{savage2020every}
-\end{quote}
-
-As you design, keep in mind that you want to organize and to do it consistently:
-
-\begin{itemize}
-\tightlist
-\item
-  Put all code, data, and output for a project in a single directory
-\item
-  Organize those directories into subdirectories
-\item
-  Name those subdirectories consistently
-\item
-  Use meaningful file names
-\item
-  Remove unnecessary files
-\end{itemize}
-
-A number of researchers have put a lot of thought into how to organize project
-directories for scientific research.
-
-One paper suggests structuring research project
-files as R packages, with the following subdirectories in a project
-directory \citep{vuorre2021sharing}:
-
-\begin{itemize}
-\tightlist
-\item
-  data: Processed R datasets
-\item
-  data-raw: Raw starting data, in any machine-readable format
-\item
-  docs
-\item
-  experiments: I think this is to write surveys, etc., that would run online?
-\item
-  man: Help files for the R functions
-\item
-  manuscript: Paper for the project, starting in a mark-up language and rendering to pdf
-\item
-  model: Code for running models, can be rendered to pdf or HTML
-\item
-  posters: Code for creating posters with RMarkdown (posterdown), renders to pdf or HTML
-\item
-  R: Code for project-specific functions
-\item
-  slides: Code for creating slides with RMarkdown, render to HTML
-\item
-  vignettes
-\end{itemize}
-
-Here is the suggestion from another paper \citep{marwick2018packaging}:
-
-\begin{quote}
-``An ideal package-based file organization for a more complex project would look like this:
-\end{quote}
-
-\begin{quote}
-. A README.md file that describes the overall project and where to get started. It can be helpful to include graphical summary of the interlocking pieces of the project.
-\end{quote}
-
-\begin{quote}
-. Script files with reusable functions go in the R/ directory. If these functions are documented using Roxygen, then the documentation will be automatically generated in a man/ directory.
-\end{quote}
-
-\begin{quote}
-.Raw data files are kept in the data/ directory. If your data are very large, or streaming, an alternative is to include a small-sample dataset so that people can try out the techniques without having to run very expensive computations.
-\end{quote}
-
-\begin{quote}
-. Analysis scripts and reports files go in the analysis/ directory. In many cases it can be useful to give the analysis scripts ascending names, for example 001-load.R, 002-clean.R etc. This kind of file-naming helps with organisation, but it does not capture the full tree of dependencies in the way a Makefile or an R Markdown file does. To manage more complex workflows, the analysis/ directory could include either an R markdown file, a Makefile or a Makefile.R file. These files are important because they control the order of the code execution. In more complex projects, careful use of caching or a Makefile can save time by only running code that has not changed since it was last run.
-\end{quote}
-
-\begin{quote}
-. A DESCRIPTION file in the project root provides formally structured, machine- and human-readable information about the authors, the project license, the software dependencies, and other metadata of the compendium. When a DESCRIPTION file is included along with the other items above, then the compendium is also a formal, installable R package. When your compendium is an R package, you can take advantage of many time-saving tools for package development, testing, and sharing (e.g., the devtools package that we noted above). R's built-in citation() function can use that metadata, along with references to any publications that result from the project, to provide users with the necessary information to cite your work.
-\end{quote}
-
-They provide some more details on some subdirectories:
-
-\begin{quote}
-``The R/ directory contains custom functions that are used repeatedly throughout the project. The man/ directory contains the manual (i.e., documentation) for the use of the functions.'' \citep{marwick2018packaging}
-\end{quote}
-
-Another project (workflowr) suggests the following subdirectories \citep{blischak2019creating}:
-
-\begin{itemize}
-\tightlist
-\item
-  analysis: Rmd files with code to visualize, model, etc.
-\item
-  code: ``intended for longer-running scripts, compiled code (e.g., C++)
-  and other source code supporting the data analysis'' \citep{blischak2019creating}
-\item
-  data: ``for storing raw data files'' \citep{blischak2019creating}
-\item
-  docs: Generated results from Rmd files (HTMLs that can be posted online)
-\item
-  output: ``for saving processed data files and other outputs generated by
-  the scripts and analyses'' \citep{blischak2019creating}
-\end{itemize}
-
-They note that you want a directory setup that is ``flexible and configurable''
-\citep{blischak2019creating}.
-
-Another paper notes some of the key characteristics that can help make
-a project reproducible:
-
-\begin{quote}
-``Using this literature as a guideline, we identify several key features of reproducible work. These recommendations are a matter of opinion---due to the lack of agreement on which components of reproducibility are most important, we select those that are mentioned most often, as well as some that are mentioned less but that we view as important.
-1. A well-designed file structure:
-1. a. Separate folders for different file types.
-1. b. No extraneous files.
-1. c.~Minimal clutter.
-2. Good documentation:
-2. a. Files are clearly named, preferably in a way where the order in which they should be run is clear.
-2. b. A README is present.
-2. c.~Dependencies are noted.
-2. d.~Code files contain descriptive comments.
-3. Reproducible file paths:
-3. a. No absolute paths, or paths leading to locations outside of a project's directory, are used in code---only portable (relative) paths.
-{[}Others not related to directory structure{]}.'' \citep{bertin2021creating}
-\end{quote}
-
-One R package, designed to set-up a project directory structure, suggests
-including a README file not only in the top-level directory, but also in
-each subdirectory \citep{prodigenr}. That project incorporates the following
-subdirectories:
-
-\begin{itemize}
-\tightlist
-\item
-  R, ``Should contain the R scripts and functions used for the analysis''
-\item
-  data, ``If relevant, is where the processed (or simulated) data that is
-  used for the project as well as the results of the project's analysis''
-\item
-  data-raw ``If relevant, is where the scripts that process the raw data
-  into the usable data are kept and, optionally where the raw data is
-  also kept''
-\item
-  doc, ``Should contain the files related to presenting the project's
-  scientific output. Already has the report / manuscript inside''. Can
-  include the report, but also slides and other reporting output.
-\end{itemize}
-
-\begin{quote}
-``Within a given project, I use a top-level organization that is logical, with chronological organization at the next level, and logical organization below that. A sample project, called msms, is shown in Figure 1. At the root of most of my projects, I have a data directory for storing fixed data sets, a results directory for tracking computational experiments peformed on that data, a doc directory with one subdirectory per manuscript, and directories such as src for source code and bin for compiled binaries or scripts. Within the data and results directories, it is often tempting to apply a similar, logical organization. For example, you may have two or three data sets against which you plan to benchmark your algorithms, so you could create one directory for each of them under data. In my experience, this approach is risky, because the logical structure of your final set of experiments may look drastically different from the form you initially designed. This is particularly true under the results directory, where you may not even know in advance what kinds of experiments you will need to perform. If you try to give your directories logical names, you may end up with a very long list of directories with names that, six months from now, you no longer know how to interpret.
-Instead, I have found that organizing my data and results directories chronologically makes the most sense. Indeed, with this approach, the distinction between data and results may not be useful. Instead, one could imagine a top-level directory called something like experiments, with subdirectories with names like 2008-12-19. Optionally, the directory name might also include a word or two indicating the topic of the experiment therein. In practice, a single experiment will often require more than one day of work, and so you may end up working a few days or more before creating a new subdirectory. Later, when you or someone else wants to know what you did, the chronological structure of your work will be self-evident.
-Below a single experiment directory, the organization of files and directories is logical, and depends upon the structure of your experiment. In many simple experiments, you can keep all of your files in the current directory. If you start creating lots of files, then you should introduce some directory structure to store files of different types. This directory structure will typically be generated automatically from a driver script, as discussed below.'' \citep{noble2009quick}
-\end{quote}
-
-This project also incorporates ``TODO.md'' in the top level of the project
-directory, as well as a ``DESCRIPTION'' file that ``includes metadata about
-your project, in a machine readable format, and that also stores a list
-of the R packages your project depends on'' \citep{prodigenr}.
-
-\begin{quote}
-``\textbf{Centralize the location of the raw data files and automate the derivation of
-intermediate data.} Store the input data on a centralized file server that is
-profesionally backed up. Mark the files as read-only. Have a clear and linear
-workflow for computing the derived data (e.g., normalized, summarized, transformed,
-etc.) from the raw files, and store these in a separate directory. Anticipate that
-this workflow will need to be run several times, and version it. Use the
-\texttt{BiocFileCache} package to mirror these files on your personal computer.
-{[}footnote: A more basic alternative is the rsync utility. A popular solution offered
-by some organizations is based on ownCloud. Commercial options are Dropbox,
-Google Drive and the like{]}.'' \citep{holmes2018modern}
+``A README.md file that describes the overall project and where to get started.
+It can be helpful to include graphical summary of the interlocking pieces of the
+project.'' \citep{marwick2018packaging}
 \end{quote}
 
 \subsection{Creating and using a project template}\label{creating-and-using-a-project-template}
 
-Once you have a blueprint for a template for your project directories, you can
-create this template as a directory on your computer. This will serve as a
-prototype to test. A prototype doesn't have to be fully refined, just built out
-enough that the users can test it out \citep{osann2020design}.
+{[}Maybe move this before designing the conceptual structure{]}
+
+Once you have a blueprint for a template for a project directory, you can create
+this as a ``physical template'' directory on your computer. This will serve as a
+prototype to test.
 
 This process is, once you have designed the template, very easy. It involves no
 fancy tools---in fact, it's so straightforward that at first it might seem too
 simple to be useful. For this basic approach, you will create an example file
-directory that includes template files and that captures you desired project
-directory structure. When you are ready to start a new project, you will copy
-this template, rename the copy to be specific to the new project, and then use
-this directory to store and work with the data you collect for the project.
+directory that captures your desired project directory structure. If you have
+created any templates, either for data collection (module 2.4 and 2.5) or for
+reports (modules 3.7--3.9), you can include those within this structure. When
+you are ready to start a new project, you will copy this template, rename the
+copy to be specific to the new project, and then use this directory to store and
+work with the data you collect for the project.
 
 This process, therefore involves creating a basic file
 directory with the desired template files and file directory structure and then
@@ -3794,9 +3770,10 @@ project.
 
 Within your templates, you may find it useful to include ``placeholders''. Instead
 of leaving the areas where data will be recorded blank, you can put in examples
-that show the format of how the data should be collected. By using a color for
-these placeholders, you can clarify that they are meant to be erased and replaced
-with the real data once a person starts using the template.
+that show the format of how the data should be collected. By typesetting these
+placeholders in color other than black, you can clarify that they are meant to
+be erased and replaced with the real data once a person starts using the
+template.
 
 Figure \ref{fig:replacingplaceholdertreatment} gives an example of how
 placeholders can work in a data collection template that's included in a
@@ -3805,28 +3782,6 @@ project directory template.
 \begin{figure*}
 \includegraphics[width=\textwidth]{figures/project_replacing_placeholder_treatment_data} \caption[The template includes a file with experiment metadata, with a sheet for recording the details of each treatment]{The template includes a file with experiment metadata, with a sheet for recording the details of each treatment. A user can open this file and replace the placeholder values (in red) with real values for the treatments in the experiment. By changing the text color to black, the user can have a visual confirmation that the placeholder data have been replaced with real study data.}\label{fig:replacingplaceholdertreatment}
 \end{figure*}
-
-Here are some specific steps to create the files for the project directory
-template:
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Review the list of data you typically collect or files you create for that
-  type of study or experiment, a list you created when designing the blueprint for
-  the directory template
-\item
-  Create template files for any data collection that is typical for that type
-  of study or experiment. Use example or placeholder data to create examples of
-  those files.
-\item
-  Create a directory structure that divides the types of files into
-  subdirectories of similar types.
-\item
-  Create one or more templates of report files that access and report on the
-  data in the project template
-\end{enumerate}
 
 In modules 2.4 and 2.5, we showed how you can create tidy data collection
 templates to use to collect data, and how these can be paired with reproducible
@@ -3844,11 +3799,12 @@ data in the project files with real data from the experiment.
 Figure \ref{fig:basicprojecttemplateuse} gives a basic walk-through of the
 simple steps you'll use to start a new project directory once you've created
 this type of template (we will cover this example in much more detail in the
-next module). First, you will find the project directory template in your
+next module, where we walk through a full example of designing and using a
+project template). First, you will find the project directory template in your
 computer's file system, copy it to where you'd like to save the files for the
-new project, and rename the directory to your new project's name. Next, you'll open
-the data collection template files and replace the placeholder example data in
-the template (shown in red font) with the real data from your study. The
+new project, and rename the directory to your new project's name. Next, you'll
+open the data collection template files and replace the placeholder example data
+in the template (shown in red font) with the real data from your study. The
 placeholder data can help you remember the format you should use to record the
 real data. Finally, once you've recorded the data for the study or experiment,
 you can open the example report template file. If you've designed this report
@@ -3912,7 +3868,14 @@ There are some other advantages, as well, to turning each of your research
 project directories into RStudio Projects. One is that it is very easy to
 connect each of these Projects with GitHub, which facilitates collaborative work
 on the project across multiple team members while tracking all changes under
-version control. This functionality is described in modules 2.9 through 2.11.
+version control. If you are tracking the project directory under the git version
+control system, then when you open the RStudio Project, there will be a special
+tab in one of the panes to help in using git with the project. This tab provides
+a visual interface for you to commit changes you've made, so they are tracked
+and can be reversed if needed, and also so you can easily push and pull these
+committed changes to and from a remote repository, like a GitHub repository, if
+you are collaborating with others. This functionality is described in modules
+2.9 through 2.11.
 
 Having your project directories as R Projects makes it easy to navigate among
 different projects. When you close RStudio and reopen it, it will automatically
@@ -3932,15 +3895,6 @@ can similarly open the RStudio Project in their own version of RStudio, and all
 the relative pathnames to files should work on their system without any problems.
 This feature helps make code in an RStudio Project directory reproducible across
 different people's computers.
-
-The RStudio Project environment has some other features, as well, that may be
-useful for some projects. For example, if you are tracking the project directory
-under the git version control system, then when you open the RStudio Project,
-there will be a special tab in one of the panes to help in using git with the
-project. This tab provides a visual interface for you to commit changes you've made,
-so they are tracked and can be reversed if needed, and also so you can easily
-push and pull these committed changes to and from a remote repository, like a
-GitHub repository, if you are collaborating with others.
 
 \subsection{Creating `Project' templates in RStudio}\label{creating-project-templates-in-rstudio}
 
@@ -3971,7 +3925,7 @@ create a new Project without using a template (click on ``New Project'') or you
 can create a Project starting from a template. The templates available in your
 copy of R will be listed below the ``New Project'' listing. Depending on which
 packages you've installed for your copy of R, you will have different choices of
-project templates available, as project templates tend to be created and shared
+project templates available, as project templates are created and shared
 within R packages \citep{rstudioprojecttemplate}. In the example shown in
 Figure \ref{fig:createnewproject}, for example, one of the template options is
 for a ``Book Project using bookdown'', available because the \texttt{bookdown} R package
@@ -8295,18 +8249,49 @@ reproducibly pre-processing experimental data.
   Describe the difference between base R and R's `tidyverse'.
 \end{itemize}
 
-\subsection{An overview of the ``tidyverse'' approach}\label{an-overview-of-the-tidyverse-approach}
+{[}Anecdote about tools{]}
 
-The ``tidyverse'' approach is an approach to using R that has grown enormously
-in popularity in recent years. Most R courses and workshops for beginning
-programmers are now structured around this approach. It provides a powerful
-yet flexible approach for working with data in R, and it one of the easier
-ways to start learning R. In this section, we'll cover the philosophy that
-provides a framework for this approach. In the following sections of the
-modules, we'll go deeper into specific tools under this approach that can
-be used for common data preprocessing tasks when working with biomedical
-data, as well as provide information on more resources that can be used to
-continue learning this approach.
+\begin{quote}
+``Similar to early many, beginner makers start with a rudimentary set of tools for
+basic creative tasks: a hammer (of course), a set of screwdrivers, scissors,
+some pliers, maybe a crescent wrench, and some kind of cutting device. Almost
+everyone who has strived to make things has some combination of this list. Then,
+as we get more experienced, we seek out better versions of the tools we already
+have as well as new tools that can facilitate the learning of new techniques---new
+ways of cutting things apart, and new ways of putting them back together.'' \citep{savage2020every}
+\end{quote}
+
+\begin{quote}
+``Once we start to expand past the basic complement of tools, what to add to our
+collections becomes a multifactor calculus based on reliability, cost, space, time,
+repairability, skill, and need. These choices are nontrivial, because the tools we use
+are extensions of our hands and our minds. The best tools `wear in' to fit you based
+on how you use them, they get smooth where you grab them. They tell the story of their
+utility with their patina of use. A toolbox of tools you know well and use lovingly is
+a magnificent thing.'' \citep{savage2020every}
+\end{quote}
+
+\begin{quote}
+``The reality is that tool choice is both less important and more important than you
+think it is. It is less important to the extent that tool usage is entirely
+subjective, which means there is no one right way to do things. But it is more
+important, because the best tool for any job is the one you're most comfortable with,
+the one that you can make do what you want it to do, whose movements you fully
+understand.'' \citep{savage2020every}
+\end{quote}
+
+The ``tidyverse'' approach is an approach to using R that has grown enormously in
+popularity in recent years. Most R courses and workshops for beginning
+programmers are now structured around this approach. It provides a powerful yet
+flexible approach for working with data in R, and it one of the easier ways to
+start learning R. In a previous module (module 2.3) we described the tidyverse
+approach in conjunction with talking about the power of the tidy data format. In
+this module, we'll go deeper into specific tools under this approach that can be
+used for common data preprocessing tasks when working with biomedical data, as
+well as provide information on more resources that can be used to continue
+learning this approach.
+
+\subsection{The ``tidyverse'' approach}\label{the-tidyverse-approach}
 
 The term ``elegance'' often captures styles and approaches that are beautiful and
 functional without unneeded extras or complexity. Engineers and scientists
@@ -8342,75 +8327,54 @@ in order you want. By contrast, when functions input and output data in differen
 object types, they can only be joined in a specified order, because you can only
 apply certain functions to certain object types.
 
-Since the ``tidyverse'' tools can be strung together in any order, they can be
-used very flexibly to build up to do interesting tasks. The tidyverse tools
-generally each do very small and simple things. For example, one function
-(\texttt{select}) just limits the data to a subset of its original columns; another
-(\texttt{mutate}) adds or changes values in columns of the dataset, while another
-(\texttt{distinct}) limits the dataframe to remove any rows that are duplicates. These
-small, simple steps can be combined together in different patterns to add up to
-complex operations on the data, while keeping each step very simple and clear.
-Since the data stays in a standard and simple object type, it is easy to check
-in on your data at any stage, as the common visualization tools for this
-approach (from the \texttt{ggplot2} package and its extensions) can be always be
-applied to data stored in a tidy dataframe.
+Since the functions in the tidyverse approach are designed to work in a modular
+way---in other words, to be combined in interesting ways to solve larger
+problems, rather than solving a large problem with a single function---each of
+the functions tends to be a small, simple tool. In other words, each function
+tends to do one thing simply but well. For example, one function (\texttt{select}) just
+limits the data to a subset of its original columns; another (\texttt{mutate}) adds or
+changes values in columns of the dataset, while another (\texttt{distinct}) limits the
+dataframe to remove any rows that are duplicates.
 
-\begin{quote}
-``After they've been built in, mechanical fasteners make everything after that
-easier. They allow for disassembly, reconfiguration, as well as replacement.''
-\citep{savage2020every}
-\end{quote}
+This makes it fairly easy to start learning the tidyverse approach, as each of
+the functions that you learn as you begin does one thing that is fairly
+straightforward. These small, simple steps can be combined together in different
+patterns to add up to complex operations on the data, while keeping each step
+very simple and clear. Since the data stays in a standard and simple object
+type, it is easy to check in on your data at any stage, as the common
+visualization tools for this approach (from the \texttt{ggplot2} package and its
+extensions) can be always be applied to data stored in a tidy dataframe.
+As you get better and better as coding using this approach, you often find that
+it is not because you are using more complex functions, but rather that you're
+becoming more clever at combining sets of simple functions in interesting ways.
 
-\begin{quote}
-``That's the reason I prefer mechanical solutions. They can be undone. Whatever
-I'm putting together can be pulled apart again without damaging the construction.
-\ldots{} it takes more engineering, more fiddling, and definitely more time. But the
-trade-off is more options. And I want options. That's the space I like to exist in
-as a maker.'' \citep{savage2020every}
-\end{quote}
+\subsection{Useful tidyverse tools for data preprocessing}\label{useful-tidyverse-tools-for-data-preprocessing}
 
-\begin{quote}
-``Standards are for products what grammar is for language. People sometimes
-criticize standards for making life a matter of routine rather than inspiration.
-Some argue that standards hinder creativity and keep us slaves to the past.
-But try imagining a world without standards. From tenderloin beef cuts to
-the geometric design of highways, standards may diminish variety and
-authenticity, but they improve efficiency. From street signs to nutrition
-labels, standards provide a common language of reason. From Internet
-protocols to MP3 audio formats, standards enable systems to work together.
-From paper sizes \ldots{} to George Laurer's Universal Product Code, standards
-offer the convenience of comparability.'' \citep{madhavan2015applied}
-\end{quote}
+As you learn to code, a good strategy is to start collecting ``tools'' for
+your ``toolbox'' in R---functions that you have learned to use very well and
+that you understand thoroughly. This will help make you proficient in R more
+quickly, and it will also limit the chance of bugs and errors in your code,
+making your data work more robust and rigorous. In this section, we'll cover
+some tidyverse tools that we have found helpful for preprocessing biological
+data. These are not exhaustive, but may help you to identify some sets of
+tools to focus on learning well for data preprocessing and analysis of
+biological data.
 
-\begin{quote}
-``The lawmakers of the growing nation {[}Canada{]} were eager to establish
-a coast-to-coast railway system within the decade. \ldots{} Throughout his
-surveys, Fleming relied to crude geometric calculations based on
-longitude, as there was no uniform time across the regions. `There was
-no system. Like the rail lines, the different times touched or overlapped
-at 300 points in the country.' \ldots{} Even regionally, timekeeping was in
-disarray. If it was 12:13 in Boston, it was 12:27 in Philadelphia and
-12:32 in Buffalo. in 1832 the United States had about 229 miles of
-railroads. By 1880, the country had increased its rail infrastructure
-to close to 95,000 miles. To perserve the sanity of the train driver,
-each railroad company began to maintain its own time. Clocks had up
-to six dials, and train stations displayed the time in various
-citis. A train going from Baltimore, Maryland, to Scranton, Pennsylvania,
-in those days might follow Baltimore time, creating the danger of collisions
-when trains operated on a single track.'' \citep{madhavan2015applied}
-\end{quote}
+Some key tools from the tidyverse for pre-processing laboratory data:
 
-\begin{quote}
-``Simplicity is not about stripping features down to a bare minimum.
-It's about achieving elegance while maintaining performance.'' \citep{madhavan2015applied}
-\end{quote}
-
-\begin{quote}
-``The essence of good technology is that it's intuitive, and it evolves.
-Ideally, you don't even want to know it's there.'' \citep{madhavan2015applied}
-\end{quote}
-
-\textbf{Functions available through packages}
+\begin{itemize}
+\tightlist
+\item
+  Tools for data input
+\item
+  Tools for changing columns or creating new columns
+\item
+  Tools for working with character strings
+\item
+  Tools for working with dates and times
+\item
+  Tools for statistical modeling
+\end{itemize}
 
 The tidyverse functions do not come with base R, but rather are available
 through extensions to base R, commonly referred to as ``packages''. Like base
@@ -8434,141 +8398,7 @@ these extensions that is specifically created for working with biomedical data
 is the \texttt{tidybulk} package \citep{mangiola2021tidybulk}, for working with
 transcriptomics data.
 
-\textbf{Uses the same data structure throughout}
-
-The centralizing principal of the tidyverse approach is the format in which data
-is stored throughout ``tidyverse'' coding---the tidy dataframe. Briefly, you can
-think of this format in two parts. First, there's the R object type that the
-data should be stored in---a basic ``dataframe'' object. The dataframe object type
-is a very basic two-dimensional format for storing data in R. When you print it
-out, it will remind you of looking at data in a spreadsheet. The two
-dimensions---rows and columns---allow you to include data for one or more
-observations, with different values that were measured for each.
-
-The tidyverse approach hinges on using the same data structure throughout your
-coding pipeline---specifically, the tidy dataframe structure (see module 2.3 for
-more details on this structure). By insisting on the same data structure
-throughout, this approach is able to offer small functions that can be chained
-together to solve complex problems.
-
-This idea rests on the idea of the power of modularity. You can think of this
-in terms of children's toys---building bricks like Legos are powerful because
-they are modular, while a toy like a stuffed animal is not. Each individual
-Lego is small and simple, and would be pretty boring by itself. However,
-because the blocks can be combined in different ways, they can be used to
-create very complex and interesting structures. By contrast, something that is
-not modular, like a stuffed animal, always retains the same structure. While it
-might be more interesting and complex to start with than a single Lego block,
-it will not evolve or contribute to something more interesting.
-
-This modularity works in the same way that it does for Lego bricks. Lego
-bricks can be combined in interesting ways because they all take the same input
-and give the same output---the shape of the tubes on the bottom of each brick
-accept the shape of the studs at the top of each brick, so they can be
-put together in essentially infinite combinations. The tidyverse approach
-in R works in a similar way---the functions in this approach almost all
-input data that are in a dataframe structure (or in a vector structure, for
-functions that operate on columns in the dataframe) and they almost all output
-data in the same structure that they input it. As a result, the functions can
-be chained together in interesting ways, where the output of one function
-can feed directly into the input of another.
-
-\begin{quote}
-``A common observation is that more of the data scientist's time is occupied
-with data cleaning, manipulation, and `munging' than it is with actual
-statistical modeling (Rahm and Do, 2000; Dasu and Johnson, 2003). Thus, the
-development of tools for manipulating and transforming data is necessary for
-efficient and effective data analysis. One important choice for a data scientist
-working in R is how data should be structured, particularly the choice of
-dividing observations across rows, columns, and multiple tables. The concept of
-`tidy data,' introduced by Wickham (2014a), offers a set of guidelines for
-organizing data in order to facilitate statistical analysis and visualization. \ldots{} This framework makes it easy for analysts to reshape, combine, group and otherwise manipulate data. Packages such as ggplot2, dplyr, and many built-in R modeling and plotting functions require the input to be in a tidy form, so keeping the data in this form allows multiple tools
-to be used in sequence in a seamless analysis pipeline (Wickham, 2009; Wickham and Francois,
-2014).''
-\citep{robinson2014broom}
-\end{quote}
-
-\textbf{Small, simple tools}
-
-Since the functions in the tidyverse approach are designed to work in a modular
-way---in other words, to be combined in interesting ways to solve larger
-problems, rather than solving a large problem with a single function---each of
-the functions tends to be a small, simple tool. In other words, each function
-tends to do one thing simply but well. This makes it fairly easy to start
-learning the tidyverse approach, as each of the functions that you learn as you
-begin does one thing that is fairly straightforward. As you get better and
-better as coding using this approach, you often find that it is not because you
-are using more complex functions, but rather that you're becoming more clever at
-combining sets of simple functions in interesting ways.
-
-\begin{quote}
-``Even though the Unix system introduces a number of innovative programs and techniques,
-no single program or idea makes it work well. Instead, what makes it effective is an approach
-to programming, a philosophy of using the computer. Although that philosophy can't be written
-down in a single sentence, at its heart is the idea that the power of a system comes more from
-the relationships among programs than from the programs themselves. Many Unix programs do
-quite trivial things in isolation, but, combined with other programs, become general and
-useful tools.'' \citep{kernighan1984unix}
-\end{quote}
-
-\subsection{Useful tidyverse tools for data preprocessing}\label{useful-tidyverse-tools-for-data-preprocessing}
-
-As you learn to code, a good strategy is to start collecting ``tools'' for
-your ``toolbox'' in R---functions that you have learned to use very well and
-that you understand thoroughly. This will help make you proficient in R more
-quickly, and it will also limit the chance of bugs and errors in your code,
-making your data work more robust and rigorous. In this section, we'll cover
-some tidyverse tools that we have found helpful for preprocessing biological
-data. These are not exhaustive, but may help you to identify some sets of
-tools to focus on learning well for data preprocessing and analysis of
-biological data.
-
-\begin{quote}
-``Similar to early many, beginner makers start with a rudimentary set of tools for
-basic creative tasks: a hammer (of course), a set of screwdrivers, scissors,
-some pliers, maybe a crescent wrench, and some kind of cutting device. Almost
-everyone who has strived to make things has some combination of this list. Then,
-as we get more experienced, we seek out better versions of the tools we already
-have as well as new tools that can facilitate the learning of new techniques---new
-ways of cutting things apart, and new ways of putting them back together.'' \citep{savage2020every}
-\end{quote}
-
-\begin{quote}
-``Once we start to expand past the basic complement of tools, what to add to our
-collections becomes a multifactor calculus based on reliability, cost, space, time,
-repairability, skill, and need. These choices are nontrivial, because the tools we use
-are extensions of our hands and our minds. The best tools `wear in' to fit you based
-on how you use them, they get smooth where you grab them. They tell the story of their
-utility with their patina of use. A toolbox of tools you know well and use lovingly is
-a magnificent thing.'' \citep{savage2020every}
-\end{quote}
-
-\begin{quote}
-``The reality is that tool choice is both less important and more important than you
-think it is. It is less important to the extent that tool usage is entirely
-subjective, which means there is no one right way to do things. But it is more
-important, because the best tool for any job is the one you're most comfortable with,
-the one that you can make do what you want it to do, whose movements you fully
-understand.'' \citep{savage2020every}
-\end{quote}
-
-Some key tools from the tidyverse for pre-processing laboratory data:
-
-\begin{itemize}
-\tightlist
-\item
-  Tools for data input
-\item
-  Tools for changing columns or creating new columns
-\item
-  Tools for working with character strings
-\item
-  Tools for working with dates and times
-\item
-  Tools for statistical modeling
-\end{itemize}
-
-\textbf{Tools for data input}
+\subsection{Tools for data input}\label{tools-for-data-input}
 
 To be able to work with data in R, you first must load it into your R
 session. Data will typically be saved in some type of file or files, and
@@ -8635,7 +8465,7 @@ each package. You can find those at:
   \texttt{readxl}: \url{https://readxl.tidyverse.org/}
 \end{itemize}
 
-\textbf{Tools for changing or creating columns}
+\subsection{Tools for changing or creating columns}\label{tools-for-changing-or-creating-columns}
 
 There are many preprocessing tasks that require creating columns that are
 mathematical functions of existing columns. One example is when you are
@@ -8643,18 +8473,18 @@ scaling or normalizing data.
 
 There are a range of ways to standardize and normalize different types of
 biomedical data, ranging from very simple to much more complex. At the simpler
-end is a process called ``scaling'', where the observations for each feature or
-column are changed to have an overall mean of 0 and standard deviation of 1.
-This can be done by taking each value in a column and subtracting from it
-the column-wide mean, then dividing by the column-wide standard deviation {[}?{]}.
-This type of scaling is often required before using some of the techniques
-for dimension reduction (e.g., principal components analysis) or clustering,
-to ensure that the unit of measurement of each column does not influence
-its weight in later analysis. For example, if you were clustering observations
-using measurements for each subject that included their weight, you don't
-want to get different results depending on whether their weight is measured
-in grams versus pounds, and this type of scaling can help avoid any of those
-differences based on the units used for measurements.
+end is a method called z-score normalization, where the observations for each
+feature or column are changed to have an overall mean of 0 and standard
+deviation of 1. This can be done by taking each value in a column and
+subtracting from it the column-wide mean, then dividing by the standard
+deviation. This type of scaling is often required before using some of the
+techniques for dimension reduction (e.g., principal components analysis) or
+clustering, to ensure that the unit of measurement of each column does not
+influence its weight in later analysis. For example, if you were clustering
+observations using measurements for each subject that included their weight, you
+don't want to get different results depending on whether their weight is
+measured in grams versus pounds, and this type of scaling can help avoid any of
+those differences based on the units used for measurements.
 
 There are also more complex methods for scaling and normalization. All similarly
 require mathematical algorithms or functions to be applied to the original
@@ -8694,7 +8524,7 @@ once.
 You can learn more about the \texttt{dplyr} package through its vignette, which is
 available at: \url{https://dplyr.tidyverse.org/}.
 
-\textbf{Tools for working with character strings}
+\subsection{Tools for working with character strings}\label{tools-for-working-with-character-strings}
 
 Once you have learned the basic tools for inputting data, as well as basic
 manipulations on columns with the \texttt{dplyr} tools, you should take some time to
@@ -8781,18 +8611,7 @@ The vignettes for the \texttt{stringr} and \texttt{forcats} packages are availab
   \texttt{forcats}: \url{https://forcats.tidyverse.org/}
 \end{itemize}
 
-\begin{quote}
-``In bioinformatics, we often need to extract data from strings. R has several
-functions to manipulate strings that are handy when working with bioinformatics data in
-R. Note, however, that for most bioinformatics text-processing tasks, R is \emph{not}
-the preferred language to use for a few reasons. First, R works with all data stored
-in memory; many bioinformatics text-processing tasks are best tackled with the
-stream-based approaches\ldots, which explicityly avoid loading all data in memory at
-once. Second, R's string processing functions are admittedly a bit clunky compared
-to Python's.'' \citep{buffalo2015bioinformatics}
-\end{quote}
-
-\textbf{Tools for working with dates and times}
+\subsection{Tools for working with dates and times}\label{tools-for-working-with-dates-and-times}
 
 Another handy set of tools are those for working with dates and times. Often, you
 will record the date that an observation is collected, or the date and time if
@@ -8826,7 +8645,7 @@ once you read the recorded data into R.
 To find out more about the \texttt{lubridate} package, you can read its vignette
 at \url{https://lubridate.tidyverse.org/}.
 
-\textbf{Tools for statistical modeling}
+\subsection{Tools for statistical modeling}\label{tools-for-statistical-modeling}
 
 Often, analysis of biomedical data will include some statistical hypothesis
 testing or model building. For example, if you have collected bacterial
