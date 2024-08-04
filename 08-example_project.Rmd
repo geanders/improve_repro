@@ -13,30 +13,20 @@ in a murine model.
 'Project' directories
 - Initialize a new 'Project' directory using this template
 
-For this module, we'll show how to create an R Project template to manage data
-from an example set of projects. We will walk through the process of creating a
-project directory template that could be used to manage and analyze data from
-any of the specific studies in this set of studies.
-
-The full directory of files for this example can be found at
+For this module, we'll show an example of creating a project directory template
+for a lab group. We will walk through the process of creating a project
+directory template that could be used to manage and analyze data from any of the
+specific studies for this group. We'll discuss the steps of the conceptual
+design---figuring out how a blueprint for the standard subdirectories and the
+file naming conventions. We'll also show examples of the physical implementation
+of this blueprint as a file directory that can be copied and renamed to initiate
+a new project. The full directory of files for this example can be found at
 https://github.com/geanders/example_for_improve_repro [need to make public],
-where you can download them or explore them online. All files for this project
-can be stored within a well-designed directory, and this directory can be
-enhanced into something called an R Project very easily. In this module, we'll
-explore how to use an R Project and what advantages it offers compared to other
-ways of organizing the files associated with a study. In particular, we'll build
-on ideas from earlier modules about creating reproducible data collection
-templates, as in this example, the use of a common template across many studies
-in a set makes it very easy to create and apply a common reporting template to
-the data, easily creating a reproducible report for each of the nineteen studies
-in the example set of studies. Further, we'll look at how this organization
-allows not only for reporting on specific studies in a reproducible way, but
-also makes it easier to create an overall report that combines results and
-details from all studies in the set.
+where you can download them or explore them online.
 
 ### Description of the example set of studies
 
-As a motivating example, we'll use an example based on a set of real immunology
+In this module, we'll use an example based on a set of real immunology
 experiments. This example highlights how a research laboratory will often
 conduct a similar type of experiment many times, so it lets us demonstrate how
 the design of the project's files within a project directory can be reused
@@ -46,7 +36,7 @@ used repeatedly, and then how you can take advantage of consistency in the
 directory structure across projects to make tools and templates that can be
 reused. [Get reference for these studies]
 
-This example set of studies covers a group of studies to explore novel
+This example covers a group of studies that explored novel
 treatments for tuberculosis. While treatments exist for tuberculosis, the
 current treatment regime is lengthy and involves a combination of multiple
 drugs. If the treatment is not completed, it can result in the development and
@@ -97,27 +87,22 @@ different times, but the data for all of the studies can be collected using a
 common format, and we'll talk about how both data collection templates and a
 project directory template could be designed to accomodate these experiments. 
 
-In this module, as well as the following two, we'll be exploring how you can use
-RStudio's Project functionality to organize data from one or more studies. We'll
-particularly focus on how, by using a common format for data collection, you can
-create tools that can be used repeatedly for different experiments to ensure
-that methods are the same across all studies of a similar type, as well as to
-improve the reproducibility of the studies.
-
 ### Step 1: Survey of data collected for the projects
 
-The first step in developing a project template is to take a survey of the
-typical types of files that are included in your research projects. Let's walk
-through the types of data that were collected for each study. First, there was
-some metadata recorded for each study. Figure \@ref(fig:metadata) gives an
-example. This includes information about the strain of mouse that was used in
-the study, treatment details (including the method of giving the drug or drugs,
-how often they were given each week, and for how many weeks), how much bacteria
-the animals were exposed to (measured both in terms of the inoculum they were
-given and their bacterial load one day after they were given that inoculum,
-which was based on sacrificing one animal the day after challenging all the
-animals with the bacteria), and, if the study included a novel drug as part of
-the tested treatment, the batch number of that drug.
+The first step in developing a project template is to survey the typical types
+of files that are included in your research projects. To give an example of this
+part of the design process, let's walk through the types of data that were
+collected for the example studies.
+
+First, there was some metadata recorded for each study. Figure
+\@ref(fig:metadata) gives an example. This includes information about the strain
+of mouse that was used in the study, treatment details (including the method of
+giving the drug or drugs, how often they were given each week, and for how many
+weeks), how much bacteria the animals were exposed to (measured both in terms of
+the inoculum they were given and their bacterial load one day after they were
+given that inoculum, which was based on sacrificing one animal the day after
+challenging all the animals with the bacteria), and, if the study included a
+novel drug as part of the tested treatment, the batch number of that drug.
 
 ```{r metadata, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of recording metadata for a study in the set of example studies for this module."}
 knitr::include_graphics("figures/project_metadata.png")
@@ -167,10 +152,23 @@ in each mouse can be recorded.
 knitr::include_graphics("figures/project_bacterial_load.png")
 ```
 
-As you can see, these data were all recorded in a format designed for the tidy
-collection of laboratory data (see modules 2.4 and 2.5). These spreadsheets are
-meant only to record the data, and then processing, analysis, and visualization
-can then be done in separate files.
+These examples are all data that the researchers record by entering them on 
+spreadsheets. It is helpful at this stage to ensure this type of data is 
+recorded in a way that separates data recording and analysis (module 2.1). 
+The example files we've shown here do---there are no extra elements in these
+spreadsheets that do calculations or create graphs. Later in this module, we'll
+talk a bit more about how these templates can be designed as part of the 
+process of designing the full project directory template. Earlier modules
+(modules 2.4 and 2.5) provide more focused details on designing data collection
+templates like these. 
+
+Another type of files that the group's studies typically generate are ones
+that are generated directly by laboratory equipment. For example, their 
+experiments often include flow cytometry assays, with files output in a 
+specialized format directly from the flow cytometer. Some experiments might
+also collect data through single-cell RNA sequencing. We'll want to keep 
+these files in mind as we design the structure of the project directory 
+template.
 
 ### Step 2: Organizing a project directory
 
@@ -210,23 +208,26 @@ sequencing
 
 Again, these subdirectories are named in a way that will generalize to many 
 different experiments and yet also clearly labels the contents. Similar 
-subdirectory diversions could also be used within the "raw_data" subdirectory.
+subdirectory diversions could also be used within the "raw_data" subdirectory, 
+which would include files for data that need to be pre-processed before
+they're used in statistical analysis (modules 3.1--3.3). For example, the 
+raw flow cytometry data will need to be gated---a process that will quantify 
+immune cell phenotypes in each sample---before it's used in statistical 
+analysis. 
 
 The exact combination of subdirectories within the "data" subdirectory might
 change from experiment to experiment. For example, some experiments might
 include single-cell RNA sequencing assays, while some may not. When we use the
 template, it will be easy to delete any "data" subdirectories for assays we are
 not conducting, but by including them in the template, we can insure that we use
-a consistent name for each subdirectory when we include it.
+a consistent name for each subdirectory when we do include it. If you're 
+trying to be consistent, it's easier to start with everything you might need
+and delete some elements to customize for a particular project rather than 
+starting with a minimal framework and adding.
 
-When you create a project directory template, we recommend that you create a
-subdirectory named something like "reports" to use to store any Rmarkdown report
-files for the project. This organization will make it clear where you've stored your
-reports in the project directory. You'll be able to use file and directory pathnames
-to access all the data in the project, so it will be easy to use the study's data
-in the report even if they're in separate subdirectories. There's only one tool 
-you'll need to do this---you'll need to learn how to use relative pathnames 
-within R code to access files in a different part of your project directory. 
+You may have noticed that this structure captures each of the main elements 
+that we discussed including in a project template in the last module: 
+data, code, reports, and metadata.
 
 ### Step 3: Establishing file name conventions
 
