@@ -8231,3 +8231,514 @@ to access all the data in the project, so it will be easy to use the study's dat
 in the report even if they're in separate subdirectories. There's only one tool 
 you'll need to do this---you'll need to learn how to use relative pathnames 
 within R code to access files in a different part of your project directory. 
+
+What are **tools** in programming? They can include: 
+
+- algorithms / approaches / numerical methods (regular expressions)
+- packages (`stringr` for regular expressions)
+- functions
+- data structures (e.g., tidy dataframe, Bioconductor data structures)
+- simple, multi-use tools (functions): "small, sharp tools
+
+Later, we will talk about an approach called the "tidyverse" approach, which
+focuses on sets of these general purpose tools. This approach allows you to 
+use the same set of tools for many problems, and it does so by focusing on 
+keeping your data in the same type of data structure (a tidy dataframe) for
+as much of the pipeline as you can. This approach therefore fosters the 
+approach of starting by learning a small set of tools very well. 
+
+> "The functional orientations of Shepherd-Barron and the Wright brothers
+(or Edison) have one thing in common. It's what the Santa Fe Institute 
+scholar Brian Arthur calls *deep craft*---the ability to know intimately 
+the various functionalities and how to effectively combine them. 'It 
+consists in [knowing] what is likely not to work, what methods to use, 
+whom to talk to, what theories to look to, and above all of how to 
+manipulate phenomena that may be freshly discovered and poorly understood',
+Arthur writes. Systems-engineering approaches that underline the 
+efficiency and reliability of failure-tolerance products like ATMs and 
+airplanes have a strong connection to deep craft." [@madhavan2015applied]
+
+**Modular, not monolithic**
+
+[Combine this section with "iterate"?]
+
+[Modular is: easier to understand, easier to maintain, easier to develop
+(big steps, then refine)]
+
+Another key thing to remember as you develop R scripts is that they are all,
+even those that do very complex things, made up of lots of smaller, simpler
+pieces. R scripts are, in other words, modular, not monolithic.
+
+As you develop a script, plan to create it by chaining together simpler steps. You can 
+start by trying to map out the key things that you'll need to do in the pipeline, and
+then you can dive into each of those sections and start writing the code to 
+achieve that step. Think of this process as like outlining a paper before you 
+write it. For example, if you are preprocessing data that measured bacterial 
+growth rates, some of the broad sections you may have in your pipeline are: 
+(1) reading in the data, (2) converting it into a tidy data format so it's easier to work 
+with, (3) determining the time range in the experiment when each sample was in its
+exponential growth phase, (4) using data in that time range to estimate the growth
+rate for each sample, and so on. Start by dividing your script into these sections
+(you can mark each off with a code comment---how to use these are described 
+later in this section), and then you can start to develop the code, starting with 
+the code to input the data. 
+
+This method---which breaks a big problem into smaller ones---is a useful
+problem-solving approach across many fields. Madhavan, in a 2015 book called
+*Applied Minds: How Engineers Think*, labels this approach "modular systems
+thinking". He notes that this approach, "includes a functional blend of
+deconstruction (breaking down a larger system into its modules) and
+reconstructionism (putting those modules back together)" [@madhavan2015applied].
+He even calls this type of modular systems thinking, which he notes is a species
+of "divide and conquer", "the core of the engineering mind-set."
+[@madhavan2015applied]
+
+He describes, in fact, how the Wright brothers used this approach to invent 
+the airplane: 
+
+> "Wilbur and Orville Wright took about four years to implement their first
+prototype of a flying machine. While their competitors focused on the design of
+winds, fuselage, and propulsion, the Wright brothers were devoted to getting the
+fundamental functions of lift, thrust, drag, and yaw correct. Consistent with
+the notion of modular thinking, they solved each puzzle at a subsystems level
+before they moved to the next layer of the assembly, and along the way they
+invented new instruments and measurement techniques." [@madhavan2015applied]
+
+Thinking of a code script as something that is modular is critical as you start 
+learning how to code in a language like R. By dividing the full pipeline into smaller
+steps, you can tackle it one piece at a time. You can look for resources that are 
+linked to a specific part of the problem, rather than feeling like you need to 
+find other examples of full, start-to-finish pipelines that have done the same thing
+that you're trying to do. For example, the step of reading in data that you recorded
+in an Excel spreadsheet comes down to a simple task---reading data into R from an 
+Excel file. It doesn't matter whether that file has data on bacterial growth rates
+or on mice weights or on anything else---the process of reading it into R is the 
+same. Therefore, when you're working on this step, you can google help on reading 
+Excel files into R if you're stuck, without worrying about whether the resources
+that you find to help used examples of the type of data you have or other types of 
+data. 
+
+> "Very little of what I've built over the years is monolithic---just a single chunk.
+Most of the time, I build things in components, then attach those pieces together 
+as I go. So yes, the component parts are pieces that have been made small in 
+precise ways from larger chunks of material, but eventually they will be assembled
+to create much larger and more complex objects than any of the raw source materials."
+[@savage2020every]
+
+**Iterate!**
+
+Code is something that you develop over multiple drafts---it's the kind of thing
+that you build by trying out one thing, seeing how it works, then revising, reworking,
+and extending to get to the pipeline you ultimately want. You will quickly feel
+frustrated if you try to build your pipelines in a single go, without this process
+of iteration. Just as many writers suffer writer's block more often when they 
+try to get everything perfect in a first draft, you will feel frustrated if you 
+think that you should build your code to its final form, from start to 
+finish, in just one try. As Madhavan notes, 
+
+> "Tweaking and prototyping are basic human habits." [@madhavan2015applied]
+
+[Examples of prototyping include: thumbnails, storyboards, outlines]
+
+[Prototype and then refine]
+
+When you build a code pipeline, try to break your process up into some key chunks. 
+For example, you might know that you'll first need to input the data into R
+(first chunk), then preprocess the data by log-transforming one of the measurements
+(second chunk), and then run a statistical hypothesis test to compare two groups
+that you measured (third chunk). Once you've broken the code into these chunks, 
+you can focus on a single chunk at a time and iterate the code for that task until 
+you're happy with it. 
+
+For example, if the first chunk is to read in the data, you might first try to 
+use a standard tool that you've used before, like the `readr` function `read_csv`, 
+which reads in data from a CSV file. However, maybe this tool doesn't work for 
+the file format your data are in (perhaps they're in an Excel file, for example), 
+and so you get an error when you try to do that. Keep calm when you get that error, 
+and just iterate back and look up some tools for reading Excel files into R. 
+When you've found some, try adapting the examples from their help files or vignettes
+to work in your code pipeline. If that works, then spend some time exploring the
+input that you get, so you can start to think about how you'll work with the data
+for the next chunk in your pipeline. 
+
+Once you're done with this process of iteration, make sure that you go back and 
+clean up the code pipeline, so that the code script is streamlined to walk 
+efficiently through the tasks. Also, rerun the whole script in a new R session, 
+so you can make sure that it is self-contained. One of the most common 
+reasons for a script not working the same later is that, when it was originally 
+developed, the coder was relying on some objects that were created in their R
+environment at the console, not through code in the script, and so were available
+when running the code originally, but not when it's opened in a new R session. 
+You can often identify and fix these issues much more quickly by testing your 
+code pipeline in a new R session right after you create it, rather than 
+waiting and running into that problem days or weeks later, when you try to rerun 
+the script.
+
+> "Prototypes create new capabilities. Prototypes foster adaptation to new 
+forms, new expections, and new offshoots of technologies. Prototypes are
+the starting points toward our ultimate creative destinations." [@madhavan2015applied]
+
+
+
+> "Programming in the real world tends to happen on a large scale. The strategy is similar
+to what one might use to write a book or undertake any other big project: figure out what
+to do, starting with a broad specification that is broken into smaller and smaller pieces, 
+then work on the pieces separately, while making sure that they hang together. In programming, 
+pieces tend to be of a size such that one person can write the precise computational steps
+in some programming language. Ensuring that the pieces written by different programmers
+work together is challenging, and failing to get this right is a major source of errors. 
+For instance, NASA's Mars Climate Orbiter failed in 1999 because the flight system software
+used metric units for thrust, but course correction data was entered in English units, 
+causing an erroneous trajectory that brought the Orbiter too close to the planet's 
+surface." [@kernighan2011d]
+
+> "Developing code in R is a back-and-forth between writing code in a rerunnable script
+and exploring data interactively in the R interpreter. To be reproducible, all steps 
+that lead to results you'll use later must be recorded in the R script that accompanies
+your analysis and interactive work. While R can save a history of the commands you've
+entered in the interpreter during a session (with the command `savehistory()`), 
+storing your steps in a well-commented R script makes your life much easier when you 
+need to backtrack to understand what you did or change your analysis." [@buffalo2015bioinformatics]
+
+> "People not doing the computational work tend to think that you can write a
+program very fast. That, I think, is frankly not true. It takes a lot of time to
+implement a prototype. Then it actually takes a lot of time to really make it
+better." --- Heng Li in [@altschul2013anatomy]
+
+
+> "Software, like many other things in computing, is organized into layers, analogous to 
+geological strata, that separate one concern from another. Layering is one of the important
+ideas that help programmers to manage complexity." [@kernighan2011d]
+
+> "At the simplest level, programming languages provide a mechanism called functions that make
+it possible for one programmer to write code that performs a useful a useful task, then package
+it in a form that other programmers can use in their programs without having to know how it 
+works." [@kernighan2011d]
+
+> "**Use functions.** It's better than copy-pasting (or repeatedly source-ing)
+stretches of code." [@holmes2018modern]
+
+> **Use the R package system.** Soon you'll note recurring function or variable
+definitions that you want to share between your different scripts. It is fine to 
+use the R function `source` to manage them initially, but it is never too early 
+to move them into your own package---at the latest when you find yourself staring
+to write emails or code comments explaining to others (or to yourself) how to use
+some functionality. Assembling existing code into an R package is not hard, and it 
+offers you many goodies, including standardized ways of composing documentation, 
+showing code usage examples, code testing, versioning and provision to others. 
+And quite likely you'll soon appreciate the benefits of using namespaces." 
+[@holmes2018modern]
+
+Some tools that can help you avoid repetition include: 
+
+- Faceting in `ggplot2`
+- The `map` family of functions in the `purrr` package
+- The `group_by` and `summarize` / `mutate` workflow in the `dplyr` package
+
+
+**Scripts are for humans to read, not just computers**
+
+A code script, by definition, is a set of instructions that you send to the 
+computer to evaluate. However, many starting programmers make things hard
+on themselves by treating the script as a document that is only for the computer. 
+
+While it is true that the code script needs to be written so that the 
+computer can evaluate it, that is only the first level of usefulness for the
+script. Keep in mind that one of the key advantages of writing a computer
+script is so that the code becomes reproducible---you and others can revisit
+it, rerun it, and adapt it at a later time. Otherwise, in a programming 
+language like R, you could just run all your code at the console, rather than 
+saving it in a script. One of the biggest barriers to reproducibility is unclear
+code. This can make it harder for others to figure out what the does. It also 
+makes it harder for you and others in your team to figure out what you did when 
+you look at the code months or years later.
+
+It is helpful to separate the process of developing your code into two steps: 
+first creating, and then editing. [Something about writing fast]
+
+To make sure that your code is "legible" by humans, take the time to clean it
+up once you have it running. (As an added bonus, it's often the case that you'll
+find a few bugs when you do so, and so you can catch and fix those.) Go back 
+through the whole script once you have built your pipeline. There are several
+specific things you can do during this editing process: [enumerate]. 
+
+[Break up monolithic code; Remove dead-end code; Improve names]
+
+Make sure you add useful comments to your code. In R, any line that starts with
+a "#" will be ignored by R, so you can use those to write messages for humans
+that the computer will skip. You can use comments in a variety of ways to make
+your code clearer to humans. First, you can use them to divide the code script
+into sections and to label those sections. This will help a human reader get an
+overview of the script when they first look at it and navigate the script as
+they continue to work with it. You can also use code comments to explain coding
+choices that you've made along the way that might not immediately be clear. For
+example, if you needed to use a function that is outside of your core set of
+tools, and that you found to tackle a specific problem, you could comment on
+that, and perhaps add a link to more information on that function.
+
+It also is good practice to follow style guidelines. You can also clean up the
+code substantially by editing it to follow a set of style guidelines for R code.
+These are guidelines that specify things that don't matter to the computer, but
+that can help human readers. For example, there are many cases where R can
+evaluate code the same way whether spaces have been used to separate pieces of
+the code or not, but a thoughtful use of spacing can help a human read the code.
+There are several style guidelines available for R and other programming
+languages, and it is less important which one you use than that you follow one
+consistently (at least by the time you edit your code for clarity to humans).
+One style guide you can use is the one created by Hadley Wickham available at:
+https://style.tidyverse.org/index.html.
+
+Finally, it is useful to use this editing stage to simplify the logic and 
+function calls within the script. Often, when you are first trying to get some
+code to work, you might come up with a pretty ungainly function call to do 
+so. Once you've gotten it working and figured out a general approach, you can 
+often go back and rethink how you've coded the approach, and you can often 
+come up with a simpler way to perform the same task using less code or 
+clearer code. The more you can simplify your code, the lower the risk for 
+bugs and the easier it will be for humans to understand. 
+
+> "Filming [of Apocalypse Now] started in March 1976 and was scheduled to
+take six weeks. It took sixteen months. The director, Francis Ford Coppola, 
+shot around 230 hours of footage, with multiple takes of the same scene. He
+was hoping to capture a magical or unusual performance. He encouraged the 
+actors to ad-lib, which produced some poetic moments but also hours of unusable
+footage. Once filming was finished, the movie had to be cut and recut for 
+months. It took Coppola and his film editor Walter Murch nearly three years to 
+edith the footage... Why produce a lot of work and then throw away 95 percent?
+The two processes seem contradictory. Why not just produce the 5 percent ultimately
+used? Because you don't know *which* 5 percent that will be. Editing can 
+be hard becuase you're discarding things you have put a lot of energy into
+making." [@judkins2016art]
+
+> "You might not write well every day, but you can always edit a bad page. 
+You can't edit a blank page." -- Jodi Picoult, cited in [@judkins2016art]
+
+> "That a language is easy for the computer expert does not mean it is 
+necessarily easy for the non-expert, and it is likely non-experts who will do the
+bulk of the programming (coding, if you wish) in the near future." [@hamming1997art]
+
+> "The code that a programmer writes, whether in assembly language or (much more likely) in 
+a high-level language, is called *source code*. ... Source code is readable by other programmers, 
+though perhaps with some effort, so it can be studied and adapted, and any innovations or ideas
+it contains are visible." [@kernighan2011d]
+
+> "*Document your methods and workflows.* This should include full command lines (copied
+and pasted) that are run through the shell that generate data or intermediate results. 
+Even if you use the default values in software, be sure to write these values down; 
+later versions of the program may use different default values. Scripts naturally 
+document all steps and parameters ..., but be sure to document any command-line options
+used to run this script. In general, any command that produces results in your work needs
+to be documented somewhere." [@buffalo2015bioinformatics]
+
+Later sections will give deeper dives into other topics that might also form part
+of the editing process.
+
+**Some things belong in the console, not the script**
+
+[Dead-end code]
+
+Finally, keep in mind that all of the code you write, as you develop a script with 
+a pipeline, does *not* need to be recorded in the script. Of course you will want
+to include all the code that is necessary for the script as a whole to work on its
+own. However, as you develop code, you'll take some steps to explore your data or
+to do things like installing packages that you don't have yet. 
+
+For example, as you work on your code, you'll likely want to look at the contents
+of your R objects as you work on them. If you have read in your data from a file into
+an R object, you'll want to look and make sure it looks like it read in correctly. 
+If you have created a new object that summarizes the original data by taking the 
+average of each group, you'll probably want to look at that as you develop the code
+to create it, again to check and explore as you build the code. To do this, you can 
+call the object's name (e.g., type `my_data` and run it) or use functions like 
+`head`, which prints out the first few rows or items of the object (e.g., `head(my_data)`), 
+`tail`, which prints out the last few rows or items of the object, or `str`, which 
+summarizes the structure and contents of the object. 
+
+All of these are useful to run as you draft and edit your code, but calls like this that
+print out pieces of the data to check aren't necessary in the final R script (and in 
+fact can make it messier than it needs to be and result in a lot of extra print-out at
+the console when you run the code as a batch once you've finalized it). As you develop
+your code, then, try to get in the habit of not writing these types of exploratory 
+function calls in the script you're developing. Instead, write them directly in the 
+console and run them from there. 
+
+[Figure---writing exploratory code in the console versus the R script. Same for installing
+packages]
+
+The other piece of code that you should run in the console rather than saving in
+the R script is code to install new packages. Since you only need to install a
+package once (until you get a different computer or update base R), you don't
+need to run `install.package` function calls everytime you run the code in a
+script. Including these functions in the script will therefore just slow it
+down. Instead, go to your console directly to write the function calls to
+install new packages (or, if you prefer, in RStudio you can go to Tools on the
+menu bar and select Install Packages).
+
+The final goal is to develop an R script that has everything it needs to run the
+full pipeline from in a fresh R session. In other words, if it uses functions
+from packages, it will include the code to load those packages (`library`
+function calls). For every R object that it uses, there will be code that
+creates that object in the script. It will not include, however, extra pieces of
+code that were used to explore the objects as you built the code. To test that
+the R script can run in a fresh R session, you can close R and reopen it (make
+sure that you've set your global options in R to never save the workspace to
+.Rdata on exit, to not restore the .Rdata into the workspace on exit, and to not
+save the history, all of which you can set by going to the RStudio Tools menu
+item and selecting Global Options). When you reopen R, there will not be any
+objects in the environment, and there will not be a history of any of the
+previous function calls that you ran. Try running the code in the script in this
+fresh environment and make sure that you weren't relying on anything that you
+did outside the script to make the code work. If the code can run in a fresh
+environment like this, then any R user should be able to rerun everything in the
+script themselves (although they may need to install a few new libraries first
+if they don't have all the required libraries yet).
+
+------------------------------------------------------------------------------------
+
+
+### Potential quotes
+
+> "Every maker needs to give themselves the space to screw up in the pursuit of 
+perfecting a new skill or in learning something they've never tried before. 
+Screwing up IS learning." [@savage2020every]
+
+> "Mistake tolerance is particularly valuable in this aspect of the creative
+process. When you know what you want to make, but you're not exactly sure what 
+it should look like or how it should operate, you need to give yourself permission
+to experiment, to iterate your way there. That's not just how you get to what you 
+want, it's how you get good at it. You have to do it over and over and over 
+again. Anticipating mistakes is how you put space around the unfamiliar and 
+the unknown." [@savage2020every]
+
+> "If you expect to nail it the first go round every time you build something 
+new---or worse, you demand it of yourself and you punish yourself when you come 
+up short---you will never be happy with what you make and making will never 
+make you happy". [@savage2020every]
+
+BioC Conference
+
+> "Just as writing a book involves an outline and a rough draft (so many drafts!),
+which get polished into a final manuscript, making things often benefits from a 
+preliminary stage where the big details get worked out, and then a final fabrication
+stage where the small details get worked out. Cardboard is a low threshold material
+that can make discussion of ideas at the perliminary stage so much easier and 
+more complete." [@savage2020every]
+
+> "In my professional life, I have worked with every conceivable type of client and 
+collaborator, from those who were makers with the same or greater expertise as me, 
+who understood deeply what I was talking about when we discussed a build, to clients
+who couldn't glue two blocks of wood together if you put the blocks in their hands, 
+covered with glue, and told them to clap. Being able to communicate your ideas to 
+clients and collaborators is one of the most important skills to possess as a maker, 
+otherwise some of your projects may never get off the ground." [@savage2020every]
+
+> "To make anything, it's critical to have a physical understanding of how all the
+component parts of your project will fit together." [@savage2020every]
+
+> "What material can you wrap your arms around to gain a complete sense for the skills
+you want to master and the objects you want to make? Is it cardboard? Muslin fabric?
+Crappy butcher cuts? Scrap wood? The backside of recycled printer paper? A word
+processor? It really doesn't matter as long as it allows you to be messy and it
+keeps you moving forward in your journey as a maker." [@savage2020every]
+
+
+> "Once you have a new tool you thing you need, spend some time getting to know it 
+physically. With certain tools, I'll go so far as to take them apart, just to 
+understand them better, inside and out. ... If you are unfamiliar with a tool or
+inexperienced with the techniques required to use it, getting comfortable like this
+is the most important thing you can do, because you might really need this thing, but
+if you are intimidated by it, you aren't going to want to use it, and then 
+what's the point?" [@savage2020every]
+
+> "If you've never used a tool before, reviews and articles about it can only get
+you so far. You need to work with a tool in order to see how the tool works for YOU.
+You need on-the-ground experience with it in your hands." [@savage2020every]
+
+With open-source, you can think of it as builing a collection of different tools, 
+rather than a black box. The tools can come from different companies (like real tools)---you
+don't have to limit to consuming the tools created by a single producer (as with 
+most proprietary software systems). 
+
+For free and open-source software, you don't have to invest money to get more tools.
+Instead, the investment for each new tool is the time that it takes to learn how 
+to use it in your workflow. This includes several elements. You'll need to understand
+what primary input is used by the function, both in terms of the input's conceptual 
+content and the format or structure in which those data are stored. You'll need to 
+understand the content and format of the output of the function in a similar way, so that
+you can join it with other functions in your workflow. You'll want to make sure 
+you understand the main choices that you can modify with the function, through setting
+different parameters, as well as the reason behind the defaults that are used for 
+those parameters. Finally, ideally you'll want to understand a bit about how the 
+function operates to move from the input you give it to the output it gives back to 
+you.
+
+> "'Freemon Dyson, a famous physicist, suggested that science moves forward by 
+inventing new tools,' Kevin [Kelly, founding editor of Wired magazine] began as
+we talked on the phone one morning about tools. 'When we invented the telescope, 
+suddenly we had astrophysicists, and astronomy, and we moved forward. The invention
+of the microscope opened up the small world of biology to us. In a broad sense, 
+science moves forward by inventing tools, because when you have those tools 
+they give you a new way of thinking." [@savage2020every]
+
+> "My initial reaction was shock---at both the ingenuity of the solution and the fact
+that I'd forgotten all about it---but that quickly resolved into gratitude. I was
+grateful to mayself for taking the time a year before to save me this time now.
+'Thank you, me-from-the-past!' I literally said to myself." [@savage2020every]
+
+> "Complex equipment breaks, and when it breaks you need the technical expertise to 
+fix it, and you need replacement parts. ... Some studies suggest that as much as 95 
+percent of medical technology donated to developing countries breaks within the 
+first five years of use." [@johnson2011good]
+
+> "Good ideas ... are, inevitably, constrained by the parts and skills that surround 
+them. We have a natural tendance to romanticize breathrough innovations, 
+imagining momentous ideas transcending their surroundings, a gifted mind somehow
+seeing over the detritus of old ideas and ossified tradition. But ideas are works
+of bricolage; they're built out of that detritus. We take the ideas we've inherited
+or that we've stumbled across, and we jigger them together into some new shape."
+[@johnson2011good]
+
+> "Good ideas are not conjured out of thin air; they are built out of a collection 
+of existing parts, the composition of which expands (and, occasionally, contracts) 
+over time. Some of these parts are conceptual: ways of solving problems, or new 
+definitions of what constitutes a problem in the first place. Some of them are, 
+literally, mechanical parts." [@johnson2011good]
+
+> "What kind of environment creates good ideas? The simplest way to answer is this: 
+innovative environments are better at helping their inhabitants explore the adjacent
+possible, because they expose a wide and diverse sample of spare parts---mechanical
+or conceptual---and they encourage novel ways of recombining those parts. Environments
+that block or limit new combinations---by punishing experimentation, by obscuring 
+certain branches of possibility, by making the current state so satisfying that no 
+one bothers to explore the edges---will, on average, generate and circulate 
+fewer innovations that environments that encourage exploration." [@johnson2011good]
+
+> "Part of coming up with a good idea is discovering what those spare parts are, and 
+ensuring that you're not just recycling the same old ingredients. ... The trick to 
+having good ideas is not to sit around in glorious isolation and try to think big 
+thoughts. The trick is to get more parts on the table." [@johnson2011good]
+
+> "*Document the version of the software that you ran.* This may seem unimportant, but
+remember the example from 'Reproducible Research' on page 6 where my colleagues and I 
+traced disagreeing results down to a single piece of software being updated. These 
+details matter. Good bioinformatices software usually has a command-line option to 
+return the current version. Software managed with a version control system such as 
+Git has explicit identifiers to every version, which can be used to document the 
+precise version you ran... If no version information is available, a release date, 
+link to the software, and download date will suffice." [@buffalo2015bioinformatics]
+
+
+> "*Document when you downloaded data.* It's important to include when the data was downloaded, 
+as the external data source (such as a website or server) might change in the future. For example, 
+a script that downloads data directly from a database might produce different results if 
+rerun after the external database is updated. Consequently, it's important to document
+when data came into your repository." [@buffalo2015bioinformatics]
+
+
+> "All of this [documentation] information is best stored in plain-text README files.
+Plain text can easily be read, searched, and edited directly from the command line, 
+making it the perfect choice for portable and accessible README files. It's also available
+on all computer systems, meaning you can document your steps when working directly on 
+a server or computer cluster. Plain text also lacks complex formatting, which can create
+issues when copying and pasting commands from your documentation back into the command 
+line." [@buffalo2015bioinformatics]
