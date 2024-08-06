@@ -284,33 +284,79 @@ contribute to the pipeline they've developed.
 
 ### Modify rather than start from scratch
 
-[Anecdote: reverse engineering? Hardware Hacker?]
+How do you get started on solving a problem? Science and engineering have long
+traditions of starting by modifying something that exists, rather than starting
+from scratch. For example, once it was clear how important penicillin would be
+for human health, the hard work of producing it as scale. Guru Madhavan of the
+National Academy of Engineering tells this story in his book *Applied Minds: How
+Engineers Think*, focusing on the critical role of adapting existing technology
+to get a foothold on the problem:
 
-[*Everyone* does this, it's part of the open-source aesthetic. Also, long 
-history in science. See anecdotes / quotes about adapting.]
+> "Extracting penicillin from the mold was no child's play... Instead of
+designing and building a reactor for the chemical reactions from scratch---which
+meant more time, money, and uncertainty---[Margaret] Hutchinson opted for
+something that was already functional. Some researchers had found that mold from
+cantaloupe could be an effective source for penicillin, so she started there.
+Her team then revised a fermentation process that Pfizer was using to produce
+food additives like citric acid and gluconic acid from sugars, with the help of
+microbes. Hutchinson swiftly helped convert a run-down Brooklyn ice factory into
+a production facility. The deep-tank fermentation process produced great
+quantities of mold by mixing sugar, salt, milk, minerals, and fodder through a
+chemical separation process that Hutchinson knew very well from the refinery
+business." [@madhavan2015applied]
 
-[There are many places that you can find example code to start from: 
-vignettes, helpfiles, StackOverflow, code included with papers (although 
-be mindful of attribution / permissions), cheatsheets, even ChatGPT.]
+Similarly, as you code, keep in mind that you shouldn't reinvent the wheel. To
+find some starting scripts to learn from, there are a few tactics you can try.
+First, check around with colleagues to see if they have R code for data
+pre-processing tasks that they do in their lab. If they work with similar types
+of data, and use R, they're likely to have come up with some scripts that
+achieve tasks you also need to do.
 
-As you code, keep in mind that you shouldn't reinvent the wheel. There are 
-excellent resources available that can help provide you with a starting 
-point for many of the coding tasks you'll need to do. For example, most
-packages have tutorials called vignettes that provide a starting point
-in how to use the package, and helpfiles often include short example code
-that you can adapt to your own purposes. Online resources like StackOverflow
-also provide advice and example code for many challenges you might come up 
-against as you're coding. Google can also be used to help you solve coding 
-problems, especially if you become familiar with some of its special 
-operators, which can help you refine your search (see https://support.google.com/websearch/answer/2466433?hl=en for more on this). 
+Another excellent source of example R code are the vignettes and examples that
+come with many R packages. If you are using functions from an R package, then
+there is likely a vignette that comes with that package, and there may also be
+examples within the helpfiles for each of the package's functions. A package
+vignette is a tutorial that walks you through the major functionality of the
+package, showing how to use the key functions in the package in an extended
+example. Some packages will have multiple vignettes, showing a range of things
+that you can do with the package.
+
+To find out if there is a vignette for a package that you're using, you can
+google the package name and "vignette". You can also find out from the console
+in R using the function `vignette`. For example, to find out if the package
+`readxl`, which helps read in data from Excel files, has any vignettes, you can
+run `vignette(package = "readxl")`. This will tell you that the package has two,
+one called "cell-and-column-types" and one called "sheet-geometry". To open one
+of these, you can again use the `vignette` function. For example,
+`vignette("cell-and-column-types", package = "readxl")` would open the first of
+the two vignettes within your R session.
+
+To open the helpfile for any function in R, at the console type a question mark
+and then the function name. For example, `?read_excel` will open the helpfile
+for the `read_excel` function (you will need to make sure you've run
+`library("readxl")` to load the package with this function). The helpfile
+provides useful information for running the function, and one of the most useful
+parts is the "Examples" section. Scroll down to the bottom of the helpfile to
+find this section. It includes several examples that you can copy into your R
+script or console and try yourself, to figure out the types of inputs that the
+function needs and how different options for the function modify how it works.
+
+Online resources like StackOverflow also provide advice and example code for
+many challenges you might come up against as you're coding. Google can also be
+used to help you solve coding problems, especially if you become familiar with
+some of its special operators, which can help you refine your search. You can
+find more on Google special operators at
+https://support.google.com/websearch/answer/2466433?hl=en.
 
 There's no problem with using any of these as starting points as you develop
-your own code. However, it's often tempting for a coder to leave some lines
-of code "as-is" if they've found an example solution that works. Instead, it's 
-critical that you make sure you fully understand why each line of code in your
-script works the way it does. Further, if you're adapting example code to 
+your own code. However, it's often tempting for a coder to leave 
+example code "as-is" if they've found an example solution that works. Instead,
+it's critical that you make sure you fully understand why each line of code in
+your script works the way it does. Further, if you're adapting example code to
 your own problem, you should edit it if possible to use the set of tools you're
-most familar with. 
+most familiar with. In this section, we'll go through some steps you should 
+take to start from example code and adapt it to your own pipeline in a way 
+that will be more rigorous and reproducible.
 
 When you find a piece of example code that you think will help with something
 you need to do in your own code, you'll first want to make sure that you can 
@@ -369,128 +415,7 @@ You gain several advantages when you adapt code to use the tools you're familiar
 with. For example, bugs will be less likely, and if there are bugs, you'll 
 catch them more quickly, since you're familiar with the tools that the code is
 using. The code will also be much easier for you to understand and maintain in 
-the future. 
-
-> "The sandbox of the budding builder is not *making* as much as it is 
-modification: taking something that exists and making it better, either 
-functionally or aesthetically or both. Often that involves attaching and 
-securing parts that were not originally intended to go together." [@savage2020every]
-
-As you start learning to write code in R, don't force yourself to stare at an 
-empty R script file and try to come up with a full script from scratch. One of the 
-best ways to learn R is to find some scripts that others have written for tasks 
-that are similar to the ones that you want to do, then work through those to figure
-out each function call, and how those function calls add up to the full pipeline. 
-
-This method of reverse engineering is useful in many areas when you're trying to 
-figure out how things work. ...
-
-Once you understand a few other R scripts, you can start trying to modify them and 
-to pull pieces from different scripts to use as building blocks as you put together
-your own script. There's no need to reinvent the wheel---if someone else has 
-shared an R script that comes close to doing what you need to do, start there and
-then change and evolve that idea to suit your own needs. 
-
-To find some starting scripts to learn from, there are a few tactics you can try. 
-First, check around with colleagues to see if they have R code for data pre-processing
-tasks that they do in their lab. If they work with similar types of data, and use R, 
-they're likely to have come up with some scripts that achieve tasks you also need to 
-do. 
-
-Another excellent source of example R code are the vignettes and examples that come 
-with many R packages. If you are using functions from an R package, then there is likely 
-a vignette that comes with that package, and there may also be examples within the 
-helpfiles for each of the package's functions. A package vignette is a tutorial that
-walks you through the major functionality of the package, showing how to use the 
-key functions in the package in an extended example. Some packages will have multiple
-vignettes, showing a range of things that you can do with the package. 
-
-To find out if there is a vignette for a package that you're using, you can google the 
-package name and "vignette". You can also find out from the console in R using the 
-function `vignette`. For example, to find out if the package `readxl`, which helps read in 
-data from Excel files, has any vignettes, you can run `vignette(package = "readxl")`.
-This will tell you that the package has two, one called "cell-and-column-types" and 
-one called "sheet-geometry". To open one of these, you can again use the `vignette` 
-function. For example, `vignette("cell-and-column-types", package = "readxl")` would 
-open the first of the two vignettes within your R session.
-
-To open the helpfile for any function in R, at the console type a question mark and then 
-the function name. For example, `?read_excel` will open the helpfile for the `read_excel`
-function (you will need to make sure you've run `library("readxl")` to load the package
-with this function). The helpfile provides useful information for running the function, 
-and one of the most useful parts is the "Examples" section. Scroll down to the bottom 
-of the helpfile to find this section. It includes several examples that you can copy into 
-your R script or console and try yourself, to figure out the types of inputs that the
-function needs and how different options for the function modify how it works. 
-
-[How to dissect code: reverse engineering. Steps: (1) run with example 
-data; (2) understand required input and expected output; (3) for nested code, 
-word inside out; (4) for piped code, one line at a time]
-
-[How to adapt code for tools you don't know: adopt *idea* to tools you do know; 
-learn any tools as new tools for cases that can't be adapted.]
-
-> "All creative work builds on what has gone before. When someone declares
-that something is original, it's because they are unaware of the influences. 
-The creative make the most of things they admire and aren't ashamed to 
-be inspired by something they respect. The bad news: everything has already
-been done. The good news: it can be done again." [@judkins2016art]
-
-[Anecdote: adapting]
-
-> "Extracting penicillin from the mold was no child's play... Instead of 
-designing and building a reactor for the chemical reactions from scratch---which
-meant more time, money, and uncertainty---[Margaret] Hutchinson opted for something
-that was already functional. Some researchers had found that mold from 
-cantaloupe could be an effective source for penicillin, so she started 
-there. Her team then revised a fermentation process that Pfizer was using to 
-produce food additives like citric acid and gluconic acid from sugars, with 
-the help of microbes. Hutchinson swiftly helped convert a run-down 
-Brooklyn ice factory into a production facility. The deep-tank fermentation
-process produced great quantities of mold by mixing sugar, salt, milk, minerals, 
-and fodder through a chemical separation process that Hutchinson knew very 
-well from the refinery business." [@madhavan2015applied]
-
-[Anecdote: adapting]
-
-> "Johannes Gutenberg invented his printing press by repurposing a wine 
-press for use with olive oil--based ink and block printing." [@madhavan2015applied]
-
-However, it is critical that you work through and understand any example code
-that you bring in and modify in your own workflow.
-
-> "Appropriate methods are 'very data-set dependent'... The methods and tuning
-parameters may need to be adjusted to account for variable such as sequencing
-length. But John Marioni at Cancer Research UK in Cambridge says it's important not 
-to put complete faith in the pipeline. 'Just because the satellite navigation
-tells you to drive into the river, you don't drive into the river,' he says." 
-[@perkel2017single]
-
-> "Do not reinvent the wheel. It pays to reuse existing software. Integrative
-frameworks and associated application stores already house hundreds of tools
-(for example, as of May 2012, Galaxy ToolShed contains ~ 1,700 tools). It is
-likely that a script for a particular problem has been already written. Ask
-around through existing resources such as SEQanswers43 and BioStar44."
-[@nekrutenko2012next]
-
-> "If you're going to build a house today, you don't start by cutting down trees to make 
-lumber and digging clay to make your own bricks. Instead, you buy prefabricated pieces like
-doors, windows, plumbing fixtures, a furnace, and a water heater. House construction is still
-a big job, but it's manageable because you can build on the work of many others and rely 
-on an infrastructure, indeed an entire industry, that will help. The same is true of 
-programming. Hardly any significant program is created from nothing. Many components written
-by others can be taken off the shelf and used. For instance, if you're writing a program for
-Windows or a Mac, there are libraries of prefabricated menus, buttons, text editors, graphics, 
-network connections, database access, and so on. Much of the job is understanding the components
-and gluing them together in your own way. Of course, many of these components in turn rest on
-other simpler and more basic ones, often for several layers. Below that, everything runs on 
-the operating system, a program that manages the hardware and controls everything that happens."
-[@kernighan2011d]
-
-> "There is also a problem with discovering software that exists; often people
-reinvent the wheel just because they don’t know any better. Good repositories
-for software and best practice workflows, especially if citable, would be a
-start." --- James Taylor in [@altschul2013anatomy]
+the future if it's written using tools that you know well. 
 
 ### Do not repeat yourself
 
@@ -558,7 +483,7 @@ online book "R for Data Science" with guidance on this topic
 for iteration, the same book also has a chapter on that
 (https://r4ds.had.co.nz/iteration.html).
 
-### Discussion questions
+<!-- ### Discussion questions -->
 
 
 
