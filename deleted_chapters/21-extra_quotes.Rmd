@@ -8809,3 +8809,216 @@ the operating system, a program that manages the hardware and controls everythin
 reinvent the wheel just because they don’t know any better. Good repositories
 for software and best practice workflows, especially if citable, would be a
 start." --- James Taylor in [@altschul2013anatomy]
+
+In the tidyverse approach, you can often
+chain the functions in any order, since each function inputs and outputs the
+same data structure. With a Bioconductor pipeline, however, there
+will be functions that input one data structure and output a different one.
+As a result, Bioconductor functions, instead of being "small"
+functions that do one simple thing, often carry out a number of complex 
+steps within each function call.
+
+> "These advances have helped to ensure that R and Bioconductor remain relevant
+in the age of high-throughput sequencing. We plan to continue in this direction
+by designing and implementing abstractions that enable user code to be agnostic
+to the mode of data storage, whether it be memory, files or databases. This will
+bring much needed agility to resource allocation and will enable the user to be
+more resourceful, without the burden of increased complexity."
+[@lawrence2014scalable]
+
+
+> "Bioconductor packages support the reading of many of the data types and formats
+produced by measurement instruments used in modern biology, as well as the 
+needed technology-specific 'preprocessing' routines. This community is 
+actively keeping these up-to-date with the rapid developments in the 
+instrument market." 
+
+
+-----------------------------------------------------------------------
+
+Many excellent
+resources exist for learning the tidyverse approach, and so we won't recover that
+information here. Instead, we will focus on how to interface between this
+approach and the object-based approach that's more common with Bioconductor
+packages. Bioconductor packages often take an object-based approach, and with
+good reason because of the complexity and size of many early versions of
+biomedical data in the pre-processing process. There are also resources for
+learning to use specific Bioconductor packages, as well as some general
+resources on Bioconductor, like *R Programming for Bioinformatics* [ref].
+However, there are fewer resources available online that teach how to coordinate
+between these two approaches in a pipeline of code, so that you can leverage the
+needed power of Bioconductor approaches early in your pipeline, as you
+pre-process large and complex data, and then shift to use a tidyverse approach
+once your data is amenible to this more straightforward approach to analysis and
+visualization.
+
+The heart of making this shift is learning how to convert data, when possible, 
+from a more complex, class-type data structure (built on the flexible list 
+data structure) to the simpler, more standardized two-dimensional dataframe 
+structure that is required for the tidyverse approach. In this subsection, we'll 
+cover approaches for converting your data from Bioconductor data structures to 
+dataframes. 
+
+If you are lucky, this might be very straightforward. A pair of packages called
+`broom` and `biobroom` have been created specifically to facilitate the conversion
+of data from more complex structures to dataframes. The `broom` package was 
+created first, by David Robinson, to convert the data stored in the objects that 
+are created by fitting statistical models into tidy dataframes. Many of the functions
+in R that run statistical tests or fit statistical models output results in a 
+more complex, list-based data structure. These structures have nice "print" methods, 
+so if fitting the model or running the test is the very last step of your pipeline, 
+you can just read the printed output from R. However, often you want to include 
+these results in further code---for example, creating plots or tables that show
+results from several statistical tests or models. The `broom` package includes 
+several functions for pulling out different bits of data that are stored in the 
+complex data structure created by fitting the model or running the test and convert
+those pieces of data into a tidy dataframe. This tidy dataframe can then be 
+easily used in further code using a tidyverse approach. 
+
+The `biobroom` package was created to meet a similar need with data stored in some
+of the complex structures commonly used in Bioconductor packages.
+
+
+
+-----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+> "The Bioconductor project distributes the software as a number of different R
+packages, including Rsamtools, IRanges, GenomicRanges, GenomicAlignments,
+Biostrings, rtracklayer, biovizBase and BiocParallel. The software enables the
+analyst to conserve computational resources, iteratively generate summaries and
+visualize data at arbitrary levels of detail. These advances have helped to
+ensure that R and Bioconductor remain relevant in the age of high-throughput
+sequencing. We plan to continue in this direction by designing and implementing
+abstractions that enable user code to be agnostic to the mode of data storage,
+whether it be memory, files or databases. This will bring much needed agility to
+resource allocation and will enable the user to be more resourceful, without the
+burden of increased complexity."  [@lawrence2014scalable]
+
+
+
+> "The biobroom package contains methods for converting standard objects in Bioconductor into a 'tidy format'. It serves as a complement to the popular broom package, and follows the same division (tidy/augment/glance) of tidying methods."
+[@biobroom]
+
+> "Tidying data makes it easy to recombine, reshape and visualize bioinformatics analyses. Objects that can be tidied include: ExpressionSet object,
+GRanges and GRangesList objects, RangedSummarizedExperiment object, MSnSet object,
+per-gene differential expression tests from limma, edgeR, and DESeq2, qvalue object for multiple hypothesis testing." [@biobroom]
+
+> "We are currently working on adding more methods to existing Bioconductor objects." [@biobroom]
+
+> "All biobroom tidy and augment methods return a tbl_df by default (this prevents them from printing many rows at once, while still acting like a traditional data.frame)." [@biobroom]
+
+> "The concept of 'tidy data' offers a powerful framework for structuring data
+to ease manipulation, modeling and visualization. However, most R functions,
+both those builtin and those found in third-party packages, produce output that
+is not tidy, and that is therefore difficult to reshape, recombine, and
+otherwise manipulate. Here I introduce the broom package, which turns the output
+of model objects into tidy data frames that are suited to further analysis,
+manipulation, and visualization with input-tidy tools." [@robinson2014broom]
+
+> "Tools are classified as 'messy-output' if their output does not fit into this
+[tidy] framework. Unfortunately, the majority of R modeling tools, both from the
+built-in stats package and those in common third party packages, are
+messy-output. This means the data analyst must tidy not only the original data,
+but the results at each intermediate stage of an analysis." [@robinson2014broom]
+
+> "The broom package is an attempt to solve this issue, by bridging the gap from
+untidy outputs of predictions and estimations to create tidy data that is easy
+to manipulate with standard tools. It centers around three S3 methods, tidy,
+augment, and glance, that each take an object produced by R statistical
+functions (such as lm, t.test, and nls) or by popular third-party packages (such
+as glmnet, survival, lme4, and multcomp) and convert it into a tidy data frame
+without rownames (Friedman et al., 2010; Therneau, 2014; Bates et al., 2014;
+Hothorn et al., 2008). These outputs can then be used with input-tidy tools such
+as dplyr or ggplot2, or downstream statistical tests. broom should be
+distinguished from packages such as reshape2 and tidyr, which rearrange and
+reshape data frames into different forms (Wickham, 2007b, 2014b). Those packages
+perform essential tasks in tidy data analysis but focus on manipulating data
+frames in one specific format into another. In contrast, broom is designed to
+take data that is not in a data frame (sometimes not anywhere close) and convert
+it to a tidy data frame." [@robinson2014broom]
+
+> "`tidy` constructs a data frame that summarizes the model’s statistical
+components, which we refer to as the component level. In a regression such as
+the above it may refer to coefficient estimates, p-values, and standard errors
+for each term in a regression. The tidy generic is flexible- in other models it
+could represent per-cluster information in clustering applications, or per-test
+information for multiple comparison functions. ... `augment` add columns to the
+original data that was modeled, thus working at the observation level. This
+includes predictions, residuals and prediction standard errors in a regression,
+and can represent cluster assignments or classifications in other applications.
+By convention, each new column starts with . to ensure it does not conflict with
+existing columns. To ensure that the output is tidy and can be recombined,
+rownames in the original data, if present, are added as a column called
+.rownames. ... Finally, `glance` constructs a concise one-row summary of the
+model level values. In a regression this typically contains values such as R2 ,
+adjusted R2 , residual standard error, Akaike Information Criterion (AIC), or
+deviance. In other applications it can include calculations such as cross
+validation accuracy or prediction error that are computed once for the entire
+model. ... These three methods appear across many analyses; indeed, the fact
+that these three levels must be combined into a single S3 object is a common
+reason that model outputs are not tidy. Importantly, some model objects may have
+only one or two of these methods defined. (For example, there is no sense in
+which a Student’s T test or correlation test generates information about each
+observation, and therefore no augment method exists). " [@robinson2014broom]
+
+> "While model inputs usually require tidy inputs, such attention to detail
+doesn’t carry over to model outputs. Outputs such as predictions and estimated
+coefficients aren’t always tidy. For example, in R, the default representation
+of model coefficients is not tidy because it does not have an explicit variable
+that records the variable name for each estimate, they are instead recorded as
+row names. In R, row names must be unique, so combining coefficients from many
+models (e.g., from bootstrap resamples, or subgroups) requires workarounds to
+avoid losing important information. This knocks you out of the flow of analysis
+and makes it harder to combine the results from multiple models."
+[@wickham2014tidy]
+
+> "Right now, in labs across the world, machines are sequencing the genomes of the life 
+on earth. Even with rapidly decreasing costs and huge technological advancements in 
+genome sequencing, we're only seeing a glimpse of the biological information contained
+in every cell, tissue, organism, and ecosystem. However, the smidgen of total biological 
+information we're gathering amounts to mountains of data biologists need to work with. At 
+no other point in human history has our ability to understand life's complexities been so 
+dependent on our skills to work with and analyze data." [@buffalo2015bioinformatics]
+
+> "Bioinformaticians are concerned with deriving biological understanding from large
+amounts of data with specialized skills and tools. Early in biology's history, the 
+datasets were small and manageable. Most biologists could analyze their own data after
+taking a statistics course, using Microsoft Excel on a personal desktop computer.
+However, this is all rapidly changing. Large sequencing datasets are widespread, and will 
+only become more common in the future. Analyzing this data takes different tools, new skills,
+and many computers with large amounts of memory, processing power, and disk space."
+[@buffalo2015bioinformatics]
+
+> "Unfortunately, many of the biologist's common computational tools can't scale to the
+size and complexity of modern biological data. Complex data formats, interfacing 
+numerous programs, and assessing software and data make large bioinformatics datasets 
+difficult to work with." [@buffalo2015bioinformatics]
+
+> "Bioconductor's pakcage system is a bit different than those on the Comprehensive R 
+Archive Network (CRAN). Bioconductor packages are released on a set schedule, twice 
+a year. Each release is coordinated with a version of R, making Bioconductor's versions
+tied to specific R versions. The motivation behind this strict coordination is that it 
+allows for packages to be thoroughly tested before being released for public use. 
+Additionally, because there's considerable code re-use within the Bioconductor project, 
+this ensures that all package versions within a Bioconductor release are compatible
+with one another. For users, the end result is that packages work as expected and 
+have been rigorously tested before you use it (this is good when your scientific
+results depend on software reliability!). If you need the cutting-edge version of a 
+package for some reason, it's always possible to work with their development branch."
+[@buffalo2015bioinformatics]
+
+> "When installing Bioconductor packages, we use the `biocLite()` function. `biocLite()`
+installs the correct version of a package for your R version (and its corresponding
+Bioconductor version)." [@buffalo2015bioinformatics]
+
