@@ -5,13 +5,14 @@ format, and in particular one that follows standards for your discipline. In
 this section, we'll talk about the "tidy" data format. The tidy data format is
 one implementation of a tabular, two-dimensional structured data format that has
 quickly gained popularity among statisticians and data scientists since it was
-defined in a 2014 paper [@wickham2014tidy]. These principles cover some basic
-rules for ordering the data, and even if you haven't heard the term *tidy data*,
-you may already be implementing many of its standards in your own datasets.
-Datasets in this format tend to be very easily to work with, including to
-further clean, model, and visualize the data, as well as to integrate the data
-with other datasets. In particular, this data format is compatible with a
-collection of open-source tools on the R platform called the
+defined in a 2014 paper [@wickham2014tidy]. 
+
+These principles cover some basic rules for ordering the data, and even if you
+haven't heard the term *tidy data*, you may already be implementing many of its
+standards in your own datasets. Datasets in this format tend to be very easily
+to work with, including to further clean, model, and visualize the data, as well
+as to integrate the data with other datasets. In particular, this data format is
+compatible with a collection of open-source tools on the R platform called the
 *tidyverse*. These characteristics mean that, if you are planning to use a
 standardized data format for recording experimental data in your research group,
 you may want to consider creating one that adheres to the tidy data format.
@@ -23,6 +24,8 @@ you may want to consider creating one that adheres to the tidy data format.
 - Explain the difference between the a structured data format (general concept)
 and the "tidy' data format (one popular implementation)
 - Understand benefits of recording data in a "tidy" format
+
+### Keeping things tidy
 
 Adam Savage has built a career out of making things. He became famous as the
 host of the TV show *Mythbusters*, where a crew builds contraptions to test
@@ -65,8 +68,13 @@ These extra elements can make it hard to extract and use the data itself. One
 way to tidy up a dataset is to remove any of these extra elements. While you can
 do this after you've collected your data, it's more efficient to design a way to
 record your data in the first place without extra elements in the file or
-spreadsheet. You can further tidy up your data format by reformatting it to 
-follow the rules of a data format called the "tidy data" format.
+spreadsheet. 
+
+You can further tidy up your data format by reformatting it to 
+follow the rules of a data format called the "tidy data" format. Just as 
+Adam Savage's "knolling" helps you find things when you need them, using 
+a tidy data format puts elements of your data in the "right" place to be 
+found by a powerful collection of tools called the *tidyverse*.
 
 We'll start this module by describing rules a dataset format must follow for it
 to be "tidy" and clarifying how you can set up your data recording to follow
@@ -107,30 +115,28 @@ up in data recording templates for laboratory research. The checklist is:
 - The data collection file or spreadsheet avoids extra elements 
 like plots or embedded equations in the file
 - Each observation forms a row
-- Each variable forms a column
 - Column headers are variable names, not values
 - Each type of observational unit forms its own table
+- Each variable forms a column
 - A single variable is in a single column, not spread across multiple columns
 - A column contains only one variable; multiple variables are not stored in one column
 - Data types are consistent within a column
 
 In module 2.1, we discussed the first two principles, highlighting how
 important it is to separate data collection from further steps of data
-processing and analysis. In this section of the module, we'll go through other
+processing and analysis. To start this module, we'll go through other
 items in this checklist, to help you understand what makes a dataset follow the
-tidy data format. If so, you'll be able to set up your data recording template
-to follow this template, and you'll be able to tell when you work with data that
-others collect if it is in this format, and restructure it if not. In the next
-part of this module, we'll explain why it's so useful to have your data in this
-format.
+tidy data format. We aim to help you be able to set up your data recording template
+to follow this format, as well as be able to tell when you work with data that
+others collect if it is in this format, and restructure it if not. 
 
-Tidy data, first, must be in a tabular (i.e., two-dimensional, with columns and
-rows, and with all rows and columns of the same length---nothing "ragged"). If
-it's in a spreadsheet, it should be stored without any "extras", like embedded
-plots and calculations.  If you record data in a spreadsheet using a very basic
-strategy of saving a single table per spreadsheet, with the first row giving the
-column names, then your data will be in a tabular format. In general, if your
-recorded data looks "boxy", it's probably in a two-dimensional tabular format.
+Tidy data, first, must be in a tabular format---that is, two-dimensional, with
+columns and rows, and with all rows and columns of the same length. If it's in a
+spreadsheet, it should be stored without any "extras", like embedded plots and
+calculations.  If you record data in a spreadsheet using a very basic strategy
+of saving a single table per spreadsheet, with the first row giving the column
+names, then your data will be in a tabular format. In general, if your recorded
+data looks "boxy", it's probably in a two-dimensional tabular format.
 
 There are some additional criteria for the tidy data format, though, and so
 not every structured, tabular dataset is in a tidy format. As Wickham notes
@@ -141,19 +147,15 @@ in his paper defining the format,
 Real datasets can, and often do, violate the three precepts of tidy data in
 almost every way imaginable." [@wickham2014tidy]
 
-The first of these rules are that each row of a tidy dataset records the
-values for a single observation, and that each column records values of a
-variable: that is, characteristics or measurements of a certain type, in the
-order of the observations given by the rows [@wickham2014tidy].
-
-To figure out if your data format follows these rules, it's important to
-determine the *unit of observation* of that data, which is the unit at which you
-take measurements [@sedgwick2014unit]. This idea is different than the *unit of
-analysis*, which is the unit that you're focusing on in your study hypotheses
-and conclusions (this is sometimes also called the "sampling unit" or "unit of
-investigation") [@altman1997units]. In some cases, these two might be equivalent
-(the same unit is both the unit of observation and the unit of measurement), but
-often they are not [@sedgwick2014unit]. Sedgwick notes: 
+First, each row of a tidy dataset records the values for a single observation
+[@wickham2014tidy]. To figure out if your data format follows this rule, it's
+important to determine the *unit of observation* of that data, which is the unit
+at which you take measurements [@sedgwick2014unit]. This idea is different than
+the *unit of analysis*, which is the unit that you're focusing on in your study
+hypotheses and conclusions (this is sometimes also called the "sampling unit" or
+"unit of investigation") [@altman1997units]. In some cases, these two might be
+equivalent (the same unit is both the unit of observation and the unit of
+measurement), but often they are not [@sedgwick2014unit]. Sedgwick notes:
 
 > "The unit of observation and unit of analysis are often confused.
 The unit of observation, sometimes referred to as the unit of
@@ -185,17 +187,7 @@ data instead had different columns to record each study subject's measurements
 at different time points, then the data would still be tabular, but it would not
 be tidy. 
 
-Once you have divided your data into separate datasets based on the level of
-observation, and structured each row to record data for a single observation
-based on the unit of observation within that dataset, each column should be used
-to measure a separate characteristic or measurement (a *variable*) for each
-measurement [@wickham2014tidy].  A column could either give characteristics of
-the data that were pre-defined by the study design---for example, the treatment
-assigned to a mouse (a type of variable called a *fixed variable*, since its
-value was fixed before the start of the experiment) or observed measurements,
-like the level of infection measured in an animal (a type of variable called a
-*measured variable*, since its value is determine through the experiment)
-[@wickham2014tidy].
+[No values in column names]
 
 In the example of human subjects measured at repeated time points, you may
 initially find the tidy format unappealing, because it seems like it would
@@ -220,22 +212,37 @@ a spreadsheet file. Once you read the data into a scripting language like R or
 Python, it will be easy to link the larger and smaller tidy datasets as needed
 for analysis, visualizations, and reports.
 
+Next, for a dataset to be tidy, each column should be used
+to measure a separate characteristic or measurement (a *variable*) for each
+measurement [@wickham2014tidy].  A column could either give characteristics of
+the data that were pre-defined by the study design---for example, the treatment
+assigned to a mouse (a type of variable called a *fixed variable*, since its
+value was fixed before the start of the experiment) or observed measurements,
+like the level of infection measured in an animal (a type of variable called a
+*measured variable*, since its value is determined through the experiment)
+[@wickham2014tidy].
+
+[One and only one variable in a column]
+
+[Consistent data type in column (e.g., don't combine numberic with character
+comments)]
+
 ### Why make your data tidy?
 
 This may all seem like a lot of extra work to make a dataset tidy, and why 
 bother if you already have it in a structured, tabular format? It turns out 
 that, once you get the hang of what gives data a tidy format, it's pretty 
 simple to design recording formats that comply with these rules. What's more, 
-when data is in a tidy format, it can be directly input into a collection 
-of tools in R that belong to something called the "tidyverse". 
+when data are in a tidy format, they can be directly input into a collection 
+of tools in R that belong to something called the *tidyverse*. 
 
 R's *tidyverse* framework enables powerful and user-friendly data management,
 processing, and analysis by combining simple tools to solve complex, multi-step
 problems [@ross2017declutter; @silge2016tidytext; @wickham2016ggplot2;
-@wickham2016r]. Since the *tidyverse* tools are simple and share a common
+@wickham2016r]. Since the tidyverse tools are simple and share a common
 interface, they are easier to learn, use, and combine than tools created in the
 traditional base R framework [@ross2017declutter; @lowndes2017our;
-@mcnamara2016state]. This *tidyverse* framework is quickly becoming the standard
+@mcnamara2016state]. This tidyverse framework is quickly becoming the standard
 taught in introductory R courses and books [@hicks2017guide; @baumer2015data;
 @kaplan2018teaching; @stander2017enthusing;
 @mcnamara2016state], ensuring ample training resources for researchers new to
@@ -243,21 +250,11 @@ programming, including books (e.g., [@baumer2017modern; @lifesciencesR;
 @wickham2016r]), massive open online courses (MOOCs), on-site university courses
 [@baumer2015data; @kaplan2018teaching; @stander2017enthusing], and Software
 Carpentry workshops [@wilson2014software; @pawlik2017developing]. Further, tools
-that extend the *tidyverse* have been created to enable high-quality data
+that extend the tidyverse have been created to enable high-quality data
 analysis and visualization in several domains, including text mining
 [@silge2017text], microbiome studies [@mcmurdie2013phyloseq], natural language
 processing [@RJ-2017-035], network analysis [@RJ-2017-023], ecology
 [@hsieh2016inext], and genomics [@yin2012ggbio]. 
-
-This collection of tools is very straightforward to use and so powerful that
-it's well worth making an effort to record data in a format that works directly
-with the tools, if possible. Outside of cases of very complex or very large
-data, it should be possible. As Jeff Leek notes in a blog post on tidy data
-analysis,
-
-> "Tidy data is great for a huge fraction of data analyses you might
-be interested in. It makes organizing, developing, and sharing data a lot
-easier. It's how I recommend most people share data." [@leek2017toward]
 
 The tidyverse is a collection of tools united by a common philosophy: very complex
 things can be done simply and efficiently with small, sharp tools that share a
@@ -296,16 +293,9 @@ this interface and can be combined in various ways, is what makes the tidyverse
 tools so powerful. However, there are other good things about the tidyverse that
 make it so popular. One is that it's fairly easy to learn to use the tools, in
 comparison to learning how to write code for other R tools [@robinson2017teach;
-@peng2018teaching]. The developers who have created the tidyverse tools have
-taken a lot of effort to try to make sure that they have a clear and consistent
-*user interface* [@wickham2017tidy; @bryan2017data]. Wickham highlights how this
-standardization makes an approach focused on tidy data so powerful: 
-
-> "A standard makes initial data cleaning easier because you do not need to
-start from scratch and reinvent the wheel every time. The tidy data standard has
-been designed to facilitate initial exploration and analysis of the data, and to
-simplify the development of data analysis tools that work well together."
-[@wickham2014tidy]
+@peng2018teaching]. This is because the developers who have created the
+tidyverse tools have taken a lot of effort to try to make sure that they have a
+clear and consistent *user interface* [@wickham2017tidy; @bryan2017data]. 
 
 To help understand a user interface, and how having a consistent user interface
 across tools is useful, let's think about a different example---cars. When you
@@ -313,8 +303,8 @@ drive a car, you get the car to do what you want through the steering wheel, the
 gas pedal, the break pedal, and different knobs and buttons on the dashboard.
 When the car needs to give you feedback, it uses different gauges on the
 dashboard, like the speedometer, as well as warning lights and sounds.
-Collectively, these ways of interacting with your car make up the car's *user
-interface*. In the same way, each function in a programming language has a
+Collectively, these ways of interacting with your car make up the car's user
+interface. In the same way, each function in a programming language has a
 collection of parameters you can set, which let you customize the way the
 function runs, as well as a way of providing you output once the function has
 finished running and the way to provide any messages or warnings about the
@@ -323,8 +313,8 @@ elements for the function's user interface, including which parameters to
 include for the function, what to name those parameters, and how to provide
 feedback to the user through messages, warnings, and the final output.  
 
-If a collection of tools is similar in its user interfaces, it will make it
-easier for users to learn and use any of the tools in that collection once
+If tools are similar in their user interfaces, it will make it
+easier for users to learn and use any of the tools once
 they've learned how to use one. For cars, this explains how the rental car
 business is able to succeed. Even though different car models are very different
 in many characteristics---their engines, their colors, their software---they are
@@ -354,14 +344,6 @@ a cohesive system: having learned one component you are more likely to be
 able to guess how another different component works."
 [@bryan2017data]
 
-As a result, the tidyverse collection of tools is pretty easy to learn, compared
-to other sets of functions in scripting languages, and pretty easy to expand
-your knowledge of once you know some of its functions. Wickham notes: 
-
-> "The goal of [the tidy tools] principles is to provide a uniform interface so
-that tidyverse packages work together naturally, and once you’ve mastered one,
-you have a head start on mastering the others." [@wickhem2017tidy]
-
 Many people who teach
 R programming now focus on first teaching the tidyverse, given these
 characteristics [@robinson2017teach; @peng2018teaching], and it's often a
@@ -372,16 +354,13 @@ model the data.
 
 ### Using tidyverse tools with data in the tidy data format
 
-The tidyverse includes tools for many of the tasks you might need to
-do while managing and working with experimental data. When you download
-R, you get what's called *base R*. This includes the main code that drives
-anything you do in R, as well as functions for doing many core tasks. 
-However, the power of R is that, in addition to base R, you can also add
-onto R through what are called *packages* (sometimes also referred to 
-as *extensions* or *libraries*). These are kind of like "booster packs"
-that add on new functions for R. They can be created and contributed
-by anyone, and many are collected through a few key repositories like
-CRAN and Bioconductor. 
+When you download R, you get what's called *base R*. This includes the main code
+that drives anything you do in R, as well as functions for doing many core
+tasks. However, the power of R is that, in addition to base R, you can also add
+onto R through what are called *packages* (sometimes also referred to as
+*extensions* or *libraries*). These are kind of like "booster packs" that add on
+new functions for R. They can be created and contributed by anyone, and many are
+collected through a few key repositories like CRAN and Bioconductor.
 
 All the tidyverse tools are included in R extension packages, rather than base
 R, so once you download R, you'll need to download these packages as well to use
@@ -437,23 +416,7 @@ visualization, compared to if the set of tools lacked this coherence.
 <!-- d) Redundant information is encouraged for completeness  -->
 
 
-
-<!-- Question 2: In tidy data, how should missing values be handled?  -->
-
-
-
-<!-- a) Replace them with zeros for consistency  -->
-
-<!-- b) Remove all observations with missing values; tidy data cannot have missing values  -->
-
-<!-- c) Keep them as-is, with no special treatment  -->
-
-<!-- d) Use a consistent representation (e.g., “NA”, or consistently leave them as an empty cell)  -->
-
-
-
-<!-- Question 3: Which of the following is the only statement that does not describe one of the advantages of using a tidy data format?  -->
-
+<!-- Question 2: Which of the following is the only statement that does not describe one of the advantages of using a tidy data format?  -->
 
 
 <!-- a) This data format is commonly taught in beginning data analysis courses, and so there are numerous resources to help learn to use it.  -->
@@ -466,7 +429,7 @@ visualization, compared to if the set of tools lacked this coherence.
 
 
 
-<!-- Question 4:  -->
+<!-- Question 3:  -->
 
 <!-- In a data collection template, which of the following are considered extra elements and should be removed to help make the template meet the standards for “tidy” data? Select all that apply.  -->
 
@@ -480,7 +443,7 @@ visualization, compared to if the set of tools lacked this coherence.
 
 
 
-<!-- Question 5: Which is not one of the guidelines for the tidy data format?  -->
+<!-- Question 4: Which is not one of the guidelines for the tidy data format?  -->
 
 
 
@@ -494,7 +457,7 @@ visualization, compared to if the set of tools lacked this coherence.
 
 
 
-<!-- Question 6: What is a tabular data format?  -->
+<!-- Question 5: What is a tabular data format?  -->
 
 
 
@@ -508,7 +471,7 @@ visualization, compared to if the set of tools lacked this coherence.
 
 
 
-<!-- Question 7: You are conducting a study that compares a drug to a placebo. You take measurements on human subjects over time, recording measurements at five timepoints for each study subject. Which of the following is true of this dataset?  -->
+<!-- Question 6: You are conducting a study that compares a drug to a placebo. You take measurements on human subjects over time, recording measurements at five timepoints for each study subject. Which of the following is true of this dataset?  -->
 
 
 
@@ -522,14 +485,14 @@ visualization, compared to if the set of tools lacked this coherence.
 
 
 
-<!-- Discussion questions -->
+### Discussion questions
 
-<!-- What are your main considerations when you decide how to record your data?   -->
+What are your main considerations when you decide how to record your data?
 
-<!-- Based on the reading, can you define the tidy data format? Were you familiar with this format before preparing for this discussion? Do you use some of these principles when recording your own data?  -->
+Based on the reading, can you define the tidy data format? Were you familiar with this format before preparing for this discussion? Do you use some of these principles when recording your own data?
 
-<!-- Describe advantages, as well as potential limitations, of storing data in a tidy data format  -->
+Describe advantages, as well as potential limitations, of storing data in a tidy data format
 
-<!-- In data that you have collected, can you think of examples when the data collection format included extra elements, beyond simply space for recording the data? Examples might include plots, calculations, notes, and highlighting. What were some of the advantages of having these extra elements in the template? Based on the reading or your own experience, what are some disadvantages to including these extra elements in a data collection template?  -->
+In data that you have collected, can you think of examples when the data collection format included extra elements, beyond simply space for recording the data? Examples might include plots, calculations, notes, and highlighting. What were some of the advantages of having these extra elements in the template? Based on the reading or your own experience, what are some disadvantages to including these extra elements in a data collection template?
 
-<!-- In research collaborations, have you experienced a case where the data format for one researcher created difficulties for the other?  -->
+In research collaborations, have you experienced a case where the data format for one researcher created difficulties for the other?
