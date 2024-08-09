@@ -233,7 +233,7 @@ This section includes modules on:
 \item
   \hyperref[module10]{Module 2.10: Enhance the reproducibility of collaborative research with version control platforms}
 \item
-  \hyperref[module11]{Module 2.11: Using git and GitHub to implement version control}
+  \hyperref[module11]{Module 2.11: Using Git and GitHub to implement version control}
 \end{itemize}
 
 \section{Separating data recording and analysis}\label{module1}
@@ -1248,13 +1248,14 @@ format, and in particular one that follows standards for your discipline. In
 this section, we'll talk about the ``tidy'' data format. The tidy data format is
 one implementation of a tabular, two-dimensional structured data format that has
 quickly gained popularity among statisticians and data scientists since it was
-defined in a 2014 paper \citep{wickham2014tidy}. These principles cover some basic
-rules for ordering the data, and even if you haven't heard the term \emph{tidy data},
-you may already be implementing many of its standards in your own datasets.
-Datasets in this format tend to be very easily to work with, including to
-further clean, model, and visualize the data, as well as to integrate the data
-with other datasets. In particular, this data format is compatible with a
-collection of open-source tools on the R platform called the
+defined in a 2014 paper \citep{wickham2014tidy}.
+
+These principles cover some basic rules for ordering the data, and even if you
+haven't heard the term \emph{tidy data}, you may already be implementing many of its
+standards in your own datasets. Datasets in this format tend to be very easily
+to work with, including to further clean, model, and visualize the data, as well
+as to integrate the data with other datasets. In particular, this data format is
+compatible with a collection of open-source tools on the R platform called the
 \emph{tidyverse}. These characteristics mean that, if you are planning to use a
 standardized data format for recording experimental data in your research group,
 you may want to consider creating one that adheres to the tidy data format.
@@ -1273,6 +1274,8 @@ you may want to consider creating one that adheres to the tidy data format.
 \item
   Understand benefits of recording data in a ``tidy'' format
 \end{itemize}
+
+\subsection{Keeping things tidy}\label{keeping-things-tidy}
 
 Adam Savage has built a career out of making things. He became famous as the
 host of the TV show \emph{Mythbusters}, where a crew builds contraptions to test
@@ -1315,8 +1318,13 @@ These extra elements can make it hard to extract and use the data itself. One
 way to tidy up a dataset is to remove any of these extra elements. While you can
 do this after you've collected your data, it's more efficient to design a way to
 record your data in the first place without extra elements in the file or
-spreadsheet. You can further tidy up your data format by reformatting it to
-follow the rules of a data format called the ``tidy data'' format.
+spreadsheet.
+
+You can further tidy up your data format by reformatting it to
+follow the rules of a data format called the ``tidy data'' format. Just as
+Adam Savage's ``knolling'' helps you find things when you need them, using
+a tidy data format puts elements of your data in the ``right'' place to be
+found by a powerful collection of tools called the \emph{tidyverse}.
 
 We'll start this module by describing rules a dataset format must follow for it
 to be ``tidy'' and clarifying how you can set up your data recording to follow
@@ -1365,11 +1373,11 @@ up in data recording templates for laboratory research. The checklist is:
 \item
   Each observation forms a row
 \item
-  Each variable forms a column
-\item
   Column headers are variable names, not values
 \item
   Each type of observational unit forms its own table
+\item
+  Each variable forms a column
 \item
   A single variable is in a single column, not spread across multiple columns
 \item
@@ -1380,21 +1388,19 @@ up in data recording templates for laboratory research. The checklist is:
 
 In module 2.1, we discussed the first two principles, highlighting how
 important it is to separate data collection from further steps of data
-processing and analysis. In this section of the module, we'll go through other
+processing and analysis. To start this module, we'll go through other
 items in this checklist, to help you understand what makes a dataset follow the
-tidy data format. If so, you'll be able to set up your data recording template
-to follow this template, and you'll be able to tell when you work with data that
-others collect if it is in this format, and restructure it if not. In the next
-part of this module, we'll explain why it's so useful to have your data in this
-format.
+tidy data format. We aim to help you be able to set up your data recording template
+to follow this format, as well as be able to tell when you work with data that
+others collect if it is in this format, and restructure it if not.
 
-Tidy data, first, must be in a tabular (i.e., two-dimensional, with columns and
-rows, and with all rows and columns of the same length---nothing ``ragged''). If
-it's in a spreadsheet, it should be stored without any ``extras'', like embedded
-plots and calculations. If you record data in a spreadsheet using a very basic
-strategy of saving a single table per spreadsheet, with the first row giving the
-column names, then your data will be in a tabular format. In general, if your
-recorded data looks ``boxy'', it's probably in a two-dimensional tabular format.
+Tidy data, first, must be in a tabular format---that is, two-dimensional, with
+columns and rows, and with all rows and columns of the same length. If it's in a
+spreadsheet, it should be stored without any ``extras'', like embedded plots and
+calculations. If you record data in a spreadsheet using a very basic strategy
+of saving a single table per spreadsheet, with the first row giving the column
+names, then your data will be in a tabular format. In general, if your recorded
+data looks ``boxy'', it's probably in a two-dimensional tabular format.
 
 There are some additional criteria for the tidy data format, though, and so
 not every structured, tabular dataset is in a tidy format. As Wickham notes
@@ -1407,19 +1413,15 @@ Real datasets can, and often do, violate the three precepts of tidy data in
 almost every way imaginable.'' \citep{wickham2014tidy}
 \end{quote}
 
-The first of these rules are that each row of a tidy dataset records the
-values for a single observation, and that each column records values of a
-variable: that is, characteristics or measurements of a certain type, in the
-order of the observations given by the rows \citep{wickham2014tidy}.
-
-To figure out if your data format follows these rules, it's important to
-determine the \emph{unit of observation} of that data, which is the unit at which you
-take measurements \citep{sedgwick2014unit}. This idea is different than the \emph{unit of
-analysis}, which is the unit that you're focusing on in your study hypotheses
-and conclusions (this is sometimes also called the ``sampling unit'' or ``unit of
-investigation'') \citep{altman1997units}. In some cases, these two might be equivalent
-(the same unit is both the unit of observation and the unit of measurement), but
-often they are not \citep{sedgwick2014unit}. Sedgwick notes:
+First, each row of a tidy dataset records the values for a single observation
+\citep{wickham2014tidy}. To figure out if your data format follows this rule, it's
+important to determine the \emph{unit of observation} of that data, which is the unit
+at which you take measurements \citep{sedgwick2014unit}. This idea is different than
+the \emph{unit of analysis}, which is the unit that you're focusing on in your study
+hypotheses and conclusions (this is sometimes also called the ``sampling unit'' or
+``unit of investigation'') \citep{altman1997units}. In some cases, these two might be
+equivalent (the same unit is both the unit of observation and the unit of
+measurement), but often they are not \citep{sedgwick2014unit}. Sedgwick notes:
 
 \begin{quote}
 ``The unit of observation and unit of analysis are often confused.
@@ -1453,17 +1455,7 @@ data instead had different columns to record each study subject's measurements
 at different time points, then the data would still be tabular, but it would not
 be tidy.
 
-Once you have divided your data into separate datasets based on the level of
-observation, and structured each row to record data for a single observation
-based on the unit of observation within that dataset, each column should be used
-to measure a separate characteristic or measurement (a \emph{variable}) for each
-measurement \citep{wickham2014tidy}. A column could either give characteristics of
-the data that were pre-defined by the study design---for example, the treatment
-assigned to a mouse (a type of variable called a \emph{fixed variable}, since its
-value was fixed before the start of the experiment) or observed measurements,
-like the level of infection measured in an animal (a type of variable called a
-\emph{measured variable}, since its value is determine through the experiment)
-\citep{wickham2014tidy}.
+{[}No values in column names{]}
 
 In the example of human subjects measured at repeated time points, you may
 initially find the tidy format unappealing, because it seems like it would
@@ -1488,41 +1480,44 @@ a spreadsheet file. Once you read the data into a scripting language like R or
 Python, it will be easy to link the larger and smaller tidy datasets as needed
 for analysis, visualizations, and reports.
 
+Next, for a dataset to be tidy, each column should be used
+to measure a separate characteristic or measurement (a \emph{variable}) for each
+measurement \citep{wickham2014tidy}. A column could either give characteristics of
+the data that were pre-defined by the study design---for example, the treatment
+assigned to a mouse (a type of variable called a \emph{fixed variable}, since its
+value was fixed before the start of the experiment) or observed measurements,
+like the level of infection measured in an animal (a type of variable called a
+\emph{measured variable}, since its value is determined through the experiment)
+\citep{wickham2014tidy}.
+
+{[}One and only one variable in a column{]}
+
+{[}Consistent data type in column (e.g., don't combine numberic with character
+comments){]}
+
 \subsection{Why make your data tidy?}\label{why-make-your-data-tidy}
 
 This may all seem like a lot of extra work to make a dataset tidy, and why
 bother if you already have it in a structured, tabular format? It turns out
 that, once you get the hang of what gives data a tidy format, it's pretty
 simple to design recording formats that comply with these rules. What's more,
-when data is in a tidy format, it can be directly input into a collection
-of tools in R that belong to something called the ``tidyverse''.
+when data are in a tidy format, they can be directly input into a collection
+of tools in R that belong to something called the \emph{tidyverse}.
 
 R's \emph{tidyverse} framework enables powerful and user-friendly data management,
 processing, and analysis by combining simple tools to solve complex, multi-step
-problems \citep{ross2017declutter, silge2016tidytext, wickham2016ggplot2, wickham2016r}. Since the \emph{tidyverse} tools are simple and share a common
+problems \citep{ross2017declutter, silge2016tidytext, wickham2016ggplot2, wickham2016r}. Since the tidyverse tools are simple and share a common
 interface, they are easier to learn, use, and combine than tools created in the
-traditional base R framework \citep{ross2017declutter, lowndes2017our, mcnamara2016state}. This \emph{tidyverse} framework is quickly becoming the standard
+traditional base R framework \citep{ross2017declutter, lowndes2017our, mcnamara2016state}. This tidyverse framework is quickly becoming the standard
 taught in introductory R courses and books \citep{hicks2017guide, baumer2015data, kaplan2018teaching, stander2017enthusing, mcnamara2016state}, ensuring ample training resources for researchers new to
 programming, including books (e.g., \citep{baumer2017modern, lifesciencesR, wickham2016r}), massive open online courses (MOOCs), on-site university courses
 \citep{baumer2015data, kaplan2018teaching, stander2017enthusing}, and Software
 Carpentry workshops \citep{wilson2014software, pawlik2017developing}. Further, tools
-that extend the \emph{tidyverse} have been created to enable high-quality data
+that extend the tidyverse have been created to enable high-quality data
 analysis and visualization in several domains, including text mining
 \citep{silge2017text}, microbiome studies \citep{mcmurdie2013phyloseq}, natural language
 processing \citep{RJ-2017-035}, network analysis \citep{RJ-2017-023}, ecology
 \citep{hsieh2016inext}, and genomics \citep{yin2012ggbio}.
-
-This collection of tools is very straightforward to use and so powerful that
-it's well worth making an effort to record data in a format that works directly
-with the tools, if possible. Outside of cases of very complex or very large
-data, it should be possible. As Jeff Leek notes in a blog post on tidy data
-analysis,
-
-\begin{quote}
-``Tidy data is great for a huge fraction of data analyses you might
-be interested in. It makes organizing, developing, and sharing data a lot
-easier. It's how I recommend most people share data.'' \citep{leek2017toward}
-\end{quote}
 
 The tidyverse is a collection of tools united by a common philosophy: very complex
 things can be done simply and efficiently with small, sharp tools that share a
@@ -1562,18 +1557,9 @@ This common input / output interface, and the use of small tools that follow
 this interface and can be combined in various ways, is what makes the tidyverse
 tools so powerful. However, there are other good things about the tidyverse that
 make it so popular. One is that it's fairly easy to learn to use the tools, in
-comparison to learning how to write code for other R tools \citep{robinson2017teach, peng2018teaching}. The developers who have created the tidyverse tools have
-taken a lot of effort to try to make sure that they have a clear and consistent
-\emph{user interface} \citep{wickham2017tidy, bryan2017data}. Wickham highlights how this
-standardization makes an approach focused on tidy data so powerful:
-
-\begin{quote}
-``A standard makes initial data cleaning easier because you do not need to
-start from scratch and reinvent the wheel every time. The tidy data standard has
-been designed to facilitate initial exploration and analysis of the data, and to
-simplify the development of data analysis tools that work well together.''
-\citep{wickham2014tidy}
-\end{quote}
+comparison to learning how to write code for other R tools \citep{robinson2017teach, peng2018teaching}. This is because the developers who have created the
+tidyverse tools have taken a lot of effort to try to make sure that they have a
+clear and consistent \emph{user interface} \citep{wickham2017tidy, bryan2017data}.
 
 To help understand a user interface, and how having a consistent user interface
 across tools is useful, let's think about a different example---cars. When you
@@ -1581,8 +1567,8 @@ drive a car, you get the car to do what you want through the steering wheel, the
 gas pedal, the break pedal, and different knobs and buttons on the dashboard.
 When the car needs to give you feedback, it uses different gauges on the
 dashboard, like the speedometer, as well as warning lights and sounds.
-Collectively, these ways of interacting with your car make up the car's \emph{user
-interface}. In the same way, each function in a programming language has a
+Collectively, these ways of interacting with your car make up the car's user
+interface. In the same way, each function in a programming language has a
 collection of parameters you can set, which let you customize the way the
 function runs, as well as a way of providing you output once the function has
 finished running and the way to provide any messages or warnings about the
@@ -1591,8 +1577,8 @@ elements for the function's user interface, including which parameters to
 include for the function, what to name those parameters, and how to provide
 feedback to the user through messages, warnings, and the final output.
 
-If a collection of tools is similar in its user interfaces, it will make it
-easier for users to learn and use any of the tools in that collection once
+If tools are similar in their user interfaces, it will make it
+easier for users to learn and use any of the tools once
 they've learned how to use one. For cars, this explains how the rental car
 business is able to succeed. Even though different car models are very different
 in many characteristics---their engines, their colors, their software---they are
@@ -1624,16 +1610,6 @@ able to guess how another different component works.''
 \citep{bryan2017data}
 \end{quote}
 
-As a result, the tidyverse collection of tools is pretty easy to learn, compared
-to other sets of functions in scripting languages, and pretty easy to expand
-your knowledge of once you know some of its functions. Wickham notes:
-
-\begin{quote}
-``The goal of {[}the tidy tools{]} principles is to provide a uniform interface so
-that tidyverse packages work together naturally, and once you've mastered one,
-you have a head start on mastering the others.'' \citep{wickhem2017tidy}
-\end{quote}
-
 Many people who teach
 R programming now focus on first teaching the tidyverse, given these
 characteristics \citep{robinson2017teach, peng2018teaching}, and it's often a
@@ -1644,16 +1620,13 @@ model the data.
 
 \subsection{Using tidyverse tools with data in the tidy data format}\label{using-tidyverse-tools-with-data-in-the-tidy-data-format}
 
-The tidyverse includes tools for many of the tasks you might need to
-do while managing and working with experimental data. When you download
-R, you get what's called \emph{base R}. This includes the main code that drives
-anything you do in R, as well as functions for doing many core tasks.
-However, the power of R is that, in addition to base R, you can also add
-onto R through what are called \emph{packages} (sometimes also referred to
-as \emph{extensions} or \emph{libraries}). These are kind of like ``booster packs''
-that add on new functions for R. They can be created and contributed
-by anyone, and many are collected through a few key repositories like
-CRAN and Bioconductor.
+When you download R, you get what's called \emph{base R}. This includes the main code
+that drives anything you do in R, as well as functions for doing many core
+tasks. However, the power of R is that, in addition to base R, you can also add
+onto R through what are called \emph{packages} (sometimes also referred to as
+\emph{extensions} or \emph{libraries}). These are kind of like ``booster packs'' that add on
+new functions for R. They can be created and contributed by anyone, and many are
+collected through a few key repositories like CRAN and Bioconductor.
 
 All the tidyverse tools are included in R extension packages, rather than base
 R, so once you download R, you'll need to download these packages as well to use
@@ -1693,6 +1666,18 @@ plots (\texttt{igraph}), phytogenetic trees (\texttt{ggtree}) and anatogram imag
 tidy data format, and they all provide similar user interfaces, making it
 easier to learn a large set of tools to do a range of data analysis and
 visualization, compared to if the set of tools lacked this coherence.
+
+\subsection{Discussion questions}\label{discussion-questions}
+
+What are your main considerations when you decide how to record your data?
+
+Based on the reading, can you define the tidy data format? Were you familiar with this format before preparing for this discussion? Do you use some of these principles when recording your own data?
+
+Describe advantages, as well as potential limitations, of storing data in a tidy data format
+
+In data that you have collected, can you think of examples when the data collection format included extra elements, beyond simply space for recording the data? Examples might include plots, calculations, notes, and highlighting. What were some of the advantages of having these extra elements in the template? Based on the reading or your own experience, what are some disadvantages to including these extra elements in a data collection template?
+
+In research collaborations, have you experienced a case where the data format for one researcher created difficulties for the other?
 
 \section{Designing templates for ``tidy'' data collection}\label{module4}
 
@@ -2780,7 +2765,7 @@ file sharing platform like Google Drive. When all the materials for a project
 are stored in a single directory, it also makes it easier to share the set of
 files through version control and online version control platforms
 \citep{vuorre2021sharing}. In later modules in this book, we will introduce
-git version control software and the GitHub platform for sharing files under
+Git version control software and the GitHub platform for sharing files under
 this type of version control---this is one example of this more dynamic way of
 sharing files, but requires them to be stored in a single directory.
 
@@ -3472,9 +3457,9 @@ There are some other advantages, as well, to turning each of your research
 project directories into RStudio Projects. One is that it is very easy to
 connect each of these Projects with GitHub, which facilitates collaborative work
 on the project across multiple team members while tracking all changes under
-version control. If you are tracking the project directory under the git version
+version control. If you are tracking the project directory under the Git version
 control system, then when you open the RStudio Project, there will be a special
-tab in one of the panes to help in using git with the project. This tab provides
+tab in one of the panes to help in using Git with the project. This tab provides
 a visual interface for you to commit changes you've made, so they are tracked
 and can be reversed if needed, and also so you can easily push and pull these
 committed changes to and from a remote repository, like a GitHub repository, if
@@ -3548,7 +3533,7 @@ detailed guide to creating your own project template at
 This topic has also been discussed through a short talk at the
 yearly RStudio::conf: \url{https://rstudio.com/resources/rstudioconf-2020/rproject-templates-to-automate-and-standardize-your-workflow/}.
 
-\subsection{Discussion questions}\label{discussion-questions}
+\subsection{Discussion questions}\label{discussion-questions-1}
 
 \section{Example: Creating a project template}\label{module8}
 
@@ -4231,7 +4216,7 @@ Software for this purpose---\emph{version control software}---first developed fo
 software programming projects. Some popular version control software today
 comes from these roots. In this section, we'll introduce the key features of
 version control, and to do so we'll use examples and terminology from a common
-version control software program called \emph{git}. While these terms are derived
+version control software program called \emph{Git}. While these terms are derived
 from this particular software program, they represent ideas that are important
 in any implementation of version control. Later, we'll touch on how some of these
 ideas are incorporated in other software, like Google Docs.
@@ -4281,7 +4266,7 @@ your project, with their own commit message about why they were cut (hopefully a
 nice clear one that will make it easy to find that commit if you ever need those
 paragraphs again).
 
-Further, each of the commits is given its own ID tag (in the \emph{git} software,
+Further, each of the commits is given its own ID tag (in the \emph{Git} software,
 this is done through something called a unique SHA-1 hash \citep{klemens201421st}),
 and version control systems have a number of commands that let you ``roll back''
 to earlier versions. This provides \emph{reversability} within the project files,
@@ -4326,7 +4311,7 @@ well, I'll just bo back to the March version of my code and I can recreate
 it'.'' \citep{perkel2018git}
 \end{quote}
 
-Modern version control systems like \emph{git} take a distributed approach to
+Modern version control systems like \emph{Git} take a distributed approach to
 collaboration on project files. In earlier types of version control programs,
 there was one central repository for the file or set of files the team was
 working on \citep{raymondunderstanding, target2018version}. Very early on, under
@@ -4375,7 +4360,7 @@ different location---can be added with another copy of the project, which can
 similarly be synced regularly to update with any changes made to project files.
 
 While there are a number of software systems for version control, one of the
-most common currently used for scientific projects is \emph{git}. This program was
+most common currently used for scientific projects is \emph{Git}. This program was
 created by Linus Torvalds, who also created the Linux operating system, in 2005
 as a way to facilitate the team working on Linux development. This program for
 version control thrives in large collaborative projects, for example open-source
@@ -4397,14 +4382,14 @@ needs to be done to complete the project. These tools---which are discussed in
 modules 2.10 and 2.11---can be used to improve collaboration on scientific
 projects done by teams. GitHub is one a very popular version control platform
 with these additional tools. It was created in 2008 as a web-based platform to
-facilitate collaborating on projects running under git version control. It can
-provide an easier entry to using git for version control than trying to learn to
-use git from the command line \citep{perez2016ten}. It also interfaces well with RStudio,
+facilitate collaborating on projects running under Git version control. It can
+provide an easier entry to using Git for version control than trying to learn to
+use Git from the command line \citep{perez2016ten}. It also interfaces well with RStudio,
 making it easy to integrate a collaborative workflow through GitHub from the
 same RStudio window on your computer where you are otherwise doing your analysis
 \citep{perez2016ten}.
 
-Finally, while git version control software is one of the best established ways
+Finally, while Git version control software is one of the best established ways
 of implementing version control, there are growing efforts to enable some level
 of version control through other platforms. For example, Google Docs enables a
 level of version control through its Version History feature. This feature
@@ -4412,18 +4397,18 @@ allows you name different versions of a document as they are is saved in Google
 Docs. It also allows you to restore a document to earlier versions, as well as
 see which changes have been made to a document and who made each change.
 
-\subsection{Comparing git to other tools}\label{comparing-git-to-other-tools}
+\subsection{Comparing Git to other tools}\label{comparing-git-to-other-tools}
 
 While some generalized tools like Google tools and Dropbox might be simpler to
-initially learn, more powerful version control tools like git offer some key
+initially learn, more powerful version control tools like Git offer some key
 advantages for recording scientific data and are worth the effort to adopt. A
 key advantage is their ability to track the full history of files as they
 evolve, including not only the history of changes to each file, but also a
 record of why each change was made. Git excels in tracking changes made to plain
-text files. For these files, whether they record code, data, or text, git can
+text files. For these files, whether they record code, data, or text, Git can
 show line-by-line differences between two versions of the file. This makes it
 very easy to go through the history of ``commits'' to a plain text file in a
-git-tracked repository and see what change was made at each time point, and then
+Git-tracked repository and see what change was made at each time point, and then
 read through the commit messages associated with those commits to see why a
 change was made. For example, if a value was entered in the wrong row of a plain
 text file or spreadsheet, and the researcher then made a commit to correct that
@@ -4442,8 +4427,8 @@ There are, of course, some limitations to using version control tools when
 recording experimental data. First, while ideally laboratory data is recorded in
 a plain text format (see the module in section 2.2 for a deeper discussion of
 why), some data may be recorded in a binary file format. Some version control
-tools, including git, can be used to track changes in binary files. However, git
-does not take to these types of files naturally. In particular, git typically
+tools, including Git, can be used to track changes in binary files. However, Git
+does not take to these types of files naturally. In particular, Git typically
 will not be able to show users a useful comparison of the differences between
 two versions of a binary file.
 
@@ -4451,16 +4436,16 @@ More problems can arise if the binary file is
 very large \citep{perez2016ten, blischak2016quick}, as some experimental research
 data files are (e.g., if they are high-throughput output of laboratory equipment
 like a mass spectrometer). However, there are emerging tools and strategies for
-improving the ability to include and track large binary files when using git and
+improving the ability to include and track large binary files when using Git and
 GitHub \citep{blischak2016quick}.
 
 Finally, as with other tools and techniques described in this book, there is an
-investment required to learn how to use git \citep{perez2016ten}, as well
+investment required to learn how to use Git \citep{perez2016ten}, as well
 as some extra overhead when using version control tools in a project
-\citep{raymond2003art}. However, git can bring dramatic gains to
+\citep{raymond2003art}. However, Git can bring dramatic gains to
 efficiency, transparency, and organization of research projects, even if you
 only use a small subset of its basic functionality \citep{perez2016ten}. In module
-2.11, we provide guidance on getting started with using git and Github to track
+2.11, we provide guidance on getting started with using Git and GitHub to track
 a scientific research project.
 
 Third, the combination of git and GitHub can help as a way to backup study data
@@ -4476,7 +4461,7 @@ computers, but so is the full history of all changes made to that data and the
 recorded messages explaining those changes, through the repositories commit
 messages \citep{perez2016ten}.
 
-\subsection{Discussion questions}\label{discussion-questions-1}
+\subsection{Discussion questions}\label{discussion-questions-2}
 
 \begin{itemize}
 \tightlist
@@ -4512,7 +4497,7 @@ messages \citep{perez2016ten}.
 
 \section{Enhance the reproducibility of collaborative research with version control platforms}\label{module10}
 
-Once a researcher has learned to use \emph{git} on their own computer for
+Once a researcher has learned to use \emph{Git} on their own computer for
 local version control, they can begin using version control platforms (e.g.,
 \emph{GitLab}, \emph{GitHub}) to collaborate with others under version
 control. We will describe how a research team can benefit from using a version
@@ -4526,52 +4511,34 @@ control platform to work collaboratively.
   List benefits of using a version control platform to collaborate
   on research projects, particularly for reproducibility
 \item
-  Describe the difference between version control (e.g., \emph{git}) and
-  a version control platform (e.g., \emph{GitLab})
+  Describe the difference between version control (e.g., \emph{Git}) and
+  a version control platform (e.g., \emph{GitHub})
 \end{itemize}
 
 \subsection{What are version control platforms?}\label{what-are-version-control-platforms}
 
-The last module introduced the idea of version control, including the popular
-software tool often used for version control, git. In this module, we'll go a
+The last module introduced the idea of version control, including a popular
+software tool often used for version control, Git. In this module, we'll go a
 step further, telling you about how you can expand the idea of version control
 to leverage it when collaborating across your research team, using \emph{version
 control platforms}. Version control platforms build on the functionality of
-version control software like git. They can provide you and your team tools
+version control software, and they can provide you and your team tools
 for sharing, tools for visualization, and tools for project management.
 
 A version control platform allows you to share project files across a group of
 collaborators while keeping track of what changes are made, who made each
-change, and why each change was made. It therefore combines the strengths of a
-``Track changes'' feature with those of a file sharing platform like Dropbox. To
-some extent, Google Docs or Google Drive also combine these features, and some
-spreadsheet programs are moving toward some rudimentary functionality for
-version control \citep{birch2018future}. However, there are added advantages of
-version control platforms. Since open-source version control platforms like
-GitHub can be set up on a server that you own, they can be used to collaborate
-on projects with sensitive data, and also can store data directly on the server
-you would like to use to store large project datasets or to run
-computationally-intensive pre-processing or analysis. Finally, most version
-control platforms include tools that help you manage and track the project.
-These include ``Issue Trackers'', tools for exploring the history of each file
-and each change, and features to assign project tasks to specific team members.
-The next section will describe the features of version control platforms that
-make them helpful as a tool for collaborating on scientific research. These
-systems are being leveraged by some scientists, both to manage research projects
-and collaborate on writing scientific manuscripts and grant proposals
-\citep{perez2016ten}.
-
-Version control platforms are always used in conjunction with version control
-software, like the \emph{git} software described in the last module. The version
-control platform leverages the history of commits that were made to the project,
-as well as the version control software's capabilities for merging changes made
-by different people at different times. On top of these facilities, a version
-control platform also adds attractive visual interfaces for working with the
-project, free or low-cost online hosting of project files, and team management
-tools for each project. In this sense, you can think of \emph{git} as the engine, in
-other words, and the version control platform as the driver's seat, with
-dashboard, steering wheel, and gears to leverage the power of the underlying
-\emph{git} software. One scientist, in an article about Git and GitHub for
+change, and why each change was made. Version control platforms are always used
+in conjunction with version control software, like the \emph{Git} software described
+in the last module. The version control platform leverages the history of
+commits that were made to the project, as well as the version control software's
+capabilities for merging changes made by different people at different times. On
+top of these facilities, a version control platform also adds attractive visual
+interfaces for working with the project, free or low-cost online hosting of
+project files, and team management tools for each project. In this sense, you
+can think of \emph{Git} as the engine, in other words, and the version control
+platform as the driver's seat, with dashboard, steering wheel, and gears to
+leverage the power of the underlying
+\emph{Git} software. One scientist, in an article about Git and GitHub for
 scientists, highlighted that resources like GitHub are ``essential for
 collaborative software projects because they enable the organization and sharing
 of programming tasks between different remote contributors.'' \citep{perez2016ten}
@@ -4581,6 +4548,25 @@ popular for scientific research are GitHub (\url{https://github.com/}) and GitLa
 (\url{https://about.gitlab.com/}). Both provide free options for scientific
 researchers, including the capabilities for using both public and private
 repositories in collaboration with other researchers.
+
+A version control platform therefore combines the strengths of a ``Track changes''
+feature with those of a file sharing platform like Dropbox. To some extent,
+Google Docs or Google Drive also combine these features, and some spreadsheet
+programs are moving toward rudimentary functionality for version control
+\citep{birch2018future}. However, there are added advantages of version control
+platforms. For example, there are version control platforms that are
+open-source. GitLab is one example. Since these can be set up on a server that
+you own, they can be used to collaborate on projects with sensitive data, and
+also can operate directly on the server you're using to store large
+project datasets or to run computationally-intensive pre-processing or analysis.
+Also, most version control platforms include tools that help you manage and
+track the project. These include ``Issue Trackers'', tools for exploring the
+history of each file and each change, and features to assign project tasks to
+specific team members. The next section will describe the features of version
+control platforms that make them helpful as a tool for collaborating on
+scientific research. These systems are being leveraged by some scientists both
+to manage research projects and to collaborate on writing scientific manuscripts
+and grant proposals \citep{perez2016ten}.
 
 \subsection{Why use version control platforms?}\label{why-use-version-control-platforms}
 
@@ -4595,25 +4581,25 @@ needing to post data or code on an outside platform, and so you can use these
 tools even in cases involving sensitive data.
 
 Some of the key advantages of using a version control platform like GitHub
-to collaborate on research projects include:
+to collaborate on research projects include that the platform:
 
 \begin{itemize}
 \tightlist
 \item
-  Ability to track and merge changes that different collaborators made to the
+  Can track and merge changes that different collaborators made to the
   document
 \item
-  Ability to create alternative versions of project files (\emph{branches}), and merge them into the main project as desired
+  Allows you to create alternative versions of project files (\emph{branches}), and merge them into the main project as desired
 \item
-  Tools for project management, including Issue Trackers
+  Includes tools for project management, including Issue Trackers
 \item
-  Default backup of project files
+  Provides additional backup of project files
 \item
-  Ability to share project information online, including through hosting websites related to the project or supplemental files related to a manuscript
+  Allows you to share project information online, including through hosting websites related to the project or supplemental files related to a manuscript
 \end{itemize}
 
 Many of these strengths draw directly on the functions provided by the
-underlying version control software (e.g., \emph{git}). However, the version control
+underlying version control software (e.g., \emph{Git}). However, the version control
 platform will typically allow team members to explore and work with these
 functions in an easier way than if they try to use the barebones version control
 software. Years ago, the use of version control required users to
@@ -4652,7 +4638,7 @@ There is one key feature of modern version control that's critical to making
 this work---resolving changes in files that started the same but were edited in
 different ways by different people and now need to be put back together,
 bringing along any changes made from the original version. This step is called
-\emph{merging} the files. While this is a feature driven by the git software itself,
+\emph{merging} the files. While this is a feature driven by the Git software itself,
 you typically won't use it until you're collaborating on a project through
 a version control platform like GitHub.
 
@@ -4683,7 +4669,7 @@ know which version to put into the integrated, latest version of the file.
 Different version control programs handle these merge conflicts in different
 ways.
 
-For the most common version control program used today, \emph{git}, these spots in
+For the most common version control program used today, \emph{Git}, these spots in
 the file are flagged with a special set of symbols when you try to integrate the
 two updated versions of the file. Along with the special symbols to denote a
 conflict, there will also be \emph{both} versions of the conflicting lines of the
@@ -4722,7 +4708,7 @@ project, how do you know what they have changed while you weren't looking, and
 who was responsible for each change?''
 \end{quote}
 
-Platforms for using git often include nice tools for visualizing differences
+Platforms for using Git often include nice tools for visualizing differences
 between two files, providing a more visual way to look at the differences between
 files across time points in the project. For example, GitHub automatically shows
 these using colors to highlight additions and subtractions of plain text for
@@ -4769,7 +4755,7 @@ information while not also adding to the cognitive load of interpreting the list
 \end{quote}
 
 If a project uses a version control platform, it is very easy to share data recorded
-for the project publicly. In a project that uses git and GitHub version control
+for the project publicly. In a project that uses Git and GitHub version control
 tools, it is easy to share the project data online once an associated manuscript
 is published, an increasingly common request or requirement from journals and
 funding agencies \citep{blischak2016quick}. Sharing data allows a more complete
@@ -4782,7 +4768,16 @@ form to the other over the course of the project \citep{metz2015github}. A priva
 project can be viewed only by fellow team members, while a public project can be
 viewed by anyone.
 
-Further, because git tracks the full history of changes to
+The most popular version control platforms, GitHub and GitLab, both allow users
+to toggle projects between ``public'' and ``private'' modes, which can be used to
+work privately on a project prior to peer review and publication, and then
+switch to a public mode after publication. This functionality will allow those
+who access the code to see not only the final product, but also the history of
+the development of the code and data for the project, providing more
+transparency in the development process, but without jeopardizing the novelty of
+the research results prior to publication.
+
+Further, because Git tracks the full history of changes to
 these documents, it includes functionality that lets you tag the code and data
 at a specific point (for example, the date when a paper was submitted) so that
 viewers can look at that specific version of the repository files, even while
@@ -4792,7 +4787,7 @@ persistent digital identifier (e.g., a DOI, like those assigned to published art
 to a specific version of a GitHub repository \citep{perez2016ten}.
 
 Version control platforms also help in providing a way to backup study data
-\citep{blischak2016quick, perez2016ten, perkel2018git}. Together, git and GitHub
+\citep{blischak2016quick, perez2016ten, perkel2018git}. Together, Git and GitHub
 provide a structure where the project directory (repository) is copied on
 multiple computers, both the users' laptop or desktop computers and on a remote
 server hosted by GitHub or a similar organization. As you collaborate with
@@ -4858,15 +4853,6 @@ freely hosted by GitHub. Users can create and host blog websites, help pages,
 manuals, tutorials, and websites related to specific projects.'' \citep{perez2016ten}
 \end{quote}
 
-The most popular version control platforms, GitHub and GitLab, both allow users
-to toggle projects between ``public'' and ``private'' modes, which can be used to
-work privately on a project prior to peer review and publication, and then
-switch to a public mode after publication. This functionality will allow those
-who access the code to see not only the final product, but also the history of
-the development of the code and data for the project, providing more
-transparency in the development process, but without jeopardizing the novelty of
-the research results prior to publication.
-
 With GitHub, while only collaborators on a public project can directly change
 the code, anyone else can \emph{suggest} changes through a process of copying a
 version of the project (\emph{forking} it). This allows someone to make the changes
@@ -4895,14 +4881,14 @@ platform. The process is particularly straightforward when the research project
 files are collected in an RStudio Project format, as described in earlier
 modules.
 
-\section{Using git and GitHub to implement version control}\label{module11}
+\section{Using Git and GitHub to implement version control}\label{module11}
 
 For many years, use of version control required use of the command line,
 limiting its accessibility to researchers with limited programming experience.
 However, graphical interfaces have removed this barrier, and RStudio has
 particularly user-friendly tools for implementing version control. In this
-module, we will show how to use \emph{git} through RStudio's user-friendly
-interface and how to connect from a local computer to \emph{GitLab} through
+module, we will show how to use \emph{Git} through RStudio's user-friendly
+interface and how to connect from a local computer to \emph{GitHub} through
 RStudio.
 
 \textbf{Objectives.} After this module, the trainee will be able to:
@@ -4910,15 +4896,15 @@ RStudio.
 \begin{itemize}
 \tightlist
 \item
-  Understand how to set up and use \emph{git} through RStudio's interface
+  Understand how to set up and use \emph{Git} through RStudio's interface
 \item
-  Understand how to connect with \emph{GitLab} through RStudio to collaborate on\\
+  Understand how to connect with \emph{GitHub} through RStudio to collaborate on\\
   research projects while maintaining version control
 \end{itemize}
 
 \subsection{How to use version control}\label{how-to-use-version-control}
 
-In this chapter, we will give you an overview of how to use git and GitHub
+In this chapter, we will give you an overview of how to use Git and GitHub
 for your laboratory research projects. If you prefer an open-source version
 control platform, GitLab has similar functionality and can be installed on
 a server you own.
@@ -4935,7 +4921,7 @@ member of your team who is comfortable with a programming language, to set up
 and maintain the GitHub repository, but all team members can participate in many
 features of the GitHub repository regardless of programming skill.
 
-The other audience for information on using git and GitHub are researchers who
+The other audience for information on using Git and GitHub are researchers who
 are comfortable coding. Fortunately, there are many good resources available for
 this audience. We'll end the module by providing advice to this audience to
 point them to resources where they can go to learn more and fully develop these
@@ -4947,38 +4933,38 @@ for scientific projects and papers. The repository is available at
 and code to accompany a published article on a pipeline for flow cytometry
 analysis \citep{fox2020cyto}.
 
-\subsection{Leveraging git and GitHub as a project director}\label{leveraging-git-and-github-as-a-project-director}
+\subsection{Leveraging Git and GitHub as a project director}\label{leveraging-git-and-github-as-a-project-director}
 
-Because git has a history in software development, and because most
+Because Git has a history in software development, and because most
 introductions to it quickly present arcane-looking code commands, you may have
 hesitations about whether it would be useful in your scientific research group.
 This is particularly likely to be the case if you, and many in your research
 group, do not have experience programming.
 
-This is not at all the case, though. In fact, the combination of git and GitHub
+This is not at all the case, though. In fact, the combination of Git and GitHub
 can become a secret weapon for your research group if you are willing to
 encourage those in your group who do know some programming (or are willing to
 learn a bit) to take the time to learn to set up a project in this environment
 for project management. Once a project has been set up in GitHub, there are a
 number of features that can be used by all team members, whether they code or
 not. These features facilitate collaboration between coders and non-coders as
-the data and analysis code evolve. The major features and advantages of git and
+the data and analysis code evolve. The major features and advantages of Git and
 GitHub are described in modules 2.9 and 2.10.
 
 As mentioned in the previous two modules, repositories that are tracked with
-git and shared through GitHub provide a number of tools that are useful in
+Git and shared through GitHub provide a number of tools that are useful in
 managing a project, both in terms of keeping track of what's been done in the
 project and also for planning what needs to be done next, breaking those goals
 into discrete tasks, assigning those tasks to team members, and maintaining a
 discussion as you tackle those tasks.
 
-While git itself traditionally has been used with a command-line interface
+While Git itself traditionally has been used with a command-line interface
 (think of the black and green computer screens shown when movies portray
-hackers), GitHub has wrapped git's functionality with an attractive graphical
+hackers), GitHub has wrapped Git's functionality with an attractive graphical
 user interface that is easy to understand. This is how you will interact with a
 project repository if you are online and logged into GitHub, rather than
 exploring it on your own computer (although there are also graphical user
-interfaces you can use to more easily explore git repositories locally, on your
+interfaces you can use to more easily explore Git repositories locally, on your
 computer).
 
 Git and GitHub provide a large set of tools for version control. However,
@@ -5196,16 +5182,29 @@ module 3.7.
 
 There are many excellent resources that provide instructions on this topic
 meant for researchers who are comfortable with using R and RStudio. An
-excellent place to start is with
-
-{[}Jenny Bryan's book{]}
+excellent place to start is with an online book written by Jenny Bryan
+named \emph{Happy Git and GitHub for the useR}. This book is available for free
+at \url{https://happygitwithr.com/}. It provides a gentle yet thorough introduction
+to using git, connecting it to RStudio Projects, and connecting everything
+with an online version control platform like GitHub. It also includes a
+helpful section that covers what a daily workflow will look like when you
+are using git and GitHub in conjunction with projects that include R code.
 
 Once you've explored that resource, here are some others you might also find
 useful:
 
-{[}Other resources{]}
-
-\subsection{Applied exercise}\label{applied-exercise-2}
+\begin{itemize}
+\tightlist
+\item
+  Software Carpentry's introduction to version control with git, available at
+  \url{https://swcarpentry.github.io/git-novice/}
+\item
+  Article on \href{https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004668}{\emph{A Quick Introduction to Version Control with Git and GitHub}}
+  \citep{blischak2016quick}
+\item
+  Article on \href{https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004947}{Ten Simple Rules for Taking Advantage of Git and GitHub}
+  \citep{perez2016ten}
+\end{itemize}
 
 \chapter{Experimental Data Preprocessing}\label{experimental-data-preprocessing}
 
@@ -6232,7 +6231,7 @@ software, where there is typically not a company-based helpline and so the
 community of users often represents one of the main sources for help and
 troubleshooting.
 
-\subsection{Discussion questions}\label{discussion-questions-2}
+\subsection{Discussion questions}\label{discussion-questions-3}
 
 \section{Introduction to scripted data pre-processing in R}\label{module13}
 
@@ -7770,6 +7769,17 @@ complex data formats is often necessary within open-source pre-processing
 software and outline the hurdles created in reproducibility tool use among
 laboratory-based scientists.
 
+\begin{quote}
+``Right now, in labs across the world, machines are sequencing the genomes of
+the life on earth. Even with rapidly decreasing costs and huge technological
+advancements in genome sequencing, we're only seeing a glimpse of the biological
+information contained in every cell, tissue, organism, and ecosystem. However,
+the smidgen of total biological information we're gathering amounts to mountains
+of data biologists need to work with. At no other point in human history has our
+ability to understand life's complexities been so dependent on our skills to
+work with and analyze data.'' \citep{buffalo2015bioinformatics}
+\end{quote}
+
 \textbf{Objectives.} After this module, the trainee will be able to:
 
 \begin{itemize}
@@ -7783,13 +7793,12 @@ laboratory-based scientists.
   data pre-processing
 \end{itemize}
 
-In previous modules, we have gone into a lot of detail about all of the
-advantages of the tidyverse approach. In some cases, though, data might be
-poorly suited to a tidyverse approach at some part of your pipeline. However as
-you work with biomedical data, you may find that it is unreasonable to start
-with a tidyverse approach from the first steps of pre-processing the data. This
-is particularly the case if you are working with data from complex research
-equipment, liek mass spectrometers and flow cytometers.
+In previous modules, we have gone into a lot of detail about advantages of the
+tidyverse approach. However as you work with biomedical data, you may find that
+it is unreasonable to start with a tidyverse approach from the first steps of
+pre-processing the data. This is particularly the case if you are working with
+data from complex research equipment, like mass spectrometers and flow
+cytometers.
 
 It can be frustrating to realize that you can't use your standard tools
 in some steps of working with the data you collect in your experiments.
@@ -7799,32 +7808,30 @@ R to work with standard datasets. You can feel like you're starting at
 square one when you realize that approach won't work for some steps of
 working with the data you're collecting for your own research.
 
-This module aims to help you navigate this process.
-It is helpful to understand how the Bioconductor approach differs from
-the tidyverse approach, to start developing a framework and tools for
-navigating both approaches.
+This module aims to help you navigate this process. In particular, it is helpful
+to understand how the Bioconductor approach differs from the tidyverse approach,
+to start developing a framework and tools for navigating both approaches.
 
-The primary difference between the two approaches is how the data objects
-are structured. When you work with data in R, it is kept in an ``object'',
-which you can think of as a structured container for the data. In the
-tidyverse approach, the primary data container is the dataframe. A
-dataframe is made up of a set of object types called vectors (each column
-in the dataframe is a vector). Therefore, to navigate the tidyverse
-approach, the only data structures you need to understand well are the
-dataframe structure and the vector structure. Tools in the tidyverse
-use these simple structures over and over.
+The primary difference between the two approaches is how the data objects are
+structured. When you work with data in R, it is kept in an ``object'', which you
+can think of as a structured container for the data. In the tidyverse approach,
+the primary data container is the dataframe. A dataframe is made up of a set of
+object types called vectors: each column in the dataframe is a vector.
+Therefore, to navigate the tidyverse approach, the only data structures you need
+to understand well are the dataframe structure and the vector structure. Tools
+in the tidyverse use these simple structures over and over.
 
-By contrast, the Bioconductor approach uses a collection of more complex
-structured containers to store data as it's used. There are a number of
-reasons for this, which we'll discuss in this module.
+By contrast, the Bioconductor approach uses a collection of more complex data
+containers. There are a number of reasons for this, which we'll discuss in this
+module.
 
-As a note, it is very possible that in the near future, all steps of even
+As a note, it is possible that in the near future, all steps of even
 complex pipelines will be manageable with a tidyverse approach. More
 R developers are embracing the tidyverse approach and making tools and packages
 within its framework. In some areas with complex data, there have been
-major inroads, allowing a tidyverse approach throughout the pipeline even
-when working with complex data. One example of this is with spatial data,
-where the \texttt{sf} package, and related tools, now make it possible to stay in
+major inroads to allow a tidyverse approach throughout the pipeline even
+when working with complex data. One example is with spatial data,
+where the \texttt{sf} package and related tools now make it possible to stay in
 a tidyverse framework when working with large and complex geospatial data.
 We will end this module by discussing the outlook for similar developments
 in the area of biomedical data.
@@ -7832,40 +7839,48 @@ in the area of biomedical data.
 \subsection{How the Bioconductor and tidyverse approaches differ}\label{how-the-bioconductor-and-tidyverse-approaches-differ}
 
 The heart of the difference between the tidyverse and Bioconductor approaches
-comes down to how data are structured within pipelines in the two approaches.
-There are more differences than this one, but most of the other differences
-result from this main difference.
+comes down to how data are structured within pipelines. While there are more
+differences than this one, most of the other differences result from this
+main one.
 
 As we've described in detail in earlier modules (modules 2.3 and 3.5), in the
 tidyverse approach, data are stored throughout the pipeline in a dataframe
-structure. These dataframes are composed of vectors, which make up their
-columns. Almost every function in the tidyverse is designed to input either a
-dataframe or a vector. And almost every function is designed to output the same
-type of data container (dataframe or vector) that it inputs. As a result, the
-tidyverse approach can mix and match functions in different orders to tackle
-complex processes through a chain of many small steps.
+structure. These dataframes are composed of a data structure called a vector.
+Vectors make up the columns of a dataframe. Almost every function in the
+tidyverse, therefore, is designed to input either a dataframe or a vector. And
+almost every function is designed to output the same type of data container
+(dataframe or vector) that it inputs. As a result, the tidyverse approach allows
+you to combine functions in different orders to tackle complex processes through
+a chain of many small steps.
 
 By contrast, most packages in Bioconductor use more complex data structures
 to store data. Often, a Bioconductor pipeline will use different data
 structures at different points in its pipeline. For example, your data might
-be stored in one type of a data container after it's first read into R, and
+be stored in one type of a data container when it's read into R, and
 another type once you've done some pre-processing.
 
 As a result, with the Bioconductor approach, there will be more types of data
-structures that you will have to learn how to use and navigate. Another
-result is that, often, the functions that you use in your
-pipeline will only work with a specific data structure. You therefore will need
-to keep track of which type of data structure is required as the input to each
-function.
+structures that you will have to understand and learn how to use. Another result
+is that the functions that you use in your pipeline will often only work with a
+specific data structure. You therefore will need to keep track of which type of
+data structure is required as the input to each function.
 
 This also means that you are more constrained in how you chain together
-different functions to make a pipeline. In the tidyverse approach, you can often
-chain the functions in any order, since each function inputs and outputs the
-same data structure. With a Bioconductor pipeline, however, there
-will be functions that input one data structure and output a different one.
-As a result, Bioconductor functions, instead of being ``small''
-functions that do one simple thing, often carry out a number of complex
-steps within each function call.
+different functions to make a pipeline. To be clear, a pipeline in R that
+includes these complex Bioconductor data structures will typically still be
+modular, in the sense that you can adapt and separate specific parts of the
+pipeline. However, they tend to be much less flexible than pipelines developed
+with a tidyverse approach. The data structure changes often, with certain
+functions outputing a data structure that is needed for the next step, then the
+function of the next step outputting the data in a different structure, and so
+on. This changing data structure means that the functions for each step often
+are constrained to always be put in the same order. By comparison, the small
+tools that make up tidyverse functions can often be combined in many different
+orders, letting you build a much larger variety of pipelines with them. Also,
+many of the functions that work with complex data types will do many things
+within one function, so they can be harder to learn and understand, and they are
+often much more customized to a specific action, which means that you have to
+learn more functions (since each does one specific thing).
 
 This difference will also make a difference in how you work when you modify a
 pipeline of code. In the tidyverse approach, you will change the functions you
@@ -7882,69 +7897,35 @@ project. This means that, for many biomedical researchers who are now generating
 complex, high-throughput data, it is worth learning how to use complex data
 structures in R.
 
-To be clear, a pipeline in R that includes these complex data structures
-will typically still be modular, in the sense that you can adapt and
-separate specific parts of the pipeline. However, they tend to be much
-less flexible than pipelines developed with a tidyverse approach. The
-data structure changes often, with certain functions outputing a data
-structure that is needed for the next step, then the function of the
-next step outputting the data in a different structure, and so on. This
-changing data structure means that the functions for each step often are
-constrained to always be put in the same order. By comparison, the small
-tools that make up tidyverse functions can often be combined in many different
-orders, letting you build a much larger variety of pipelines with them.
-Also, many of the functions that work with complex data types will do
-many things within one function, so they can be harder to learn and
-understand, and they are often much more customized to a specific action,
-which means that you have to learn more functions (since each does one
-specific thing).
-
 \subsection{Why is the Bioconductor approach designed as it is?}\label{why-is-the-bioconductor-approach-designed-as-it-is}
 
-It can be helpful to understand why the Bioconductor approach is designed
-in the way it is. First, there are some characteristics of complex data
-that can make it unsuitable for a tidyverse approach. In the next section
-of the module, we'll discuss some of these characteristics, as well as
-provide examples of how biomedical data can have these characteristics.
+To begin learning the Bioconductor approach, it can be helpful to understand
+it's designed the way it is. First, there are some characteristics of complex
+data that can make the data unsuitable for a tidyverse approach, including data
+size and complexity. In the next section of this module, we'll discuss some of
+these characteristics, as well as provide examples of how biomedical data can
+have them. However, there are also some historical and cultural reasons for the
+Bioconductor design. It is helpful to have an introduction to this, as it can
+help you navigate as you work within the Bioconductor framework.
 
-However, there are also some historical and cultural reasons for the
-Bioconductor design. It is helpful to have an introduction to this, as it
-can help you navigate as you work within the Bioconductor framework.
+Bioconductor predates the tidyverse approach. In fact, it has been around almost
+as long as R itself---the first version of R was first released in 2000, and
+Bioconductor started in 2003. The Bioconductor project was inspired by an
+ambitious aim---to allow people around the world to coordinate to make tools for
+pre-processing and analyzing genomic and other high-throughput data. Anyone is
+allowed to make their own extension to R as a package, including a Bioconductor
+package.
 
-Bioconductor predates the tidyverse approach. In fact, it has been around
-almost as long as R itself---the first version of R was first released
-in 2000, and Bioconductor started in 2003.
-
-The Bioconductor project had an ambitious aim---allow people around the world to
-coordinate to make tools for pre-processing and analyzing genomic and other
-high-throughput data. Anyone is allowed to make their own extension to R as a
-package, including a Bioconductor package. This is similar to the approach taken
-by Andy Warhol, the famous pop artist. He had a studio where the door was always
-open, and people were free to walk in off the street to help create new things
-\citep{judkins2016art}.
-
-Imagine how complex it is to try to harness all these contributions. Within
-the Bioconductor project, this is managed by using some general design principles,
-centered on some standard data structures. Each person who writes
-code for Bioconductor can use these data structures, writing functions that
-input and output data within these defined structures. If they are working
-on something where there isn't yet a defined structure, they can define new
-ones within their package, which others can then use in their own packages.
-
-The different Bioconductor data structures, then, were implemented to help many
-people coordinate to make software extensions to R to handle complex biomedical
-data. As Susan Holmes and Wolfgang Huber note in their book \emph{Modern Statistics
-for Modern Biology}:
-
-\begin{quote}
-``The Bioconductor project has defined specialized data containers to represent
-complex biological datasets. These help to keep your data consistent, safe and
-easy to use.'' \citep{holmes2018modern}
-\end{quote}
-
-Indeed, in an article on software for computational biology, Robert Gentleman---one
-of the developers of R and founders of the Bioconductor project---is quoted
-as saying:
+Imagine how complex it is to try to harness all these contributions. Within the
+Bioconductor project, this challenge is managed by using some general design
+principles, centered on standard data structures. The different Bioconductor
+data structures, then, were implemented to help many people coordinate to make
+software extensions to R to handle complex biomedical data. As Susan Holmes and
+Wolfgang Huber note in their book \emph{Modern Statistics for Modern Biology},
+``specialized data containers \ldots{} help to keep your data consistent, safe and
+easy to use.'' \citep{holmes2018modern} Indeed, in an article on software for
+computational biology, Robert Gentleman---one of the developers of R and
+founders of the Bioconductor project---is quoted as saying:
 
 \begin{quote}
 ``We defined a handful of data structures that we expected people to use. For
@@ -7954,23 +7935,47 @@ be used by analytic tools. Really, I think it's data structures that drive
 interoperability.'' --- Robert Gentlemen in \citep{altschul2013anatomy}
 \end{quote}
 
+Each person who writes code for Bioconductor can use these data structures,
+writing functions that input and output data within these defined structures. If
+they are working on something where there isn't yet a defined structure, they
+can define new ones within their package, which others can then use in their own
+packages.
+
+As a result of this design, there are a number of complex data structures in
+use within Bioconductor packages. Some that you might come across as you start to work
+using this approach include \citep{huber2015orchestrating}:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{ExpressionSet}
+\item
+  \texttt{SummarizedExperiment}
+\item
+  \texttt{GRanges}
+\item
+  \texttt{VCF}
+\item
+  \texttt{VRanges}
+\item
+  \texttt{BSgenome}
+\end{itemize}
+
 \subsection{Why is it sometimes necessary to use a Bioconductor approach with biomedical data}\label{why-is-it-sometimes-necessary-to-use-a-bioconductor-approach-with-biomedical-data}
 
-There are some characteristics of some types of biomedical data that make
-non-tidy data structures sometimes very useful. Specifially, there are two main
-features---of data collected from complex laboratory equipment like flow
-cytometers and mass spectrometers, in particular---that make it useful to use
+Two main features---of data collected from complex laboratory equipment like
+flow cytometers and mass spectrometers, in particular---make it useful to use
 more complex data structures in R in the earlier stages of pre-processing the
 data rather directly using a tidy data structure. First, the data are often very
 large, in some cases so large that it is difficult to read them into R. Second,
-the data might combine various elements, each with their own natural structures,
-that you'd like to keep together as you move through the steps of pre-processing
-the data.
+the data might combine various elements that you'd like to keep together as you
+move through the steps of pre-processing the data, but each of these elements
+have their own natural structures, making it hard to set the data up as a
+two-dimensional dataframe. Let's take a more detailed look at each of these.
 
-The first reason why dataframe structures don't always work for data from
-biological experiments has to do with the size of data (and so how much
-memory it requires). Very large datasets are common in biomedical data,
-including genomics data. As Holmes and Huber note:
+First, very large datasets are common in biomedical data, including genomics
+data. In a book on \emph{Modern Statistics for Modern Biology}, Holmes and Huber
+describe how the size of biological data have exploded:
 
 \begin{quote}
 ``Biology, formerly a science with sparse, often only qualitative data, has
@@ -7979,12 +7984,13 @@ energy physics or astronomy and whose data are wildly more heterogeneous and
 complex.'' \citep{holmes2018modern}
 \end{quote}
 
-A computer has several ways that it can store data. The primary storage is
-closely connected with the computer's processing unit, where calculations are
-made, and so data stored in this primary storage can be processed by code very
-quickly. This storage is called the computer's random access memory, or RAM. R
-uses this approach, and so when you load data in R to be stored in one of its
-traditional data structures, that data is moved into part of the computer's RAM
+When datasets are large, it can cause complications for computers. A computer
+has several ways that it can store data. The primary storage is closely
+connected with the computer's processing unit, where calculations are made, and
+so data stored in this primary storage can be processed by code very quickly.
+This storage is called the computer's random access memory, or RAM. R uses this
+approach, and so when you load data in R to be stored in one of its traditional
+data structures, that data is moved into part of the computer's RAM
 \citep{burns2011r, gillespie2016efficient}.
 
 Data can also be stored in other devices on a computer, including hard drives
@@ -8023,46 +8029,48 @@ if you are the user, you won't notice the difference in where the data is kept
 (on disk versus in memory)---this means you won't have to worry about these
 memory management issues, but instead can just gain from everything going
 smoothly, even as datasets get very large \citep{gatto2013msnbase}.
-As one article notes:
 
-\begin{quote}
-``These advances have helped to ensure that R and Bioconductor remain relevant
-in the age of high-throughput sequencing. We plan to continue in this direction
-by designing and implementing abstractions that enable user code to be agnostic
-to the mode of data storage, whether it be memory, files or databases. This will
-bring much needed agility to resource allocation and will enable the user to be
-more resourceful, without the burden of increased complexity.''
-\citep{lawrence2014scalable}
-\end{quote}
+The second reason that tidy dataframes aren't always the best container for
+biomedical data has to do with the complexity of the data. Dataframes are very
+clearly and simply organized. However, they can be too restrictive in some
+cases. Sometimes, you might have data that do not fit well within the
+two-dimensional, non-ragged structure that is characteristic of the dataframe
+structure.
 
-The second reason that tidy dataframes aren't always best for biomedical data
-has to do with the complexity of the data. Dataframes are very clearly and
-simply organized. However, they can be too restrictive in some cases. Sometimes,
-you might have data that do not fit well within the two-dimensional, non-ragged
-structure that is characteristic of the dataframe structure. For example, some
-biomedical data may have data that records characteristics at several levels of
-the data. It may have records on the levels of gene expression within each
-sample, separate information about each gene that was measured, and another
-separate set of information that characterizes each of the samples. While it is
-critical to keep ``like'' measurements aligned with data like this---in other
-words, to ensure that you can connect the data that characterizes a gene with
-the data that provides measures of the level of expression of that gene in each
-sample---these data do not naturally have a two-dimensional structure and so do
-not fit naturally into a dataframe structure.
+For example, some biomedical data may have data that records characteristics at
+several levels of the data. It may have records on the levels of gene expression
+within each sample, separate information about each gene that was measured, and
+another separate set of information that characterizes each of the samples.
+While it is critical to keep ``like'' measurements aligned with data like
+this---in other words, to ensure that you can connect the data that
+characterizes a gene with the data that provides measures of the level of
+expression of that gene in each sample---these data do not naturally have a
+two-dimensional structure and so do not fit naturally into a dataframe
+structure.
 
 Finally, one of the advantages of these complex data structures for biomedical
 data pre-processing is that they can be leveraged to develop very powerful
 algorithms for working with complex biomedical data. These include reading data
 in from the specialized file formats that are often output by laboratory
-equipment. As Holmes and Huber note:
+equipment \citep{holmes2018modern}.
 
-\begin{quote}
-``Bioconductor packages support the reading of many of the data types and formats
-produced by measurement instruments used in modern biology, as well as the
-needed technology-specific `preprocessing' routines. This community is
-actively keeping these up-to-date with the rapid developments in the
-instrument market.'' \citep{holmes2018modern}
-\end{quote}
+\subsection{Navigating Bioconductor packages and data structures}\label{navigating-bioconductor-packages-and-data-structures}
+
+{[}How to install BioC packages; \texttt{biocLite()}{]}
+
+While CRAN is the common spot for sharing general-purpose packages, there is a
+specialized repository that is used for many genomics and other biology-related
+R packages called Bioconductor. These packages can also be easily installed
+through a call in R, but in this case it requires an installation function from
+the \texttt{BiocManager} package. Many of the functions that are useful for
+preprocessing biological data from laboratory experiments are available through
+Bioconductor.
+
+{[}How to find out more about BioC data structures{]}
+
+There are resources for learning to use specific Bioconductor packages, as well
+as some general resources on Bioconductor, like \emph{R Programming for
+Bioinformatics} {[}ref{]}.
 
 \subsection{Combining Bioconductor and tidyverse approaches in a workflow}\label{combining-bioconductor-and-tidyverse-approaches-in-a-workflow}
 
@@ -8075,65 +8083,62 @@ use a method or algorithm available through Bioconductor. However, this doesn't
 mean that you must completely give up the power and efficiency of the tidyverse
 approach described in earlier modules.
 
-Instead, you can combine the two, in a workflow like that shown in Figure
-\ref{fig:combinedworkflow}. In this combined approach, you start the workflow
-in the Bioconductor approach and transition when possible to a tidyverse
-approach, transitioning by ``tidying'' from a more complex data structure to a
-simpler dataframe data structure along the way. In this module, we will describe
-how you can make this transition to create this type of combined workflow. This
-is a useful approach, because once your workflow has advanced to a stage where
-it is straightforward to store the data in a a dataframe, there are a large
-advantages to shifting into the tidyverse approach as compared to using more
-complex object-oriented classes for storing the data, in particular when it
-comes to data analysis and visualization at later stages in your workflow.
+Instead, you can combine the two approaches in a workflow like that shown in
+Figure \ref{fig:combinedworkflow}. In this combined approach, you start the
+workflow in the Bioconductor approach and transition when possible to a
+tidyverse approach, transitioning by ``tidying'' from a more complex data
+structure to a simpler dataframe data structure along the way. This is a useful
+approach, because once your workflow has advanced to a stage where it is
+straightforward to store the data in a a dataframe, there are a large advantages
+to shifting into the tidyverse approach as compared to using more complex
+object-oriented classes for storing the data, in particular when it comes to
+data analysis and visualization at later stages in your workflow. In this
+section, we will describe how you can make this transition to create a combined
+workflow.
 
 \begin{figure*}
 \includegraphics[width=\textwidth]{figures/workflow} \caption[An overview of a workflow that moves from a Bioconductor approach---for pre-processing of the data---through to a tidyverse approach one pre-processing has created smaller, simpler data that can be reasonably stored in a dataframe structure]{An overview of a workflow that moves from a Bioconductor approach---for pre-processing of the data---through to a tidyverse approach one pre-processing has created smaller, simpler data that can be reasonably stored in a dataframe structure.}\label{fig:combinedworkflow}
 \end{figure*}
 
-Key to this kind of combined pipeline are tools that can convert between
-specialized data structures for Bioconductor to tidy dataframes. A set of tools
-for doing this are available through the \texttt{biobroom} package. You will use
-functions in this package applied to certain types of Bioconductor data objects,
-and the function will be able to extract parts of the data into a tidy data
-frame.
+Key to a combined pipeline are tools that can convert between specialized data
+structures for Bioconductor and tidy dataframes. A set of tools for doing this
+are available through the \texttt{biobroom} package \citep{biobroom}. The \texttt{biobroom} package
+includes three generic functions (also called ``methods''), which can be used
+on a number of Bioconductor object classes. When applied to object stored in one
+of these Bioconductor classes, these functions will extract part of the data
+into a tidy dataframe format. In this format, it is easy to use the tools from
+the tidyverse to further explore, analyze, and visualize the data.
 
-The \texttt{biobroom} package includes three main generic functions (also called
-``methods''), which can be used on a number of Bioconductor object classes. When
-applied to object stored in one of these Bioconductor classes, these functions
-will extract part of the data into a tidy dataframe format. In this format, it
-is easy to use the tools from the tidyverse to further explore, analyze, and
-visualize the data.
-
-The three generic functions of \texttt{biobroom} are the functions \texttt{tidy}, \texttt{augment},
+The three generic functions of \texttt{biobroom} are called \texttt{tidy}, \texttt{augment},
 and \texttt{glance}. These function names mimic the names of the three main functions
 in the \texttt{broom} package, which is a more general purpose package for extracting
 tidy datasets from more complex R object containers \citep{robinson2014broom}. The
 \texttt{broom} package focuses on the output from functions in R for statistical
 testing and modeling, while the newer \texttt{biobroom} package replicates this idea,
 but for many of the common object classes used to store data through
-Bioconductor packages and workflows.
+Bioconductor packages and workflows \citep{biobroom}.
 
-As an example, we can look at how the \texttt{biobroom} package can be used to convert
-output generated by functions in the \texttt{edgeR} package. The \texttt{edgeR} package is a
-popular Bioconductor package that can be used on gene expression data to explore
-which genes are expressed differently across experimental groups (\emph{differential
-expression analysis}) \citep{edgeR}. Before using the functions in the package, the
-data must be pre-processed to align sequence reads from the raw data and then to
-create a table with the counts of each read at each gene across each sample. The
-\texttt{edgeR} package includes functions for pre-processing through its own functions,
-as well, including capabilities for filtering out genes with low read counts
-across all samples and model-based normalization across samples to help handle
-technical bias, including differences in sequencing depth \citep{chen2014edger}.
+As an example, we can talk about how the \texttt{biobroom} package can be used to
+convert output generated by functions in the \texttt{edgeR} package. The \texttt{edgeR}
+package is a popular Bioconductor package that can be used on gene expression
+data, to explore which genes are expressed differently across experimental
+groups (an approach called differential expression analysis) \citep{edgeR}. Before
+using the functions in the package, the data must be pre-processed to align
+sequence reads from the raw data and then to create a table with the counts of
+each read at each gene across each sample. The \texttt{edgeR} package includes
+functions for pre-processing these data, including filtering out genes with low
+read counts across all samples and applying model-based normalization across
+samples to help handle technical bias, including differences in sequencing depth
+\citep{chen2014edger}.
 
 The \texttt{edgeR} package operates on data stored in a special object class defined by
-the package, the \texttt{DGEList} object class \citep{chen2014edger}. This object class
-includes areas for storing the table of read counts, in the form of a matrix
-appropriate for analysis by other functions in the package, as well as other
-spots for storing information about each sample and, if needed, a space to store
-annotations of the genes \citep{chen2014edger}. Then functions from the \texttt{edgeR}
+the package called the \texttt{DGEList} object class \citep{chen2014edger}. This object
+class includes areas for storing the table of read counts, in the form of a
+matrix appropriate for analysis by other functions in the package, as well as
+other spots for storing information about each sample and, if needed, a space to
+store annotations of the genes \citep{chen2014edger}. Then functions from the \texttt{edgeR}
 package can perform differential expression analysis on the data in the
-\texttt{DGEList} class. The result is an object in the \texttt{DGEExact} class, which is
+\texttt{DGEList} class. The result is an object in the \texttt{DGEExact} class, which is also
 defined by the \texttt{edgeR} package. To extract data from this class in a tidy
 format, you can use the \texttt{tidy} and \texttt{glance} functions from \texttt{biobroom}.
 
@@ -8144,239 +8149,20 @@ the future there might be tidy dataframe formats that are adaptable enough to
 handle earlier stages in the data pre-processing for genomics data. The tidyverse
 dataframe approach has already been adapted to enable tidy dataframes to include
 more complex types of data within certain columns of the data frame as a special
-list-type column. This functionality is being leveraged through the \texttt{sf}
+list-type column.
+
+This functionality is being leveraged through the \texttt{sf}
 package, for example, to enable a tidy approach to working with geographical
 data. This allows those who are working with geographical data, for example data
 from shapefiles for creating maps, to use the standard tidyverse approaches
 while still containing complex data needed for this geographical information
-within a tidy dataframe. It seems very possible that similar approaches may be
-adapted in the near future to allow for biomedical or genomic data to be stored
-in a way that both accounts for complexity early and pre-processing of these
-data but also allows for a more natural integration with the wealth of powerful
-tools available through the tidyverse approach.
+within a tidy dataframe. Another example is the \texttt{tidymodels} package, which \ldots{}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-Many excellent
-resources exist for learning the tidyverse approach, and so we won't recover that
-information here. Instead, we will focus on how to interface between this
-approach and the object-based approach that's more common with Bioconductor
-packages. Bioconductor packages often take an object-based approach, and with
-good reason because of the complexity and size of many early versions of
-biomedical data in the pre-processing process. There are also resources for
-learning to use specific Bioconductor packages, as well as some general
-resources on Bioconductor, like \emph{R Programming for Bioinformatics} {[}ref{]}.
-However, there are fewer resources available online that teach how to coordinate
-between these two approaches in a pipeline of code, so that you can leverage the
-needed power of Bioconductor approaches early in your pipeline, as you
-pre-process large and complex data, and then shift to use a tidyverse approach
-once your data is amenible to this more straightforward approach to analysis and
-visualization.
-
-The heart of making this shift is learning how to convert data, when possible,
-from a more complex, class-type data structure (built on the flexible list
-data structure) to the simpler, more standardized two-dimensional dataframe
-structure that is required for the tidyverse approach. In this subsection, we'll
-cover approaches for converting your data from Bioconductor data structures to
-dataframes.
-
-If you are lucky, this might be very straightforward. A pair of packages called
-\texttt{broom} and \texttt{biobroom} have been created specifically to facilitate the conversion
-of data from more complex structures to dataframes. The \texttt{broom} package was
-created first, by David Robinson, to convert the data stored in the objects that
-are created by fitting statistical models into tidy dataframes. Many of the functions
-in R that run statistical tests or fit statistical models output results in a
-more complex, list-based data structure. These structures have nice ``print'' methods,
-so if fitting the model or running the test is the very last step of your pipeline,
-you can just read the printed output from R. However, often you want to include
-these results in further code---for example, creating plots or tables that show
-results from several statistical tests or models. The \texttt{broom} package includes
-several functions for pulling out different bits of data that are stored in the
-complex data structure created by fitting the model or running the test and convert
-those pieces of data into a tidy dataframe. This tidy dataframe can then be
-easily used in further code using a tidyverse approach.
-
-The \texttt{biobroom} package was created to meet a similar need with data stored in some
-of the complex structures commonly used in Bioconductor packages.
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-Some of the most important data structures in Bioconductor are \citep{huber2015orchestrating} (from Table 2 in this reference):
-
-\begin{itemize}
-\tightlist
-\item
-  \texttt{ExpressionSet} (\texttt{Biobase} package)
-\item
-  \texttt{SummarizedExperiment} (\texttt{GenomicRanges} package)
-\item
-  \texttt{GRanges} (\texttt{GenomicRanges} package)
-\item
-  \texttt{VCF} (\texttt{VariantAnnotation} package)
-\item
-  \texttt{VRanges} (\texttt{VariantAnnotation} package)
-\item
-  \texttt{BSgenome} (\texttt{BSgenome} package)
-\end{itemize}
-
-\begin{quote}
-``The Bioconductor project distributes the software as a number of different R
-packages, including Rsamtools, IRanges, GenomicRanges, GenomicAlignments,
-Biostrings, rtracklayer, biovizBase and BiocParallel. The software enables the
-analyst to conserve computational resources, iteratively generate summaries and
-visualize data at arbitrary levels of detail. These advances have helped to
-ensure that R and Bioconductor remain relevant in the age of high-throughput
-sequencing. We plan to continue in this direction by designing and implementing
-abstractions that enable user code to be agnostic to the mode of data storage,
-whether it be memory, files or databases. This will bring much needed agility to
-resource allocation and will enable the user to be more resourceful, without the
-burden of increased complexity.'' \citep{lawrence2014scalable}
-\end{quote}
-
-\begin{quote}
-``The biobroom package contains methods for converting standard objects in Bioconductor into a `tidy format'. It serves as a complement to the popular broom package, and follows the same division (tidy/augment/glance) of tidying methods.''
-\citep{biobroom}
-\end{quote}
-
-\begin{quote}
-``Tidying data makes it easy to recombine, reshape and visualize bioinformatics analyses. Objects that can be tidied include: ExpressionSet object,
-GRanges and GRangesList objects, RangedSummarizedExperiment object, MSnSet object,
-per-gene differential expression tests from limma, edgeR, and DESeq2, qvalue object for multiple hypothesis testing.'' \citep{biobroom}
-\end{quote}
-
-\begin{quote}
-``We are currently working on adding more methods to existing Bioconductor objects.'' \citep{biobroom}
-\end{quote}
-
-\begin{quote}
-``All biobroom tidy and augment methods return a tbl\_df by default (this prevents them from printing many rows at once, while still acting like a traditional data.frame).'' \citep{biobroom}
-\end{quote}
-
-\begin{quote}
-``The concept of `tidy data' offers a powerful framework for structuring data
-to ease manipulation, modeling and visualization. However, most R functions,
-both those builtin and those found in third-party packages, produce output that
-is not tidy, and that is therefore difficult to reshape, recombine, and
-otherwise manipulate. Here I introduce the broom package, which turns the output
-of model objects into tidy data frames that are suited to further analysis,
-manipulation, and visualization with input-tidy tools.'' \citep{robinson2014broom}
-\end{quote}
-
-\begin{quote}
-``Tools are classified as `messy-output' if their output does not fit into this
-{[}tidy{]} framework. Unfortunately, the majority of R modeling tools, both from the
-built-in stats package and those in common third party packages, are
-messy-output. This means the data analyst must tidy not only the original data,
-but the results at each intermediate stage of an analysis.'' \citep{robinson2014broom}
-\end{quote}
-
-\begin{quote}
-``The broom package is an attempt to solve this issue, by bridging the gap from
-untidy outputs of predictions and estimations to create tidy data that is easy
-to manipulate with standard tools. It centers around three S3 methods, tidy,
-augment, and glance, that each take an object produced by R statistical
-functions (such as lm, t.test, and nls) or by popular third-party packages (such
-as glmnet, survival, lme4, and multcomp) and convert it into a tidy data frame
-without rownames (Friedman et al., 2010; Therneau, 2014; Bates et al., 2014;
-Hothorn et al., 2008). These outputs can then be used with input-tidy tools such
-as dplyr or ggplot2, or downstream statistical tests. broom should be
-distinguished from packages such as reshape2 and tidyr, which rearrange and
-reshape data frames into different forms (Wickham, 2007b, 2014b). Those packages
-perform essential tasks in tidy data analysis but focus on manipulating data
-frames in one specific format into another. In contrast, broom is designed to
-take data that is not in a data frame (sometimes not anywhere close) and convert
-it to a tidy data frame.'' \citep{robinson2014broom}
-\end{quote}
-
-\begin{quote}
-``\texttt{tidy} constructs a data frame that summarizes the model's statistical
-components, which we refer to as the component level. In a regression such as
-the above it may refer to coefficient estimates, p-values, and standard errors
-for each term in a regression. The tidy generic is flexible- in other models it
-could represent per-cluster information in clustering applications, or per-test
-information for multiple comparison functions. \ldots{} \texttt{augment} add columns to the
-original data that was modeled, thus working at the observation level. This
-includes predictions, residuals and prediction standard errors in a regression,
-and can represent cluster assignments or classifications in other applications.
-By convention, each new column starts with . to ensure it does not conflict with
-existing columns. To ensure that the output is tidy and can be recombined,
-rownames in the original data, if present, are added as a column called
-.rownames. \ldots{} Finally, \texttt{glance} constructs a concise one-row summary of the
-model level values. In a regression this typically contains values such as R2 ,
-adjusted R2 , residual standard error, Akaike Information Criterion (AIC), or
-deviance. In other applications it can include calculations such as cross
-validation accuracy or prediction error that are computed once for the entire
-model. \ldots{} These three methods appear across many analyses; indeed, the fact
-that these three levels must be combined into a single S3 object is a common
-reason that model outputs are not tidy. Importantly, some model objects may have
-only one or two of these methods defined. (For example, there is no sense in
-which a Student's T test or correlation test generates information about each
-observation, and therefore no augment method exists).'' \citep{robinson2014broom}
-\end{quote}
-
-\begin{quote}
-``While model inputs usually require tidy inputs, such attention to detail
-doesn't carry over to model outputs. Outputs such as predictions and estimated
-coefficients aren't always tidy. For example, in R, the default representation
-of model coefficients is not tidy because it does not have an explicit variable
-that records the variable name for each estimate, they are instead recorded as
-row names. In R, row names must be unique, so combining coefficients from many
-models (e.g., from bootstrap resamples, or subgroups) requires workarounds to
-avoid losing important information. This knocks you out of the flow of analysis
-and makes it harder to combine the results from multiple models.''
-\citep{wickham2014tidy}
-\end{quote}
-
-\begin{quote}
-``Right now, in labs across the world, machines are sequencing the genomes of the life
-on earth. Even with rapidly decreasing costs and huge technological advancements in
-genome sequencing, we're only seeing a glimpse of the biological information contained
-in every cell, tissue, organism, and ecosystem. However, the smidgen of total biological
-information we're gathering amounts to mountains of data biologists need to work with. At
-no other point in human history has our ability to understand life's complexities been so
-dependent on our skills to work with and analyze data.'' \citep{buffalo2015bioinformatics}
-\end{quote}
-
-\begin{quote}
-``Bioinformaticians are concerned with deriving biological understanding from large
-amounts of data with specialized skills and tools. Early in biology's history, the
-datasets were small and manageable. Most biologists could analyze their own data after
-taking a statistics course, using Microsoft Excel on a personal desktop computer.
-However, this is all rapidly changing. Large sequencing datasets are widespread, and will
-only become more common in the future. Analyzing this data takes different tools, new skills,
-and many computers with large amounts of memory, processing power, and disk space.''
-\citep{buffalo2015bioinformatics}
-\end{quote}
-
-\begin{quote}
-``Unfortunately, many of the biologist's common computational tools can't scale to the
-size and complexity of modern biological data. Complex data formats, interfacing
-numerous programs, and assessing software and data make large bioinformatics datasets
-difficult to work with.'' \citep{buffalo2015bioinformatics}
-\end{quote}
-
-\begin{quote}
-``Bioconductor's pakcage system is a bit different than those on the Comprehensive R
-Archive Network (CRAN). Bioconductor packages are released on a set schedule, twice
-a year. Each release is coordinated with a version of R, making Bioconductor's versions
-tied to specific R versions. The motivation behind this strict coordination is that it
-allows for packages to be thoroughly tested before being released for public use.
-Additionally, because there's considerable code re-use within the Bioconductor project,
-this ensures that all package versions within a Bioconductor release are compatible
-with one another. For users, the end result is that packages work as expected and
-have been rigorously tested before you use it (this is good when your scientific
-results depend on software reliability!). If you need the cutting-edge version of a
-package for some reason, it's always possible to work with their development branch.''
-\citep{buffalo2015bioinformatics}
-\end{quote}
-
-\begin{quote}
-``When installing Bioconductor packages, we use the \texttt{biocLite()} function. \texttt{biocLite()}
-installs the correct version of a package for your R version (and its corresponding
-Bioconductor version).'' \citep{buffalo2015bioinformatics}
-\end{quote}
-
-\subsection{Practice quiz}\label{practice-quiz-1}
+It seems very possible that similar approaches may be adapted in the near future
+to allow for biomedical or genomic data to be stored in a way that both accounts
+for complexity early and pre-processing of these data but also allows for a more
+natural integration with the wealth of powerful tools available through the
+tidyverse approach.
 
 \section{Introduction to reproducible data pre-processing protocols}\label{module18}
 
@@ -8719,7 +8505,7 @@ this process.
 
 Third, documents that are created in knitted format are created using plain
 text. Plain text files can easily be tracked well and clearly using version
-control tools like git, and associated collaboration tools like GitHub, as
+control tools like Git, and associated collaboration tools like GitHub, as
 discussed in earlier modules (modules 2.9--2.11). This substantially increases the \textbf{transparency}
 of the data pre-processing and analysis. It allows you to clearly document
 changes you or others make in the document, step-by-step. You can document who
@@ -9360,7 +9146,7 @@ text file---following certain rules---and then reference that information in a
 document. In this way, it can serve the role of a bibliographical reference
 manager (like Endnote or Mendeley) while being free and keeping all information
 in plain text files, where they can easily be tracked with version control like
-git. By using BibTeX with RMarkdown, you can include bibliographical references
+Git. By using BibTeX with RMarkdown, you can include bibliographical references
 in the documents that you create, and Rmarkdown will handle the creation of the
 references section and the numbering of the documents within your text.
 
@@ -10263,7 +10049,7 @@ that is updated with the day's date each time the protocol is re-rendered.
 \includegraphics[width=\textwidth]{figures/protocol_yaml_date} \caption[Example of using more advanced RMarkdown functionality within a data pre-processing protocol]{Example of using more advanced RMarkdown functionality within a data pre-processing protocol. In this example, R code is incorporated into the YAML of the document to include the date that the document was last rendered, marking this on the pdf output as the *Last edited* date of the protocol.}\label{fig:protocolyaml}
 \end{figure*}
 
-\subsection{Applied exercise}\label{applied-exercise-3}
+\subsection{Applied exercise}\label{applied-exercise-2}
 
 To wrap up this module, try downloading both the source file and the output of this example
 data pre-processing protocol. Again, you can find the source code (the RMarkdown file)
@@ -10273,8 +10059,6 @@ you can compare the elements of the RMarkdown file with the output they produce 
 PDF file. Read through the descriptions of the protocol. Do you think that you could recreate
 the process if your laboratory ran a new experiment that involved plating samples to
 estimate bacterial load?
-
-\chapter{References}\label{references}
 
 \bibliography{book.bib,packages.bib}
 
