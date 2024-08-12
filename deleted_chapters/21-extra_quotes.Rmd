@@ -9056,3 +9056,43 @@ the whole thing feel incomplete. The checkbox allowed me to cross something off 
 to see clearly *that* I'd crossed it off, and at the same time retain all its 
 information while not also adding to the cognitive load of interpreting the list." 
 [@savage2020every]
+
+Statisticians have outlined specific methods that a
+laboratory-based scientist can take to ensure that data shared in an Excel
+spreadsheet are shared in a reliable and reproducible way, including avoiding
+macros or embedded formulas, using a separate Excel file for each dataset,
+recording descriptions of variables in a separate code book rather than in the
+Excel file, avoiding the use of color of the cells to encode information, using
+"NA" to code missing values, avoiding spaces in column headers, and avoiding
+splitting or merging cells [@ellis2018share; @broman2018data]. In this module,
+we will describe this common practice and will outline alternative approaches
+that separate the steps of data recording and data analysis.
+
+> "Beware of common pitfalls when working with *ad hoc* bioinformatics formats.
+Simple mistakes over minor details like file formats can consume a
+disproportionate amount of time and energy to discover and fix, so mind these
+details early on." [@buffalo2015bioinformatics]
+
+For example, if
+you have two tables in the same spreadsheet, with blank lines between them, the
+computer will likely either think it's read all the data after the first table,
+and so not read in any data from the second table, or it will think the data
+from both tables belong in a single table, with some rows of missing data in the
+center. To write the code to read in data from two tables into two separate
+datasets in a statistical program, it will be necessary to write some complex
+code to tell the computer how to search out the start of the second table in the
+spreadsheet.
+
+Problems also come up if a spreadsheet uses multiple rows to create multi-level
+column headers. In this case, anyone reading it into another program like R or
+Python will need to either skip some of the rows of the column headers, and so
+lose information in the original spreadsheet, or write complex code to parse the
+column headers separately, then read in the later rows with data, and then stick
+the two elements back together. Another thing that can cause problems is
+"summary" rows at the end of a dataset (for example, the sums or means of all
+values in a column). These will need to be trimmed off when the data is read
+into other programs, since most of the analysis and visualization someone would
+want to do in another program will calculate any summaries fresh, and will want
+each row of a dataset to represent the same "type" and level of data (e.g., one
+measurement from one animal).
+

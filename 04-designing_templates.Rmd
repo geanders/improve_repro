@@ -1,17 +1,5 @@
 ## Designing templates for "tidy" data collection {#module4}
 
-This module will move from the principles of the "tidy" data format to the
-practical details of designing a "tidy" data format to use when collecting
-experimental data. We will describe common issues that prevent biomedical
-research datasets from being "tidy" and show how these issues can be avoided. We
-will also provide rubrics and a checklist to help determine if a data collection
-template complies with a "tidy" format.
-
-**Objectives.** After this module, the trainee will be able to:
-
-- Identify characteristics that keep a dataset from being "tidy"
-- Convert data from an "untidy" to a "tidy" format 
-
 In this module, we will use a real example of data collected in a biomedical
 laboratory. We'll use this example to show how data is often collected in a way
 that is not "tidy" (module 2.3), focusing on the features of data collection
@@ -24,15 +12,30 @@ for tidy data collection, while in the next module we'll dig deeper into the
 details of making this conversion for the example dataset that we use as a
 demonstration in this module.
 
+**Objectives.** After this module, the trainee will be able to:
+
+- Detect features in a data collection template that keep a dataset from being 
+"tidy"
+- Discuss how "untidy" data collection can affect the rigor and reproducibility 
+of data recording
+- Distinguish "untidy" features of a data collection templates into those that
+can affect rigor and reproducibility versus those that can easily be addressed
+later in the code pipeline
+- Discuss three principles for designing a data collection template for "tidy" 
+data collection
+- List "extra" elements that are sometimes included in a data collection 
+spreadsheet but that can impede reproducibility
+- Compare "wide" versus "long" data formats
+- Explain why certain characters and formatting in a data collection template
+may cause problems with later analysis
+
 ### Example---Data on rate of bacterial growth 
 
-Throughout this module, we'll use a real dataset to illustrate principles of 
+Throughout this module, we'll use a real dataset to illustrate principles of
 data collection in a biomedical laboratory. First, let's start by looking at the
-original data collection template, and use this to walk through some details of 
-this dataset.
-
-Figure \@ref(fig:growthexcel1) provides an annotated view of the data set, showing
-the format used when the data were originally collected:
+original data collection template, and use this to walk through some details of
+this dataset. Figure \@ref(fig:growthexcel1) provides an annotated view of the
+data set, showing the format used when the data were originally collected.
 
 ```{r growthexcel1, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column."}
 knitr::include_graphics("figures/growth_curve_example.png")
@@ -56,12 +59,11 @@ the tube was filled almost to the top with culture, which left very little air
 at the top of the tube. 
 
 Once the tubes were filled and capped, they were left to grow for about a week.
-During this time, the researchers took several measurements to determine the 
-growth of the bacteria in each tube. To do this, they used a spectrophotometer 
-to track increases in optical density over time. This 
-method gives a measurement that is directly proportional
-to the cell mass in each tube, and so provides a measure of how much the 
-bacteria has grown since the start of the experiment.
+During this time, the researchers took several measurements to determine the
+growth of the bacteria in each tube. To do this, they used a spectrophotometer
+to track optical density over time. This method gives a measurement that is
+directly proportional to the cell mass in each tube, and so provides a measure
+of how much the bacteria has grown since the start of the experiment.
 
 To record data from this experiment, researchers used the spreadsheet shown in
 Figure \@ref(fig:growthexcel1). This spreadsheet is an example of a data
@@ -101,18 +103,18 @@ inoculum to add to each tube at the start of the experiment.
 
 What the researchers found appealing about the format of this spreadsheet was
 the ease with which the researcher collecting data in the laboratory could
-accomplish the study goals. They also cited transparency of the raw data and
-ease with which additional sampling data points could be added. The data being
-graphed in real time, and the inclusion of a simple macro to calculate doubling
-time, allowed the research in the laboratory to see tangible differences between
-the two assay conditions as data were collected over the one-week experiment.
+accomplish the study goals. The data being graphed in real time, and the
+inclusion of a simple macro to calculate doubling time, allowed the research in
+the laboratory to see tangible differences between the two assay conditions as
+data were collected over the one-week experiment. They also cited the and ease
+with which additional sampling data points could be added.
 
 However, many of these features can have undesired consequences. They can increase
 the chance of errors in recording the data and in calculating summaries based on the
 data. They also make it hard to move the data into a reproducible pipeline, and 
 so limit opportunities for more sophisticated analysis and visualization. In the
 next section of this module, we'll highlight features of data collection templates
-like this one that can make data collection untidy. In the next module, 
+like this one that can make data collection untidy. In the next module (module 2.5), 
 we'll discuss how you could create a new data collection template for this example
 data that would be tidier, and use this to open a more general discussion of 
 principles of tidy data collection templates.
@@ -141,20 +143,20 @@ a spreadsheet, and these functions often provide options to specify the sheet of
 the file to read in, as well as the rows and columns to read from a specific
 sheet. In the example spreadsheet in Figure \@ref(fig:extractraw), for example,
 you could specify to read in only rows 1--15 of columns A--I, to focus on the
-raw data. However, one goal of reproducible research is to create tools and
-pipelines that are robust---that is, ones that still work as desired when the
-raw data is changed in small ways, or even across different raw data files.
+raw data. 
 
-Therefore, while we could customize code to read in data from a specific part of
-a complex spreadsheet, like that shown in Figure \@ref(fig:extractraw), this
-customization would make the code less robust. If we asked the statistical
-program to read in rows 1--15 of columns A--I, for example, the code would
-perform incorrectly if we later added one more time point to the experiment, or
-if we tried to use the same template for an experiment that used more test
-tubes. If we instead use a template that only records the raw data, without
-additional elements, then we can create more robust tools, since we can write
-code to read in whatever is in a spreadsheet, rather than restricting to certain
-rows and columns. 
+However, one goal of reproducible research is to create tools and pipelines that
+are robust---that is, ones that still work as desired when the raw data is
+changed in small ways, or even across different raw data files. Therefore, while
+we could customize code to read in data from a specific part of a complex
+spreadsheet, like that shown in Figure \@ref(fig:extractraw), this customization
+would make the code less robust. If we asked the statistical program to read in
+rows 1--15 of columns A--I, for example, the code would perform incorrectly if
+we later added one more time point to the experiment, or if we tried to use the
+same template for an experiment that used more test tubes. If we instead use a
+template that only records the raw data, without additional elements, then we
+can create more robust tools, since we can write code to read in whatever is in
+a spreadsheet, rather than restricting to certain rows and columns.
 
 Next, the example template helps demonstrate how specific ways of recording data
 can make the template less tidy. First, let's look at how the template records
@@ -182,58 +184,60 @@ calculations based on that data. Columns B and D in Figure \@ref(fig:extractraw)
 are both the output from calculations. Anytime a spreadsheet includes a
 calculation, it creates the room for mistakes in data collection and analysis.
 Often, calculations in a spreadsheet will be done using embedded formulas. These
-can cause problems anytime new columns or rows are added to the data, as that
+can cause problems when new columns or rows are added to the data, as that
 can shift the cells meant to be used in the calculation. Further, these formulas
 are embedded in the spreadsheet, where they can't be seen and checked very
-easily, which makes it easy to miss a typo or other error in the formula. In the
-example in Figure \@ref(fig:extractraw), columns B and D aren't calculated by
-embedded formulas, but rather calculated by the researcher by hand and then
-entered. This can create the room for user error with each calculation and each
-data entry. Later, we'll see how we can tidy this data collection template by
-removing columns that calculate time (columns B and D) and instead doing that
-calculation once the raw data are read into a statistical program.
+easily, which makes it easy to miss a typo or other error in the formula. 
 
-The second thing that could be changed is how the template records the date and time 
-of the measurement. Currently, it uses two columns (A and C) to record this information.
-However, each piece of information is useless without the other---instead, they must
-be known jointly to do things like calculate the time since the start of the 
-experiment. It would therefore be tidier to record this information in a single column.
-For example, instead of recording the starting time of the experiment as "12:00" in 
-column A and "9-Jul" in column C, you could record it as "July 9, 2019 12:00" in a 
-single date-time column. In this example, adding the year ("2019") to the date will
-also make this data point easier to work with in a programming language, as these often
-have special functions to work with data in date-time classes, but all elements of the
-date and/or time must be included to convert data points into these useful classes.
+In the example in Figure \@ref(fig:extractraw), columns B and D aren't
+calculated by embedded formulas, but rather calculated by the researcher by hand
+and then entered. This creates room for user error with each calculation
+and data entry. Later, we'll see how we can tidy this data collection
+template by removing columns that calculate time (columns B and D) and instead
+doing that calculation once the raw data are read into a statistical program.
 
-Next, let's look at how the template collects data related to cell growth in each tube
-(columns E--I, Figure \@ref(fig:growthmeasures)).
+The second thing that could be changed is how the template records the date and
+time of the measurement. Currently, it uses two columns (A and C) to record this
+information. However, each piece of information is useless without the
+other---instead, they must be known jointly to do things like calculate the time
+since the start of the experiment. It would therefore be tidier to record this
+information in a single column. For example, instead of recording the starting
+time of the experiment as "12:00" in column A and "9-Jul" in column C, you could
+record it as "July 9, 2019 12:00" in a single date-time column. In this example,
+adding the year ("2019") to the date will also make this data point easier to
+work with in a programming language, as languages like R and Python often have
+special functions to work with data in date-time classes, but all elements of
+the date and/or time must be included to convert data points into these useful
+format.
+
+Next, let's look at how the template collects data related to cell growth in
+each tube (columns E--I, Figure \@ref(fig:growthmeasures)). These data are
+recorded in a format that will work pretty well. Strictly speaking, they aren't
+fully tidy (module 2.3), since the column headers include information that we
+might want to use as variables in analysis and visualization. Specifically, each
+test tube's ID is incorporated in the column name where measurements for that
+tube are recorded, since each test tube is recorded using a separate column. 
 
 ```{r growthmeasures, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Measurements of bacterial growth in the example data collection template. The five highlighted columns (columns E--I) are all used in this spreadsheet to record optical density in each test tube at each measurement time."}
 knitr::include_graphics("figures/growth_curve_growth_measures.png")
 ```
 
-These data are recorded in a format that will work pretty well. Strictly
-speaking, they aren't fully tidy (module 2.3), since the column headers include
-information that we might want to use as variables in analysis and
-visualization. Specifically, each test tube's ID is incorporated in the column
-name where measurements for that tube are recorded, since each test tube is
-recorded using a separate column. If we want to run analysis where we estimate
-values for each test tube, or create plots where each test tube's measurements
-are shown with a separate line, then we'll need to convert the format of the
-data a bit. However, that's quite easy to do in more statistical programming
-languages now, and so it's reasonable to compromise on this element of
-"tidiness" in the data collection format. As we'll show in the next module,
+If we want to run analysis where we estimate values for each test tube, or
+create plots where each test tube's measurements are shown with a separate line,
+then  once we read the data into another program, we'll need to convert the
+format of the data a bit. However, that's quite easy to do in more statistical
+programming languages now, and so it's reasonable to compromise on this element
+of "tidiness" in the data collection format. As we'll show in the next module,
 changing this layout in the original data collection would require the
 researcher to re-type the measurement date and time several times and would
 result in the spreadsheet being longer, and so harder to see at once when
-recording data. We'll discuss this balance in designing data collection
-templates more in a bit.
+recording data. 
 
 There is a final element we'd like to highlight on this example template that
 could make the data hard to integrate into a reproducible pipeline. There are
 cases in the example template where either column names or cell values are
 formatted in a way that would be hard to work with when the data is read into a
-more advanced program like R or Python (Figure \@ref(fig:growthformatting)). For
+program like R or Python (Figure \@ref(fig:growthformatting)). For
 example, the column names include spaces and parentheses (e.g., "Time (clock)").
 If left as-is, when the data are read into another program, the column names
 will need to be cleaned up to take these characters out, so that the column
@@ -250,59 +254,61 @@ knitr::include_graphics("figures/growth_curve_formatting.png")
 
 Now that we've looked at characteristics that can make a data collection
 template untidy, let's go through some principles for creating tidy templates to
-record the same data. There are three basic principles for designing tidy
-templates that will go a long way to creating ways to collect data in a research
-group that can be easily used within a reproducible analysis pipeline.
+record the same data. In this module, we'll focus on higher-level strategies, 
+using the example data collection template to highlight out points. In the 
+next module (module 2.5), we'll provide a detailed walk-through of how the 
+example template can be modified to use a tidier format. 
 
-The first principle in designing a tidier template for collecting laboratory
-data is to **limit the template to the collection of data**. The key here is the
-word "collection". A tidy template will avoid any calculations done on the
-original data and instead focus only on the initial data that the researcher
-records for the experiment. This means that you should exclude from the template
-any element that provides a calculation, summary, or plot based on the initial
-recorded element. You should also exclude any special formatting that you are
-using to encode information. For example, say that you are collecting data, and
-in some cases you get a warning that the reading may be below the instrument's
-detection limit. It may be tempting to highlight the cells with measurements
-where this warning was displayed as you record the data. However, you should
-avoid doing this, as any color or other formatting information will be lost when
-you read the data in the file into a statistical program. Instead, you could add
-a second column to indicate if the measurement included a warning.
+There are three basic principles for designing tidy templates that will go a
+long way to creating ways to collect data in a research group that can be easily
+used within a reproducible analysis pipeline. The first principle in designing a
+tidier template for collecting laboratory data is to **limit the template to the
+collection of data**. The key here is the word "collection". A tidy template
+will avoid any calculations done on the original data and instead focus only on
+the initial data that the researcher records for the experiment. This means that
+you should exclude from the template any element that provides a calculation,
+summary, or plot based on the initial recorded element. You should also exclude
+any special formatting that you are using to encode information. For example,
+say that you are collecting data, and in some cases you get a warning that the
+reading may be below the instrument's detection limit. It may be tempting to
+highlight the cells with measurements where this warning was displayed as you
+record the data. However, you should avoid doing this, as any color or other
+formatting information will be lost when you read the data in the file into a
+statistical program. Instead, you could add a second column to indicate if the
+measurement included a warning.
 
 The second principle is to **make sensible choices when dividing data collection
 into rows and columns**. There are many different ways that you could spread the
 data collection into rows and columns. One decision is how (and whether) to
 divide recorded information across columns. Figure \@ref(fig:arrangingcolumns),
 for example, shows several ways that you could divide data on a date and time
-into one or more columns. In this example, it typically makes the most sense
-to use a single column to record all the date and time elements (the top example
-in Figure \@ref(fig:arrangingcolumns)). Most statistical programs have powerful 
-functions for parsing dates and times, after which they store these data in special
-classes that allow time-related operations (for example, calculating the time difference
-between two date-time measurements). It will be most efficient to record all date and 
-time elements in a single column. 
+into one or more columns. In this example, it typically makes the most sense to
+use a single column to record all the date and time elements (the top example in
+Figure \@ref(fig:arrangingcolumns)). As mentioned earlier, most statistical
+programs have powerful functions for parsing dates and times, after which they
+store these data in special classes that allow time-related operations (for
+example, calculating the time difference between two date-time measurements). It
+will be most efficient to record all date and time elements in a single column.
 
 ```{r arrangingcolumns, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Examples of special characters and formatting in the example template that could cause problems later in a data analysis pipeline."}
 knitr::include_graphics("figures/arranging_columns.png")
 ```
 
-Conversely if you have complex data with different elements 
-(for example, height in components of inches and feet), it may make
-sense to use separate columns for each of the components. For 
-example, rather than using one column to record `5'7"`, you 
-could divide the information into one column with the component
-that is in feet (`5`) and one with the component in inches (`7`). 
-In the first case, when you read the data into a program like 
-R you would need to use complex code to split the value into 
-its parts to be able to use it. In the second case, you could 
-easy work with the values in the two separate columns to calculate
-a value to use in further work (e.g., use a formula like 
-`height_ft * 12 + height_in` to calculate the full height in inches).
+Conversely if you have complex data with different elements (for example, height
+in components of inches and feet), it may make sense to use separate columns for
+each of the components. For example, rather than using one column to record
+`5'7"`, you could divide the information into one column with the component that
+is in feet (`5`) and one with the component in inches (`7`). In the first case
+(recording `5'7"`), when you read the data into a program like R you would need
+to use complex code to split the value into its parts to be able to use it. In
+the second case, you could easy work with the values in the two separate columns
+to calculate a value to use in further work (e.g., use a formula like `height_ft
+* 12 + height_in` to calculate the full height in inches).
 
 Another decision at this stage is how "long" versus "wide" you make your
 template. A "wide" design will include more columns, while a "long" design will
 include more rows. Often, you can create different designs that allow you to
-collect the same values but with different designs on this wide-versus-long
+collect the same values but with different designs along this wide-versus-long
 spectrum. Figure \@ref(fig:longversuswide) gives two examples of templates that
 collect the same data, but one is using a wider design and the other is using a
 longer design.
@@ -315,18 +321,19 @@ In module 2.3, we described the rules for the tidy format for dataframes.
 If you record data directly into a tidy format, it will be very easy to 
 read into a programming language to analyze and visualize. However, 
 this tidy format can sometimes result in datasets that are very long. It 
-may be more convenient to record data into a wider format, especially if you 
+may be more convenient to record data in a wider format, especially if you 
 are recording the data in a laboratory setting where it is inconvenient to 
-scroll up and down within a longer-format file. Fortunately, there are some
-convenient tools in programs like R and Python that can be used to take 
-data that are collected in a wider format and reformat them to the tidy 
-format as soon as they are read into the software program. While this will 
-require some extra code, it is usually code that is fairly simple and straightforward.
-Therefore, when you design your data collection template, you can balance 
-any practical advantages of using a wider data collection format against
-the advantages of a fully tidy format that apply once your input the data
-into a statistical program for analysis and visualization. Often, the wider
-format might win out in this balance, and that's fine. 
+scroll up and down within a longer-format spreadsheet as you record. 
+
+Fortunately, there are some convenient tools in programs like R and Python that
+can be used to take data that are collected in a wider format and reformat them
+to the tidy format as soon as they are read into the software program. While
+this will require some extra code, it is usually code that is fairly simple and
+straightforward. Therefore, when you design your data collection template, you
+can balance any practical advantages of using a wider data collection format
+against the advantages of a fully tidy format that apply once your input the
+data into a statistical program for analysis and visualization. Often, the wider
+format might win out in this balance, and that's fine.
 
 The third principle is to **avoid characters or formatting that will make it
 hard for a computer program to process the data**. This principle is
@@ -345,7 +352,7 @@ the rest of the characters in the column name.
 Based on these rules, then, you should avoid putting spaces in your column names
 when you design a data collection template. It is tempting to include spaces to 
 make the names clearer for humans to read, and this is understandable. Often, 
-using an underscore in place of a space can allow for easy human comprehension 
+an underscore serves the same function, allowing for easy human comprehension 
 while still avoiding characters that are difficult for statistical programs. 
 For example, if you have a column named "Optical density", you can change it 
 to "Optical_density" without making it much more difficult for a person to 
@@ -363,7 +370,7 @@ Beyond spaces, there are a number of other special characters that you might
 be tempted to include in column names. These could include parentheses, dollar signs, 
 percent signs, hash marks ("#"), and so on. Any of these will require extra code
 in later steps of an analysis pipeline, and some can cause more severe problems
-because they have special functionality in the programming language. For example, 
+because they have special meanings in the programming language. For example, 
 hash marks are used in the R programming language to add comments within code, while
 dollar signs are used for subsetting elements of a list or data frame object. 
 It is worth the effort to avoid all these characters in column names in a data
@@ -406,7 +413,7 @@ When you convert data collection templates to "tidier" formats, they will
 typically look much simpler than the templates that your research group may have
 been using. In the example experiment that we described earlier in this module,
 this process of tidying the template results in a template like that shown in
-Figure \@ref(fig:growthexcel1) (in the next module, we'll walk through all the
+Figure \@ref(fig:growthsimple1) (in the next module, we'll walk through all the
 steps to create this tidier template, using this principles we've covered in
 this module). By comparison, the starting template for data collection for this
 experiment is shown in Figure \@ref(fig:growthexcel1).
@@ -445,7 +452,7 @@ The report shown in Figure \@ref(fig:growthreport1) repeats some of the same sum
 that were shown in the more complex original data collection template 
 (Figure \@ref(fig:growthexcel1)). There are a number of advantages, however, to using 
 separate steps and files for the processes of collecting versus analyzing the data. 
-The separate report (Figure \@ref(fig:growthexcel1)) provides a starting point that can 
+The separate report (Figure \@ref(fig:growthreport1)) provides a starting point that can 
 be easily adapted to make more complex figures and analysis, as well as to integrate
 the collected data with data measured in other ways for the experiment. 
 
