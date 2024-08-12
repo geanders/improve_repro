@@ -3131,45 +3131,138 @@ particularly helpful. This might include information, for example, about the
 license under which you are sharing any code within the project.</p>
 <p>Several articles suggest sharing this metadocumentation through a type of file
 called a “README” file <span class="citation">(Marwick, Boettiger, and Mullen 2018; Bertin and Baumer 2021; Johnston 2022)</span>.</p>
-<p>[More about README files]</p>
-<p>As one article notes:</p>
-<blockquote>
-<p>“A README.md file that describes the overall project and where to get started.
-It can be helpful to include graphical summary of the interlocking pieces of the
-project.” <span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
-</blockquote>
+<p>The idea of a README file comes from the tradition of software engineering.
+The code that builds a software system can be large and complex, with many
+source files that must be combined and compiled to “build” the software.
+Since it can be hard to navigate the directory with all these files, one
+long-standing solution is to include a README file. This README file is
+put in the top level of the directory’s hierarchy. This way, when someone opens
+the directory, they’ll see this file right away.</p>
+<p>This file serves as a spot where you can help someone navigate the rest of the
+files in the directory. You can also use it to record metadata for the project:
+things like who was involved in the research and a citation to a resulting
+paper. You can write this file in plain text, but if you’re sharing the project
+directory through a version control platform, you might want to explore
+writing it in the mark-up language Markdown (see module 2.11 for more on
+using Markdown for a README file that will be shared through a version control
+platform).</p>
 <p><strong>Decide on file name conventions</strong></p>
-<p>Some things to keep in mind as you decide on file names are:</p>
-<ul>
-<li>Discoverability [More on this, module 2.6]</li>
-<li>Design them in a way that you can later use regular expressions [more
-about this, refer to module 3.5 where we talk about tools for regular
-expressions]</li>
-<li>When you use the filenames, plan to use their relative file paths, rather
-than their absolute filepaths [More on relative versus absolute paths]</li>
-</ul>
-<blockquote>
-<p>“In many cases it can be useful to give the analysis scripts ascending names, for example 001-load.R, 002-clean.R etc. This kind of file-naming helps with organisation” <span class="citation">(Marwick, Boettiger, and Mullen 2018)</span></p>
-</blockquote>
-<blockquote>
-<p>“2. a. Files are clearly named, preferably in a way where the order in which they should be run is clear.
-…
-3. a. No absolute paths, or paths leading to locations outside of a project’s directory, are used in code—only portable (relative) paths.” <span class="citation">(Bertin and Baumer 2021)</span></p>
-</blockquote>
+<p>The first thing to keep in mind when you create rules for how you name files
+in your project is this: use names that balance <em>generalizability</em> with
+<em>discoverability</em>. In terms of generalizability, you want to use file names
+that generalize to all of your projects. In other words, don’t make file
+names so specific that they won’t work the next time you do a project.</p>
+<p>You may, for example, want to include the name of the grant or experiment
+in your filename for your metadata. This instinct is good—it can be helpful
+to include information about your experiment somewhere in the filenames. But
+try to put this type of information as high in the project files as possible:
+specifically, put that information in the name of the project directory itself.
+Then, within the filenames in that directory, use names that can be used
+across many projects.</p>
+<p>This is because if a type of file always has the same name in all your project
+directories, you and your team will find it easy to find that file and use
+that file as they move from one project to the next. It even will allow you
+to write code that leverages the fact that certain files always have the
+same name across projects.</p>
+<p>You don’t, however, want to make file names so general that they aren’t
+<em>discoverable</em> (see module 2.6 for more on the idea of <em>discoverability</em>).
+A filename, in other words, shouldn’t be so generic that its name doesn’t
+give you an good idea of what it contains.</p>
+<p>Say, for example, that you used the name “file_a” for the metadata file in your
+project directory. This filename is generic and would work across many projects,
+unlike a filename that includes something like the name of the experiment. It’s
+so generic, though, that it would be hard for someone to figour out what the
+file contains just by looking at its name. A better name would be something like
+“experiment_metadata”—generic enough to work across many projects, but
+detailed enough to be discoverable.</p>
+<p>Another thing to consider, as you select file naming conventions, is to avoid
+special characters in filenames. We discussed this idea some in module 2.4, in
+the context of avoiding special characters in the column names and cell entries
+in a data collection spreadsheet. Similar considerations apply to filenames.
+While many operating systems allow you to include things like spaces in
+filenames, these special characters can make it harder to write code that works
+with the file. Try to write filenames that have only alphanumeric characters and
+underscores.</p>
+<p>One of the biggest culprits here are spaces. It is appealing to include
+spaces in a filename: it’s easier to read the words in the filename if they’re
+separated by spaces. You should, though, get out of this habit.</p>
+<p>Once you move to coding with the file, the spaces will be a pain. Often, when a
+computer parses code, it thinks it’s gotten to the end of something when it gets
+to a space. When it gets to a space in a filename, for example, it can think
+it’s gotten to the end of that filename in some contexts. So, if you put a space
+in the middle of a filename, it can confuse the computer.</p>
+<p>There are ways to help the computer out—ways to “escape” special characters,
+to the computer will treat them literally rather than attributing special
+meaning to these special characters. However, this is a pain to have to do over
+and over again as you use a set of files. It’s much simpler to enforce a rule to
+use underscores instead of spaces in your filenames: “experiment_metadata.Md”,
+for example, rather than “experiment metadata.Md”. The underscores serve the
+same purpose of legibility that the spaces do, by separating words within the
+filename. They won’t confuse the computer in the same way, though.</p>
 <p>It is good practice to write code using relative pathnames that start from the
-top-level of the project directory. This is because these relative pathnames
-will work equally well on someone else’s computer, whereas if you use file
-pathnames that are absolute (i.e., giving directions to the file from the root
-directory on your computer), then when someone else tries on run the code on
-their own computer, it won’t work and they’ll need to change the filepaths in
-the code, since everyone’s computer has its files organized differently. For
-example, if you, on your personal computer, have the project directory stored in
-your “Documents” folder, while a colleague has stored the project directory in
-his or her “Desktop” directory, then the absolute filepaths for each file in the
-directory will be different for each of you. The relative pathnames, starting
-from the top level of the project directory, will be the same for both of you,
-though, regardless of where you each stored the project directory on your
-computer.</p>
+top-level of the project directory <span class="citation">(Bertin and Baumer 2021)</span>. In other words, tell
+the computer where to find the files starting from the top level of the project
+directory. This is because these relative pathnames will work equally well on
+someone else’s computer, whereas if you use file pathnames that are absolute
+(i.e., giving directions to the file from the root directory on your computer),
+then when someone else tries on run the code on their own computer, it won’t
+work and they’ll need to change the filepaths in the code, since everyone’s
+computer has its files organized differently. For example, if you, on your
+personal computer, have the project directory stored in your “Documents” folder,
+while a colleague has stored the project directory in his or her “Desktop”
+directory, then the absolute filepaths for each file in the directory will be
+different for each of you. The relative pathnames, starting from the top level
+of the project directory, will be the same for both of you, though, regardless
+of where you each stored the project directory on your computer.</p>
+<p>When it comes to code scripts in your project, there’s also one other think you
+may want to consider in naming conventions. Often, you will have divided key
+tasks (like data entry, pre-processing, and analysis) into separate script
+tiles. The scripts will need to follow a specific order when they are run to
+recreate the results for the project. In this case, you may want to consider
+starting each script’s filename with a number, where the numbers indicate the
+order that the scripts should be run <span class="citation">(Marwick, Boettiger, and Mullen 2018; Bertin and Baumer 2021)</span>. For example, your script files might look like:
+“01_reading_data.R”, “02_preprocessing_data.R”, “03_exploratory_analysis.R”, and
+so on.</p>
+<p>There are other cases where you’ll have more than one of a certain file type.
+For example, within your raw data files, you may have one file per sample for
+an assay like flow cytometry, or one file per timepoint if you’re recording
+data for multiple timepoints.</p>
+<p>In this case, you’ll need to develop rules for how you name these files,
+chosing a system that allows different filenames for each file. As you do,
+there are two things you can keep in mind: first, adhering to standards when
+possible, and second designing filenames in a way that you can leverage
+something called <em>regular expressions</em>.</p>
+<p>In an earlier module (2.2), we talked about standards in terms of recording
+data. We emphasized how powerful standards can be if they are regularly
+followed in practice. Just as standards are a powerful tool when recording
+data, they are also a powerful tool when creating filenames.
+If there are conventions in your discipline for how certain files are named,
+follow these.</p>
+<p>One example is that there may be a standard way that a piece of laboratory
+equipment names a file. For example, it may always include some elements like
+the sample name and the date that the sample was run through the equipment.
+In this case, you don’t want to change these filenames. You want to keep them
+in the standard format, as people may have already built tools to work with
+that standard. If you change from the standard, those tools wouldn’t be available.
+Standards also tend to help with discoverability, so if you change the filenames
+for the standard, it may make it harder for someone else to navigate your files.</p>
+<p>If standards don’t exist for naming a certain type of file, you can create your
+own standards. As you do, you can think about how to create filenames that
+leverage <em>regular expressions</em>. These are coding tools that can search for
+patterns that you specify in character strings, including filenames.</p>
+<p>As an example, say you have files that record separate timepoints of your
+experiment. You could pick a naming convention that always includes the
+timepoint in the filename, recorded using the same conventions and always in
+the same place in the filename. If you collect at timepoints that you call
+“day 7”, “day 14”, and “day 21”, you might incorporate these within the filenames
+using “D” for “day” and the two digits for the number. This would result in
+files that include something like “D07”, “D14”, or “D21” in the name. It would
+be straightforward to pull this information back out of the filenames if you
+always put it in the same spot in the filename. For example, if you’re collecting
+bacterial loads by measuring colony-forming units, you might name the files,
+“cfu_D07.xlsx”, “cfu_D14.xlsx”, and “cfu_D21.xlsx”. Because you have
+always put the varying information (the timepoint) in the same spot, it
+will be easy to extract this with code using regular expressions.</p>
 </div>
 <div id="creating-and-using-a-project-template" class="section level3 hasAnchor" number="2.7.2">
 <h3><span class="header-section-number">2.7.2</span> Creating and using a project template<a href="experimental-data-recording.html#creating-and-using-a-project-template" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -4496,18 +4589,15 @@ text files at a particular stage in the commit history.</p>
 process of collaborating together using version control software easier. These
 include <em>bug trackers</em> or <em>issue trackers</em>, which allow the team to keep a running “to-do”
 list of what needs to be done to complete the project <span class="citation">(Perez-Riverol et al. 2016)</span>.</p>
-<blockquote>
-<p>“Lists aren’t external to the creative process, they are intrinsic to it. They are
-a natural part of any project of scale, whether we like it or not.” <span class="citation">(Savage 2020)</span></p>
-</blockquote>
-<blockquote>
-<p>“The maker in me knows that this is where lists really shine, that it is their capacity
-for simplifying the complex that sets them apart from all other planning tools.
-Not just at the beginning of a project, either, but at every step along the
-creative process, because no matter how exacting the list you make at the outset,
-there will always be things that you missed or, more frequently, that change. It’s
-like trying to measure a coastline: it’s fractal.” <span class="citation">(Savage 2020)</span></p>
-</blockquote>
+<p>Sometimes the best tools also happen to be those that are cheap and easy. In
+this case, the tool might be so obvious that you don’t even think of formalizing
+it as a tool. One example is the “to-do” list.</p>
+<p>A to-do list allows you to take a big task and break it into specific steps
+that need to be done to complete that task. It helps with something very key
+to solving big problems: being able to zoom between the big picture—big
+but vague descriptions of major steps to solve the problem—and the fine
+details of how you will tackle each of those steps. As Adam Savage of
+the TV show <em>Mythbusters</em> notes:</p>
 <blockquote>
 <p>“The value of a list is that it frees you up to think more creatively, by
 defining a project’s scope and scale for you on the page, so your brain doesn’t
@@ -4515,15 +4605,20 @@ have to hold on to so much information. The beauty of the checkbox is that it
 does the same thing with regard to progress, allowing you to monitor the status
 of your project, without having to mentally keep track of everything.” <span class="citation">(Savage 2020)</span></p>
 </blockquote>
-<blockquote>
-<p>“The best part of making a list is, you guessed it, crossing things off. But when you
-physically cross them out, like with a pen, you can make them harder to read, which
-destroys their informational value beyond that single project and, to me at least, makes
-the whole thing feel incomplete. The checkbox allowed me to cross something off my list,
-to see clearly <em>that</em> I’d crossed it off, and at the same time retain all its
-information while not also adding to the cognitive load of interpreting the list.”
-<span class="citation">(Savage 2020)</span></p>
-</blockquote>
+<p>The Issues section of a GitHub repository works as this type of to-do list. By
+looking at the home Issues page, you see an overview of the tasks you need to
+complete to finish the project. For each of these tasks, you can zoom in on
+the details by clicking on its Issue. This will take you to a page where your
+team can discuss the details of the task, honing in on how you will solve it.</p>
+<p>It’s tempting to use emails to discuss progress on a task and talk about how
+to solve it. Don’t use an Issue instead. This will keep the discussion in one
+place, and so you won’t have to go back through emails to find your old
+discussion on how you solved it. Also, the Issues section of GitHub doesn’t
+delete an Issue once you’ve complete that task. Instead, it allows you to “close”
+the Issue. This moves the Issue into a section with all your other closed
+issues—it takes it out of your “to-do” list, but saves the full discussion
+somewhere that you’ll be able to find easily in the future if you ever want to
+revisit how you solved that problem.</p>
 <p>If a project uses a version control platform, it is very easy to share data recorded
 for the project publicly. In a project that uses Git and GitHub version control
 tools, it is easy to share the project data online once an associated manuscript
