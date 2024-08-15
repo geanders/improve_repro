@@ -138,51 +138,48 @@ div.csl-indent {
 <div class="col-sm-12">
 <div id="module8" class="section level2" number="2.8">
 <h2><span class="header-section-number">2.8</span> Example: Creating a project template</h2>
-<p>We will walk through a real example, based on the experiences of one of our
-Co-Is, of establishing the format for a research group’s ‘Project’ template,
-creating that template using RStudio, and initializing a new research project
-directory using the created template. This example will be from a
-laboratory-based research group that studies the efficacy of tuberculosis drugs
-in a murine model.</p>
-<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
-<ul>
-<li>Create a ‘Project’ template in RStudio to initialize consistently-formatted
-‘Project’ directories</li>
-<li>Initialize a new ‘Project’ directory using this template</li>
-</ul>
 <p>For this module, we’ll show an example of creating a project directory template
 for a lab group. We will walk through the process of creating a project
 directory template that could be used to manage and analyze data from any of the
-specific studies for this group. We’ll discuss the steps of the conceptual
-design—figuring out how a blueprint for the standard subdirectories and the
-file naming conventions. We’ll also show examples of the physical implementation
-of this blueprint as a file directory that can be copied and renamed to initiate
-a new project. The full directory of files for this example can be found at
-<a href="https://github.com/geanders/example_for_improve_repro" class="uri">https://github.com/geanders/example_for_improve_repro</a> [need to make public],
-where you can download them or explore them online.</p>
+specific studies for this group. We’ll start by discussing the steps of the
+conceptual design—figuring out how a blueprint for the standard subdirectories
+and the file naming conventions. We’ll then show how this blueprint can be
+developed into physical implementation: a file directory that can be copied and
+renamed to initiate a new project. The full directory of files for this example
+can be found at <a href="https://github.com/geanders/example_for_improve_repro" class="uri">https://github.com/geanders/example_for_improve_repro</a>, where you
+can download them or explore them online.</p>
+<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
+<ul>
+<li>Examine files from previous projects as a step in developing a project
+directory template</li>
+<li>Develop a structure of subdirectories for a project directory template</li>
+<li>Create a project directory template to initialize consistently-formatted
+directories for a lab group’s experiments</li>
+<li>Explain how a report template can be incorporated within a project directory
+template</li>
+</ul>
 <div id="description-of-the-example-set-of-studies" class="section level3" number="2.8.1">
 <h3><span class="header-section-number">2.8.1</span> Description of the example set of studies</h3>
 <p>In this module, we’ll use an example based on a set of real immunology
 experiments. This example highlights how a research laboratory will often
-conduct a similar type of experiment many times, so it lets us demonstrate how
-the design of the project’s files within a project directory can be reused
-across similar experiments. It will allow us to show you how you can move from
-designing a file directory for a single experiment to designing one that can be
-used repeatedly, and then how you can take advantage of consistency in the
-directory structure across projects to make tools and templates that can be
-reused. [Get reference for these studies]</p>
+conduct a similar type of experiment many times, so it lets us demonstrate how a
+project directory template can be reused across similar experiments. It will
+allow us to show you how you can move from designing a file directory for a
+single experiment to designing one that can be used repeatedly, and then how you
+can take advantage of consistency in the directory structure across projects to
+make templates for data collection that can be reused.</p>
 <p>This example covers a group of studies that explored novel
 treatments for tuberculosis. While treatments exist for tuberculosis, the
 current treatment regime is lengthy and involves a combination of multiple
 drugs. If the treatment is not completed, it can result in the development and
-spread of drug-resistant tuberculosis strains, and so the treatment is sometimes
-required to be done under observation <span class="citation">(Barry and Cheung 2009)</span>. If the patient has a
-strain of tuberculosis that is resistant to some of the first-line drugs, they
+spread of drug-resistant tuberculosis strains, and so the treatment sometimes
+must be done under observation <span class="citation">(Barry and Cheung 2009)</span>. If the patient has a
+strain of tuberculosis that is resistant to first-line drugs, they
 need to be treated with second-line drugs, which can have serious side effects
 <span class="citation">(Barry and Cheung 2009)</span>. There is a critical need to develop more candidate drugs
 against this disease, given all the limitations and struggles of the current
 treatment regime.</p>
-<p>Each study investigates how mice that are challenged with tuberculosis respond
+<p>Each study investigates how mice challenged with tuberculosis respond
 to different treatments, both in terms of how well they handle the treatment
 (assessed by checking if their weight decreases notably while on treatment) and
 also how well the treatment manages to limit the growth of tuberculosis in the
@@ -191,14 +188,13 @@ mouse’s lungs.</p>
 goals—all aimed to test candidate treatments for tuberculosis. Most studies in
 this set tested one or more treatments as well as one or more controls. The
 controls could include negative controls, like saline solution, or positive
-controls, like a drug already in use to treat the disease, isoniazid. A few of
-the studies tested only controls, to help in developing baseline expectations
-for things like the bacterial load in different mouse strains used in studies in
-the set. The set of studies tested some treatments that were monotherapies (only
-one drug given to the animal) as well as some that were combinations of two or
-three different drugs. For many of the drugs that were tested, they were tested
-at different doses and, in some cases, different methods of delivery or
-different mouse models.</p>
+controls, like a drug already in use to treat the disease (e.g., isoniazid). A
+few of the studies tested only controls, to develop baseline expectations for
+things like the bacterial load in different mouse strains. The set of studies
+tested some treatments that were monotherapies (only one drug given to the
+animal) as well as some that were combinations of two or three drugs.
+For many of the drugs that were tested, they were tested at different doses and,
+in some cases, different methods of delivery or different mouse models.</p>
 <p>Each of the treatments were given to several mice that had been infected with
 <em>Mycobacterium tuberculosis</em>. During the treatment, the mice were weighed
 regularly. This weight measurement helps to determine if a particular treatment
@@ -206,14 +202,13 @@ is well-tolerated by the animals—if not, it may show through the treated mice
 losing weight during treatment. For convenience, the mice were not weighed
 individually. Instead, mice with the same treatment were kept in a single cage,
 and the entire cage was weighed, the weight of the cage itself factored out, and
-the average weight of mice for that treatment determined by dividing the weight
-of all mice in the cage by the number of mice in the cage. After a period of
-time, the mice were sacrificed and one lobe from their lungs was used to
-determine each mouse’s bacterial load, through plating the material from the
-lobe and counting the colony forming units (CFUs). One aim of the data analysis
-is to compare the bacterial load of mice under various treatments to the
-bacterial load of mice in the control group.</p>
-<p>The full set of studies included 19 different studies. These were conducted at
+the average weight of mice determined by dividing by the number of mice in the
+cage. After a period of time, the mice were sacrificed and one lobe from their
+lungs was used to determine each mouse’s bacterial load, through plating the
+material from the lobe and counting the colony forming units (CFUs). One aim of
+the data analysis is to compare the bacterial load of mice under various
+treatments to the bacterial load of mice in the control group.</p>
+<p>The full set of studies included 19 studies. These were conducted at
 different times, but the data for all of the studies can be collected using a
 common format, and we’ll talk about how both data collection templates and a
 project directory template could be designed to accomodate these experiments.</p>
@@ -224,8 +219,8 @@ project directory template could be designed to accomodate these experiments.</p
 of files that are included in your research projects. To give an example of this
 part of the design process, let’s walk through the types of data that were
 collected for the example studies.</p>
-<p>First, there was some metadata recorded for each study. Figure
-<a href="2.8-module8.html#fig:metadata">2.29</a> gives an example. This includes information about the strain
+<p>First, there were metadata recorded for each study. Figure
+<a href="2.8-module8.html#fig:metadata">2.26</a> gives an example. This includes information about the strain
 of mouse that was used in the study, treatment details (including the method of
 giving the drug or drugs, how often they were given each week, and for how many
 weeks), how much bacteria the animals were exposed to (measured both in terms of
@@ -236,7 +231,7 @@ novel drug as part of the tested treatment, the batch number of that drug.</p>
 <div class="figure fullwidth"><span style="display:block;" id="fig:metadata"></span>
 <img src="figures/project_metadata.png" alt="Example of recording metadata for a study in the set of example studies for this module." width="\textwidth"  />
 <p class="caption marginnote shownote">
-Figure 2.29: Example of recording metadata for a study in the set of example studies for this module.
+Figure 2.26: Example of recording metadata for a study in the set of example studies for this module.
 </p>
 </div>
 <p>Next, the researchers recorded some information about each treatment group
@@ -244,7 +239,7 @@ within the experiment. This typically included at least one negative control. In
 some cases, there was also a positive control, in which the animals were treated
 with a drug that’s in standard use against tuberculosis already (e.g.,
 isoniazid). Most studies would also test one or more treatments, which could
-include monotherapies or combined therapies. Figure <a href="2.8-module8.html#fig:treatmentdetails">2.30</a>
+include monotherapies or combined therapies. Figure <a href="2.8-module8.html#fig:treatmentdetails">2.27</a>
 shows an example of the data that were recorded on each treatment in the study.
 These data include the names and doses of up to three drugs in each treatment,
 as well as a column where the researcher can provide detailed specifications of
@@ -252,7 +247,7 @@ the treatment.</p>
 <div class="figure fullwidth"><span style="display:block;" id="fig:treatmentdetails"></span>
 <img src="figures/project_treatment_details.png" alt="Example of recording treatment details for a study in the set of example studies for this module." width="\textwidth"  />
 <p class="caption marginnote shownote">
-Figure 2.30: Example of recording treatment details for a study in the set of example studies for this module.
+Figure 2.27: Example of recording treatment details for a study in the set of example studies for this module.
 </p>
 </div>
 <p>Once the animals were challenged with the bacteria, treatment began, and two
@@ -264,26 +259,26 @@ the average weight of mice for that treatment determined by dividing the weight
 of all mice in the cage by the number of mice in the cage. These weights were converted to a measure of the percent change in
 weight since the start of treatment. If the animals’ weights decrease during the
 treatment, it is a marker that the treatment is not well-tolerated by the
-animals. Figure <a href="2.8-module8.html#fig:mouseweight">2.31</a> shows an example of how these data could be
+animals. Figure <a href="2.8-module8.html#fig:mouseweight">2.28</a> shows an example of how these data could be
 recorded. All animals within a treatment group were kept in the same cage, and
 this cage was measured once a week. By dividing the weight of all animals in the
 cage by the number of animals, the researchers could estimate the average weight
 of animals in that treatment group, which is recorded as shown in Figure
-<a href="2.8-module8.html#fig:mouseweight">2.31</a>.</p>
+<a href="2.8-module8.html#fig:mouseweight">2.28</a>.</p>
 <div class="figure fullwidth"><span style="display:block;" id="fig:mouseweight"></span>
 <img src="figures/project_mouse_weights.png" alt="Example of recording weekly weights of mice in each treatment group for the example set of studies." width="\textwidth"  />
 <p class="caption marginnote shownote">
-Figure 2.31: Example of recording weekly weights of mice in each treatment group for the example set of studies.
+Figure 2.28: Example of recording weekly weights of mice in each treatment group for the example set of studies.
 </p>
 </div>
 <p>Finally, after the treatment period, the mice were sacrificed and a portion of
 each mouse’s lung was used to estimate the bacterial load in that mouse. Figure
-<a href="2.8-module8.html#fig:bacterialload">2.32</a> shows an example of how the data on the bacterial load
+<a href="2.8-module8.html#fig:bacterialload">2.29</a> shows an example of how the data on the bacterial load
 in each mouse can be recorded.</p>
 <div class="figure fullwidth"><span style="display:block;" id="fig:bacterialload"></span>
 <img src="figures/project_bacterial_load.png" alt="Example of recording the bacterial load in the lungs of each mouse at the end of treatment for the example set of studies." width="\textwidth"  />
 <p class="caption marginnote shownote">
-Figure 2.32: Example of recording the bacterial load in the lungs of each mouse at the end of treatment for the example set of studies.
+Figure 2.29: Example of recording the bacterial load in the lungs of each mouse at the end of treatment for the example set of studies.
 </p>
 </div>
 <p>These examples are all data that the researchers record by entering them on
@@ -297,7 +292,7 @@ process of designing the full project directory template. Earlier modules
 templates like these.</p>
 <p>Another type of files that the group’s studies typically generate are ones
 that are generated directly by laboratory equipment. For example, their
-experiments often include flow cytometry assays, with files output in a
+experiments may include flow cytometry assays, with files output in a
 specialized format directly from the flow cytometer. Some experiments might
 also collect data through single-cell RNA sequencing. We’ll want to keep
 these files in mind as we design the structure of the project directory
@@ -306,20 +301,30 @@ template.</p>
 <div id="step-2-organizing-a-project-directory" class="section level3" number="2.8.3">
 <h3><span class="header-section-number">2.8.3</span> Step 2: Organizing a project directory</h3>
 <p>Once you’ve determined the types of files that you’ll normally include in your
-project, you then need to decide how to organize them into subdirectories in the project
-file directory.</p>
-<p>In this case, we’ve organized the project directory template to include just
-a few things at the top level:</p>
+project, you then need to decide how to organize them into subdirectories in the
+project file directory. In this case, we’ve organized the project directory
+template to include just a few things at the top level (Figure
+<a href="2.8-module8.html#fig:templatedirectorymod8">2.30</a>, also shown in module 2.7):</p>
 <ul>
-<li>A Excel file that stores meta-data about the experiment</li>
+<li>A spreadsheet that stores meta-data about the experiment</li>
 <li>A subdirectory named “raw_data”, where we’ll store original raw files of
-data, before it is pre-processed</li>
+data, before it is pre-processed, focusing on data generated by laboratory
+equipment</li>
 <li>A subdirectory named “data”, which will store experimental data once it
-has been pre-processed</li>
-<li>A subdirectory named “R”, which will store code</li>
+has been pre-processed, as well as recorded data that do not require pre-processing</li>
+<li>A subdirectory named “R”, which will store code for pre-processing and analysis</li>
 <li>A subdirectory named “reports”, which will store the files to generate
 reports, as well as any reports that are ultimately generated</li>
 </ul>
+<div class="figure"><span style="display:block;" id="fig:templatedirectorymod8"></span>
+<p class="caption marginnote shownote">
+Figure 2.30: A research group can create a file directory that will serve as a template for all the experiments of a certain type in your laboratory. The template can include templates of files for data recording and for generating reports. To start recording data for a new experiment, a researcher can copy and rename this template directory.
+</p>
+<img src="figures/project_template_directory.png" alt="A research group can create a file directory that will serve as a template for all the experiments of a certain type in your laboratory. The template can include templates of files for data recording and for generating reports. To start recording data for a new experiment, a researcher can copy and rename this template directory." width="\textwidth"  />
+</div>
+<p>You may have noticed that this structure captures each of the main elements
+that we discussed including in a project template in the last module:
+data, code, reports, and metadata.</p>
 <p>In this structure, we’ve selected subdirectory names that are generic enough
 (e.g., “data”, “reports”) that they can be reused across many of our projects
 without modification. These names should also be clear to any researcher that
@@ -327,9 +332,10 @@ explores this directory in the future, since the names are clear and
 unambiguous. However, you might make different choices—for example, if
 some of your team aren’t familiar with R as a programming language, you may
 want to use the subdirectory name “code” rather than “R”.</p>
-<p>Within some of the subdirectories, we can include more subdirectories to
-further organize files. For example, within the “data” subdirectory, we can
-have subdirectories for different types of data:</p>
+<p>Within some of the subdirectories, we can include more subdirectories to further
+organize files (Figure<a href="2.8-module8.html#fig:projecttemplatecomplexmod8">2.31</a>, repeated from
+module 2.7). For example, within the “data” subdirectory, we can have
+subdirectories for different types of data:</p>
 <ul>
 <li>A subdirectory named “flow_data” for data from flow cytometry</li>
 <li>A subdirectory named “recorded_data”, for data that are recorded “by hand”
@@ -337,6 +343,12 @@ in the laboratory (for example, the weights of animals)</li>
 <li>A subdirectory named “sc_rna_seq_data” for data from single-cell RNA
 sequencing</li>
 </ul>
+<div class="figure"><span style="display:block;" id="fig:projecttemplatecomplexmod8"></span>
+<p class="caption marginnote shownote">
+Figure 2.31: Example of a more complex project directory structure that could be created, with directories added to store data collected through flow cytometry and single cell RNA sequencing.
+</p>
+<img src="figures/project_template_morecomplex.png" alt="Example of a more complex project directory structure that could be created, with directories added to store data collected through flow cytometry and single cell RNA sequencing." width="\textwidth"  />
+</div>
 <p>Again, these subdirectories are named in a way that will generalize to many
 different experiments and yet also clearly labels the contents. Similar
 subdirectory diversions could also be used within the “raw_data” subdirectory,
@@ -354,13 +366,29 @@ a consistent name for each subdirectory when we do include it. If you’re
 trying to be consistent, it’s easier to start with everything you might need
 and delete some elements to customize for a particular project rather than
 starting with a minimal framework and adding.</p>
-<p>You may have noticed that this structure captures each of the main elements
-that we discussed including in a project template in the last module:
-data, code, reports, and metadata.</p>
 </div>
 <div id="step-3-establishing-file-name-conventions" class="section level3" number="2.8.4">
 <h3><span class="header-section-number">2.8.4</span> Step 3: Establishing file name conventions</h3>
-<p>[Add here on the file name conventions we picked]</p>
+<p>Next, we decided on how we’d name files in the directory. First, there are some
+files that will be included in every project. These include a file to record
+metadata about the experiment, as well as a file to record mouse weights over
+the course of the experiment and bacterial load at the end of the experiment.</p>
+<p>For both of these files, we selected filenames that would balance
+generalizability with discoverability (see module 2.7 for more on setting rules
+for filenames based on these principles). The file with experimental data, for
+example, is named “experiment_metadata.xlsx”. This name is generic enough that
+it will work for each of the studies, but it is also clear enough that people
+will have a good idea of what’s in the file when they explore the project
+directory. Similarly, the file for recording weights and bacterial load is named
+“recorded_lab_data.xlsx”, which again balances considerations generalizability
+with discoverability.</p>
+<p>You may have noticed that both these names avoid any special characters,
+including spaces. Instead, the filenames use underscores to help distinguish
+different words in the filenames and make them easy to read.</p>
+<p>These experiments may have read-outs from laboratory equipment. Examples include
+data from assays like flow cytometry and single-cell RNA sequencing. In these
+cases, we’ll keep the filenames that are generated by the laboratory equipment,
+so that we’ll maintain those standard formats.</p>
 </div>
 <div id="step-4-designing-data-collection-templates" class="section level3" number="2.8.5">
 <h3><span class="header-section-number">2.8.5</span> Step 4: Designing data collection templates</h3>
@@ -374,11 +402,11 @@ over the course of the experiment (mouse weights and bacterial loads). Within
 each file, we’ve used separate sheets to record the different types of data.
 This allows us to keep similar types of data together in the same file, while
 having a tidy collection format for each specific type of data (Figure
-<a href="2.8-module8.html#fig:projectdatacollection">2.33</a>).</p>
+<a href="2.8-module8.html#fig:projectdatacollection">2.32</a>).</p>
 <div class="figure fullwidth"><span style="display:block;" id="fig:projectdatacollection"></span>
 <img src="figures/project_data_collection.png" alt="Data collection templates for the example project directory template. These templates were created in two files, one for metadata, which is saved in the main directory of the project, and one for data collected in the laboratory during the experiment, which is saved in the 'data' subdirectory. Each file is saved as a spreadsheet file, with two sheets in each file to store different types of data." width="\textwidth"  />
 <p class="caption marginnote shownote">
-Figure 2.33: Data collection templates for the example project directory template. These templates were created in two files, one for metadata, which is saved in the main directory of the project, and one for data collected in the laboratory during the experiment, which is saved in the ‘data’ subdirectory. Each file is saved as a spreadsheet file, with two sheets in each file to store different types of data.
+Figure 2.32: Data collection templates for the example project directory template. These templates were created in two files, one for metadata, which is saved in the main directory of the project, and one for data collected in the laboratory during the experiment, which is saved in the ‘data’ subdirectory. Each file is saved as a spreadsheet file, with two sheets in each file to store different types of data.
 </p>
 </div>
 <p>All of these data collection files are designed using the principles of tidy
@@ -393,7 +421,7 @@ that process to create tidy data collection templates for each type of data.</p>
 (formatted in red to indicate that it is placeholder, rather than final
 data). This is so the researcher can see an example of how to enter data in
 the template when they start a new project.</p>
-<p>Figure <a href="2.8-module8.html#fig:replacingplaceholdermetadata">2.34</a> gives an example of this process.
+<p>Figure <a href="2.8-module8.html#fig:replacingplaceholdermetadata">2.33</a> gives an example of this process.
 One of the files that is included in the example template directory shown
 earlier is a spreadsheet to record metadata on the experiment. This spreadsheet
 file has two sheets, one that records overall metadata on the study (for
@@ -405,18 +433,18 @@ including these placeholder data, the researcher can see an example of the
 format that you expect to be used in recording data in this file. Once the
 project template is copied, the researcher will replace these data with the real
 data, and then change the font color to black to indicate that the placeholder
-data have been replaced (Figure <a href="2.8-module8.html#fig:replacingplaceholdermetadata">2.34</a>).</p>
+data have been replaced (Figure <a href="2.8-module8.html#fig:replacingplaceholdermetadata">2.33</a>).</p>
 <div class="figure fullwidth"><span style="display:block;" id="fig:replacingplaceholdermetadata"></span>
 <img src="figures/project_replace_placeholder_metadata.png" alt="The template includes a file with experiment metadata, with a sheet for recording the overall details of the experiment. A user can open this file and replace the placeholder values (in red) with real values for the experiment. By changing the text color to black, the user can have a visual confirmation that the placeholder data have been replaced with real study data." width="\textwidth"  />
 <p class="caption marginnote shownote">
-Figure 2.34: The template includes a file with experiment metadata, with a sheet for recording the overall details of the experiment. A user can open this file and replace the placeholder values (in red) with real values for the experiment. By changing the text color to black, the user can have a visual confirmation that the placeholder data have been replaced with real study data.
+Figure 2.33: The template includes a file with experiment metadata, with a sheet for recording the overall details of the experiment. A user can open this file and replace the placeholder values (in red) with real values for the experiment. By changing the text color to black, the user can have a visual confirmation that the placeholder data have been replaced with real study data.
 </p>
 </div>
 <p>Another sheet of this spreadsheet allows the researcher to record the details of
 each of the treatments that were tested in the experiment. Again, placeholder
 data are included in the template in a red font to help show the researcher how
 to record the data, and these are meant to be replaced with real data from the
-specific experiment (Figure <a href="2.8-module8.html#fig:replacingplaceholdertreatment2">2.35</a>). A
+specific experiment (Figure <a href="2.8-module8.html#fig:replacingplaceholdertreatment2">2.34</a>). A
 similar format is used in the template file to record data from the experiment,
 including the weights of each animal over each week of treatment and the final
 bacterial load in each animal at the end of treatment. Again, there are
@@ -425,63 +453,46 @@ real data after copying the project template for a new experiment.</p>
 <div class="figure fullwidth"><span style="display:block;" id="fig:replacingplaceholdertreatment2"></span>
 <img src="figures/project_replacing_placeholder_treatment_data.png" alt="The template includes a file with experiment metadata, with a sheet for recording the details of each treatment. A user can open this file and replace the placeholder values (in red) with real values for the treatments in the experiment. By changing the text color to black, the user can have a visual confirmation that the placeholder data have been replaced with real study data." width="\textwidth"  />
 <p class="caption marginnote shownote">
-Figure 2.35: The template includes a file with experiment metadata, with a sheet for recording the details of each treatment. A user can open this file and replace the placeholder values (in red) with real values for the treatments in the experiment. By changing the text color to black, the user can have a visual confirmation that the placeholder data have been replaced with real study data.
+Figure 2.34: The template includes a file with experiment metadata, with a sheet for recording the details of each treatment. A user can open this file and replace the placeholder values (in red) with real values for the treatments in the experiment. By changing the text color to black, the user can have a visual confirmation that the placeholder data have been replaced with real study data.
 </p>
 </div>
 </div>
 <div id="step-5-designing-a-report-template" class="section level3" number="2.8.6">
 <h3><span class="header-section-number">2.8.6</span> Step 5: Designing a report template</h3>
 <p>A final and optional step is to create one or more template reports. You can
-create this using tools for reproducible reports—in R, a key tool for this is
-RMarkdown. Here, we’ll cover using this tool for creating a report briefly, but
-there are many more details in modules 3.7 through 3.9. Having example files
-will help you to develop a template project report that can input the type of
-data that you typically collect for this type of project.</p>
+create report templates using tools for reproducible reports—in R, a key tool
+for this is RMarkdown. Here, we’ll cover using this tool for creating a report
+briefly, but there are many more details in modules 3.7 through 3.9. Having
+example files will help you to develop a template project report that can input
+the type of data that you typically collect for this type of project.</p>
 <p>We created an Rmarkdown file that does this analysis and visualization and
 included it in the project template directory. This means that the report file
 will be copied and available each time someone copies the project template
 directory at the start of a new project. However, you are not obligated to keep
 the report identical to the template. Instead, the template report serves as a
 starting point, and you can add to it or adapt it as you work on a study.</p>
-<p>In many cases, you may have a more complex design for your project directory. For
-example, if you were collecting flow cytometry data for the project as well, then
-you would want a subdirectory in the project that is specifically designed to
-store files from the flow cytometry component of the experiment. This subdirectory
-would likely include several files, rather than just one. Further, you would not
-know ahead of time what the name of these files would be (as you do with the data
-collection template files that are included in the template directory). However,
-you can still easily write code for a template report file that will work with
-multiple files of a similar type, even if you don’t know what the names will be,
-as long as you know what the name of their subdirectory will be. There are functions
-in R like <code>list.files</code> that can be used to list all the file names for the files
-in a given directory. You can use this function to create a vector of all the file
-names and then “map” a function or group of functions across these
-files to read them in, process them, and join them into a single dataframe in R.
-By using this process, you can write template code in the report for the project
-that should work in most cases for the data that you collect for a given type of
-study.</p>
 <p>This file is created using the RMarkdown format,
 which combines text with executable code. You can create this template so that it
 inputs the experimental data from the file formats created for the data recording
 files in the project template. By doing this, the researcher should be able to “knit”
 this report for a new experiment, and it should recreate the report based on the
-data recorded for that experiment (Figure <a href="2.8-module8.html#fig:makingareport">2.36</a>). By knitting
+data recorded for that experiment (Figure <a href="2.8-module8.html#fig:makingareport">2.35</a>). By knitting
 this template report, you can create a nicely formatted version of the report for
-the experimental data (Figure <a href="2.8-module8.html#fig:examplereport1">2.37</a>).</p>
+the experimental data (Figure <a href="2.8-module8.html#fig:examplereport1">2.36</a>).</p>
 <div class="figure fullwidth"><span style="display:block;" id="fig:makingareport"></span>
 <img src="figures/project_opening_and_running_report.png" alt="Example of how a user can create a report from the template. The template includes an example report, which is written using RMarkdown. The user can open this template report file and use the 'Knit' button in RStudio to render the file. As long as the experimental data are recorded using the data template files, the code for this report can process the data to generate a report from the data. The user can also make changes and additions to the template report." width="\textwidth"  />
 <p class="caption marginnote shownote">
-Figure 2.36: Example of how a user can create a report from the template. The template includes an example report, which is written using RMarkdown. The user can open this template report file and use the ‘Knit’ button in RStudio to render the file. As long as the experimental data are recorded using the data template files, the code for this report can process the data to generate a report from the data. The user can also make changes and additions to the template report.
+Figure 2.35: Example of how a user can create a report from the template. The template includes an example report, which is written using RMarkdown. The user can open this template report file and use the ‘Knit’ button in RStudio to render the file. As long as the experimental data are recorded using the data template files, the code for this report can process the data to generate a report from the data. The user can also make changes and additions to the template report.
 </p>
 </div>
 <div class="figure fullwidth"><span style="display:block;" id="fig:examplereport1"></span>
 <img src="figures/project_example_report_study001.png" alt="Example of the output from 'knitting' a report from the project template" width="\textwidth"  />
 <p class="caption marginnote shownote">
-Figure 2.37: Example of the output from ‘knitting’ a report from the project template
+Figure 2.36: Example of the output from ‘knitting’ a report from the project template
 </p>
 </div>
 <p>Specifically, for this set of studies a preliminary report was designed, with an
-example shown in Figure <a href="2.8-module8.html#fig:prelimreport">2.38</a>. This report uses the first page
+example shown in Figure <a href="2.8-module8.html#fig:prelimreport">2.37</a>. This report uses the first page
 to provide a nicely format version of the metadata for the study, including a
 table with overall details and a table with details for each specific treatment
 that was tested. The second page provides a graph that shows the percent weight
@@ -494,33 +505,33 @@ was the same as for the untreated control group.</p>
 <div class="figure fullwidth"><span style="display:block;" id="fig:prelimreport"></span>
 <img src="figures/project_prelim_report.png" alt="Example of the preliminary report generated for each study in the set of example studies for this module. The first page includes metadata on the study, as well as details on each treatment that was tested. The second page shows how mouse weights in each treatment group changed over the course of treatment, to help identify if a treatment was well-tolerated. The third page graphs the bacterial load in each mouse, grouped by treatment, and gives the result of a statistical analysis to test which treatment groups had outcomes that were significantly different from the untreated control group." width="\textwidth"  />
 <p class="caption marginnote shownote">
-Figure 2.38: Example of the preliminary report generated for each study in the set of example studies for this module. The first page includes metadata on the study, as well as details on each treatment that was tested. The second page shows how mouse weights in each treatment group changed over the course of treatment, to help identify if a treatment was well-tolerated. The third page graphs the bacterial load in each mouse, grouped by treatment, and gives the result of a statistical analysis to test which treatment groups had outcomes that were significantly different from the untreated control group.
+Figure 2.37: Example of the preliminary report generated for each study in the set of example studies for this module. The first page includes metadata on the study, as well as details on each treatment that was tested. The second page shows how mouse weights in each treatment group changed over the course of treatment, to help identify if a treatment was well-tolerated. The third page graphs the bacterial load in each mouse, grouped by treatment, and gives the result of a statistical analysis to test which treatment groups had outcomes that were significantly different from the untreated control group.
 </p>
 </div>
 <p>Let’s take a closer look at a few of these elements. For example, Figure
-<a href="2.8-module8.html#fig:studytable">2.39</a> shows the tables from the first page of the report shown
-in Figure <a href="2.8-module8.html#fig:prelimreport">2.38</a>. If you look back to the data collection for
-this study (e.g., Figures <a href="2.8-module8.html#fig:metadata">2.29</a> and <a href="2.8-module8.html#fig:treatmentdetails">2.30</a>),
+<a href="2.8-module8.html#fig:studytable">2.38</a> shows the tables from the first page of the report shown
+in Figure <a href="2.8-module8.html#fig:prelimreport">2.37</a>. If you look back to the data collection for
+this study (e.g., Figures <a href="2.8-module8.html#fig:metadata">2.26</a> and <a href="2.8-module8.html#fig:treatmentdetails">2.27</a>),
 you can see that all of the information in these tables was pulled from data
 recorded at the start of the study.</p>
 <div class="figure fullwidth"><span style="display:block;" id="fig:studytable"></span>
 <img src="figures/project_study_info_table.png" alt="Example of one element of the preliminary report generated for each study in the set of example studies for this module. The first page provides tables with metadata about the study and details about each treatment that was tested." width="\textwidth"  />
 <p class="caption marginnote shownote">
-Figure 2.39: Example of one element of the preliminary report generated for each study in the set of example studies for this module. The first page provides tables with metadata about the study and details about each treatment that was tested.
+Figure 2.38: Example of one element of the preliminary report generated for each study in the set of example studies for this module. The first page provides tables with metadata about the study and details about each treatment that was tested.
 </p>
 </div>
-<p>Figure <a href="2.8-module8.html#fig:mouseweightsplot">2.40</a> shows the second page of the report. This
+<p>Figure <a href="2.8-module8.html#fig:mouseweightsplot">2.39</a> shows the second page of the report. This
 figure has taken the mouse weights—which were recorded in one of the data
-collection templates for the project (Figure <a href="2.8-module8.html#fig:mouseweight">2.31</a>)—and used
+collection templates for the project (Figure <a href="2.8-module8.html#fig:mouseweight">2.28</a>)—and used
 them to generate a plot of how average mouse weight in each treatment group
 changed over the course of the treatment.</p>
 <div class="figure fullwidth"><span style="display:block;" id="fig:mouseweightsplot"></span>
 <img src="figures/project_mouse_weights_graph.png" alt="Example of one element of the preliminary report generated for each study in the set of example studies for this module. The second page provides a plot of how the weights of mice in each treatment changed over the course of treatment." width="\textwidth"  />
 <p class="caption marginnote shownote">
-Figure 2.40: Example of one element of the preliminary report generated for each study in the set of example studies for this module. The second page provides a plot of how the weights of mice in each treatment changed over the course of treatment.
+Figure 2.39: Example of one element of the preliminary report generated for each study in the set of example studies for this module. The second page provides a plot of how the weights of mice in each treatment changed over the course of treatment.
 </p>
 </div>
-<p>Figure <a href="2.8-module8.html#fig:bactcompare">2.41</a> shows the last page of the report. This page
+<p>Figure <a href="2.8-module8.html#fig:bactcompare">2.40</a> shows the last page of the report. This page
 starts with a figure that shows the bacterial load in the lungs of each mouse in
 the study at the end of the treatment period. In this figure, the measurement
 for each mouse is shown with a point, and these points are grouped by the
@@ -538,26 +549,9 @@ are from the data collected in the data collection templates shown earlier.</p>
 <div class="figure fullwidth"><span style="display:block;" id="fig:bactcompare"></span>
 <img src="figures/project_bact_compare_plot.png" alt="Example of one element of the preliminary report generated for each study in the set of example studies for this module. The third page provides results on how bacterial load in the lungs compares among treatments at the end of the treatment period." width="\textwidth"  />
 <p class="caption marginnote shownote">
-Figure 2.41: Example of one element of the preliminary report generated for each study in the set of example studies for this module. The third page provides results on how bacterial load in the lungs compares among treatments at the end of the treatment period.
+Figure 2.40: Example of one element of the preliminary report generated for each study in the set of example studies for this module. The third page provides results on how bacterial load in the lungs compares among treatments at the end of the treatment period.
 </p>
 </div>
-<p>In the report, we’ll design the script for the report (the RMarkdown file) so
-that it can leverage the order in how we’ve arranged files in the file system,
-since this is enforced by the project directory template and so is the same
-across different projects. This will let us repeat and reuse code scripts across
-all the projects that use this template. This strategy is used often in handling
-complex bioinformatics data <span class="citation">(Buffalo 2015)</span>, but it can also be
-leveraged to improve the reproducibility and reliability when only using less
-complex data recorded in the laboratory, as with the data shown in the example
-for this module.</p>
-<p>When it comes to project directories, it turns out that you can use the
-directory structure in your favor when you create script-based reports, like
-RMarkdown reports. There are functions in R, for example, that will allow you to
-print all the files in a specified subdirectory. Say that you have several flow
-cytometry files in a subdirectory of the “data” subdirectory called “flow_data”.
-You could use this function in R to create a list of all the files in that
-subdirectory, and then you can run other functions to do the same operations on
-all of those files.</p>
 <p>We wrote the code in the report in a way that it will still run if there are
 more or fewer observations in any of the data collection files, so the report
 template has some flexibility in terms of how each study in the set of studies
@@ -565,9 +559,7 @@ might vary. For example, in the example set of studies, some of the experiments
 were run using only a control group of mice, while others were run to test
 several different treatment groups. The report template can accommodate
 these differences across studies in the set of studies.</p>
-</div>
-<div id="applied-exercise-1" class="section level3" number="2.8.7">
-<h3><span class="header-section-number">2.8.7</span> Applied exercise</h3>
+<!-- ### Applied exercise -->
 
 </div>
 </div>
