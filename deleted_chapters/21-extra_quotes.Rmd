@@ -9222,3 +9222,61 @@ template. However, you are not obligated to keep the report identical to the
 template. Instead, the template report serves as a starting point, and you can
 add to it or adapt it as you work on a study.
 
+In many cases, you may have a more complex design for your project directory. For
+example, if you were collecting flow cytometry data for the project as well, then 
+you would want a subdirectory in the project that is specifically designed to 
+store files from the flow cytometry component of the experiment. This subdirectory
+would likely include several files, rather than just one. Further, you would not
+know ahead of time what the name of these files would be (as you do with the data
+collection template files that are included in the template directory). However, 
+you can still easily write code for a template report file that will work with 
+multiple files of a similar type, even if you don't know what the names will be, 
+as long as you know what the name of their subdirectory will be. There are functions
+in R like `list.files` that can be used to list all the file names for the files 
+in a given directory. You can use this function to create a vector of all the file
+names and then "map" a function or group of functions across these
+files to read them in, process them, and join them into a single dataframe in R. 
+By using this process, you can write template code in the report for the project
+that should work in most cases for the data that you collect for a given type of 
+study. 
+
+In the report, we'll design the script for the report (the RMarkdown file) so
+that it can leverage the order in how we've arranged files in the file system,
+since this is enforced by the project directory template and so is the same
+across different projects. This will let us repeat and reuse code scripts across
+all the projects that use this template. This strategy is used often in handling
+complex bioinformatics data [@buffalo2015bioinformatics], but it can also be
+leveraged to improve the reproducibility and reliability when only using less
+complex data recorded in the laboratory, as with the data shown in the example
+for this module.
+
+When it comes to project directories, it turns out that you can use the
+directory structure in your favor when you create script-based reports, like
+RMarkdown reports. There are functions in R, for example, that will allow you to
+print all the files in a specified subdirectory. Say that you have several flow
+cytometry files in a subdirectory of the "data" subdirectory called "flow_data".
+You could use this function in R to create a list of all the files in that
+subdirectory, and then you can run other functions to do the same operations on
+all of those files.
+
+
+Eric Raymond, in his book *The Art of Unix Programming*, calls this type of 
+project tracking "hand-hacking". He notes:
+
+> "The most primitive (but still very common) method [of version control] is all
+hand-hacking. You snapshot the project periodically by manually copying
+everything in it to a backup. You include history comments in source files. You
+make verbal or email arrangements with other developers to keep their hands off
+certain files while you hack them. ... The hidden costs of this hand-hacking
+method are high, especially when (as frequently happens) it breaks down. The
+procedures take time and concentration; they're prone to error, and tend to get
+slipped under pressure or when the project is in trouble---that is exactly when
+they are needed." [@raymond2003art]
+
+As Tippmannmy notes:
+
+> "The purpose of a lab notebook is to provide a lasting record of events in a
+laboratory. In the same way that a chemistry experiment would be nearly
+impossible without a lab notebook, scientific computing would be a nightmare of
+inefficiency and uncertainty without version-control systems."
+[@tippmannmy2014digital]

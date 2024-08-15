@@ -1,54 +1,50 @@
 ## Example: Creating a project template {#module8}
 
-We will walk through a real example, based on the experiences of one of our
-Co-Is, of establishing the format for a research group's 'Project' template,
-creating that template using RStudio, and initializing a new research project
-directory using the created template. This example will be from a
-laboratory-based research group that studies the efficacy of tuberculosis drugs
-in a murine model.
-
-**Objectives.** After this module, the trainee will be able to:
-
-- Create a 'Project' template in RStudio to initialize consistently-formatted
-'Project' directories
-- Initialize a new 'Project' directory using this template
-
 For this module, we'll show an example of creating a project directory template
 for a lab group. We will walk through the process of creating a project
 directory template that could be used to manage and analyze data from any of the
-specific studies for this group. We'll discuss the steps of the conceptual
-design---figuring out how a blueprint for the standard subdirectories and the
-file naming conventions. We'll also show examples of the physical implementation
-of this blueprint as a file directory that can be copied and renamed to initiate
-a new project. The full directory of files for this example can be found at
-https://github.com/geanders/example_for_improve_repro [need to make public],
-where you can download them or explore them online.
+specific studies for this group. We'll start by discussing the steps of the
+conceptual design---figuring out how a blueprint for the standard subdirectories
+and the file naming conventions. We'll then show how this blueprint can be
+developed into physical implementation: a file directory that can be copied and
+renamed to initiate a new project. The full directory of files for this example
+can be found at https://github.com/geanders/example_for_improve_repro, where you
+can download them or explore them online.
+
+**Objectives.** After this module, the trainee will be able to:
+
+- Examine files from previous projects as a step in developing a project
+directory template
+- Develop a structure of subdirectories for a project directory template
+- Create a project directory template to initialize consistently-formatted
+directories for a lab group's experiments
+- Explain how a report template can be incorporated within a project directory
+template
 
 ### Description of the example set of studies
 
 In this module, we'll use an example based on a set of real immunology
 experiments. This example highlights how a research laboratory will often
-conduct a similar type of experiment many times, so it lets us demonstrate how
-the design of the project's files within a project directory can be reused
-across similar experiments. It will allow us to show you how you can move from
-designing a file directory for a single experiment to designing one that can be
-used repeatedly, and then how you can take advantage of consistency in the
-directory structure across projects to make tools and templates that can be
-reused. [Get reference for these studies]
+conduct a similar type of experiment many times, so it lets us demonstrate how a
+project directory template can be reused across similar experiments. It will
+allow us to show you how you can move from designing a file directory for a
+single experiment to designing one that can be used repeatedly, and then how you
+can take advantage of consistency in the directory structure across projects to
+make templates for data collection that can be reused. 
 
 This example covers a group of studies that explored novel
 treatments for tuberculosis. While treatments exist for tuberculosis, the
 current treatment regime is lengthy and involves a combination of multiple
 drugs. If the treatment is not completed, it can result in the development and
-spread of drug-resistant tuberculosis strains, and so the treatment is sometimes
-required to be done under observation [@barry2009new]. If the patient has a
-strain of tuberculosis that is resistant to some of the first-line drugs, they
+spread of drug-resistant tuberculosis strains, and so the treatment sometimes
+must be done under observation [@barry2009new]. If the patient has a
+strain of tuberculosis that is resistant to first-line drugs, they
 need to be treated with second-line drugs, which can have serious side effects
 [@barry2009new]. There is a critical need to develop more candidate drugs
 against this disease, given all the limitations and struggles of the current
 treatment regime.
 
-Each study investigates how mice that are challenged with tuberculosis respond
+Each study investigates how mice challenged with tuberculosis respond
 to different treatments, both in terms of how well they handle the treatment
 (assessed by checking if their weight decreases notably while on treatment) and
 also how well the treatment manages to limit the growth of tuberculosis in the
@@ -58,14 +54,13 @@ These example studies were conducted with similar designs and similar
 goals---all aimed to test candidate treatments for tuberculosis. Most studies in
 this set tested one or more treatments as well as one or more controls. The
 controls could include negative controls, like saline solution, or positive
-controls, like a drug already in use to treat the disease, isoniazid. A few of
-the studies tested only controls, to help in developing baseline expectations
-for things like the bacterial load in different mouse strains used in studies in
-the set. The set of studies tested some treatments that were monotherapies (only
-one drug given to the animal) as well as some that were combinations of two or
-three different drugs. For many of the drugs that were tested, they were tested
-at different doses and, in some cases, different methods of delivery or
-different mouse models.
+controls, like a drug already in use to treat the disease (e.g., isoniazid). A
+few of the studies tested only controls, to develop baseline expectations for
+things like the bacterial load in different mouse strains. The set of studies
+tested some treatments that were monotherapies (only one drug given to the
+animal) as well as some that were combinations of two or three drugs.
+For many of the drugs that were tested, they were tested at different doses and,
+in some cases, different methods of delivery or different mouse models.
 
 Each of the treatments were given to several mice that had been infected with
 *Mycobacterium tuberculosis*. During the treatment, the mice were weighed
@@ -74,15 +69,14 @@ is well-tolerated by the animals---if not, it may show through the treated mice
 losing weight during treatment. For convenience, the mice were not weighed
 individually. Instead, mice with the same treatment were kept in a single cage,
 and the entire cage was weighed, the weight of the cage itself factored out, and
-the average weight of mice for that treatment determined by dividing the weight
-of all mice in the cage by the number of mice in the cage. After a period of
-time, the mice were sacrificed and one lobe from their lungs was used to
-determine each mouse's bacterial load, through plating the material from the
-lobe and counting the colony forming units (CFUs). One aim of the data analysis
-is to compare the bacterial load of mice under various treatments to the
-bacterial load of mice in the control group.
+the average weight of mice determined by dividing by the number of mice in the
+cage. After a period of time, the mice were sacrificed and one lobe from their
+lungs was used to determine each mouse's bacterial load, through plating the
+material from the lobe and counting the colony forming units (CFUs). One aim of
+the data analysis is to compare the bacterial load of mice under various
+treatments to the bacterial load of mice in the control group.
 
-The full set of studies included 19 different studies. These were conducted at
+The full set of studies included 19 studies. These were conducted at
 different times, but the data for all of the studies can be collected using a
 common format, and we'll talk about how both data collection templates and a
 project directory template could be designed to accomodate these experiments. 
@@ -94,7 +88,7 @@ of files that are included in your research projects. To give an example of this
 part of the design process, let's walk through the types of data that were
 collected for the example studies.
 
-First, there was some metadata recorded for each study. Figure
+First, there were metadata recorded for each study. Figure
 \@ref(fig:metadata) gives an example. This includes information about the strain
 of mouse that was used in the study, treatment details (including the method of
 giving the drug or drugs, how often they were given each week, and for how many
@@ -164,7 +158,7 @@ templates like these.
 
 Another type of files that the group's studies typically generate are ones
 that are generated directly by laboratory equipment. For example, their 
-experiments often include flow cytometry assays, with files output in a 
+experiments may include flow cytometry assays, with files output in a 
 specialized format directly from the flow cytometer. Some experiments might
 also collect data through single-cell RNA sequencing. We'll want to keep 
 these files in mind as we design the structure of the project directory 
@@ -173,20 +167,28 @@ template.
 ### Step 2: Organizing a project directory
 
 Once you've determined the types of files that you'll normally include in your
-project, you then need to decide how to organize them into subdirectories in the project
-file directory. 
+project, you then need to decide how to organize them into subdirectories in the
+project file directory. In this case, we've organized the project directory
+template to include just a few things at the top level (Figure
+\@ref(fig:templatedirectorymod8), also shown in module 2.7):
 
-In this case, we've organized the project directory template to include just
-a few things at the top level: 
-
-- A Excel file that stores meta-data about the experiment
+- A spreadsheet that stores meta-data about the experiment
 - A subdirectory named "raw_data", where we'll store original raw files of 
-data, before it is pre-processed
+data, before it is pre-processed, focusing on data generated by laboratory 
+equipment
 - A subdirectory named "data", which will store experimental data once it 
-has been pre-processed
-- A subdirectory named "R", which will store code
+has been pre-processed, as well as recorded data that do not require pre-processing
+- A subdirectory named "R", which will store code for pre-processing and analysis
 - A subdirectory named "reports", which will store the files to generate
 reports, as well as any reports that are ultimately generated
+
+```{r templatedirectorymod8, fig.fullwidth = FALSE, echo = FALSE, out.width = "\\textwidth", fig.cap = "A research group can create a file directory that will serve as a template for all the experiments of a certain type in your laboratory. The template can include templates of files for data recording and for generating reports. To start recording data for a new experiment, a researcher can copy and rename this template directory."}
+knitr::include_graphics("figures/project_template_directory.png")
+```
+
+You may have noticed that this structure captures each of the main elements 
+that we discussed including in a project template in the last module: 
+data, code, reports, and metadata.
 
 In this structure, we've selected subdirectory names that are generic enough
 (e.g., "data", "reports") that they can be reused across many of our projects
@@ -196,15 +198,20 @@ unambiguous. However, you might make different choices---for example, if
 some of your team aren't familiar with R as a programming language, you may 
 want to use the subdirectory name "code" rather than "R". 
 
-Within some of the subdirectories, we can include more subdirectories to 
-further organize files. For example, within the "data" subdirectory, we can 
-have subdirectories for different types of data: 
+Within some of the subdirectories, we can include more subdirectories to further
+organize files (Figure\@ref(fig:projecttemplatecomplexmod8), repeated from
+module 2.7). For example, within the "data" subdirectory, we can have
+subdirectories for different types of data:
 
 - A subdirectory named "flow_data" for data from flow cytometry
 - A subdirectory named "recorded_data", for data that are recorded "by hand"
 in the laboratory (for example, the weights of animals)
 - A subdirectory named "sc_rna_seq_data" for data from single-cell RNA 
 sequencing
+
+```{r projecttemplatecomplexmod8, fig.cap = "Example of a more complex project directory structure that could be created, with directories added to store data collected through flow cytometry and single cell RNA sequencing.", fig.fullwidth = FALSE, out.width = "\\textwidth"}
+knitr::include_graphics("figures/project_template_morecomplex.png")
+```
 
 Again, these subdirectories are named in a way that will generalize to many 
 different experiments and yet also clearly labels the contents. Similar 
@@ -225,13 +232,31 @@ trying to be consistent, it's easier to start with everything you might need
 and delete some elements to customize for a particular project rather than 
 starting with a minimal framework and adding.
 
-You may have noticed that this structure captures each of the main elements 
-that we discussed including in a project template in the last module: 
-data, code, reports, and metadata.
-
 ### Step 3: Establishing file name conventions
 
-[Add here on the file name conventions we picked]
+Next, we decided on how we'd name files in the directory. First, there are some
+files that will be included in every project. These include a file to record
+metadata about the experiment, as well as a file to record mouse weights over
+the course of the experiment and bacterial load at the end of the experiment.
+
+For both of these files, we selected filenames that would balance
+generalizability with discoverability (see module 2.7 for more on setting rules
+for filenames based on these principles). The file with experimental data, for
+example, is named "experiment_metadata.xlsx". This name is generic enough that
+it will work for each of the studies, but it is also clear enough that people
+will have a good idea of what's in the file when they explore the project
+directory. Similarly, the file for recording weights and bacterial load is named
+"recorded_lab_data.xlsx", which again balances considerations generalizability
+with discoverability.
+
+You may have noticed that both these names avoid any special characters,
+including spaces. Instead, the filenames use underscores to help distinguish
+different words in the filenames and make them easy to read.
+
+These experiments may have read-outs from laboratory equipment. Examples include
+data from assays like flow cytometry and single-cell RNA sequencing. In these 
+cases, we'll keep the filenames that are generated by the laboratory equipment, 
+so that we'll maintain those standard formats. 
 
 ### Step 4: Designing data collection templates
 
@@ -301,11 +326,11 @@ knitr::include_graphics("figures/project_replacing_placeholder_treatment_data.pn
 ### Step 5: Designing a report template
 
 A final and optional step is to create one or more template reports. You can
-create this using tools for reproducible reports---in R, a key tool for this is
-RMarkdown. Here, we'll cover using this tool for creating a report briefly, but
-there are many more details in modules 3.7 through 3.9.  Having example files
-will help you to develop a template project report that can input the type of
-data that you typically collect for this type of project.
+create report templates using tools for reproducible reports---in R, a key tool
+for this is RMarkdown. Here, we'll cover using this tool for creating a report
+briefly, but there are many more details in modules 3.7 through 3.9.  Having
+example files will help you to develop a template project report that can input
+the type of data that you typically collect for this type of project.
 
 We created an Rmarkdown file that does this analysis and visualization and
 included it in the project template directory. This means that the report file
@@ -313,24 +338,6 @@ will be copied and available each time someone copies the project template
 directory at the start of a new project. However, you are not obligated to keep
 the report identical to the template. Instead, the template report serves as a
 starting point, and you can add to it or adapt it as you work on a study.
-
-In many cases, you may have a more complex design for your project directory. For
-example, if you were collecting flow cytometry data for the project as well, then 
-you would want a subdirectory in the project that is specifically designed to 
-store files from the flow cytometry component of the experiment. This subdirectory
-would likely include several files, rather than just one. Further, you would not
-know ahead of time what the name of these files would be (as you do with the data
-collection template files that are included in the template directory). However, 
-you can still easily write code for a template report file that will work with 
-multiple files of a similar type, even if you don't know what the names will be, 
-as long as you know what the name of their subdirectory will be. There are functions
-in R like `list.files` that can be used to list all the file names for the files 
-in a given directory. You can use this function to create a vector of all the file
-names and then "map" a function or group of functions across these
-files to read them in, process them, and join them into a single dataframe in R. 
-By using this process, you can write template code in the report for the project
-that should work in most cases for the data that you collect for a given type of 
-study. 
 
 This file is created using the RMarkdown format, 
 which combines text with executable code. You can create this template so that it 
@@ -406,25 +413,6 @@ are from the data collected in the data collection templates shown earlier.
 knitr::include_graphics("figures/project_bact_compare_plot.png")
 ```
  
-In the report, we'll design the script for the report (the RMarkdown file) so
-that it can leverage the order in how we've arranged files in the file system,
-since this is enforced by the project directory template and so is the same
-across different projects. This will let us repeat and reuse code scripts across
-all the projects that use this template. This strategy is used often in handling
-complex bioinformatics data [@buffalo2015bioinformatics], but it can also be
-leveraged to improve the reproducibility and reliability when only using less
-complex data recorded in the laboratory, as with the data shown in the example
-for this module.
-
-When it comes to project directories, it turns out that you can use the
-directory structure in your favor when you create script-based reports, like
-RMarkdown reports. There are functions in R, for example, that will allow you to
-print all the files in a specified subdirectory. Say that you have several flow
-cytometry files in a subdirectory of the "data" subdirectory called "flow_data".
-You could use this function in R to create a list of all the files in that
-subdirectory, and then you can run other functions to do the same operations on
-all of those files.
-
 We wrote the code in the report in a way that it will still run if there are
 more or fewer observations in any of the data collection files, so the report
 template has some flexibility in terms of how each study in the set of studies
@@ -434,4 +422,4 @@ several different treatment groups. The report template can accommodate
 these differences across studies in the set of studies.
 
 
-### Applied exercise
+<!-- ### Applied exercise -->
