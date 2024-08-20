@@ -139,14 +139,8 @@ div.csl-indent {
 <div id="module15" class="section level2" number="3.6">
 <h2><span class="header-section-number">3.6</span> Complex data types in experimental data pre-processing</h2>
 <p>Raw data from many biomedical experiments, especially those that use
-high-throughput techniques, can be very large and complex. Because of the scale
-and complexity of these data, software for pre-processing the data in R often
-uses complex, ‘untidy’ data formats. While these formats are necessary for
-computational efficiency, they add a critical barrier for researchers wishing to
-implement reproducibility tools. In this module, we will explain why use of
-complex data formats is often necessary within open-source pre-processing
-software and outline the hurdles created in reproducibility tool use among
-laboratory-based scientists.</p>
+high-throughput techniques, can be large and complex. As Vince Buffalo
+notes in an article on bioinformatics data skills:</p>
 <blockquote>
 <p>“Right now, in labs across the world, machines are sequencing the genomes of
 the life on earth. Even with rapidly decreasing costs and huge technological
@@ -157,14 +151,6 @@ of data biologists need to work with. At no other point in human history has our
 ability to understand life’s complexities been so dependent on our skills to
 work with and analyze data.” <span class="citation">(Buffalo 2015)</span></p>
 </blockquote>
-<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
-<ul>
-<li>Explain why R software for pre-processing biomedical data often stores
-data in complex, ‘untidy’ formats</li>
-<li>Describe how these complex data formats can create barriers to
-laboratory-based researchers seeking to use reproducibility tools for
-data pre-processing</li>
-</ul>
 <p>In previous modules, we have gone into a lot of detail about advantages of the
 tidyverse approach. However as you work with biomedical data, you may find that
 it is unreasonable to start with a tidyverse approach from the first steps of
@@ -197,11 +183,18 @@ complex pipelines will be manageable with a tidyverse approach. More
 R developers are embracing the tidyverse approach and making tools and packages
 within its framework. In some areas with complex data, there have been
 major inroads to allow a tidyverse approach throughout the pipeline even
-when working with complex data. One example is with spatial data,
-where the <code>sf</code> package and related tools now make it possible to stay in
-a tidyverse framework when working with large and complex geospatial data.
-We will end this module by discussing the outlook for similar developments
-in the area of biomedical data.</p>
+when working with complex data. We’ll end the module by discussing these
+prospects.</p>
+<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
+<ul>
+<li>Explain why R software for pre-processing biomedical data often stores
+data in complex, “untidy” formats</li>
+<li>Describe how these complex data formats can create barriers to
+laboratory-based researchers seeking to use reproducibility tools for
+data pre-processing</li>
+<li>Explain how the tidyverse and Bioconductor approaches differ in the
+data structures they use</li>
+</ul>
 <div id="how-the-bioconductor-and-tidyverse-approaches-differ" class="section level3" number="3.6.1">
 <h3><span class="header-section-number">3.6.1</span> How the Bioconductor and tidyverse approaches differ</h3>
 <p>The heart of the difference between the tidyverse and Bioconductor approaches
@@ -259,7 +252,7 @@ structures in R.</p>
 </div>
 <div id="why-is-the-bioconductor-approach-designed-as-it-is" class="section level3" number="3.6.2">
 <h3><span class="header-section-number">3.6.2</span> Why is the Bioconductor approach designed as it is?</h3>
-<p>To begin learning the Bioconductor approach, it can be helpful to understand
+<p>To begin learning the Bioconductor approach, it can be helpful to understand why
 it’s designed the way it is. First, there are some characteristics of complex
 data that can make the data unsuitable for a tidyverse approach, including data
 size and complexity. In the next section of this module, we’ll discuss some of
@@ -289,7 +282,7 @@ founders of the Bioconductor project—is quoted as saying:</p>
 instance, if everybody puts their gene expression data into the same kind of
 box, it doesn’t matter how the data came about, but that box is the same and can
 be used by analytic tools. Really, I think it’s data structures that drive
-interoperability.” — Robert Gentlemen in <span class="citation">(Altschul et al. 2013)</span></p>
+interoperability.” — Robert Gentlemen as quoted in <span class="citation">Altschul et al. (2013)</span></p>
 </blockquote>
 <p>Each person who writes code for Bioconductor can use these data structures,
 writing functions that input and output data within these defined structures. If
@@ -310,10 +303,10 @@ using this approach include <span class="citation">(Huber et al. 2015)</span>:</
 </div>
 <div id="why-is-it-sometimes-necessary-to-use-a-bioconductor-approach-with-biomedical-data" class="section level3" number="3.6.3">
 <h3><span class="header-section-number">3.6.3</span> Why is it sometimes necessary to use a Bioconductor approach with biomedical data</h3>
-<p>Two main features—of data collected from complex laboratory equipment like
-flow cytometers and mass spectrometers, in particular—make it useful to use
-more complex data structures in R in the earlier stages of pre-processing the
-data rather directly using a tidy data structure. First, the data are often very
+<p>For data collected from complex laboratory equipment like flow cytometers and
+mass spectrometers, there are two main features that make it useful to use more
+complex data structures in R in the earlier stages of pre-processing the data
+rather directly using a tidy data structure. First, the data are often very
 large, in some cases so large that it is difficult to read them into R. Second,
 the data might combine various elements that you’d like to keep together as you
 move through the steps of pre-processing the data, but each of these elements
@@ -378,9 +371,9 @@ structure.</p>
 <p>For example, some biomedical data may have data that records characteristics at
 several levels of the data. It may have records on the levels of gene expression
 within each sample, separate information about each gene that was measured, and
-another separate set of information that characterizes each of the samples.
+another set of information that characterizes each of the samples.
 While it is critical to keep “like” measurements aligned with data like
-this—in other words, to ensure that you can connect the data that
+this—in other words, to insure that you can connect the data that
 characterizes a gene with the data that provides measures of the level of
 expression of that gene in each sample—these data do not naturally have a
 two-dimensional structure and so do not fit naturally into a dataframe
@@ -475,9 +468,9 @@ format, you can use the <code>tidy</code> and <code>glance</code> functions from
 </div>
 <div id="outlook-for-a-tidyverse-approach-to-biomedical-data" class="section level3" number="3.6.6">
 <h3><span class="header-section-number">3.6.6</span> Outlook for a tidyverse approach to biomedical data</h3>
-<p>Finally, it is quite likely better tools will continue to evolve, and that in
-the future there might be tidy dataframe formats that are adaptable enough to
-handle earlier stages in the data pre-processing for genomics data. The tidyverse
+<p>Finally, tools are continuing to evolve, and it’s quite possible that in the
+future there might be tidy dataframe formats that are adaptable enough to handle
+earlier stages in the data pre-processing for genomics data. The tidyverse
 dataframe approach has already been adapted to enable tidy dataframes to include
 more complex types of data within certain columns of the data frame as a special
 list-type column.</p>

@@ -5,7 +5,7 @@
 <meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta property="og:title" content="3.5 Simplify scripted pre-processing through R’s ‘tidyverse’ tools | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
+<meta property="og:title" content="3.5 Simplify scripted pre-processing through R’s “tidyverse” tools | Improving the Reproducibility of Experimental Data Recording and Pre-Processing" />
 <meta property="og:type" content="book" />
 
 <meta property="og:description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing." />
@@ -17,7 +17,7 @@
 
 <meta name="description" content="Online book with modules for improving the reproducibility of experimental data recording and preprocessing.">
 
-<title>3.5 Simplify scripted pre-processing through R’s ‘tidyverse’ tools | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
+<title>3.5 Simplify scripted pre-processing through R’s “tidyverse” tools | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
 
 <link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
 <link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
@@ -137,73 +137,20 @@ div.csl-indent {
 <div class="row">
 <div class="col-sm-12">
 <div id="module14" class="section level2" number="3.5">
-<h2><span class="header-section-number">3.5</span> Simplify scripted pre-processing through R’s ‘tidyverse’ tools</h2>
-<p>The R programming language now includes a collection of ‘tidyverse’ extension
-packages that enable user-friendly yet powerful work with experimental data,
-including pre-processing and exploratory visualizations. The principle behind
-the ‘tidyverse’ is that a collection of simple, general tools can be joined
-together to solve complex problems, as long as a consistent format is used for
-the input and output of each tool (the ‘tidy’ data format taught in other
-modules).</p>
-<p>Once data are in the “tidy” data format, you can create a pipeline of code that
-uses small tools, each of which does one simple thing, to work with the data.
-This work can include cleaning the data, adding values that are functions of the
-original values for each observation (e.g., adding a column with BMI based on
-values for each observation on height and weight), applying statistical models to
-test hypotheses, summarizing data to create tables, and visualizing the data.</p>
-<p>In this module, we will explain why this ‘tidyverse’ system is so
-powerful and how it can be leveraged within biomedical research, especially for
-reproducibly pre-processing experimental data.</p>
-<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
-<ul>
-<li>Define R’s ‘tidyverse’ system</li>
-<li>Explain how the ‘tidyverse’ collection of packages can be both user-friendly
-and powerful in solving many complex tasks with data</li>
-<li>Describe the difference between base R and R’s ‘tidyverse’.</li>
-</ul>
-<p>[Anecdote: favorite tools: math chalk, Blackwing pencils, Happy Hacker keyboard]</p>
-<blockquote>
-<p>“Similar to early many, beginner makers start with a rudimentary set of tools for
-basic creative tasks: a hammer (of course), a set of screwdrivers, scissors,
-some pliers, maybe a crescent wrench, and some kind of cutting device. Almost
-everyone who has strived to make things has some combination of this list. Then,
-as we get more experienced, we seek out better versions of the tools we already
-have as well as new tools that can facilitate the learning of new techniques—new
-ways of cutting things apart, and new ways of putting them back together.” <span class="citation">(Savage 2020)</span></p>
-</blockquote>
-<blockquote>
-<p>“Once we start to expand past the basic complement of tools, what to add to our
-collections becomes a multifactor calculus based on reliability, cost, space, time,
-repairability, skill, and need. These choices are nontrivial, because the tools we use
-are extensions of our hands and our minds. The best tools ‘wear in’ to fit you based
-on how you use them, they get smooth where you grab them. They tell the story of their
-utility with their patina of use. A toolbox of tools you know well and use lovingly is
-a magnificent thing.” <span class="citation">(Savage 2020)</span></p>
-</blockquote>
-<blockquote>
-<p>“The reality is that tool choice is both less important and more important than you
-think it is. It is less important to the extent that tool usage is entirely
-subjective, which means there is no one right way to do things. But it is more
-important, because the best tool for any job is the one you’re most comfortable with,
-the one that you can make do what you want it to do, whose movements you fully
-understand.” <span class="citation">(Savage 2020)</span></p>
-</blockquote>
-<p>The best thing that you can do to smooth the path as you learn a coding language
-is to start by finding a few general purpose tools and learning to use them
-really well. If you ask most good programmers, you will find that a large
-amount of their code relies on a fairly small set of general-use tools,
-with more specialized tools only used here and there, where a specific
-algorithm is necessary.</p>
+<h2><span class="header-section-number">3.5</span> Simplify scripted pre-processing through R’s “tidyverse” tools</h2>
 <p>As you learn to code, then, a good strategy is to start collecting “tools” for
 your toolbox in R—functions that you have learned to use very well and that
 you understand thoroughly. This will make you proficient in R more quickly, and
 it will also limit the chance of bugs and errors in your code, making your data
-work more robust and rigorous. When you first start out, though, it is hard to
-know which tools are the most important to add early and learn well. In this
-section, we’ll cover some tools that we have found helpful for
-pre-processing biological data. These are not exhaustive, but may help you to
-identify some sets of tools to focus on learning well for data pre-processing and
-analysis of biological data.</p>
+work more robust and rigorous. If you ask most good programmers, you will find
+that a large amount of their code relies on a fairly small set of general-use
+tools, with more specialized tools only used here and there, where a specific
+algorithm is necessary. When you first start out, though, it is hard to know
+which tools are the most important to add early and learn well. In this section,
+we’ll cover some tools that we have found helpful for pre-processing biological
+data. These are not exhaustive, but may help you to identify some sets of tools
+to focus on learning well for data pre-processing and analysis of biological
+data.</p>
 <p>Some key tools for pre-processing laboratory data are:</p>
 <ul>
 <li>Tools for data input</li>
@@ -238,10 +185,44 @@ do using the <code>library</code> call (e.g., <code>library("tidyverse")</code>)
 there are numerous other packages that build on the tidyverse approach.
 Some are created by the creator of the tidyverse approach (Hadley Wickham)
 or others on his team, while others are created by other R programmers but
-follow the standards of the tidyverse approach. An examples of one of
+follow the standards of the tidyverse approach. An example of one of
 these extensions that is specifically created for working with biomedical data
 is the <code>tidybulk</code> package <span class="citation">(Mangiola et al. 2021)</span>, for working with
 transcriptomics data.</p>
+<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
+<ul>
+<li>Define “tidyverse”, “character string”, “factor”,</li>
+<li>Explain how the tidyverse collection of packages can be both user-friendly
+and powerful in solving many complex tasks with data</li>
+<li>Describe the difference between base R and R’s tidyverse</li>
+<li>List two key tidyverse packages for file input</li>
+<li>List a key tidyverse package for changing or adding columns</li>
+<li>List key tidyverse packages for working with character strings and factors</li>
+<li>List a key tidyverse package for working with dates</li>
+<li>List two key tidyverse packages related to statistical modeling</li>
+<li>Locate further resources for learning the tidyverse approach</li>
+</ul>
+<!-- [Anecdote: favorite tools: math chalk, Blackwing pencils, Happy Hacker keyboard] -->
+<!-- > "Similar to early many, beginner makers start with a rudimentary set of tools for -->
+<!-- basic creative tasks: a hammer (of course), a set of screwdrivers, scissors,  -->
+<!-- some pliers, maybe a crescent wrench, and some kind of cutting device. Almost -->
+<!-- everyone who has strived to make things has some combination of this list. Then,  -->
+<!-- as we get more experienced, we seek out better versions of the tools we already  -->
+<!-- have as well as new tools that can facilitate the learning of new techniques---new -->
+<!-- ways of cutting things apart, and new ways of putting them back together." [@savage2020every] -->
+<!-- > "Once we start to expand past the basic complement of tools, what to add to our  -->
+<!-- collections becomes a multifactor calculus based on reliability, cost, space, time,  -->
+<!-- repairability, skill, and need. These choices are nontrivial, because the tools we use -->
+<!-- are extensions of our hands and our minds. The best tools 'wear in' to fit you based -->
+<!-- on how you use them, they get smooth where you grab them. They tell the story of their -->
+<!-- utility with their patina of use. A toolbox of tools you know well and use lovingly is -->
+<!-- a magnificent thing." [@savage2020every] -->
+<!-- > "The reality is that tool choice is both less important and more important than you  -->
+<!-- think it is. It is less important to the extent that tool usage is entirely  -->
+<!-- subjective, which means there is no one right way to do things. But it is more -->
+<!-- important, because the best tool for any job is the one you're most comfortable with,  -->
+<!-- the one that you can make do what you want it to do, whose movements you fully  -->
+<!-- understand." [@savage2020every] -->
 <div id="tools-for-data-input" class="section level3" number="3.5.1">
 <h3><span class="header-section-number">3.5.1</span> Tools for data input</h3>
 <p>To be able to work with data in R, you first must load the data into your R
@@ -249,7 +230,7 @@ session. Data will typically be saved in some type of file or files, and
 so you must instruct R about how to find that data and then read it from
 the file into the R session.</p>
 <p>There are several key tidyverse tools for inputting data from a file. The
-most important is a package in the tidyverse called, <code>readr</code>. This package
+most important is a package in the tidyverse called <code>readr</code>. This package
 allows you to read data from plain text files. Data are often stored in
 these plain text files, including in formats like CSV (“comma-separated
 values”), tab-separated values, and fixed width files. These are all files
@@ -316,7 +297,7 @@ measurements.</p>
 <p>There are a range of ways to standardize and normalize different types of
 biomedical data, ranging from very simple to much more complex. At the simpler
 end is a method called z-score normalization, where the observations for each
-feature or column are changed to have an overall mean of 0 and standard
+feature (i.e., column) are changed to have an overall mean of 0 and standard
 deviation of 1. This can be done by taking each value in a column and
 subtracting from it the column-wide mean, then dividing by the standard
 deviation. There are also more complex methods for scaling and normalization.
@@ -359,18 +340,17 @@ manipulations on columns with the <code>dplyr</code> tools, you should take some
 learn a few other tools that can often be used to make your coding pipelines
 much more efficient. One of these is to learn how to work well with character
 strings.</p>
-<p>Character strings are strings of alphanumerical symbols that are stored
-inside quotation marks, like “Mouse-01” or “Control group”. Several tidyverse
-packages help you work with this type of data more efficiently, either through
-finding and using regular patterns in the data (e.g., the number “01” stored in
+<p>Character strings are strings of alphanumerical symbols that are stored inside
+quotation marks, like “Mouse-01” or “Control group”. Several tidyverse packages
+help you work with this type of data more efficiently, either through finding
+and using regular patterns in the data (e.g., the number “01” stored in
 “Mouse-01”) or in treating these data as a marker of a set number of groups
 (e.g., “Control group” versus “Treated group”). These tools can help you in
 processing and exploring the data, and they are also extremely important in
 creating figures and tables from the data with clear labels. Once you start
-learning to work with character string data, you will realize that it’s not just
-within the data, but also that you can treat the file names and directory names
-of your project as character strings, and use these tools to embed and use
-useful information in them.</p>
+learning to work with character string data, you will realize that you can also
+treat the file names and directory names of your project as character strings,
+and use these tools to embed and use useful information in these filenames.</p>
 <p>The <code>stringr</code> package, which is part of the tidyverse, includes simple but
 powerful tools for working with vectors composed of character strings. For
 example, the package includes a function that let you extract a subset of each
@@ -380,25 +360,23 @@ else, and a function that will tell you which character strings in the vector
 have a match to a certain pattern. It also includes a function that can change
 the case of all the letters in each string, either to uppercase, to lowercase,
 or to “title case” (the first letter in each word is capitalized).</p>
-<p>You likely will not realize how powerful many of these tools are
-until you have a time when you need to do one of these tasks, but
-then you’ll find they make your life much easier. For example,
-say that you have a column in your data that provides the ID of each study
-subject (e.g., “Mouse 1A”). If some of the IDs were entered using upper
-case (e.g., “MOUSE 1A”), some with lower case (“mouse 1a”), and some with
-a mixture (e.g., “Mouse 1A”), then you may find that it is hard
-to write code that recognizes that “Mouse 1A” is the same as “mouse 1a” and
-“MOUSE 1A”. The functions in the <code>stringr</code> package would let you quickly
-convert everything to the same case and so work around this issue.
-As another example, you may want to extract certain elements from each
-subject ID—for example, you might want to create a column where you
-have changed “Mouse 1A” to just “1A” and “Mouse 2B” to just “2B”. The
-<code>stringr</code> package has functions that will let you do this in several
-ways. For example, it has a function that would let you remove “Mouse”
-from each character string, and another function that would let you
-extract only the part of the string that starts from the first number.
-These types of tools can be invaluable when you need to pre-process or
-clean data from the format that it first enters R.</p>
+<p>You likely will not realize how powerful many of these tools are until you need
+to do one of these tasks, but then you’ll find they make your life much easier.
+For example, say that you have a column in your data that provides the ID of
+each study subject (e.g., “Mouse 1A”). If some of the IDs were entered using
+upper case (e.g., “MOUSE 1A”), some with lower case (“mouse 1a”), and some with
+a mixture (e.g., “Mouse 1A”), then you may find that it is hard to write code
+that recognizes that “Mouse 1A” is the same as “mouse 1a” and “MOUSE 1A”. The
+functions in the <code>stringr</code> package would let you quickly convert everything to
+the same case and so work around this issue.</p>
+<p>As another example, you may want to extract certain elements from each subject
+ID—for example, you might want to create a column where you have changed
+“Mouse 1A” to just “1A” and “Mouse 2B” to just “2B”. The <code>stringr</code> package has
+functions that will let you do this in several ways. For example, it has a
+function that would let you remove “Mouse” from each character string, and
+another function that would let you extract only the part of the string that
+starts from the first number. These types of tools can be invaluable when you
+need to pre-process or clean data from the format that it first enters R.</p>
 <p>Sometimes, you will want to treat character strings as discrete categories
 or values. For example, if part of your data records subject IDs
 (e.g., “Mouse 1A”, “Mouse 2B”), you may want to be able to link up all
@@ -508,11 +486,6 @@ a variety of statistical models and extracting results in a tidy format.</p>
 </div>
 <div id="resources-to-learn-more-on-tidyverse-tools" class="section level3" number="3.5.6">
 <h3><span class="header-section-number">3.5.6</span> Resources to learn more on tidyverse tools</h3>
-<p>Here we have introduced the tidyverse approach, as well as covered some key
-tools within it for biomedical data pre-processing. However, we strongly
-recommend that you continue to learn more in this approach. In this section,
-we’ll point you to resources that you can use to continue to learn this approach
-to working with data in R.</p>
 <p>The tidyverse approach is now widely taught, both in in-person courses at
 universities and through a variety of online resources.
 Since there are so many excellent resources available—many for free—to learn
@@ -542,25 +515,26 @@ you prefer that format). These typically include lots of examples of code that
 help you try out concepts as you learn them.</p>
 <p>One key resource for learning the tidyverse approach for R is the book <em>R for
 Data Science</em> by Hadley Wickham (the primary developer of the tidyverse) and
-Garrett Grolemund. This book is available as a print edition through O’Reilly
-Media. It is also freely available online at <a href="https://r4ds.had.co.nz/" class="uri">https://r4ds.had.co.nz/</a>. This book
-is geared to beginners in R, moving through to get readers to an intermediate
-stage of coding expertise, which is a level that will allow most scientific
-researchers to powerfully work with their experimental data. The book includes
-exercises for practicing the concepts, and a separate online book is available
-with solutions for the exercises
-(<a href="https://jrnold.github.io/r4ds-exercise-solutions/" class="uri">https://jrnold.github.io/r4ds-exercise-solutions/</a>).</p>
-<p>Another online book that is an excellent tool—particularly for those using
-R for biomedical research—is <em>Modern Statistics for Modern Biology</em>, by
-Susan Holmes and Wolfgang Huber. These book shows how the tidyverse approach
-can be combined with tools from Bioconductor that are custom built to
+Garrett Grolemund <span class="citation">(Wickham and Grolemund 2016)</span>. This book is available as a print edition
+through O’Reilly Media. It is also freely available online at
+<a href="https://r4ds.had.co.nz/" class="uri">https://r4ds.had.co.nz/</a>. This book is geared to beginners in R, moving through
+to get readers to an intermediate stage of coding expertise, which is a level
+that will allow most scientific researchers to powerfully work with their
+experimental data. The book includes exercises for practicing the concepts, and
+a separate online book is available with solutions for the exercises
+at <a href="https://jrnold.github.io/r4ds-exercise-solutions/" class="uri">https://jrnold.github.io/r4ds-exercise-solutions/</a>.</p>
+<p>Another online book that is an excellent tool—particularly for those using R
+for biomedical research—is <em>Modern Statistics for Modern Biology</em>, by Susan
+Holmes and Wolfgang Huber <span class="citation">(Holmes and Huber 2018)</span>. This book shows how the tidyverse
+approach can be combined with tools from Bioconductor that are custom-built to
 work with bioinformatics data. It also provides an excellent overview of
 statistical methods for working with biomedical data and how those can be
-applied using R. The book is available online at <a href="https://www.huber.embl.de/msmb/" class="uri">https://www.huber.embl.de/msmb/</a>.</p>
+applied using R. The book is available online at
+<a href="https://www.huber.embl.de/msmb/" class="uri">https://www.huber.embl.de/msmb/</a>.</p>
 <p><strong>Cheatsheets</strong></p>
 <p>For many of the key tidyverse packages, there are two-page “cheatsheets” that
 have been developed by the package creators to help users learn and remember
-the functions that are available in the package. These are available here:
+the functions that are available in the package. These are available at
 <a href="https://posit.co/resources/cheatsheets/" class="uri">https://posit.co/resources/cheatsheets/</a>.</p>
 <p>Each cheatsheet includes numerous working examples. One excellent way to
 familiarize yourself with the tools in a package, then, is to work through the
@@ -573,9 +547,7 @@ this memory jog.</p>
 <p>For deeper tutorials of each tidyverse package, you can explore the
 package’s vignette. We’ve provided links to several of these throughout this
 module.</p>
-</div>
-<div id="practice-quiz" class="section level3" number="3.5.7">
-<h3><span class="header-section-number">3.5.7</span> Practice quiz</h3>
+<!-- ### Practice quiz -->
 
 </div>
 </div>
