@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Module 9 Harnessing version control for transparent data recording | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
+<meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson">
+<meta name="generator" content="bookdown 0.40 with bs4_book()">
+<meta property="og:title" content="Module 9 Harnessing version control for transparent data recording | Improving the Reproducibility of Experimental Data Recording and Pre-Processing">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Module 9 Harnessing version control for transparent data recording | Improving the Reproducibility of Experimental Data Recording and Pre-Processing">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.7.0/transition.js"></script><script src="libs/bs3compat-0.7.0/tabs.js"></script><script src="libs/bs3compat-0.7.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+          margin-bottom: 0em;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<meta name="description" content="As a research project progresses, researchers will often end up with many files (e.g., ‘draft1.doc’, ‘draft2.doc’). This can result in an explosion of files, and it becomes hard to track which...">
+<meta property="og:description" content="As a research project progresses, researchers will often end up with many files (e.g., ‘draft1.doc’, ‘draft2.doc’). This can result in an explosion of files, and it becomes hard to track which...">
+<meta name="twitter:description" content="As a research project progresses, researchers will often end up with many files (e.g., ‘draft1.doc’, ‘draft2.doc’). This can result in an explosion of files, and it becomes hard to track which...">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Improving the Reproducibility of Experimental Data Recording and Pre-Processing</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Overview of these modules</a></li>
+<li class="book-part">Experimental Data Recording</li>
+<li><a class="" href="module1.html"><span class="header-section-number">1</span> Separating data recording and analysis</a></li>
+<li><a class="" href="module2.html"><span class="header-section-number">2</span> Principles and power of structured data formats</a></li>
+<li><a class="" href="module3.html"><span class="header-section-number">3</span> The “tidy” data format</a></li>
+<li><a class="" href="module4.html"><span class="header-section-number">4</span> Designing templates for “tidy” data collection</a></li>
+<li><a class="" href="module5.html"><span class="header-section-number">5</span> Example: Creating a template for “tidy” data collection</a></li>
+<li><a class="" href="module6.html"><span class="header-section-number">6</span> Organizing project files</a></li>
+<li><a class="" href="module7.html"><span class="header-section-number">7</span> Creating project directory templates</a></li>
+<li><a class="" href="module8.html"><span class="header-section-number">8</span> Example: Creating a project template</a></li>
+<li><a class="active" href="module9.html"><span class="header-section-number">9</span> Harnessing version control for transparent data recording</a></li>
+<li><a class="" href="module10.html"><span class="header-section-number">10</span> Enhance the reproducibility of collaborative research with version control platforms</a></li>
+<li><a class="" href="module11.html"><span class="header-section-number">11</span> Using Git and GitHub to implement version control</a></li>
+<li class="book-part">Experimental Data Pre-processing</li>
+<li><a class="" href="module12.html"><span class="header-section-number">12</span> Principles of pre-processing experimental data</a></li>
+<li><a class="" href="module13.html"><span class="header-section-number">13</span> Selecting software options for pre-processing</a></li>
+<li><a class="" href="module14.html"><span class="header-section-number">14</span> Introduction to scripted data pre-processing in R</a></li>
+<li><a class="" href="module15.html"><span class="header-section-number">15</span> Tips for improving reproducibility when writing R scripts</a></li>
+<li><a class="" href="module16.html"><span class="header-section-number">16</span> Simplify scripted pre-processing through R’s “tidyverse” tools</a></li>
+<li><a class="" href="module17.html"><span class="header-section-number">17</span> Complex data types in experimental data pre-processing</a></li>
+<li><a class="" href="module18.html"><span class="header-section-number">18</span> Introduction to reproducible data pre-processing protocols</a></li>
+<li><a class="" href="module19.html"><span class="header-section-number">19</span> RMarkdown for creating reproducible data pre-processing protocols</a></li>
+<li><a class="" href="module20.html"><span class="header-section-number">20</span> Example: Creating a reproducible data pre-processing protocol</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/geanders/improve_repro">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="module9" class="section level1" number="9">
+<h1>
+<span class="header-section-number">Module 9</span> Harnessing version control for transparent data recording<a class="anchor" aria-label="anchor" href="#module9"><i class="fas fa-link"></i></a>
+</h1>
+<p>As a research project progresses, researchers will often end up with many files
+(e.g., ‘draft1.doc’, ‘draft2.doc’). This can result in an explosion of files,
+and it becomes hard to track which files represent the “current” state of a
+project. Version control allows researchers to edit and change research project
+files more cleanly, while including messages to explain changes and maintaining
+the power to backtrack to previous versions.</p>
+<p>In this module, we will explain what version control is and how it can be used
+in research projects to improve the transparency and reproducibility of
+research, particularly for data recording. We’ll introduce you
+to the basic idea of version control, using the Git software program as an
+example. In later modules, we’ll explain version control platforms like GitHub,
+as well as give some tips on how to use both within your research projects.</p>
+<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
+<ul>
+<li>Define “version”, “version control”, “version control software”,
+“repository”, “commit”, and “commit message”</li>
+<li>Discuss challenges in coordinating changes in project files when working
+in teams</li>
+<li>List some downsides of physical laboratory notebooks</li>
+<li>Distinguish between “version control” and “version control software”</li>
+<li>Identify examples of versioning in a digital context (data, code, files)</li>
+<li>Discuss how version control principles can improve collaboration in
+scientific projects</li>
+</ul>
+<div id="challenges-of-collaborating-on-evolving-research-materials" class="section level2" number="9.1">
+<h2>
+<span class="header-section-number">9.1</span> Challenges of collaborating on evolving research materials<a class="anchor" aria-label="anchor" href="#challenges-of-collaborating-on-evolving-research-materials"><i class="fas fa-link"></i></a>
+</h2>
+<p>When research groups—or any other professional teams—collaborate on
+publications and research, the process can be a bit haphazard. Teams often use
+emails and email attachments to share updates on the project, and they sometimes
+use email attachments to pass around the latest version of a document for others
+to review and edit.</p>
+<p>One fascinating example comes from the business world. After the implosion of
+Enron, a trove of emails from within the company were released. This set of
+emails has become known as the Enron Corpus and has been used for a variety of
+research studies. One group of researchers investigated emails from this corpus
+that involved people who were doing work with spreadsheets.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Hermans and Murphy-Hill, &lt;span&gt;“Enron’s Spreadsheets and Related Emails.”&lt;/span&gt;&lt;/p&gt;"><sup>189</sup></a></span>
+They found that passing Excel files through email attachments was a common
+practice, and that messages within emails suggested that spreadsheets were
+stored locally, rather than in a location that was accessible to all team
+members.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.&lt;/p&gt;"><sup>190</sup></a></span> This meant that team members might often be
+working on different versions of the same spreadsheet file. They note that “the
+practice of emailing spreadsheets is known to result in serious problems in
+terms of accountability and errors, as people do not have access to the latest
+version of a spreadsheet, but need to be updated of changes via email.”<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.&lt;/p&gt;"><sup>191</sup></a></span> The same process for collaboration is often used in
+scientific research: one study found, “Team members regularly pass data files
+back and forth by hand, by email, and by using shared lab or project servers,
+websites, and databases.”<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Edwards et al., &lt;span&gt;“Science Friction.”&lt;/span&gt;&lt;/p&gt;"><sup>192</sup></a></span></p>
+<p>These practices make it very difficult to keep track of all project files, and
+in particular, to track which version of each file is the most current. Further,
+this process constrains patterns of collaboration—it requires each team member
+to take turns in editing each file, or for one team member to attempt to merge
+in changes that were made by separate team members at the same time when all
+versions are collected.</p>
+<p>This process also makes it difficult to keep track of why changes were made, and
+often requires one team member to approve the changes of other team members.
+While “Track changes” and “Comment” features in software like Microsoft Word can
+help the team communicate with each other, these features often lead to a very
+messy document at stages in the editing, where it is hard to pick out the
+current versus suggested wording, and once a change is accepted or a comment
+deleted, these conversations can be lost forever. Finally, word processing tools
+are poorly suited to track changes or add suggestions directly to data or code,
+as both data and code are usually saved in formats that aren’t native to word
+processing programs, and copying them into a format like Word can introduce
+problematic hidden formatting that can cause the data or code to malfunction.</p>
+</div>
+<div id="recording-data-in-the-laboratoryfrom-paper-to-computers" class="section level2" number="9.2">
+<h2>
+<span class="header-section-number">9.2</span> Recording data in the laboratory—from paper to computers<a class="anchor" aria-label="anchor" href="#recording-data-in-the-laboratoryfrom-paper-to-computers"><i class="fas fa-link"></i></a>
+</h2>
+<p>More and more scientific researchers are tackling these challenges in their own
+projects using something called <em>version control</em>. But how does version
+control—traditionally a tool of software engineers—relate to collaborating
+to collect and analyze scientific research data? Traditionally, experimental
+data collected in a laboratory was recorded in a paper laboratory notebook.
+These laboratory notebooks played a role not only as the initial recording of
+data, but also keep a legal record of the data recorded in the lab.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Amanda Mascarelli, &lt;span&gt;“Research Tools: Jump Off the Page,”&lt;/span&gt; &lt;em&gt;Nature&lt;/em&gt; 507, no. 7493 (2014): 523–25.&lt;/p&gt;"><sup>193</sup></a></span> They were also a resource for collaborating across a
+team and for passing on a research project from one lab member to another.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Declan Butler, &lt;span&gt;“Electronic Notebooks: A New Leaf,”&lt;/span&gt; &lt;em&gt;Nature&lt;/em&gt; 436, no. 7047 (2005): 20–22.&lt;/p&gt;"><sup>194</sup></a></span></p>
+<p>However, paper laboratory notebooks have a number of limitations. First, they
+can be very inefficient. In a time when almost all data analyses—even simple
+calculations—are done on a computer, recording research data on paper rather
+than directly entering it into a computer is inefficient. Also, any stage of
+copying data from one format to another, especially when done by a human rather
+than a machine, introduces the chance to copying errors. Handwritten laboratory
+notebooks can be hard to read,<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.; Jeffrey M Perkel, &lt;span&gt;“Coding Your Way Out of a Problem”&lt;/span&gt; (Nature Publishing Group, 2011).&lt;/p&gt;"><sup>195</sup></a></span> and
+they may lack adequate flexibility to handle the complex experiments often
+conducted. Further, electronic alternatives can also be easier to search,
+allowing for deeper and more comprehensive investigations of the data collected
+across multiple experiments.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Jim Giles, &lt;span&gt;“The Digital Lab: Lab-Management Software and Electronic Notebooks Are Here–and This Time, It’s More Than Just Talk,”&lt;/span&gt; &lt;em&gt;Nature&lt;/em&gt; 481, no. 7382 (2012): 430–32; Butler, &lt;span&gt;“Electronic Notebooks”&lt;/span&gt;; Perkel, &lt;span&gt;“Coding Your Way Out of a Problem.”&lt;/span&gt;&lt;/p&gt;"><sup>196</sup></a></span> As one article notes, physical lab notebooks are “usually
+chaotic and always unsearchable.”<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Perkel, &lt;span&gt;“Coding Your Way Out of a Problem.”&lt;/span&gt;&lt;/p&gt;"><sup>197</sup></a></span></p>
+<p>Given a widespread recognition of the limitations of paper laboratory notebooks,
+in the past couple of decades, there have been a number of efforts, both formal
+and informal, to move from paper laboratory notebooks to electronic
+alternatives. In some fields that rely heavily on computational analysis, there
+are very few research labs (if any) that use paper laboratory notebooks.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Butler, &lt;span&gt;“Electronic Notebooks.”&lt;/span&gt;&lt;/p&gt;"><sup>198</sup></a></span> In other fields, where researchers have traditionally
+used paper lab notebooks, companies have been working for a while to develop
+electronic laboratory notebooks specifically tailored to scientific research.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Giles, &lt;span&gt;“The Digital Lab.”&lt;/span&gt;&lt;/p&gt;"><sup>199</sup></a></span> Some early adapters were pharmaceutical industrial
+labs, where companies had the budgets to get customized versions and the
+authority to require their use. In academic laboratories, electronic lab
+notebooks have taken longer to be adapted.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.; Butler, &lt;span&gt;“Electronic Notebooks.”&lt;/span&gt;&lt;/p&gt;"><sup>200</sup></a></span> Indeed, a widely adopted platform for electronic laboratory
+notebooks has yet to be taken up by the scientific community,<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Roberta Kwok, &lt;span&gt;“Lab Notebooks Go Digital,”&lt;/span&gt; &lt;em&gt;Nature&lt;/em&gt; 560, no. 7717 (2018): 269–70.&lt;/p&gt;"><sup>201</sup></a></span>
+despite clear advantages of recording data directly into a computer rather than
+first using a paper notebook. As Kwok notes in a 2018 commentary,</p>
+<blockquote>
+<p>“Since at least the 1990s, articles on technology have predicted the imminent,
+widespread adoption of electronic laboratory notebooks (ELNs) by researchers. It has
+yet to happen”<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.&lt;/p&gt;"><sup>202</sup></a></span></p>
+</blockquote>
+<p>Instead of using customized electronic laboratory notebook software, some
+academics are moving their data recording online, but are using more generalized
+electronic alternatives, like Dropbox, Google applications, OneNote, and
+Evernote.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Perkel, &lt;span&gt;“Coding Your Way Out of a Problem”&lt;/span&gt;; Kwok, &lt;span&gt;“Lab Notebooks Go Digital”&lt;/span&gt;; Giles, &lt;span&gt;“The Digital Lab”&lt;/span&gt;; Kendall Powell, &lt;span&gt;“A Lab App for That,”&lt;/span&gt; &lt;em&gt;Nature&lt;/em&gt; 484, no. 7395 (2012): 553–55.&lt;/p&gt;"><sup>203</sup></a></span>
+Some scientists have started using version control software, especially the
+combination of Git and GitHub, as a way to improve laboratory data recording,
+and in particular to improve transparency and reproducibility standards.
+These pieces of software share the same pattern as Google applications or
+Dropbox—they are generalized tools that have been honed and optimized for ease
+of use through their role outside of scientific research, but can be harnessed
+as a powerful tool in a scientific laboratory, as well. They are also free—at
+least, for GitHub, at the entry and academic levels—and, even better, one
+(Git) is open-source.</p>
+</div>
+<div id="defining-version-and-version-control" class="section level2" number="9.3">
+<h2>
+<span class="header-section-number">9.3</span> Defining “version” and “version control”<a class="anchor" aria-label="anchor" href="#defining-version-and-version-control"><i class="fas fa-link"></i></a>
+</h2>
+<p>Most scientific research today involves collaboration across a team of
+researchers, rather than an individual scientist working alone. Collaboration
+drives interdisciplinary science, but it also creates challenges. One
+challenge comes with coordinating versions of research materials. These
+materials can include data collection files, but can also include other
+documents like study protocols, as well as physical materials like cell lines,
+antibodies, and model organisms.</p>
+<p>A <em>version</em> is one iteration of a research material that is evolving. For
+example, a draft of a research paper is one version of that paper. Research data
+that you collect may also go through several versions. For example, if you
+identify a typo in data after you record it, you may need to correct the typo
+and add a note or signature to explain that update. Further, if you are
+collecting data at multiple timepoints, you may have new versions of a data file
+as you complete each timepoint.</p>
+<p>As materials evolve across versions, it introduces challenges in maintaining a
+research process that is smooth, efficient, and error-free. One challenge is to
+make sure it is always clear which version is the most current, as well as which
+version should be used for specific purposes. For example, if several coauthors
+are editing a paper draft, it is important to ensure they are all working on the
+most recent version.</p>
+<p>Another challenge is to coordinate the changes that different people make when
+they work on the material at the same time. Scientific collaboration often does
+not operate as an assembly line, where one person finishes their work on a
+document or material and then hands it off to the next person. Instead, there
+will often be several copies of a version in different peoples’ hands, with all
+of them working on it at once. One example is a paper draft—often coauthors
+all edit the latest draft at the same time, rather than one-by-one.
+This creates the challenge of taking the contributions of each person and
+coordinating their changes and additions into one primary copy.</p>
+<p>A third challenge is to keep track of the changes that are made at each step, as
+the document moves from version to version. This record can help in auditing for
+errors or bugs that might be introduced as the document evolves. Ideally, the
+record also will include some information about why changes were made at each
+step.</p>
+<p>These challenges can be addressed through a process called <em>version control</em>.
+While the term is most commonly used in reference to software development, the
+idea of version control is widely relevant. Any process that creates evolving
+versions of a document or material can benefit from the idea of version control,
+which aims to record and document changes to the material over time, coordinate
+the contributions of different members of a team, and revert back to older
+versions if needed. In this module, we’ll focus on version control as it applies
+to research materials that are electronic (files and directories), but you may
+also find it useful to think about how the principles and elements of version
+control can be applied to other research materials, like cell lines and
+antibodies.</p>
+</div>
+<div id="what-are-the-key-elements-of-version-control" class="section level2" number="9.4">
+<h2>
+<span class="header-section-number">9.4</span> What are the key elements of version control?<a class="anchor" aria-label="anchor" href="#what-are-the-key-elements-of-version-control"><i class="fas fa-link"></i></a>
+</h2>
+<p>The term <em>version</em> in <em>version control</em> refers to one iteration or state of a
+document or set of documents, for example the current version of a data file.
+The word <em>control</em> captures the idea of allowing for safe changes and updates to
+the version, especially when more than one person is working on it. Part of this
+“control” will also include recording the changes made from one version to the
+next and annotating reasons for those changes.</p>
+<p>The general term <em>version control</em> can refer to any method of syncing
+contributions from several people to a file or set of files. Version control of
+computer files can be done “by hand”, with a person manually logging each change,
+and originally was.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Francis Irving, &lt;span&gt;“Astonishments, Ten, in the History of Version Control,”&lt;/span&gt; 2011, &lt;a href="https://www.flourish.org/2011/12/astonishments-ten-in-the-history-of-version-control/"&gt;https://www.flourish.org/2011/12/astonishments-ten-in-the-history-of-version-control/&lt;/a&gt;.&lt;/p&gt;'><sup>204</sup></a></span> However, it’s much more efficient
+to use a computer program to handle this tracking and to coordinate
+contributions from multiple people. As Eric Raymond notes in <em>The Art of Unix
+Programming</em>, “tracking all that detail is just the sort of thing computers are
+good at and humans are not.”<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Raymond, &lt;em&gt;The Art of Unix Programming&lt;/em&gt;.&lt;/p&gt;"><sup>205</sup></a></span> He goes on to describe version
+control as “a suite of programs that automates away most of the drudgery
+involved in keeping an annotated history of your project and avoiding
+modification conflicts.”<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.&lt;/p&gt;"><sup>206</sup></a></span></p>
+<p>Software for this purpose—<em>version control software</em>—was first developed for
+software programming projects. Some popular version control software today
+comes from these roots. In this section, we’ll introduce the key features of
+version control, and to do so we’ll use examples and terminology from a common
+version control software program called Git. While these terms are derived
+from this particular software program, they represent ideas that are important
+in any implementation of version control. Later, we’ll touch on how some of these
+ideas are incorporated in other software, like Google Docs.</p>
+<p>The software available for version control tracks electronic files. While the
+very earliest version control software systems tracked single files, these
+systems quickly moved to tracking sets of files, called <em>repositories</em>. A
+repository is almost identical to a file directory (which you may also know as a
+file folder), and indeed a repository starts from a file directory. The only
+difference is the repository is enhanced with some additional overhead.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Ben Klemens, &lt;em&gt;21st Century c: C Tips from the New School&lt;/em&gt; (" O’Reilly Media, Inc.", 2014).&lt;/p&gt;'><sup>207</sup></a></span> This overhead is added to record how the files in the
+directory have changed over time. You can compare this to how you might track
+document changes if the documents were paper rather than electronic—you could
+store the documents in a paper folder and add a piece of paper where you record
+a log of each change you make to the documents in the folder. The extra overhead
+that changes a regular file directory to a repository is very similar to the log
+in this example. A repository, in other words, is a directory that is under
+version control.</p>
+<p>In a repository of files that is under version control, the version control
+software takes snapshots of how the files look during your work on them. Each
+snapshot is called a <em>commit</em>, and it provides a record of which lines in each
+file changed from one snapshot to another, as well as exactly how they changed.
+The idea behind these commits—recording the differences, line-by-line, between
+an older and newer version of each file derives from a longstanding Unix command
+line tool called <em>diff</em>. This tool, developed early in the history of Unix at
+AT&amp;T’s Bell Labs,<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Raymond, &lt;em&gt;The Art of Unix Programming&lt;/em&gt;.&lt;/p&gt;"><sup>208</sup></a></span> is a solid and well-tested tool that does
+the simple but important job of generating a list of all the differences between
+two plain text files. Each commit in a repository includes the same type of
+information about the differences introduced in the files at the time of that
+commit.</p>
+<p>When you are working with a directory under version control, you explain your
+changes as you make them—in other words, version control allows for annotation
+of the developing and editing process.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Eric Raymond, &lt;span&gt;“Understanding Version-Control Systems (DRAFT),”&lt;/span&gt; 2009, &lt;a href="http://www.catb.org/~esr/writings/version-control/version-control.html"&gt;http://www.catb.org/~esr/writings/version-control/version-control.html&lt;/a&gt;.&lt;/p&gt;'><sup>209</sup></a></span> Each commit
+requires you to enter a <em>commit message</em> describing why the changes in that
+commit were made. The commit messages can serve as a powerful tool for
+explaining changes to other team members or for reminding yourself in the future
+about why certain changes were made. A repository under version control, then,
+can include not only a complete history of how files in a project directory have
+changed over the course of the project, but also why. If this feature is used
+thoughtfully, then the commit history of the project provides a well-documented
+description of the project’s full evolution. If you’re working on a manuscript,
+for example, when it’s time to edit, you can cut whole paragraphs, and if you
+ever need to get them back, they’ll be right there in the commit history for
+your project, with their own commit message about why they were cut. If you make
+the commit message clear, it will make it easy to find that commit if you ever
+need those paragraphs again.</p>
+<p>Further, each of the commits is given its own ID tag (in the Git software,
+this is done through something called a unique SHA-1 hash),<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Klemens, &lt;em&gt;21st Century c&lt;/em&gt;.&lt;/p&gt;"><sup>210</sup></a></span>
+and version control systems have a number of commands that let you “roll back”
+to earlier versions. This provides <em>reversability</em> within the project files,
+allowing you to go back to the version as it was when a certain commit was made.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Raymond, &lt;span&gt;“Understanding Version-Control Systems (DRAFT).”&lt;/span&gt;&lt;/p&gt;"><sup>211</sup></a></span></p>
+<p>It turns out that this functionality—of being able to roll back to earlier
+versions—has a wonderful side benefit when it comes to working on a large
+project. It means that you don’t need to save earlier versions of each file. You
+can maintain one and only one version of each project file in the project’s
+directory, with the confidence that you never “lose” old versions of the file.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Jeffrey Perkel, &lt;span&gt;“Git: The Reproducibility Tool Scientists Love to Hate,”&lt;/span&gt; &lt;em&gt;Naturejobs Blog&lt;/em&gt;, 2018; John D Blischak, Emily R Davenport, and Greg Wilson, &lt;span&gt;“A Quick Introduction to Version Control with Git and GitHub,”&lt;/span&gt; &lt;em&gt;PLoS Computational Biology&lt;/em&gt; 12, no. 1 (2016).&lt;/p&gt;"><sup>212</sup></a></span> This allows you to maintain a clean and
+simple version of the project files, with only one copy of each, ensuring it’s
+always clear which version of a file is the “current” one (since there’s only
+one version).<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Klemens, &lt;em&gt;21st Century c&lt;/em&gt;.&lt;/p&gt;"><sup>213</sup></a></span> This also provides the reassurance that you can
+try new directions in a project, and always roll back to the old version if that
+direction doesn’t work well.</p>
+<p>In a 2011 commentary in <em>Nature Methods</em>, Perkel tells a story about how this
+functionality helped one researcher keep his project directories simpler:</p>
+<blockquote>
+<p>“Early in his graduate career, John Blischak found himself creating figures
+for his advisor’s grant application. Blischak was using the programming language
+R to generate the figures, and as he iterated and optimized his code, he ran
+into a familiar problem: Determined not to lose his work, he gave each new
+version a different filename—analysis_1, analysis_2, and so on, for
+instance—but failed to document how they had evolved. ‘I had no idea what had
+changed between them,’ says Blischak… Using Git, Blischak says, he no longer
+needed to maintain multiple copies of his files. ‘I just keep overwriting it and
+changing it and saving the snapshots. And if the professor comes back and says,
+’oh, you sent me an email back in March with this figure’, I can say, ‘okay,
+well, I’ll just bo back to the March version of my code and I can recreate
+it’.”<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Perkel, &lt;span&gt;“Git.”&lt;/span&gt;&lt;/p&gt;"><sup>214</sup></a></span></p>
+</blockquote>
+<p>A key strength, then, of using version control is its ability to track every
+change made to files in the project, why the change was made, and who made it.
+Version control creates a full history of the evolution of each file in the
+project. When a change is committed, the history records the exact change made,
+including the previous version of the file. No change is ever fully lost,
+therefore, unless a great deal of extra work is taken to erase something from
+the project’s commit history.</p>
+<p>It’s also helpful to understand how version control programs handle
+collaboration. In earlier types of version control programs, under what is
+called a <em>centralized</em> framework, there was one central repository for the file
+or set of files the team was working on.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Raymond, &lt;span&gt;“Understanding Version-Control Systems (DRAFT)”&lt;/span&gt;; Sinclair Target, &lt;span&gt;“Version Control Before Git with CVS,”&lt;/span&gt; 2018, &lt;a href="https://twobithistory.org/2018/07/07/cvs.html"&gt;https://twobithistory.org/2018/07/07/cvs.html&lt;/a&gt;; Irving, &lt;span&gt;“Astonishments, Ten, in the History of Version Control.”&lt;/span&gt;&lt;/p&gt;'><sup>215</sup></a></span> A team member who wanted to make
+a change would “check out” the file he or she wanted to work on, make changes,
+and then check it back in as the newest main version.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Raymond, &lt;em&gt;The Art of Unix Programming&lt;/em&gt;.&lt;/p&gt;"><sup>216</sup></a></span> While
+one team member had this file checked out, other members would be locked out of
+making any changes to that file—they could look at it, but couldn’t make any
+edits.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Raymond, &lt;span&gt;“Understanding Version-Control Systems (DRAFT)”&lt;/span&gt;; Target, &lt;span&gt;“Version Control Before Git with CVS.”&lt;/span&gt;&lt;/p&gt;"><sup>217</sup></a></span> This meant that there was no
+chance of two people trying to change the same part of a file at the same time.
+In spirit, this early system is pretty similar to the idea of sending a file
+around the team by email, with the understanding that only one person works on
+it at a time. A slightly more modern analogy is the idea of having a single
+version of a file in Dropbox or Google Docs, and avoiding working on the file
+when you see that another team member is working on it.</p>
+<p>This assembly-line approach is pretty clunky, though. In particular, it usually
+increases the amount of time that it takes the team to finish the project,
+because only one person can work on a file at a time. Later types of version
+control programs moved toward a different style, allowing for <em>distributed</em>
+rather than centralized collaborative work on a file or a set of files.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Raymond, &lt;span&gt;“Understanding Version-Control Systems (DRAFT)”&lt;/span&gt;; Irving, &lt;span&gt;“Astonishments, Ten, in the History of Version Control.”&lt;/span&gt;&lt;/p&gt;"><sup>218</sup></a></span> Under the distributed model,
+all team members can have their own version of all the files, work on them and
+make records of changes they make to the files, and then occassionally sync with
+everyone else to share your changes with them and bring their changes into your
+copy of the files. This functionality is called <em>concurrency</em>, since it allows
+team members to concurrently work on the same set of files.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Raymond, &lt;span&gt;“Understanding Version-Control Systems (DRAFT).”&lt;/span&gt;&lt;/p&gt;"><sup>219</sup></a></span></p>
+<p>This idea allowed for the development of other useful features and styles of
+working, including <em>branching</em> and <em>forking</em>. Branching allows you to try out
+new ideas that you’re not sure you’ll ultimately want to go with. Forking is a
+key tool used in open-source software development, and, among other things,
+facilitates someone who isn’t part of the original team getting a copy of the
+files they can work with and suggesting some changes that might be helpful. So,
+this is the basic idea of modern version control—for a project that involves a
+set of computer files, everyone on the team has their own copy of the directory
+on their own computer, makes changes at the time and in the spots in the files
+that they want, and then regularly re-syncs their local directory with everyone
+else’s to share changes and updates.</p>
+<p>This distributed model also means there is a copy of the full repository on
+every team member’s computer, which has the side benefit of providing additional
+backup of the project files. Remote repositories—which may be on a server in a
+different location—can be added with another copy of the project, which can
+similarly be synced regularly to update with any changes made to project files.</p>
+</div>
+<div id="comparing-git-to-other-tools" class="section level2" number="9.5">
+<h2>
+<span class="header-section-number">9.5</span> Comparing Git to other tools<a class="anchor" aria-label="anchor" href="#comparing-git-to-other-tools"><i class="fas fa-link"></i></a>
+</h2>
+<p>While there are a number of software systems for version control, one of the
+most common currently used for scientific projects is Git. This program was
+created by Linus Torvalds, who also created the Linux operating system, in 2005
+as a way to facilitate the team working on Linux development. This program for
+version control thrives in large collaborative projects, for example open-source
+software development projects that include numerous contributors, both regular
+and occasional.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Zack Brown, &lt;span&gt;“A Git Origin Story,”&lt;/span&gt; &lt;em&gt;Linux Journal&lt;/em&gt;, 2018.&lt;/p&gt;"><sup>220</sup></a></span> As Target notes in a 2018 article about
+version control:</p>
+<blockquote>
+<p>“While people sometimes grouse about its steep learning curve or unintuitive
+interface, Git has become everyone’s go-to for version control.”<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Target, &lt;span&gt;“Version Control Before Git with CVS.”&lt;/span&gt;&lt;/p&gt;"><sup>221</sup></a></span></p>
+</blockquote>
+<p>In recent years, some complementary tools have been developed that make the
+process of collaborating together using version control software easier. Other
+tools, such as bug trackers or issue trackers, facilitate corroborative
+file-based projects to allow the team to keep a running “to-do” list of what
+needs to be done to complete the project. These tools—which are discussed in
+modules <a href="module10.html#module10">10</a> and <a href="module11.html#module11">11</a>—can be used to improve collaboration on scientific
+projects done by teams. GitHub is one a very popular version control platform
+with these additional tools. It was created in 2008 as a web-based platform to
+facilitate collaborating on projects running under Git version control. It can
+provide an easier entry to using Git for version control than trying to learn to
+use Git from the command line.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Yasset Perez-Riverol et al., &lt;span&gt;“Ten Simple Rules for Taking Advantage of Git and GitHub,”&lt;/span&gt; &lt;em&gt;PLoS Computational Biology&lt;/em&gt; 12, no. 7 (2016).&lt;/p&gt;"><sup>222</sup></a></span> It also interfaces well with RStudio,
+making it easy to integrate a collaborative workflow through GitHub from the
+same RStudio window on your computer where you are otherwise doing your analysis.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.&lt;/p&gt;"><sup>223</sup></a></span></p>
+<p>While Git version control software is one of the best established ways
+of implementing version control, there are growing efforts to enable some level
+of version control through other platforms. For example, Google Docs enables a
+level of version control through its Version History feature. This feature
+allows you name different versions of a document as they are is saved in Google
+Docs. It also allows you to restore a document to earlier versions, as well as
+see which changes have been made to a document and who made each change.</p>
+<p>While some generalized tools like Google tools and Dropbox might be simpler to
+initially learn, more powerful version control tools like Git offer some key
+advantages for recording scientific data and are worth the effort to adopt. A
+key advantage is their ability to track the full history of files as they
+evolve, including not only the history of changes to each file, but also a
+record of why each change was made.</p>
+<p>Git excels in tracking changes made to plain text files. For these files,
+whether they record code, data, or text, Git can show line-by-line differences
+between two versions of the file. This makes it very easy to go through the
+history of “commits” to a plain text file in a Git-tracked repository and see
+what change was made at each time point, and then read through the commit
+messages associated with those commits to see why a change was made. For
+example, if a value was entered in the wrong row of a plain text file or
+spreadsheet, and the researcher then made a commit to correct that data entry
+mistake, the researcher could explain the problem and its resolution in the
+commit message for that change.</p>
+<p>There are, of course, some limitations to using version control tools when
+recording experimental data. First, while ideally laboratory data is recorded in
+a plain text format, some data may be recorded in a binary file format. Some
+version control tools, including Git, can be used to track changes in binary
+files. However, Git does not take to these types of files naturally. In
+particular, Git typically will not be able to show a useful comparison of
+the differences between two versions of a binary file.</p>
+<p>More problems can arise if the binary file is
+very large,<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.; Blischak, Davenport, and Wilson, &lt;span&gt;“A Quick Introduction to Version Control with Git and GitHub.”&lt;/span&gt;&lt;/p&gt;"><sup>224</sup></a></span> as some experimental research
+data files are (e.g., if they are high-throughput output of laboratory equipment
+like a mass spectrometer). However, there are emerging tools and strategies for
+improving the ability to include and track large binary files when using Git and
+GitHub.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Blischak, Davenport, and Wilson, &lt;span&gt;“A Quick Introduction to Version Control with Git and GitHub.”&lt;/span&gt;&lt;/p&gt;"><sup>225</sup></a></span></p>
+<p>Finally, as with other tools and techniques described in this book, there is an
+investment required to learn how to use Git,<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Perez-Riverol et al., &lt;span&gt;“Ten Simple Rules for Taking Advantage of Git and GitHub.”&lt;/span&gt;&lt;/p&gt;"><sup>226</sup></a></span> as well
+as some extra overhead when using version control tools in a project.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Raymond, &lt;em&gt;The Art of Unix Programming&lt;/em&gt;.&lt;/p&gt;"><sup>227</sup></a></span> However, Git can bring dramatic gains to
+efficiency, transparency, and organization of research projects, even if you
+only use a small subset of its basic functionality.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Perez-Riverol et al., &lt;span&gt;“Ten Simple Rules for Taking Advantage of Git and GitHub.”&lt;/span&gt;&lt;/p&gt;"><sup>228</sup></a></span> In module
+<a href="module11.html#module11">11</a>, we provide guidance on getting started with using Git and GitHub to track
+a scientific research project.</p>
+<p>Third, the combination of Git and GitHub can help as a way to backup study data.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Blischak, Davenport, and Wilson, &lt;span&gt;“A Quick Introduction to Version Control with Git and GitHub”&lt;/span&gt;; Perez-Riverol et al., &lt;span&gt;“Ten Simple Rules for Taking Advantage of Git and GitHub”&lt;/span&gt;; Perkel, &lt;span&gt;“Git.”&lt;/span&gt;&lt;/p&gt;"><sup>229</sup></a></span> Together, Git and GitHub
+provide a structure where the project directory (repository) is copied on
+multiple computers, both the users’ laptop or desktop computers and on a remote
+server hosted by GitHub or a similar organization. This set-up makes it easy to
+bring all the project files onto a new computer—all you have to do is clone
+the project repository. It also ensures that there are copies of the full
+project directory, including all its files, in multiple places.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Blischak, Davenport, and Wilson, &lt;span&gt;“A Quick Introduction to Version Control with Git and GitHub.”&lt;/span&gt;&lt;/p&gt;"><sup>230</sup></a></span> Further, not only is the data backed up across multiple
+computers, but so is the full history of all changes made to that data and the
+recorded messages explaining those changes, through the repositories commit
+messages.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Perez-Riverol et al., &lt;span&gt;“Ten Simple Rules for Taking Advantage of Git and GitHub.”&lt;/span&gt;&lt;/p&gt;"><sup>231</sup></a></span></p>
+</div>
+<div id="discussion-questions-1" class="section level2" number="9.6">
+<h2>
+<span class="header-section-number">9.6</span> Discussion questions<a class="anchor" aria-label="anchor" href="#discussion-questions-1"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>In your own research, do you collect data in paper laboratory notebooks, electronically, or a mixture of the two? What have you found to be advantages and disadvantages of the method you typically use? Are there ever cases where you have no choice and must either record on paper or electronically (examples might include when working behind a secure barrier or when data are recorded directly by equipment into a digital format)?<br>
+</li>
+<li>Have you used any of the following tools for recording, sharing, and versioning data or other research files (e.g., drafts of research papers, code):
+<ul>
+<li>Electronic laboratory notebooks</li>
+<li>Dropbox</li>
+<li>Google Docs / Google Drive</li>
+<li>Microsoft Teams</li>
+<li>Local server or drive run by your institution</li>
+<li>GitHub / GitLab</li>
+</ul>
+</li>
+<li>Describe how any of these tools have helped in version control, including tracking changes to the file and helping to coordinate several people working on a file at once. Are there aspects where the tools you’ve used have been limited in this capacity?</li>
+<li>Can you think of any examples of times when you’ve experienced a failure of version control? Examples might include a case where some team members worked on the wrong version of a file, or when you lost track of the changes that had been made to a file. What did you learn from the experience? Have you developed methods to avoid similar problems in the future? How might a version control problem like this result in problems with the rigor and reproducibility of scientific research?</li>
+<li>How does the idea of version control relate to physical research materials, like model organisms, antibodies, or cell lines? Do you have any examples you can share of issues that have come up in research related to the version of these types of physical research materials?</li>
+<li>What steps do you think you could take in your research to improve version control? Do you see this as a higher or lower priority change to take compared to other steps that might improve rigor and reproducibility in your research? Discuss your reasoning.</li>
+</ul>
+<!-- ### Practice Quiz --><!-- Question 1: Which of the following research materials can have different versions and therefore is a material for which you can consider principles of version control?  --><!-- a) Electronically-recorded research data   --><!-- b) Study protocols  --><!-- c) Cell lines  --><!-- d) All of the above [Correct answer]  --><!-- Question 2: What is one challenge that is created when several people make changes to the same document concurrently?  --><!-- a) It is difficult to share copies of the document with everyone at once  --><!-- b) Science researchers tend to work alone on most projects, so it is difficult to convince them to collaborate  --><!-- c) It is difficult to resolve and coordinate the changes each person made to incorporate all the changes into a new version [Correct answer]  --><!-- d) Most researchers prefer to work one after another on a document, rather than all working at the same time  --><!-- Question 3:  --><!-- TRUE / FALSE: The idea of version control is only relevant in the context of developing software.  --><!-- [Correct answer: FALSE]  --><!-- Question 4: In the term version control, what does “control” mean?  --><!-- a) Allowing only one person to work on a document at a time while freezing it to changes from any other user  --><!-- b) Ensuring that none of the updates to a document introduce bugs or errors  --><!-- c) Allowing for safe changes and updates to a version of a document when more than one person is working on it [Correct answer]  --><!-- d) Giving priority to one primary user to overrule changes made to the document by other users  --><!-- Question 5: What is the difference between a normal file directory and a repository?  --><!-- a) There is no difference; these words are synonyms  --><!-- b) A file directory is under version control, while a repository may not be  --><!-- c) A repository is one version of a file directory   --><!-- d) A repository is under version control, while a file directory may not be [Correct answer]  --><!-- Question 6: Why is reversibility appealing in a version control system?  --><!-- a) It means that you can roll back to an earlier version of the document if you want to [Correct answer]  --><!-- b) It means that you have a well-documented history of all changes made to the document  --><!-- c) It means that multiple people can make changes to a document at once  --><!-- d) It means that new files can be added to a repository  --><!-- Question 7: In the git version control system, what is the term for a snapshot of a version of the files in a repository at a certain point in its history?  --><!-- a) Merge  --><!-- b) History  --><!-- c) Commit message  --><!-- d) Commit [Correct answer]  --><!-- Question 8: How can the combination of version control software and a version control platform (like GitHub) help provide backup for research documents?  --><!-- a) To enable this combination, you must also keep a copy of the research files on a dedicated server  --><!-- b) With this combination, each contributor has a full copy of the repository of research files on their local computer, which they can sync with other versions through the platform [Correct answer]  --><!-- c) This combination coordinates with Google Drive to archive files  --><!-- d) This combination provides a full history of all versions of the files in the repository, while using the version control software without the platform would not  -->
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="module8.html"><span class="header-section-number">8</span> Example: Creating a project template</a></div>
+<div class="next"><a href="module10.html"><span class="header-section-number">10</span> Enhance the reproducibility of collaborative research with version control platforms</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#module9"><span class="header-section-number">9</span> Harnessing version control for transparent data recording</a></li>
+<li><a class="nav-link" href="#challenges-of-collaborating-on-evolving-research-materials"><span class="header-section-number">9.1</span> Challenges of collaborating on evolving research materials</a></li>
+<li><a class="nav-link" href="#recording-data-in-the-laboratoryfrom-paper-to-computers"><span class="header-section-number">9.2</span> Recording data in the laboratory—from paper to computers</a></li>
+<li><a class="nav-link" href="#defining-version-and-version-control"><span class="header-section-number">9.3</span> Defining “version” and “version control”</a></li>
+<li><a class="nav-link" href="#what-are-the-key-elements-of-version-control"><span class="header-section-number">9.4</span> What are the key elements of version control?</a></li>
+<li><a class="nav-link" href="#comparing-git-to-other-tools"><span class="header-section-number">9.5</span> Comparing Git to other tools</a></li>
+<li><a class="nav-link" href="#discussion-questions-1"><span class="header-section-number">9.6</span> Discussion questions</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/geanders/improve_repro/blob/master/09-version_control.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/geanders/improve_repro/edit/master/09-version_control.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Improving the Reproducibility of Experimental Data Recording and Pre-Processing</strong>" was written by Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson. </p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Module 15 Tips for improving reproducibility when writing R scripts | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
+<meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson">
+<meta name="generator" content="bookdown 0.40 with bs4_book()">
+<meta property="og:title" content="Module 15 Tips for improving reproducibility when writing R scripts | Improving the Reproducibility of Experimental Data Recording and Pre-Processing">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Module 15 Tips for improving reproducibility when writing R scripts | Improving the Reproducibility of Experimental Data Recording and Pre-Processing">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.7.0/transition.js"></script><script src="libs/bs3compat-0.7.0/tabs.js"></script><script src="libs/bs3compat-0.7.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+          margin-bottom: 0em;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<meta name="description" content="Some biomedical researchers have already worked quite a bit with a programming language like R, either in a role that is primarily computational, or as a way to understand data they’ve collected...">
+<meta property="og:description" content="Some biomedical researchers have already worked quite a bit with a programming language like R, either in a role that is primarily computational, or as a way to understand data they’ve collected...">
+<meta name="twitter:description" content="Some biomedical researchers have already worked quite a bit with a programming language like R, either in a role that is primarily computational, or as a way to understand data they’ve collected...">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Improving the Reproducibility of Experimental Data Recording and Pre-Processing</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Overview of these modules</a></li>
+<li class="book-part">Experimental Data Recording</li>
+<li><a class="" href="module1.html"><span class="header-section-number">1</span> Separating data recording and analysis</a></li>
+<li><a class="" href="module2.html"><span class="header-section-number">2</span> Principles and power of structured data formats</a></li>
+<li><a class="" href="module3.html"><span class="header-section-number">3</span> The “tidy” data format</a></li>
+<li><a class="" href="module4.html"><span class="header-section-number">4</span> Designing templates for “tidy” data collection</a></li>
+<li><a class="" href="module5.html"><span class="header-section-number">5</span> Example: Creating a template for “tidy” data collection</a></li>
+<li><a class="" href="module6.html"><span class="header-section-number">6</span> Organizing project files</a></li>
+<li><a class="" href="module7.html"><span class="header-section-number">7</span> Creating project directory templates</a></li>
+<li><a class="" href="module8.html"><span class="header-section-number">8</span> Example: Creating a project template</a></li>
+<li><a class="" href="module9.html"><span class="header-section-number">9</span> Harnessing version control for transparent data recording</a></li>
+<li><a class="" href="module10.html"><span class="header-section-number">10</span> Enhance the reproducibility of collaborative research with version control platforms</a></li>
+<li><a class="" href="module11.html"><span class="header-section-number">11</span> Using Git and GitHub to implement version control</a></li>
+<li class="book-part">Experimental Data Pre-processing</li>
+<li><a class="" href="module12.html"><span class="header-section-number">12</span> Principles of pre-processing experimental data</a></li>
+<li><a class="" href="module13.html"><span class="header-section-number">13</span> Selecting software options for pre-processing</a></li>
+<li><a class="" href="module14.html"><span class="header-section-number">14</span> Introduction to scripted data pre-processing in R</a></li>
+<li><a class="active" href="module15.html"><span class="header-section-number">15</span> Tips for improving reproducibility when writing R scripts</a></li>
+<li><a class="" href="module16.html"><span class="header-section-number">16</span> Simplify scripted pre-processing through R’s “tidyverse” tools</a></li>
+<li><a class="" href="module17.html"><span class="header-section-number">17</span> Complex data types in experimental data pre-processing</a></li>
+<li><a class="" href="module18.html"><span class="header-section-number">18</span> Introduction to reproducible data pre-processing protocols</a></li>
+<li><a class="" href="module19.html"><span class="header-section-number">19</span> RMarkdown for creating reproducible data pre-processing protocols</a></li>
+<li><a class="" href="module20.html"><span class="header-section-number">20</span> Example: Creating a reproducible data pre-processing protocol</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/geanders/improve_repro">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="module15" class="section level1" number="15">
+<h1>
+<span class="header-section-number">Module 15</span> Tips for improving reproducibility when writing R scripts<a class="anchor" aria-label="anchor" href="#module15"><i class="fas fa-link"></i></a>
+</h1>
+<p>Some biomedical researchers have already worked quite a bit with a programming
+language like R, either in a role that is primarily computational, or as a
+way to understand data they’ve collected from the wet lab. While
+module <a href="module14.html#module14">14</a> focused on scientists who are new to coding, to help give them
+an entry point into how to write and run a code script in R, this module
+focuses on a different audience—scientists who are familiar with coding but
+would like to take steps to improve their practice.</p>
+<p>We have worked with a number of scientists in this situation. This module
+provides a series of tips for how they can improve their coding practice to
+make it more rigorous and reproducible. These are tips based on our own
+experiences of the things that—in real and regular practice—get in the
+way of code being rigorous and reproducible.</p>
+<p>We’ll provide advice in three main areas:</p>
+<ul>
+<li>Write code for computers, but edit it for humans</li>
+<li>Modify rather than start from scratch</li>
+<li>Do not repeat yourself</li>
+</ul>
+<p>This module is meant for researchers who are using R already as part of their
+research. It is meant as a complement and alternative to module <a href="module14.html#module14">14</a>,
+which focused on readers who are new to creating code scripts.</p>
+<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
+<ul>
+<li>Improve the reproducibility of their scripts by leveraging tips for
+researchers who are already coders</li>
+<li>Implement advice on editing code to make it clear for humans</li>
+<li>Practice editing code to include better names for data objects and columns</li>
+<li>Practice breaking up monolithic code into code that is structured and
+organized</li>
+<li>List examples of dead-end code</li>
+<li>Practice editing scripts to remove dead-end code</li>
+<li>Define “package vignette”</li>
+<li>List steps to adapt example code to make it more reproducible and easier
+to maintain in their own pipeline</li>
+<li>Explain why you can improve rigor and reproducibility in your code if you
+avoid repetition</li>
+</ul>
+<div id="write-code-for-computers-but-edit-it-for-humans" class="section level2" number="15.1">
+<h2>
+<span class="header-section-number">15.1</span> Write code for computers, but edit it for humans<a class="anchor" aria-label="anchor" href="#write-code-for-computers-but-edit-it-for-humans"><i class="fas fa-link"></i></a>
+</h2>
+<p>A key requirement for a project to be computationally reproducible is that the
+code used for pre-processing and analysis is available. However, even when code
+for a project is available, it can be hard to understand and reproduce the
+analysis. One common culprit is that the code is unclear. One way to improve the
+reproducibility of your code, therefore, is to make sure you edit it so that
+it’s clear for humans, not just computers.</p>
+<p>During World War I and World War II, the British and US used a special type of
+camouflage on some of their ships called “dazzle camouflage”. This type of
+camouflage uses large geometric shapes, often in black and white, and it makes
+the ships look a bit like zebras. Unlike other types of camouflage, this type
+doesn’t conceal the ship—it’s still very clear that it’s there. However, to be
+able to hit a ship at sea, people needed to know not only where it was, but also
+where it was going. This is because the ship is moving: between the time that a
+ballistic is fired and when it lands it will have changed location. People
+needed to calibrate to aim where the ship would be by the time the ballistic got
+to it. Dazzle camouflage makes it much harder to determine where the ship is
+headed.</p>
+<p>Often, people will write code for research projects that looks like it’s using
+dazzle camouflage. It’s easy to see that there’s something there when you look
+at the code script, but it’s very hard to figure out what it’s doing or where
+it’s trying to go. In other words, it’s hard for a human to quickly digest. This
+type of code will be hard for others to figure out, and also it will be hard for
+you to figure out when you come back to the code in the future.</p>
+<p>The best way to avoid this type of code is to get into the practice of editing
+your code. When you first write code, you don’t want to write it slowly and
+carefully—rather, you’ll usually be best at figuring out how to get something
+to work if you get in the flow and get down some code without worrying about how
+legible it is to humans.</p>
+<p>This is fine, but get in the habit of thinking of this as just the first step:
+in your initial coding, you’re getting the code to work for the computer, but
+later you will need to go back and clean up the code so it’s clear for humans,
+too. Editing the code will make it easier to understand (both by others and by
+you) and will also make the code easier to maintain and extend in the future.</p>
+<p>This idea is similar to writing. Many writing experts recommend that you break
+your writing process into several stages. First, you write in a drafting
+process, where you get your ideas on paper without editing yourself much. This
+is a stage of getting the ideas out. In a separate stage, you edit, and at this
+stage you have your audience clearly in mind, editing to make the writing clear
+for them. By separating into these stages, you can use your mind in a more
+creative, less constrained way as you create ideas, and then in a more critical
+way as you refine those ideas for your audience.</p>
+<p>While this practice is familiar to many writers, it’s less well known to
+scientists who are also coders. If you don’t already, try incorporating editing
+stages as you develop your code. It is most helpful to take time to edit code if
+you’re still within a day or two of writing it, so it’s helpful to work in this
+editing stage fairly frequently. Since it often requires less energy and brain
+power than the initial stage (getting the code to work with the computer), it
+can be helpful to incorporate editing time at times in your day when your energy
+is otherwise low. For example, taking ten or fifteen minutes to edit existing
+code can be a good way to start coding for the day, before you get to the
+heavier lifting of writing new code.</p>
+<p>As you edit your code, there are a few specific things that you can do to make
+it clearer for humans to read. Some editing steps that we will cover in this
+module are:</p>
+<ul>
+<li>Improve the names you’re using within the code</li>
+<li>Break up monolithic code</li>
+<li>Add useful comments</li>
+<li>Remove dead-end code</li>
+</ul>
+<p>Let’s take a closer look at how you can do each of these steps.</p>
+<div id="improve-names-within-the-code" class="section level3" number="15.1.1">
+<h3>
+<span class="header-section-number">15.1.1</span> Improve names within the code<a class="anchor" aria-label="anchor" href="#improve-names-within-the-code"><i class="fas fa-link"></i></a>
+</h3>
+<p>When you’re initially coding, you might often use “placeholder” types of names
+for data objects. For example, a coder might tend to name objects “df” (for
+“dataframe”) or “ex” (for “example”) as they’re first getting the code to work.</p>
+<p>There’s no problem in using these types of generic names as you initially
+develop your code. In fact, there’s a rich history of these placeholder
+object names. They even have a fancy name, <em>metasyntactic variables</em>.
+Different coding languages have developed different ones that are popular,
+as have coders in different countries. For example, many C programmers will
+name things “foo” and “bar” as they initially work on their code, while
+Italians often use the Italian words for different Disney characters
+(“pippo”, “pluto”, “paperino”).</p>
+<p>The problem isn’t in using these placeholder names; the problem is when you
+don’t later edit your code to use better names. These generic names
+will tell you nothing about what’s stored in each object when you go back
+and read the code later. With better names for each object, you can read through
+the code and in some ways it will document itself, without even needing to
+read the code comments to figure out what’s going on.</p>
+<p>There is a style guide that is focused on the tidyverse approach available
+at <a href="https://style.tidyverse.org/syntax.html" class="uri">https://style.tidyverse.org/syntax.html</a>. It includes guidance on how to
+select good names for objects in R within its section on “Syntax”. Generally,
+some good principles include that the name of the object should give you an
+idea of what’s contained in the object. For example, if you have a dataframe
+that has the weights of mice from your experiment, it’s much better to name
+it “mouse_weights” rather than something generic like “foo”. Some of the
+other guidance will help make your life easier as a coder, including things
+like using only lowercase letters.</p>
+<p>Similar principles apply to column names: ideally, you want
+their names to describe what they contain. There are also some rules that will
+make it easier to work with the column names. For example, column names can
+include spaces, but if they do, it makes using them within R harder. Each time
+you refer to that column name, you have to surround the name in backticks so R
+will process its full name as a single name, rather than thinking its name ends
+at the first space. This becomes a pain as you write a lot of code that refers
+to that column. It’s also helpful to keep column names fairly short, so you can
+see the full name as you work with the dataset and resulting output.</p>
+<p>When it comes to column names, some of your editing might be to improve names
+that you quickly wrote yourself as you coded. However, a common reason for
+ungainly column names is that you’ve read in data from a file format like Excel,
+where it was easy for the person who entered the data to include spaces and
+special characters in the column names. In this case, there are some tools in
+R that can help you quickly improve the column names. In particular, the
+<code>janitor</code> package has a function called <code>clean_names</code> that will do a lot of the
+work for you, including converting the name to lowercase, removing special
+characters (like “*” and “&amp;”), and replacing spaces with underscores. If you
+need to make more targeted changes to column names, you can do so using the
+<code>rename</code> function from the <code>dplyr</code> package.</p>
+</div>
+<div id="break-up-monolithic-code" class="section level3" number="15.1.2">
+<h3>
+<span class="header-section-number">15.1.2</span> Break up monolithic code<a class="anchor" aria-label="anchor" href="#break-up-monolithic-code"><i class="fas fa-link"></i></a>
+</h3>
+<p>Next, you can edit to break up “monolithic” code—that is, code that isn’t
+clearly divided to show sections or steps in the process. When you’re first
+creating your code, you won’t want to take the time to nicely organize it into
+logical sections. However, once you are ready to edit your code, you will find
+that breaking it into clear sections and labeling them will help you and others
+navigate the code at a higher level (understanding the big picture of how it
+works by looking at the major steps it takes), only diving into the details of
+each section once the big picture is clear.</p>
+<p>Again, this process mimics a process used by many writers. It’s common to
+create drafts and notes that lack clear organization, but instead are just
+collecting the raw material that will be shaped into a final article or book.
+However, this raw material then needs to be organized and edited to make it
+into something that others can navigate and make sense of.</p>
+<p>In a similar way, once you’ve gotten your code to work, you should make sure you have
+a clear picture of the whole process and how it tackles the problem at a
+“big picture” level. One of the big steps might be something like reading in
+and cleaning the data, while another step might be identifying and addressing
+outliers in the data. Once you’ve identified the big steps, try as much as
+possible to group the code into these big steps, then you can use code comments
+and blank lines in your code to separate these sections and label them to
+describe what they’re doing.</p>
+<p>As you do, you might find that you move some of your code around in the script.
+This is fine as long as it doesn’t affect the computer being able to process the
+script. For example, one of your big steps might be loading in packages you’ll
+need. Rather than having a lot of <code>library</code> calls sprinkled throughout your
+code, you can group these all together at the start of your script in a section
+called something like “Loading packages”. This will clean up other parts of your
+script, and by having all your library calls at the start of the code script,
+another person could immediately see which packages they’ll need to have
+installed to run your code.</p>
+<p>Another way that you can break up monolithic code is to split it into more lines.
+R will process the code whether it’s all on one line or split into separate
+lines: R just keeps reading until it gets to the end of the function call
+either way. This means that you can use the “Return” key to break up your code
+lines so you’re always able to see the full line of code without scrolling.</p>
+<p>One common standard is to keep all of your lines of code to 80 characters or
+fewer. RStudio has the functionality to reformat your code to meet this
+standard. In the RStudio menus, if you go to the “Code” menu, you can select
+to “Reformat Code”. This can help clean up long lines of code in your editing
+process.</p>
+</div>
+<div id="add-useful-comments" class="section level3" number="15.1.3">
+<h3>
+<span class="header-section-number">15.1.3</span> Add useful comments<a class="anchor" aria-label="anchor" href="#add-useful-comments"><i class="fas fa-link"></i></a>
+</h3>
+<p>As you are breaking up monolithic code, it is helpful to add code comments about
+why you are doing certain things. In R, you can add a code comment after a <code>#</code>;
+R won’t read anything that comes after that symbol on a line. You can use this
+to add small messages for humans that describe your code.</p>
+<p>As you add these comments, keep in mind that it’s often more useful to describe
+why you’re doing something rather than what you’re doing. With a lot of R
+code—especially in the tidyverse approach—the functions have names that
+clearly describe what they do. For example, the function to rename a column is
+called <code>rename</code>, while the function to select certain columns is called
+<code>select</code>. Therefore, your code should do a fairly good job of self-documenting
+in terms of describing what it’s doing.</p>
+<p>Instead, you can use code comments to remind yourself or others of
+why you’re implementing certain steps. For example, rather than having a code
+comment that says “Rename columns”, you could say, “The columns that come
+from the Excel file generated by the cytometer include a lot of special
+characters, which we need to remove to make it easier to work with the data in
+R.” By explaining why you’re doing something, you’ll also help yourself when it’s
+time to maintain or extend your code. You’ll be able to tell, for example,
+whether changing or deleting a certain line of code will cause a big problem
+in other areas of code.</p>
+</div>
+<div id="remove-dead-end-code" class="section level3" number="15.1.4">
+<h3>
+<span class="header-section-number">15.1.4</span> Remove dead-end code<a class="anchor" aria-label="anchor" href="#remove-dead-end-code"><i class="fas fa-link"></i></a>
+</h3>
+<p>Another useful step when you edit your code is to edit out pieces we’ll call
+“dead-end code”. These are pieces of code that aren’t contributing to the
+process of your script.</p>
+<p>There are two main types of dead-end code that we often see. First, there’s
+code that you use during your interactive coding process to check on things. For
+example, you might use the <code>View</code> function to take a look at a data frame at a
+certain step in your process, or use functions like <code>summary</code> and <code>str</code> to
+explore what’s in different objects.</p>
+<p>It’s great to do this kind of exploration as you code; in fact, one of the
+advantages of interactive software like R is that you can explore as you
+develop your scripts. However, these are tools that help you develop a script,
+but not ones that are necessary for the final script to run. Instead, they just
+gunk up the code that’s doing the real work.</p>
+<p>There are two things you can do regarding this type of dead-end code. The first
+is that you can get in the habit of running it in your console, rather than
+having it in your script, even when you’re developing the code. However, this
+does require switching between the console and the script as you write code,
+which can interrupt your flow. An alternative is to run these in the script as
+you write the code, but then delete any of these exploratory calls as you
+edit your script.</p>
+<p>There’s also a second type of dead-end code. This is code that you wrote to try
+out to solve a particular problem, but that ultimately didn’t work (or that
+you replaced with a better approach). Often, you may have worked a long time
+on that piece of code, or it might contain some really clever approach that
+you’re proud of. However, leaving it your script, if it isn’t contributing to
+the ultimate process you ended up with, will only get it the way of understanding
+your primary code. It will lead a reader down a rabbit hole, rather than allowing
+them to move step by step through your logic.</p>
+<p>In writing, there are similarly areas that aren’t contributing to the forward
+movement of a piece but that authors are reluctant to remove because they love
+them for one reason or another. This has resulted in the famous advice to
+authors (from Stephen King, among others) to “murder your darlings”. In other
+words, be brave enough to edit out anything that isn’t contributing to the
+necessary progress of your piece. Coders should take this advice in a similar
+way when it comes to pieces of code in their scripts that don’t ultimately
+contribute to the pipeline they’ve developed.</p>
+</div>
+</div>
+<div id="modify-rather-than-start-from-scratch" class="section level2" number="15.2">
+<h2>
+<span class="header-section-number">15.2</span> Modify rather than start from scratch<a class="anchor" aria-label="anchor" href="#modify-rather-than-start-from-scratch"><i class="fas fa-link"></i></a>
+</h2>
+<p>How do you get started on solving a problem? Science and engineering have long
+traditions of starting by modifying something that exists, rather than starting
+from scratch. For example, once it was clear how important penicillin would be
+for human health, it was time for the hard work of producing it as scale. Guru
+Madhavan of the National Academy of Engineering tells this story in his book
+<em>Applied Minds: How Engineers Think</em>, focusing on the critical role of adapting
+existing technology to get a foothold on the problem:</p>
+<blockquote>
+<p>“Extracting penicillin from the mold was no child’s play… Instead of
+designing and building a reactor for the chemical reactions from scratch—which
+meant more time, money, and uncertainty—[Margaret] Hutchinson opted for
+something that was already functional. Some researchers had found that mold from
+cantaloupe could be an effective source for penicillin, so she started there.
+Her team then revised a fermentation process that Pfizer was using to produce
+food additives like citric acid and gluconic acid from sugars, with the help of
+microbes. Hutchinson swiftly helped convert a run-down Brooklyn ice factory into
+a production facility. The deep-tank fermentation process produced great
+quantities of mold by mixing sugar, salt, milk, minerals, and fodder through a
+chemical separation process that Hutchinson knew very well from the refinery
+business.”<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Madhavan, &lt;em&gt;Applied Minds&lt;/em&gt;.&lt;/p&gt;"><sup>307</sup></a></span></p>
+</blockquote>
+<p>Similarly, as you code, keep in mind that you shouldn’t reinvent the wheel.
+Instead, it’s often useful to start from an existing script, pipeline, or piece
+of code.</p>
+<p>To find some starting scripts to learn from, there are a few tactics you can
+try. First, check around with colleagues to see if they have R code for data
+pre-processing tasks that they do in their lab. If they work with similar types
+of data, and use R, they’re likely to have come up with some scripts that
+achieve tasks you also need to do.</p>
+<p>Another excellent source of example R code are the vignettes and examples that
+come with many R packages. If you are using functions from an R package,
+there is likely a vignette that comes with that package, and there may also be
+examples within the helpfiles for each of the package’s functions. A <em>package
+vignette</em> is a tutorial that walks you through the major functionality of the
+package, showing how to use the key functions in the package in an extended
+example. Some packages will have multiple vignettes, showing a range of things
+that you can do with the package.</p>
+<p>To find out if there is a vignette for a package that you’re using, you can
+google the package name and “vignette”. You can also find out from the console
+in R using the function <code>vignette</code>. For example, to find out if the package
+<code>readxl</code>, which helps read in data from Excel files, has any vignettes, you can
+run <code>vignette(package = "readxl")</code>. This will tell you that the package has two,
+one called “cell-and-column-types” and one called “sheet-geometry”. To open one
+of these, you can again use the <code>vignette</code> function. For example,
+<code><a href="https://readxl.tidyverse.org/articles/cell-and-column-types.html">vignette("cell-and-column-types", package = "readxl")</a></code> would open the first of
+the two vignettes within your R session.</p>
+<p>To open the helpfile for any function in R, at the console type a question mark
+and then the function name. For example, <code><a href="https://readxl.tidyverse.org/reference/read_excel.html">?read_excel</a></code> will open the helpfile
+for the <code>read_excel</code> function (you will need to make sure you’ve run
+<code><a href="https://readxl.tidyverse.org">library("readxl")</a></code> to load the package with this function). The helpfile
+provides useful information for running the function, and one of the most useful
+parts is the “Examples” section. Scroll down to the bottom of the helpfile to
+find this section. It includes several examples that you can copy into your R
+script or console and try yourself, to figure out the types of inputs the
+function needs and how different options for the function modify it.</p>
+<p>Online resources like StackOverflow also provide advice and example code for
+many challenges you might come up against as you’re coding. Google can also be
+used to help you solve coding problems, especially if you become familiar with
+some of its special operators, which can help you refine your search. You can
+find more on Google special operators at
+<a href="https://support.google.com/websearch/answer/2466433?hl=en" class="uri">https://support.google.com/websearch/answer/2466433?hl=en</a>.</p>
+<p>There’s no problem with using any of these as starting points as you develop
+your own pipeline. However, it’s often tempting for a coder to leave
+example code “as-is” if they’ve found an example solution that works. Instead,
+it’s critical that you make sure you fully understand why each line of code in
+your script works the way it does. Further, if you’re adapting example code to
+your own problem, you should edit it if possible to use the set of tools you’re
+most familiar with. In this section, we’ll go through some steps you should
+take to start from example code and adapt it to your own pipeline in a way
+that will be more rigorous and reproducible.</p>
+<p>When you find a piece of example code that you think will help with something
+you need to do in your own code, you’ll first want to make sure that you can get
+it to work with any example data it came with, before you try it out with your
+own data. If it won’t run with its own data, there are a few trouble-shooting
+steps you can take. First, make sure you have all the required packages
+installed and loaded. Second, make sure that you’ve saved the example data to
+the right place on your computer if the example code reads in data from a file.
+Finally, make sure that you have the same versions of packages and of R as were
+used in the example. If the code still doesn’t work after you’ve resolved these
+issues, you may want to move on to finding other example code.</p>
+<p>Once you’ve gotten the code to run on the example data, walk through it line
+by line to understand what it does. For each step, make sure you understand
+what the input looks like and what the output looks like. If code is nested
+(function calls are placed within function calls), be sure that you understand
+the code at each level of nesting. If the code uses piping to move the output
+of one call to the input of the next, make sure you’ve worked through each
+of the lines in the pipe individually.</p>
+<p>There are two tools that can help as you dissect the code in this way. First,
+when you work in R study, you can highlight code in a script and then use the
+“Run” button to run only the highlighted code. This functionality allows you to
+run a nested function call without running the whole line of code, or to run
+only part of a series of piped calls (by highlighting everything up to the
+piping symbol on a line and then running it). The other tool that’s useful is a
+function in the <code>dplyr</code> package called <code>pull</code>. This function allows you to
+extract a column from a dataframe as a vector. This is helpful when you’re
+dissecting nested calls in piped code, as often a function will operate on a
+single column of the dataframe. This function allows you to pull out that column
+and then test the function call to see what it’s doing with that column.</p>
+<p>Once you figure out what the example code does on the data it comes with, you
+can adapt it to work with your own data. As you do, pay close attention to
+how your data are similar or different to the example data. At this stage, your
+goal will be to get the example code to work with your data.</p>
+<p>Many researchers stop at this step—they’ve gotten example code to work with
+their own data (and hopefully worked through it to understand why). However,
+example code often follows a very different style than code you write yourself.
+For example, you may use the tidyverse approach, while the example might use
+code written in a base R style. Further, different coders think about and
+tackle problems in different ways, which can lead to the case where any
+example code that you’ve adapted in your script feels different from your usual
+code.</p>
+<p>This can result in spots of your code that you will later be very worried to
+change, because while it works, you don’t understand why well enough to feel
+comfortable making any change. This can make your code fragile and hard to
+maintain. Instead, take a moment to adapt the logic that you’ve learned from
+the example to your own set of tools. For example, if the example code is
+written in base R but you prefer tidyverse tools, rewrite the code’s logic
+to use tidyverse tools.</p>
+<p>You gain several advantages when you adapt code to use the tools you’re familiar
+with. For example, bugs will be less likely, and if there are bugs, you’ll
+catch them more quickly, since you’re familiar with the tools that the code is
+using. The code will also be much easier for you to understand and maintain in
+the future if it’s written using tools that you know well.</p>
+</div>
+<div id="do-not-repeat-yourself" class="section level2" number="15.3">
+<h2>
+<span class="header-section-number">15.3</span> Do not repeat yourself<a class="anchor" aria-label="anchor" href="#do-not-repeat-yourself"><i class="fas fa-link"></i></a>
+</h2>
+<p>As you become more familiar with programming with R, you can start to evolve your
+style of writing scripts in more advanced ways. A key one is to learn how to limit
+how often you repeat the same code. As you write data pre-processing pipelines, you’ll
+find that you often need to do the same thing, or variations on the same thing, over
+and over. For example, you may need to read in and clean several files of the same
+type and structure. You will likely, at first at least, find yourself copying and
+pasting the same code to several parts of your script, with only minor changes to
+that code (e.g., changing the R object that you input each time).</p>
+<p>Don’t worry too much about this as you start to learn how to write R scripts. This
+is a normal part of the drafting process. However, as you get better at using R, you’ll
+want to learn techniques that can help you avoid this repetition.</p>
+<p>There are a few reasons that you’ll want to avoid repetition in your code when
+possible. First, these repeated copies of the same or similar code will make
+your code script much longer and harder to figure out later. Second, it is hard
+to keep these copies of code in sync with each other. For example, if you have
+several copies of the code you use to check for outliers in your data, and you
+decide you want to change how you are doing that, you’ll need to find every copy
+of that piece of code in your script and make sure you make the same change in
+each place. Instead, if you have less repetition in your code, then you can make
+the change in a single place and ensure that the change will be in place
+everywhere you are doing that process.</p>
+<p>There are a few tools that are useful to develop to help avoid repetition. The
+first is to learn how to write your own R functions. Any R user can write a new
+function. You can collect them in packages that you plan to share with others, but
+you can also just write them for your personal use. When you create a function, it
+encapsulates the code for something that you need to do, and it allows you to do
+that thing anywhere else in your code just by calling that function, rather
+than copying all the lines of the original code. This is an excellent way to
+write the code in one place you need to use often, rather than copying and
+pasting the same code throughout your R script.</p>
+<p>Since you need to run the code that defines the function before you use it, it
+often makes sense to write the code that creates these functions near the top of
+your code script. If you find that you’ve written a lot of functions, or that
+you’ve written functions that you’d like to use in more than one of your data
+pre-processing scripts, you can even save the code that creates the functions in
+a separate R script and just source that separate script at the top of each
+script that uses the function, using the <code>source</code> call. “Sourcing” a file in
+this way simply runs all the code in the file. Eventually, you could
+even think of creating your own package with those functions.</p>
+<p>There is one other excellent set of tool for avoiding repetition that we want to
+mention. Again, it is likely more complex that what you’ll want to start off
+with as you learn to write R scripts, but once you are comfortable with the
+basics, it’s a powerful tool for creating code scripts that are as short and
+simple as possible while doing very powerful things. This is a set of tools that
+focus on iteration. They include <code>for</code> loops, which allow you to step through
+elements in a data structure and apply the same code to each. They also include
+a set of tools in the <code>purrr</code> library that allow you to apply the same code,
+through a function, to each element in a larger data structure. These are
+excellent tools when you are doing something like reading in a lot of similar
+files and combining them into a single R object for pre-processing.</p>
+<p>We will not go into details about how to write R functions or these iteration
+tools in these modules, as our aim here is to get you started and give you an
+overview of where you might want to go next. If you do want to learn to write
+your own R functions, there’s a chapter describing the process in the free
+online book “R for Data Science” with guidance on this topic
+(<a href="https://r4ds.had.co.nz/functions.html" class="uri">https://r4ds.had.co.nz/functions.html</a>).<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Wickham and Grolemund, &lt;em&gt;R for Data Science&lt;/em&gt;.&lt;/p&gt;"><sup>308</sup></a></span> If you’d like to learn
+more about tools for iteration, the same book also has a chapter on that
+(<a href="https://r4ds.had.co.nz/iteration.html" class="uri">https://r4ds.had.co.nz/iteration.html</a>).</p>
+<!-- ### Discussion questions -->
+
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="module14.html"><span class="header-section-number">14</span> Introduction to scripted data pre-processing in R</a></div>
+<div class="next"><a href="module16.html"><span class="header-section-number">16</span> Simplify scripted pre-processing through R’s “tidyverse” tools</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#module15"><span class="header-section-number">15</span> Tips for improving reproducibility when writing R scripts</a></li>
+<li>
+<a class="nav-link" href="#write-code-for-computers-but-edit-it-for-humans"><span class="header-section-number">15.1</span> Write code for computers, but edit it for humans</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#improve-names-within-the-code"><span class="header-section-number">15.1.1</span> Improve names within the code</a></li>
+<li><a class="nav-link" href="#break-up-monolithic-code"><span class="header-section-number">15.1.2</span> Break up monolithic code</a></li>
+<li><a class="nav-link" href="#add-useful-comments"><span class="header-section-number">15.1.3</span> Add useful comments</a></li>
+<li><a class="nav-link" href="#remove-dead-end-code"><span class="header-section-number">15.1.4</span> Remove dead-end code</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#modify-rather-than-start-from-scratch"><span class="header-section-number">15.2</span> Modify rather than start from scratch</a></li>
+<li><a class="nav-link" href="#do-not-repeat-yourself"><span class="header-section-number">15.3</span> Do not repeat yourself</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/geanders/improve_repro/blob/master/15-tips_on_repro_code.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/geanders/improve_repro/edit/master/15-tips_on_repro_code.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Improving the Reproducibility of Experimental Data Recording and Pre-Processing</strong>" was written by Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson. </p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

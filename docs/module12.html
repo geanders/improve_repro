@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Module 12 Principles of pre-processing experimental data | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
+<meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson">
+<meta name="generator" content="bookdown 0.40 with bs4_book()">
+<meta property="og:title" content="Module 12 Principles of pre-processing experimental data | Improving the Reproducibility of Experimental Data Recording and Pre-Processing">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Module 12 Principles of pre-processing experimental data | Improving the Reproducibility of Experimental Data Recording and Pre-Processing">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.7.0/transition.js"></script><script src="libs/bs3compat-0.7.0/tabs.js"></script><script src="libs/bs3compat-0.7.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+          margin-bottom: 0em;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<meta name="description" content="The experimental data collected for biomedical research often requires pre-processing before it can be analyzed. In any scientific field, when you work with data, it will often take much more time...">
+<meta property="og:description" content="The experimental data collected for biomedical research often requires pre-processing before it can be analyzed. In any scientific field, when you work with data, it will often take much more time...">
+<meta name="twitter:description" content="The experimental data collected for biomedical research often requires pre-processing before it can be analyzed. In any scientific field, when you work with data, it will often take much more time...">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Improving the Reproducibility of Experimental Data Recording and Pre-Processing</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Overview of these modules</a></li>
+<li class="book-part">Experimental Data Recording</li>
+<li><a class="" href="module1.html"><span class="header-section-number">1</span> Separating data recording and analysis</a></li>
+<li><a class="" href="module2.html"><span class="header-section-number">2</span> Principles and power of structured data formats</a></li>
+<li><a class="" href="module3.html"><span class="header-section-number">3</span> The “tidy” data format</a></li>
+<li><a class="" href="module4.html"><span class="header-section-number">4</span> Designing templates for “tidy” data collection</a></li>
+<li><a class="" href="module5.html"><span class="header-section-number">5</span> Example: Creating a template for “tidy” data collection</a></li>
+<li><a class="" href="module6.html"><span class="header-section-number">6</span> Organizing project files</a></li>
+<li><a class="" href="module7.html"><span class="header-section-number">7</span> Creating project directory templates</a></li>
+<li><a class="" href="module8.html"><span class="header-section-number">8</span> Example: Creating a project template</a></li>
+<li><a class="" href="module9.html"><span class="header-section-number">9</span> Harnessing version control for transparent data recording</a></li>
+<li><a class="" href="module10.html"><span class="header-section-number">10</span> Enhance the reproducibility of collaborative research with version control platforms</a></li>
+<li><a class="" href="module11.html"><span class="header-section-number">11</span> Using Git and GitHub to implement version control</a></li>
+<li class="book-part">Experimental Data Pre-processing</li>
+<li><a class="active" href="module12.html"><span class="header-section-number">12</span> Principles of pre-processing experimental data</a></li>
+<li><a class="" href="module13.html"><span class="header-section-number">13</span> Selecting software options for pre-processing</a></li>
+<li><a class="" href="module14.html"><span class="header-section-number">14</span> Introduction to scripted data pre-processing in R</a></li>
+<li><a class="" href="module15.html"><span class="header-section-number">15</span> Tips for improving reproducibility when writing R scripts</a></li>
+<li><a class="" href="module16.html"><span class="header-section-number">16</span> Simplify scripted pre-processing through R’s “tidyverse” tools</a></li>
+<li><a class="" href="module17.html"><span class="header-section-number">17</span> Complex data types in experimental data pre-processing</a></li>
+<li><a class="" href="module18.html"><span class="header-section-number">18</span> Introduction to reproducible data pre-processing protocols</a></li>
+<li><a class="" href="module19.html"><span class="header-section-number">19</span> RMarkdown for creating reproducible data pre-processing protocols</a></li>
+<li><a class="" href="module20.html"><span class="header-section-number">20</span> Example: Creating a reproducible data pre-processing protocol</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/geanders/improve_repro">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="module12" class="section level1" number="12">
+<h1>
+<span class="header-section-number">Module 12</span> Principles of pre-processing experimental data<a class="anchor" aria-label="anchor" href="#module12"><i class="fas fa-link"></i></a>
+</h1>
+<p>The experimental data collected for biomedical research often requires
+pre-processing before it can be analyzed. In any scientific field, when you work
+with data, it will often take much more time to prepare the data for analysis
+than it takes to set up and run the statistical analysis itself.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;David Robinson, &lt;span&gt;“Broom: An r Package for Converting Statistical Analysis Objects into Tidy Data Frames,”&lt;/span&gt; &lt;em&gt;arXiv Preprint arXiv:1412.3565&lt;/em&gt;, 2014.&lt;/p&gt;"><sup>260</sup></a></span> This is certainly true with complex biomedical data,
+including data for flow cytometry, transcriptomics, proteomics, and
+metabolomics. It is a worthwhile investment of time to learn strategies to make
+pre-processing of this data more efficient and reproducible, and it is
+critical—for the rigor of the entire experiment—to ensure that the
+pre-processing is done correctly and can be repeated by others.</p>
+<p>These pre-processing steps, in fact, should be as clear and practical to follow
+as the types of protocols you would follow for a wet lab procedure. Key to
+reproducibility is that a procedure is described in enough detail that others
+can follow it exactly. Use of point-and-click software and/or propritary
+software can limit the transparency and reproducibility of this analysis stage
+and is time-consuming for repeated tasks.</p>
+<p>In this module, we will explain how pre-processing can be broken into common
+themes and processes. In module <a href="module13.html#module13">13</a>, we will explain how scripted
+pre-processing, especially using open-source software, can improve transparency
+and reproducibility of this stage of working with biomedical data.</p>
+<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
+<ul>
+<li>Define “pre-processing” of experimental data, “noise” in data, “batch effects”,
+“normalization”, “dimension reduction”, and “feature selection”</li>
+<li>List some reasons that pre-processing might be necessary</li>
+<li>Understand key themes and processes in pre-processing and identify these
+processes in their own pipelines</li>
+</ul>
+<div id="what-is-data-pre-processing" class="section level2" number="12.1">
+<h2>
+<span class="header-section-number">12.1</span> What is data pre-processing?<a class="anchor" aria-label="anchor" href="#what-is-data-pre-processing"><i class="fas fa-link"></i></a>
+</h2>
+<p>When you are conducting an experiment that involves work in the wet lab, you
+will do a lot of work before you have any data ready for analysis. You may,
+for example, have conducted an extensive amount of work that involved laboratory
+animals or cell cultures. In many cases, you will have run some samples through
+very advanced equipment, like cytometers or sequencers. Once you have completed
+this long and hard process, you may ask yourself, “I ran the experiment, I ran
+the equipment… Aren’t I done with the hard work?”.</p>
+<p>For certain types of data, you may be, and you may be able to proceed directly to
+statistical analysis. For example, if you collected the weights of lab animals,
+you are probably directly using those data to answer questions like whether weight
+differed between treatment groups. However, with a lot of biomedical data, you
+will not be able to move directly to analyzing the data. Instead, you will need
+to start with a stage of <em>pre-processing</em> the data: that is, taking
+computational steps to prepare the data before it’s in an appropriate format to
+be used in statistical analysis.</p>
+<p>There are several reasons that pre-processing is often necessary. The first is
+that many biomedical data are collected using extremely complex equipment and
+scientific principles. The pre-processing in this case is used to extract scientific
+meaning from data that might have been collected using measurements that are
+more closely linked to the complex process than to the final scientific question.
+Next, there will be some cases where practical concerns made it easier to
+collect data in one way and pre-process it later to get it to a format that
+aligns with the scientific question. For example, if you want the average weight
+of mice in different treatment groups, it may be more practical to weigh the
+cage that contains all the mice in each treatment group rather than weigh
+each mouse individually. This makes life in the lab easier, but means you’ll need
+to do some more computational pre-processing of the data to make sense of it
+later. Third, there are now frequent cases where an assay generates
+a very large set of measures—for example, expression levels of thousands of
+genes for each sample—and some pre-processing might help in digesting the
+complexity inherent in this type of high-dimensional data. Finally, pre-processing
+is often necessary to check for and resolve quality control issues within the
+data. In this module, we’ll explore each of these themes of pre-processing in
+more depth.</p>
+</div>
+<div id="common-themes-and-processes-in-data-pre-processing" class="section level2" number="12.2">
+<h2>
+<span class="header-section-number">12.2</span> Common themes and processes in data pre-processing<a class="anchor" aria-label="anchor" href="#common-themes-and-processes-in-data-pre-processing"><i class="fas fa-link"></i></a>
+</h2>
+<p>Exactly what pre-processing you will need to do will vary depending on the way the data
+were collected and the scientific questions you hope to answer, and often it
+will take a lot of work to develop a solid pipeline for pre-processing data from
+a specific assay. However, there are some common themes that drive the need for
+such pre-processing of data across types of data collection and research
+questions. These common themes provide a framework that can help as you design
+data pre-processing pipelines, or as you interpret and apply pipelines that were
+developed by other researchers. The rest of this module will describe several of
+the most common themes in data pre-processing.</p>
+<div id="extracting-scientifically-relevant-measurement" class="section level3" number="12.2.1">
+<h3>
+<span class="header-section-number">12.2.1</span> Extracting scientifically-relevant measurement<a class="anchor" aria-label="anchor" href="#extracting-scientifically-relevant-measurement"><i class="fas fa-link"></i></a>
+</h3>
+<p>One common purpose of pre-processing is to translate the measurements that
+you directly collect into measurements that are meaningful for your scientific
+research question. Scientific research uses a variety of complex techniques and
+equipment to initially collect data. As a result of these inventions and
+processes, the data that are directly collected in the laboratory by a person or
+piece of equipment might require quite a bit of pre-processing to be translated
+into a measure that meaningfully describes a scientific process. A key element
+of pre-processing data is to translate the acquired data into a format that can
+more directly answer scientific questions.</p>
+<p>This type of pre-processing will vary substantially from assay to assay, with
+algorithms that are tied to the methodology of the assay itself. We’ll describe
+some examples of this idea, moving from an example of a very simple translation
+to processes that are much more complex (and more typical of the data collected
+at present in many types of biomedical research assays).</p>
+<p>As a basic example, some assays use equipment that can measure the
+intensity of color of a sample or the sample’s opacity. Some of these measures
+might be directly (or at least proportionally) interpretable. For example,
+opacity might provide information about the concentration of bacteria
+in a sample. Others might need more interpretation, based on the scientific
+underpinnings of the assay. For example, in an enzyme-linked immunosorbent assay
+(ELISA), antibody levels are detected as a measure of the intensity of color of
+a sample at various dilutions, but to interpret this correctly, you need to know
+the exact process that was used for that assay, as well as the dilutions that
+were measured.</p>
+<p>The complexity of this “translation” scales up as you move to data that are
+collected using more complex processes. Biomedical research today leverages
+extraordinarily complex equipment and measurement processes to learn more about
+health and disease. These invented processes of measuring can
+provide detailed and informative data, allowing us to “see”
+elements of biological processes that could not be seen at that level before.
+However, they all require steps to translate the data that are directly
+recorded by equipment into data that are more scientifically meaningful.</p>
+<p>One example is flow cytometry. In flow cytometry, immune cells are characterized
+based on proteins that are present both within and on the surface of each cell,
+as well as properties like cell size and granularity.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Holden T Maecker, J Philip McCoy, and Robert Nussenblatt, &lt;span&gt;“Standardizing Immunophenotyping for the Human Immunology Project,”&lt;/span&gt; &lt;em&gt;Nature Reviews Immunology&lt;/em&gt; 12, no. 3 (2012): 191–200; David Barnett et al., &lt;span&gt;“CD4 Immunophenotyping in HIV Infection,”&lt;/span&gt; &lt;em&gt;Nature Reviews Microbiology&lt;/em&gt; 6, no. 11 (2008): S7–15.&lt;/p&gt;"><sup>261</sup></a></span> Flow cytometry identifies these proteins through a complicated
+process that involves lasers and fluorescent tags and that leverages a key
+biological process—that an antibody can have a very specific affinity for one
+specific protein.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Barnett et al., &lt;span&gt;“CD4 Immunophenotyping in HIV Infection.”&lt;/span&gt;&lt;/p&gt;"><sup>262</sup></a></span></p>
+<p>The process starts by identifying proteins that can help to
+identify specific immune cell populations (e.g., CD3 and CD4 proteins in
+combination can help identify helper T cells). This collection of proteins is
+the basis of a panel that’s developed for that flow cytometry experiment. For
+each of the proteins on the panel, you will incorporate an antibody with a
+specific affinity for that protein. If that antibody sticks to the cell in a
+substantial number, it indicates the presence of its associated protein on the
+cell.</p>
+<p>To be able to measure which of the antibodies stick to which cells, each type of
+antibody is attached to a specific fluorescent tag (each of these is often
+referred to as a “color” in descriptions of flow cytometry).<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Christophe Benoist and Nir Hacohen, &lt;span&gt;“Flow Cytometry, Amped Up,”&lt;/span&gt; &lt;em&gt;Science&lt;/em&gt; 332, no. 6030 (2011): 677–78.&lt;/p&gt;"><sup>263</sup></a></span>
+Each fluorescent tag included in the panel will emit wavelength in a certain
+well-defined range after it is exposed to light at wavelengths of a certain
+range. As each cell passes through the flow cytometer, lasers activate these
+fluorescent tags, and you can measure the intensity of light emitted at specific
+wavelengths to identify which proteins in the panel are present on or in each
+cell.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Barnett et al., &lt;span&gt;“CD4 Immunophenotyping in HIV Infection.”&lt;/span&gt;&lt;/p&gt;"><sup>264</sup></a></span></p>
+<p>This is an extraordinarily clever way to identify cells, but the complexity of
+the process means that a lot of pre-processing work must be done on the resulting
+measurements. To interpret the data that are recorded by a flow cytometer
+(intensity of light at different wavelengths)—and to generate a
+characterization of immune cell populations from these data—you need to
+incorporate a number of steps of translation. These include steps that
+incorporate information about which fluorescent tags were attached to which
+antibodies, which proteins in the cell each of those antibodies attach to, which
+immune cells those proteins help characterize, what wavelength each fluorescent
+tag emits at, and so on. In some cases, the measuring equipment will provide
+software that performs some of this pre-processing before you get the first
+version of the data, but some may need to be performed by hand, especially if
+you need to customize based on your research question. Further, it’s critical to
+understand the process, to decide if it’s appropriate for your specific
+scientific question.</p>
+<p>Similarly complex processes are used to collect data for many single-cell and
+high throughput assays, including transcriptomics, metabolomics, proteomics,
+and single cell RNA-sequencing. It can require complex and sometimes lengthy
+algorithms and pipelines to extract direct scientifically-relevant measures
+from the measures that the laboratory equipment captures in these cases.
+Depending on the assay, this pre-processing can include sequence alignment
+and assembly (if sequencing data were collected) or peak identification and
+alignment (if data was collected using mass spectrometry, for example).</p>
+<p>As Paul Flicek and Ewan Birney note in an article on making sense of
+sequence reads:</p>
+<blockquote>
+<p>“The individual outputs of the sequence machines are essentially worthless by
+themselves. … Fundamental to creating biological understanding from the
+increasing piles of sequence data is the development of analysis algorithms able
+to assess the success of the experiments and synthesize the data into manageable
+and understandable pieces.”<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Paul Flicek and Ewan Birney, &lt;span&gt;“Sense from Sequence Reads: Methods for Alignment and Assembly,”&lt;/span&gt; &lt;em&gt;Nature Methods&lt;/em&gt; 6, no. Suppl 11 (2009): S6–12.&lt;/p&gt;"><sup>265</sup></a></span></p>
+</blockquote>
+<p>The discipline of bioinformatics works to develop these types of pre-processing
+algorithms.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Barry and Cheung, &lt;span&gt;“New Tactics Against Tuberculosis.”&lt;/span&gt;&lt;/p&gt;"><sup>266</sup></a></span> Many of them are available through open-source,
+scripted software like R and Python. These types of pre-processing algorithms
+are often also available as proprietary software, sometimes sold by equipment
+manufacturers and sometimes separately.</p>
+</div>
+<div id="addressing-practical-concerns-and-limitations-in-data-collection" class="section level3" number="12.2.2">
+<h3>
+<span class="header-section-number">12.2.2</span> Addressing practical concerns and limitations in data collection<a class="anchor" aria-label="anchor" href="#addressing-practical-concerns-and-limitations-in-data-collection"><i class="fas fa-link"></i></a>
+</h3>
+<p>Another common reason for pre-processing is to address things you
+did while collecting the data—specifically, things you did for
+practical purposes or under practical limitations. These will then need to
+be handled, when possible, in computational pre-processing.</p>
+<p>This type of pre-processing often addresses something called
+<em>noise</em> in the data. When we collect biomedical
+research data, we are collecting it in the hope that it will measure
+some meaningful biological variation between two or more conditions. For
+example, we may measure it in the hope that there is a meaningful difference in
+gene expression between a sample taken from an animal that is diseased versus
+one that is healthy, with the aim of finding a biomarker of the disease.</p>
+<p>There are, however, several sources of variation in data we collect. The first
+of these is variation that comes from meaningful biological variation between
+samples—the type of variation that we are trying to measure and
+use to answer scientific questions. We often call this the “signal” in the
+data.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Chris Chatfield, &lt;em&gt;Problem Solving: A Statistician’s Guide&lt;/em&gt; (CRC Press, 1995).&lt;/p&gt;"><sup>267</sup></a></span></p>
+<p>There are other sources of variation, too, though. These sources are irrelevant to
+our scientific question, and so we often call them “noise”—in other words,
+they cause our data to change from one sample to the next in a way that might
+blur the signal that we care about. We therefore often take steps in
+pre-processing to try to limit or remove this type of variation, so we can see the
+meaningful biological variation more clearly.</p>
+<p>There are two main sources of this noise: biological and technical. Biological
+noise in data does come from biological processes, but from ones that are
+irrelevant to the process that we care about in our particular experiment. For
+example, cells express different genes depending on where they are in the cell
+cycle. However, if you are trying to use single cell RNA-sequencing to explore
+variation in gene expression by cell type, you might consider this
+growth-related variation as noise, even though it represents a biological
+process.</p>
+<p>The second source of noise is technical. Technical noise comes from variation
+that is introduced in the process of collecting data, rather than from
+biological processes. In the introduction to the module, we brought up the
+example of weighing mice by cage rather than individually; one example of
+technical noise in this case would be the differences across the samples that’s
+based on the number of mice in each cage.</p>
+<p>As another example, part of the process of single-cell RNA-sequencing involves
+amplifying complementary DNA that are developed from the messenger RNA in each
+cell in the sample. How much the complementary DNA are amplified in this
+process, however, varies across cells.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Jeffrey M Perkel, &lt;span&gt;“Single-Cell Sequencing Made Simple,”&lt;/span&gt; &lt;em&gt;Nature&lt;/em&gt; 547, no. 7661 (2017): 125–26.&lt;/p&gt;"><sup>268</sup></a></span> This occurs because,
+while the different fragments are all amplified before their sequences are read,
+some fragments are amplified more times than others. If two fragments had the
+exact same abundence in the original cell, but one was amplified more than the
+other, that one would be measured as having a higher level in the sample if this
+amplification bias were not accounted for. If this isn’t addressed in
+pre-processing, amplification bias prevents any meaningful comparison
+across cells.</p>
+<p>Another source of technical noise is something called <em>batch effects</em>. These
+occur when data have consistent differences based on who was doing the
+measuring, which batch the sample was run with, or which equipment was used for
+the measure. For example, if two researchers are working to weigh the mice for
+an experiment, the weights recorded by one of the researchers might tend to be,
+on average, lower than those recorded by the other researcher, perhaps because
+the two scales they are using are calibrated a bit differently. Similarly,
+settings or conditions can change in subtle ways between different runs on a
+piece of equipment, and so the samples run in different batches might have some
+differences in output based on the batch.</p>
+<p>In some cases, there are ways to reduce some of the variation that comes from
+processes that aren’t of interest for your scientific question, either from
+biological or technical sources. This is important to consider doing, because
+while some of this variation might just lower the statistical power of the
+analysis, some can go further and bias the results.</p>
+<p>Batch effects, for example, can often be addressed through statistical modeling,
+as long as they are identified and are not aligned with a difference you are
+trying to measure (in other words, if all the samples for the control animals
+are run in one batch and all those for the treated animals in another batch, you
+would not be able to separate the batch effect from the effect of treatment).</p>
+<p>There are some methods that adjust for batch effects by fitting a regression
+model that includes the batch as a factor, and then using the residuals from
+that model for the next steps of analysis (“regressing out” those batch effects).<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Davis J McCarthy et al., &lt;span&gt;“Scater: Pre-Processing, Quality Control, Normalization and Visualization of Single-Cell RNA-Seq Data in r,”&lt;/span&gt; &lt;em&gt;Bioinformatics&lt;/em&gt; 33, no. 8 (2017): 1179–86.&lt;/p&gt;"><sup>269</sup></a></span> You can also incorporate this directly into a statistical
+model that is being used for the main statistical hypothesis testing of interest.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.&lt;/p&gt;"><sup>270</sup></a></span> In this case, the technical noise isn’t addressed
+during the pre-processing phase, but rather as part of the statistical analysis.</p>
+<p>Another example of a process that can help adjust for unwanted variation is
+normalization. Let’s start with a very simple example to explain what
+normalization does. Say that you wanted to measure the height of three people,
+so you can determine who is tallest and who is shortest. However, rather than
+standing on an even surface, they are all standing on top of ladders that are
+different heights. If you measure the height of the top of each person’s head
+from the ground, you will not be able to compare their heights correctly,
+because each has the height of their ladder incorporated into the measure. If
+you knew the height of each person’s ladder, though, you could normalize your
+measure by subtracting each ladder’s height from the total measurement, and then
+you could meaningfully compare the heights to determine which person is tallest.</p>
+<p>Normalization plays a similar role in pre-processing many forms of biomedical
+data. One article defines normalization as the, “process of accounting for, and
+possibly removing, sources of variation that are not of biological interest.”<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;H Craig Mak, &lt;span&gt;“John Storey,”&lt;/span&gt; &lt;em&gt;Nature Biotechnology&lt;/em&gt; 29, no. 4 (2011): 331–33.&lt;/p&gt;"><sup>271</sup></a></span> One simple example is when comparing the weights of two groups
+of mice. Often, a group of mice might be measured collectively in their cage,
+rather than taken out and weighed individually. Say that you have three treated
+mice in one cage and four control mice in another cage. You can weigh both cages
+of mice, but to compare these weights, you will need to normalize the
+measurement by dividing by the total number of mice that are in each cage (in
+other words, taking the average weight per mouse). This type of averaging is a
+very simple example of normalizing data.</p>
+<p>Other normalization pre-processing might be used to adjust for sequencing depth
+for gene expression data, so that you can meaningfully compare the measures of a
+gene’s expression in different samples or treatment groups.
+This can be done in bulk RNA sequencing by calculating and adjusting for a
+global scale factor.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Rhonda Bacher et al., &lt;span&gt;“SCnorm: Robust Normalization of Single-Cell RNA-Seq Data,”&lt;/span&gt; &lt;em&gt;Nature Methods&lt;/em&gt; 14, no. 6 (2017): 584–86.&lt;/p&gt;"><sup>272</sup></a></span> One article highlights the critical
+role of normalization in RNA sequencing in the context of reproducibility:</p>
+<blockquote>
+<p>“The biggest, the easiest way [for a biologist doing RNA-Seq to tell that
+better normalization of the data is needed]—the way that I discovered the
+importance of normalization in the microarray context—is the lack of
+reproducibility across different studies. You can have three studies that are
+all designed to study the same thing, and you just see basically no
+reproducibility, in terms of differentially expressed genes. And every time I
+encountered that, it could always be traced back to normalization. So, I’d say
+that the biggest sign and the biggest reason why you want to use normalization
+is to have a clear signal that’s reproducible.”<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Mak, &lt;span&gt;“John Storey.”&lt;/span&gt;&lt;/p&gt;"><sup>273</sup></a></span></p>
+</blockquote>
+<p>In single-cell RNA sequencing, there’s also a need for normalization, but in
+this case the procedures to do it are a bit different. Difference processes are
+needed because these data tend to be noisier and have a number of
+zero-expression values.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Perkel, &lt;span&gt;“Single-Cell Sequencing Made Simple”&lt;/span&gt;; Bacher et al., &lt;span&gt;“SCnorm.”&lt;/span&gt;&lt;/p&gt;"><sup>274</sup></a></span> For these assays, therefore, new technologies for
+normalization have been developed. For example, in scRNA-seq, processes like the
+use of unique molecular identifiers (UMIs) can allow you to later account for
+amplification bias.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ashraful Haque et al., &lt;span&gt;“A Practical Guide to Single-Cell RNA-Sequencing for Biomedical Research and Clinical Applications,”&lt;/span&gt; &lt;em&gt;Genome Medicine&lt;/em&gt; 9, no. 1 (2017): 1–12.&lt;/p&gt;"><sup>275</sup></a></span></p>
+</div>
+<div id="digesting-complexity-in-datasets" class="section level3" number="12.2.3">
+<h3>
+<span class="header-section-number">12.2.3</span> Digesting complexity in datasets<a class="anchor" aria-label="anchor" href="#digesting-complexity-in-datasets"><i class="fas fa-link"></i></a>
+</h3>
+<p>Biomedical research has dramatically changed in the past couple of decades to
+include data with higher dimensions: that is, data that either includes many
+samples or many measures per sample, or both.</p>
+<p>Examples of high-dimensional data in biomedical data include data with many
+<em>measurements</em> (also called <em>features</em>), often in the hundreds or thousands in
+terms of the measurements generated per sample. For example, transcriptomics
+data can include measurements for each sample on the expression level of tens of
+thousands of different genes.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Perkel, &lt;span&gt;“Single-Cell Sequencing Made Simple.”&lt;/span&gt;&lt;/p&gt;"><sup>276</sup></a></span> Data from metabolics,
+proteomics, and other “omics” similarly create data at high-dimensional scales
+in terms of the number of features that are measured.</p>
+<p>There are also some cases where data are large because of the number of
+observations, rather than (or in addition to) their number of measurements. One
+example is flow cytometry data, where the observations are individual cells.
+Current experiments often capture in the range of a million cells. Another assay
+that generates lots of observations is single cell RNA-sequencing. Again, with
+this technique, observations are taken at the level of the cell, with on the
+order of at least 10,000 cells processed per sample.</p>
+<p>Whether data is large because it measures many features (e.g., transcriptomics)
+or includes many observations (e.g., single-cell data), the sheer size of the
+data can require you to digest it somehow before you can use it to answer
+scientific questions. There are several pre-processing techniques that can be
+used to do this. The way that you digest this size and complexity depends on
+whether the data are large because they have many features or because they have
+many observations.</p>
+<p>For data with many measurements for each observation, the different measurements
+often have strong correlation structures across samples. For example, a large
+collection of genes may work in concert, and so gene expression across those
+genes may be highly correlated. As another example, a metabolite might break
+down into multiple measured metabolite features, making the measurements for
+those features highly correlated. In some cases, your data may even have more
+measurements than samples. For example, if you run an assay that measures the
+level of thousands of metabolite features, with twenty samples, then you will
+end up with many more measurements (columns in your dataset, if it has a tidy
+structure) than observations (rows in a tidy data structure).</p>
+<p>This case of data with many measurements presents, first, a technical issue. In
+the case of data with more measurements than samples, you may have no choice but
+to resolve this before later steps of analysis. This is because a number of
+statistical techniques fail or provide meaningless results for datasets with
+more columns than rows, as the algorithms run into problems
+related to singularity and non-uniqueness.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Chatfield, &lt;em&gt;Problem Solving&lt;/em&gt;.&lt;/p&gt;"><sup>277</sup></a></span> As Chatfield
+notes:</p>
+<blockquote>
+<p>“It is potentially dangerous to allow the number of variables to exceed the
+number of observations because of non-uniqueness and singularity problems. Put
+simply, the unwary analyst may try to estimate more parameters than there are
+observations.”<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.&lt;/p&gt;"><sup>278</sup></a></span></p>
+</blockquote>
+<p>Another concern with data that have many measurements is that
+the amount of information across the measurements is lower than the number of
+measurement—in other words, some of the measures are partially or fully
+redundant. To get a basic idea of dimension reduction, consider this example.
+Say you have conducted an experiment that includes two species of research mice,
+C57 black 6 and BALB/C. You record information about each mouse, including
+columns that record both which species the mouse is and what color its coat is.
+Since C57 black 6 mice are always black, and BALB/C mice are always white, these
+two columns of data will be perfectly correlated. Therefore, one of the two
+columns adds no information—once you have one of the measurements for a mouse,
+you can perfectly deduce what the other measurement will be. You could
+therefore, without any loss of information, reduce the number of
+columns of the data you’ve collected by choosing only one of these
+two columns to keep.</p>
+<p>This same idea scales up to much more complex data—in many high dimensional
+datasets, many of the measurements (e.g., levels of metabolite features in
+metabolomics data or levels of gene expression in gene expression data) will be
+highly correlated with each other, essentially providing the same information
+across different measurements. In this case, the complexity of the dataset can
+often be substantially reduced by using something called <em>dimension reduction</em>.</p>
+<p>Dimension reduction helps to collect the information that is captured by the
+dataset into fewer columns, or “dimensions”—to go, for instance, from columns
+that measure the expression of thousands of different genes down to fewer
+columns that capture the key sources of variation across these genes. One
+long-standing approach to dimension reduction is principal components analysis
+(PCA).<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Haque et al., &lt;span&gt;“A Practical Guide to Single-Cell RNA-Sequencing for Biomedical Research and Clinical Applications.”&lt;/span&gt;&lt;/p&gt;"><sup>279</sup></a></span> Other newer techniques have been developed, as
+well, such as t-distributed stochastic neighbor embedding (t-SNE).<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Perkel, &lt;span&gt;“Single-Cell Sequencing Made Simple.”&lt;/span&gt;&lt;/p&gt;"><sup>280</sup></a></span> Newer techniques often aim to improve on limitations of
+classic techniques like PCA under the conditions of current biomedical
+data—for example, some may help address problems that arise when applying
+dimension reduction techniques to very large datasets.</p>
+<p>Another approach to digest the complexity of high dimensional data is to remove
+some of the features that were measured entirely, an approach that is more
+generally called <em>feature selection</em> in data science. One example is in
+pre-processing single-cell RNA-sequencing data. In this case, it is common to filter
+down to only some of the genes whose expression was measured. One filtering
+criterion is to filter out “low quality” genes. These might be genes with low
+abundance on average across samples or high dropout rates (which happens if
+a transcript is present in the cell but either isn’t captured or isn’t amplified
+and so is not present in the sequencing reads) <span class="citation">McCarthy et al.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;&lt;span&gt;“Scater.”&lt;/span&gt;&lt;/p&gt;"><sup>281</sup></a></span> Another criterion for filtering genes for single cell
+RNA-sequencing is to focus on the genes that vary substantially across different
+cell types, removing the “housekeeping” genes with similar expression regardless
+of the cell type.</p>
+<p>For data with lots of observations, like single-cell data, again the sheer size
+of the data can make it difficult to explore and generate knowledge from it. In
+this case, you can often reduce complexity by finding a way to group the
+observations and then summarizing the size and other characteristics of each
+group.</p>
+<p>For example, flow cytometry leverages the different measures taken on each cell
+to make sense of them with a process referred to as <em>gating</em>. In gating, each
+measure taken on the cells is considered one or two at a time to filter the data.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Maecker, McCoy, and Nussenblatt, &lt;span&gt;“Standardizing Immunophenotyping for the Human Immunology Project.”&lt;/span&gt;&lt;/p&gt;"><sup>282</sup></a></span> The gating process steps through many of these
+“gates”, filtering out cells and each step and only retaining the cells with
+markers or characteristics that align with a certain cell type, until the
+researcher is satisfied that they have identified all the cells of a certain
+type in the sample (e.g., all helper T cells in the sample). This compresses the
+data to counts of different cell types, from original data with one observation
+per cell.</p>
+<p>Another way of doing this is with clustering techniques, which can be helpful to
+explore large-scale patterns across the many observations. For example, single
+cell RNA-sequencing measures messenger RNA expression for each cell in a sample
+of what can be 10,000 or more cells. One goal of single-cell RNA-sequencing is
+to use gene expression patterns in each cell to identify distinct cell types in
+the sample, potentially including cell types that were not known prior to the
+experiment.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Perkel, &lt;span&gt;“Single-Cell Sequencing Made Simple.”&lt;/span&gt;&lt;/p&gt;"><sup>283</sup></a></span> To do this, it needs to used measures of the
+expression of hundreds of genes in each cell to group the thousands of cells by
+similar patterns of gene expression. One use of clustering techniques is to
+group cells into cell types, based on their gene expression profiles, through
+single-cell RNA-sequencing.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Haque et al., &lt;span&gt;“A Practical Guide to Single-Cell RNA-Sequencing for Biomedical Research and Clinical Applications.”&lt;/span&gt;&lt;/p&gt;"><sup>284</sup></a></span></p>
+</div>
+<div id="quality-assessment-and-control" class="section level3" number="12.2.4">
+<h3>
+<span class="header-section-number">12.2.4</span> Quality assessment and control<a class="anchor" aria-label="anchor" href="#quality-assessment-and-control"><i class="fas fa-link"></i></a>
+</h3>
+<p>Another common step in pre-processing is to identify and resolve quality control
+issues. These are cases where some error or problem occurred in the data
+recording and measurement, or some of the samples are poor quality and need to
+be discarded.</p>
+<p>There are many reasons why biomedical data might have quality control
+issues. First, when data are recorded “by hand” (including into a spreadsheet),
+the person who is recording the data can miss a number or mis-type a number. For
+example, if you are recording the weights of mice for an experiment, you may
+forget to include a decimal in one recorded value, or invert two numbers. These
+types of errors include recording errors (reading the value from the instrument
+incorrectly), typing errors (making a mistake when entering the value into a
+spreadsheet or other electronic record), and copying errors (introduced when
+copying from one record to another).<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Chatfield, &lt;em&gt;Problem Solving&lt;/em&gt;.&lt;/p&gt;"><sup>285</sup></a></span></p>
+<p>While some of these can be hard to identify later, in many cases you can
+identify and fix recording errors through exploratory analysis of the data. For
+example, if most recorded mouse weights are around 25 grams, but one is recorded
+as 252 grams, you may be able to identify that the recorder missed a decimal point
+when recorded one weight. In this case, you could identify the error as
+an extreme outlier—in fact, beyond a value that would make physical sense.</p>
+<p>Other quality control issues may come in the form of missing data (e.g., you
+forget to measure one mouse at one time point), or larger issues, like a quality
+problem with a whole sample. In these cases, it is important to
+identify missingness in the data, so that as a next step you can try to
+determine why certain data points are missing (e.g., are they missing at random,
+or is there some process that makes certain data points more likely to be
+missing, in which case this missingness may bias later analysis), to help you
+decide how to handle those missing values.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.&lt;/p&gt;"><sup>286</sup></a></span></p>
+<p>Some quality control issues will be very specific to a type of data or assay.
+For example, one common theme in quality control repeats across methods
+that measure data at the level of the single cell. Some examples of this type of
+single-cell resolution measurement include flow cytometry and single-cell
+RNA-seq. In these cases, some of the measurements might be made on cells that
+are in some way problematic. This can include cells that are dead or damaged,<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Tomislav Ilicic et al., &lt;span&gt;“Classification of Low Quality Cells from Single-Cell RNA-Seq Data,”&lt;/span&gt; &lt;em&gt;Genome Biology&lt;/em&gt; 17, no. 1 (2016): 1–15.&lt;/p&gt;"><sup>287</sup></a></span> and it can also include cases where a measurement
+that was meant to be taken on a single cell was instead taken on two or more
+cells that were stuck together, or on a piece of debris or, in the case of
+droplet-based single cell RNA-seq, an empty droplet.</p>
+<p>Quality control steps can help to identify and remove these problematic
+observations. For example, flow cytometry panels will often include a marker for
+dead cells, which can then be used when the data are gated to identify and
+exclude these cells, while a size measure (forward scatter) can identify cases
+where two or more cells were stuck together and passed through the equipment at
+the same time. In single-cell RNA-sequencing, low quality cells may be
+identified based on a relatively high mitochondrial DNA expression compared to
+expression of other genes, potentially because if a cell ruptured before it was
+lysed for the assay, much of the cytoplasm and its messenger RNA would have
+escaped, but not RNA from the mitochondria.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.&lt;/p&gt;"><sup>288</sup></a></span> Cells
+can be removed in the pre-processing of scRNA-seq data based on this and related
+criteria (low number of detected genes, small relative library size).<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.&lt;/p&gt;"><sup>289</sup></a></span></p>
+
+</div>
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="module11.html"><span class="header-section-number">11</span> Using Git and GitHub to implement version control</a></div>
+<div class="next"><a href="module13.html"><span class="header-section-number">13</span> Selecting software options for pre-processing</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#module12"><span class="header-section-number">12</span> Principles of pre-processing experimental data</a></li>
+<li><a class="nav-link" href="#what-is-data-pre-processing"><span class="header-section-number">12.1</span> What is data pre-processing?</a></li>
+<li>
+<a class="nav-link" href="#common-themes-and-processes-in-data-pre-processing"><span class="header-section-number">12.2</span> Common themes and processes in data pre-processing</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#extracting-scientifically-relevant-measurement"><span class="header-section-number">12.2.1</span> Extracting scientifically-relevant measurement</a></li>
+<li><a class="nav-link" href="#addressing-practical-concerns-and-limitations-in-data-collection"><span class="header-section-number">12.2.2</span> Addressing practical concerns and limitations in data collection</a></li>
+<li><a class="nav-link" href="#digesting-complexity-in-datasets"><span class="header-section-number">12.2.3</span> Digesting complexity in datasets</a></li>
+<li><a class="nav-link" href="#quality-assessment-and-control"><span class="header-section-number">12.2.4</span> Quality assessment and control</a></li>
+</ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/geanders/improve_repro/blob/master/12-scripted_preprocessing.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/geanders/improve_repro/edit/master/12-scripted_preprocessing.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Improving the Reproducibility of Experimental Data Recording and Pre-Processing</strong>" was written by Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson. </p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

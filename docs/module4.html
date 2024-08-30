@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Module 4 Designing templates for “tidy” data collection | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
+<meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson">
+<meta name="generator" content="bookdown 0.40 with bs4_book()">
+<meta property="og:title" content="Module 4 Designing templates for “tidy” data collection | Improving the Reproducibility of Experimental Data Recording and Pre-Processing">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Module 4 Designing templates for “tidy” data collection | Improving the Reproducibility of Experimental Data Recording and Pre-Processing">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.7.0/transition.js"></script><script src="libs/bs3compat-0.7.0/tabs.js"></script><script src="libs/bs3compat-0.7.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+          margin-bottom: 0em;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<meta name="description" content="In this module, we will use a real example of data collected in a biomedical laboratory. We’ll use this example to show how data is often collected in a way that is not “tidy” (module 3), focusing...">
+<meta property="og:description" content="In this module, we will use a real example of data collected in a biomedical laboratory. We’ll use this example to show how data is often collected in a way that is not “tidy” (module 3), focusing...">
+<meta name="twitter:description" content="In this module, we will use a real example of data collected in a biomedical laboratory. We’ll use this example to show how data is often collected in a way that is not “tidy” (module 3), focusing...">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Improving the Reproducibility of Experimental Data Recording and Pre-Processing</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Overview of these modules</a></li>
+<li class="book-part">Experimental Data Recording</li>
+<li><a class="" href="module1.html"><span class="header-section-number">1</span> Separating data recording and analysis</a></li>
+<li><a class="" href="module2.html"><span class="header-section-number">2</span> Principles and power of structured data formats</a></li>
+<li><a class="" href="module3.html"><span class="header-section-number">3</span> The “tidy” data format</a></li>
+<li><a class="active" href="module4.html"><span class="header-section-number">4</span> Designing templates for “tidy” data collection</a></li>
+<li><a class="" href="module5.html"><span class="header-section-number">5</span> Example: Creating a template for “tidy” data collection</a></li>
+<li><a class="" href="module6.html"><span class="header-section-number">6</span> Organizing project files</a></li>
+<li><a class="" href="module7.html"><span class="header-section-number">7</span> Creating project directory templates</a></li>
+<li><a class="" href="module8.html"><span class="header-section-number">8</span> Example: Creating a project template</a></li>
+<li><a class="" href="module9.html"><span class="header-section-number">9</span> Harnessing version control for transparent data recording</a></li>
+<li><a class="" href="module10.html"><span class="header-section-number">10</span> Enhance the reproducibility of collaborative research with version control platforms</a></li>
+<li><a class="" href="module11.html"><span class="header-section-number">11</span> Using Git and GitHub to implement version control</a></li>
+<li class="book-part">Experimental Data Pre-processing</li>
+<li><a class="" href="module12.html"><span class="header-section-number">12</span> Principles of pre-processing experimental data</a></li>
+<li><a class="" href="module13.html"><span class="header-section-number">13</span> Selecting software options for pre-processing</a></li>
+<li><a class="" href="module14.html"><span class="header-section-number">14</span> Introduction to scripted data pre-processing in R</a></li>
+<li><a class="" href="module15.html"><span class="header-section-number">15</span> Tips for improving reproducibility when writing R scripts</a></li>
+<li><a class="" href="module16.html"><span class="header-section-number">16</span> Simplify scripted pre-processing through R’s “tidyverse” tools</a></li>
+<li><a class="" href="module17.html"><span class="header-section-number">17</span> Complex data types in experimental data pre-processing</a></li>
+<li><a class="" href="module18.html"><span class="header-section-number">18</span> Introduction to reproducible data pre-processing protocols</a></li>
+<li><a class="" href="module19.html"><span class="header-section-number">19</span> RMarkdown for creating reproducible data pre-processing protocols</a></li>
+<li><a class="" href="module20.html"><span class="header-section-number">20</span> Example: Creating a reproducible data pre-processing protocol</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/geanders/improve_repro">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="module4" class="section level1" number="4">
+<h1>
+<span class="header-section-number">Module 4</span> Designing templates for “tidy” data collection<a class="anchor" aria-label="anchor" href="#module4"><i class="fas fa-link"></i></a>
+</h1>
+<p>In this module, we will use a real example of data collected in a biomedical
+laboratory. We’ll use this example to show how data is often collected in a way
+that is not “tidy” (module <a href="module3.html#module3">3</a>), focusing on the features of data collection
+that make it “untidy”. We’ll then describe some general principles for why and
+how to instead create and use tidy (or at least tidier) templates to collect
+data in the laboratory. We’ll also show how this can be the first step in a
+pipeline to creating useful, attractive, and reproducible reports that describe
+the data you collected. This module will focus on the principles of templates
+for tidy data collection, while in module <a href="module5.html#module5">5</a> we’ll dig deeper into the
+details of making this conversion for the example dataset that we use as a
+demonstration in this module.</p>
+<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
+<ul>
+<li>Detect features in a data collection template that keep a dataset from being
+“tidy”</li>
+<li>Discuss how “untidy” data collection can affect the rigor and reproducibility
+of data recording</li>
+<li>Distinguish “untidy” features of a data collection templates into those that
+can affect rigor and reproducibility versus those that can easily be addressed
+later in the code pipeline</li>
+<li>Discuss three principles for designing a data collection template for “tidy”
+data collection</li>
+<li>List “extra” elements that are sometimes included in a data collection
+spreadsheet but that can impede reproducibility</li>
+<li>Compare “wide” versus “long” data formats</li>
+<li>Explain why certain characters and formatting in a data collection template
+may cause problems with later analysis</li>
+</ul>
+<div id="exampledata-on-rate-of-bacterial-growth" class="section level2" number="4.1">
+<h2>
+<span class="header-section-number">4.1</span> Example—Data on rate of bacterial growth<a class="anchor" aria-label="anchor" href="#exampledata-on-rate-of-bacterial-growth"><i class="fas fa-link"></i></a>
+</h2>
+<p>Throughout this module, we’ll use a real dataset to illustrate principles of
+data collection in a biomedical laboratory. First, let’s start by looking at the
+original data collection template, and use this to walk through some details of
+this dataset. Figure <a href="module4.html#fig:growthexcel1">4.1</a> provides an annotated view of the
+data set, showing the format used when the data were originally collected.</p>
+<div class="figure">
+<span style="display:block;" id="fig:growthexcel1"></span>
+<img src="figures/growth_curve_example.png" alt="Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column." width="100%"><p class="caption">
+Figure 4.1: Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column.
+</p>
+</div>
+<p>These data were collected to measure the compare growth yield and doubling time
+of <em>Mycobacterium tuberculosis</em> (the bacteria that causes tuberculosis in
+humans) under two conditions—high oxygen and low oxygen. In humans, <em>M.
+tuberculosis</em> can persist for years or decades in granulomas, and the centers of
+these granulomas are often hypoxic (low in oxygen). Therefore, it’s important to
+understand how these bacteria grow in hypoxic conditions.</p>
+<p>To conduct this experiment, the researchers used test tubes that were capped
+with sealed caps to prevent and air exchange between the contents of the tube
+and the environment. Inside the tubes, the amount of oxygen was controlled
+by shifting the ratio of the volume of the culture (the liquid with nutrients
+in which the M. tuberculosis will grow) versus the volume of air.
+In the high oxygen condition, a lower volume of culture was used, which leaves
+room for a lot of air in the top of the tube. In the low oxygen condition,
+the tube was filled almost to the top with culture, which left very little air
+at the top of the tube.</p>
+<p>Once the tubes were filled and capped, they were left to grow for about a week.
+During this time, the researchers took several measurements to determine the
+growth of the bacteria in each tube. To do this, they used a spectrophotometer
+to track optical density over time. This method gives a measurement that is
+directly proportional to the cell mass in each tube, and so provides a measure
+of how much the bacteria has grown since the start of the experiment.</p>
+<p>To record data from this experiment, researchers used the spreadsheet shown in
+Figure <a href="module4.html#fig:growthexcel1">4.1</a>. This spreadsheet is an example of a data
+collection template—it was created not only for this experiment, but also for
+other experiments that this research group conducts to measure bacterial growth
+under different conditions. It was designed to allow a researcher working in the
+laboratory to record measurements over the course of the experiment.</p>
+<p>Let’s take a closer look at some of the features of this spreadsheet. First, it
+has a section on the top right that focuses on data collection during the
+experiment, with one row for each time when the tubes were measured for the cell
+mass. This section of the spreadsheet starts with several
+columns related to the time of each measurement, including the clock time at
+measurement (column A), the difference in time (hours) between each time point
+in which data were collected (column B), the date on which data were gathered
+(column C), and the time in hours for each data point from the start of the
+study for graphing purposes (column D). The columns for clock time (A) and date
+(C) were recorded by hand, while the columns for time since the start of the
+experiment (B and D) were calculated or converted by hand from these values and
+then entered in the column. The remaining columns (E–I) provide data on the
+optical density (absorbance at 600 nm), which is directly proportional to cell
+mass in the tube. There is one column per test tub, and each of these column
+labels includes a test tube ID (A1, A3, L1, L2, L3). If a tube ID starts with
+“A”, it was grown in high oxygen conditions, and if it starts with “L”, it was
+grown in low oxygen conditions.</p>
+<p>Next, the spreadsheet has areas that provide summaries of the data, calculated
+using embedded formulas or through the spreadsheet’s plotting functions. For
+example, rows 17–18 provide calculations of the doubling time of the bacteria
+in each tube for two periods (early and late in the experiment), while two
+growth curves are plotted at the bottom of the spreadsheet.</p>
+<p>Finally, the spreadsheet includes a couple of other features, including some
+written notes about one of the hand calculations and a macro in the top right
+that can be used by the researcher to calculate the amount of the initial
+inoculum to add to each tube at the start of the experiment.</p>
+<p>What the researchers found appealing about the format of this spreadsheet was
+the ease with which the researcher collecting data in the laboratory could
+accomplish the study goals. The data being graphed in real time, and the
+inclusion of a simple macro to calculate doubling time, allowed the research in
+the laboratory to see tangible differences between the two assay conditions as
+data were collected over the one-week experiment. They also cited the and ease
+with which additional sampling data points could be added.</p>
+<p>However, many of these features can have undesired consequences. They can increase
+the chance of errors in recording the data and in calculating summaries based on the
+data. They also make it hard to move the data into a reproducible pipeline, and
+so limit opportunities for more sophisticated analysis and visualization. In the
+next section of this module, we’ll highlight features of data collection templates
+like this one that can make data collection untidy. In module <a href="module5.html#module5">5</a>,
+we’ll discuss how you could create a new data collection template for this example
+data that would be tidier, and use this to open a more general discussion of
+principles of tidy data collection templates.</p>
+</div>
+<div id="features-that-make-data-collection-templates-untidy" class="section level2" number="4.2">
+<h2>
+<span class="header-section-number">4.2</span> Features that make data collection templates untidy<a class="anchor" aria-label="anchor" href="#features-that-make-data-collection-templates-untidy"><i class="fas fa-link"></i></a>
+</h2>
+<p>There are several features of the data collection template shown in Figure
+<a href="module4.html#fig:growthexcel1">4.1</a> that make it untidy. These will make it difficult read
+the data into a statistical program like R or Python to conduct data analysis
+and visualization. There are also some features that make it prone to errors in
+data collection and analysis.</p>
+<p>First, these data will be hard to read into a statistical program because the
+raw data form only part of the spreadsheet (Figure <a href="module4.html#fig:extractraw">4.2</a>, area
+highlighted by the blue box). The “extra” elements on the spreadsheet, which
+include the output from calculations, plots, macros, and notes, make it harder
+to isolate the raw data from the file when using a statistical program.</p>
+<div class="figure">
+<span style="display:block;" id="fig:extractraw"></span>
+<img src="figures/growth_curve_raw_data.png" alt="Isolating raw data collected in a template from extra elements. The box in this figure highlights the area of the spreadsheet where data are collected. All other elements of the spreadsheet focus on other aims (e.g., summarizing these data, adding notes, macros for experimental design). Those other elements make it difficult to extract the raw data for more advanced analysis and visualization through a statistical program like R, Python, or Perl." width="100%"><p class="caption">
+Figure 4.2: Isolating raw data collected in a template from extra elements. The box in this figure highlights the area of the spreadsheet where data are collected. All other elements of the spreadsheet focus on other aims (e.g., summarizing these data, adding notes, macros for experimental design). Those other elements make it difficult to extract the raw data for more advanced analysis and visualization through a statistical program like R, Python, or Perl.
+</p>
+</div>
+<p>While these extra elements make it hard to extract the raw data, it isn’t
+impossible. Programming languages like R include functions to read data in from
+a spreadsheet, and these functions often provide options to specify the sheet of
+the file to read in, as well as the rows and columns to read from a specific
+sheet. In the example spreadsheet in Figure <a href="module4.html#fig:extractraw">4.2</a>, for example,
+you could specify to read in only rows 1–15 of columns A–I, to focus on the
+raw data.</p>
+<p>However, one goal of reproducible research is to create tools and pipelines that
+are robust—that is, ones that still work as desired when the raw data is
+changed in small ways, or even across different raw data files. Therefore, while
+we could customize code to read in data from a specific part of a complex
+spreadsheet, like that shown in Figure <a href="module4.html#fig:extractraw">4.2</a>, this customization
+would make the code less robust. If we asked the statistical program to read in
+rows 1–15 of columns A–I, for example, the code would perform incorrectly if
+we later added one more time point to the experiment, or if we tried to use the
+same template for an experiment that used more test tubes. If we instead use a
+template that only records the raw data, without additional elements, then we
+can create more robust tools, since we can write code to read in whatever is in
+a spreadsheet, rather than restricting to certain rows and columns.</p>
+<p>Next, the example template helps demonstrate how specific ways of recording data
+can make the template less tidy. First, let’s look at how the template records
+the time of each measurement. It does this using four separate columns
+(Figure <a href="module4.html#fig:extractraw">4.2</a>). In column C, the researcher records the date a
+measurement was taken, and in Column A he or she records the clock time of the
+measurement. The experiment was started, for example, at 12:00 PM (“12:00” in column A)
+on July 9 (“9-Jul” in column C). These values are entered by hand by the researcher.
+Next, these values are used to calculate, for each measurement, how long it had been
+since the start of the experiment. This value is recorded in two separate ways—as
+hours and minutes in column B and converted into hours and percents of hours (using
+decimals) in column D. For example, the second measurement was taken at 4:05 PM
+on July 9 (“16:05” in column A and “9-Jul” in column C), which is 4 hours and 5 minutes
+after the start of the experiment (“4hr 5min” in column B) or, since 5 minutes is about
+8% of an hour, 4.08 hours after the start of the experiment (“4.08” in column D).</p>
+<div class="figure">
+<span style="display:block;" id="fig:timemeasures"></span>
+<img src="figures/growth_curve_time_measures.png" alt="Measurements of time in the example data collection template. The four highlighted columns (columns A, B, C, and D) are all used in this spreadsheet to record time. The methods of recording time in this template, however, may make it more likely to create errors in data recording and collection and will make it harder to use the data in a reproducible pipeline." width="100%"><p class="caption">
+Figure 4.3: Measurements of time in the example data collection template. The four highlighted columns (columns A, B, C, and D) are all used in this spreadsheet to record time. The methods of recording time in this template, however, may make it more likely to create errors in data recording and collection and will make it harder to use the data in a reproducible pipeline.
+</p>
+</div>
+<p>There are a few things that could be changed about how the time data are
+recorded here that could make this data collection template tidier. First, it
+would be better to focus only on recording the raw data, rather than adding
+calculations based on that data. Columns B and D in Figure <a href="module4.html#fig:extractraw">4.2</a>
+are both the output from calculations. Anytime a spreadsheet includes a
+calculation, it creates the room for mistakes in data collection and analysis.
+Often, calculations in a spreadsheet will be done using embedded formulas. These
+can cause problems when new columns or rows are added to the data, as that
+can shift the cells meant to be used in the calculation. Further, these formulas
+are embedded in the spreadsheet, where they can’t be seen and checked very
+easily, which makes it easy to miss a typo or other error in the formula.</p>
+<p>In the example in Figure <a href="module4.html#fig:extractraw">4.2</a>, columns B and D aren’t
+calculated by embedded formulas, but rather calculated by the researcher by hand
+and then entered. This creates room for user error with each calculation
+and data entry. Later, we’ll see how we can tidy this data collection
+template by removing columns that calculate time (columns B and D) and instead
+doing that calculation once the raw data are read into a statistical program.</p>
+<p>The second thing that could be changed is how the template records the date and
+time of the measurement. Currently, it uses two columns (A and C) to record this
+information. However, each piece of information is useless without the
+other—instead, they must be known jointly to do things like calculate the time
+since the start of the experiment. It would therefore be tidier to record this
+information in a single column. For example, instead of recording the starting
+time of the experiment as “12:00” in column A and “9-Jul” in column C, you could
+record it as “July 9, 2019 12:00” in a single date-time column. In this example,
+adding the year (“2019”) to the date will also make this data point easier to
+work with in a programming language, as languages like R and Python often have
+special functions to work with data in date-time classes, but all elements of
+the date and/or time must be included to convert data points into these useful
+format.</p>
+<p>Next, let’s look at how the template collects data related to cell growth in
+each tube (columns E–I, Figure <a href="module4.html#fig:growthmeasures">4.4</a>). These data are
+recorded in a format that will work pretty well. Strictly speaking, they aren’t
+fully tidy (module <a href="module3.html#module3">3</a>), since the column headers include information that we
+might want to use as variables in analysis and visualization. Specifically, each
+test tube’s ID is incorporated in the column name where measurements for that
+tube are recorded, since each test tube is recorded using a separate column.</p>
+<div class="figure">
+<span style="display:block;" id="fig:growthmeasures"></span>
+<img src="figures/growth_curve_growth_measures.png" alt="Measurements of bacterial growth in the example data collection template. The five highlighted columns (columns E--I) are all used in this spreadsheet to record optical density in each test tube at each measurement time." width="100%"><p class="caption">
+Figure 4.4: Measurements of bacterial growth in the example data collection template. The five highlighted columns (columns E–I) are all used in this spreadsheet to record optical density in each test tube at each measurement time.
+</p>
+</div>
+<p>If we want to run analysis where we estimate values for each test tube, or
+create plots where each test tube’s measurements are shown with a separate line,
+then once we read the data into another program, we’ll need to convert the
+format of the data a bit. However, that’s quite easy to do in more statistical
+programming languages now, and so it’s reasonable to compromise on this element
+of “tidiness” in the data collection format. As we’ll show in module <a href="module5.html#module5">5</a>,
+changing this layout in the original data collection would require the
+researcher to re-type the measurement date and time several times and would
+result in the spreadsheet being longer, and so harder to see at once when
+recording data.</p>
+<p>There is a final element we’d like to highlight on this example template that
+could make the data hard to integrate into a reproducible pipeline. There are
+cases in the example template where either column names or cell values are
+formatted in a way that would be hard to work with when the data is read into a
+program like R or Python (Figure <a href="module4.html#fig:growthformatting">4.5</a>). For
+example, the column names include spaces and parentheses (e.g., “Time (clock)”).
+If left as-is, when the data are read into another program, the column names
+will need to be cleaned up to take these characters out, so that the column
+names are composed only of alphabetical characters, numbers, or underscores.
+While this can be done in code like R or Python, it will add to the data
+cleaning process and could be avoided by using simpler column names in the
+original data collection template.</p>
+<div class="figure">
+<span style="display:block;" id="fig:growthformatting"></span>
+<img src="figures/growth_curve_formatting.png" alt="Examples of special characters and formatting in the example template that could cause problems later in a data analysis pipeline." width="100%"><p class="caption">
+Figure 4.5: Examples of special characters and formatting in the example template that could cause problems later in a data analysis pipeline.
+</p>
+</div>
+</div>
+<div id="converting-to-a-tidier-format-for-data-collection-templates" class="section level2" number="4.3">
+<h2>
+<span class="header-section-number">4.3</span> Converting to a “tidier” format for data collection templates<a class="anchor" aria-label="anchor" href="#converting-to-a-tidier-format-for-data-collection-templates"><i class="fas fa-link"></i></a>
+</h2>
+<p>Now that we’ve looked at characteristics that can make a data collection
+template untidy, let’s go through some principles for creating tidy templates to
+record the same data. In this module, we’ll focus on higher-level strategies,
+using the example data collection template to highlight out points. In
+module <a href="module5.html#module5">5</a>, we’ll provide a detailed walk-through of how the
+example template can be modified to use a tidier format.</p>
+<p>There are three basic principles for designing tidy templates that will go a
+long way to creating ways to collect data in a research group that can be easily
+used within a reproducible analysis pipeline. The first principle in designing a
+tidier template for collecting laboratory data is to <strong>limit the template to the
+collection of data</strong>. The key here is the word “collection”. A tidy template
+will avoid any calculations done on the original data and instead focus only on
+the initial data that the researcher records for the experiment. This means that
+you should exclude from the template any element that provides a calculation,
+summary, or plot based on the initial recorded element. You should also exclude
+any special formatting that you are using to encode information. For example,
+say that you are collecting data, and in some cases you get a warning that the
+reading may be below the instrument’s detection limit. It may be tempting to
+highlight the cells with measurements where this warning was displayed as you
+record the data. However, you should avoid doing this, as any color or other
+formatting information will be lost when you read the data in the file into a
+statistical program. Instead, you could add a second column to indicate if the
+measurement included a warning.</p>
+<p>The second principle is to <strong>make sensible choices when dividing data collection
+into rows and columns</strong>. There are many different ways that you could spread the
+data collection into rows and columns. One decision is how (and whether) to
+divide recorded information across columns. Figure <a href="module4.html#fig:arrangingcolumns">4.6</a>,
+for example, shows several ways that you could divide data on a date and time
+into one or more columns. In this example, it typically makes the most sense to
+use a single column to record all the date and time elements (the top example in
+Figure <a href="module4.html#fig:arrangingcolumns">4.6</a>). As mentioned earlier, most statistical
+programs have powerful functions for parsing dates and times, after which they
+store these data in special classes that allow time-related operations (for
+example, calculating the time difference between two date-time measurements). It
+will be most efficient to record all date and time elements in a single column.</p>
+<div class="figure">
+<span style="display:block;" id="fig:arrangingcolumns"></span>
+<img src="figures/arranging_columns.png" alt="Examples of special characters and formatting in the example template that could cause problems later in a data analysis pipeline." width="100%"><p class="caption">
+Figure 4.6: Examples of special characters and formatting in the example template that could cause problems later in a data analysis pipeline.
+</p>
+</div>
+<p>Conversely if you have complex data with different elements (for example, height
+in components of inches and feet), it may make sense to use separate columns for
+each of the components. For example, rather than using one column to record
+<code>5'7"</code>, you could divide the information into one column with the component that
+is in feet (<code>5</code>) and one with the component in inches (<code>7</code>). In the first case
+(recording <code>5'7"</code>), when you read the data into a program like R you would need
+to use complex code to split the value into its parts to be able to use it. In
+the second case, you could easy work with the values in the two separate columns
+to calculate a value to use in further work (e.g., use a formula like <code>height_ft * 12 + height_in</code> to calculate the full height in inches).</p>
+<p>Another decision at this stage is how “long” versus “wide” you make your
+template. A “wide” design will include more columns, while a “long” design will
+include more rows. Often, you can create different designs that allow you to
+collect the same values but with different designs along this wide-versus-long
+spectrum. Figure <a href="module4.html#fig:longversuswide">4.7</a> gives two examples of templates that
+collect the same data, but one is using a wider design and the other is using a
+longer design.</p>
+<div class="figure">
+<span style="display:block;" id="fig:longversuswide"></span>
+<img src="figures/growth_curve_long_vs_wide.png" alt="Examples of two ways arranging the same data in a data recording template. The format on the left records the optical density measurements for each test tube in a separate column, and the column header identifies the test tube. This is an example of a 'wider' format. The format on the right records the optical density for all test tupbes in a single column, using a separate column to record which test tube the measurement represents. This is an example of a 'longer' format." width="100%"><p class="caption">
+Figure 4.7: Examples of two ways arranging the same data in a data recording template. The format on the left records the optical density measurements for each test tube in a separate column, and the column header identifies the test tube. This is an example of a ‘wider’ format. The format on the right records the optical density for all test tupbes in a single column, using a separate column to record which test tube the measurement represents. This is an example of a ‘longer’ format.
+</p>
+</div>
+<p>In module <a href="module3.html#module3">3</a>, we described the rules for the tidy format for dataframes.
+If you record data directly into a tidy format, it will be very easy to
+read into a programming language to analyze and visualize. However,
+this tidy format can sometimes result in datasets that are very long. It
+may be more convenient to record data in a wider format, especially if you
+are recording the data in a laboratory setting where it is inconvenient to
+scroll up and down within a longer-format spreadsheet as you record.</p>
+<p>Fortunately, there are some convenient tools in programs like R and Python that
+can be used to take data that are collected in a wider format and reformat them
+to the tidy format as soon as they are read into the software program. While
+this will require some extra code, it is usually code that is fairly simple and
+straightforward. Therefore, when you design your data collection template, you
+can balance any practical advantages of using a wider data collection format
+against the advantages of a fully tidy format that apply once your input the
+data into a statistical program for analysis and visualization. Often, the wider
+format might win out in this balance, and that’s fine.</p>
+<p>The third principle is to <strong>avoid characters or formatting that will make it
+hard for a computer program to process the data</strong>. This principle is
+particularly important for the column names for each column. When you read data
+into a statistical program like R, these names will automatically be used as the
+column names in the R data frame object, and the code will regularly use these
+column names to refer to parts of the data when analyzing and visualizing it.
+You will find it easiest to use the data in a reproducible pipeline if you
+follow a couple rules for the column names. The reason that these rules will help
+is that they replicate the rules for naming objects in programming languages,
+and so will help in seamlessly transitioning between the stages of data
+collection and data analysis. First, always start a column name with a letter.
+Second, only use letters, numbers, or the underscore character (“_“) for
+the rest of the characters in the column name.</p>
+<p>Based on these rules, then, you should avoid putting spaces in your column names
+when you design a data collection template. It is tempting to include spaces to
+make the names clearer for humans to read, and this is understandable. Often,
+an underscore serves the same function, allowing for easy human comprehension
+while still avoiding characters that are difficult for statistical programs.
+For example, if you have a column named “Optical density”, you can change it
+to “Optical_density” without making it much more difficult for a person to
+understand. As with other choices in designing a data collection template,
+these choices about column names can be a balance between making the template
+easy for researchers to use in the laboratory and easy for the statistical
+program to parse later in the pipeline. For example, statistical programs like
+R have functions for working with character strings that can be used to
+replace all the spaces in column names with another character. However, if
+it isn’t unreasonable to follow the recommended rules in writing column names
+for the data collection template, you can keep code later in the pipeline
+much simpler, so it’s worth considering.</p>
+<p>Beyond spaces, there are a number of other special characters that you might
+be tempted to include in column names. These could include parentheses, dollar signs,
+percent signs, hash marks (“#”), and so on. Any of these will require extra code
+in later steps of an analysis pipeline, and some can cause more severe problems
+because they have special meanings in the programming language. For example,
+hash marks are used in the R programming language to add comments within code, while
+dollar signs are used for subsetting elements of a list or data frame object.
+It is worth the effort to avoid all these characters in column names in a data
+collection template.</p>
+<p>There are also considerations you can make in terms of how you record data within
+cells of the data collection template, and these can make a big difference in terms
+of how hard or easy it is to work with the data within a statistical program. While
+statistical programs like R are very powerful in terms of being able to handle even
+very “messy” input data, they require a lot of code to leverage this power. By being
+thoughtful when you design the template to record the data, you can avoid having to
+use a lot of code to input and clean the data in later stages of the pipeline.</p>
+<p>Figure <a href="module4.html#fig:recordingtime">4.8</a> gives an example of a choice that you could make
+in the format you use to record data. This figure shows two columns from the
+original data collection template from the example experiment for this module.
+This template includes two columns that record the time since the start of the
+experiment, and they use different formats for doing this. In column B, time is
+recorded in hours and minutes, with the characters “hr” and “min” used to
+separate the two time components. In column D, the same information is recorded,
+but in decimals of hours (e.g., 4.08 hours for 4 hours and 5 minutes). While the
+format in column B is more similar to how humans think of time, it will take
+more code to parse in a statistical program. When reading this data into a
+program like R, you would need to use regular expressions to split apart the
+different elements and then recombine them into a format that the program
+understands. By contrast, the values recorded in column D could be easily read
+in by a statistical program, with minimal code needed before they could be used
+in analysis and visualizations.</p>
+<div class="figure">
+<span style="display:block;" id="fig:recordingtime"></span>
+<img src="figures/growth_curve_recording_time.png" alt="Examples of two ways of recording time in the original template from the example experiment. Column B uses hours and minutes, with characters embedded to separate hours from minutes, while column D uses hours in decimal degrees. The format in column D will be much easier to integrate into a larger data analysis pipeline." width="100%"><p class="caption">
+Figure 4.8: Examples of two ways of recording time in the original template from the example experiment. Column B uses hours and minutes, with characters embedded to separate hours from minutes, while column D uses hours in decimal degrees. The format in column D will be much easier to integrate into a larger data analysis pipeline.
+</p>
+</div>
+<p>These three principles are an excellent starting point for designing a tidy
+template for collecting data. By using these, you will be well on your way to
+collecting data in a way that is easy to integrate in a longer reproducible data
+analysis pipeline.</p>
+<p>When you convert data collection templates to “tidier” formats, they will
+typically look much simpler than the templates that your research group may have
+been using. In the example experiment that we described earlier in this module,
+this process of tidying the template results in a template like that shown in
+Figure <a href="module4.html#fig:growthsimple1">4.9</a> (in module <a href="module5.html#module5">5</a>, we’ll walk through all the
+steps to create this tidier template, using this principles we’ve covered in
+this module). By comparison, the starting template for data collection for this
+experiment is shown in Figure <a href="module4.html#fig:growthexcel1">4.1</a>.</p>
+<div class="figure">
+<span style="display:block;" id="fig:growthsimple1"></span>
+<img src="figures/growth_curve_simple.png" alt="Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created---these are all done later, using a code script." width="100%"><p class="caption">
+Figure 4.9: Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created—these are all done later, using a code script.
+</p>
+</div>
+<p>By comparing these two templates, you can see that the simpler template does
+not, by itself, provide immediate, real-time summaries of the collected data. The
+simpler template has removed elements like plots and values calculated by embedded
+formulas. At first glance, this might seem like a disadvantage of using a tidier
+template to collect data. However, by combining other tools in a pipeline, it is
+easy to connect the tidier raw data file to reporting tools. In this way, you can
+quickly create real-time summaries of the data that are similar to those shown in
+Figure <a href="module4.html#fig:growthexcel1">4.1</a>, but that are created and reported outside the file
+used to originally record the data.</p>
+<p>Figure <a href="module4.html#fig:growthreport1">4.10</a> shows an example of a simple report that could
+be created for the example experiment. This report is generated using a
+statistical program, R, which inputs the data from the simple template shown in
+Figure <a href="module4.html#fig:growthsimple1">4.9</a>. The report then uses R code to generate a PDF
+or Word file with the output shown below. The file for this report is created in
+a way that the output can be quickly regenerated with a single button click, and
+so it can be applied to other data saved using the same template. In fact, you
+can create templates for reports that coordinate with each data collection
+template that you create. In module <a href="module5.html#module5">5</a>, we’ll walk through how you
+could create the generating file for this report, and in other modules (modules
+<a href="module18.html#module18">18</a>–<a href="module20.html#module20">20</a>), we provide a thorough overview of creating
+these types of “knitted” documents.</p>
+<div class="figure">
+<span style="display:block;" id="fig:growthreport1"></span>
+<img src="figures/growth_curve_report.png" alt="Examples of an automated report that can be created to quickly generate summaries and estimates of the data collected in the simplified data collection template for the example experiment." width="100%"><p class="caption">
+Figure 4.10: Examples of an automated report that can be created to quickly generate summaries and estimates of the data collected in the simplified data collection template for the example experiment.
+</p>
+</div>
+<p>The report shown in Figure <a href="module4.html#fig:growthreport1">4.10</a> repeats some of the same summaries
+that were shown in the more complex original data collection template
+(Figure <a href="module4.html#fig:growthexcel1">4.1</a>). There are a number of advantages, however, to using
+separate steps and files for the processes of collecting versus analyzing the data.
+The separate report (Figure <a href="module4.html#fig:growthreport1">4.10</a>) provides a starting point that can
+be easily adapted to make more complex figures and analysis, as well as to integrate
+the collected data with data measured in other ways for the experiment.</p>
+</div>
+<div id="learning-more-about-tidy-data-collection-in-the-laboratory" class="section level2" number="4.4">
+<h2>
+<span class="header-section-number">4.4</span> Learning more about tidy data collection in the laboratory<a class="anchor" aria-label="anchor" href="#learning-more-about-tidy-data-collection-in-the-laboratory"><i class="fas fa-link"></i></a>
+</h2>
+<p>It may take some iteration to develop the data collection templates that are both
+convenient and appropriate to input to more complex programs for pre-processing,
+analysis, and visualization. This module and module <a href="module5.html#module5">5</a> provide guidance and
+examples, but it can be helpful to see more examples. Two excellent resources on this
+topic are articles by <span class="citation">Ellis and Leek<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;&lt;span&gt;“How to Share Data for Collaboration.”&lt;/span&gt;&lt;/p&gt;"><sup>145</sup></a></span> and <span class="citation">Broman and Woo<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;&lt;span&gt;“Data Organization in Spreadsheets.”&lt;/span&gt;&lt;/p&gt;"><sup>146</sup></a></span>.</p>
+<!-- ### Applied exercise -->
+
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="module3.html"><span class="header-section-number">3</span> The “tidy” data format</a></div>
+<div class="next"><a href="module5.html"><span class="header-section-number">5</span> Example: Creating a template for “tidy” data collection</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#module4"><span class="header-section-number">4</span> Designing templates for “tidy” data collection</a></li>
+<li><a class="nav-link" href="#exampledata-on-rate-of-bacterial-growth"><span class="header-section-number">4.1</span> Example—Data on rate of bacterial growth</a></li>
+<li><a class="nav-link" href="#features-that-make-data-collection-templates-untidy"><span class="header-section-number">4.2</span> Features that make data collection templates untidy</a></li>
+<li><a class="nav-link" href="#converting-to-a-tidier-format-for-data-collection-templates"><span class="header-section-number">4.3</span> Converting to a “tidier” format for data collection templates</a></li>
+<li><a class="nav-link" href="#learning-more-about-tidy-data-collection-in-the-laboratory"><span class="header-section-number">4.4</span> Learning more about tidy data collection in the laboratory</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/geanders/improve_repro/blob/master/04-designing_templates.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/geanders/improve_repro/edit/master/04-designing_templates.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Improving the Reproducibility of Experimental Data Recording and Pre-Processing</strong>" was written by Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson. </p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

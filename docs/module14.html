@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Module 14 Introduction to scripted data pre-processing in R | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
+<meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson">
+<meta name="generator" content="bookdown 0.40 with bs4_book()">
+<meta property="og:title" content="Module 14 Introduction to scripted data pre-processing in R | Improving the Reproducibility of Experimental Data Recording and Pre-Processing">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Module 14 Introduction to scripted data pre-processing in R | Improving the Reproducibility of Experimental Data Recording and Pre-Processing">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.7.0/transition.js"></script><script src="libs/bs3compat-0.7.0/tabs.js"></script><script src="libs/bs3compat-0.7.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+          margin-bottom: 0em;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<meta name="description" content="Learning to code can seem daunting, but it’s not any more difficult than learning any new language. Many people from a variety of disciplines have learned to code to help with their research....">
+<meta property="og:description" content="Learning to code can seem daunting, but it’s not any more difficult than learning any new language. Many people from a variety of disciplines have learned to code to help with their research....">
+<meta name="twitter:description" content="Learning to code can seem daunting, but it’s not any more difficult than learning any new language. Many people from a variety of disciplines have learned to code to help with their research....">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Improving the Reproducibility of Experimental Data Recording and Pre-Processing</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Overview of these modules</a></li>
+<li class="book-part">Experimental Data Recording</li>
+<li><a class="" href="module1.html"><span class="header-section-number">1</span> Separating data recording and analysis</a></li>
+<li><a class="" href="module2.html"><span class="header-section-number">2</span> Principles and power of structured data formats</a></li>
+<li><a class="" href="module3.html"><span class="header-section-number">3</span> The “tidy” data format</a></li>
+<li><a class="" href="module4.html"><span class="header-section-number">4</span> Designing templates for “tidy” data collection</a></li>
+<li><a class="" href="module5.html"><span class="header-section-number">5</span> Example: Creating a template for “tidy” data collection</a></li>
+<li><a class="" href="module6.html"><span class="header-section-number">6</span> Organizing project files</a></li>
+<li><a class="" href="module7.html"><span class="header-section-number">7</span> Creating project directory templates</a></li>
+<li><a class="" href="module8.html"><span class="header-section-number">8</span> Example: Creating a project template</a></li>
+<li><a class="" href="module9.html"><span class="header-section-number">9</span> Harnessing version control for transparent data recording</a></li>
+<li><a class="" href="module10.html"><span class="header-section-number">10</span> Enhance the reproducibility of collaborative research with version control platforms</a></li>
+<li><a class="" href="module11.html"><span class="header-section-number">11</span> Using Git and GitHub to implement version control</a></li>
+<li class="book-part">Experimental Data Pre-processing</li>
+<li><a class="" href="module12.html"><span class="header-section-number">12</span> Principles of pre-processing experimental data</a></li>
+<li><a class="" href="module13.html"><span class="header-section-number">13</span> Selecting software options for pre-processing</a></li>
+<li><a class="active" href="module14.html"><span class="header-section-number">14</span> Introduction to scripted data pre-processing in R</a></li>
+<li><a class="" href="module15.html"><span class="header-section-number">15</span> Tips for improving reproducibility when writing R scripts</a></li>
+<li><a class="" href="module16.html"><span class="header-section-number">16</span> Simplify scripted pre-processing through R’s “tidyverse” tools</a></li>
+<li><a class="" href="module17.html"><span class="header-section-number">17</span> Complex data types in experimental data pre-processing</a></li>
+<li><a class="" href="module18.html"><span class="header-section-number">18</span> Introduction to reproducible data pre-processing protocols</a></li>
+<li><a class="" href="module19.html"><span class="header-section-number">19</span> RMarkdown for creating reproducible data pre-processing protocols</a></li>
+<li><a class="" href="module20.html"><span class="header-section-number">20</span> Example: Creating a reproducible data pre-processing protocol</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/geanders/improve_repro">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="module14" class="section level1" number="14">
+<h1>
+<span class="header-section-number">Module 14</span> Introduction to scripted data pre-processing in R<a class="anchor" aria-label="anchor" href="#module14"><i class="fas fa-link"></i></a>
+</h1>
+<p>Learning to code can seem daunting, but it’s not any more difficult than
+learning any new language. Many people from a variety of disciplines have
+learned to code to help with their research. Doing so can pay big dividends in
+terms of reproducibility and efficiency.</p>
+<p>In this module, we’ll provide some tips to make it easier as you get started.
+If you are new to coding, these can give you a framework for how to tackle what
+can seem the daunting task of learning to code, as well as help you see that
+there are approachable techniques.</p>
+<p>This module is meant for researchers who have not yet used code scripts but either
+are interested in starting or are supervising researchers who are working
+with code for biomedical analysis. Our aim in this module is to provide enough
+information that someone without coding experience can gain some comfort in
+navigating R code scripts, for example to help understand a paper that includes
+scripts as part of its supplemental materials or to help understand the work of
+a trainee who is incorporating code in their research. For researchers who are
+already using code scripts, we recommend the next module (module <a href="module15.html#module15">15</a>), which provides
+advice on steps that can improve reproducibility when writing scripts for
+biomedical data pre-processing.</p>
+<p>In this module, we will provide an introduction to scripted pre-processing of
+experimental data through R scripts. We will introduce the basic elements of an
+R code script as well as the basics of creating and running a script. At the end
+of the module, through a video exercise, we will demonstrate how to create,
+save, and run an R code script for a simple data pre-processing task.</p>
+<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
+<ul>
+<li>Describe what an R code script is and how it differs from interactive
+coding in R</li>
+<li>Explain how code scripts can increase reproducibility of data pre-processing</li>
+<li>Create and save an R script to perform a simple data pre-processing task</li>
+<li>Run an R script</li>
+<li>Work through an example R script using a video exercise</li>
+<li>Define “code script”, “assignment operator”, “function”, “function call”,
+“package”, “batch execution”, and “keyboard shortcut”</li>
+</ul>
+<div id="what-is-a-code-script" class="section level2" number="14.1">
+<h2>
+<span class="header-section-number">14.1</span> What is a code script?<a class="anchor" aria-label="anchor" href="#what-is-a-code-script"><i class="fas fa-link"></i></a>
+</h2>
+<p>The simplest method of working with R is through something called <em>interactive
+coding</em>. With this style of coding, you enter a single command or function call
+at the cursor in the console, tell the program to execute that one element of
+code (for example, by pressing the Return key), and then wait until it executes
+it before you enter the next command or function call.</p>
+<p>A <em>script</em>, on the other hand, is a longer document that gives all the steps in a
+process. You can think of a code script as being like a script for a play—it’s
+a record of everything that happens over the course of the event. For a play,
+the script records the dialogue and stage directions for a play, while for a
+data pre-processing task, it records all the steps from inputting the data
+through pre-processing steps and finally saving the data in a processed form for
+further analysis, visualization, and statistical testing.</p>
+<p>You can run the same code whether you’re using a script or typing in the
+commands one at a time in the console as interactive coding. However, when you
+code interactively at the console, you’re not making a record of each of your
+steps (as a note, there are ways to save the history of commands typed at a
+console, but it can be very messy to reproduce later, so you should consider
+commands that are typed at the console to not be recorded for the purposes of
+reproducibility). When you write your code in a script, on the other hand, you
+have a record that you can later reopen to see what you did or to repeat the
+steps. In a very broad way, you can visualize this process as walking in wet
+sand—you are making a record (footsteps) of the path you took while you are
+making that path.</p>
+<p>A code script is typically written in a plain text document, and you can create,
+edit, and save code scripts in any interactive development environment (like
+RStudio, if you are programming in R). The program (R for example) can then read
+and run this script as a “batch” at any time. In other words, it can walk
+through and execute each piece of code that you recorded in the script, rather
+than you needing to enter each line of code one at a time in the console. For
+many programming languages, you can also run the code in a script in smaller
+sections, executing just one or a few lines at a time to explore what’s
+happening in each line of the code. With this combination of functionality, as
+well as recording of code for future reference or reproduction, code scripts
+provide an excellent method for building and using pipelines of code to
+pre-process biomedical data.</p>
+<p>In later sections of this module, we’ll walk through the practical steps of
+writing one of these code scripts. In a video exercise at the end, we’ll look at
+an example script for a simple task in biomedical data pre-processing,
+calculating the rate of growth of bacteria under different growing conditions.
+In this exercise, we’ll walk you through how to open, run, and explore this
+script in RStudio.</p>
+</div>
+<div id="how-code-scripts-improve-reproducibility-of-pre-processing" class="section level2" number="14.2">
+<h2>
+<span class="header-section-number">14.2</span> How code scripts improve reproducibility of pre-processing<a class="anchor" aria-label="anchor" href="#how-code-scripts-improve-reproducibility-of-pre-processing"><i class="fas fa-link"></i></a>
+</h2>
+<p>In the introduction to this book, we provided the definition for computational
+reproducibility. Specifically, computational reproducibility means
+that another researcher could get the exact results of the original study from
+the original data collected from a study.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Philip B Stark, &lt;span&gt;“Before Reproducibility Must Come Preproducibility,”&lt;/span&gt; &lt;em&gt;Nature&lt;/em&gt; 557, no. 7706 (2018): 613–14.&lt;/p&gt;"><sup>304</sup></a></span> Computational
+reproducibility, then, requires two main things: the original data and very
+thorough instructions that describe how those data were processed and analyzed.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Nekrutenko and Taylor, &lt;span&gt;“Next-Generation Sequencing Data Interpretation.”&lt;/span&gt;&lt;/p&gt;"><sup>305</sup></a></span></p>
+<p>Neither of these elements is trivial to provide in a thorough way for a complex
+biomedical experiment. Raw datasets are often extremely large and complex. To
+provide thorough instructions on the processing and analysis requires “access to
+… source code or binaries of exact versions of software used to carry out the
+initial analysis (this includes all helper scripts that are used to convert
+formats, groom data, and so on) and knowing all parameter settings exactly as
+they were used.”<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.&lt;/p&gt;"><sup>306</sup></a></span></p>
+<p>By using a code script for data pre-processing (and data analysis and
+visualization), you can often substantially improve the computational
+reproducibility of your experiment. This is because the code script itself
+documents the exact and precise instructions for how the data are processed and
+analyzed. For example, an R script will include all instructions for how the
+data were loaded from a file, and will even include the file name where the data
+are saved, as it must reference this to input the data. Further, it provides a
+list of all the function calls that were run and the order in which they were
+run. For each function call, it provides the details on the parameter settings
+used for that function. Since R is an open-source language, and its packages are
+largely open-source as well, if you know the version of R and each package used
+in the script, you can find and read through all the underlying code that
+defines all the functions used in the script. In other words, the open-source
+nature of the code means that you can, if you want, dig into the algorithms
+underlying any step of the process, and so you do not have to consider any step
+of the script as a “black box”.</p>
+<p>In the course of writing an executable script to pre-process data, then, you are
+thoroughly documenting each step that you take in that process, creating one of
+the key components (clear instructions on how the data were processed and
+analyzed) that is necessary to make an experiment computationally reproducible.
+Once you have this script, there are only two other elements that are required
+to make the experiment fully computationally reproducible: first, the original,
+raw data, and second, information on the versions of any software you used in
+the code (this would include the version of R that was used, as well as versions
+of any R packages that were used to supplement the base R functions).</p>
+</div>
+<div id="how-to-write-an-r-code-script" class="section level2" number="14.3">
+<h2>
+<span class="header-section-number">14.3</span> How to write an R code script<a class="anchor" aria-label="anchor" href="#how-to-write-an-r-code-script"><i class="fas fa-link"></i></a>
+</h2>
+<p>In this section, we’ll go through some basics to help you get started writing a
+code script in R. The process of writing a code script is similar in many other
+interpreted languages, like Python and Julia. If you are familiar with writing
+code scripts in R, you may find module <a href="module15.html#module15">15</a>—where we provide some tips on
+improving reproducibility when writing scripts—more helpful.</p>
+<p>We’ll start with a few basic conventions of the R programming language.
+If you have never used R before, it is critical to understand these basic
+pieces to understand how an R code script is put together
+and run. Specifically, we’ll cover:</p>
+<ul>
+<li>What is an R object?</li>
+<li>What are R functions and function calls?</li>
+<li>What is an R library?</li>
+<li>What is an R script?</li>
+</ul>
+<p>In later modules, we’ll go into more detail about some helpful tools in R,
+including the suite of “tidyverse” tools that are now taught in most beginner R
+programming courses. We will, of course, not have room to provide a full course
+on how to program in R, but we are aiming to give you enough of an overview that you
+can understand how R programming can fit into a data pre-processing and analysis
+pipeline for laboratory-based biomedical research projects, as well as how you
+can navigate an R script that someone else has written. In module <a href="module16.html#module16">16</a>, we’ll
+provide directions to more resources if you would like to continue developing
+your expertise in R programming beyond the basics covered in these modules.</p>
+<div id="what-is-an-r-object" class="section level3" number="14.3.1">
+<h3>
+<span class="header-section-number">14.3.1</span> What is an R object?<a class="anchor" aria-label="anchor" href="#what-is-an-r-object"><i class="fas fa-link"></i></a>
+</h3>
+<p>First, you’ll need to understand where R keeps data while you’re working with
+it. When you work in R, any piece of data that you work with will be available
+in something called an <em>object</em>. The simplest way to think of this R object is
+simply as a container for data. Different objects can be structured in different
+ways, in terms of how they arrange the data—which has implications for how
+you access the data from that object—but regardless of this structure, all
+R objects share the same purpose of storing data in a way that’s available to
+you as you work in R.</p>
+<p>One of the first steps in most R scripts, therefore, will be to create some of
+these objects. Until you have some data available, there’s not much interesting
+stuff that you can do in R. If you want to work with data that are stored in a
+file—for example, data that you recorded in the laboratory and saved in an
+Excel file—then you can create an R object with that data by reading in the
+data using a specific R function (we’ll cover these in a minute). This will read
+the data in R and store it in an object where you can access it later.</p>
+<p>To keep track of the objects you have in your R session, you typically assign
+each object a name. Any time you want to use the data in that object, or work
+with the object in any way, you can then refer to it by that name, rather than
+needing to repeat all the code you used to initially create it. You can assign
+an object its name using a special function in R called the <em>gets arrow</em> or
+<em>assignment operator</em>. It’s an arrow made of the less than and hyphen keys, with
+no spaces between the two (<code>&lt;-</code>). You’ll put the name you want to give the object
+to the left of this arrow and the code to create the object (for example, to read
+in data from a file) to the right. Therefore, the beginning of your R script
+will often have one or more lines of code that look like this:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_data</span> <span class="op">&lt;-</span> <span class="fu">read_excel</span><span class="op">(</span><span class="st">"my_recorded_data.xlsx"</span><span class="op">)</span></span></code></pre></div>
+<p>In this example, the line of code is reading in data from an Excel file named
+“my_recorded_data.xlsx” and storing in an R object that is assigned the name
+<code>my_data</code>. When you want to work with these data later in the code pipeline, you
+can do so with the name <code>my_data</code>, which now stores the data from that file.</p>
+<p>In addition to creating objects from the data that you initially read in, you will
+likely create more intermediate objects along the way. For example, if you take
+your initial data and filter it to a subset, then you might assign that version
+of the data to a separate object name, so you can work with that version later in
+your code. Alternatively, in some cases you’ll just overwrite the original object
+with the new version, using the same object name (for example, creating a subset of
+the <code>my_data</code> object and assigning it the same name of <code>my_data</code>). This reassigns the
+object name—when you refer to <code>my_data</code> from that point on, it will contain the
+subsetted version. However, in some cases this can be useful because it helps keep
+the collection of R objects you have in your session a bit smaller and simpler. What’s
+more, you can make these changes to simplify the version of the data you’re working
+with in R without worrying about it changing your raw data. Once you read the data
+in from an outside file, like an Excel file, R will work on a copy of that data, not
+the original data. You can make as many changes as you want to the data object in R
+without it changing anything in your raw data.</p>
+</div>
+<div id="what-are-r-functions-and-an-r-function-calls" class="section level3" number="14.3.2">
+<h3>
+<span class="header-section-number">14.3.2</span> What are R functions and an R function calls?<a class="anchor" aria-label="anchor" href="#what-are-r-functions-and-an-r-function-calls"><i class="fas fa-link"></i></a>
+</h3>
+<p>The next key component of the R programming language is the idea of <em>R functions</em>
+and <em>R function calls</em>. These are the parts of R that do things (whereas the objects in R
+are the “things” that these functions operate on). An R function is a tool that can
+take one or more R objects as inputs, do something based on those inputs, and return a
+new R object as the output. Occasionally they’ll also have “side effects” beyond returning
+this R object—for example, some functions will make a plot and show it in the plotting
+window of RStudio.</p>
+<p>The R objects that you input can be ones that you’ve assigned to a name (for
+example, <code>my_data</code>). They can also be simple objects that you make on the fly,
+just to have to input to that function. For example, if you’re reading in data
+from a file, one of the R object inputs you’ll need to give the function is the
+path to that file, which you could either save as an object (e.g.,
+<code>my_data_filepath &lt;- "my_recorded_data.xlsx"</code> and then reference
+<code>my_data_filepath</code> when you call the function) or create as an object on the fly
+when you call the function (e.g., just put <code>"my_recorded_data.xlsx"</code> directly in
+the function call, as shown in the example above).</p>
+<p>The function itself is the tool, which encapsulates the code to do something with
+input objects. When you use that tool, it’s called <em>calling</em> the function. Therefore,
+all of the lines of code in your script will give function calls, where you are
+asking R to run a specific function (or, in some cases, a linked set of functions)
+based on specified inputs.</p>
+<p>For example, the following function call would read in data from the Excel file
+“my_recorded_data.xlsx”:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">read_excel</span><span class="op">(</span><span class="st">"my_recorded_data.xlsx"</span><span class="op">)</span></span></code></pre></div>
+<p>This line of code is calling the function <code>read_excel</code>, which is a tool for inputting
+data from an Excel file into an R object with a specific data structure. By running
+this line of code, either at the console or in an R script, you are asking R to input
+data from the file named “my_recorded_data.xlsx”, which is the R object that you’re
+giving as an input to the function. This particular call would only read the data in—it
+won’t assign the resulting object to a name, but instead will just print out the data
+at the R console.</p>
+<p>If you’d like to read the data in and save it in an object to use later, you’ll
+want to add another function to this call, so that you assign the output object
+a name. For this, you’ll use the gets arrow that we described earlier. This is a
+special type of function in R. Most R functions consist of the function’s name,
+followed by parentheses inside of which you put the objects to input to the
+function (e.g., <code>read_excel("my_recorded_dat.xlsx"</code>). The gets arrow is a
+different type of function called an <em>operator</em>. These functions go between two
+objects, both of which are input to the operator function. They’re used often
+for arithmetic (for example, the <code>+</code> operator adds the values in the objects
+before and after it, so that you can call <code>1 + 2</code> to add one and two). For the
+gets arrow, it will go between the name that you want to assign to the object
+(e.g., <code>my_data</code>) and the function call that creates that object (e.g.,
+<code>read_excel("my_recorded_data.xlsx")</code>):</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_data</span> <span class="op">&lt;-</span> <span class="fu">read_excel</span><span class="op">(</span><span class="st">"my_recorded_data.xlsx"</span><span class="op">)</span></span></code></pre></div>
+<p>In this case, the line that R will execute will include two functions, where the
+output of one gets linked straight into the second, and the result will be the
+output from the second function (that the data in the Excel file is stored in
+an object assigned the name <code>my_data</code>).</p>
+<p>As you write an R script, you will use function calls to work through the
+steps in your pipeline. You can use different function calls to do things like
+apply a transformation, average values across groups, or reduce dimensions of
+a high-dimensional dataset. Once you’ve pre-processed the data, you can also use
+function calls to run statistical tests with the data and to visualize results
+through figures and tables.</p>
+<p>The process of writing a script is normally very iterative—you’ll write the
+code to do the first few steps (e.g., read in the data), look at what you’ve
+got, plan out some next steps, try to write some code for those steps, run it
+and check your output, and so on. The process is very similar to drafting a
+paper. You can try things out in early steps—and some steps won’t work out at
+first, or it will turn out that you don’t need them. As you continue, you’ll
+refine the script, editing it down to the essential steps and making sure each
+function call within those steps is operating as you intend. While it can be
+intimidating to start with a blank file and develop some code—just like it is
+with a blank piece of paper when writing a manuscript—just like with writing,
+you can start with something rough and then iterate until you arrive at
+the version you want.</p>
+<p>This process might seem a bit overwhelming when you first learn it, but it
+suffices at this point if you understand that, in R code, you’ll be working with
+objects (your materials) and functions (your tools). As we look through R
+scripts in the video exercise of this module, we’ll see these two pieces—objects and
+functions—used again and again in the scripts. They are the building blocks
+for your R scripts.</p>
+</div>
+<div id="what-is-an-r-library" class="section level3" number="14.3.3">
+<h3>
+<span class="header-section-number">14.3.3</span> What is an R library?<a class="anchor" aria-label="anchor" href="#what-is-an-r-library"><i class="fas fa-link"></i></a>
+</h3>
+<p>There’s one last component of R that will be helpful to understand as we move through
+the rest of this module and the next few modules. That’s the idea of an R package, and
+fortunately, it’s a pretty straightforward one.</p>
+<p>We just talked about how functions in R are tools, which you can use to do interesting
+things with your data (including all the pre-processing steps we talked about in
+module <a href="module12.html#module12">12</a>). However, the version of R that you initially install to your computer
+(available for free for all major operating systems at <a href="https://cran.r-hub.io/" class="uri">https://cran.r-hub.io/</a>) doesn’t
+include all the tools that you will likely want to use. The initial download gives you
+the base of the programming language, which is called <em>base R</em>, as well as a few
+extensions of this for very common tasks, like fitting some common statistical models.</p>
+<p>Because R is an open-source software, people who use R can build on this
+simple base. R users can create new functions that combine more rudimentary
+tools in base R to create customized tools suited to their own tasks. R users
+can create these tools for their own personal use, and often do, but there is
+also a mechanism for them to share these new tools with others if they’d like.
+They can bundle a set of R functions they’ve created into an <em>R package</em> and
+then post this package on a public repository where others can download it and
+use the functions in it. In some of the examples in these modules, we’ll be
+using tools from these packages, and it’s rare that someone uses R without using
+at least some of these supplementary packages, so it’s good to get an idea of
+how to get and use them.</p>
+<p>The people who make packages can share them in a number of repositories, but the
+most standard repository for sharing R packages widely is the Comprehensive R
+Archive Network (CRAN). If a package is shared through CRAN, you can get it
+using the function <code>install.packages</code> along with the package’s name. For
+example, in the code we showed earlier, the <code>read_excel</code> function does not come
+with base R, but instead is part of a package called <code>readxl</code>, which is shared
+on CRAN. To download that package so that you can use its functions, you can
+run:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"readxl"</span><span class="op">)</span></span></code></pre></div>
+<p>This will download the code for the package and unpack it in a special part of
+your computer where R can easily find it. You only need to install a package
+once, at least until you get a new computer or update your version of base R.
+However, to use the functions in that package, you’ll need to <em>load</em> the package
+in your current R session. This makes the functions in that package available to
+you as you work in that R session. To do this, you use the <code>library</code> function,
+along with the name of the package. For example, to load the <code>readxl</code> package in
+an R session, you’d need to run:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://readxl.tidyverse.org">"readxl"</a></span><span class="op">)</span></span></code></pre></div>
+<p>While you only need to install a package once, you need to load it every
+time you open a new R session to do work, if you want to use its functions in
+that R session. Therefore, you’ll often see a lot of calls to the <code>library</code>
+function in R scripts. You can use this call anywhere in the script as long as
+you put it before code where you use the library’s functions, but it’s great to
+get in the habit of putting all the <code>library</code> function calls at the start of
+your R script. That way, if you share the script with someone else, they can
+quickly check to see if they’ll need to install any new packages before they can
+run the code in the script.</p>
+</div>
+<div id="what-is-an-r-script" class="section level3" number="14.3.4">
+<h3>
+<span class="header-section-number">14.3.4</span> What is an R script<a class="anchor" aria-label="anchor" href="#what-is-an-r-script"><i class="fas fa-link"></i></a>
+</h3>
+<p>Based on the points that we’ve just discussed, hopefully you can envision now
+that an R script will ultimately include a number of lines of code, covering a
+number of R function calls that work with data stored in objects. You can expect
+there to be lots of calls that assign objects their own names (with <code>&lt;-</code>), and
+the function calls will typically include both a function called by name and
+some objects as input to that function, contained inside parentheses after the
+function name.</p>
+<p>This type of script should be written in plain text, and so the best way to
+create an R script is by using a text editor. Your computer likely came with a
+text editor as one of the pieces of utility software that was installed by
+default. However, with R scripts, it can be easier to use the text editor that
+comes as part of RStudio. This allows you to open and edit your scripts in a
+nice environment, one that includes a console area where you can test out pieces
+of code, a pane for viewing figures, and so on.</p>
+<p>In RStudio, you can create a new R script by going to the “File” menu at the top
+of the screen, choosing “New File” and then choosing “R Script”. This will open
+a new plain text file that, by default, will have the file extension “.R” (e.g.,
+“my_file.R”), which is the standard file extension for R scripts. Once you’ve
+created an R script file, you can begin writing your script. In the next
+section, we’ll walk through how you can run code that you’ve put into your
+script. However, we think it’s worth mentioning that, as you get started on this
+process, you might find it easiest to start not by writing your own R script
+from scratch, but instead by starting with someone else’s and walking through
+that. You can explore how it works (reverse engineer it). Then you can try
+changing small parts, to see if it acts as you expect when you do. This process
+will help you get a feel for how these scripts are organized and how they
+operate. In the video exercise for this module, we’ll provide an R script for a
+basic laboratory data pre-processing task and walk you through it, so you can use
+that as a starting point to understand how it would work to create, edit, and
+run your own R script.</p>
+</div>
+</div>
+<div id="how-to-run-code-in-an-r-script" class="section level2" number="14.4">
+<h2>
+<span class="header-section-number">14.4</span> How to run code in an R script<a class="anchor" aria-label="anchor" href="#how-to-run-code-in-an-r-script"><i class="fas fa-link"></i></a>
+</h2>
+<p>Once you’ve written code in an R script, you can run (execute) that code in a
+number of ways. First, you can run all the code in the script at once, which is
+known as <em>batch execution</em>. When you do this, all the code in the script will be
+executed by R, and while it’s executed by R one line at a time, you won’t have
+the chance to make changes along the way. If you compare it to the idea of a
+code script to a play script, you can think of this as being like when the
+play is performed for an audience—once you start the play, you don’t have
+the chance to stop and work on it as it’s going. Instead, it will go straight
+through to the end. If there is an error somewhere along the way, then the code
+will stop running at that point and you’ll get an error message, but otherwise
+when you run the code as a batch, R won’t stop executing the lines until it gets
+to the end. This mode of running the code is great for once you’ve developed a
+pipeline that you’re happy with—it quickly runs everything and provides the
+output.</p>
+<p>The other way that you can execute the code is by running a single line, or a
+small set of lines, of the code at a time. In the play analogy, this is similar
+to what might happen during rehearsals, when you go through part of the play
+script and then stop to get comments from the director, then either re-try that
+part with a few changes or move on to the next small part. This mode of running
+the code is great for when you’re developing the pipeline. Just like with a
+play’s rehearsals, you’ll want a lot of chances to explore and change things as
+you develop the final product, and this mode of running code is excellent for
+exploration and editing. Often, most of your time when you code will be spent
+doing this style of code execution. Running in batch mode will get a lot of work
+done, but is very quick for the programmer—developing the code is what takes
+time, and just like with writing a manuscript, this time comes from drafting a
+rough draft and then editing it until you arrive at a clean and clear final
+version.</p>
+<p>Both of these methods of code execution are easy to do in RStudio. Since you’ll
+usually start by using line-by-line execution, we’ll start with talking about how you
+can do that. In RStudio, you can open your code script (a file ending in “.R”),
+and you will still be able to see the console, which is a space for submitting
+function calls to R. To execute the code in the script one line at a time,
+there’s a few quick ways that you can tell RStudio to send that line in the
+script to the console and run it. Start by putting your cursor on that line of code.
+One way to now execute this line (i.e., send it to the console to run) is to
+click on the “Run” button in the top right-hand corner of the script file. If
+you try this, you should see that this line of code gets sent to the console
+pane of RStudio, and the results from running that line are shown in the
+console.</p>
+<p>Even quicker is a <em>keyboard shortcut</em> that does the same thing. (Keyboard
+shortcuts are short control sequences that you type in your keyboard to run a
+command. They’re faster than clicking buttons because you can do them without
+taking your hands off the keyboard. Ctrl-C is one very common one that you might
+have used before, which in most programs will copy the current selection.) For
+running a line of R code, with your cursor on the line of the function call that
+you want to execute, use the keyboard shortcut Ctrl-Return (depending on your
+operating system, you may need to use Command rather than Ctrl).</p>
+<p>You can use a similar method to run a few lines of code at once. All you have to
+do is highlight the code that you want to run, and then you can use either of
+the two methods (click the “Run” button or use the Ctrl-Return keyboard shortcut).
+We will show you examples of how to do this in the video exercise at the end
+of this module.</p>
+<p>To execute an R script in batch mode, there are again a could of ways you can do
+it. First, there is a “Source” button in the top right of the R script file when
+you open it in RStudio. You can click on this button and it will run the entire
+script as a batch. There is also an R command that you can use to source a file
+based on its file name, <code>source</code>. If you have a file in your working directory
+named “my_pipeline.R”, for example, you can execute the code in it in a batch by
+running <code>source("my_pipeline.R)</code>.</p>
+<p>To get started, it’s probably easiest to just use the buttons “Run” and “Source”
+that RStudio provides in the window for the R script file. As you do more work, you
+may find some of these other methods help you work faster, or allow you to do
+more interesting things, so it’s good to know they’re there, but you don’t need
+to try to navigate them all as you learn how to run code in an R script.</p>
+<!-- ### Exercise -->
+<!-- As we mentioned earlier, it can be helpful as you learn how to navigate R -->
+<!-- scripts to start by dissecting and exploring an existing script. In the video -->
+<!-- that is embedded here, we give an example of that using a script that captures -->
+<!-- an example given in a previous module. We will walk through how this script -->
+<!-- captures some of the elements discussed in this module. -->
+<!-- [Resources for exercise] -->
+<!-- [Video of exercise] -->
+
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="module13.html"><span class="header-section-number">13</span> Selecting software options for pre-processing</a></div>
+<div class="next"><a href="module15.html"><span class="header-section-number">15</span> Tips for improving reproducibility when writing R scripts</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#module14"><span class="header-section-number">14</span> Introduction to scripted data pre-processing in R</a></li>
+<li><a class="nav-link" href="#what-is-a-code-script"><span class="header-section-number">14.1</span> What is a code script?</a></li>
+<li><a class="nav-link" href="#how-code-scripts-improve-reproducibility-of-pre-processing"><span class="header-section-number">14.2</span> How code scripts improve reproducibility of pre-processing</a></li>
+<li>
+<a class="nav-link" href="#how-to-write-an-r-code-script"><span class="header-section-number">14.3</span> How to write an R code script</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#what-is-an-r-object"><span class="header-section-number">14.3.1</span> What is an R object?</a></li>
+<li><a class="nav-link" href="#what-are-r-functions-and-an-r-function-calls"><span class="header-section-number">14.3.2</span> What are R functions and an R function calls?</a></li>
+<li><a class="nav-link" href="#what-is-an-r-library"><span class="header-section-number">14.3.3</span> What is an R library?</a></li>
+<li><a class="nav-link" href="#what-is-an-r-script"><span class="header-section-number">14.3.4</span> What is an R script</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#how-to-run-code-in-an-r-script"><span class="header-section-number">14.4</span> How to run code in an R script</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/geanders/improve_repro/blob/master/14-intro_scripted_preprocess.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/geanders/improve_repro/edit/master/14-intro_scripted_preprocess.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Improving the Reproducibility of Experimental Data Recording and Pre-Processing</strong>" was written by Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson. </p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

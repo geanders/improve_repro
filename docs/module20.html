@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Module 20 Example: Creating a reproducible data pre-processing protocol | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
+<meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson">
+<meta name="generator" content="bookdown 0.40 with bs4_book()">
+<meta property="og:title" content="Module 20 Example: Creating a reproducible data pre-processing protocol | Improving the Reproducibility of Experimental Data Recording and Pre-Processing">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Module 20 Example: Creating a reproducible data pre-processing protocol | Improving the Reproducibility of Experimental Data Recording and Pre-Processing">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.7.0/transition.js"></script><script src="libs/bs3compat-0.7.0/tabs.js"></script><script src="libs/bs3compat-0.7.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+          margin-bottom: 0em;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<meta name="description" content="We will walk through an example of creating a reproducible data pre-processing protocol. As an example, we will look at how to pre-process and analyze data that are collected in the laboratory to...">
+<meta property="og:description" content="We will walk through an example of creating a reproducible data pre-processing protocol. As an example, we will look at how to pre-process and analyze data that are collected in the laboratory to...">
+<meta name="twitter:description" content="We will walk through an example of creating a reproducible data pre-processing protocol. As an example, we will look at how to pre-process and analyze data that are collected in the laboratory to...">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Improving the Reproducibility of Experimental Data Recording and Pre-Processing</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Overview of these modules</a></li>
+<li class="book-part">Experimental Data Recording</li>
+<li><a class="" href="module1.html"><span class="header-section-number">1</span> Separating data recording and analysis</a></li>
+<li><a class="" href="module2.html"><span class="header-section-number">2</span> Principles and power of structured data formats</a></li>
+<li><a class="" href="module3.html"><span class="header-section-number">3</span> The “tidy” data format</a></li>
+<li><a class="" href="module4.html"><span class="header-section-number">4</span> Designing templates for “tidy” data collection</a></li>
+<li><a class="" href="module5.html"><span class="header-section-number">5</span> Example: Creating a template for “tidy” data collection</a></li>
+<li><a class="" href="module6.html"><span class="header-section-number">6</span> Organizing project files</a></li>
+<li><a class="" href="module7.html"><span class="header-section-number">7</span> Creating project directory templates</a></li>
+<li><a class="" href="module8.html"><span class="header-section-number">8</span> Example: Creating a project template</a></li>
+<li><a class="" href="module9.html"><span class="header-section-number">9</span> Harnessing version control for transparent data recording</a></li>
+<li><a class="" href="module10.html"><span class="header-section-number">10</span> Enhance the reproducibility of collaborative research with version control platforms</a></li>
+<li><a class="" href="module11.html"><span class="header-section-number">11</span> Using Git and GitHub to implement version control</a></li>
+<li class="book-part">Experimental Data Pre-processing</li>
+<li><a class="" href="module12.html"><span class="header-section-number">12</span> Principles of pre-processing experimental data</a></li>
+<li><a class="" href="module13.html"><span class="header-section-number">13</span> Selecting software options for pre-processing</a></li>
+<li><a class="" href="module14.html"><span class="header-section-number">14</span> Introduction to scripted data pre-processing in R</a></li>
+<li><a class="" href="module15.html"><span class="header-section-number">15</span> Tips for improving reproducibility when writing R scripts</a></li>
+<li><a class="" href="module16.html"><span class="header-section-number">16</span> Simplify scripted pre-processing through R’s “tidyverse” tools</a></li>
+<li><a class="" href="module17.html"><span class="header-section-number">17</span> Complex data types in experimental data pre-processing</a></li>
+<li><a class="" href="module18.html"><span class="header-section-number">18</span> Introduction to reproducible data pre-processing protocols</a></li>
+<li><a class="" href="module19.html"><span class="header-section-number">19</span> RMarkdown for creating reproducible data pre-processing protocols</a></li>
+<li><a class="active" href="module20.html"><span class="header-section-number">20</span> Example: Creating a reproducible data pre-processing protocol</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/geanders/improve_repro">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="module20" class="section level1" number="20">
+<h1>
+<span class="header-section-number">Module 20</span> Example: Creating a reproducible data pre-processing protocol<a class="anchor" aria-label="anchor" href="#module20"><i class="fas fa-link"></i></a>
+</h1>
+<p>We will walk through an example of creating a reproducible data pre-processing
+protocol. As an example, we will look at how to pre-process and analyze data
+that are collected in the laboratory to estimate bacterial load in samples.
+These data come from plating samples from an immunological experiment at serial
+dilutions, using data from an experiment lead by one of the coauthors. This data
+pre-processing protocol was created using RMarkdown and allows the efficient,
+transparent, and reproducible pre-processing of plating data for all experiments
+in the research group. We will go through how RMarkdown techniques can be
+applied to develop this type of data pre-processing protocol for a laboratory
+research group.</p>
+<p><strong>Objectives.</strong> After this module, you should be able to:</p>
+<ul>
+<li>Explain how a reproducible data pre-processing protocol can be developed for
+a real research project</li>
+<li>Understand how to design and implement a data pre-processing protocol to
+replace manual or point-and-click data pre-processing tools</li>
+<li>Apply techniques in RMarkdown to develop your own reproducible data
+pre-processing protocols</li>
+</ul>
+<div id="introduction-and-example-data" class="section level2" number="20.1">
+<h2>
+<span class="header-section-number">20.1</span> Introduction and example data<a class="anchor" aria-label="anchor" href="#introduction-and-example-data"><i class="fas fa-link"></i></a>
+</h2>
+<p>In this module, we’ll provide advice and an example of how you can use the
+tools for knitted documents to create a reproducible data pre-processing
+protocol. This module builds on ideas and techniques that were introduced
+in the last two modules (3.7 and 3.8), to help you put them into practical use for
+data pre-processing that you do repeatedly for research data in your
+laboratory.</p>
+<p>In this module, we will use an example of a common pre-processing task in
+immunological research: estimating the bacterial load in samples by plating at
+different dilutions. For this type of experiment, the laboratory researcher
+plates each of the samples at several dillutions, identifies a good dilution for
+counting colony-forming units (CFUs), and then back-calculates the estimated
+bacterial load in the original sample based on the colonies counted at this “good”
+dilution. This experimental technique dates back to the late 1800s, with Robert
+Koch, and continues to be widely used in microbiology research and applications
+today.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Avishai Ben-David and Charles E Davidson, &lt;span&gt;“Estimation Method for Serial Dilution Experiments,”&lt;/span&gt; &lt;em&gt;Journal of Microbiological Methods&lt;/em&gt; 107 (2014): 214–21.&lt;/p&gt;"><sup>341</sup></a></span> These data are originally from an experiment in one
+of our authors’ laboratory and are also available as example data for an R
+package called <code>bactcountr</code>, currently under development at
+<a href="https://github.com/aef1004/bactcountr/tree/master/data" class="uri">https://github.com/aef1004/bactcountr/tree/master/data</a>.</p>
+<p>These data are representative of data often collected in immunological research.
+For example, you may be testing out some drugs against an infectious bacteria
+and want to know how successful different drugs are in limiting bacterial load.
+You run an experiment and have samples from animals treated with different drugs
+or under control and would then want to know how much viable (i.e., replicating)
+bacteria are in each of your samples.</p>
+<p>You can find out by plating the sample at different dilutions and
+counting the colony-forming units (CFUs) that are cultured on each plate.
+You put a sample on a plate with a medium they can grow on and then give them
+time to grow. The idea is that individual bacteria from the original sample end
+up randomly around the surface of the plate, and any that are viable (able to
+reproduce) will form a new colony that, after a while, you’ll be able to see.</p>
+<p>To get a good estimate of bactieral load from this process, you need to count
+CFUs on a “countable” plate—one with a “just right” dilution (and you
+typically won’t know which dilution this is for a sample until after plating).
+If you have too high of a dilution (i.e., one with very few viable bacteria),
+randomness will play a big role in the CFU count, and you’ll estimate the
+original bacterial load with more variability. If you have too low of a dilution (i.e., one
+with lots of viable bacteria), it will be difficult to identify separate
+colonies, and they may complete for resources. To translate from diluted
+concentration to original concentration, you can then do a back-calculation,
+incorporating both the number of colonies counted at that dilution and how
+dilute the sample was. There is therefore some pre-processing required (although
+it is fairly simple) to prepare the data collected to get an estimate of
+bacterial load in the original sample. This estimate of bacterial load can then be used in
+statistical testing and combined with other experimental data to explore
+questions like whether a candidate vaccine reduces bacterial load when a research
+animal is challenged with a pathogen.</p>
+<p>We will use this example of a common data pre-processing task to show how to
+create a reproducible pre-processing protocol in this module. If you would like,
+you can access all the components of the example pre-processing protocol and
+follow along, re-rendering it yourself on your own computer. The example data
+are available as a csv file, downloadable
+<a href="https://raw.githubusercontent.com/geanders/improve_repro/master/data/bactcountr_example_data/cfu_data.csv">here</a>.
+You can open this file using spreadsheet software, or look at it directly in
+RStudio. The final pre-processing protocol for these data can also be
+downloaded, including both <a href="https://raw.githubusercontent.com/geanders/improve_repro/master/data/bactcountr_example_data/example_protocol.Rmd">the original RMarkdown
+file</a>
+and <a href="https://github.com/geanders/improve_repro/raw/master/data/bactcountr_example_data/example_protocol.pdf">the output PDF
+document</a>.
+Throughout this module, we will walk through elements of this document, to
+provide an example as we explain the process of developing data pre-processing
+modules for common tasks in your research group. We recommend that you go ahead and
+read through the output PDF document, to get an idea for the example protocol that
+we’re creating.</p>
+<p>This example is intentionally simple, to allow a basic introduction to the
+process using pre-processing tasks that are familiar to many laboratory-based
+scientists and easy to explain to anyone who has not used plating in experimental
+work. However, the same general process can also be used to create
+pre-processing protocols for data that are much larger or more complex or for
+pre-processing pipelines that are much more involved.
+For example, this process could be used to create data pre-processing protocols
+for automated gating of flow cytometry data or for pre-processing data
+collected through single cell RNA sequencing.</p>
+</div>
+<div id="advice-on-designing-a-pre-processing-protocol" class="section level2" number="20.2">
+<h2>
+<span class="header-section-number">20.2</span> Advice on designing a pre-processing protocol<a class="anchor" aria-label="anchor" href="#advice-on-designing-a-pre-processing-protocol"><i class="fas fa-link"></i></a>
+</h2>
+<p>Before you write your protocol in a knitted document, you should decide on the
+content to include in the protocol. This section provides tips on this design
+process. In this section, we’ll describe some key steps in designing a
+data pre-processing protocol:</p>
+<ol style="list-style-type: decimal">
+<li>Defining input and output data for the protocol;</li>
+<li>Setting up a project directory for the protocol;</li>
+<li>Outlining key tasks in pre-processing the input data; and</li>
+<li>Adding code for pre-processing.</li>
+</ol>
+<p>We will illustrate these design steps using the example protocol on
+pre-processing plating data.</p>
+<div id="defining-input-and-output-data-for-the-protocol" class="section level3" number="20.2.1">
+<h3>
+<span class="header-section-number">20.2.1</span> Defining input and output data for the protocol<a class="anchor" aria-label="anchor" href="#defining-input-and-output-data-for-the-protocol"><i class="fas fa-link"></i></a>
+</h3>
+<p>The first step in designing the data pre-processing protocol is to decide on the
+starting point for the protocol (the data input) and the ending point (the data
+output). It may make sense to design a separate protocol for each major type of
+data that you collect in your research laboratory. Your input data for the
+protocol, under this design, might be the data that is output from a specific
+type of equipment (e.g., flow cytometer) or from a certain type of sample or
+measurement (e.g., metabolomics run on a mass spectrometer), even if it is a
+fairly simple type of data (e.g., CFUs from plating data, as used in the example
+protocol for this module). For example, say you are working with three types of
+data for a research experiment: data from a flow cytometer, metabolomics data
+measured with a mass spectrometer, and bacterial load data measured by plating
+data and counting colony forming units (CFUs). In this case, you may want to
+create three pre-processing protocols: one for the flow data, one for the
+metabolomics data, and one for the CFU data. These protocols are modular and can
+be re-used with other experiments that use any of these three types of data.</p>
+<p>With an example dataset, you can begin to create a pre-processing protocol
+before you collect any of your own research data for a new experiment. If the
+format of the initial data is similar to the format you anticipate for your
+data, you can create the code and explanations for key steps in your
+pre-processing for that type of data. Often, you will be able to adapt the
+RMarkdown document to change it from inputting the example data to inputting
+your own experimental data with minimal complications, once your data comes in.
+By thinking through and researching data pre-processing options before the data
+is collected, you can save time in analyzing and presenting your project results
+once you’ve completed the experimental data collection for the project. Further,
+with an example dataset, you can get a good approximation of the format in which
+you will output data from the pre-processing steps. This will allow you to begin
+planning the analysis and visualization that you will use to combine the
+different types of data from your experiment and use it to investigate important
+research hypotheses. Again, if data follow standardized formats across steps in
+your process, it will often be easy to adapt the code in the protocol to input
+the new dataset that you created, without major changes to the code developed
+with the example dataset.</p>
+<p>While pre-processing protocols for some types of data might be very complex,
+others might be fairly simple. However, it is still worthwhile to develop a
+protocol even for simple pre-processing tasks, as it allows you to pass along
+some of the details of pre-processing the data that might have become “common
+sense” to longer-tenured members of your research group. For example, the
+pre-processing tasks in the example protocol are fairly simple. This protocol
+inputs data collected in a plain-text delimited file (a csv file, in the
+example). Within the protocol, there are steps to convert initial measurements
+from plating at different dilutions into an estimate of the bacterial load in
+each sample. There are also sections in the protocol for exploratory data
+analysis, to allow for quality assessment and control of the collected data as
+part of the pre-processing. The output of the protocol is a simple data object (a
+dataframe, in this example) with the bacterial load for each original sample.
+These data are now ready to be used in tables and figures in the research report
+or manuscript, as well as to explore associations with the experimental design
+details (e.g., comparing bacterial load in treated versus untreated animals) or
+merged with other types of experimental data (e.g., comparing immune cell
+populations, as measured with flow cytometry data, with bacterial loads, as
+measured from plating and counting CFUs).</p>
+<p>Once you have identified the input data type to use for the protocol, you should
+identify an example dataset from your laboratory that you can use to create the
+protocol. This could be a dataset that you currently need to pre-process, in
+which case the development of the protocol will serve a second purpose, allowing
+you to complete this task at the same time. However, you may not have a new set
+of data of this type that you currently need to pre-process, and in this case
+you can build your protocol using a dataset from a previous experiment in your
+laboratory. In this case, you may already have a record of the steps that you
+used to pre-process the data previously, and these can be helpful as a starting
+point as you draft the more thorough pre-processing protocol. You may want to
+select an example dataset that you have already published or are getting ready
+to publish, so you won’t feel awkard about making the data available for people
+to practice with. If you don’t have an example dataset from your own laboratory,
+you can explore example datasets that are already available, either as data
+included with existing R packages or through open repositories, including those
+hosted through national research institutions like the NIH. In this case, be
+sure to cite the source of the data and include any available information about
+the equipment that was used to collect it, including equipment settings used
+when the data were collected.</p>
+<p>For the example protocol for this module, we want to pre-process data that were
+collected “by hand” by counting CFUs on plates in the laboratory. These counts
+were recorded in a plain text delimited file (a csv file) using spreadsheet
+software. The spreadsheet was set up to ensure the data can easily be converted
+to a “tidy” format, as described in module 2.3. The first few rows of the input
+data look like this:</p>
+<pre><code>## # A tibble: 6 × 6
+##   group replicate dilution_0 dilution_1 dilution_2 dilution_3
+##   &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;           &lt;dbl&gt;      &lt;dbl&gt;
+## 1     2 2-A       26         10                  0          0
+## 2     2 2-B       TNTC       52                 10          5
+## 3     2 2-C       0          0                   0          0
+## 4     3 3-A       0          0                   0          0
+## 5     3 3-B       TNTC       TNTC               30         10
+## 6     3 3-C       0          0                   0          0</code></pre>
+<p>Each row represents the number of bacterial colonies counted after plating a
+certain sample, where each sample represents one experimental animal and several
+experimental animals (replicates) were considered for each experimental group.
+Columns are included with values for the experimental group of the sample
+(<code>group</code>), the specific ID of the sample within that experimental group
+(<code>replicate</code>, e.g., <code>2-A</code> is mouse A in experimental group 2), and the
+colony-forming units (CFUs) counted at each of several dilutions. If a cell has
+the value “TNTC”, this indicates that CFUs were too numerous to count for that
+sample at that dilution.</p>
+<p>When you have identified the input data type you will use for the protocol,
+as well as selected an example dataset of this type to use to create the
+protocol, you can include a section in the protocol
+that describes these input data, what file format they are in, and how they
+can be read into R for pre-processing (Figure <a href="module20.html#fig:protocoldatainput">20.1</a>).</p>
+<div class="figure">
+<span style="display:block;" id="fig:protocoldatainput"></span>
+<img src="figures/protocol_data_input.png" alt="Providing details on input data in the pre-processing protocol. Once you have an example data file for the type of data that will be input for the protocol, you can add a section that provides the code to read the data into R. You can also add code that will show the first few rows of the example dataset, as well as a description of the data. This figure shows examples of how these elements can be added to an RMarkdown file for a pre-processing protocol, and the associated elements in the final pdf of the protocol, using the example protocol for this module." width="100%"><p class="caption">
+Figure 20.1: Providing details on input data in the pre-processing protocol. Once you have an example data file for the type of data that will be input for the protocol, you can add a section that provides the code to read the data into R. You can also add code that will show the first few rows of the example dataset, as well as a description of the data. This figure shows examples of how these elements can be added to an RMarkdown file for a pre-processing protocol, and the associated elements in the final pdf of the protocol, using the example protocol for this module.
+</p>
+</div>
+<p>For the data output, it often makes sense to plan for data in a format that is
+appropriate for data analysis and for merging with other types of data collected
+from the experiment. The aim of pre-processing is to get the data from the
+format in which they were collected into a format that is meaningful for
+combining with other types of data from the experiment and using in statistical
+hypothesis testing.</p>
+<p>In the example pre-processing protocol, we ultimately
+output a simple dataset, with one row for each of the original samples. The
+first few rows of this output data are:</p>
+<pre><code>## # A tibble: 6 × 3
+##   group replicate cfu_in_organ
+##   &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
+## 1     2 2-A                260
+## 2     2 2-B               2500
+## 3     2 2-C                  0
+## 4     3 3-A                  0
+## 5     3 3-B               7500
+## 6     3 3-C                  0</code></pre>
+<p>For each original sample, an estimate of the CFUs of <em>Mycobacterium
+tuberculosis</em> in the full spleen is given (<code>cfu_in_organ</code>). These data
+can now be merged with other data collected about each animal in the experiment.
+For example, they could be joined with data that provide measures of the
+immune cell populations for each animal, to explore if certain immune
+cells are associated with bacterial load. They could also be joined with
+experimental information and then used in hypothesis testing. For example,
+these data could be merged with a table that describes which groups were
+controls versus which used a certain vaccine, and then a test could be
+conducted exploring evidence that bacterial loads in animals given a
+vaccine were lower than in control animals.</p>
+</div>
+<div id="setting-up-a-project-directory-for-the-protocol" class="section level3" number="20.2.2">
+<h3>
+<span class="header-section-number">20.2.2</span> Setting up a project directory for the protocol<a class="anchor" aria-label="anchor" href="#setting-up-a-project-directory-for-the-protocol"><i class="fas fa-link"></i></a>
+</h3>
+<p>Once you have decided on the input and output data formats, you will next want
+to set up a file directory for storing all the inputs needed in the protocol.
+You can include the project files for the protocol in an RStudio Project (see
+module 2.6) and post this either publicly or privately on GitHub (see modules
+2.9–2.11). This creates a “packet” of everything that a reader needs to use to
+recreate what you did—they can download the whole GitHub repository and will
+have a nice project directory on their computer with everything they need to try
+out the protocol.</p>
+<p>Part of the design of the protocol involves deciding on the files that should be
+included in this project directory. Figure <a href="module20.html#fig:protocolprojectfiles">20.2</a>
+provides an example of the initial files included in the project directory for
+the example protocol for this module. The left side of the figure shows the
+files that are initially included, while the left side shows the files in the
+project after the code in the protocol is run.</p>
+<p>Generally, in the project directory you should include a file with the input
+example data, in whatever file format you will usually collect this type of
+data. You will also include an RMarkdown file where the protocol is written. If
+you are planning to cite articles and other references, you can include a BibTeX
+file, with the bibliographical information for each source you plan to cite (see module 3.8).
+Finally, if you would like to include photographs or graphics, you can include
+these image files in the project directory. Often, you might want to group these
+together in a subdirectory of the project named something like “figures”.</p>
+<p>Once you run the RMarkdown file for the protocol, you will generate additional
+files in the project. Two typical files you will generate will be the output
+file for the protocol (in the example, this is output to a pdf file). Usually,
+the code in the protocol will also result in output data, which is pre-processed
+through the protocol code and written into a file to be used in further
+analysis.</p>
+<div class="figure">
+<span style="display:block;" id="fig:protocolprojectfiles"></span>
+<img src="figures/protocol_project_files.png" alt="Example of files in the project directory for a data pre-processing protocol. On the left are the files initially included in the project directory for the example protocol for this module. These include a file with the input data (cfu\_data.csv), a BibTeX file with bibliographical information for references (example\_bib.bib), the RMarkdown file for the protocol (example\_protocol.Rmd), and a subdirectory with figures to include in the protocol (figures). On the right is shown the directory after the code in the protocol RMarkdown document is run, which creates an output pdf with the protocol (example\_protocol.pdf) as well as the output data (processed\_cfu\_estimates.csv)." width="100%"><p class="caption">
+Figure 20.2: Example of files in the project directory for a data pre-processing protocol. On the left are the files initially included in the project directory for the example protocol for this module. These include a file with the input data (cfu_data.csv), a BibTeX file with bibliographical information for references (example_bib.bib), the RMarkdown file for the protocol (example_protocol.Rmd), and a subdirectory with figures to include in the protocol (figures). On the right is shown the directory after the code in the protocol RMarkdown document is run, which creates an output pdf with the protocol (example_protocol.pdf) as well as the output data (processed_cfu_estimates.csv).
+</p>
+</div>
+</div>
+<div id="outlining-key-tasks-in-pre-processing-the-input-data" class="section level3" number="20.2.3">
+<h3>
+<span class="header-section-number">20.2.3</span> Outlining key tasks in pre-processing the input data<a class="anchor" aria-label="anchor" href="#outlining-key-tasks-in-pre-processing-the-input-data"><i class="fas fa-link"></i></a>
+</h3>
+<p>The next step is to outline the key tasks that are involved in moving from the
+data input to the desired data output. For the plating data we are using for our
+example, the key tasks to be included in the pre-processing protocol are:</p>
+<ol style="list-style-type: decimal">
+<li>Read the data into R</li>
+<li>Explore the data and perform some quality checks</li>
+<li>Identify a “good” dilution for each sample—one at which you have a
+countable plate</li>
+<li>Estimate the bacterial load in each original sample based on the CFUs counted
+at that dilution</li>
+<li>Output data with the estimated bacterial load for each sample</li>
+</ol>
+<p>Once you have this basic design, you can set up the RMarkdown file for the
+pre-processing protocol to include a separate section for each task, as well as
+an “Overview” section at the beginning to describe the overall protocol, the
+data being pre-processed, and the laboratory procedures used to collect those
+data. In RMarkdown, you can create first-level section headers by putting the
+text for the header on its own line and beginning that line with <code>#</code>, followed
+by a space. You should include a blank line before and after the line with this
+header text. Figure <a href="module20.html#fig:protocolsections">20.3</a> shows how this is done in the
+example protocol for this module, showing how text in the plain text RMarkdown
+file for the protocol align with section headers in the final pdf output of the
+protocol.</p>
+<div class="figure">
+<span style="display:block;" id="fig:protocolsections"></span>
+<img src="figures/protocol_sections.png" alt="Dividing an RMarkdown data pre-processing protocol into sections. This shows an example of creating section headers in a data pre-processing protocol created with RMarkdown, showing section headers in the example pre-procotcol for this module." width="100%"><p class="caption">
+Figure 20.3: Dividing an RMarkdown data pre-processing protocol into sections. This shows an example of creating section headers in a data pre-processing protocol created with RMarkdown, showing section headers in the example pre-procotcol for this module.
+</p>
+</div>
+</div>
+<div id="adding-code-for-pre-processing" class="section level3" number="20.2.4">
+<h3>
+<span class="header-section-number">20.2.4</span> Adding code for pre-processing<a class="anchor" aria-label="anchor" href="#adding-code-for-pre-processing"><i class="fas fa-link"></i></a>
+</h3>
+<p>For many of these steps, you likely have code—or can start drafting the
+code—required for that step.
+In RMarkdown, you can test this code as you write it. You insert each piece
+of executable code within a special section, separated from the regular
+text with special characters, as described in previous modules.</p>
+<p>For any pre-processing steps that are straightforward (e.g., calculating the
+dilution factor in the example module, which requires only simple mathematical
+operations), you can directly write in the code required for the step.
+For other pre-processing steps, however, the algorithm may be a bit more
+complex. For example, complex algorithms have been developed for steps like
+peak identification and alignment that are required when
+pre-processing data from a mass spectrometer.</p>
+<p>For these more complex tasks, you can start to explore available R packages for
+performing the task. There are thousands of packages available that extend the
+basic functionality of R, providing code implementations of algorithms in a
+variety of scientific fields. Many of the R packages relevant for biological
+data—especially high-throughput biological data—are available through a
+repository called Bioconductor. These packages are all open-source (so you can
+explore their code if you want to) and free. You can use vignettes and package
+manuals for Bioconductor packages to identify the different functions you can
+use for your pre-processing steps. Once you have identified a function for the
+task, you can use the helpfile for the function to see how to use it. This help
+documentation will allow you to determine all of the function’s parameters and
+the choices you can select for each.</p>
+<p>You can add each piece of code in the RMarkdown version of the protocol using
+the standard method for RMarkdown (module 3.8). Figure <a href="module20.html#fig:protocolcode">20.4</a>
+shows an example from the example protocol for this module. Here, we are using
+code to help identify a “good” dilution for counting CFUs for each sample. The
+code in included in an executable code chunk, and so it will be run each time
+the protocol is rendered. Code comments are included in the code to provide
+finer-level details about what the code is doing.</p>
+<div class="figure">
+<span style="display:block;" id="fig:protocolcode"></span>
+<img src="figures/protocol_code.png" alt="Example of including code in a data pre-processing protocol created with RMarkdown. This figure shows how code can be included in the RMarkdown file for a pre-processing protocol (right), and the corresponding output in the final pdf of the protocol (left), for the code to identify a 'good' dilution for counting CFUs for each sample. Code comments are included to provide finer-level details on the code." width="100%"><p class="caption">
+Figure 20.4: Example of including code in a data pre-processing protocol created with RMarkdown. This figure shows how code can be included in the RMarkdown file for a pre-processing protocol (right), and the corresponding output in the final pdf of the protocol (left), for the code to identify a ‘good’ dilution for counting CFUs for each sample. Code comments are included to provide finer-level details on the code.
+</p>
+</div>
+<p>For each step of the protocol, you can also include potential problems
+that might come up in specific instances of the data you get from
+future experiments. This can help you adapt the code in the protocol in
+thoughtful ways as you apply it in the future to new data collected
+for new studies and projects.</p>
+</div>
+</div>
+<div id="writing-data-pre-processing-protocols" class="section level2" number="20.3">
+<h2>
+<span class="header-section-number">20.3</span> Writing data pre-processing protocols<a class="anchor" aria-label="anchor" href="#writing-data-pre-processing-protocols"><i class="fas fa-link"></i></a>
+</h2>
+<p>Now that you have planned out the key components of the pre-processing protocol,
+you can use RMarkdown’s functionality to flesh it out into a full pre-processing
+protocol. This gives you the chance to move beyond a simple code script, and
+instead include more thorough descriptions of what you’re doing at each step and
+why you’re doing it. You can also include discussions of potential limitations
+of the approach that you are taking in the pre-processing, as well as areas
+where other research groups might use a different approach. These details can
+help when it is time to write the Methods section for the paper describing your
+results from an experiment using these data. They can also help your research
+group identify pre-processing choices that might differ from other research
+groups, which opens the opportunity to perform sensitivity analyses regarding
+these pre-processing choices and ensure that your final conclusions are robust
+across multiple reasonable pre-processing approaches.</p>
+<p>Protocols are common for wet lab techniques, where they provide a “recipe” that
+ensures consistency and reproducibility in those processes. Computational tasks,
+including data pre-processing, can also be standardized through the creation and
+use of protocol in your research group. While code scripts are becoming more
+common as a means of recording data pre-processing steps, they are often not
+as clear as a traditional protocol, in particular in terms of providing a
+thorough description of what is being done at each step and why it is being
+done that way. Data pre-processing protocols can provide these more thorough
+descriptions, and by creating them with RMarkdown or with similar types
+of “knitted” documents (modules 3.7 and 3.8), you can combine the executable code
+used to pre-process the data with extensive documentation. As a further
+advantage, the creation of these protocols will ensure that your research
+group has thought carefully about each step of the process, rather than
+relying on cobbling together bits and pieces of code they’ve found but don’t
+fully understand. Just as the creation of a research protocol for a
+clinical trial requires a careful consideration of each step of the ultimate
+trial,<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;AzzAm Al-JunDi and SAlAh SAkkA, &lt;span&gt;“Protocol Writing in Clinical Research,”&lt;/span&gt; &lt;em&gt;Journal of Clinical and Diagnostic Desearch: JCDR&lt;/em&gt; 10, no. 11 (2016): ZE10.&lt;/p&gt;"><sup>342</sup></a></span> the creation of data pre-processing protocols ensure
+that each step in the process is carefully considered, and so helps to
+ensure that each step of this process is conducted as carefully as the
+steps taken in designing the experiment as a whole and each wet lab technique
+conducted for the experiment.</p>
+<p>A data pre-processing protocol, in the sense we use it here, is essentially an
+annotated recipe for each step in preparing your data from the initial, “raw”
+state that is output from the laboratory equipment (or collected by hand) to a
+state that is useful for answering important research questions. The exact
+implementation of each step is given in code that can be re-used and adapted
+with new data of a similar format. However, the code script is often not enough
+to helpfully understand, share, and collaborate on the process. Instead, it’s
+critical to also include descriptions written by humans and for humans. These
+annotations can include descriptions of the code and how certain parameters are
+standardized the algorithms in the code. They can also be used to justify
+choices, and link them up both with characteristics of the data and equipment
+for your experiment as well as with scientific principles that underlie the
+choices. Protocols like this are critical to allow you to standardize the
+process you use across many samples from one experiment, across different
+experiments and projects in your research laboratory, and even across different
+research laboratories.</p>
+<p>As you begin adding text to your pre-processing protocol, you should keep in
+mind these general aims. First, a good protocol provides adequate detail that
+another researcher can fully reproduce the procedure.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.&lt;/p&gt;"><sup>343</sup></a></span> For a
+protocol for a trial or wet lab technique, this means that the protocol should
+allow another researcher to reproduce the process and get results that are
+<em>comparable</em> to your results;<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.&lt;/p&gt;"><sup>344</sup></a></span> for a data pre-processing
+protocol, the protocol must include adequate details that another researcher,
+provided they start with the same data, gets <em>identical</em> results (short of any
+pre-processing steps that include some element of sampling or random-number
+generation, e.g., Monte Carlo methods). This idea—being able to exactly
+re-create the computational results from an earlier project—is referred to as
+<em>computational reproducibility</em> and is considered a key component in
+ensuring that research is fully reproducible.</p>
+<p>By creating the data pre-processing protocol as a knitted document
+using a tool like RMarkdown (modules 3.7 and 3.8), you can ensure that the protocol is
+computationally reproducible. In an RMarkdown document, you include the code
+examples as <em>executable</em> code—this means that the code is run every time you
+render the document. You are therefore “checking” your code every time that you
+run it. As the last step of your pre-processing protocol, you should output the
+copy of the pre-processed data that you will use for any further analysis for
+the project. You can use functions in R to output this to a plain text format,
+for example a comma-separated delimited file (modules 2.4 and 2.5). Each time you render
+the protocol, you will re-write this output file, and so this provides assurance
+that the code in your protocol can be used to reproduce your output data (since
+that’s how you yourself created that form of the data).</p>
+<p>Figure <a href="module20.html#fig:protocoloutput">20.5</a> provides an example from the example protocol
+for this module. The RMarkdown file for the protocol includes code to write out
+the final, pre-processed data to a comma-separated plain text file called
+“processed_cfu_estimates.csv”. This code writes the output file into the same
+directory where you’ve saved the RMarkdown file. Each time the RMarkdown file is
+rendered to create the pdf version of the protocol, the input data will be
+pre-processed from scratch, using the code throughout the protocol, and this
+file will be overwritten with the data generated. This guarantees that the code
+in the protocol can be used by anyone—you or other researchers—to reproduce
+the final data from the protocol, and so guarantees that these data are
+computationally reproducible.</p>
+<div class="figure">
+<span style="display:block;" id="fig:protocoloutput"></span>
+<img src="figures/protocol_output_data.png" alt="Example of using code in pre-processing protocol to output the final, pre-processed data that will be used in further analysis for the research project. This example comes from the example protocol for this module, showing both the executable code included in the RMarkdown file for the protocol (right) and how this code is included in the final pdf of the protocol. Outputting the pre-processed data into a plain text file as the last step of the protocol helps ensure computational reproducibility for this step of working with experimental data." width="100%"><p class="caption">
+Figure 20.5: Example of using code in pre-processing protocol to output the final, pre-processed data that will be used in further analysis for the research project. This example comes from the example protocol for this module, showing both the executable code included in the RMarkdown file for the protocol (right) and how this code is included in the final pdf of the protocol. Outputting the pre-processed data into a plain text file as the last step of the protocol helps ensure computational reproducibility for this step of working with experimental data.
+</p>
+</div>
+<p>In your data pre-processing protocol, show the code that you use to implement
+this choice and also explain clearly in the text why you made this choice and
+what alternatives should be considered if data characteristics are different.
+Write this as if you are explaining to a new research group member (or your
+future self) how to think about this step in the pre-processing, why you’re
+doing it the way your doing it, and what code is used to do it that way. You
+should also include references that justify choices when they are
+available—include these using BibTeX (module 3.8). By doing this, you will make it much
+easier on yourself when you write the Methods section of papers that report on
+the data you have pre-processed, as you’ll already have draft information on
+your pre-processing methods in your protocol.</p>
+<p>Good protocols include not only <em>how</em> (for data pre-processing protocols, this
+is the code), but also <em>why</em> each step is taken. This includes explanations that are both higher-level
+(i.e., why a larger question is being asked) and also at a fine level, for each
+step in the process. A protocol should include some background, the
+aims of the work, hypotheses to be tested, materials and methods, methods of
+data collection and equipment to analyze samples.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.&lt;/p&gt;"><sup>345</sup></a></span></p>
+<p>This step of documentation and explanation is very important to creating a
+useful data pre-processing protocol. Yes, the code itself allows someone else to
+replicate what you did. However, only those who are very, very familiar with the
+software program, including any of the extension packages you include, can
+“read” the code directly to understand what it’s doing. Further, even if you
+understand the code very well when you create it, it is unlikely that you will
+stay at that same level of comprehension in the future, as other tasks and
+challenges take over that brain space. Explaining for humans, in text that
+augments and accompanies the code, is also important because function names and
+parameter names in code often are not easy to decipher. While excellent
+programmers can sometimes create functions with clear and transparent names,
+easy to translate to determine the task each is doing, this is difficult in
+software development and is rare in practice. Human annotations, written by and
+for humans, are critical to ensure that the steps will be clear to you and
+others in the future when you revisit what was done with this data and what you
+plan to do with future data.</p>
+<p>The process of writing a protocol in this way forces you to think about each
+step in the process, why you do it a certain way (include parameters you choose
+for certain functions in a pipeline of code), and include justifications from
+the literature for this reasoning. If done well, it should allow you to quickly
+and thoroughly write the associated sections of Methods in research reports and
+manuscripts and help you answer questions and challenges from reviewers. Writing
+the protocol will also help you identify steps for which you are uncertain how
+to proceed and what choices to make in customizing an analysis for your research
+data. These are areas where you can search more deeply in the literature to
+understand implications of certain choices and, if needed, contact the
+researchers who developed and maintained associated software packages to get
+advice.</p>
+<p>For example, the example protocol for this module explains how to pre-process
+data collected from counting CFUs after plating serial dilutions of samples. One
+of the steps of pre-processing is to identify a dilution for each sample at
+which you have a “countable” plate. The protocol includes an explanation of why
+it is important to identify the dilution for a countable plate and also gives
+the rules that are used to pick a dilution for each sample, before including the
+code that implements those rules. This allows the protocol to provide research
+group members with the logic behind the pre-processing, so that they can adapt
+if needed in future experiments. For example, the count range of CFUs used for
+the protocol to find a good dilution is about a quarter of the typically
+suggested range for this process, and this is because this experiment plated
+each sample on a quarter of a plate, rather than using the full plate. By
+explaining this reasoning, in the future the protocol could be adapted when
+using a full plate rather than a quarter of a plate for each sample.</p>
+<p>One tool in RMarkdown that is helpful for this process is its built-in
+referencing system. In the previous module, we showed how you can include
+bibliographical references in an RMarkdown file. When you write a protocol
+within RMarkdown, you can include references in this way to provide background
+and support as you explain why you are conducting each step of the
+pre-processing. Figure <a href="module20.html#fig:protocolreferences">20.6</a> shows an example of the
+elements you use to do this, showing each element in the example protocol for
+this module.</p>
+<div class="figure">
+<span style="display:block;" id="fig:protocolreferences"></span>
+<img src="figures/protocol_references.png" alt="Including references in a data pre-processing protocol created with RMarkdown. RMarkdown has a built-in referencing system that you can use, based on the BibTeX system for LaTeX. This figure shows examples from the example protocol for this module of the elements used for referencing. You create a BibTeX file with information about each reference, and then use the key for the reference within the text to cite that reference. All cited references will be printed at the end of the document; you can chose the header that you want for this reference section in the RMarkdown file ('References' in this example). In the YAML of the RMarkdown file, you specify the path to the BibTeX file (with the 'bibliography: ' key), so it can be linked in when the RMarkdown file is rendered." width="100%"><p class="caption">
+Figure 20.6: Including references in a data pre-processing protocol created with RMarkdown. RMarkdown has a built-in referencing system that you can use, based on the BibTeX system for LaTeX. This figure shows examples from the example protocol for this module of the elements used for referencing. You create a BibTeX file with information about each reference, and then use the key for the reference within the text to cite that reference. All cited references will be printed at the end of the document; you can chose the header that you want for this reference section in the RMarkdown file (‘References’ in this example). In the YAML of the RMarkdown file, you specify the path to the BibTeX file (with the ‘bibliography:’ key), so it can be linked in when the RMarkdown file is rendered.
+</p>
+</div>
+<p>Other helpful tools in RMarkdown are tools for creating equations and tables. As
+described in the previous module, RMarkdown includes a number of formatting
+tools. You can create simple tables through basic formatting, or more complex
+tables using add-on packages like <code>kableExtra</code>. Math can be typeset using
+conventions developed in the LaTeX mark-up language. The previous module
+provided advice and links to resources on using these types of tools. Figure
+<a href="module20.html#fig:protocolequations">20.7</a> gives an example of them in use within the example
+protocol for this module.</p>
+<div class="figure">
+<span style="display:block;" id="fig:protocolequations"></span>
+<img src="figures/protocol_equations_tables.png" alt="Example of including tables and equations in an RMarkdown data pre-processing protocol." width="100%"><p class="caption">
+Figure 20.7: Example of including tables and equations in an RMarkdown data pre-processing protocol.
+</p>
+</div>
+<p>You can also include figures, either figures created in R or outside figure files.
+Any figures that are created by code in the RMarkdown document will automatically
+be included in the protocol. For other graphics, you can include image files
+(e.g., png and jpeg files) using the <code>include_graphics</code> function from the
+<code>knitr</code> package. You can use options in the code chunk options to specify
+the size of the figure in the document and to include a figure caption. The
+figures will be automatically numbered in the order they appear in the protocol.</p>
+<p>Figure <a href="module20.html#fig:protocolfigures">20.8</a> shows an example of how external figure
+files were included in the example protocol. In this case, the functionality
+allowed us to include an overview graphic that we created in PowerPoint and
+saved as an image as well as a photograph taken by a member of our research
+group.</p>
+<div class="figure">
+<span style="display:block;" id="fig:protocolfigures"></span>
+<img src="figures/protocol_figures.png" alt="Example of including figures from image files in an RMarkdown data pre-processing protocol." width="100%"><p class="caption">
+Figure 20.8: Example of including figures from image files in an RMarkdown data pre-processing protocol.
+</p>
+</div>
+<p>Finally, you can try out even more complex functionality for RMarkdown as you
+continue to build data pre-processing protocols for your research group. Figure
+<a href="module20.html#fig:protocolyaml">20.9</a> shows an example of using R code within the YAML of the
+example protocol for this module; this allows us to include a “Last edited” date
+that is updated with the day’s date each time the protocol is re-rendered.</p>
+<div class="figure">
+<span style="display:block;" id="fig:protocolyaml"></span>
+<img src="figures/protocol_yaml_date.png" alt="Example of using more advanced RMarkdown functionality within a data pre-processing protocol. In this example, R code is incorporated into the YAML of the document to include the date that the document was last rendered, marking this on the pdf output as the *Last edited* date of the protocol." width="100%"><p class="caption">
+Figure 20.9: Example of using more advanced RMarkdown functionality within a data pre-processing protocol. In this example, R code is incorporated into the YAML of the document to include the date that the document was last rendered, marking this on the pdf output as the <em>Last edited</em> date of the protocol.
+</p>
+</div>
+</div>
+<div id="applied-exercise-1" class="section level2" number="20.4">
+<h2>
+<span class="header-section-number">20.4</span> Applied exercise<a class="anchor" aria-label="anchor" href="#applied-exercise-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>To wrap up this module, try downloading both the source file and the output of this example
+data pre-processing protocol. Again, you can find the source code (the RMarkdown file)
+<a href="https://raw.githubusercontent.com/geanders/improve_repro/master/data/bactcountr_example_data/example_protocol.Rmd">here</a> and the output file <a href="https://github.com/geanders/improve_repro/raw/master/data/bactcountr_example_data/example_protocol.pdf">here</a>. If you would like to try re-running the file, you can get all the additional files
+you’ll need (the original data file, figure files, etc.) <a href="https://github.com/geanders/improve_repro/tree/master/data/bactcountr_example_data">here</a>. See if
+you can compare the elements of the RMarkdown file with the output they produce in the
+PDF file. Read through the descriptions of the protocol. Do you think that you could recreate
+the process if your laboratory ran a new experiment that involved plating samples to
+estimate bacterial load?</p>
+
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-al2016protocol" class="csl-entry">
+Al-JunDi, AzzAm, and SAlAh SAkkA. <span>“Protocol Writing in Clinical Research.”</span> <em>Journal of Clinical and Diagnostic Desearch: JCDR</em> 10, no. 11 (2016): ZE10.
+</div>
+<div id="ref-altarawneh2017pilot" class="csl-entry">
+AlTarawneh, Ghada, and Simon Thorne. <span>“A Pilot Study Exploring Spreadsheet Risk in Scientific Research.”</span> <em>arXiv Preprint arXiv:1703.09785</em>, 2017.
+</div>
+<div id="ref-altman1997units" class="csl-entry">
+Altman, Douglas G., and J. Martin Bland. <span>“Statistical Notes: Units of Analysis.”</span> <em>BMJ</em> 314 (1997): 1874.
+</div>
+<div id="ref-altschul2013anatomy" class="csl-entry">
+Altschul, Stephen, Barry Demchak, Richard Durbin, Robert Gentleman, Martin Krzywinski, Heng Li, Anton Nekrutenko, et al. <span>“The Anatomy of Successful Computational Biology Software.”</span> <em>Nature Biotechnology</em> 31, no. 10 (2013): 894–97.
+</div>
+<div id="ref-anderson2007issues" class="csl-entry">
+Anderson, Nicholas R, E Sally Lee, J Scott Brockenbrough, Mark E Minie, Sherrilynne Fuller, James Brinkley, and Peter Tarczy-Hornoch. <span>“Issues in Biomedical Research Data Management and Analysis: Needs and Barriers.”</span> <em>Journal of the American Medical Informatics Association</em> 14, no. 4 (2007): 478–88.
+</div>
+<div id="ref-RJ-2017-035" class="csl-entry">
+Arnold, Taylor. <span>“<span class="nocase">A Tidy Data Model for Natural Language Processing using cleanNLP</span>.”</span> <em><span>The R Journal</span></em> 9, no. 2 (2017): 248–67.
+</div>
+<div id="ref-bacher2017scnorm" class="csl-entry">
+Bacher, Rhonda, Li-Fang Chu, Ning Leng, Audrey P Gasch, James A Thomson, Ron M Stewart, Michael Newton, and Christina Kendziorski. <span>“SCnorm: Robust Normalization of Single-Cell RNA-Seq Data.”</span> <em>Nature Methods</em> 14, no. 6 (2017): 584–86.
+</div>
+<div id="ref-baker2016quality" class="csl-entry">
+Baker, Monya. <span>“How Quality Control Could Save Your Science.”</span> <em>Nature</em> 529, no. 7587 (2016): 456–59.
+</div>
+<div id="ref-barga2011bioinformatics" class="csl-entry">
+Barga, Roger, Bill Howe, David Beck, Stuart Bowers, William Dobyns, Winston Haynes, Roger Higdon, et al. <span>“Bioinformatics and Data-Intensive Scientific Discovery in the Beginning of the 21st Century.”</span> <em>Omics: A Journal of Integrative Biology</em> 15, no. 4 (2011): 199–201.
+</div>
+<div id="ref-barnett2008cd4" class="csl-entry">
+Barnett, David, Brooke Walker, Alan Landay, and Thomas N Denny. <span>“CD4 Immunophenotyping in HIV Infection.”</span> <em>Nature Reviews Microbiology</em> 6, no. 11 (2008): S7–15.
+</div>
+<div id="ref-barry2009new" class="csl-entry">
+Barry, Clifton E, and Maija S Cheung. <span>“New Tactics Against Tuberculosis.”</span> <em>Scientific American</em> 300, no. 3 (2009): 62–69.
+</div>
+<div id="ref-biobroom" class="csl-entry">
+Bass, Andrew J., David G. Robinson, Steve Lianoglou, Emily Nelson, John D. Storey, and with contributions from Laurent Gatto. <em>Biobroom: Turn Bioconductor Objects into Tidy Data Frames</em>, 2020. <a href="https://github.com/StoreyLab/biobroom">https://github.com/StoreyLab/biobroom</a>.
+</div>
+<div id="ref-baumer2015data" class="csl-entry">
+Baumer, Ben. <span>“A Data Science Course for Undergraduates: Thinking with Data.”</span> <em>The American Statistician</em> 69, no. 4 (2015): 334–42.
+</div>
+<div id="ref-baumer2017modern" class="csl-entry">
+Baumer, Benjamin S, Daniel T Kaplan, and Nicholas J Horton. <em>Modern Data Science with r</em>. Boca Raton: CRC Press, 2017.
+</div>
+<div id="ref-beckman2021implementing" class="csl-entry">
+Beckman, Matthew D, Mine Çetinkaya-Rundel, Nicholas J Horton, Colin W Rundel, Adam J Sullivan, and Maria Tackett. <span>“Implementing Version Control with Git and GitHub as a Learning Objective in Statistics and Data Science Courses.”</span> <em>Journal of Statistics and Data Science Education</em> 29, no. sup1 (2021): S132–44.
+</div>
+<div id="ref-ben2014estimation" class="csl-entry">
+Ben-David, Avishai, and Charles E Davidson. <span>“Estimation Method for Serial Dilution Experiments.”</span> <em>Journal of Microbiological Methods</em> 107 (2014): 214–21.
+</div>
+<div id="ref-benoist2011flow" class="csl-entry">
+Benoist, Christophe, and Nir Hacohen. <span>“Flow Cytometry, Amped Up.”</span> <em>Science</em> 332, no. 6030 (2011): 677–78.
+</div>
+<div id="ref-bertin2021creating" class="csl-entry">
+Bertin, Audrey M, and Benjamin S Baumer. <span>“Creating Optimal Conditions for Reproducible Data Analysis in r with Fertile.”</span> <em>Stat</em> 10, no. 1 (2021): e332.
+</div>
+<div id="ref-birch2018future" class="csl-entry">
+Birch, David, David Lyford-Smith, and Yike Guo. <span>“The Future of Spreadsheets in the Big Data Era.”</span> <em>arXiv Preprint arXiv:1801.10231</em>, 2018.
+</div>
+<div id="ref-blischak2019creating" class="csl-entry">
+Blischak, John D, Peter Carbonetto, and Matthew Stephens. <span>“Creating and Sharing Reproducible Research Code the Workflowr Way.”</span> <em>F1000Research</em> 8 (2019): 1749.
+</div>
+<div id="ref-blischak2016quick" class="csl-entry">
+Blischak, John D, Emily R Davenport, and Greg Wilson. <span>“A Quick Introduction to Version Control with Git and GitHub.”</span> <em>PLoS Computational Biology</em> 12, no. 1 (2016).
+</div>
+<div id="ref-brazma2006standards" class="csl-entry">
+Brazma, Alvis, Maria Krestyaninova, and Ugis Sarkans. <span>“Standards for Systems Biology.”</span> <em>Nature Reviews Genetics</em> 7, no. 8 (2006): 593.
+</div>
+<div id="ref-broman2018data" class="csl-entry">
+Broman, Karl W, and Kara H Woo. <span>“Data Organization in Spreadsheets.”</span> <em>The American Statistician</em> 72, no. 1 (2018): 2–10.
+</div>
+<div id="ref-brown2018git" class="csl-entry">
+Brown, Zack. <span>“A Git Origin Story.”</span> <em>Linux Journal</em>, 2018.
+</div>
+<div id="ref-bryan2018excuse" class="csl-entry">
+Bryan, Jennifer. <span>“Excuse Me, Do You Have a Moment to Talk about Version Control?”</span> <em>The American Statistician</em> 72, no. 1 (2018): 20–27.
+</div>
+<div id="ref-bryan2017data" class="csl-entry">
+Bryan, Jennifer, and Hadley Wickham. <span>“Data Science: A Three Ring Circus or a Big Tent?”</span> <em>Journal of Computational and Graphical Statistics</em> 26, no. 4 (2017): 784–85.
+</div>
+<div id="ref-buffalo2015bioinformatics" class="csl-entry">
+Buffalo, Vince. <em>Bioinformatics Data Skills: Reproducible and Robust Research with Open Source Tools</em>. " O’Reilly Media, Inc.", 2015.
+</div>
+<div id="ref-burns2011r" class="csl-entry">
+Burns, Patrick. <em>The r Inferno</em>. Lulu. com, 2011.
+</div>
+<div id="ref-butler2005electronic" class="csl-entry">
+Butler, Declan. <span>“Electronic Notebooks: A New Leaf.”</span> <em>Nature</em> 436, no. 7047 (2005): 20–22.
+</div>
+<div id="ref-campbell2007number" class="csl-entry">
+Campbell-Kelly, Martin. <span>“Number Crunching Without Programming: The Evolution of Spreadsheet Usability.”</span> <em>IEEE Annals of the History of Computing</em> 29, no. 3 (2007): 6–19.
+</div>
+<div id="ref-chatfield1995problem" class="csl-entry">
+Chatfield, Chris. <em>Problem Solving: A Statistician’s Guide</em>. CRC Press, 1995.
+</div>
+<div id="ref-chen2014edger" class="csl-entry">
+Chen, Yunshun, Davis McCarthy, Mark Robinson, and Gordon K Smyth. <span>“edgeR: Differential Expression Analysis of Digital Gene Expression Data User’s Guide.”</span> <em>Bioconductor User’s Guide. Available Online: Http://Www. Bioconductor. Org/Packages/Release/Bioc/Vignettes/edgeR/Inst/Doc/edgeRUsersGuide.pdf (Accessed on 15 February 2021)</em>, 2014.
+</div>
+<div id="ref-cooper15heterogeneity" class="csl-entry">
+Cooper, Sarah K, David F Ackart, Faye Lanni, Marcela Henao-Tamayo, G B Anderson, and Brendan K Podell. <span>“Heterogeneity in Immune Cell Composition Is Associated with Mycobacterium Tuberculosis Replication at the Granuloma Level.”</span> <em>Frontiers in Immunology</em> 15 (2024): 1427472.
+</div>
+<div id="ref-creeth1985microcomputer" class="csl-entry">
+Creeth, Richard. <span>“Microcomputer Spreadsheets: Their Uses and Abuses.”</span> <em>Journal of Accountancy (Pre-1986)</em> 159, no. 6 (1985): 90.
+</div>
+<div id="ref-edwards2011science" class="csl-entry">
+Edwards, Paul N, Matthew S Mayernik, Archer L Batcheller, Geoffrey C Bowker, and Christine L Borgman. <span>“Science Friction: Data, Metadata, and Collaboration.”</span> <em>Social Studies of Science</em> 41, no. 5 (2011): 667–90.
+</div>
+<div id="ref-ellis2018share" class="csl-entry">
+Ellis, Shannon E, and Jeffrey T Leek. <span>“How to Share Data for Collaboration.”</span> <em>The American Statistician</em> 72, no. 1 (2018): 53–57.
+</div>
+<div id="ref-flicek2009sense" class="csl-entry">
+Flicek, Paul, and Ewan Birney. <span>“Sense from Sequence Reads: Methods for Alignment and Assembly.”</span> <em>Nature Methods</em> 6, no. Suppl 11 (2009): S6–12.
+</div>
+<div id="ref-fox2020cyto" class="csl-entry">
+Fox, Amy, Taru S Dutt, Burton Karger, Mauricio Rojas, Andrés Obregón-Henao, G Brooke Anderson, and Marcela Henao-Tamayo. <span>“Cyto-Feature Engineering: A Pipeline for Flow Cytometry Analysis to Uncover Immune Populations and Associations with Disease.”</span> <em>Scientific Reports</em> 10, no. 1 (2020): 1–12.
+</div>
+<div id="ref-gatto2013msnbase" class="csl-entry">
+Gatto, Laurent. <span>“MSnbase Development,”</span> 2013.
+</div>
+<div id="ref-ghosh2011software" class="csl-entry">
+Ghosh, Samik, Yukiko Matsuoka, Yoshiyuki Asai, Kun-Yi Hsin, and Hiroaki Kitano. <span>“Software for Systems Biology: From Tools to Integrated Platforms.”</span> <em>Nature Reviews Genetics</em> 12, no. 12 (2011): 821.
+</div>
+<div id="ref-gibb2014reproducibility" class="csl-entry">
+Gibb, Bruce C. <span>“Reproducibility.”</span> <em>Nature Chemistry</em> 6, no. 8 (2014): 653–54.
+</div>
+<div id="ref-giles2012digital" class="csl-entry">
+Giles, Jim. <span>“The Digital Lab: Lab-Management Software and Electronic Notebooks Are Here–and This Time, It’s More Than Just Talk.”</span> <em>Nature</em> 481, no. 7382 (2012): 430–32.
+</div>
+<div id="ref-gillespie2016efficient" class="csl-entry">
+Gillespie, Colin, and Robin Lovelace. <em>Efficient r Programming: A Practical Guide to Smarter Programming</em>. " O’Reilly Media, Inc.", 2016.
+</div>
+<div id="ref-goodman2014ten" class="csl-entry">
+Goodman, Alyssa, Alberto Pepe, Alexander W Blocker, Christine L Borgman, Kyle Cranmer, Merce Crosas, Rosanne Di Stefano, et al. <span>“Ten Simple Rules for the Care and Feeding of Scientific Data.”</span> Public Library of Science, 2014.
+</div>
+<div id="ref-hamming1997art" class="csl-entry">
+Hamming, Richard R. <em>The Art of Doing Science and Engineering: Learning to Learn</em>. CRC Press, 1997.
+</div>
+<div id="ref-haque2017practical" class="csl-entry">
+Haque, Ashraful, Jessica Engel, Sarah A Teichmann, and Tapio Lönnberg. <span>“A Practical Guide to Single-Cell RNA-Sequencing for Biomedical Research and Clinical Applications.”</span> <em>Genome Medicine</em> 9, no. 1 (2017): 1–12.
+</div>
+<div id="ref-hermans2016spreadsheets" class="csl-entry">
+Hermans, Felienne, Bas Jansen, Sohon Roy, Efthimia Aivaloglou, Alaaeddin Swidan, and David Hoepelman. <span>“Spreadsheets Are Code: An Overview of Software Engineering Approaches Applied to Spreadsheets.”</span> In <em>2016 IEEE 23rd International Conference on Software Analysis, Evolution, and Reengineering (SANER)</em>, 5:56–65. IEEE, 2016.
+</div>
+<div id="ref-hermans2015enron" class="csl-entry">
+Hermans, Felienne, and Emerson Murphy-Hill. <span>“Enron’s Spreadsheets and Related Emails: A Dataset and Analysis.”</span> In <em>2015 IEEE/ACM 37th IEEE International Conference on Software Engineering</em>, 2:7–16. IEEE, 2015.
+</div>
+<div id="ref-hicks2017guide" class="csl-entry">
+Hicks, Stephanie C, and Rafael A Irizarry. <span>“A Guide to Teaching Data Science.”</span> <em>The American Statistician</em> In Press (2017). doi:<a href="https://doi.org/10.1080/00031305.2017.1356747">10.1080/00031305.2017.1356747</a>.
+</div>
+<div id="ref-hicks2021mbkmeans" class="csl-entry">
+Hicks, Stephanie C, Ruoxi Liu, Yuwei Ni, Elizabeth Purdom, and Davide Risso. <span>“Mbkmeans: Fast Clustering for Single Cell Data Using Mini-Batch k-Means.”</span> <em>PLOS Computational Biology</em> 17, no. 1 (2021): e1008625.
+</div>
+<div id="ref-holmes2018modern" class="csl-entry">
+Holmes, Susan, and Wolfgang Huber. <em>Modern Statistics for Modern Biology</em>. Cambridge University Press, 2018.
+</div>
+<div id="ref-hsieh2016inext" class="csl-entry">
+Hsieh, TC, KH Ma, and Anne Chao. <span>“<span class="nocase">iNEXT: an R package for rarefaction and extrapolation of species diversity (Hill numbers)</span>.”</span> <em>Methods in Ecology and Evolution</em> 7, no. 12 (2016): 1451–56.
+</div>
+<div id="ref-huber2015orchestrating" class="csl-entry">
+Huber, Wolfgang, Vincent J Carey, Robert Gentleman, Simon Anders, Marc Carlson, Benilton S Carvalho, Hector Corrada Bravo, et al. <span>“Orchestrating High-Throughput Genomic Analysis with Bioconductor.”</span> <em>Nature Methods</em> 12, no. 2 (2015): 115.
+</div>
+<div id="ref-ilicic2016classification" class="csl-entry">
+Ilicic, Tomislav, Jong Kyoung Kim, Aleksandra A Kolodziejczyk, Frederik Otzen Bagger, Davis James McCarthy, John C Marioni, and Sarah A Teichmann. <span>“Classification of Low Quality Cells from Single-Cell RNA-Seq Data.”</span> <em>Genome Biology</em> 17, no. 1 (2016): 1–15.
+</div>
+<div id="ref-lifesciencesR" class="csl-entry">
+Irizarry, Rafael A., and Michael I. Love. <em>Data Analysis for the Life Sciences with r</em>. Chapman; Hall, 2016.
+</div>
+<div id="ref-irving2011astonishments" class="csl-entry">
+Irving, Francis. <span>“Astonishments, Ten, in the History of Version Control,”</span> 2011. <a href="https://www.flourish.org/2011/12/astonishments-ten-in-the-history-of-version-control/">https://www.flourish.org/2011/12/astonishments-ten-in-the-history-of-version-control/</a>.
+</div>
+<div id="ref-janssens2014data" class="csl-entry">
+Janssens, Jeroen. <em>Data Science at the Command Line: Facing the Future with Time-Tested Tools</em>. " O’Reilly Media, Inc.", 2014.
+</div>
+<div id="ref-prodigenr" class="csl-entry">
+Johnston, Luke. <em>Prodigenr: Research Project Directory Generator</em>, 2022. <a href="https://CRAN.R-project.org/package=prodigenr">https://CRAN.R-project.org/package=prodigenr</a>.
+</div>
+<div id="ref-judkins2016art" class="csl-entry">
+Judkins, Rod. <em>The Art of Creative Thinking</em>. Perigee, 2016.
+</div>
+<div id="ref-kaplan2018teaching" class="csl-entry">
+Kaplan, Daniel. <span>“Teaching Stats for Data Science.”</span> <em>The American Statistician</em> 72, no. 1 (2018): 89–96.
+</div>
+<div id="ref-keller2017evolution" class="csl-entry">
+Keller, Sallie, Gizem Korkmaz, Mark Orr, Aaron Schroeder, and Stephanie Shipp. <span>“The Evolution of Data Quality: Understanding the Transdisciplinary Origins of Data Quality Concepts and Approaches.”</span> <em>Annu. Rev. Stat. Appl</em> 4 (2017): 85–108.
+</div>
+<div id="ref-kernighan2011d" class="csl-entry">
+Kernighan, Brian W. <em>D Is for Digital: What a Well-Informed Person Should Know about Computers and Communications</em>. CreateSpace Independent Publishing Platform, 2011.
+</div>
+<div id="ref-kernighan1984unix" class="csl-entry">
+Kernighan, Brian W, and Rob Pike. <em>The UNIX Programming Environment</em>. Vol. 270. Prentice-Hall Englewood Cliffs, NJ, 1984.
+</div>
+<div id="ref-klemens201421st" class="csl-entry">
+Klemens, Ben. <em>21st Century c: C Tips from the New School</em>. " O’Reilly Media, Inc.", 2014.
+</div>
+<div id="ref-krishnan2016towards" class="csl-entry">
+Krishnan, Sanjay, Daniel Haas, Michael J Franklin, and Eugene Wu. <span>“Towards Reliable Interactive Data Cleaning: A User Survey and Recommendations.”</span> In <em>Proceedings of the Workshop on Human-in-the-Loop Data Analytics</em>, 9. ACM, 2016.
+</div>
+<div id="ref-kwok2018lab" class="csl-entry">
+Kwok, Roberta. <span>“Lab Notebooks Go Digital.”</span> <em>Nature</em> 560, no. 7717 (2018): 269–70.
+</div>
+<div id="ref-lawrence2014scalable" class="csl-entry">
+Lawrence, Michael, and Martin Morgan. <span>“Scalable Genomics with r and Bioconductor.”</span> <em>Statistical Science: A Review Journal of the Institute of Mathematical Statistics</em> 29, no. 2 (2014): 214.
+</div>
+<div id="ref-leips2010helm" class="csl-entry">
+LEIPS, JEFF. <span>“At the Helm: Leading Your Laboratory.”</span> <em>Genetics Research</em> 92, no. 4 (2010): 325–26.
+</div>
+<div id="ref-levy1984spreadsheet" class="csl-entry">
+Levy, Steven. <span>“A Spreadsheet Way of Knowledge.”</span> <em>Harpers</em> 269 (1984): 58–64.
+</div>
+<div id="ref-lithgow2017long" class="csl-entry">
+Lithgow, Gordon J, Monica Driscoll, and Patrick Phillips. <span>“A Long Journey to Reproducible Results.”</span> <em>Nature</em> 548, no. 7668 (2017): 387–88.
+</div>
+<div id="ref-lowndes2017our" class="csl-entry">
+Lowndes, Julia S Stewart, Benjamin D Best, Courtney Scarborough, Jamie C Afflerbach, Melanie R Frazier, Casey C O’Hara, Ning Jiang, and Benjamin S Halpern. <span>“Our Path to Better Science in Less Time Using Open Data Science Tools.”</span> <em>Nature Ecology &amp; Evolution</em> 1, no. 6 (2017): 160.
+</div>
+<div id="ref-lynch2008big" class="csl-entry">
+Lynch, Clifford. <span>“Big Data: How Do Your Data Grow?”</span> <em>Nature</em> 455, no. 7209 (2008): 28.
+</div>
+<div id="ref-madhavan2015applied" class="csl-entry">
+Madhavan, Guru. <em>Applied Minds: How Engineers Think</em>. W. W. Norton, 2015.
+</div>
+<div id="ref-maecker2012standardizing" class="csl-entry">
+Maecker, Holden T, J Philip McCoy, and Robert Nussenblatt. <span>“Standardizing Immunophenotyping for the Human Immunology Project.”</span> <em>Nature Reviews Immunology</em> 12, no. 3 (2012): 191–200.
+</div>
+<div id="ref-majumder2021cognitive" class="csl-entry">
+Majumder, Erica L-W, Elizabeth M Billings, H Paul Benton, Richard L Martin, Amelia Palermo, Carlos Guijas, Markus M Rinschen, et al. <span>“Cognitive Analysis of Metabolomics Data for Systems Biology.”</span> <em>Nature Protocols</em> 16, no. 3 (2021): 1376–1418.
+</div>
+<div id="ref-mak2011john" class="csl-entry">
+Mak, H Craig. <span>“John Storey.”</span> <em>Nature Biotechnology</em> 29, no. 4 (2011): 331–33.
+</div>
+<div id="ref-mangiola2021tidybulk" class="csl-entry">
+Mangiola, Stefano, Ramyar Molania, Ruining Dong, Maria A Doyle, and Anthony T Papenfuss. <span>“Tidybulk: An r Tidy Framework for Modular Transcriptomic Data Analysis.”</span> <em>Genome Biology</em> 22 (2021): 1–15.
+</div>
+<div id="ref-marwick2018packaging" class="csl-entry">
+Marwick, Ben, Carl Boettiger, and Lincoln Mullen. <span>“Packaging Data Analytical Work Reproducibly Using <span>R</span> (and Friends).”</span> <em>The American Statistician</em> 72, no. 1 (2018): 80–88.
+</div>
+<div id="ref-mascarelli2014research" class="csl-entry">
+Mascarelli, Amanda. <span>“Research Tools: Jump Off the Page.”</span> <em>Nature</em> 507, no. 7493 (2014): 523–25.
+</div>
+<div id="ref-mccarthy2017scater" class="csl-entry">
+McCarthy, Davis J, Kieran R Campbell, Aaron TL Lun, and Quin F Wills. <span>“Scater: Pre-Processing, Quality Control, Normalization and Visualization of Single-Cell RNA-Seq Data in r.”</span> <em>Bioinformatics</em> 33, no. 8 (2017): 1179–86.
+</div>
+<div id="ref-mccullough2002accuracy" class="csl-entry">
+McCullough, B D, and Berry Wilson. <span>“On the Accuracy of Statistical Procedures in Microsoft Excel 2000 and Excel XP.”</span> <em>Computational Statistics &amp; Data Analysis</em> 40, no. 4 (2002): 713–21.
+</div>
+<div id="ref-mccullough2001does" class="csl-entry">
+McCullough, BD. <span>“Does Microsoft Fix Errors in Excel?”</span> In <em>Proceedings of the 2001 Joint Statistical Meetings</em>, 2001.
+</div>
+<div id="ref-mccullough1999assessing" class="csl-entry">
+McCullough, Bruce D. <span>“Assessing the Reliability of Statistical Software: Part II.”</span> <em>The American Statistician</em> 53, no. 2 (1999): 149–59.
+</div>
+<div id="ref-mccullough2008accuracy" class="csl-entry">
+McCullough, Bruce D, and David A Heiser. <span>“On the Accuracy of Statistical Procedures in Microsoft Excel 2007.”</span> <em>Computational Statistics &amp; Data Analysis</em> 52, no. 10 (2008): 4570–78.
+</div>
+<div id="ref-mccullough2005accuracy" class="csl-entry">
+McCullough, Bruce D, and Berry Wilson. <span>“On the Accuracy of Statistical Procedures in Microsoft Excel 2003.”</span> <em>Computational Statistics &amp; Data Analysis</em> 49, no. 4 (2005): 1244–52.
+</div>
+<div id="ref-mccullough1999accuracy" class="csl-entry">
+———. <span>“On the Accuracy of Statistical Procedures in Microsoft Excel 97.”</span> <em>Computational Statistics &amp; Data Analysis</em> 31, no. 1 (1999): 27–37.
+</div>
+<div id="ref-mcmurdie2013phyloseq" class="csl-entry">
+McMurdie, Paul J, and Susan Holmes. <span>“Phyloseq: An <span>R</span> Package for Reproducible Interactive Analysis and Graphics of Microbiome Census Data.”</span> <em>PloS One</em> 8, no. 4 (2013): e61217.
+</div>
+<div id="ref-mcnamara2016state" class="csl-entry">
+McNamara, Amelia. <span>“On the State of Computing in Statistics Education: Tools for Learning and for Doing.”</span> <em>arXiv Preprint arXiv:1610.00984</em>, 2016.
+</div>
+<div id="ref-melard2014accuracy" class="csl-entry">
+Mélard, Guy. <span>“On the Accuracy of Statistical Procedures in Microsoft Excel 2010.”</span> <em>Computational Statistics</em> 29, no. 5 (2014): 1095–1128.
+</div>
+<div id="ref-metz2015github" class="csl-entry">
+Metz, Cade. <span>“How GitHub Conquered Google, Microsoft, and Everyone Else.”</span> <em>Wired Magazine</em>, 2015.
+</div>
+<div id="ref-michener2015ten" class="csl-entry">
+Michener, William K. <span>“Ten Simple Rules for Creating a Good Data Management Plan.”</span> <em>PLoS Computational Biology</em> 11, no. 10 (2015): e1004525.
+</div>
+<div id="ref-murrell2009introduction" class="csl-entry">
+Murrell, Paul. <em>Introduction to Data Technologies</em>. Chapman; Hall/CRC, 2009.
+</div>
+<div id="ref-myneni2010organization" class="csl-entry">
+Myneni, Sahiti, and Vimla L Patel. <span>“Organization of Biomedical Data for Collaborative Scientific Research: A Research Information Management System.”</span> <em>International Journal of Information Management</em> 30, no. 3 (2010): 256–64.
+</div>
+<div id="ref-nardi1990spreadsheet" class="csl-entry">
+Nardi, Bonnie A, and James R Miller. <span>“The Spreadsheet Interface: A Basis for End User Programming.”</span> In <em>Proceedings of the IFIP TC13 Third Interational Conference on Human-Computer Interaction</em>, 977–83. North-Holland Publishing Co., 1990.
+</div>
+<div id="ref-nash2006spreadsheets" class="csl-entry">
+Nash, JC. <span>“Spreadsheets in Statistical Practice—Another Look.”</span> <em>The American Statistician</em> 60, no. 3 (2006): 287–89.
+</div>
+<div id="ref-neff2021past" class="csl-entry">
+Neff, Ellen P. <span>“On the Past, Present, and Future of in Vivo Science.”</span> <em>Lab Animal</em> 50, no. 10 (2021): 273–76.
+</div>
+<div id="ref-nekrutenko2012next" class="csl-entry">
+Nekrutenko, Anton, and James Taylor. <span>“Next-Generation Sequencing Data Interpretation: Enhancing Reproducibility and Accessibility.”</span> <em>Nature Reviews Genetics</em> 13, no. 9 (2012): 667–72.
+</div>
+<div id="ref-noble2009quick" class="csl-entry">
+Noble, William Stafford. <span>“A Quick Guide to Organizing Computational Biology Projects.”</span> <em>PLoS Computational Biology</em> 5, no. 7 (2009): e1000424.
+</div>
+<div id="ref-osann2020design" class="csl-entry">
+Osann, Isabell, Lena Mayer, and Inga Wiele. <em>The Design Thinking Quick Start Guide: A 6-Step Process for Generating and Implementing Creative Solutions</em>. John Wiley &amp; Sons, 2020.
+</div>
+<div id="ref-pawlik2017developing" class="csl-entry">
+Pawlik, Aleksandra, Celia WG van Gelder, Aleksandra Nenadic, Patricia M Palagi, Eija Korpelainen, Philip Lijnzaad, Diana Marek, Susanna-Assunta Sansone, John Hancock, and Carole Goble. <span>“Developing a Strategy for Computational Lab Skills Training Through <span class="nocase">Software and Data Carpentry</span>: Experiences from the <span>ELIXIR Pilot</span> Action.”</span> <em>F1000Research</em> 6 (2017): ELIXIR–1040.
+</div>
+<div id="ref-peng2018teaching" class="csl-entry">
+Peng, Roger. <span>“Teaching r to New Users—from Tapply to the Tidyverse.”</span> <em>Simply Statistics</em>, 2018.
+</div>
+<div id="ref-peng2016r" class="csl-entry">
+Peng, Roger D. <em>R Programming for Data Science</em>. Leanpub, 2016.
+</div>
+<div id="ref-perez2016ten" class="csl-entry">
+Perez-Riverol, Yasset, Laurent Gatto, Rui Wang, Timo Sachsenberg, Julian Uszkoreit, Felipe da Veiga Leprevost, Christian Fufezan, et al. <span>“Ten Simple Rules for Taking Advantage of Git and GitHub.”</span> <em>PLoS Computational Biology</em> 12, no. 7 (2016).
+</div>
+<div id="ref-perkel2018git" class="csl-entry">
+Perkel, Jeffrey. <span>“Git: The Reproducibility Tool Scientists Love to Hate.”</span> <em>Naturejobs Blog</em>, 2018.
+</div>
+<div id="ref-perkel2011coding" class="csl-entry">
+Perkel, Jeffrey M. <span>“Coding Your Way Out of a Problem.”</span> Nature Publishing Group, 2011.
+</div>
+<div id="ref-perkel2017single" class="csl-entry">
+———. <span>“Single-Cell Sequencing Made Simple.”</span> <em>Nature</em> 547, no. 7661 (2017): 125–26.
+</div>
+<div id="ref-perkel2018future" class="csl-entry">
+———. <span>“THE FUTURE OF SCIENTIFIC FIGURES.”</span> <em>Nature</em> 554, no. 7690 (2018): 133–34.
+</div>
+<div id="ref-powell2012lab" class="csl-entry">
+Powell, Kendall. <span>“A Lab App for That.”</span> <em>Nature</em> 484, no. 7395 (2012): 553–55.
+</div>
+<div id="ref-powell2009errors" class="csl-entry">
+Powell, Stephen G, Kenneth R Baker, and Barry Lawson. <span>“Errors in Operational Spreadsheets: A Review of the State of the Art.”</span> In <em>2009 42nd Hawaii International Conference on System Sciences</em>, 1–8. IEEE, 2009.
+</div>
+<div id="ref-quintelier2021analyzing" class="csl-entry">
+Quintelier, Katrien, Artuur Couckuyt, Annelies Emmaneel, Joachim Aerts, Yvan Saeys, and Sofie Van Gassen. <span>“Analyzing High-Dimensional Cytometry Data Using FlowSOM.”</span> <em>Nature Protocols</em> 16, no. 8 (2021): 3775–3801.
+</div>
+<div id="ref-raymondunderstanding" class="csl-entry">
+Raymond, Eric. <span>“Understanding Version-Control Systems (DRAFT),”</span> 2009. <a href="http://www.catb.org/~esr/writings/version-control/version-control.html">http://www.catb.org/~esr/writings/version-control/version-control.html</a>.
+</div>
+<div id="ref-raymond2003art" class="csl-entry">
+Raymond, Eric S. <em>The Art of Unix Programming</em>. Addison-Wesley Professional, 2003.
+</div>
+<div id="ref-robinson2014broom" class="csl-entry">
+Robinson, David. <span>“Broom: An r Package for Converting Statistical Analysis Objects into Tidy Data Frames.”</span> <em>arXiv Preprint arXiv:1412.3565</em>, 2014.
+</div>
+<div id="ref-robinson2017teach" class="csl-entry">
+———. <span>“Teach the Tidyverse to Beginners.”</span> <em>Variance Explained</em>, 2017.
+</div>
+<div id="ref-edgeR" class="csl-entry">
+Robinson, Mark D, Davis J McCarthy, and Gordon K Smyth. <span>“edgeR: A Bioconductor Package for Differential Expression Analysis of Digital Gene Expression Data.”</span> <em>Bioinformatics</em> 26, no. 1 (2010): 139–40. doi:<a href="https://doi.org/10.1093/bioinformatics/btp616">10.1093/bioinformatics/btp616</a>.
+</div>
+<div id="ref-ross2017declutter" class="csl-entry">
+Ross, Zev, Hadley Wickham, and David Robinson. <span>“Declutter Your <span>R</span> Workflow with Tidy Tools.”</span> <em>PeerJ Preprints</em> 5 (2017): e3180v1.
+</div>
+<div id="ref-sansone2012toward" class="csl-entry">
+Sansone, Susanna-Assunta, Philippe Rocca-Serra, Dawn Field, Eamonn Maguire, Chris Taylor, Oliver Hofmann, Hong Fang, et al. <span>“Toward Interoperable Bioscience Data.”</span> <em>Nature Genetics</em> 44, no. 2 (2012): 121.
+</div>
+<div id="ref-savage2020every" class="csl-entry">
+Savage, Adam. <em>Every Tool’s a Hammer: Life Is What You Make It</em>. Atria Books, 2020.
+</div>
+<div id="ref-schadt2010computational" class="csl-entry">
+Schadt, Eric E, Michael D Linderman, Jon Sorenson, Lawrence Lee, and Garry P Nolan. <span>“Computational Solutions to Large-Scale Data Management and Analysis.”</span> <em>Nature Reviews Genetics</em> 11, no. 9 (2010): 647.
+</div>
+<div id="ref-schrode2021analysis" class="csl-entry">
+Schrode, Nadine, Carina Seah, PJ Michael Deans, Gabriel Hoffman, and Kristen J Brennand. <span>“Analysis Framework and Experimental Design for Evaluating Synergy-Driving Gene Expression.”</span> <em>Nature Protocols</em> 16, no. 2 (2021): 812–40.
+</div>
+<div id="ref-sedgwick2014unit" class="csl-entry">
+Sedgwick, Philip. <span>“Unit of Observation and Unit of Analysis.”</span> <em>BMJ</em> 348 (2014): g3840.
+</div>
+<div id="ref-silge2017text" class="csl-entry">
+Silge, Julia, and David Robinson. <em>Text Mining with r: A Tidy Approach</em>. Sebastopol: O’Reilly Media, 2017.
+</div>
+<div id="ref-silge2016tidytext" class="csl-entry">
+———. <span>“Tidytext: Text Mining and Analysis Using Tidy Data Principles in <span>R</span>.”</span> <em>The Journal of Open Source Software</em> 1, no. 3 (2016).
+</div>
+<div id="ref-spidlen2021data" class="csl-entry">
+Spidlen, Josef, Wayne Moore, David Parks, Michael Goldberg, Kim Blenman, James S Cavenaugh, ISAC Data Standards Task Force, and Ryan Brinkman. <span>“Data File Standard for Flow Cytometry, Version FCS 3.2.”</span> <em>Cytometry Part A</em> 99, no. 1 (2021): 100–102.
+</div>
+<div id="ref-stander2017enthusing" class="csl-entry">
+Stander, Julian, and Luciana Dalla Valle. <span>“On Enthusing Students about Big Data and Social Media Visualization and Analysis Using <span class="nocase">R, RStudio, and RMarkdown</span>.”</span> <em>Journal of Statistics Education</em> 25, no. 2 (2017): 60–67.
+</div>
+<div id="ref-stark2018before" class="csl-entry">
+Stark, Philip B. <span>“Before Reproducibility Must Come Preproducibility.”</span> <em>Nature</em> 557, no. 7706 (2018): 613–14.
+</div>
+<div id="ref-target2018version" class="csl-entry">
+Target, Sinclair. <span>“Version Control Before Git with CVS,”</span> 2018. <a href="https://twobithistory.org/2018/07/07/cvs.html">https://twobithistory.org/2018/07/07/cvs.html</a>.
+</div>
+<div id="ref-teixeira2016emergence" class="csl-entry">
+Teixeira, Ricardo, and Vasco Amaral. <span>“On the Emergence of Patterns for Spreadsheets Data Arrangements.”</span> In <em>Federation of International Conferences on Software Technologies: Applications and Foundations</em>, 333–45. Springer, 2016.
+</div>
+<div id="ref-thomas2015write" class="csl-entry">
+Thomas, Kathy, and Mary Beth Farrell. <span>“How to Write a Protocol: Part 1.”</span> <em>Journal of Nuclear Medicine Technology</em> 43, no. 1 (2015): 1–7.
+</div>
+<div id="ref-topaloglou2004biological" class="csl-entry">
+Topaloglou, Thodoros, Susan B Davidson, HV Jagadish, Victor M Markowitz, Evan W Steeg, and Mike Tyers. <span>“Biological Data Management: Research, Practice and Opportunities.”</span> In <em>Proceedings of the Thirtieth International Conference on Very Large Data Bases-Volume 30</em>, 1233–36. VLDB Endowment, 2004.
+</div>
+<div id="ref-RJ-2017-023" class="csl-entry">
+Tyner, Sam, François Briatte, and Heike Hofmann. <span>“<span class="nocase">Network Visualization with ggplot2</span>.”</span> <em><span>The R Journal</span></em> 9, no. 1 (2017): 27–59.
+</div>
+<div id="ref-nih2018data" class="csl-entry">
+U.S. Department of Health and Human Services, National Institutes of Health. <span>“<span class="nocase">NIH Strategic Plan for Data Science</span>,”</span> 2018. <a href="https://datascience.nih.gov/sites/default/files/NIH_Strategic_Plan_for_Data_Science_Final_508.pdf">https://datascience.nih.gov/sites/default/files/NIH_Strategic_Plan_for_Data_Science_Final_508.pdf</a>.
+</div>
+<div id="ref-nih2016strategic" class="csl-entry">
+———. <span>“<span>NIH-Wide Strategic Plan, Fiscal Years 2016-2020: Turning Discovery Into Health</span>,”</span> 2016. <a href="https://www.nih.gov/sites/default/files/about-nih/strategic-plan-fy2016-2020-508.pdf">https://www.nih.gov/sites/default/files/about-nih/strategic-plan-fy2016-2020-508.pdf</a>.
+</div>
+<div id="ref-vuorre2021sharing" class="csl-entry">
+Vuorre, Matti, and Matthew JC Crump. <span>“Sharing and Organizing Research Products as r Packages.”</span> <em>Behavior Research Methods</em> 53 (2021): 792–802.
+</div>
+<div id="ref-welsh2017escape" class="csl-entry">
+Welsh, Eric A, Paul A Stewart, Brent M Kuenzi, and James A Eschrich. <span>“Escape Excel: A Tool for Preventing Gene Symbol and Accession Conversion Errors.”</span> <em>PloS One</em> 12, no. 9 (2017): e0185207.
+</div>
+<div id="ref-wendt2022ten" class="csl-entry">
+Wendt, Caroline J, and G Brooke Anderson. <span>“Ten Simple Rules for Finding and Selecting r Packages.”</span> <em>PLoS Computational Biology</em> 18, no. 3 (2022): e1009884.
+</div>
+<div id="ref-wickham2016ggplot2" class="csl-entry">
+Wickham, Hadley. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. 2nd ed. New York: Springer, 2016.
+</div>
+<div id="ref-wickham2017tidy" class="csl-entry">
+———. <span>“The Tidy Tools Manifesto.”</span> <em>CRAN Vignette</em>, 2017.
+</div>
+<div id="ref-wickham2014tidy" class="csl-entry">
+———. <span>“Tidy Data.”</span> <em>Journal of Statistical Software</em> 59, no. 10 (2014): 1–23.
+</div>
+<div id="ref-wickham2016r" class="csl-entry">
+Wickham, Hadley, and Garrett Grolemund. <em>R for Data Science: Import, Tidy, Transform, Visualize, and Model Data</em>. sebastopol: O’Reilly Media, 2016.
+</div>
+<div id="ref-wilkinson2016fair" class="csl-entry">
+Wilkinson, Mark D, Michel Dumontier, IJsbrand Jan Aalbersberg, Gabrielle Appleton, Myles Axton, Arie Baak, Niklas Blomberg, et al. <span>“The FAIR Guiding Principles for Scientific Data Management and Stewardship.”</span> <em>Scientific Data</em> 3 (2016).
+</div>
+<div id="ref-willekens2013chronological" class="csl-entry">
+Willekens, Frans. <span>“Chronological Objects in Demographic Research.”</span> <em>Demographic Research</em> 28 (2013): 649–80.
+</div>
+<div id="ref-wilson2014software" class="csl-entry">
+Wilson, G. <span>“<span>Software Carpentry</span>: Lessons Learned.”</span> <em>F1000Research</em> 3 (2014): 62–62.
+</div>
+<div id="ref-winchester2018give" class="csl-entry">
+Winchester, Catherine. <span>“Give Every Paper a Read for Reproducibility.”</span> <em>Nature</em> 557, no. 7706 (2018): 281–82.
+</div>
+<div id="ref-xie2018r" class="csl-entry">
+Xie, Yihui, Joseph J Allaire, and Garrett Grolemund. <em>R Markdown: The Definitive Guide</em>. CRC Press, 2018.
+</div>
+<div id="ref-xie2020r" class="csl-entry">
+Xie, Yihui, Christophe Dervieux, and Emily Riederer. <em>R Markdown Cookbook</em>. Chapman; Hall/CRC, 2020.
+</div>
+<div id="ref-yin2012ggbio" class="csl-entry">
+Yin, Tengfei, Dianne Cook, and Michael Lawrence. <span>“Ggbio: An <span>R</span> Package for Extending the Grammar of Graphics for Genomic Data.”</span> <em>Genome Biology</em> 13, no. 8 (2012): R77.
+</div>
+<div id="ref-zeeberg2004mistaken" class="csl-entry">
+Zeeberg, Barry R, Joseph Riss, David W Kane, Kimberly J Bussey, Edward Uchio, W Marston Linehan, J Carl Barrett, and John N Weinstein. <span>“Mistaken Identifiers: Gene Name Errors Can Be Introduced Inadvertently When Using <span>Excel</span> in Bioinformatics.”</span> <em>BMC Bioinformatics</em> 5, no. 1 (2004): 80.
+</div>
+<div id="ref-ziemann2016gene" class="csl-entry">
+Ziemann, Mark, Yotam Eren, and Assam El-Osta. <span>“Gene Name Errors Are Widespread in the Scientific Literature.”</span> <em>Genome Biology</em> 17, no. 1 (2016): 177.
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="chapter-nav">
+<div class="prev"><a href="module19.html"><span class="header-section-number">19</span> RMarkdown for creating reproducible data pre-processing protocols</a></div>
+<div class="empty"></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#module20"><span class="header-section-number">20</span> Example: Creating a reproducible data pre-processing protocol</a></li>
+<li><a class="nav-link" href="#introduction-and-example-data"><span class="header-section-number">20.1</span> Introduction and example data</a></li>
+<li>
+<a class="nav-link" href="#advice-on-designing-a-pre-processing-protocol"><span class="header-section-number">20.2</span> Advice on designing a pre-processing protocol</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#defining-input-and-output-data-for-the-protocol"><span class="header-section-number">20.2.1</span> Defining input and output data for the protocol</a></li>
+<li><a class="nav-link" href="#setting-up-a-project-directory-for-the-protocol"><span class="header-section-number">20.2.2</span> Setting up a project directory for the protocol</a></li>
+<li><a class="nav-link" href="#outlining-key-tasks-in-pre-processing-the-input-data"><span class="header-section-number">20.2.3</span> Outlining key tasks in pre-processing the input data</a></li>
+<li><a class="nav-link" href="#adding-code-for-pre-processing"><span class="header-section-number">20.2.4</span> Adding code for pre-processing</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#writing-data-pre-processing-protocols"><span class="header-section-number">20.3</span> Writing data pre-processing protocols</a></li>
+<li><a class="nav-link" href="#applied-exercise-1"><span class="header-section-number">20.4</span> Applied exercise</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/geanders/improve_repro/blob/master/20-example_protocol.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/geanders/improve_repro/edit/master/20-example_protocol.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Improving the Reproducibility of Experimental Data Recording and Pre-Processing</strong>" was written by Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson. </p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

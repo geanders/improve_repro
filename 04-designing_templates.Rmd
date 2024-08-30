@@ -1,14 +1,14 @@
-## Designing templates for "tidy" data collection {#module4}
+# Designing templates for "tidy" data collection {#module4}
 
 In this module, we will use a real example of data collected in a biomedical
 laboratory. We'll use this example to show how data is often collected in a way
-that is not "tidy" (module 2.3), focusing on the features of data collection
+that is not "tidy" (module \@ref(module3)), focusing on the features of data collection
 that make it "untidy". We'll then describe some general principles for why and
 how to instead create and use tidy (or at least tidier) templates to collect
 data in the laboratory. We'll also show how this can be the first step in a
 pipeline to creating useful, attractive, and reproducible reports that describe
 the data you collected. This module will focus on the principles of templates
-for tidy data collection, while in the next module we'll dig deeper into the
+for tidy data collection, while in module \@ref(module5) we'll dig deeper into the
 details of making this conversion for the example dataset that we use as a
 demonstration in this module.
 
@@ -29,7 +29,7 @@ spreadsheet but that can impede reproducibility
 - Explain why certain characters and formatting in a data collection template
 may cause problems with later analysis
 
-### Example---Data on rate of bacterial growth 
+## Example---Data on rate of bacterial growth 
 
 Throughout this module, we'll use a real dataset to illustrate principles of
 data collection in a biomedical laboratory. First, let's start by looking at the
@@ -37,7 +37,7 @@ original data collection template, and use this to walk through some details of
 this dataset. Figure \@ref(fig:growthexcel1) provides an annotated view of the
 data set, showing the format used when the data were originally collected.
 
-```{r growthexcel1, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column."}
+```{r growthexcel1, echo = FALSE, out.width = "100%", fig.cap = "Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column."}
 knitr::include_graphics("figures/growth_curve_example.png")
 ```
 
@@ -114,12 +114,12 @@ the chance of errors in recording the data and in calculating summaries based on
 data. They also make it hard to move the data into a reproducible pipeline, and 
 so limit opportunities for more sophisticated analysis and visualization. In the
 next section of this module, we'll highlight features of data collection templates
-like this one that can make data collection untidy. In the next module (module 2.5), 
+like this one that can make data collection untidy. In module \@ref(module5), 
 we'll discuss how you could create a new data collection template for this example
 data that would be tidier, and use this to open a more general discussion of 
 principles of tidy data collection templates.
 
-### Features that make data collection templates untidy
+## Features that make data collection templates untidy
 
 There are several features of the data collection template shown in Figure
 \@ref(fig:growthexcel1) that make it untidy. These will make it difficult read
@@ -133,7 +133,7 @@ highlighted by the blue box). The "extra" elements on the spreadsheet, which
 include the output from calculations, plots, macros, and notes, make it harder
 to isolate the raw data from the file when using a statistical program.
 
-```{r extractraw, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Isolating raw data collected in a template from extra elements. The box in this figure highlights the area of the spreadsheet where data are collected. All other elements of the spreadsheet focus on other aims (e.g., summarizing these data, adding notes, macros for experimental design). Those other elements make it difficult to extract the raw data for more advanced analysis and visualization through a statistical program like R, Python, or Perl."}
+```{r extractraw, echo = FALSE, out.width = "100%", fig.cap = "Isolating raw data collected in a template from extra elements. The box in this figure highlights the area of the spreadsheet where data are collected. All other elements of the spreadsheet focus on other aims (e.g., summarizing these data, adding notes, macros for experimental design). Those other elements make it difficult to extract the raw data for more advanced analysis and visualization through a statistical program like R, Python, or Perl."}
 knitr::include_graphics("figures/growth_curve_raw_data.png")
 ```
 
@@ -173,7 +173,7 @@ on July 9 ("16:05" in column A and "9-Jul" in column C), which is 4 hours and 5 
 after the start of the experiment ("4hr 5min" in column B) or, since 5 minutes is about 
 8% of an hour, 4.08 hours after the start of the experiment ("4.08" in column D).
 
-```{r timemeasures, fig.fullwidth = FALSE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Measurements of time in the example data collection template. The four highlighted columns (columns A, B, C, and D) are all used in this spreadsheet to record time. The methods of recording time in this template, however, may make it more likely to create errors in data recording and collection and will make it harder to use the data in a reproducible pipeline."}
+```{r timemeasures, echo = FALSE, out.width = "100%", fig.cap = "Measurements of time in the example data collection template. The four highlighted columns (columns A, B, C, and D) are all used in this spreadsheet to record time. The methods of recording time in this template, however, may make it more likely to create errors in data recording and collection and will make it harder to use the data in a reproducible pipeline."}
 knitr::include_graphics("figures/growth_curve_time_measures.png")
 ```
 
@@ -213,21 +213,22 @@ format.
 Next, let's look at how the template collects data related to cell growth in
 each tube (columns E--I, Figure \@ref(fig:growthmeasures)). These data are
 recorded in a format that will work pretty well. Strictly speaking, they aren't
-fully tidy (module 2.3), since the column headers include information that we
+fully tidy (module \@ref(module3)), since the column headers include information that we
 might want to use as variables in analysis and visualization. Specifically, each
 test tube's ID is incorporated in the column name where measurements for that
 tube are recorded, since each test tube is recorded using a separate column. 
 
-```{r growthmeasures, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Measurements of bacterial growth in the example data collection template. The five highlighted columns (columns E--I) are all used in this spreadsheet to record optical density in each test tube at each measurement time."}
+```{r growthmeasures, echo = FALSE, out.width = "100%", fig.cap = "Measurements of bacterial growth in the example data collection template. The five highlighted columns (columns E--I) are all used in this spreadsheet to record optical density in each test tube at each measurement time."}
 knitr::include_graphics("figures/growth_curve_growth_measures.png")
 ```
+
 
 If we want to run analysis where we estimate values for each test tube, or
 create plots where each test tube's measurements are shown with a separate line,
 then  once we read the data into another program, we'll need to convert the
 format of the data a bit. However, that's quite easy to do in more statistical
 programming languages now, and so it's reasonable to compromise on this element
-of "tidiness" in the data collection format. As we'll show in the next module,
+of "tidiness" in the data collection format. As we'll show in module \@ref(module5),
 changing this layout in the original data collection would require the
 researcher to re-type the measurement date and time several times and would
 result in the spreadsheet being longer, and so harder to see at once when
@@ -246,17 +247,17 @@ While this can be done in code like R or Python, it will add to the data
 cleaning process and could be avoided by using simpler column names in the
 original data collection template. 
 
-```{r growthformatting, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Examples of special characters and formatting in the example template that could cause problems later in a data analysis pipeline."}
+```{r growthformatting, echo = FALSE, out.width = "100%", fig.cap = "Examples of special characters and formatting in the example template that could cause problems later in a data analysis pipeline."}
 knitr::include_graphics("figures/growth_curve_formatting.png")
 ```
 
-### Converting to a "tidier" format for data collection templates
+## Converting to a "tidier" format for data collection templates
 
 Now that we've looked at characteristics that can make a data collection
 template untidy, let's go through some principles for creating tidy templates to
 record the same data. In this module, we'll focus on higher-level strategies, 
-using the example data collection template to highlight out points. In the 
-next module (module 2.5), we'll provide a detailed walk-through of how the 
+using the example data collection template to highlight out points. In 
+module \@ref(module5), we'll provide a detailed walk-through of how the 
 example template can be modified to use a tidier format. 
 
 There are three basic principles for designing tidy templates that will go a
@@ -290,7 +291,7 @@ store these data in special classes that allow time-related operations (for
 example, calculating the time difference between two date-time measurements). It
 will be most efficient to record all date and time elements in a single column.
 
-```{r arrangingcolumns, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Examples of special characters and formatting in the example template that could cause problems later in a data analysis pipeline."}
+```{r arrangingcolumns, echo = FALSE, out.width = "100%", fig.cap = "Examples of special characters and formatting in the example template that could cause problems later in a data analysis pipeline."}
 knitr::include_graphics("figures/arranging_columns.png")
 ```
 
@@ -313,11 +314,11 @@ spectrum. Figure \@ref(fig:longversuswide) gives two examples of templates that
 collect the same data, but one is using a wider design and the other is using a
 longer design.
 
-```{r longversuswide, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Examples of two ways arranging the same data in a data recording template. The format on the left records the optical density measurements for each test tube in a separate column, and the column header identifies the test tube. This is an example of a 'wider' format. The format on the right records the optical density for all test tupbes in a single column, using a separate column to record which test tube the measurement represents. This is an example of a 'longer' format."}
+```{r longversuswide, echo = FALSE, out.width = "100%", fig.cap = "Examples of two ways arranging the same data in a data recording template. The format on the left records the optical density measurements for each test tube in a separate column, and the column header identifies the test tube. This is an example of a 'wider' format. The format on the right records the optical density for all test tupbes in a single column, using a separate column to record which test tube the measurement represents. This is an example of a 'longer' format."}
 knitr::include_graphics("figures/growth_curve_long_vs_wide.png")
 ```
 
-In module 2.3, we described the rules for the tidy format for dataframes. 
+In module \@ref(module3), we described the rules for the tidy format for dataframes. 
 If you record data directly into a tidy format, it will be very easy to 
 read into a programming language to analyze and visualize. However, 
 this tidy format can sometimes result in datasets that are very long. It 
@@ -400,7 +401,7 @@ understands. By contrast, the values recorded in column D could be easily read
 in by a statistical program, with minimal code needed before they could be used
 in analysis and visualizations.
 
-```{r recordingtime, fig.fullwidth = FALSE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Examples of two ways of recording time in the original template from the example experiment. Column B uses hours and minutes, with characters embedded to separate hours from minutes, while column D uses hours in decimal degrees. The format in column D will be much easier to integrate into a larger data analysis pipeline."}
+```{r recordingtime, echo = FALSE, out.width = "100%", fig.cap = "Examples of two ways of recording time in the original template from the example experiment. Column B uses hours and minutes, with characters embedded to separate hours from minutes, while column D uses hours in decimal degrees. The format in column D will be much easier to integrate into a larger data analysis pipeline."}
 knitr::include_graphics("figures/growth_curve_recording_time.png")
 ```
 
@@ -413,12 +414,12 @@ When you convert data collection templates to "tidier" formats, they will
 typically look much simpler than the templates that your research group may have
 been using. In the example experiment that we described earlier in this module,
 this process of tidying the template results in a template like that shown in
-Figure \@ref(fig:growthsimple1) (in the next module, we'll walk through all the
+Figure \@ref(fig:growthsimple1) (in module \@ref(module5), we'll walk through all the
 steps to create this tidier template, using this principles we've covered in
 this module). By comparison, the starting template for data collection for this
 experiment is shown in Figure \@ref(fig:growthexcel1).
 
-```{r growthsimple1, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created---these are all done later, using a code script."}
+```{r growthsimple1, echo = FALSE, out.width = "100%", fig.cap = "Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created---these are all done later, using a code script."}
 knitr::include_graphics("figures/growth_curve_simple.png")
 ```
 
@@ -436,15 +437,16 @@ Figure \@ref(fig:growthreport1) shows an example of a simple report that could
 be created for the example experiment. This report is generated using a
 statistical program, R, which inputs the data from the simple template shown in
 Figure \@ref(fig:growthsimple1). The report then uses R code to generate a PDF
-or Word file with the output shown below. The file for this report is created in 
-a way that the output can be quickly regenerated with a single button click, and 
-so it can be applied to other data saved using the same template. In fact, you can 
-create templates for reports that coordinate with each data collection template 
-that you create. In the next module, we'll walk through how you could create 
-the generating file for this report, and in later modules (3.7--3.9), we provide 
-a thorough overview of creating these types of "knitted" documents.
+or Word file with the output shown below. The file for this report is created in
+a way that the output can be quickly regenerated with a single button click, and
+so it can be applied to other data saved using the same template. In fact, you
+can create templates for reports that coordinate with each data collection
+template that you create. In module \@ref(module5), we'll walk through how you
+could create the generating file for this report, and in other modules (modules
+\@ref(module18)--\@ref(module20)), we provide a thorough overview of creating
+these types of "knitted" documents.
 
-```{r growthreport1, fig.fullwidth = TRUE, echo = FALSE, out.width = "\\textwidth", fig.cap = "Examples of an automated report that can be created to quickly generate summaries and estimates of the data collected in the simplified data collection template for the example experiment."}
+```{r growthreport1, echo = FALSE, out.width = "100%", fig.cap = "Examples of an automated report that can be created to quickly generate summaries and estimates of the data collected in the simplified data collection template for the example experiment."}
 knitr::include_graphics("figures/growth_curve_report.png")
 ```
 
@@ -456,14 +458,15 @@ The separate report (Figure \@ref(fig:growthreport1)) provides a starting point 
 be easily adapted to make more complex figures and analysis, as well as to integrate
 the collected data with data measured in other ways for the experiment. 
 
-### Learning more about tidy data collection in the laboratory
+## Learning more about tidy data collection in the laboratory
 
 It may take some iteration to develop the data collection templates that are both 
 convenient and appropriate to input to more complex programs for pre-processing, 
-analysis, and visualization. This module and the next module provide guidance and 
+analysis, and visualization. This module and module \@ref(module5) provide guidance and 
 examples, but it can be helpful to see more examples. Two excellent resources on this
 topic are articles by @ellis2018share and @broman2018data.
 
 <!-- ### Applied exercise -->
+
 
 

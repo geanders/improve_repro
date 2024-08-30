@@ -1,92 +1,82 @@
-\documentclass[]{tufte-book}
-
-% ams
-\usepackage{amssymb,amsmath}
-
-\usepackage{ifxetex,ifluatex}
-\usepackage{fixltx2e} % provides \textsubscript
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
-\else % if luatex or xelatex
-  \makeatletter
-  \@ifpackageloaded{fontspec}{}{\usepackage{fontspec}}
-  \makeatother
-  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
-  \makeatletter
-  \@ifpackageloaded{soul}{
-     \renewcommand\allcapsspacing[1]{{\addfontfeature{LetterSpace=15}#1}}
-     \renewcommand\smallcapsspacing[1]{{\addfontfeature{LetterSpace=10}#1}}
-   }{}
-  \makeatother
-
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
-
-% graphix
-\usepackage{graphicx}
-\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
-
-% booktabs
-\usepackage{booktabs}
-
-% url
-\usepackage{url}
-
-% hyperref
-\usepackage{hyperref}
-
-% units.
-\usepackage{units}
-
-
-\setcounter{secnumdepth}{2}
-
-% citations
-\usepackage{natbib}
-\bibliographystyle{apalike}
-
-
-% pandoc syntax highlighting
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
 \usepackage{color}
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
 \newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
 % Add ',fontsize=\small' for more characters per line
-\newenvironment{Shaded}{}{}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
-\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
 \newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
-\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
 \newcommand{\NormalTok}[1]{#1}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
 \newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
-
-% table with pandoc
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
@@ -97,26 +87,23 @@
 % Allow footnotes in longtable head/foot
 \IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
 \makesavenoteenv{longtable}
-
-% multiplecol
-\usepackage{multicol}
-
-% strikeout
-\usepackage[normalem]{ulem}
-
-% morefloats
-\usepackage{morefloats}
-
-
-% tightlist macro required by pandoc >= 1.14
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-
-% title / author / date
-\title{Improving the Reproducibility of Experimental Data Recording and Pre-Processing}
-\author{Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, and Gregory Robertson}
-\date{}
-
+\setcounter{secnumdepth}{5}
 \usepackage{booktabs}
 \usepackage{amsthm}
 \usepackage{fontspec}
@@ -127,19 +114,33 @@
   \thm@postskip=\thm@preskip
 }
 \makeatother
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage[]{natbib}
+\bibliographystyle{plainnat}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Improving the Reproducibility of Experimental Data Recording and Pre-Processing},
+  pdfauthor={Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Improving the Reproducibility of Experimental Data Recording and Pre-Processing}
+\author{Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson}
+\date{}
 
 \begin{document}
-
 \maketitle
 
-
-
 {
-\setcounter{tocdepth}{1}
+\setcounter{tocdepth}{2}
 \tableofcontents
 }
-
-\chapter{Overview of these modules}\label{overview-of-these-modules}
+\section*{Overview of these modules}\label{overview-of-these-modules}
+\addcontentsline{toc}{section}{Overview of these modules}
 
 The NIH-Wide Strategic Plan \citep{nih2016strategic}
 describes an integrative view of biology and human health that includes
@@ -161,7 +162,7 @@ failure points for reproducibility at the stages of data recording and
 pre-processing.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/existing_blackboxes} \caption[Two scenarios where 'black boxes' of non-transparent, non-reproducible data handling exist in research data workflows at the stages of data recording and pre-processing]{Two scenarios where 'black boxes' of non-transparent, non-reproducible data handling exist in research data workflows at the stages of data recording and pre-processing. These create potential points of failure for reproducible research. Red arrows indicate where data is passed to other research team members, including statisticians / data analysts, often within complex or unstructured spreadsheet files.}\label{fig:workflow}
+\includegraphics[width=1\linewidth]{figures/existing_blackboxes} \caption{Two scenarios where 'black boxes' of non-transparent, non-reproducible data handling exist in research data workflows at the stages of data recording and pre-processing. These create potential points of failure for reproducible research. Red arrows indicate where data is passed to other research team members, including statisticians / data analysts, often within complex or unstructured spreadsheet files.}\label{fig:workflow}
 \end{figure}
 
 It is widely known and discussed among data scientists, mathematical modelers,
@@ -199,42 +200,16 @@ these training modules, we have choosen topics that tackle barriers to
 reproducibility that have straightforward, easy-to-teach solutions, but which
 are still very common in biomedical laboratory-based research programs.
 
-\subsection{License}\label{license}
+\subsubsection*{License}\label{license}
+\addcontentsline{toc}{subsubsection}{License}
 
 This book is licensed under the \href{https://creativecommons.org/licenses/by-nc-sa/4.0/}{Creative Commons
 Attribution-NonCommercial-ShareAlike 4.0 International
 License}, while all code in
 the book is under the \href{https://opensource.org/licenses/MIT}{MIT license}.
 
-\chapter{Experimental Data Recording}\label{experimental-data-recording}
-
-This section includes modules on:
-
-\begin{itemize}
-\tightlist
-\item
-  \hyperref[module1]{Module 2.1: Separating data recording and analysis}
-\item
-  \hyperref[module2]{Module 2.2: Principles and power of structured data formats}
-\item
-  \hyperref[module3]{Module 2.3: The ``tidy'' data format}
-\item
-  \hyperref[module4]{Module 2.4: Designing templates for ``tidy'' data collection}
-\item
-  \hyperref[module5]{Module 2.5: Example: Creating a template for ``tidy'' data collection}
-\item
-  \hyperref[module6]{Module 2.6: Organizing project files}
-\item
-  \hyperref[module7]{Module 2.7: Creating project directory templates}
-\item
-  \hyperref[module8]{Module 2.8: Example: Creating a project template}
-\item
-  \hyperref[module9]{Module 2.9: Harnessing version control for transparent data recording}
-\item
-  \hyperref[module10]{Module 2.10: Enhance the reproducibility of collaborative research with version control platforms}
-\item
-  \hyperref[module11]{Module 2.11: Using Git and GitHub to implement version control}
-\end{itemize}
+\part*{Experimental Data Recording}\label{part-experimental-data-recording}
+\addcontentsline{toc}{part}{Experimental Data Recording}
 
 \section{Separating data recording and analysis}\label{module1}
 
@@ -403,7 +378,7 @@ Those include:
 
 Let's take a look at each of these.
 
-\textbf{Raw data often lost}
+\subsubsection{Raw data often lost}\label{raw-data-often-lost}
 
 One of the key tenets of ensuring that research is computationally reproducible
 is to always keep a copy of all raw data, as well as the steps taken to get from
@@ -440,7 +415,7 @@ plain text files should be widely accessible through general purpose tools---a
 text editor is a type of software available on all computers, for
 example---regardless of changes to proprietary software like Microsoft Excel.
 
-\textbf{Analysis steps are often opaque}
+\subsubsection{Analysis steps are often opaque}\label{analysis-steps-are-often-opaque}
 
 To keep analysis steps clear---whether the calculation is being done in scripted
 code or in spreadsheets or in pen-and-paper calculations---it is important to
@@ -530,7 +505,7 @@ requirements at the time of publication.''
 \citep{anderson2007issues}
 \end{quote}
 
-\textbf{Potential for errors}
+\subsubsection{Potential for errors}\label{potential-for-errors}
 
 Because spreadsheets often do a poor job of making the analysis steps
 transparent, they can be prone to bugs in analysis. As one early article on
@@ -598,7 +573,7 @@ lifespan of a spreadsheet can extend and extend---a spreadsheet created by one
 user for their own personal use can end up being used and modified by that
 person or others for years \citep{hermans2016spreadsheets}.
 
-\textbf{Better software tools are available}
+\subsubsection{Better software tools are available}\label{better-software-tools-are-available}
 
 While spreadsheets serve as a widely-used tool for data recording and analysis,
 in many cases spreadsheets programs are poorly suited to pre-process and analyze
@@ -686,7 +661,7 @@ per spreadsheet. Even when spreadsheets can handle larger data, their efficiency
 in running data processing and analysis pipelines across large datasets can be
 slow compared to code implemented with other programming languages.
 
-\textbf{Difficulty collaborating with statisticians}
+\subsubsection{Difficulty collaborating with statisticians}\label{difficulty-collaborating-with-statisticians}
 
 Modern biomedical researchers requires large teams, with statisticians and
 bioinformaticians often included, to enable sophisticated processing and
@@ -880,7 +855,7 @@ stable, which can frustrate community members, as scripts and software must be
 revamped to handle shifting formats \citep{buffalo2015bioinformatics, barga2011bioinformatics}. In some cases, a useful compromise is to follow a
 general data recording format, rather than one that is very prescriptive. For
 example, committing to recording data in a format that is ``tidy'' (which we
-discuss extensively in the next module) may be much more flexible---and able to
+discuss extensively in module \ref{module3}) may be much more flexible---and able to
 meet the needs of a large range of experimental designs---than the use of a
 common spreadsheet template or a more prescriptive standardized data format.
 
@@ -891,7 +866,7 @@ content that should be included in a dataset, and the format in which that
 content is stored. One article names these three facets of a data standard as
 \emph{ontologies}, \emph{minimum information}, and \emph{file formats} \citep{ghosh2011software}.
 
-\textbf{Ontology standards.}
+\subsubsection{Ontology standards}\label{ontology-standards}
 
 The first facet of a data standard is called an \emph{ontology} (sometimes called a
 \emph{terminology} \citep{sansone2012toward}). An ontology helps define a vocabulary that
@@ -956,7 +931,7 @@ capitalization (for example, to change all letters in a character string to
 lower case), this process does require an extra step of data cleaning and an
 extra chance for confusion or for errors to be introduced into data.
 
-\textbf{Minimum information standards}
+\subsubsection{Minimum information standards}\label{minimum-information-standards}
 
 Another part of a data standard is \emph{minimum information}. Within a data
 recording standard, minimum information (sometimes also called \emph{minimum
@@ -981,7 +956,7 @@ Experiment (MIAPE), and the Minimum Information for Biological and Biomedical
 Investigations (MIBBI) project.'' \citep{ghosh2011software}
 \end{quote}
 
-\textbf{Standardized file formats}
+\subsubsection{Standardized file formats}\label{standardized-file-formats}
 
 While using a standard ontology and a standard for minimum information is a
 helpful start, it just means that each dataset has the required elements
@@ -1212,12 +1187,12 @@ to ensure that the data cleaning process is not introducing errors. By contrast,
 if the data is recorded in a two-dimensional format with a single row of column
 names as the first row, data analysts can likely read it quickly and cleanly
 into other programs, with low risks of errors in the transfer of data from the
-spreadsheet. In the next module, we'll go into detail about a more refined
+spreadsheet. In module \ref{module3}, we'll go into detail about a more refined
 format for these two-dimensional data called the tidy data format.
 
 \section{The ``tidy'' data format}\label{module3}
 
-In the previous module, we explained the benefits of saving data in a structured
+In module \ref{module2}, we explained the benefits of saving data in a structured
 format, and in particular one that follows standards for your discipline. In
 this section, we'll talk about the ``tidy'' data format. The tidy data format is
 one implementation of a tabular, two-dimensional structured data format that has
@@ -1360,7 +1335,7 @@ up in data recording templates for laboratory research. The checklist is:
   Data types are consistent within a column
 \end{itemize}
 
-In module 2.1, we discussed the first two principles, highlighting how
+In module \ref{module1}, we discussed the first two principles, highlighting how
 important it is to separate data collection from further steps of data
 processing and analysis. To start this module, we'll go through other
 items in this checklist, to help you understand what makes a dataset follow the
@@ -1617,7 +1592,7 @@ and use certain patterns in strings (\texttt{stringr}). Finally, the tidyverse
 includes powerful functions for visualizing data, based around the \texttt{ggplot2}
 package, which implements a ``grammar of graphics'' within R. We cover some
 tidyverse tools you may find helpful for pre-processing biomedical data in
-module 3.5.
+module \ref{module16}.
 
 You can install and load any of these tidyverse packages one-by-one using the
 \texttt{install.packages} and \texttt{library} functions with the package name from within R.
@@ -1657,13 +1632,13 @@ In research collaborations, have you experienced a case where the data format fo
 
 In this module, we will use a real example of data collected in a biomedical
 laboratory. We'll use this example to show how data is often collected in a way
-that is not ``tidy'' (module 2.3), focusing on the features of data collection
+that is not ``tidy'' (module \ref{module3}), focusing on the features of data collection
 that make it ``untidy''. We'll then describe some general principles for why and
 how to instead create and use tidy (or at least tidier) templates to collect
 data in the laboratory. We'll also show how this can be the first step in a
 pipeline to creating useful, attractive, and reproducible reports that describe
 the data you collected. This module will focus on the principles of templates
-for tidy data collection, while in the next module we'll dig deeper into the
+for tidy data collection, while in module \ref{module5} we'll dig deeper into the
 details of making this conversion for the example dataset that we use as a
 demonstration in this module.
 
@@ -1702,9 +1677,9 @@ original data collection template, and use this to walk through some details of
 this dataset. Figure \ref{fig:growthexcel1} provides an annotated view of the
 data set, showing the format used when the data were originally collected.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/growth_curve_example} \caption[Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment]{Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column.}\label{fig:growthexcel1}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/growth_curve_example} \caption{Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column.}\label{fig:growthexcel1}
+\end{figure}
 
 These data were collected to measure the compare growth yield and doubling time
 of \emph{Mycobacterium tuberculosis} (the bacteria that causes tuberculosis in
@@ -1779,7 +1754,7 @@ the chance of errors in recording the data and in calculating summaries based on
 data. They also make it hard to move the data into a reproducible pipeline, and
 so limit opportunities for more sophisticated analysis and visualization. In the
 next section of this module, we'll highlight features of data collection templates
-like this one that can make data collection untidy. In the next module (module 2.5),
+like this one that can make data collection untidy. In module \ref{module5},
 we'll discuss how you could create a new data collection template for this example
 data that would be tidier, and use this to open a more general discussion of
 principles of tidy data collection templates.
@@ -1798,9 +1773,9 @@ highlighted by the blue box). The ``extra'' elements on the spreadsheet, which
 include the output from calculations, plots, macros, and notes, make it harder
 to isolate the raw data from the file when using a statistical program.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/growth_curve_raw_data} \caption[Isolating raw data collected in a template from extra elements]{Isolating raw data collected in a template from extra elements. The box in this figure highlights the area of the spreadsheet where data are collected. All other elements of the spreadsheet focus on other aims (e.g., summarizing these data, adding notes, macros for experimental design). Those other elements make it difficult to extract the raw data for more advanced analysis and visualization through a statistical program like R, Python, or Perl.}\label{fig:extractraw}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/growth_curve_raw_data} \caption{Isolating raw data collected in a template from extra elements. The box in this figure highlights the area of the spreadsheet where data are collected. All other elements of the spreadsheet focus on other aims (e.g., summarizing these data, adding notes, macros for experimental design). Those other elements make it difficult to extract the raw data for more advanced analysis and visualization through a statistical program like R, Python, or Perl.}\label{fig:extractraw}
+\end{figure}
 
 While these extra elements make it hard to extract the raw data, it isn't
 impossible. Programming languages like R include functions to read data in from
@@ -1839,7 +1814,7 @@ after the start of the experiment (``4hr 5min'' in column B) or, since 5 minutes
 8\% of an hour, 4.08 hours after the start of the experiment (``4.08'' in column D).
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/growth_curve_time_measures} \caption[Measurements of time in the example data collection template]{Measurements of time in the example data collection template. The four highlighted columns (columns A, B, C, and D) are all used in this spreadsheet to record time. The methods of recording time in this template, however, may make it more likely to create errors in data recording and collection and will make it harder to use the data in a reproducible pipeline.}\label{fig:timemeasures}
+\includegraphics[width=1\linewidth]{figures/growth_curve_time_measures} \caption{Measurements of time in the example data collection template. The four highlighted columns (columns A, B, C, and D) are all used in this spreadsheet to record time. The methods of recording time in this template, however, may make it more likely to create errors in data recording and collection and will make it harder to use the data in a reproducible pipeline.}\label{fig:timemeasures}
 \end{figure}
 
 There are a few things that could be changed about how the time data are
@@ -1878,21 +1853,21 @@ format.
 Next, let's look at how the template collects data related to cell growth in
 each tube (columns E--I, Figure \ref{fig:growthmeasures}). These data are
 recorded in a format that will work pretty well. Strictly speaking, they aren't
-fully tidy (module 2.3), since the column headers include information that we
+fully tidy (module \ref{module3}), since the column headers include information that we
 might want to use as variables in analysis and visualization. Specifically, each
 test tube's ID is incorporated in the column name where measurements for that
 tube are recorded, since each test tube is recorded using a separate column.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/growth_curve_growth_measures} \caption[Measurements of bacterial growth in the example data collection template]{Measurements of bacterial growth in the example data collection template. The five highlighted columns (columns E--I) are all used in this spreadsheet to record optical density in each test tube at each measurement time.}\label{fig:growthmeasures}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/growth_curve_growth_measures} \caption{Measurements of bacterial growth in the example data collection template. The five highlighted columns (columns E--I) are all used in this spreadsheet to record optical density in each test tube at each measurement time.}\label{fig:growthmeasures}
+\end{figure}
 
 If we want to run analysis where we estimate values for each test tube, or
 create plots where each test tube's measurements are shown with a separate line,
 then once we read the data into another program, we'll need to convert the
 format of the data a bit. However, that's quite easy to do in more statistical
 programming languages now, and so it's reasonable to compromise on this element
-of ``tidiness'' in the data collection format. As we'll show in the next module,
+of ``tidiness'' in the data collection format. As we'll show in module \ref{module5},
 changing this layout in the original data collection would require the
 researcher to re-type the measurement date and time several times and would
 result in the spreadsheet being longer, and so harder to see at once when
@@ -1911,17 +1886,17 @@ While this can be done in code like R or Python, it will add to the data
 cleaning process and could be avoided by using simpler column names in the
 original data collection template.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/growth_curve_formatting} \caption[Examples of special characters and formatting in the example template that could cause problems later in a data analysis pipeline]{Examples of special characters and formatting in the example template that could cause problems later in a data analysis pipeline.}\label{fig:growthformatting}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/growth_curve_formatting} \caption{Examples of special characters and formatting in the example template that could cause problems later in a data analysis pipeline.}\label{fig:growthformatting}
+\end{figure}
 
 \subsection{Converting to a ``tidier'' format for data collection templates}\label{converting-to-a-tidier-format-for-data-collection-templates}
 
 Now that we've looked at characteristics that can make a data collection
 template untidy, let's go through some principles for creating tidy templates to
 record the same data. In this module, we'll focus on higher-level strategies,
-using the example data collection template to highlight out points. In the
-next module (module 2.5), we'll provide a detailed walk-through of how the
+using the example data collection template to highlight out points. In
+module \ref{module5}, we'll provide a detailed walk-through of how the
 example template can be modified to use a tidier format.
 
 There are three basic principles for designing tidy templates that will go a
@@ -1955,9 +1930,9 @@ store these data in special classes that allow time-related operations (for
 example, calculating the time difference between two date-time measurements). It
 will be most efficient to record all date and time elements in a single column.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/arranging_columns} \caption[Examples of special characters and formatting in the example template that could cause problems later in a data analysis pipeline]{Examples of special characters and formatting in the example template that could cause problems later in a data analysis pipeline.}\label{fig:arrangingcolumns}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/arranging_columns} \caption{Examples of special characters and formatting in the example template that could cause problems later in a data analysis pipeline.}\label{fig:arrangingcolumns}
+\end{figure}
 
 Conversely if you have complex data with different elements (for example, height
 in components of inches and feet), it may make sense to use separate columns for
@@ -1977,11 +1952,11 @@ spectrum. Figure \ref{fig:longversuswide} gives two examples of templates that
 collect the same data, but one is using a wider design and the other is using a
 longer design.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/growth_curve_long_vs_wide} \caption[Examples of two ways arranging the same data in a data recording template]{Examples of two ways arranging the same data in a data recording template. The format on the left records the optical density measurements for each test tube in a separate column, and the column header identifies the test tube. This is an example of a 'wider' format. The format on the right records the optical density for all test tupbes in a single column, using a separate column to record which test tube the measurement represents. This is an example of a 'longer' format.}\label{fig:longversuswide}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/growth_curve_long_vs_wide} \caption{Examples of two ways arranging the same data in a data recording template. The format on the left records the optical density measurements for each test tube in a separate column, and the column header identifies the test tube. This is an example of a 'wider' format. The format on the right records the optical density for all test tupbes in a single column, using a separate column to record which test tube the measurement represents. This is an example of a 'longer' format.}\label{fig:longversuswide}
+\end{figure}
 
-In module 2.3, we described the rules for the tidy format for dataframes.
+In module \ref{module3}, we described the rules for the tidy format for dataframes.
 If you record data directly into a tidy format, it will be very easy to
 read into a programming language to analyze and visualize. However,
 this tidy format can sometimes result in datasets that are very long. It
@@ -2065,7 +2040,7 @@ in by a statistical program, with minimal code needed before they could be used
 in analysis and visualizations.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/growth_curve_recording_time} \caption[Examples of two ways of recording time in the original template from the example experiment]{Examples of two ways of recording time in the original template from the example experiment. Column B uses hours and minutes, with characters embedded to separate hours from minutes, while column D uses hours in decimal degrees. The format in column D will be much easier to integrate into a larger data analysis pipeline.}\label{fig:recordingtime}
+\includegraphics[width=1\linewidth]{figures/growth_curve_recording_time} \caption{Examples of two ways of recording time in the original template from the example experiment. Column B uses hours and minutes, with characters embedded to separate hours from minutes, while column D uses hours in decimal degrees. The format in column D will be much easier to integrate into a larger data analysis pipeline.}\label{fig:recordingtime}
 \end{figure}
 
 These three principles are an excellent starting point for designing a tidy
@@ -2077,14 +2052,14 @@ When you convert data collection templates to ``tidier'' formats, they will
 typically look much simpler than the templates that your research group may have
 been using. In the example experiment that we described earlier in this module,
 this process of tidying the template results in a template like that shown in
-Figure \ref{fig:growthsimple1} (in the next module, we'll walk through all the
+Figure \ref{fig:growthsimple1} (in module \ref{module5}, we'll walk through all the
 steps to create this tidier template, using this principles we've covered in
 this module). By comparison, the starting template for data collection for this
 experiment is shown in Figure \ref{fig:growthexcel1}.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/growth_curve_simple} \caption[Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure]{Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created---these are all done later, using a code script.}\label{fig:growthsimple1}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/growth_curve_simple} \caption{Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created---these are all done later, using a code script.}\label{fig:growthsimple1}
+\end{figure}
 
 By comparing these two templates, you can see that the simpler template does
 not, by itself, provide immediate, real-time summaries of the collected data. The
@@ -2102,15 +2077,16 @@ statistical program, R, which inputs the data from the simple template shown in
 Figure \ref{fig:growthsimple1}. The report then uses R code to generate a PDF
 or Word file with the output shown below. The file for this report is created in
 a way that the output can be quickly regenerated with a single button click, and
-so it can be applied to other data saved using the same template. In fact, you can
-create templates for reports that coordinate with each data collection template
-that you create. In the next module, we'll walk through how you could create
-the generating file for this report, and in later modules (3.7--3.9), we provide
-a thorough overview of creating these types of ``knitted'' documents.
+so it can be applied to other data saved using the same template. In fact, you
+can create templates for reports that coordinate with each data collection
+template that you create. In module \ref{module5}, we'll walk through how you
+could create the generating file for this report, and in other modules (modules
+\ref{module18}--\ref{module20}), we provide a thorough overview of creating
+these types of ``knitted'' documents.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/growth_curve_report} \caption[Examples of an automated report that can be created to quickly generate summaries and estimates of the data collected in the simplified data collection template for the example experiment]{Examples of an automated report that can be created to quickly generate summaries and estimates of the data collected in the simplified data collection template for the example experiment.}\label{fig:growthreport1}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/growth_curve_report} \caption{Examples of an automated report that can be created to quickly generate summaries and estimates of the data collected in the simplified data collection template for the example experiment.}\label{fig:growthreport1}
+\end{figure}
 
 The report shown in Figure \ref{fig:growthreport1} repeats some of the same summaries
 that were shown in the more complex original data collection template
@@ -2124,7 +2100,7 @@ the collected data with data measured in other ways for the experiment.
 
 It may take some iteration to develop the data collection templates that are both
 convenient and appropriate to input to more complex programs for pre-processing,
-analysis, and visualization. This module and the next module provide guidance and
+analysis, and visualization. This module and module \ref{module5} provide guidance and
 examples, but it can be helpful to see more examples. Two excellent resources on this
 topic are articles by \citet{ellis2018share} and \citet{broman2018data}.
 
@@ -2192,9 +2168,9 @@ bacteria growth using a measure of optical density. Figure
 \ref{fig:growthexcel2} shows the original template that the research group used
 to record these data.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/growth_curve_example} \caption[Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment]{Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column.}\label{fig:growthexcel2}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/growth_curve_example} \caption{Example of an Excel spreadsheet used to record and analyze data for a laboratory experiment. Annotations highlight where data is entered by hand, where calculations are done by hand, and where embedded Excel formulas are used. The figures are created automatically using values in a specified column.}\label{fig:growthexcel2}
+\end{figure}
 
 In the previous module, we described features that make this template ``untidy''
 and potentially problematic to include in a larger pipeline of reproducible
@@ -2232,9 +2208,9 @@ while working in the laboratory, but you should make sure that you're not using
 it to encode information about the data---all color formatting will be ignored
 when the data are read by a statistical program like R.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/growth_curve_step1} \caption[First step in designing a tidy data collection template for the example project]{First step in designing a tidy data collection template for the example project. A template has been created that focuses only on the raw data, removing all extra elements like plots, notes, macros, and summaries.}\label{fig:step1}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/growth_curve_step1} \caption{First step in designing a tidy data collection template for the example project. A template has been created that focuses only on the raw data, removing all extra elements like plots, notes, macros, and summaries.}\label{fig:step1}
+\end{figure}
 
 Other ``extras'' in spreadsheets are embedded elements like formulas and macros.
 To make your data collection tidy, you should remove any computation steps from
@@ -2259,7 +2235,7 @@ collected in the course of the experiment. It has removed all elements that are
 based on calculations or other derivatives of those original, raw data points.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/growth_curve_step2} \caption[Second step in designing a tidy data collection template for the example project]{Second step in designing a tidy data collection template for the example project. This template started from the previous one, but removed columns that were hand-calculated and then entered by the researcher in the previous template. This version has removed all calculated values on the template, limiting it to only the original recorded values required for the experiment.}\label{fig:step2}
+\includegraphics[width=1\linewidth]{figures/growth_curve_step2} \caption{Second step in designing a tidy data collection template for the example project. This template started from the previous one, but removed columns that were hand-calculated and then entered by the researcher in the previous template. This version has removed all calculated values on the template, limiting it to only the original recorded values required for the experiment.}\label{fig:step2}
 \end{figure}
 
 \subsection{Making sensible choices about rows and columns}\label{making-sensible-choices-about-rows-and-columns}
@@ -2277,9 +2253,9 @@ that we can consider to arrange data collection across rows and columns.
 All three build on the changes we made in the earlier step of ``tidying'' the template,
 which resulted in the template shown in Figure \ref{fig:step2}.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/growth_curve_column_options} \caption[Examples of ways that data collection could be divided into rows and columns in the example template]{Examples of ways that data collection could be divided into rows and columns in the example template. Panel A shows an example where date and time are recorded in different columns. Panel B is similar to Panel A, but in this case, date and time are recorded in a single column. Panel C shows a classically 'tidy' data format, where each measurement date-time is repeated for each of the five test tubes, and columns give the test tube ID and absorbance measurement at that time for that tube (only part of the data is shown for this format, while remaining rows are off the page). While Panel C provides the 'tidiest' format, it may have some practical constraints when used in a laboratory setting. For example, it would require more data entry during data collection (since date-time is entered five times at each measurement time), and its long format prevent it all from being seen at once without scrolling on a computer screen.}\label{fig:columnoptions}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/growth_curve_column_options} \caption{Examples of ways that data collection could be divided into rows and columns in the example template. Panel A shows an example where date and time are recorded in different columns. Panel B is similar to Panel A, but in this case, date and time are recorded in a single column. Panel C shows a classically 'tidy' data format, where each measurement date-time is repeated for each of the five test tubes, and columns give the test tube ID and absorbance measurement at that time for that tube (only part of the data is shown for this format, while remaining rows are off the page). While Panel C provides the 'tidiest' format, it may have some practical constraints when used in a laboratory setting. For example, it would require more data entry during data collection (since date-time is entered five times at each measurement time), and its long format prevent it all from being seen at once without scrolling on a computer screen.}\label{fig:columnoptions}
+\end{figure}
 
 Panel A (an exact repeat of the template shown in Figure \ref{fig:step2}) shows
 an example where date and time are recorded in different columns. Panel B is
@@ -2319,9 +2295,9 @@ single column. In this version of the template, we've also been careful about
 how date and time are recorded, a consideration that we'll discuss more in the
 next section.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/growth_curve_step3} \caption[Third step in designing a tidy data collection template for the example project]{Third step in designing a tidy data collection template for the example project. This template started from the previous one, but combined collection of the date and time of the measurement into a single column and revised the format to include all date elements and to prevent automatic conversion by the spreadsheet program.}\label{fig:step3}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/growth_curve_step3} \caption{Third step in designing a tidy data collection template for the example project. This template started from the previous one, but combined collection of the date and time of the measurement into a single column and revised the format to include all date elements and to prevent automatic conversion by the spreadsheet program.}\label{fig:step3}
+\end{figure}
 
 \subsection{Avoiding problematic characters or formatting}\label{avoiding-problematic-characters-or-formatting}
 
@@ -2377,7 +2353,7 @@ template can be very easily read into and processed using further statistical pr
 R or Python.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/growth_curve_simple} \caption[Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure]{Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created---these are all done later, using a code script.}\label{fig:growthsimple2}
+\includegraphics[width=1\linewidth]{figures/growth_curve_simple} \caption{Example of an simpler format that can be used to record and analyze data for the same laboratory experiment as the previous figure. Annotations highlight where data is entered by hand. No calculations are conducted or figures created---these are all done later, using a code script.}\label{fig:growthsimple2}
 \end{figure}
 
 \subsection{Separating data analysis from data collection}\label{separating-data-analysis-from-data-collection}
@@ -2390,9 +2366,9 @@ files) for collecting data from those for analyzing data. Figure
 that could be created to pair with the data collection template shown in Figure
 \ref{fig:growthsimple2}.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/growth_curve_report} \caption[Examples of an automated report that can be created to quickly generate summaries and estimates of the data collected in the simplified data collection template for the example experiment]{Examples of an automated report that can be created to quickly generate summaries and estimates of the data collected in the simplified data collection template for the example experiment.}\label{fig:growthreport2}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/growth_curve_report} \caption{Examples of an automated report that can be created to quickly generate summaries and estimates of the data collected in the simplified data collection template for the example experiment.}\label{fig:growthreport2}
+\end{figure}
 
 To create a report template like this, you can use tools for reproducible
 reports from statistical programs like R and Python. In this section, we will
@@ -2438,9 +2414,9 @@ code, you will have an object in R called \texttt{growth\_data}, which contains 
 in a two-dimensional form very similar to how it is recorded in the spreadsheet
 (this type of object in R is called a dataframe).
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/growth_curve_readxl} \caption[Code to read data from the data collection template into R for cleaning, analysis, and visualization]{Code to read data from the data collection template into R for cleaning, analysis, and visualization. The data were recorded in the tidy data collection template described earlier in this module. Here, those data are read into R (code shown at top). The resulting data in R are stored in a format that is very similar to the design of a spreadsheet, with rows for observations and columns for the values recorded for each observation (bottom).}\label{fig:growthreadexcel}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/growth_curve_readxl} \caption{Code to read data from the data collection template into R for cleaning, analysis, and visualization. The data were recorded in the tidy data collection template described earlier in this module. Here, those data are read into R (code shown at top). The resulting data in R are stored in a format that is very similar to the design of a spreadsheet, with rows for observations and columns for the values recorded for each observation (bottom).}\label{fig:growthreadexcel}
+\end{figure}
 
 Another key step is to calculate, for each observation, the time since the start
 of the experiment. In the original data collection template shown in Figure
@@ -2466,9 +2442,9 @@ started. This lets us compare each observation time to the time of the start of
 the experiment. The result of this code is a new version of the \texttt{growth\_data}
 dataframe, with a new column giving time since the start of the experiment:
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/growth_curve_adddifftime} \caption[Code to add a column to the data that gives the time since the start of the experiment]{Code to add a column to the data that gives the time since the start of the experiment. This code (top) uses the time recorded for each experiment and compares it to the first recorded time, at the start of the experiment. This determines the time since the start of the experiment for each observation, given in a new column in the data (bottom).}\label{fig:growthadddifftime}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/growth_curve_adddifftime} \caption{Code to add a column to the data that gives the time since the start of the experiment. This code (top) uses the time recorded for each experiment and compares it to the first recorded time, at the start of the experiment. This determines the time since the start of the experiment for each observation, given in a new column in the data (bottom).}\label{fig:growthadddifftime}
+\end{figure}
 
 Another key step is to plot results from the data. In R, there is a package
 called \texttt{ggplot2} that provides tools for visualization. The tools in this
@@ -2497,9 +2473,9 @@ color and linetype scales. Another layer is used to customize the appearance of
 the plot---things like the background color and the font used---and another
 layer is added to use a log-10 scale for the x-axis.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/growth_curve_plot_code} \caption[Code to plot growth curves from the data]{Code to plot growth curves from the data. When the plotting code is run, the data have been transformed into a 'tidy' format (top), with columns that include the time since the start of the experiment, a test tube ID, the growth condition for the test tube, and the optical density measured in that test tube. The code (middle) add layers to implement each element of the plot based on this input data. The final plot is shown at the bottom.}\label{fig:growthplotcode}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/growth_curve_plot_code} \caption{Code to plot growth curves from the data. When the plotting code is run, the data have been transformed into a 'tidy' format (top), with columns that include the time since the start of the experiment, a test tube ID, the growth condition for the test tube, and the optical density measured in that test tube. The code (middle) add layers to implement each element of the plot based on this input data. The final plot is shown at the bottom.}\label{fig:growthplotcode}
+\end{figure}
 
 While this looks like a lot of code, the process isn't any longer than it would
 be to customize elements of a plot in a spreadsheet program. The advantages of
@@ -2535,9 +2511,9 @@ between each of the times for these observations and the target time, and uses
 this to identify the observation with the closest time to the target. It pulls
 out the time of this observation and returns it.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/growth_curve_function} \caption[Code to create and apply a small function]{Code to create and apply a small function. The code at the top can be used to create a function that can input your dataframe and determine the observation time in that data that is closest to (without being larger than) a target time. The function does this through a series of small steps. This function can then be applied to find the observation time in the data that is closest to specific target times, like 24 hours and 64 hours (bottom).}\label{fig:growthfunction}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/growth_curve_function} \caption{Code to create and apply a small function. The code at the top can be used to create a function that can input your dataframe and determine the observation time in that data that is closest to (without being larger than) a target time. The function does this through a series of small steps. This function can then be applied to find the observation time in the data that is closest to specific target times, like 24 hours and 64 hours (bottom).}\label{fig:growthfunction}
+\end{figure}
 
 Small functions like this can easily be reused in other code for your research
 group. By writing the logic of the step out as a function---rather than redoing
@@ -2560,9 +2536,9 @@ In later modules, we'll talk some more about R coding tools that you might find
 useful for working with biomedical data, including the tools in the powerful and
 popular \texttt{tidyverse} suite of packages.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/growth_curve_load_packages} \caption[Code to load packages with additional functionality]{Code to load packages with additional functionality. These provide functions that are not offered in base R, but that are useful in working with the example data. They include packages with functions for reading in data from an Excel file, as well as packages with functions for cleaning and visualizing data.}\label{fig:growthloadpackage}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/growth_curve_load_packages} \caption{Code to load packages with additional functionality. These provide functions that are not offered in base R, but that are useful in working with the example data. They include packages with functions for reading in data from an Excel file, as well as packages with functions for cleaning and visualizing data.}\label{fig:growthloadpackage}
+\end{figure}
 
 Overall, you can see that the code in this document provides a step-by-step
 recipe that documents all the calculations and cleaning that we do with the
@@ -2665,7 +2641,7 @@ include data, they tend to be more impactful, as measured by
 citations that the paper receives \citep{marwick2018packaging}.
 
 In an earlier module, we introduced Adam Savage's idea of ``knolling'' to keep a
-workspace tidy (Module 2.3). He was talking about a physical workspace. When
+workspace tidy (module \ref{module3}). He was talking about a physical workspace. When
 you are working with data, computer files and directories are your workspace.
 For any type of work, the design of the workspace plays a critical role in
 how the workers approach tasks and solve problems. Rod Judkins, who is a
@@ -2771,7 +2747,7 @@ shared as an email attachment (if the file size is small enough) or through a
 file sharing platform like Google Drive. When all the materials for a project
 are stored in a single directory, it also makes it easier to share the set of
 files through version control and online version control platforms
-\citep{vuorre2021sharing}. In later modules in this book (modules 3.9--3.11), we will
+\citep{vuorre2021sharing}. In later modules in this book (modules \ref{module9}--\ref{module11}), we will
 introduce Git version control software and the GitHub platform for sharing files
 under this type of version control---this is one example of this more dynamic
 way of sharing files, but requires them to be stored in a single directory.
@@ -2837,7 +2813,7 @@ shorthand.
 One way to improve discoverability is to follow any standards that exist for
 organizing project files \citep{marwick2018packaging}. The use of standards or
 conventions tend to make it easier for users to navigate (``discover'') new
-instances of a certain type of thing. In module 2.2, we discussed this role of
+instances of a certain type of thing. In module \ref{module2}, we discussed this role of
 standards when it comes to the format you use to record your data. When it comes
 to project file organization, standards will come in the form of the
 subdirectories that are included, how they're organized hierarchically, and how
@@ -2894,7 +2870,7 @@ programming languages.'' \citep{buffalo2015bioinformatics}
 A final way to improve your directory organization is to make sure the directory
 is not cluttered with unnecessary files. Unnecessary files can include old versions
 of project files, which have been superseded by newer versions. In later modules
-(modules 2.9--2.11), we'll describe how version control can help avoid this clutter
+(modules \ref{module9}--\ref{module11}), we'll describe how version control can help avoid this clutter
 from old versions of files while retaining information from older versions as
 files evolve.
 
@@ -2922,7 +2898,7 @@ your projects. Once you have decided on a structure for this template, you can
 create a version of it on your computer---a file directory with all the
 subdirectories included, but without any files (or only template files you'd
 want to use as a starting point in each project, like templates for data
-collection and reports as presented in Modules 2.4 and 2.5). When you start a
+collection and reports as presented in modules \ref{module4} and \ref{module5}). When you start a
 new project, you can then just copy this template directory, rename it, and
 start using it for your new research project. If you are using R and begin to
 use R Projects (described in the next section), you can also create an R Studio
@@ -2961,16 +2937,14 @@ specific experiment. However, you will aim to keep to the standard format as
 much as possible, since it's the standardization across projects that provides
 many of the advantages.
 
-In the next module, we will walk through the steps of designing a project
+In module \ref{module7}, we will walk through the steps of designing a project
 template that you can use across experiments for your laboratory group. In
-module 2.8, we'll walk through an example of creating and using this kind of
+module \ref{module8}, we'll walk through an example of creating and using this kind of
 project template for an example set of studies.
 
 \section{Creating project directory templates}\label{module7}
 
-\textbf{Objectives.} After this module, the trainee will be able to:
-
-The last module described the advantages of organizing all the files for a
+Module \ref{module6} described the advantages of organizing all the files for a
 research project within a single directory, and the added advantages of using a
 consistent directory structure for all of the experiments or projects in your
 research group. In this module, we'll walk through the steps required to design
@@ -2978,6 +2952,8 @@ and create a template for your project directories. Creating and using a common
 template for your directory structure for projects will help create consistency
 across projects in the directory structure, which can facilitate the use and
 re-use of automated tools like code scripts across different experiments.
+
+\textbf{Objectives.} After this module, the trainee will be able to:
 
 \begin{itemize}
 \tightlist
@@ -3020,12 +2996,12 @@ directory template are that the system:
   Keeps all files for a research project within a single directory, using
   subdirectories to organize files into a hierarchical structure
 \item
-  Keeps data collection and analysis separate (see module 2.1)
+  Keeps data collection and analysis separate (see module \ref{module1})
 \item
   Avoids or removes unnecessary files
 \item
   Uses meaningful names for files and subdirectories, allowing easy navigation
-  and discoverability (module 2.6) by a new user
+  and discoverability (module \ref{module6}) by a new user
 \item
   Facilitates creation of reports and analysis that incorporate data from
   different assays for an experiment
@@ -3033,7 +3009,7 @@ directory template are that the system:
   Makes it easy to share all project files across the team, as well as
   publicly, once a paper is published
 \item
-  Makes it easy to implement version control for a project (modules 2.9--2.11)
+  Makes it easy to implement version control for a project (modules \ref{module9}--\ref{module11})
 \item
   Incorporates enough flexibility to be used with minimal changes across many
   research projects
@@ -3057,7 +3033,7 @@ can break the process into a few key steps:
 
 In this section, we'll go into detail about each of these tasks.
 
-\textbf{Observe your current research project practices}
+\subsubsection{Observe your current research project practices}\label{observe-your-current-research-project-practices}
 
 As you work on this blueprint, you will want to prioritize how it will fit the
 needs of the user---your research group. One way you can do this is to follow a
@@ -3084,7 +3060,7 @@ might be in future projects is to look at your past projects.
 It can also be helpful to have an example of each file type, to help capture
 the typical size, structure, and contents of each type of file. For
 data that you will record yourself in the lab, these can be the templates that you
-developed to collect the data in a tidy format (modules 2.3 through 2.5).
+developed to collect the data in a tidy format (modules \ref{module3}--\ref{module5}).
 For data from equipment, these can be one or more example files from the
 equipment that you have collected for a past project. Having these example files
 will help you to develop a template project report that can input the type of
@@ -3092,12 +3068,12 @@ data that you typically collect for this type of project.
 
 This is also a good stage to diagnose if there are data collection files that
 are not successful in separating data collection from data pre-processing and
-analysis (module 2.1). As you progress, you may also want to add templates that
-serve as a starting point for data collection files within this project. This
-idea of creating data collection templates is described in detail in modules 2.4
-and 2.5.
+analysis (module \ref{module1}). As you progress, you may also want to add
+templates that serve as a starting point for data collection files within this
+project. This idea of creating data collection templates is described in detail
+in modules \ref{module4} and \ref{module5}.
 
-\textbf{Determine which subdirectories you'll include and how you'll name them}
+\subsubsection{Determine which subdirectories you'll include and how you'll name them}\label{determine-which-subdirectories-youll-include-and-how-youll-name-them}
 
 Once you have examined past projects to determine the types of files that you'll
 normally include in a project, you can decide how to organize them into
@@ -3130,10 +3106,10 @@ areas:
 We'll go through each of these to discuss what might be included in each, as
 well as how it might make sense to name subdirectories in each of the areas.
 
-\emph{Data subdirectories}
+\textbf{Data subdirectories}
 
 Data should be saved in an area that is separate from any code for analysis. See
-module 2.1 for a deeper discussion on the benefits of separating data from
+module \ref{module1} for a deeper discussion on the benefits of separating data from
 analysis to improve reproducibility. The raw data should also be treated as
 ``read-only''---in other words, the raw data should never be edited or changed. To
 work with the data, including any necessary quality control, pre-processing, or
@@ -3168,10 +3144,10 @@ small-sample dataset so that people can try out the techniques without having to
 run very expensive computations.'' \citep{marwick2018packaging}
 \end{quote}
 
-\emph{Code subdirectories}
+\textbf{Code subdirectories}
 
 Next, you'll want to include one or more subdirectories for code. Again, this
-structure helps in separating data collection from data analysis (module 2.1).
+structure helps in separating data collection from data analysis (module \ref{module1}).
 This code may include data for cleaning and pre-processing the data, although
 some researchers choose to put code for these steps in the ``raw-data''
 subdirectory, as separate files from the raw data files but within the same
@@ -3183,7 +3159,7 @@ projects.
 One article recommended having a single code subdirectory, named
 ``code'' \citep{blischak2019creating}. This subdirectory can
 store any code scripts (outside of any code running as part of a report
-RMarkdown file; see modules 3.7--3.9). Another recommends that, if you
+RMarkdown file; see modules \ref{module18}--\ref{module20}). Another recommends that, if you
 have both compiled code (like C code) and code scripts (for a language
 like R), you may want to have separate subdirectories for source code (``src'')
 versus compiled code or scripts (``bin'') \citep{noble2009quick}.
@@ -3194,14 +3170,14 @@ several times across other code scripts in your project \citep{vuorre2021sharing
 separate subdirectory named ``model'' \citep{vuorre2021sharing} or ``analysis''
 \citep{marwick2018packaging}.
 
-\emph{Report subdirectories}
+\textbf{Report subdirectories}
 
 You can leverage the standard structure you've created for your directory to
 create a report. This can be designed to generate some exploratory analysis and
 visualizations that you find you typically want to generate from your data. You
 can create this using tools for reproducible reports---in R, a key tool for this
 is RMarkdown. Here, we'll cover using this tool for creating a report, and there
-are many more details in modules 3.7 through 3.9. Briefly, RMarkdown allows you
+are many more details in modules \ref{module18} through \ref{module20}. Briefly, RMarkdown allows you
 to include both code and text meant for humans within a single, plain text
 document. This document can then be rendered, a process that executes the code
 and formats the text meant for humans, producing a document in an easy-to-read
@@ -3223,7 +3199,7 @@ RMarkdown file) \citep{blischak2019creating}. These two subdirectories could be 
 recommends using separate subdirectories for different types of report outputs,
 for example ``posters'', ``manuscript'', and ``slides'' \citep{vuorre2021sharing}.
 
-\emph{Metadata subdirectories or files}
+\textbf{Metadata subdirectories or files}
 
 The final major area to cover in your project directory are files for metadata.
 These files contain information that describes your project as a whole. In some
@@ -3262,11 +3238,11 @@ files in the directory. You can also use it to record metadata for the project:
 things like who was involved in the research and a citation to a resulting
 paper. You can write this file in plain text, but if you're sharing the project
 directory through a version control platform, you might want to explore
-writing it in the mark-up language Markdown (see module 2.11 for more on
+writing it in the mark-up language Markdown (see module \ref{module11} for more on
 using Markdown for a README file that will be shared through a version control
 platform).
 
-\textbf{Decide on file name conventions}
+\subsection{Decide on file name conventions}\label{decide-on-file-name-conventions}
 
 The final step in designing a conceptual framework is to create some rules for
 how you'll name files in the project. When you create rules for how you name
@@ -3290,7 +3266,7 @@ to write code that leverages the fact that certain files always have the
 same name across projects.
 
 You don't, however, want to make file names so general that they aren't
-\emph{discoverable} (see module 2.6 for more on the idea of \emph{discoverability}).
+\emph{discoverable} (see module \ref{module6} for more on the idea of \emph{discoverability}).
 A filename, in other words, shouldn't be so generic that its name doesn't
 give you an good idea of what it contains.
 
@@ -3303,7 +3279,7 @@ file contains just by looking at its name. A better name would be something like
 detailed enough to be discoverable.
 
 Another thing to consider, as you select file naming conventions, is to avoid
-special characters in filenames. We discussed this idea in module 2.4, in
+special characters in filenames. We discussed this idea in module \ref{module4}, in
 the context of avoiding special characters in the column names and cell entries
 in a data collection spreadsheet. Similar considerations apply to filenames.
 While many operating systems allow you to include things like spaces in
@@ -3366,7 +3342,7 @@ there are two things you can keep in mind: first, adhering to standards when
 possible, and second designing filenames in a way that you can leverage
 something called \emph{regular expressions}.
 
-In an earlier module (2.2), we talked about standards in terms of recording
+In module \ref{module2}, we talked about standards in terms of recording
 data. We emphasized how powerful standards can be if they are regularly
 followed in practice. Just as standards are a powerful tool when recording
 data, they are also a powerful tool when creating filenames.
@@ -3409,8 +3385,8 @@ This process is, once you have designed the template, very easy. It involves no
 fancy tools---in fact, it's so straightforward that at first it might seem too
 simple to be useful. For this basic approach, you will create an example file
 directory that captures your desired project directory structure. If you have
-created any templates, either for data collection (module 2.4 and 2.5) or for
-reports (modules 3.7--3.9), you can include those within this structure.
+created any templates, either for data collection (module \ref{module4} and \ref{module5}) or for
+reports (modules \ref{module18}--\ref{module20}), you can include those within this structure.
 
 In other words, you will create a basic file directory with the desired template
 files and file directory structure. When you are ready to start a new project,
@@ -3421,7 +3397,7 @@ resulting template directory might look like, as well as how it can be copied,
 renamed, and used as you start new projects.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/project_template_directory} \caption[A research group can create a file directory that will serve as a template for all the experiments of a certain type in your laboratory]{A research group can create a file directory that will serve as a template for all the experiments of a certain type in your laboratory. The template can include templates of files for data recording and for generating reports. To start recording data for a new experiment, a researcher can copy and rename this template directory.}\label{fig:templatedirectory}
+\includegraphics[width=1\linewidth]{figures/project_template_directory} \caption{A research group can create a file directory that will serve as a template for all the experiments of a certain type in your laboratory. The template can include templates of files for data recording and for generating reports. To start recording data for a new experiment, a researcher can copy and rename this template directory.}\label{fig:templatedirectory}
 \end{figure}
 
 This template is not restrictive---it serves as a starting point, but it can
@@ -3432,7 +3408,7 @@ type of data. Figure \ref{fig:projecttemplatecomplex} shows an example of
 how you could customize the basic template shown in Figure \ref{fig:templatedirectory}.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/project_template_morecomplex} \caption[Example of a more complex project directory structure that could be created, with directories added to store data collected through flow cytometry and single cell RNA sequencing]{Example of a more complex project directory structure that could be created, with directories added to store data collected through flow cytometry and single cell RNA sequencing.}\label{fig:projecttemplatecomplex}
+\includegraphics[width=1\linewidth]{figures/project_template_morecomplex} \caption{Example of a more complex project directory structure that could be created, with directories added to store data collected through flow cytometry and single cell RNA sequencing.}\label{fig:projecttemplatecomplex}
 \end{figure}
 
 Keep in mind, though, that you do want to keep a balance, where you avoid
@@ -3444,13 +3420,13 @@ to be more and more different from each other.
 
 Figure \ref{fig:basicprojecttemplateuse} gives a basic walk-through of the
 simple steps you'll use to start a new project directory once you've created
-this type of template (we will cover this example in much more detail in the
-next module, where we walk through a full example of designing and using a
+this type of template (we will cover this example in much more detail in
+module \ref{module8}, where we walk through a full example of designing and using a
 project template).
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/project_template_basic_use} \caption[Steps in using a basic project directory template that you have created for a type of study or experiment]{Steps in using a basic project directory template that you have created for a type of study or experiment.}\label{fig:basicprojecttemplateuse}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/project_template_basic_use} \caption{Steps in using a basic project directory template that you have created for a type of study or experiment.}\label{fig:basicprojecttemplateuse}
+\end{figure}
 
 \subsection{Project directories as RStudio Projects}\label{project-directories-as-rstudio-projects}
 
@@ -3490,7 +3466,7 @@ a visual interface for you to commit changes you've made, so they are tracked
 and can be reversed if needed, and also so you can easily push and pull these
 committed changes to and from a remote repository, like a GitHub repository, if
 you are collaborating with others. This functionality is described in modules
-2.9 through 2.11.
+\ref{module9} through \ref{module11}.
 
 Having your project directories set up as R Projects also makes it easy to
 navigate among different projects. When you close RStudio and reopen it, it will
@@ -3608,9 +3584,9 @@ given that inoculum, which was based on sacrificing one animal the day after
 challenging all the animals with the bacteria), and, if the study included a
 novel drug as part of the tested treatment, the batch number of that drug.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/project_metadata} \caption[Example of recording metadata for a study in the set of example studies for this module]{Example of recording metadata for a study in the set of example studies for this module.}\label{fig:metadata}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/project_metadata} \caption{Example of recording metadata for a study in the set of example studies for this module.}\label{fig:metadata}
+\end{figure}
 
 Next, the researchers recorded some information about each treatment group
 within the experiment. This typically included at least one negative control. In
@@ -3623,9 +3599,9 @@ These data include the names and doses of up to three drugs in each treatment,
 as well as a column where the researcher can provide detailed specifications of
 the treatment.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/project_treatment_details} \caption[Example of recording treatment details for a study in the set of example studies for this module]{Example of recording treatment details for a study in the set of example studies for this module.}\label{fig:treatmentdetails}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/project_treatment_details} \caption{Example of recording treatment details for a study in the set of example studies for this module.}\label{fig:treatmentdetails}
+\end{figure}
 
 Once the animals were challenged with the bacteria, treatment began, and two
 main types of data were measured and recorded. First, the mice were weighed once
@@ -3643,27 +3619,27 @@ cage by the number of animals, the researchers could estimate the average weight
 of animals in that treatment group, which is recorded as shown in Figure
 \ref{fig:mouseweight}.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/project_mouse_weights} \caption[Example of recording weekly weights of mice in each treatment group for the example set of studies]{Example of recording weekly weights of mice in each treatment group for the example set of studies.}\label{fig:mouseweight}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/project_mouse_weights} \caption{Example of recording weekly weights of mice in each treatment group for the example set of studies.}\label{fig:mouseweight}
+\end{figure}
 
 Finally, after the treatment period, the mice were sacrificed and a portion of
 each mouse's lung was used to estimate the bacterial load in that mouse. Figure
 \ref{fig:bacterialload} shows an example of how the data on the bacterial load
 in each mouse can be recorded.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/project_bacterial_load} \caption[Example of recording the bacterial load in the lungs of each mouse at the end of treatment for the example set of studies]{Example of recording the bacterial load in the lungs of each mouse at the end of treatment for the example set of studies.}\label{fig:bacterialload}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/project_bacterial_load} \caption{Example of recording the bacterial load in the lungs of each mouse at the end of treatment for the example set of studies.}\label{fig:bacterialload}
+\end{figure}
 
 These examples are all data that the researchers record by entering them on
 spreadsheets. It is helpful at this stage to ensure this type of data is
-recorded in a way that separates data recording and analysis (module 2.1).
+recorded in a way that separates data recording and analysis (module \ref{module2}).
 The example files we've shown here do---there are no extra elements in these
 spreadsheets that do calculations or create graphs. Later in this module, we'll
 talk a bit more about how these templates can be designed as part of the
 process of designing the full project directory template. Earlier modules
-(modules 2.4 and 2.5) provide more focused details on designing data collection
+(modules \ref{module4} and \ref{module5}) provide more focused details on designing data collection
 templates like these.
 
 Another type of files that the group's studies typically generate are ones
@@ -3680,7 +3656,7 @@ Once you've determined the types of files that you'll normally include in your
 project, you then need to decide how to organize them into subdirectories in the
 project file directory. In this case, we've organized the project directory
 template to include just a few things at the top level (Figure
-\ref{fig:templatedirectorymod8}, also shown in module 2.7):
+\ref{fig:templatedirectorymod8}, also shown in module \ref{module7}):
 
 \begin{itemize}
 \tightlist
@@ -3701,11 +3677,11 @@ template to include just a few things at the top level (Figure
 \end{itemize}
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/project_template_directory} \caption[A research group can create a file directory that will serve as a template for all the experiments of a certain type in your laboratory]{A research group can create a file directory that will serve as a template for all the experiments of a certain type in your laboratory. The template can include templates of files for data recording and for generating reports. To start recording data for a new experiment, a researcher can copy and rename this template directory.}\label{fig:templatedirectorymod8}
+\includegraphics[width=1\linewidth]{figures/project_template_directory} \caption{A research group can create a file directory that will serve as a template for all the experiments of a certain type in your laboratory. The template can include templates of files for data recording and for generating reports. To start recording data for a new experiment, a researcher can copy and rename this template directory.}\label{fig:templatedirectorymod8}
 \end{figure}
 
 You may have noticed that this structure captures each of the main elements
-that we discussed including in a project template in the last module:
+that we discussed including in a project template in module \ref{module7}:
 data, code, reports, and metadata.
 
 In this structure, we've selected subdirectory names that are generic enough
@@ -3718,7 +3694,7 @@ want to use the subdirectory name ``code'' rather than ``R''.
 
 Within some of the subdirectories, we can include more subdirectories to further
 organize files (Figure\ref{fig:projecttemplatecomplexmod8}, repeated from
-module 2.7). For example, within the ``data'' subdirectory, we can have
+module \ref{module7}). For example, within the ``data'' subdirectory, we can have
 subdirectories for different types of data:
 
 \begin{itemize}
@@ -3734,14 +3710,14 @@ subdirectories for different types of data:
 \end{itemize}
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/project_template_morecomplex} \caption[Example of a more complex project directory structure that could be created, with directories added to store data collected through flow cytometry and single cell RNA sequencing]{Example of a more complex project directory structure that could be created, with directories added to store data collected through flow cytometry and single cell RNA sequencing.}\label{fig:projecttemplatecomplexmod8}
+\includegraphics[width=1\linewidth]{figures/project_template_morecomplex} \caption{Example of a more complex project directory structure that could be created, with directories added to store data collected through flow cytometry and single cell RNA sequencing.}\label{fig:projecttemplatecomplexmod8}
 \end{figure}
 
 Again, these subdirectories are named in a way that will generalize to many
 different experiments and yet also clearly labels the contents. Similar
 subdirectory diversions could also be used within the ``raw\_data'' subdirectory,
 which would include files for data that need to be pre-processed before
-they're used in statistical analysis (modules 3.1--3.3). For example, the
+they're used in statistical analysis (modules \ref{module12}--\ref{module14}). For example, the
 raw flow cytometry data will need to be gated---a process that will quantify
 immune cell phenotypes in each sample---before it's used in statistical
 analysis.
@@ -3764,7 +3740,7 @@ metadata about the experiment, as well as a file to record mouse weights over
 the course of the experiment and bacterial load at the end of the experiment.
 
 For both of these files, we selected filenames that would balance
-generalizability with discoverability (see module 2.7 for more on setting rules
+generalizability with discoverability (see module \ref{module7} for more on setting rules
 for filenames based on these principles). The file with experimental data, for
 example, is named ``experiment\_metadata.xlsx''. This name is generic enough that
 it will work for each of the studies, but it is also clear enough that people
@@ -3796,15 +3772,15 @@ This allows us to keep similar types of data together in the same file, while
 having a tidy collection format for each specific type of data (Figure
 \ref{fig:projectdatacollection}).
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/project_data_collection} \caption[Data collection templates for the example project directory template]{Data collection templates for the example project directory template. These templates were created in two files, one for metadata, which is saved in the main directory of the project, and one for data collected in the laboratory during the experiment, which is saved in the 'data' subdirectory. Each file is saved as a spreadsheet file, with two sheets in each file to store different types of data.}\label{fig:projectdatacollection}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/project_data_collection} \caption{Data collection templates for the example project directory template. These templates were created in two files, one for metadata, which is saved in the main directory of the project, and one for data collected in the laboratory during the experiment, which is saved in the 'data' subdirectory. Each file is saved as a spreadsheet file, with two sheets in each file to store different types of data.}\label{fig:projectdatacollection}
+\end{figure}
 
 All of these data collection files are designed using the principles of tidy
-data collection. In modules 2.4 and 2.5, we showed how you can create tidy data
+data collection. In modules \ref{module4} and \ref{module5}, we showed how you can create tidy data
 collection templates to use, and how these can be paired with
 reproducible reporting tools to separate the steps of data collection and
-reporting (modules 3.7 through 3.9 go into much more depth on these reproducible
+reporting (modules \ref{modul18} through \ref{module20} go into much more depth on these reproducible
 reporting tools). Once you have decided on the types of data that you will
 usually collect for the type of study that this template is for, you can use
 that process to create tidy data collection templates for each type of data.
@@ -3828,9 +3804,9 @@ project template is copied, the researcher will replace these data with the real
 data, and then change the font color to black to indicate that the placeholder
 data have been replaced (Figure \ref{fig:replacingplaceholdermetadata}).
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/project_replace_placeholder_metadata} \caption[The template includes a file with experiment metadata, with a sheet for recording the overall details of the experiment]{The template includes a file with experiment metadata, with a sheet for recording the overall details of the experiment. A user can open this file and replace the placeholder values (in red) with real values for the experiment. By changing the text color to black, the user can have a visual confirmation that the placeholder data have been replaced with real study data.}\label{fig:replacingplaceholdermetadata}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/project_replace_placeholder_metadata} \caption{The template includes a file with experiment metadata, with a sheet for recording the overall details of the experiment. A user can open this file and replace the placeholder values (in red) with real values for the experiment. By changing the text color to black, the user can have a visual confirmation that the placeholder data have been replaced with real study data.}\label{fig:replacingplaceholdermetadata}
+\end{figure}
 
 Another sheet of this spreadsheet allows the researcher to record the details of
 each of the treatments that were tested in the experiment. Again, placeholder
@@ -3843,16 +3819,16 @@ bacterial load in each animal at the end of treatment. Again, there are
 placeholder values in the template file, which the researcher will replace with
 real data after copying the project template for a new experiment.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/project_replacing_placeholder_treatment_data} \caption[The template includes a file with experiment metadata, with a sheet for recording the details of each treatment]{The template includes a file with experiment metadata, with a sheet for recording the details of each treatment. A user can open this file and replace the placeholder values (in red) with real values for the treatments in the experiment. By changing the text color to black, the user can have a visual confirmation that the placeholder data have been replaced with real study data.}\label{fig:replacingplaceholdertreatment2}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/project_replacing_placeholder_treatment_data} \caption{The template includes a file with experiment metadata, with a sheet for recording the details of each treatment. A user can open this file and replace the placeholder values (in red) with real values for the treatments in the experiment. By changing the text color to black, the user can have a visual confirmation that the placeholder data have been replaced with real study data.}\label{fig:replacingplaceholdertreatment2}
+\end{figure}
 
 \subsection{Step 5: Designing a report template}\label{step-5-designing-a-report-template}
 
 A final and optional step is to create one or more template reports. You can
 create report templates using tools for reproducible reports---in R, a key tool
 for this is RMarkdown. Here, we'll cover using this tool for creating a report
-briefly, but there are many more details in modules 3.7 through 3.9. Having
+briefly, but there are many more details in modules \ref{module18} through \ref{module20}. Having
 example files will help you to develop a template project report that can input
 the type of data that you typically collect for this type of project.
 
@@ -3872,13 +3848,13 @@ data recorded for that experiment (Figure \ref{fig:makingareport}). By knitting
 this template report, you can create a nicely formatted version of the report for
 the experimental data (Figure \ref{fig:examplereport1}).
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/project_opening_and_running_report} \caption[Example of how a user can create a report from the template]{Example of how a user can create a report from the template. The template includes an example report, which is written using RMarkdown. The user can open this template report file and use the 'Knit' button in RStudio to render the file. As long as the experimental data are recorded using the data template files, the code for this report can process the data to generate a report from the data. The user can also make changes and additions to the template report.}\label{fig:makingareport}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/project_opening_and_running_report} \caption{Example of how a user can create a report from the template. The template includes an example report, which is written using RMarkdown. The user can open this template report file and use the 'Knit' button in RStudio to render the file. As long as the experimental data are recorded using the data template files, the code for this report can process the data to generate a report from the data. The user can also make changes and additions to the template report.}\label{fig:makingareport}
+\end{figure}
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/project_example_report_study001} \caption[Example of the output from 'knitting' a report from the project template]{Example of the output from 'knitting' a report from the project template}\label{fig:examplereport1}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/project_example_report_study001} \caption{Example of the output from 'knitting' a report from the project template}\label{fig:examplereport1}
+\end{figure}
 
 Specifically, for this set of studies a preliminary report was designed, with an
 example shown in Figure \ref{fig:prelimreport}. This report uses the first page
@@ -3892,9 +3868,9 @@ statistical test, for each treatment group, of the hypothesis that the mean
 of a transformed version of the measure of bacterial load (log-10) for the group
 was the same as for the untreated control group.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/project_prelim_report} \caption[Example of the preliminary report generated for each study in the set of example studies for this module]{Example of the preliminary report generated for each study in the set of example studies for this module. The first page includes metadata on the study, as well as details on each treatment that was tested. The second page shows how mouse weights in each treatment group changed over the course of treatment, to help identify if a treatment was well-tolerated. The third page graphs the bacterial load in each mouse, grouped by treatment, and gives the result of a statistical analysis to test which treatment groups had outcomes that were significantly different from the untreated control group.}\label{fig:prelimreport}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/project_prelim_report} \caption{Example of the preliminary report generated for each study in the set of example studies for this module. The first page includes metadata on the study, as well as details on each treatment that was tested. The second page shows how mouse weights in each treatment group changed over the course of treatment, to help identify if a treatment was well-tolerated. The third page graphs the bacterial load in each mouse, grouped by treatment, and gives the result of a statistical analysis to test which treatment groups had outcomes that were significantly different from the untreated control group.}\label{fig:prelimreport}
+\end{figure}
 
 Let's take a closer look at a few of these elements. For example, Figure
 \ref{fig:studytable} shows the tables from the first page of the report shown
@@ -3903,9 +3879,9 @@ this study (e.g., Figures \ref{fig:metadata} and \ref{fig:treatmentdetails}),
 you can see that all of the information in these tables was pulled from data
 recorded at the start of the study.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/project_study_info_table} \caption[Example of one element of the preliminary report generated for each study in the set of example studies for this module]{Example of one element of the preliminary report generated for each study in the set of example studies for this module. The first page provides tables with metadata about the study and details about each treatment that was tested.}\label{fig:studytable}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/project_study_info_table} \caption{Example of one element of the preliminary report generated for each study in the set of example studies for this module. The first page provides tables with metadata about the study and details about each treatment that was tested.}\label{fig:studytable}
+\end{figure}
 
 Figure \ref{fig:mouseweightsplot} shows the second page of the report. This
 figure has taken the mouse weights---which were recorded in one of the data
@@ -3913,9 +3889,9 @@ collection templates for the project (Figure \ref{fig:mouseweight})---and used
 them to generate a plot of how average mouse weight in each treatment group
 changed over the course of the treatment.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/project_mouse_weights_graph} \caption[Example of one element of the preliminary report generated for each study in the set of example studies for this module]{Example of one element of the preliminary report generated for each study in the set of example studies for this module. The second page provides a plot of how the weights of mice in each treatment changed over the course of treatment.}\label{fig:mouseweightsplot}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/project_mouse_weights_graph} \caption{Example of one element of the preliminary report generated for each study in the set of example studies for this module. The second page provides a plot of how the weights of mice in each treatment changed over the course of treatment.}\label{fig:mouseweightsplot}
+\end{figure}
 
 Figure \ref{fig:bactcompare} shows the last page of the report. This page
 starts with a figure that shows the bacterial load in the lungs of each mouse in
@@ -3933,9 +3909,9 @@ difference from the untreated control was estimated to be statistically
 significant. All the data for these results, including the labels for the plot,
 are from the data collected in the data collection templates shown earlier.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/project_bact_compare_plot} \caption[Example of one element of the preliminary report generated for each study in the set of example studies for this module]{Example of one element of the preliminary report generated for each study in the set of example studies for this module. The third page provides results on how bacterial load in the lungs compares among treatments at the end of the treatment period.}\label{fig:bactcompare}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/project_bact_compare_plot} \caption{Example of one element of the preliminary report generated for each study in the set of example studies for this module. The third page provides results on how bacterial load in the lungs compares among treatments at the end of the treatment period.}\label{fig:bactcompare}
+\end{figure}
 
 We wrote the code in the report in a way that it will still run if there are
 more or fewer observations in any of the data collection files, so the report
@@ -4331,7 +4307,7 @@ process of collaborating together using version control software easier. Other
 tools, such as bug trackers or issue trackers, facilitate corroborative
 file-based projects to allow the team to keep a running ``to-do'' list of what
 needs to be done to complete the project. These tools---which are discussed in
-modules 2.10 and 2.11---can be used to improve collaboration on scientific
+modules \ref{module10} and \ref{module11}---can be used to improve collaboration on scientific
 projects done by teams. GitHub is one a very popular version control platform
 with these additional tools. It was created in 2008 as a web-based platform to
 facilitate collaborating on projects running under Git version control. It can
@@ -4388,7 +4364,7 @@ as some extra overhead when using version control tools in a project
 \citep{raymond2003art}. However, Git can bring dramatic gains to
 efficiency, transparency, and organization of research projects, even if you
 only use a small subset of its basic functionality \citep{perez2016ten}. In module
-2.11, we provide guidance on getting started with using Git and GitHub to track
+\ref{module11}, we provide guidance on getting started with using Git and GitHub to track
 a scientific research project.
 
 Third, the combination of Git and GitHub can help as a way to backup study data
@@ -4444,7 +4420,7 @@ Once a researcher has learned to use Git on their own computer for local version
 control, they can begin using version control platforms (e.g., GitLab, GitHub)
 to collaborate with others under version control. In this module, we will
 describe how a research team can benefit from using a version control platform
-to work collaboratively. In the next module, we'll give detailed examples
+to work collaboratively. In module \ref{module11}, we'll give detailed examples
 of how you can use a version control platform even if you're not familiar with
 coding.
 
@@ -4474,7 +4450,7 @@ coding.
 
 \subsection{What are version control platforms?}\label{what-are-version-control-platforms}
 
-The last module introduced the idea of version control, including the popular
+Module \ref{module9} introduced the idea of version control, including the popular
 software version control program Git. In this module, we'll go a
 step further, telling you about how you can expand the idea of version control
 to leverage it when collaborating across your research team, using \emph{version
@@ -4511,7 +4487,7 @@ researchers, including the capabilities for using both public and private
 repositories in collaboration with other researchers.
 
 Version control platforms are always used in conjunction with version control
-software, like the Git software described in the last module. A version control
+software, like the Git software described in module \ref{module9}. A version control
 platform adds attractive visual interfaces for working with the project, free or
 low-cost online hosting of project files, and team management tools for each
 project. In this sense, you can think of Git as the engine and the version
@@ -4649,7 +4625,7 @@ of plain text for one file compared to another version of it when you look
 through a repository's commit history. Similarly, RStudio provides a new
 ``Commit'' window that can be used to compare differences between the original and
 revised version of plain text files at a particular stage in the commit history.
-In the next module, we'll walk you through examples of navigating these features.
+In module \ref{module9}, we'll walk you through examples of navigating these features.
 
 Another advantage of a version control platform is that they often include extra
 tools for project management. These include \emph{issue trackers}, which allow the
@@ -4796,7 +4772,7 @@ instead can be picked up and continued by other interested researchers.
 Copyright statements and licenses within code projects help to clarify
 attribution and rights in these cases.
 
-In the next module, we describe practical ways to leverage these resources
+In module \ref{module11}, we describe practical ways to leverage these resources
 within your research group. We include instructions both for team leaders---who
 may not code but may want to use GitHub within projects to help manage the
 projects---as well as researchers who work directly with data and code for the
@@ -4884,14 +4860,15 @@ set up a project in this environment for project management. Once a project has
 been set up in GitHub, there are a number of features that can be used by all
 team members, whether they code or not. These features facilitate collaboration
 between coders and non-coders as the data and code evolve. The major features
-and advantages of Git and GitHub are described in modules 2.9 and 2.10.
+and advantages of Git and GitHub are described in modules \ref{module9} and
+\ref{module10}.
 
-As mentioned in the previous two modules, repositories that are tracked with
-Git and shared through GitHub provide a number of tools that are useful in
-managing a project, both in terms of keeping track of what's been done in the
-project and also for planning what needs to be done next, breaking those goals
-into discrete tasks, assigning those tasks to team members, and maintaining a
-discussion as you tackle those tasks.
+As mentioned in modules \ref{module9} and \ref{module10}, repositories that
+are tracked with Git and shared through GitHub provide a number of tools that
+are useful in managing a project, both in terms of keeping track of what's been
+done in the project and also for planning what needs to be done next, breaking
+those goals into discrete tasks, assigning those tasks to team members, and
+maintaining a discussion as you tackle those tasks.
 
 You can go a long way by just starting with a subset of the tools that Git and
 GitHub offer. In this module, we'll focus on:
@@ -4923,7 +4900,7 @@ to contribute to a repository. For some actions, you need to be a collaborator
 on a project to take the action; in the later sections of this module, we
 describe how people can be added as collaborators in a GitLab repository.
 
-\textbf{Exploring commits and the commit history}
+\subsubsection{Exploring commits and the commit history}\label{exploring-commits-and-the-commit-history}
 
 A version control platform like GitHub can help with managing your projects
 by providing tools to visually explore how the project has evolved.
@@ -4934,9 +4911,9 @@ own page on GitHub (Figure \ref{fig:githubcommits1} shows an example). You can
 see the history of changes to that files by clicking the ``History'' link on that
 page.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/github_commits1} \caption[Example of a file page within a GitHub repository]{Example of a file page within a GitHub repository. Each file in a repository has its own page. On this page, you can see the history of changes made to the file by looking at 'History'. You can also make a commit an edit directly in GitHub by clicking on the 'Edit' icon.}\label{fig:githubcommits1}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/github_commits1} \caption{Example of a file page within a GitHub repository. Each file in a repository has its own page. On this page, you can see the history of changes made to the file by looking at 'History'. You can also make a commit an edit directly in GitHub by clicking on the 'Edit' icon.}\label{fig:githubcommits1}
+\end{figure}
 
 Figure \ref{fig:githubcommithistory} gives an example of how you can see the
 full history of changes that have been made to each file in the project. Each
@@ -4946,9 +4923,9 @@ changes in a file in your research project. Near the commit message are listings
 of which team member made the commit and when it was made. This also helps you
 see how team members have contributed as the file evolves.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/github_commit_history} \caption[Commit history in GitHub]{Commit history in GitHub. Each file in a repository has a 'History' page, where you can explore each change commited for the file. Each commit has a unique identifier and commit message describing the change. You can click on the entry for any of these commits to see the changes made to the file with the commit (see next figure).}\label{fig:githubcommithistory}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/github_commit_history} \caption{Commit history in GitHub. Each file in a repository has a 'History' page, where you can explore each change commited for the file. Each commit has a unique identifier and commit message describing the change. You can click on the entry for any of these commits to see the changes made to the file with the commit (see next figure).}\label{fig:githubcommithistory}
+\end{figure}
 
 If you click on one of the commits listed on a file's History page (Figure
 \ref{fig:githubcommithistory} points to one example of where you would click),
@@ -4966,9 +4943,9 @@ version before the commit, and once in green showing its version following the
 commit. You can visually compare the two versions of the line to see how it was
 changed with the commit.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/github_commit_history2} \caption[Commit history in GitHub]{Commit history in GitHub. Each commit has its own page, where you can explore what changes were made with the commit, who made them, and when they were committed.}\label{fig:githubcommithistory2}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/github_commit_history2} \caption{Commit history in GitHub. Each commit has its own page, where you can explore what changes were made with the commit, who made them, and when they were committed.}\label{fig:githubcommithistory2}
+\end{figure}
 
 The page shown in Figure \ref{fig:githubcommits1} also allows you to make your
 own edits to the file and commit them. For team members who are working a lot on
@@ -4990,14 +4967,14 @@ make the commit (Figure \ref{fig:githubcommits2}). These commits will show up
 in the repository's history, attributed to you and with your commit message
 attached to the change.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/github_commits2} \caption[Committing changes directly in GitHub]{Committing changes directly in GitHub. When you click on the 'Edit' button in a file's GitHub page (see previous figure), it will take you to a page where you can edit the file directly. You save the changes with a 'commit', including a commit message describing why you made the change. The change will be tagged with the message and your name.}\label{fig:githubcommits2}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/github_commits2} \caption{Committing changes directly in GitHub. When you click on the 'Edit' button in a file's GitHub page (see previous figure), it will take you to a page where you can edit the file directly. You save the changes with a 'commit', including a commit message describing why you made the change. The change will be tagged with the message and your name.}\label{fig:githubcommits2}
+\end{figure}
 
-\textbf{Tracking and making progress on issues}
+\subsubsection{Tracking and making progress on issues}\label{tracking-and-making-progress-on-issues}
 
 Another way that a version control platform like GitHub can help you manage a
-project is through the ``Issues'' tracker. As we described in module 2.10,
+project is through the ``Issues'' tracker. As we described in module \ref{module10},
 this Issues page can serve as a ``to-do'' list for the project as a whole.
 It lets you keep track of the tasks that need to be done, as well as
 have detailed conversations with your team about each task.
@@ -5009,18 +4986,18 @@ page} for the
 repository we are using as an example. There will be a main Issues page, like
 one shown in this figure, as well as separate pages for each Issue.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/github_issues} \caption[Issues tracker page for an example GitHub repository]{Issues tracker page for an example GitHub repository. Arrows highlight the tab to click to get to the Issues tracker page in a repository, as well as where to go to find open and closed Issues for the repository.}\label{fig:githubissues1}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/github_issues} \caption{Issues tracker page for an example GitHub repository. Arrows highlight the tab to click to get to the Issues tracker page in a repository, as well as where to go to find open and closed Issues for the repository.}\label{fig:githubissues1}
+\end{figure}
 
 The main Issues tracker page provides clickable links to all open issues for
 the repository. You can open a new issue using the ``New Issue'' on this main
 page or on the specific page of any of the repository's issues. See Figure
 \ref{fig:githubissues2} for an example of this button.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/github_issues2} \caption[Conversation about an Issue on Issues tracker page of an example GitHub repository]{Conversation about an Issue on Issues tracker page of an example GitHub repository. In this example, you can see how GitHub Issues trackers allow you to discuss how to resolve an issue across your team. From this page, you can read the current conversation about Issue \#1 of the repository and add your own comments. Once the Issue is resolved, you can 'Close' the Issue, which moves it off the list of active issues, but allows you to still re-read the conversation and, if necessary, re-open the issue later. You can also open a new issue from this page, using the button highlighted at the top right.}\label{fig:githubissues2}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/github_issues2} \caption{Conversation about an Issue on Issues tracker page of an example GitHub repository. In this example, you can see how GitHub Issues trackers allow you to discuss how to resolve an issue across your team. From this page, you can read the current conversation about Issue \#1 of the repository and add your own comments. Once the Issue is resolved, you can 'Close' the Issue, which moves it off the list of active issues, but allows you to still re-read the conversation and, if necessary, re-open the issue later. You can also open a new issue from this page, using the button highlighted at the top right.}\label{fig:githubissues2}
+\end{figure}
 
 On the page for a specific issue (e.g., Figure \ref{fig:githubissues2}), you
 can have a conversation with your team to determine how to resolve the issue.
@@ -5036,9 +5013,9 @@ was resolved. If you need to, you can re-open a closed issue later, if you
 determine that it was not fully resolved. Figure \ref{fig:githubissues1} shows
 where to go to see a list of closed Issues for a project.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/github_issues3} \caption[Labeling and assigning Issues]{Labeling and assigning Issues. The GitHub Issues tracker allows you to assign each issue to one or more team members, clarifying that they will take the lead in resolving the issue. It also allows you to tag each issue with one or more labels, so you can easily navigate to issues of a specific type or identify the category of a specific issue.}\label{fig:githubissues3}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/github_issues3} \caption{Labeling and assigning Issues. The GitHub Issues tracker allows you to assign each issue to one or more team members, clarifying that they will take the lead in resolving the issue. It also allows you to tag each issue with one or more labels, so you can easily navigate to issues of a specific type or identify the category of a specific issue.}\label{fig:githubissues3}
+\end{figure}
 
 The Issues tracker page includes more advanced functionality, as well
 (Figure \ref{fig:githubissues3}). For example, you can assign an issue to one
@@ -5087,9 +5064,9 @@ not see this tab when you're exploring a repository, you either do not have
 owner-level rights for that repository or you aren't logged in to your GitHub
 account.)
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/github_settings} \caption[If you have owner-level rights to a repository, you will have access to an additional page on the repository, called 'Settings']{If you have owner-level rights to a repository, you will have access to an additional page on the repository, called 'Settings'. You can use this page for several administrative tasks for the repository. For example, you can add or remove collaborators for the repository.}\label{fig:githubsettings}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/github_settings} \caption{If you have owner-level rights to a repository, you will have access to an additional page on the repository, called 'Settings'. You can use this page for several administrative tasks for the repository. For example, you can add or remove collaborators for the repository.}\label{fig:githubsettings}
+\end{figure}
 
 You can use the Settings page to manage the collaborators for the project.
 If you go to the ``Collaborators'' section of the Settings page
@@ -5117,11 +5094,11 @@ for a paper, you could use this functionality to change the repository from
 private---while you're working on the paper---to public---once you've
 published the paper and want to share the code and data.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/github_public_private} \caption[If you have owner-level rights for a repository, you can change the visibility of the repository]{If you have owner-level rights for a repository, you can change the visibility of the repository. To do this, go to the 'Settings' page of the repository and scroll down to the 'Danger Zone' section, shown here. In this section, you can change the repository from private to public using the option to 'Change repository visibility'.}\label{fig:githubpublicprivate}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/github_public_private} \caption{If you have owner-level rights for a repository, you can change the visibility of the repository. To do this, go to the 'Settings' page of the repository and scroll down to the 'Danger Zone' section, shown here. In this section, you can change the repository from private to public using the option to 'Change repository visibility'.}\label{fig:githubpublicprivate}
+\end{figure}
 
-\textbf{Providing project documentation}
+\subsubsection{Providing project documentation}\label{providing-project-documentation}
 
 {[}Add: README with Markdown{]}
 
@@ -5132,7 +5109,7 @@ will find it useful to create the README file using a file format called
 \begin{itemize}
 \tightlist
 \item
-  Module 2.7: metadata, README
+  Module \ref{module7}: metadata, README
 \item
   Markdown renders nicely when posted on GitHub
 \item
@@ -5145,7 +5122,7 @@ To be able to leverage GitHub to manage projects and share data, you will need
 to have at least one person in the research group who can set up the initial
 repository. GitHub repositories can be created very easily starting from an
 RStudio Project, a format for organizing project files that was described in
-module 3.7.
+module \ref{module7}.
 
 There are many excellent resources that provide instructions on this topic
 meant for researchers who are comfortable with using R and RStudio. An
@@ -5172,31 +5149,8 @@ Once you've explored that resource, some others you might find useful are:
   \citep{perez2016ten}
 \end{itemize}
 
-\chapter{Experimental Data Pre-processing}\label{experimental-data-pre-processing}
-
-This section includes modules on:
-
-\begin{itemize}
-\tightlist
-\item
-  \hyperref[module12]{Module 3.1: Principles of pre-processing experimental data}
-\item
-  \hyperref[module12a]{Module 3.2: Selecting software options for pre-processing}
-\item
-  \hyperref[module13]{Module 3.3: Introduction to scripted data pre-processing in R}
-\item
-  \hyperref[module13a]{Module 3.4: Tips for improving reproducibility when writing R scripts}
-\item
-  \hyperref[module14]{Module 3.5: Simplify scripted pre-processing through R's `tidyverse' tools}
-\item
-  \hyperref[module15]{Module 3.6: Complex data types in experimental data pre-processing}
-\item
-  \hyperref[module18]{Module 3.7: Introduction to reproducible data pre-processing protocols}
-\item
-  \hyperref[module19]{Module 3.8: RMarkdown for creating reproducible data pre-processing protocols}
-\item
-  \hyperref[module20]{Module 3.9: Example: Creating a reproducible data pre-processing protocol}
-\end{itemize}
+\part*{Experimental Data Pre-processing}\label{part-experimental-data-pre-processing}
+\addcontentsline{toc}{part}{Experimental Data Pre-processing}
 
 \section{Principles of pre-processing experimental data}\label{module12}
 
@@ -5219,7 +5173,7 @@ software can limit the transparency and reproducibility of this analysis stage
 and is time-consuming for repeated tasks.
 
 In this module, we will explain how pre-processing can be broken into common
-themes and processes. In the next module, we will explain how scripted
+themes and processes. In module \ref{module13}, we will explain how scripted
 pre-processing, especially using open-source software, can improve transparency
 and reproducibility of this stage of working with biomedical data.
 
@@ -5288,7 +5242,7 @@ data pre-processing pipelines, or as you interpret and apply pipelines that were
 developed by other researchers. The rest of this module will describe several of
 the most common themes in data pre-processing.
 
-\textbf{Extracting scientifically-relevant measurement}
+\subsubsection{Extracting scientifically-relevant measurement}\label{extracting-scientifically-relevant-measurement}
 
 One common purpose of pre-processing is to translate the measurements that
 you directly collect into measurements that are meaningful for your scientific
@@ -5394,7 +5348,7 @@ scripted software like R and Python. These types of pre-processing algorithms
 are often also available as proprietary software, sometimes sold by equipment
 manufacturers and sometimes separately.
 
-\textbf{Addressing practical concerns and limitations in data collection}
+\subsubsection{Addressing practical concerns and limitations in data collection}\label{addressing-practical-concerns-and-limitations-in-data-collection}
 
 Another common reason for pre-processing is to address things you
 did while collecting the data---specifically, things you did for
@@ -5532,7 +5486,7 @@ normalization have been developed. For example, in scRNA-seq, processes like the
 use of unique molecular identifiers (UMIs) can allow you to later account for
 amplification bias \citep{haque2017practical}.
 
-\textbf{Digesting complexity in datasets}
+\subsubsection{Digesting complexity in datasets}\label{digesting-complexity-in-datasets}
 
 Biomedical research has dramatically changed in the past couple of decades to
 include data with higher dimensions: that is, data that either includes many
@@ -5665,7 +5619,7 @@ similar patterns of gene expression. One use of clustering techniques is to
 group cells into cell types, based on their gene expression profiles, through
 single-cell RNA-sequencing \citep{haque2017practical}.
 
-\textbf{Quality assessment and control}
+\subsubsection{Quality assessment and control}\label{quality-assessment-and-control}
 
 Another common step in pre-processing is to identify and resolve quality control
 issues. These are cases where some error or problem occurred in the data
@@ -5723,9 +5677,9 @@ can be removed in the pre-processing of scRNA-seq data based on this and related
 criteria (low number of detected genes, small relative library size)
 \citep{ilicic2016classification}.
 
-\section{Selecting software options for pre-processing}\label{module12a}
+\section{Selecting software options for pre-processing}\label{module13}
 
-The previous module described some common themes and processes in pre-processing
+Module \ref{module12} described some common themes and processes in pre-processing
 biomedical data. While we've covered some key processes of pre-processing, we
 haven't talked yet about the tools you can use to implement it. These are often
 combined together into a \emph{pipeline} (also called a \emph{workflow}). These pipelines can
@@ -6136,7 +6090,7 @@ software, where there is typically not a company-based helpline and so the
 community of users often represents one of the main sources for help and
 troubleshooting.
 
-\section{Introduction to scripted data pre-processing in R}\label{module13}
+\section{Introduction to scripted data pre-processing in R}\label{module14}
 
 Learning to code can seem daunting, but it's not any more difficult than
 learning any new language. Many people from a variety of disciplines have
@@ -6155,7 +6109,7 @@ information that someone without coding experience can gain some comfort in
 navigating R code scripts, for example to help understand a paper that includes
 scripts as part of its supplemental materials or to help understand the work of
 a trainee who is incorporating code in their research. For researchers who are
-already using code scripts, we recommend the next module, which provides
+already using code scripts, we recommend the next module (module \ref{module15}), which provides
 advice on steps that can improve reproducibility when writing scripts for
 biomedical data pre-processing.
 
@@ -6283,7 +6237,7 @@ of any R packages that were used to supplement the base R functions).
 In this section, we'll go through some basics to help you get started writing a
 code script in R. The process of writing a code script is similar in many other
 interpreted languages, like Python and Julia. If you are familiar with writing
-code scripts in R, you may find the next module---where we provide some tips on
+code scripts in R, you may find module \ref{module15}---where we provide some tips on
 improving reproducibility when writing scripts---more helpful.
 
 We'll start with a few basic conventions of the R programming language.
@@ -6309,11 +6263,11 @@ programming courses. We will, of course, not have room to provide a full course
 on how to program in R, but we are aiming to give you enough of an overview that you
 can understand how R programming can fit into a data pre-processing and analysis
 pipeline for laboratory-based biomedical research projects, as well as how you
-can navigate an R script that someone else has written. In module 3.4, we'll
+can navigate an R script that someone else has written. In module \ref{module16}, we'll
 provide directions to more resources if you would like to continue developing
 your expertise in R programming beyond the basics covered in these modules.
 
-\textbf{What is an R object?}
+\subsubsection{What is an R object?}\label{what-is-an-r-object}
 
 First, you'll need to understand where R keeps data while you're working with
 it. When you work in R, any piece of data that you work with will be available
@@ -6370,7 +6324,7 @@ in from an outside file, like an Excel file, R will work on a copy of that data,
 the original data. You can make as many changes as you want to the data object in R
 without it changing anything in your raw data.
 
-\textbf{What are R functions and an R function calls?}
+\subsubsection{What are R functions and an R function calls?}\label{what-are-r-functions-and-an-r-function-calls}
 
 The next key component of the R programming language is the idea of \emph{R functions}
 and \emph{R function calls}. These are the parts of R that do things (whereas the objects in R
@@ -6465,7 +6419,7 @@ scripts in the video exercise of this module, we'll see these two pieces---objec
 functions---used again and again in the scripts. They are the building blocks
 for your R scripts.
 
-\textbf{What is an R library?}
+\subsubsection{What is an R library?}\label{what-is-an-r-library}
 
 There's one last component of R that will be helpful to understand as we move through
 the rest of this module and the next few modules. That's the idea of an R package, and
@@ -6473,7 +6427,7 @@ fortunately, it's a pretty straightforward one.
 
 We just talked about how functions in R are tools, which you can use to do interesting
 things with your data (including all the pre-processing steps we talked about in
-modules 3.1). However, the version of R that you initially install to your computer
+module \ref{module12}). However, the version of R that you initially install to your computer
 (available for free for all major operating systems at \url{https://cran.r-hub.io/}) doesn't
 include all the tools that you will likely want to use. The initial download gives you
 the base of the programming language, which is called \emph{base R}, as well as a few
@@ -6531,7 +6485,7 @@ your R script. That way, if you share the script with someone else, they can
 quickly check to see if they'll need to install any new packages before they can
 run the code in the script.
 
-\textbf{What is an R script}
+\subsubsection{What is an R script}\label{what-is-an-r-script}
 
 Based on the points that we've just discussed, hopefully you can envision now
 that an R script will ultimately include a number of lines of code, covering a
@@ -6640,12 +6594,12 @@ may find some of these other methods help you work faster, or allow you to do
 more interesting things, so it's good to know they're there, but you don't need
 to try to navigate them all as you learn how to run code in an R script.
 
-\section{Tips for improving reproducibility when writing R scripts}\label{module13a}
+\section{Tips for improving reproducibility when writing R scripts}\label{module15}
 
 Some biomedical researchers have already worked quite a bit with a programming
 language like R, either in a role that is primarily computational, or as a
 way to understand data they've collected from the wet lab. While
-the last module focused on scientists who are new to coding, to help give them
+module \ref{module14} focused on scientists who are new to coding, to help give them
 an entry point into how to write and run a code script in R, this module
 focuses on a different audience---scientists who are familiar with coding but
 would like to take steps to improve their practice.
@@ -6669,7 +6623,7 @@ We'll provide advice in three main areas:
 \end{itemize}
 
 This module is meant for researchers who are using R already as part of their
-research. It is meant as a complement and alternative to the previous module,
+research. It is meant as a complement and alternative to module \ref{module14},
 which focused on readers who are new to creating code scripts.
 
 \textbf{Objectives.} After this module, the trainee will be able to:
@@ -6778,7 +6732,7 @@ module are:
 
 Let's take a closer look at how you can do each of these steps.
 
-\textbf{Improve names within the code}
+\subsubsection{Improve names within the code}\label{improve-names-within-the-code}
 
 When you're initially coding, you might often use ``placeholder'' types of names
 for data objects. For example, a coder might tend to name objects ``df'' (for
@@ -6832,7 +6786,7 @@ characters (like ``*'' and ``\&''), and replacing spaces with underscores. If yo
 need to make more targeted changes to column names, you can do so using the
 \texttt{rename} function from the \texttt{dplyr} package.
 
-\textbf{Break up monolithic code}
+\subsubsection{Break up monolithic code}\label{break-up-monolithic-code}
 
 Next, you can edit to break up ``monolithic'' code---that is, code that isn't
 clearly divided to show sections or steps in the process. When you're first
@@ -6880,7 +6834,7 @@ standard. In the RStudio menus, if you go to the ``Code'' menu, you can select
 to ``Reformat Code''. This can help clean up long lines of code in your editing
 process.
 
-\textbf{Add useful comments}
+\subsubsection{Add useful comments}\label{add-useful-comments}
 
 As you are breaking up monolithic code, it is helpful to add code comments about
 why you are doing certain things. In R, you can add a code comment after a \texttt{\#};
@@ -6905,7 +6859,7 @@ time to maintain or extend your code. You'll be able to tell, for example,
 whether changing or deleting a certain line of code will cause a big problem
 in other areas of code.
 
-\textbf{Remove dead-end code}
+\subsubsection{Remove dead-end code}\label{remove-dead-end-code}
 
 Another useful step when you edit your code is to edit out pieces we'll call
 ``dead-end code''. These are pieces of code that aren't contributing to the
@@ -7156,7 +7110,7 @@ online book ``R for Data Science'' with guidance on this topic
 more about tools for iteration, the same book also has a chapter on that
 (\url{https://r4ds.had.co.nz/iteration.html}).
 
-\section{Simplify scripted pre-processing through R's ``tidyverse'' tools}\label{module14}
+\section{Simplify scripted pre-processing through R's ``tidyverse'' tools}\label{module16}
 
 As you learn to code, then, a good strategy is to start collecting ``tools'' for
 your toolbox in R---functions that you have learned to use very well and that
@@ -7193,7 +7147,7 @@ We will concentrate on tools that are drawn from a collection of tools called th
 enormously in popularity in recent years. Most R courses and workshops for
 beginning programmers are now structured around this approach. It provides a
 powerful yet flexible approach for working with data in R, and it one of the
-easier ways to start learning R. In a previous module (module 2.3) we described
+easier ways to start learning R. In module \ref{module3} we described
 the tidyverse approach in conjunction with talking about the power of the tidy
 data format. In this module, we'll go deeper into specific tools under this
 approach that can be used for common data pre-processing tasks when working with
@@ -7559,7 +7513,7 @@ point you to some excellent references that go deeply into the tidyverse
 approach to coding, its set of tools, and how they can be applied when
 working with biomedical data.
 
-\textbf{Classes and workshops}
+\subsubsection{Classes and workshops}\label{classes-and-workshops}
 
 Most R programming classes at universities, as well as workshops at conferences
 and other venues, now focus on the tidyverse approach, especially if they are
@@ -7575,7 +7529,7 @@ relevance for most biologists and other bench scientists, and so if you would
 like to become better at working with biomedical data, it would be worthwhile to
 focus on programming languages that are scripted.
 
-\textbf{Online books}
+\subsubsection{Online books}\label{online-books}
 
 There are a number of excellent free online books that are available to help
 you learn more about R (many of which can also be purchased as a hard copy, if
@@ -7602,7 +7556,7 @@ statistical methods for working with biomedical data and how those can be
 applied using R. The book is available online at
 \url{https://www.huber.embl.de/msmb/}.
 
-\textbf{Cheatsheets}
+\subsubsection{Cheatsheets}\label{cheatsheets}
 
 For many of the key tidyverse packages, there are two-page ``cheatsheets'' that
 have been developed by the package creators to help users learn and remember
@@ -7622,7 +7576,7 @@ For deeper tutorials of each tidyverse package, you can explore the
 package's vignette. We've provided links to several of these throughout this
 module.
 
-\section{Complex data types in experimental data pre-processing}\label{module15}
+\section{Complex data types in experimental data pre-processing}\label{module17}
 
 Raw data from many biomedical experiments, especially those that use
 high-throughput techniques, can be large and complex. As Vince Buffalo
@@ -7702,7 +7656,7 @@ comes down to how data are structured within pipelines. While there are more
 differences than this one, most of the other differences result from this
 main one.
 
-As we've described in detail in earlier modules (modules 2.3 and 3.5), in the
+As we've described in detail in modules \ref{module3} and \ref{module16}, in the
 tidyverse approach, data are stored throughout the pipeline in a dataframe
 structure. These dataframes are composed of a data structure called a vector.
 Vectors make up the columns of a dataframe. Almost every function in the
@@ -7955,9 +7909,9 @@ data analysis and visualization at later stages in your workflow. In this
 section, we will describe how you can make this transition to create a combined
 workflow.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/workflow} \caption[An overview of a workflow that moves from a Bioconductor approach---for pre-processing of the data---through to a tidyverse approach one pre-processing has created smaller, simpler data that can be reasonably stored in a dataframe structure]{An overview of a workflow that moves from a Bioconductor approach---for pre-processing of the data---through to a tidyverse approach one pre-processing has created smaller, simpler data that can be reasonably stored in a dataframe structure.}\label{fig:combinedworkflow}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=\textwidth]{figures/workflow} \caption{An overview of a workflow that moves from a Bioconductor approach---for pre-processing of the data---through to a tidyverse approach one pre-processing has created smaller, simpler data that can be reasonably stored in a dataframe structure.}\label{fig:combinedworkflow}
+\end{figure}
 
 Key to a combined pipeline are tools that can convert between specialized data
 structures for Bioconductor and tidy dataframes. A set of tools for doing this
@@ -8086,7 +8040,7 @@ A data-focused protocol can include steps for quality control of the
 collected data, as well as pre-processing steps like transformations and
 scaling of the data.
 
-In module 3.9, we'll walk through an example of creating a data pre-processing
+In module \ref{module20}, we'll walk through an example of creating a data pre-processing
 protocol that focuses on data collected by plating samples to estimate
 bacterial load. In this case, a key step in pre-processing the data is to
 identify a ``good'' dilution to be used for estimating bacterial load in each
@@ -8127,9 +8081,9 @@ documents to record the data pre-processing process for a type of data in your
 laboratory, and by using a knitted document, you ensure that the code is
 ``checked'' every time you render the document. In this module,
 we will give an overview of how these knitted documents work, as well as how they
-can improve the reproducibility and efficiency of experimental work. In the
-next module, we'll show how you can make them in the free RStudio software.
-Finally, in module 3.9, we'll walk through a full example of writing a data pre-processing
+can improve the reproducibility and efficiency of experimental work. In
+module \ref{module19}, we'll show how you can make them in the free RStudio software.
+Finally, in module \ref{module20}, we'll walk through a full example of writing a data pre-processing
 protocol in this way---you can take a look now to get an idea by downloading the
 example protocol
 \href{https://github.com/geanders/improve_repro/raw/master/data/bactcountr_example_data/example_protocol.pdf}{here}.
@@ -8168,7 +8122,7 @@ As a larger example, all the modules in this online book were written as knitted
 documents.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/vignette_example_annotated} \caption[An example of a knitted document]{An example of a knitted document. This shows a section of the online vignette for the `xcms` package from Bioconductor. The two types of content are highlighted: formatted text for humans to read, and executable computer code.}\label{fig:xcmsexample}
+\includegraphics[width=\textwidth]{figures/vignette_example_annotated} \caption{An example of a knitted document. This shows a section of the online vignette for the `xcms` package from Bioconductor. The two types of content are highlighted: formatted text for humans to read, and executable computer code.}\label{fig:xcmsexample}
 \end{figure}
 
 You can visualize the full process of creating and rendering a knitted document
@@ -8309,7 +8263,7 @@ strike-through, bulleted lists, numbered lists, web links, headers of different
 levels (e.g., to mark off sections and subsections), horizontal
 rules, and block quotes. Details and examples of the Markdown syntax can be
 found on the Markdown Guide page at \url{https://www.markdownguide.org/basic-syntax/},
-and we'll cover more examples of using Markdown in the next two modules. Once a
+and we'll cover more examples of using Markdown in modules \ref{module19} and \ref{module20}. Once a
 document is run through a program to execute any code, it will then be run
 through a program that interprets this formatting markup (a markup renderer),
 which will format the document based on any of the mark up indications and will
@@ -8355,7 +8309,7 @@ this process.
 Third, documents that are created in knitted format are created using plain
 text. Plain text files can easily be tracked well and clearly using version
 control tools like Git, and associated collaboration tools like GitHub, as
-discussed in earlier modules (modules 2.9--2.11). This substantially increases
+discussed in modules \ref{module9}--\ref{module11}. This substantially increases
 the transparency of the data pre-processing and analysis. It allows you to
 clearly document changes you or others make in the document, step-by-step. You
 can document who made the change, and that person can include a message about
@@ -8386,7 +8340,7 @@ including code that is clear and easy for a computer to execute.
 Now that we've gotten a top-level view of the idea of knitted documents and
 discussed their advantages, let's take a closer look at how they work. We'll
 wrap up this module by covering some of the mechanics of how all knitted
-documents work, and then in the next module (3.8) we'll look more closely at how
+documents work, and then in module \ref{module19} we'll look more closely at how
 you can leverage these techniques in the RMarkdown system specifically.
 
 There are seven components of how these documents work. It is helpful to
@@ -8431,7 +8385,7 @@ documents. Figure \ref{fig:xcmsexampleplain} shows an example of what the plan t
 start of the \texttt{xcms} tutorial shown in Figure \ref{fig:xcmsexample}.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/plaintext_vignette_example} \caption[An example of a the plain text used to write a knitted document]{An example of a the plain text used to write a knitted document. This shows a section of the plain text used to write the online vignette for the `xcms` package from Bioconductor. The full plain text file used for the vignette can be viewed on GitHub [here](https://github.com/sneumann/xcms/blob/master/vignettes/xcms.Rmd).}\label{fig:xcmsexampleplain}
+\includegraphics[width=1\linewidth]{figures/plaintext_vignette_example} \caption{An example of a the plain text used to write a knitted document. This shows a section of the plain text used to write the online vignette for the `xcms` package from Bioconductor. The full plain text file used for the vignette can be viewed on GitHub [here](https://github.com/sneumann/xcms/blob/master/vignettes/xcms.Rmd).}\label{fig:xcmsexampleplain}
 \end{figure}
 
 There are a few things to keep in mind when writing plain text. First, you
@@ -8517,7 +8471,7 @@ as a PDF report).
 The rules for which keys can be included in the preamble will depend on the
 markup language being used. Here, we are showing an example in Markdown, but you
 can also use other markup languages like LaTeX and HTML, and these will have
-their own convention for specifying the preamble. In the next module, when we
+their own convention for specifying the preamble. In module \ref{module19}, when we
 talk more specifically about RMarkdown, we will give some resources where you
 can find more about how to customize the preamble in RMarkdown specifically. If
 you are using a different markup language, there are numerous websites,
@@ -8535,7 +8489,7 @@ that could be used in an RMarkdown document to write some regular text, then
 some executable code, and then indicate the start of more regular text:
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/demarcating_code} \caption[An example of how special combinations of characters are used to demarcate code in an RMarkdown file]{An example of how special combinations of characters are used to demarcate code in an RMarkdown file. The color formatting here is applied automatically by RStudio; all the text in this example is written in plain text.}\label{fig:demarcatecode}
+\includegraphics[width=1\linewidth]{figures/demarcating_code} \caption{An example of how special combinations of characters are used to demarcate code in an RMarkdown file. The color formatting here is applied automatically by RStudio; all the text in this example is written in plain text.}\label{fig:demarcatecode}
 \end{figure}
 
 The combination that indicates the start of executable code will vary depending
@@ -8566,9 +8520,9 @@ vignette shown earlier in Figures \ref{fig:xcmsexample} and
 \ref{fig:xcmsexampleplain}. In Figure \ref{fig:xcmsbothversions}, we've
 recreated these two parts side-by-side, so they're easier to compare.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/originalandfinal} \caption[The original plain text for a knitted document and the final output, side by side]{The original plain text for a knitted document and the final output, side by side. These examples are from the `xcms` package vignette, a package available on Bioconductor. The left part of the figure shows the plain text that was written to create the output, which is shown in the left part of the figure. You can see how elements like sections headers and different font styles are indicated in the original plain text through special characters or combinations of charaters, using the Markdown language syntax.}\label{fig:xcmsbothversions}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/originalandfinal} \caption{The original plain text for a knitted document and the final output, side by side. These examples are from the `xcms` package vignette, a package available on Bioconductor. The left part of the figure shows the plain text that was written to create the output, which is shown in the left part of the figure. You can see how elements like sections headers and different font styles are indicated in the original plain text through special characters or combinations of charaters, using the Markdown language syntax.}\label{fig:xcmsbothversions}
+\end{figure}
 
 You can look for several formatting elements here. First, the section is headed
 ``Initial data inspection''. You can see that in the original plain text document,
@@ -8635,7 +8589,7 @@ same data pre-processing steps to different sets of raw data.
 
 \subsection{Creating knitted documents in R}\label{creating-knitted-documents-in-r}
 
-In the last module (3.7), we described what knitted documents are, as well as the
+In module \ref{module18}, we described what knitted documents are, as well as the
 advantages of using knitted documents to create data pre-processing protocols
 for common pre-processing tasks in your research group. We also described the
 key elements of creating a knitted document, regardless of the software system
@@ -8665,7 +8619,7 @@ choices in that menu. Figure \ref{fig:rmarkdownnewfile} shows an example of
 what this menu option looks like.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/rmarkdown_newfile} \caption[RStudio pull-down menus to help you navigate to open a new RMarkdown file]{RStudio pull-down menus to help you navigate to open a new RMarkdown file.}\label{fig:rmarkdownnewfile}
+\includegraphics[width=1\linewidth]{figures/rmarkdown_newfile} \caption{RStudio pull-down menus to help you navigate to open a new RMarkdown file.}\label{fig:rmarkdownnewfile}
 \end{figure}
 
 This will open a window with some options you can specify some of the overall
@@ -8680,7 +8634,7 @@ all pieces of software with an underlying TeX engine and all are open-source and
 free. The example in the next module was created as a PDF using one of these tools.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/rmarkdown_choices} \caption[Options available when you create a new RMarkdown file in RStudio]{Options available when you create a new RMarkdown file in RStudio. You can specify information that will go into the document's preamble, including the title and authors and the format that the document will be output to (HTML, Word, or PDF).}\label{fig:rmarkdownchoices}
+\includegraphics[width=1\linewidth]{figures/rmarkdown_choices} \caption{Options available when you create a new RMarkdown file in RStudio. You can specify information that will go into the document's preamble, including the title and authors and the format that the document will be output to (HTML, Word, or PDF).}\label{fig:rmarkdownchoices}
 \end{figure}
 
 Once you have selected the options in this menu you can choose the ``Okay'' button
@@ -8693,7 +8647,7 @@ how the example document works, you can edit it and change it to convert it
 into the document you would like to create.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/rmarkdown_template} \caption[Example of the template RMarkdown document that you will see when you create a new RMarkdown file in RStudio]{Example of the template RMarkdown document that you will see when you create a new RMarkdown file in RStudio. You can explore this template and try rendering (knitting) it. Once you are familiar with how this example works, you can edit the text and code to adapt it for your own document.}\label{fig:rmarkdowntemplate}
+\includegraphics[width=1\linewidth]{figures/rmarkdown_template} \caption{Example of the template RMarkdown document that you will see when you create a new RMarkdown file in RStudio. You can explore this template and try rendering (knitting) it. Once you are familiar with how this example works, you can edit the text and code to adapt it for your own document.}\label{fig:rmarkdowntemplate}
 \end{figure}
 
 If you have not used RMarkdown before, it is very helpful to try knitting this
@@ -8714,12 +8668,12 @@ in a new window. As you start with RMarkdown, it is useful to look at this
 output to see how it compares with the plain text RMarkdown file (Figure
 \ref{fig:rmarkdownoriginalfinal}, left).
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/rmarkdownoriginalfinal} \caption[Example of the template RMarkdown document that you will see when you create a new RMarkdown file in RStudio]{Example of the template RMarkdown document that you will see when you create a new RMarkdown file in RStudio. You can explore this template and try rendering (knitting) it. Once you are familiar with how this example works, you can edit the text and code to adapt it for your own document.}\label{fig:rmarkdownoriginalfinal}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/rmarkdownoriginalfinal} \caption{Example of the template RMarkdown document that you will see when you create a new RMarkdown file in RStudio. You can explore this template and try rendering (knitting) it. Once you are familiar with how this example works, you can edit the text and code to adapt it for your own document.}\label{fig:rmarkdownoriginalfinal}
+\end{figure}
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/rmarkdown_template2} \caption[Example of the template RMarkdown document, highlighting buttons in RStudio that you can use to facilitate working with the document]{Example of the template RMarkdown document, highlighting buttons in RStudio that you can use to facilitate working with the document. The 'knit' button, highlighted at the top of the figure, will render the entire document. The green arrow, highlighted lower in the figure within a code chunk, can be used to run the code in that specific code chunk.}\label{fig:rmarkdowntemplate2}
+\includegraphics[width=1\linewidth]{figures/rmarkdown_template2} \caption{Example of the template RMarkdown document, highlighting buttons in RStudio that you can use to facilitate working with the document. The 'knit' button, highlighted at the top of the figure, will render the entire document. The green arrow, highlighted lower in the figure within a code chunk, can be used to run the code in that specific code chunk.}\label{fig:rmarkdowntemplate2}
 \end{figure}
 
 You will also notice, after you first render the document, that your working
@@ -8986,7 +8940,7 @@ them when you become familiar with the basics. However, we will provide more
 details for one advanced element that we find particularly useful in creating data
 pre-processing protocols: including bibliographical references.
 
-\textbf{Including bibliographical references.}
+\subsubsection{Including bibliographical references}\label{including-bibliographical-references}
 
 To include references in RMarkdown documents, you can use something called
 \emph{BibTeX}. This is a software system that is free and open-source and works in
@@ -9074,9 +9028,9 @@ says ``BibTeX'' (bottom red arrow in Figure \ref{fig:googlebibtex}). If you clic
 on that, it will take you to a page that gives the full BibTex listing for that
 article, and you can just copy and paste this into your plain text BibTeX file.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/google_scholar} \caption[Example of using Google Scholar to get bibliographical information for a BibTeX file]{Example of using Google Scholar to get bibliographical information for a BibTeX file. When you look up an article on Google Scholar, there is an option (the quotation mark icon under the article listing) to open a pop-up window with bibliographical information. At the bottom of this pop-up box, you can click on 'BibTeX' to get a plain text version of the BibTeX entry for the article. You can copy and paste this into you BibTeX file.}\label{fig:googlebibtex}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/google_scholar} \caption{Example of using Google Scholar to get bibliographical information for a BibTeX file. When you look up an article on Google Scholar, there is an option (the quotation mark icon under the article listing) to open a pop-up window with bibliographical information. At the bottom of this pop-up box, you can click on 'BibTeX' to get a plain text version of the BibTeX entry for the article. You can copy and paste this into you BibTeX file.}\label{fig:googlebibtex}
+\end{figure}
 
 Once you have this plain text BibTeX file, you will tell your computer how to
 find it by including its path in the YAML. For example, if you created a BibTeX
@@ -9126,7 +9080,7 @@ In the output from rendering that RMarkdown document you'd get:
 The full paper details will then be included at the end of the document, in a reference
 section.
 
-\textbf{Other advanced RMarkdown functionality}
+\subsubsection{Other advanced RMarkdown functionality}\label{other-advanced-rmarkdown-functionality}
 
 There are a number of other advanced things that you can do with RMarkdown, once
 you have mastered the basics. First, you can use RMarkdown to build different
@@ -9144,9 +9098,9 @@ you create ``dashboards'' with data, similar to the dashboards that many public
 health departments using during the COVID-19 pandemic to share case numbers in
 specific counties and states.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/blogdownexample} \caption[Example of a website created using blogdown, leveraging the RMarkdown framework]{Example of a website created using blogdown, leveraging the RMarkdown framework.}\label{fig:blogdown}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/blogdownexample} \caption{Example of a website created using blogdown, leveraging the RMarkdown framework.}\label{fig:blogdown}
+\end{figure}
 
 With RMarkdown, you can also create reports that are more customized than the
 default style that we explored above. First, you can create templates that add
@@ -9160,7 +9114,7 @@ one of these article templates is shown in Figure \ref{fig:rticleexample}
 different journal families.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/rticles_example} \caption[Example of a manuscript written in RMarkdown using a templat]{Example of a manuscript written in RMarkdown using a templat. This figure shows the first page of an article written for submission to PLoS Computation Biology, written in RMarkdown while using the PLoS template from the `rticles` package (Wendt and Anderson 2022).}\label{fig:rticleexample}
+\includegraphics[width=1\linewidth]{figures/rticles_example} \caption{Example of a manuscript written in RMarkdown using a templat. This figure shows the first page of an article written for submission to PLoS Computation Biology, written in RMarkdown while using the PLoS template from the `rticles` package (Wendt and Anderson 2022).}\label{fig:rticleexample}
 \end{figure}
 
 RMarkdown also has some features that make it easy to run code that is
@@ -9387,7 +9341,7 @@ data pre-processing protocol:
 We will illustrate these design steps using the example protocol on
 pre-processing plating data.
 
-\textbf{Defining input and output data for the protocol.}
+\subsubsection{Defining input and output data for the protocol}\label{defining-input-and-output-data-for-the-protocol}
 
 The first step in designing the data pre-processing protocol is to decide on the
 starting point for the protocol (the data input) and the ending point (the data
@@ -9499,9 +9453,9 @@ protocol, you can include a section in the protocol
 that describes these input data, what file format they are in, and how they
 can be read into R for pre-processing (Figure \ref{fig:protocoldatainput}).
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/protocol_data_input} \caption[Providing details on input data in the pre-processing protocol]{Providing details on input data in the pre-processing protocol. Once you have an example data file for the type of data that will be input for the protocol, you can add a section that provides the code to read the data into R. You can also add code that will show the first few rows of the example dataset, as well as a description of the data. This figure shows examples of how these elements can be added to an RMarkdown file for a pre-processing protocol, and the associated elements in the final pdf of the protocol, using the example protocol for this module.}\label{fig:protocoldatainput}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/protocol_data_input} \caption{Providing details on input data in the pre-processing protocol. Once you have an example data file for the type of data that will be input for the protocol, you can add a section that provides the code to read the data into R. You can also add code that will show the first few rows of the example dataset, as well as a description of the data. This figure shows examples of how these elements can be added to an RMarkdown file for a pre-processing protocol, and the associated elements in the final pdf of the protocol, using the example protocol for this module.}\label{fig:protocoldatainput}
+\end{figure}
 
 For the data output, it often makes sense to plan for data in a format that is
 appropriate for data analysis and for merging with other types of data collected
@@ -9538,7 +9492,7 @@ controls versus which used a certain vaccine, and then a test could be
 conducted exploring evidence that bacterial loads in animals given a
 vaccine were lower than in control animals.
 
-\textbf{Setting up a project directory for the protocol}
+\subsubsection{Setting up a project directory for the protocol}\label{setting-up-a-project-directory-for-the-protocol}
 
 Once you have decided on the input and output data formats, you will next want
 to set up a file directory for storing all the inputs needed in the protocol.
@@ -9573,10 +9527,10 @@ through the protocol code and written into a file to be used in further
 analysis.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/protocol_project_files} \caption[Example of files in the project directory for a data pre-processing protocol]{Example of files in the project directory for a data pre-processing protocol. On the left are the files initially included in the project directory for the example protocol for this module. These include a file with the input data (cfu\_data.csv), a BibTeX file with bibliographical information for references (example\_bib.bib), the RMarkdown file for the protocol (example\_protocol.Rmd), and a subdirectory with figures to include in the protocol (figures). On the right is shown the directory after the code in the protocol RMarkdown document is run, which creates an output pdf with the protocol (example\_protocol.pdf) as well as the output data (processed\_cfu\_estimates.csv).}\label{fig:protocolprojectfiles}
+\includegraphics[width=1\linewidth]{figures/protocol_project_files} \caption{Example of files in the project directory for a data pre-processing protocol. On the left are the files initially included in the project directory for the example protocol for this module. These include a file with the input data (cfu\_data.csv), a BibTeX file with bibliographical information for references (example\_bib.bib), the RMarkdown file for the protocol (example\_protocol.Rmd), and a subdirectory with figures to include in the protocol (figures). On the right is shown the directory after the code in the protocol RMarkdown document is run, which creates an output pdf with the protocol (example\_protocol.pdf) as well as the output data (processed\_cfu\_estimates.csv).}\label{fig:protocolprojectfiles}
 \end{figure}
 
-\textbf{Outlining key tasks in pre-processing the input data.}
+\subsubsection{Outlining key tasks in pre-processing the input data}\label{outlining-key-tasks-in-pre-processing-the-input-data}
 
 The next step is to outline the key tasks that are involved in moving from the
 data input to the desired data output. For the plating data we are using for our
@@ -9611,11 +9565,11 @@ example protocol for this module, showing how text in the plain text RMarkdown
 file for the protocol align with section headers in the final pdf output of the
 protocol.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/protocol_sections} \caption[Dividing an RMarkdown data pre-processing protocol into sections]{Dividing an RMarkdown data pre-processing protocol into sections. This shows an example of creating section headers in a data pre-processing protocol created with RMarkdown, showing section headers in the example pre-procotcol for this module.}\label{fig:protocolsections}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/protocol_sections} \caption{Dividing an RMarkdown data pre-processing protocol into sections. This shows an example of creating section headers in a data pre-processing protocol created with RMarkdown, showing section headers in the example pre-procotcol for this module.}\label{fig:protocolsections}
+\end{figure}
 
-\textbf{Adding code for pre-processing.}
+\subsubsection{Adding code for pre-processing}\label{adding-code-for-pre-processing}
 
 For many of these steps, you likely have code---or can start drafting the
 code---required for that step.
@@ -9652,9 +9606,9 @@ code in included in an executable code chunk, and so it will be run each time
 the protocol is rendered. Code comments are included in the code to provide
 finer-level details about what the code is doing.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/protocol_code} \caption[Example of including code in a data pre-processing protocol created with RMarkdown]{Example of including code in a data pre-processing protocol created with RMarkdown. This figure shows how code can be included in the RMarkdown file for a pre-processing protocol (right), and the corresponding output in the final pdf of the protocol (left), for the code to identify a 'good' dilution for counting CFUs for each sample. Code comments are included to provide finer-level details on the code.}\label{fig:protocolcode}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/protocol_code} \caption{Example of including code in a data pre-processing protocol created with RMarkdown. This figure shows how code can be included in the RMarkdown file for a pre-processing protocol (right), and the corresponding output in the final pdf of the protocol (left), for the code to identify a 'good' dilution for counting CFUs for each sample. Code comments are included to provide finer-level details on the code.}\label{fig:protocolcode}
+\end{figure}
 
 For each step of the protocol, you can also include potential problems
 that might come up in specific instances of the data you get from
@@ -9756,9 +9710,9 @@ in the protocol can be used by anyone---you or other researchers---to reproduce
 the final data from the protocol, and so guarantees that these data are
 computationally reproducible.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/protocol_output_data} \caption[Example of using code in pre-processing protocol to output the final, pre-processed data that will be used in further analysis for the research project]{Example of using code in pre-processing protocol to output the final, pre-processed data that will be used in further analysis for the research project. This example comes from the example protocol for this module, showing both the executable code included in the RMarkdown file for the protocol (right) and how this code is included in the final pdf of the protocol. Outputting the pre-processed data into a plain text file as the last step of the protocol helps ensure computational reproducibility for this step of working with experimental data.}\label{fig:protocoloutput}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/protocol_output_data} \caption{Example of using code in pre-processing protocol to output the final, pre-processed data that will be used in further analysis for the research project. This example comes from the example protocol for this module, showing both the executable code included in the RMarkdown file for the protocol (right) and how this code is included in the final pdf of the protocol. Outputting the pre-processed data into a plain text file as the last step of the protocol helps ensure computational reproducibility for this step of working with experimental data.}\label{fig:protocoloutput}
+\end{figure}
 
 In your data pre-processing protocol, show the code that you use to implement
 this choice and also explain clearly in the text why you made this choice and
@@ -9833,9 +9787,9 @@ pre-processing. Figure \ref{fig:protocolreferences} shows an example of the
 elements you use to do this, showing each element in the example protocol for
 this module.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/protocol_references} \caption[Including references in a data pre-processing protocol created with RMarkdown]{Including references in a data pre-processing protocol created with RMarkdown. RMarkdown has a built-in referencing system that you can use, based on the BibTeX system for LaTeX. This figure shows examples from the example protocol for this module of the elements used for referencing. You create a BibTeX file with information about each reference, and then use the key for the reference within the text to cite that reference. All cited references will be printed at the end of the document; you can chose the header that you want for this reference section in the RMarkdown file ('References' in this example). In the YAML of the RMarkdown file, you specify the path to the BibTeX file (with the 'bibliography: ' key), so it can be linked in when the RMarkdown file is rendered.}\label{fig:protocolreferences}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/protocol_references} \caption{Including references in a data pre-processing protocol created with RMarkdown. RMarkdown has a built-in referencing system that you can use, based on the BibTeX system for LaTeX. This figure shows examples from the example protocol for this module of the elements used for referencing. You create a BibTeX file with information about each reference, and then use the key for the reference within the text to cite that reference. All cited references will be printed at the end of the document; you can chose the header that you want for this reference section in the RMarkdown file ('References' in this example). In the YAML of the RMarkdown file, you specify the path to the BibTeX file (with the 'bibliography: ' key), so it can be linked in when the RMarkdown file is rendered.}\label{fig:protocolreferences}
+\end{figure}
 
 Other helpful tools in RMarkdown are tools for creating equations and tables. As
 described in the previous module, RMarkdown includes a number of formatting
@@ -9846,9 +9800,9 @@ provided advice and links to resources on using these types of tools. Figure
 \ref{fig:protocolequations} gives an example of them in use within the example
 protocol for this module.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/protocol_equations_tables} \caption[Example of including tables and equations in an RMarkdown data pre-processing protocol]{Example of including tables and equations in an RMarkdown data pre-processing protocol.}\label{fig:protocolequations}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/protocol_equations_tables} \caption{Example of including tables and equations in an RMarkdown data pre-processing protocol.}\label{fig:protocolequations}
+\end{figure}
 
 You can also include figures, either figures created in R or outside figure files.
 Any figures that are created by code in the RMarkdown document will automatically
@@ -9864,9 +9818,9 @@ allowed us to include an overview graphic that we created in PowerPoint and
 saved as an image as well as a photograph taken by a member of our research
 group.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/protocol_figures} \caption[Example of including figures from image files in an RMarkdown data pre-processing protocol]{Example of including figures from image files in an RMarkdown data pre-processing protocol.}\label{fig:protocolfigures}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/protocol_figures} \caption{Example of including figures from image files in an RMarkdown data pre-processing protocol.}\label{fig:protocolfigures}
+\end{figure}
 
 Finally, you can try out even more complex functionality for RMarkdown as you
 continue to build data pre-processing protocols for your research group. Figure
@@ -9874,9 +9828,9 @@ continue to build data pre-processing protocols for your research group. Figure
 example protocol for this module; this allows us to include a ``Last edited'' date
 that is updated with the day's date each time the protocol is re-rendered.
 
-\begin{figure*}
-\includegraphics[width=\textwidth]{figures/protocol_yaml_date} \caption[Example of using more advanced RMarkdown functionality within a data pre-processing protocol]{Example of using more advanced RMarkdown functionality within a data pre-processing protocol. In this example, R code is incorporated into the YAML of the document to include the date that the document was last rendered, marking this on the pdf output as the *Last edited* date of the protocol.}\label{fig:protocolyaml}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=1\linewidth]{figures/protocol_yaml_date} \caption{Example of using more advanced RMarkdown functionality within a data pre-processing protocol. In this example, R code is incorporated into the YAML of the document to include the date that the document was last rendered, marking this on the pdf output as the *Last edited* date of the protocol.}\label{fig:protocolyaml}
+\end{figure}
 
 \subsection{Applied exercise}\label{applied-exercise-1}
 
@@ -9889,8 +9843,6 @@ PDF file. Read through the descriptions of the protocol. Do you think that you c
 the process if your laboratory ran a new experiment that involved plating samples to
 estimate bacterial load?
 
-\bibliography{book.bib,packages.bib}
-
-
+  \bibliography{book.bib,packages.bib}
 
 \end{document}

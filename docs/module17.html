@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Module 17 Complex data types in experimental data pre-processing | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
+<meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson">
+<meta name="generator" content="bookdown 0.40 with bs4_book()">
+<meta property="og:title" content="Module 17 Complex data types in experimental data pre-processing | Improving the Reproducibility of Experimental Data Recording and Pre-Processing">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Module 17 Complex data types in experimental data pre-processing | Improving the Reproducibility of Experimental Data Recording and Pre-Processing">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.7.0/transition.js"></script><script src="libs/bs3compat-0.7.0/tabs.js"></script><script src="libs/bs3compat-0.7.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+          margin-bottom: 0em;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<meta name="description" content="Raw data from many biomedical experiments, especially those that use high-throughput techniques, can be large and complex. As Vince Buffalo notes in an article on bioinformatics data skills:...">
+<meta property="og:description" content="Raw data from many biomedical experiments, especially those that use high-throughput techniques, can be large and complex. As Vince Buffalo notes in an article on bioinformatics data skills:...">
+<meta name="twitter:description" content="Raw data from many biomedical experiments, especially those that use high-throughput techniques, can be large and complex. As Vince Buffalo notes in an article on bioinformatics data skills:...">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Improving the Reproducibility of Experimental Data Recording and Pre-Processing</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Overview of these modules</a></li>
+<li class="book-part">Experimental Data Recording</li>
+<li><a class="" href="module1.html"><span class="header-section-number">1</span> Separating data recording and analysis</a></li>
+<li><a class="" href="module2.html"><span class="header-section-number">2</span> Principles and power of structured data formats</a></li>
+<li><a class="" href="module3.html"><span class="header-section-number">3</span> The “tidy” data format</a></li>
+<li><a class="" href="module4.html"><span class="header-section-number">4</span> Designing templates for “tidy” data collection</a></li>
+<li><a class="" href="module5.html"><span class="header-section-number">5</span> Example: Creating a template for “tidy” data collection</a></li>
+<li><a class="" href="module6.html"><span class="header-section-number">6</span> Organizing project files</a></li>
+<li><a class="" href="module7.html"><span class="header-section-number">7</span> Creating project directory templates</a></li>
+<li><a class="" href="module8.html"><span class="header-section-number">8</span> Example: Creating a project template</a></li>
+<li><a class="" href="module9.html"><span class="header-section-number">9</span> Harnessing version control for transparent data recording</a></li>
+<li><a class="" href="module10.html"><span class="header-section-number">10</span> Enhance the reproducibility of collaborative research with version control platforms</a></li>
+<li><a class="" href="module11.html"><span class="header-section-number">11</span> Using Git and GitHub to implement version control</a></li>
+<li class="book-part">Experimental Data Pre-processing</li>
+<li><a class="" href="module12.html"><span class="header-section-number">12</span> Principles of pre-processing experimental data</a></li>
+<li><a class="" href="module13.html"><span class="header-section-number">13</span> Selecting software options for pre-processing</a></li>
+<li><a class="" href="module14.html"><span class="header-section-number">14</span> Introduction to scripted data pre-processing in R</a></li>
+<li><a class="" href="module15.html"><span class="header-section-number">15</span> Tips for improving reproducibility when writing R scripts</a></li>
+<li><a class="" href="module16.html"><span class="header-section-number">16</span> Simplify scripted pre-processing through R’s “tidyverse” tools</a></li>
+<li><a class="active" href="module17.html"><span class="header-section-number">17</span> Complex data types in experimental data pre-processing</a></li>
+<li><a class="" href="module18.html"><span class="header-section-number">18</span> Introduction to reproducible data pre-processing protocols</a></li>
+<li><a class="" href="module19.html"><span class="header-section-number">19</span> RMarkdown for creating reproducible data pre-processing protocols</a></li>
+<li><a class="" href="module20.html"><span class="header-section-number">20</span> Example: Creating a reproducible data pre-processing protocol</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/geanders/improve_repro">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="module17" class="section level1" number="17">
+<h1>
+<span class="header-section-number">Module 17</span> Complex data types in experimental data pre-processing<a class="anchor" aria-label="anchor" href="#module17"><i class="fas fa-link"></i></a>
+</h1>
+<p>Raw data from many biomedical experiments, especially those that use
+high-throughput techniques, can be large and complex. As Vince Buffalo
+notes in an article on bioinformatics data skills:</p>
+<blockquote>
+<p>“Right now, in labs across the world, machines are sequencing the genomes of
+the life on earth. Even with rapidly decreasing costs and huge technological
+advancements in genome sequencing, we’re only seeing a glimpse of the biological
+information contained in every cell, tissue, organism, and ecosystem. However,
+the smidgen of total biological information we’re gathering amounts to mountains
+of data biologists need to work with. At no other point in human history has our
+ability to understand life’s complexities been so dependent on our skills to
+work with and analyze data.”<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Buffalo, &lt;em&gt;Bioinformatics Data Skills&lt;/em&gt;.&lt;/p&gt;"><sup>313</sup></a></span></p>
+</blockquote>
+<p>In previous modules, we have gone into a lot of detail about advantages of the
+tidyverse approach. However as you work with biomedical data, you may find that
+it is unreasonable to start with a tidyverse approach from the first steps of
+pre-processing the data. This is particularly the case if you are working with
+data from complex research equipment, like mass spectrometers and flow
+cytometers.</p>
+<p>It can be frustrating to realize that you can’t use your standard tools
+in some steps of working with the data you collect in your experiments.
+For example, you may have taken an R course or workshop, and be at the
+point where you are starting to feel pretty comfortable with how to use
+R to work with standard datasets. You can feel like you’re starting at
+square one when you realize that approach won’t work for some steps of
+working with the data you’re collecting for your own research.</p>
+<p>This module aims to help you navigate this process. In particular, it is helpful
+to understand how the Bioconductor approach differs from the tidyverse approach,
+to start developing a framework and tools for navigating both approaches.</p>
+<p>The primary difference between the two approaches is how the data objects are
+structured. When you work with data in R, it is kept in an “object”, which you
+can think of as a structured container for the data. In the tidyverse approach,
+the primary data container is the dataframe. A dataframe is made up of a set of
+object types called vectors: each column in the dataframe is a vector.
+Therefore, to navigate the tidyverse approach, the only data structures you need
+to understand well are the dataframe structure and the vector structure. Tools
+in the tidyverse use these simple structures over and over.</p>
+<p>By contrast, the Bioconductor approach uses a collection of more complex data
+containers. There are a number of reasons for this, which we’ll discuss in this
+module.</p>
+<p>As a note, it is possible that in the near future, all steps of even
+complex pipelines will be manageable with a tidyverse approach. More
+R developers are embracing the tidyverse approach and making tools and packages
+within its framework. In some areas with complex data, there have been
+major inroads to allow a tidyverse approach throughout the pipeline even
+when working with complex data. We’ll end the module by discussing these
+prospects.</p>
+<p><strong>Objectives.</strong> After this module, the trainee will be able to:</p>
+<ul>
+<li>Explain why R software for pre-processing biomedical data often stores
+data in complex, “untidy” formats</li>
+<li>Describe how these complex data formats can create barriers to
+laboratory-based researchers seeking to use reproducibility tools for
+data pre-processing</li>
+<li>Explain how the tidyverse and Bioconductor approaches differ in the
+data structures they use</li>
+</ul>
+<div id="how-the-bioconductor-and-tidyverse-approaches-differ" class="section level2" number="17.1">
+<h2>
+<span class="header-section-number">17.1</span> How the Bioconductor and tidyverse approaches differ<a class="anchor" aria-label="anchor" href="#how-the-bioconductor-and-tidyverse-approaches-differ"><i class="fas fa-link"></i></a>
+</h2>
+<p>The heart of the difference between the tidyverse and Bioconductor approaches
+comes down to how data are structured within pipelines. While there are more
+differences than this one, most of the other differences result from this
+main one.</p>
+<p>As we’ve described in detail in modules <a href="module3.html#module3">3</a> and <a href="module16.html#module16">16</a>, in the
+tidyverse approach, data are stored throughout the pipeline in a dataframe
+structure. These dataframes are composed of a data structure called a vector.
+Vectors make up the columns of a dataframe. Almost every function in the
+tidyverse, therefore, is designed to input either a dataframe or a vector. And
+almost every function is designed to output the same type of data container
+(dataframe or vector) that it inputs. As a result, the tidyverse approach allows
+you to combine functions in different orders to tackle complex processes through
+a chain of many small steps.</p>
+<p>By contrast, most packages in Bioconductor use more complex data structures
+to store data. Often, a Bioconductor pipeline will use different data
+structures at different points in its pipeline. For example, your data might
+be stored in one type of a data container when it’s read into R, and
+another type once you’ve done some pre-processing.</p>
+<p>As a result, with the Bioconductor approach, there will be more types of data
+structures that you will have to understand and learn how to use. Another result
+is that the functions that you use in your pipeline will often only work with a
+specific data structure. You therefore will need to keep track of which type of
+data structure is required as the input to each function.</p>
+<p>This also means that you are more constrained in how you chain together
+different functions to make a pipeline. To be clear, a pipeline in R that
+includes these complex Bioconductor data structures will typically still be
+modular, in the sense that you can adapt and separate specific parts of the
+pipeline. However, they tend to be much less flexible than pipelines developed
+with a tidyverse approach. The data structure changes often, with certain
+functions outputing a data structure that is needed for the next step, then the
+function of the next step outputting the data in a different structure, and so
+on. This changing data structure means that the functions for each step often
+are constrained to always be put in the same order. By comparison, the small
+tools that make up tidyverse functions can often be combined in many different
+orders, letting you build a much larger variety of pipelines with them. Also,
+many of the functions that work with complex data types will do many things
+within one function, so they can be harder to learn and understand, and they are
+often much more customized to a specific action, which means that you have to
+learn more functions (since each does one specific thing).</p>
+<p>This difference will also make a difference in how you work when you modify a
+pipeline of code. In the tidyverse approach, you will change the functions you
+include and the order in which you call them, rearranging the small tools to
+create different pipelines. For a Bioconductor pipeline, it’s more common that
+to customize it, you will adjust parameter settings within functions, but will
+still call a standard series of functions in a standardized order.</p>
+<p>Because of those differences, it can be hard to pick up the Bioconductor
+approach if you’re used to the tidyverse approach. However, Bioconductor is
+critical to learn if you are working with many types of biomedical data, as many
+of the key tools and algorithms for genomic data are shared through that
+project. This means that, for many biomedical researchers who are now generating
+complex, high-throughput data, it is worth learning how to use complex data
+structures in R.</p>
+</div>
+<div id="why-is-the-bioconductor-approach-designed-as-it-is" class="section level2" number="17.2">
+<h2>
+<span class="header-section-number">17.2</span> Why is the Bioconductor approach designed as it is?<a class="anchor" aria-label="anchor" href="#why-is-the-bioconductor-approach-designed-as-it-is"><i class="fas fa-link"></i></a>
+</h2>
+<p>To begin learning the Bioconductor approach, it can be helpful to understand why
+it’s designed the way it is. First, there are some characteristics of complex
+data that can make the data unsuitable for a tidyverse approach, including data
+size and complexity. In the next section of this module, we’ll discuss some of
+these characteristics, as well as provide examples of how biomedical data can
+have them. However, there are also some historical and cultural reasons for the
+Bioconductor design. It is helpful to have an introduction to this, as it can
+help you navigate as you work within the Bioconductor framework.</p>
+<p>Bioconductor predates the tidyverse approach. In fact, it has been around almost
+as long as R itself—the first version of R was first released in 2000, and
+Bioconductor started in 2003. The Bioconductor project was inspired by an
+ambitious aim—to allow people around the world to coordinate to make tools for
+pre-processing and analyzing genomic and other high-throughput data. Anyone is
+allowed to make their own extension to R as a package, including a Bioconductor
+package.</p>
+<p>Imagine how complex it is to try to harness all these contributions. Within the
+Bioconductor project, this challenge is managed by using some general design
+principles, centered on standard data structures. The different Bioconductor
+data structures, then, were implemented to help many people coordinate to make
+software extensions to R to handle complex biomedical data. As Susan Holmes and
+Wolfgang Huber note in their book <em>Modern Statistics for Modern Biology</em>,
+“specialized data containers … help to keep your data consistent, safe and
+easy to use.”<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Holmes and Huber, &lt;em&gt;Modern Statistics for Modern Biology&lt;/em&gt;.&lt;/p&gt;"><sup>314</sup></a></span> Indeed, in an article on software for
+computational biology, Robert Gentleman—one of the developers of R and
+founders of the Bioconductor project—is quoted as saying:</p>
+<blockquote>
+<p>“We defined a handful of data structures that we expected people to use. For
+instance, if everybody puts their gene expression data into the same kind of
+box, it doesn’t matter how the data came about, but that box is the same and can
+be used by analytic tools. Really, I think it’s data structures that drive
+interoperability.” — Robert Gentlemen as quoted in <span class="citation">Stephen Altschul et al.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;&lt;span&gt;“The Anatomy of Successful Computational Biology Software,”&lt;/span&gt; &lt;em&gt;Nature Biotechnology&lt;/em&gt; 31, no. 10 (2013): 894–97.&lt;/p&gt;"><sup>315</sup></a></span></p>
+</blockquote>
+<p>Each person who writes code for Bioconductor can use these data structures,
+writing functions that input and output data within these defined structures. If
+they are working on something where there isn’t yet a defined structure, they
+can define new ones within their package, which others can then use in their own
+packages.</p>
+<p>As a result of this design, there are a number of complex data structures in
+use within Bioconductor packages. Some that you might come across as you start to work
+using this approach include:<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Wolfgang Huber et al., &lt;span&gt;“Orchestrating High-Throughput Genomic Analysis with Bioconductor,”&lt;/span&gt; &lt;em&gt;Nature Methods&lt;/em&gt; 12, no. 2 (2015): 115.&lt;/p&gt;"><sup>316</sup></a></span></p>
+<ul>
+<li><code>ExpressionSet</code></li>
+<li><code>SummarizedExperiment</code></li>
+<li><code>GRanges</code></li>
+<li><code>VCF</code></li>
+<li><code>VRanges</code></li>
+<li><code>BSgenome</code></li>
+</ul>
+</div>
+<div id="why-is-it-sometimes-necessary-to-use-a-bioconductor-approach-with-biomedical-data" class="section level2" number="17.3">
+<h2>
+<span class="header-section-number">17.3</span> Why is it sometimes necessary to use a Bioconductor approach with biomedical data<a class="anchor" aria-label="anchor" href="#why-is-it-sometimes-necessary-to-use-a-bioconductor-approach-with-biomedical-data"><i class="fas fa-link"></i></a>
+</h2>
+<p>For data collected from complex laboratory equipment like flow cytometers and
+mass spectrometers, there are two main features that make it useful to use more
+complex data structures in R in the earlier stages of pre-processing the data
+rather directly using a tidy data structure. First, the data are often very
+large, in some cases so large that it is difficult to read them into R. Second,
+the data might combine various elements that you’d like to keep together as you
+move through the steps of pre-processing the data, but each of these elements
+have their own natural structures, making it hard to set the data up as a
+two-dimensional dataframe. Let’s take a more detailed look at each of these.</p>
+<p>First, very large datasets are common in biomedical data, including genomics
+data. In a book on <em>Modern Statistics for Modern Biology</em>, Holmes and Huber
+describe how the size of biological data have exploded:</p>
+<blockquote>
+<p>“Biology, formerly a science with sparse, often only qualitative data, has
+turned into a field whose production of quantitative data is on par with high
+energy physics or astronomy and whose data are wildly more heterogeneous and
+complex.”<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Holmes and Huber, &lt;em&gt;Modern Statistics for Modern Biology&lt;/em&gt;.&lt;/p&gt;"><sup>317</sup></a></span></p>
+</blockquote>
+<p>When datasets are large, it can cause complications for computers. A computer
+has several ways that it can store data. The primary storage is closely
+connected with the computer’s processing unit, where calculations are made, and
+so data stored in this primary storage can be processed by code very quickly.
+This storage is called the computer’s random access memory, or RAM. R uses this
+approach, and so when you load data in R to be stored in one of its traditional
+data structures, that data is moved into part of the computer’s RAM.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Patrick Burns, &lt;em&gt;The r Inferno&lt;/em&gt; (Lulu. com, 2011); Colin Gillespie and Robin Lovelace, &lt;em&gt;Efficient r Programming: A Practical Guide to Smarter Programming&lt;/em&gt; (" O’Reilly Media, Inc.", 2016).&lt;/p&gt;'><sup>318</sup></a></span></p>
+<p>Data can also be stored in other devices on a computer, including hard drives
+and solid state drives that are built into the computer or even onto storage
+devices that can be removed from the computer, like USB drives or external hard
+drives. The size of available storage in these devices tends to be much, much
+larger than the storage size of the computer’s RAM. However, it takes longer to
+access data in these secondary storage devices because they aren’t directly
+connected to the processor, and instead require the data to move into RAM before
+it can be accessed by the processor, which is the only part of the computer that
+can do things to analyze, modify, or otherwise process the data.</p>
+<p>The traditional dataframe structure in R is built after
+reading data into RAM. However, many biological experiments now create
+data that is much too large to read into memory for R in a reasonable way.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Michael Lawrence and Martin Morgan, &lt;span&gt;“Scalable Genomics with r and Bioconductor,”&lt;/span&gt; &lt;em&gt;Statistical Science: A Review Journal of the Institute of Mathematical Statistics&lt;/em&gt; 29, no. 2 (2014): 214; Stephanie C Hicks et al., &lt;span&gt;“Mbkmeans: Fast Clustering for Single Cell Data Using Mini-Batch k-Means,”&lt;/span&gt; &lt;em&gt;PLOS Computational Biology&lt;/em&gt; 17, no. 1 (2021): e1008625.&lt;/p&gt;"><sup>319</sup></a></span> If you try to read in a dataset
+that’s too large for the RAM, R can’t handle it. As Roger Peng notes in
+<em>R Programming for Data Science</em>:</p>
+<blockquote>
+<p>“Reading in a large dataset for which you do not have enough RAM is one easy
+way to freeze up your computer (or at least your R session). This is usually an
+unpleasant experience that usually requires you to kill the R process, in the
+best case scenario, or reboot your computer, in the worst case.”<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Roger D Peng, &lt;em&gt;R Programming for Data Science&lt;/em&gt; (Leanpub, 2016).&lt;/p&gt;"><sup>320</sup></a></span></p>
+</blockquote>
+<p>More complex data structures can allow more sophisticated ways to handle massive
+data, and so they are often necessary when working with massive biological
+datasets, particularly early in pre-processing, before the data can be
+summarized in an efficient way. For example, a more complex data structure could
+allow much of the data to be left on disk, and only read into memory on demand,
+as specific portions of the data are needed.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Laurent Gatto, &lt;span&gt;“MSnbase Development,”&lt;/span&gt; 2013; Hicks et al., &lt;span&gt;“Mbkmeans.”&lt;/span&gt;&lt;/p&gt;"><sup>321</sup></a></span> This approach can be used to iterate across subsets of the
+data, only reading parts of the data into memory at a time.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Lawrence and Morgan, &lt;span&gt;“Scalable Genomics with r and Bioconductor.”&lt;/span&gt;&lt;/p&gt;"><sup>322</sup></a></span> Such structures can be designed to work in a way that,
+if you are the user, you won’t notice the difference in where the data is kept
+(on disk versus in memory)—this means you won’t have to worry about these
+memory management issues, but instead can just gain from everything going
+smoothly, even as datasets get very large.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Gatto, &lt;span&gt;“MSnbase Development.”&lt;/span&gt;&lt;/p&gt;"><sup>323</sup></a></span></p>
+<p>The second reason that tidy dataframes aren’t always the best container for
+biomedical data has to do with the complexity of the data. Dataframes are very
+clearly and simply organized. However, they can be too restrictive in some
+cases. Sometimes, you might have data that do not fit well within the
+two-dimensional, non-ragged structure that is characteristic of the dataframe
+structure.</p>
+<p>For example, some biomedical data may have data that records characteristics at
+several levels of the data. It may have records on the levels of gene expression
+within each sample, separate information about each gene that was measured, and
+another set of information that characterizes each of the samples.
+While it is critical to keep “like” measurements aligned with data like
+this—in other words, to insure that you can connect the data that
+characterizes a gene with the data that provides measures of the level of
+expression of that gene in each sample—these data do not naturally have a
+two-dimensional structure and so do not fit naturally into a dataframe
+structure.</p>
+<p>Finally, one of the advantages of these complex data structures for biomedical
+data pre-processing is that they can be leveraged to develop very powerful
+algorithms for working with complex biomedical data. These include reading data
+in from the specialized file formats that are often output by laboratory
+equipment.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Holmes and Huber, &lt;em&gt;Modern Statistics for Modern Biology&lt;/em&gt;.&lt;/p&gt;"><sup>324</sup></a></span></p>
+</div>
+<div id="navigating-bioconductor-packages-and-data-structures" class="section level2" number="17.4">
+<h2>
+<span class="header-section-number">17.4</span> Navigating Bioconductor packages and data structures<a class="anchor" aria-label="anchor" href="#navigating-bioconductor-packages-and-data-structures"><i class="fas fa-link"></i></a>
+</h2>
+<p>[How to install BioC packages; <code>biocLite()</code>]</p>
+<p>While CRAN is the common spot for sharing general-purpose packages, there is a
+specialized repository that is used for many genomics and other biology-related
+R packages called Bioconductor. These packages can also be easily installed
+through a call in R, but in this case it requires an installation function from
+the <code>BiocManager</code> package. Many of the functions that are useful for
+preprocessing biological data from laboratory experiments are available through
+Bioconductor.</p>
+<p>[How to find out more about BioC data structures]</p>
+<p>There are resources for learning to use specific Bioconductor packages, as well
+as some general resources on Bioconductor, like <em>R Programming for
+Bioinformatics</em> [ref].</p>
+</div>
+<div id="combining-bioconductor-and-tidyverse-approaches-in-a-workflow" class="section level2" number="17.5">
+<h2>
+<span class="header-section-number">17.5</span> Combining Bioconductor and tidyverse approaches in a workflow<a class="anchor" aria-label="anchor" href="#combining-bioconductor-and-tidyverse-approaches-in-a-workflow"><i class="fas fa-link"></i></a>
+</h2>
+<p>Work with research data will typically require a series of steps for
+pre-processing, analysis, exploration, and visualization. Collectively, these
+form a <em>workflow</em> or <em>pipeline</em> for the data analysis. With large, complex
+biological data, early steps in this workflow might require a Bioconductor
+approach, given the size and complexity of the data, or because you’d like to
+use a method or algorithm available through Bioconductor. However, this doesn’t
+mean that you must completely give up the power and efficiency of the tidyverse
+approach described in earlier modules.</p>
+<p>Instead, you can combine the two approaches in a workflow like that shown in
+Figure <a href="module17.html#fig:combinedworkflow">17.1</a>. In this combined approach, you start the
+workflow in the Bioconductor approach and transition when possible to a
+tidyverse approach, transitioning by “tidying” from a more complex data
+structure to a simpler dataframe data structure along the way. This is a useful
+approach, because once your workflow has advanced to a stage where it is
+straightforward to store the data in a a dataframe, there are a large advantages
+to shifting into the tidyverse approach as compared to using more complex
+object-oriented classes for storing the data, in particular when it comes to
+data analysis and visualization at later stages in your workflow. In this
+section, we will describe how you can make this transition to create a combined
+workflow.</p>
+<div class="figure">
+<span style="display:block;" id="fig:combinedworkflow"></span>
+<img src="figures/workflow.png" alt="An overview of a workflow that moves from a Bioconductor approach---for pre-processing of the data---through to a tidyverse approach one pre-processing has created smaller, simpler data that can be reasonably stored in a dataframe structure." width="\textwidth"><p class="caption">
+Figure 17.1: An overview of a workflow that moves from a Bioconductor approach—for pre-processing of the data—through to a tidyverse approach one pre-processing has created smaller, simpler data that can be reasonably stored in a dataframe structure.
+</p>
+</div>
+<p>Key to a combined pipeline are tools that can convert between specialized data
+structures for Bioconductor and tidy dataframes. A set of tools for doing this
+are available through the <code>biobroom</code> package.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Andrew J. Bass et al., &lt;em&gt;Biobroom: Turn Bioconductor Objects into Tidy Data Frames&lt;/em&gt;, 2020, &lt;a href="https://github.com/StoreyLab/biobroom"&gt;https://github.com/StoreyLab/biobroom&lt;/a&gt;.&lt;/p&gt;'><sup>325</sup></a></span> The <code>biobroom</code> package
+includes three generic functions (also called “methods”), which can be used
+on a number of Bioconductor object classes. When applied to object stored in one
+of these Bioconductor classes, these functions will extract part of the data
+into a tidy dataframe format. In this format, it is easy to use the tools from
+the tidyverse to further explore, analyze, and visualize the data.</p>
+<p>The three generic functions of <code>biobroom</code> are called <code>tidy</code>, <code>augment</code>,
+and <code>glance</code>. These function names mimic the names of the three main functions
+in the <code>broom</code> package, which is a more general purpose package for extracting
+tidy datasets from more complex R object containers.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Robinson, &lt;span&gt;“Broom.”&lt;/span&gt;&lt;/p&gt;"><sup>326</sup></a></span> The
+<code>broom</code> package focuses on the output from functions in R for statistical
+testing and modeling, while the newer <code>biobroom</code> package replicates this idea,
+but for many of the common object classes used to store data through
+Bioconductor packages and workflows.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Bass et al., &lt;em&gt;Biobroom&lt;/em&gt;.&lt;/p&gt;"><sup>327</sup></a></span></p>
+<p>As an example, we can talk about how the <code>biobroom</code> package can be used to
+convert output generated by functions in the <code>edgeR</code> package. The <code>edgeR</code>
+package is a popular Bioconductor package that can be used on gene expression
+data, to explore which genes are expressed differently across experimental
+groups (an approach called differential expression analysis).<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Mark D Robinson, Davis J McCarthy, and Gordon K Smyth, &lt;span&gt;“edgeR: A Bioconductor Package for Differential Expression Analysis of Digital Gene Expression Data,”&lt;/span&gt; &lt;em&gt;Bioinformatics&lt;/em&gt; 26, no. 1 (2010): 139–40, doi:&lt;a href="https://doi.org/10.1093/bioinformatics/btp616"&gt;10.1093/bioinformatics/btp616&lt;/a&gt;.&lt;/p&gt;'><sup>328</sup></a></span> Before
+using the functions in the package, the data must be pre-processed to align
+sequence reads from the raw data and then to create a table with the counts of
+each read at each gene across each sample. The <code>edgeR</code> package includes
+functions for pre-processing these data, including filtering out genes with low
+read counts across all samples and applying model-based normalization across
+samples to help handle technical bias, including differences in sequencing depth.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Yunshun Chen et al., &lt;span&gt;“edgeR: Differential Expression Analysis of Digital Gene Expression Data User’s Guide,”&lt;/span&gt; &lt;em&gt;Bioconductor User’s Guide. Available Online: Http://Www. Bioconductor. Org/Packages/Release/Bioc/Vignettes/edgeR/Inst/Doc/edgeRUsersGuide.pdf (Accessed on 15 February 2021)&lt;/em&gt;, 2014.&lt;/p&gt;"><sup>329</sup></a></span></p>
+<p>The <code>edgeR</code> package operates on data stored in a special object class defined by
+the package called the <code>DGEList</code> object class.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.&lt;/p&gt;"><sup>330</sup></a></span> This object
+class includes areas for storing the table of read counts, in the form of a
+matrix appropriate for analysis by other functions in the package, as well as
+other spots for storing information about each sample and, if needed, a space to
+store annotations of the genes.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.&lt;/p&gt;"><sup>331</sup></a></span> Then functions from the <code>edgeR</code>
+package can perform differential expression analysis on the data in the
+<code>DGEList</code> class. The result is an object in the <code>DGEExact</code> class, which is also
+defined by the <code>edgeR</code> package. To extract data from this class in a tidy
+format, you can use the <code>tidy</code> and <code>glance</code> functions from <code>biobroom</code>.</p>
+</div>
+<div id="outlook-for-a-tidyverse-approach-to-biomedical-data" class="section level2" number="17.6">
+<h2>
+<span class="header-section-number">17.6</span> Outlook for a tidyverse approach to biomedical data<a class="anchor" aria-label="anchor" href="#outlook-for-a-tidyverse-approach-to-biomedical-data"><i class="fas fa-link"></i></a>
+</h2>
+<p>Finally, tools are continuing to evolve, and it’s quite possible that in the
+future there might be tidy dataframe formats that are adaptable enough to handle
+earlier stages in the data pre-processing for genomics data. The tidyverse
+dataframe approach has already been adapted to enable tidy dataframes to include
+more complex types of data within certain columns of the data frame as a special
+list-type column.</p>
+<p>This functionality is being leveraged through the <code>sf</code>
+package, for example, to enable a tidy approach to working with geographical
+data. This allows those who are working with geographical data, for example data
+from shapefiles for creating maps, to use the standard tidyverse approaches
+while still containing complex data needed for this geographical information
+within a tidy dataframe. Another example is the <code>tidymodels</code> package, which …</p>
+<p>It seems very possible that similar approaches may be adapted in the near future
+to allow for biomedical or genomic data to be stored in a way that both accounts
+for complexity early and pre-processing of these data but also allows for a more
+natural integration with the wealth of powerful tools available through the
+tidyverse approach.</p>
+<!-- ### Practice quiz -->
+
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="module16.html"><span class="header-section-number">16</span> Simplify scripted pre-processing through R’s “tidyverse” tools</a></div>
+<div class="next"><a href="module18.html"><span class="header-section-number">18</span> Introduction to reproducible data pre-processing protocols</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#module17"><span class="header-section-number">17</span> Complex data types in experimental data pre-processing</a></li>
+<li><a class="nav-link" href="#how-the-bioconductor-and-tidyverse-approaches-differ"><span class="header-section-number">17.1</span> How the Bioconductor and tidyverse approaches differ</a></li>
+<li><a class="nav-link" href="#why-is-the-bioconductor-approach-designed-as-it-is"><span class="header-section-number">17.2</span> Why is the Bioconductor approach designed as it is?</a></li>
+<li><a class="nav-link" href="#why-is-it-sometimes-necessary-to-use-a-bioconductor-approach-with-biomedical-data"><span class="header-section-number">17.3</span> Why is it sometimes necessary to use a Bioconductor approach with biomedical data</a></li>
+<li><a class="nav-link" href="#navigating-bioconductor-packages-and-data-structures"><span class="header-section-number">17.4</span> Navigating Bioconductor packages and data structures</a></li>
+<li><a class="nav-link" href="#combining-bioconductor-and-tidyverse-approaches-in-a-workflow"><span class="header-section-number">17.5</span> Combining Bioconductor and tidyverse approaches in a workflow</a></li>
+<li><a class="nav-link" href="#outlook-for-a-tidyverse-approach-to-biomedical-data"><span class="header-section-number">17.6</span> Outlook for a tidyverse approach to biomedical data</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/geanders/improve_repro/blob/master/17-complex_data_preprocess.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/geanders/improve_repro/edit/master/17-complex_data_preprocess.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Improving the Reproducibility of Experimental Data Recording and Pre-Processing</strong>" was written by Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson. </p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>
