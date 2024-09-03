@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Module 3 The “tidy” data format | Improving the Reproducibility of Experimental Data Recording and Pre-Processing</title>
-<meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson">
+<meta name="author" content="Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, and Gregory Robertson">
 <meta name="generator" content="bookdown 0.40 with bs4_book()">
 <meta property="og:title" content="Module 3 The “tidy” data format | Improving the Reproducibility of Experimental Data Recording and Pre-Processing">
 <meta property="og:type" content="book">
@@ -274,7 +274,35 @@ observations would need to be recorded on separate lines in the data. If the
 data instead had different columns to record each study subject’s measurements
 at different time points, then the data would still be tabular, but it would not
 be tidy.</p>
-<p>[No values in column names]</p>
+<p>For a dataset to be tidy, it cannot have variable values in any of its
+column names. It’s helpful to talk about an example to understand how you
+might end up with a variable value in a column name. If you are measuring
+study subjects at different times, then one variable is the ting you measure
+at each timepoint (the subject’s weight, for example). Another variable,
+though, is the timepoint itself. One observation might be recorded 14 days
+into the study, so it would have a timepoint of “day 14”. Another might
+be measured 28 days into the study, and that measure would have a timepoint
+of “day 28”.</p>
+<p>It can be tempting to put these types of variables—which were set as part
+of the study design—into the column names. It would be tempting, for example,
+to have a column for each timepoint, then put the weight measures within
+the cells for that timepoint. This type of format would look fine visually and
+would be easy for readers to interpret. What’s the problem, then? Why aren’t
+these data tidy?</p>
+<p>It is simply because this format doesn’t work well with the software tools
+created to work with tidy data. Remember that the “tidy” data format isn’t
+meant as a contrast, where everything else is objectively “messy”. Instead,
+it’s a standard format—by insisting on certain things consistently being
+in certain places, it allows for tools that work with that format. Some of
+the rules of the tidy format, then, exist to get things in the right place to
+work with the tools.</p>
+<p>To make the dataset we talked about (repeated measures of weights for each
+subject) tidy, we’d just need to move some of the elements around. We’d need
+to put the description of the timepoint (e.g., “day 14”, “day 28”) not in
+a column name, but instead with the cells of a column of the table. This
+will mean we’ll need to add some rows to the table, but have fewer columns.
+We often refer to this change as <em>pivoting</em> the dataframe from a <em>wider</em>
+format to a <em>longer</em> format.</p>
 <p>In the example of human subjects measured at repeated time points, you may
 initially find the tidy format unappealing, because it seems like it would
 lead to a lot of repeated data. For example, if you wanted to record each study
@@ -305,9 +333,33 @@ assigned to a mouse (a type of variable called a <em>fixed variable</em>, since 
 value was fixed before the start of the experiment) or observed measurements,
 like the level of infection measured in an animal (a type of variable called a
 <em>measured variable</em>, since its value is determined through the experiment).<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ibid.&lt;/p&gt;"><sup>126</sup></a></span></p>
-<p>[One and only one variable in a column]</p>
-<p>[Consistent data type in column (e.g., don’t combine numberic with character
-comments)]</p>
+<p>Next, make sure that each column has one and only one variable. Let’s look
+at an example to see the type of thing you should avoid to make sure you’re
+following this rule. Say that you’re recording weights for your study subjects,
+but sometimes you collect the weight in ounces and sometimes in grams. You will
+want to include in your data both the numeric measure of weight for each
+subject and also the unit of that measure. To keep your data tidy, you need
+to have one column to record the numeric value you measured for the weight
+and another column for the units in which that weight was measured. If you
+don’t use separate columns, but instead record values like “22 g” and “0.8 oz”
+in a single column, you’ll have to do extra work once you read the data into
+a program like R to make the data tidy. This can be done using a tool
+called regular expressions, but it’s even better to set up your initial
+data recording to record the numeric value (e.g., 22, 0.8) in one column
+and your units (e.g., “g”, “oz”) in a separate column.</p>
+<p>In each column of the dataframe, make sure you only have one type of data.
+For example, make sure all the values are numbers, or that all the values are
+character strings. Each column in a dataframe is treated by R as a vector, and
+a vector must be limited to one data type. If you try to mix different data
+types, then some of your entries may be coerced into a different data type or
+treated as a missing value.</p>
+<p>One culprit to look out for is putting comments in table cells as you record
+data. Say you’re recording animal weights, but you forgot to weigh one animal.
+If you put a comment about that in the cell where you would have recorded the
+weight, you’ll mix numeric values (since all other cells in the column
+record weight as a number) with one cell that is a character string (the
+comment). If you need to record comments, you could handle that by making a
+separate column just for that.</p>
 </div>
 <div id="why-make-your-data-tidy" class="section level2" number="3.3">
 <h2>
@@ -498,16 +550,17 @@ visualization, compared to if the set of tools lacked this coherence.</p>
 <!-- c) The unit of observation is the timepoint, while the unit of analysis is the human subject  -->
 <!-- d) The unit of observation and the unit of analysis are both the treatment (drug or placebo)  -->
 </div>
-<div id="discussion-questions" class="section level2" number="3.5">
+<div id="discussion-questions-2" class="section level2" number="3.5">
 <h2>
-<span class="header-section-number">3.5</span> Discussion questions<a class="anchor" aria-label="anchor" href="#discussion-questions"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.5</span> Discussion questions<a class="anchor" aria-label="anchor" href="#discussion-questions-2"><i class="fas fa-link"></i></a>
 </h2>
-<p>What are your main considerations when you decide how to record your data?</p>
-<p>Based on the reading, can you define the tidy data format? Were you familiar with this format before preparing for this discussion? Do you use some of these principles when recording your own data?</p>
-<p>Describe advantages, as well as potential limitations, of storing data in a tidy data format</p>
-<p>In data that you have collected, can you think of examples when the data collection format included extra elements, beyond simply space for recording the data? Examples might include plots, calculations, notes, and highlighting. What were some of the advantages of having these extra elements in the template? Based on the reading or your own experience, what are some disadvantages to including these extra elements in a data collection template?</p>
-<p>In research collaborations, have you experienced a case where the data format for one researcher created difficulties for the other?</p>
-
+<ul>
+<li><p>What are your main considerations when you decide how to record your data?</p></li>
+<li><p>Based on the reading, can you define the tidy data format? Were you familiar with this format before preparing for this discussion? Do you use some of these principles when recording your own data?</p></li>
+<li><p>Describe advantages, as well as potential limitations, of storing data in a tidy data format</p></li>
+<li><p>In data that you have collected, can you think of examples when the data collection format included extra elements, beyond simply space for recording the data? Examples might include plots, calculations, notes, and highlighting. What were some of the advantages of having these extra elements in the template? Based on the reading or your own experience, what are some disadvantages to including these extra elements in a data collection template?</p></li>
+<li><p>In research collaborations, have you experienced a case where the data format for one researcher created difficulties for the other?</p></li>
+</ul>
 </div>
 </div>
 
@@ -522,7 +575,7 @@ visualization, compared to if the set of tools lacked this coherence.</p>
 <li><a class="nav-link" href="#what-makes-data-tidy"><span class="header-section-number">3.2</span> What makes data “tidy”?</a></li>
 <li><a class="nav-link" href="#why-make-your-data-tidy"><span class="header-section-number">3.3</span> Why make your data tidy?</a></li>
 <li><a class="nav-link" href="#using-tidyverse-tools-with-data-in-the-tidy-data-format"><span class="header-section-number">3.4</span> Using tidyverse tools with data in the tidy data format</a></li>
-<li><a class="nav-link" href="#discussion-questions"><span class="header-section-number">3.5</span> Discussion questions</a></li>
+<li><a class="nav-link" href="#discussion-questions-2"><span class="header-section-number">3.5</span> Discussion questions</a></li>
 </ul>
 
       <div class="book-extra">
@@ -540,7 +593,7 @@ visualization, compared to if the set of tools lacked this coherence.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Improving the Reproducibility of Experimental Data Recording and Pre-Processing</strong>" was written by Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson. </p>
+    <p>"<strong>Improving the Reproducibility of Experimental Data Recording and Pre-Processing</strong>" was written by Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, and Gregory Robertson. </p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

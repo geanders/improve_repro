@@ -124,12 +124,12 @@
 \urlstyle{same}
 \hypersetup{
   pdftitle={Improving the Reproducibility of Experimental Data Recording and Pre-Processing},
-  pdfauthor={Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson},
+  pdfauthor={Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, and Gregory Robertson},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
 \title{Improving the Reproducibility of Experimental Data Recording and Pre-Processing}
-\author{Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, Gregory Robertson}
+\author{Brooke Anderson, Michael Lyons, Mercedes Gonzalez-Juarrero, Marcela Henao-Tamayo, and Gregory Robertson}
 \date{}
 
 \begin{document}
@@ -727,6 +727,60 @@ of data entry and analysis functionality, better documentation of data analysis
 pipelines, and easy use of version control to track projects and collaborate
 transparently and with a recorded history.
 
+\subsection{Discussion questions}\label{discussion-questions}
+
+\begin{itemize}
+\item
+  What types of data do you record in your research? Do you use spreadsheets to
+  record data in your scientific research? For data that aren't recorded in
+  spreadsheets, what alternatives do you use (paper laboratory notebooks,
+  electronic laboratory notebooks, data recorded directly by equipment, other)?
+\item
+  If you use spreadsheets in your scientific research, what do you like and
+  dislike about them? The reading in this module mentioned that some of the
+  upsides include that they are easy to learn and that many people have access
+  to the software to use them. Are these advantages that resonate with you?
+\item
+  There are a variety of ways that scientists use spreadsheets in their research.
+  Describe examples of when you've used spreadsheets to:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Record data
+  \item
+    Clean data
+  \item
+    Preprocess data
+  \item
+    Analyze data
+  \item
+    Create graphs
+  \item
+    Create reports
+    Based on the reading and your own experience, what are potential advantages and
+    pitfalls of using spreadsheets for each of these purposes?
+  \end{itemize}
+\item
+  Describe how you document any steps you take to clean or preprocess your data
+  once you record it. Based on the reading, list some advantages and disadvantages
+  of the method you use versus alternative methods of documentation.
+\item
+  What does it mean to consider raw data as ``read-only''? What are some ways
+  to insure that raw data are treated as read-only? Do you have any examples from
+  your research when raw data were not treated as read-only? What problems could
+  that cause for research reproducibility?
+\item
+  When someone new joins your research group, how do you teach them how to
+  record experimental data? Do you have any experiences when this did not go
+  smoothly?
+\item
+  In you research, have you ever used a spreadsheet that included formulas or
+  macros? How did you document these steps and check them for potential errors?
+  What do you see as the advantages and disadvantages of including formulas or
+  macros in spreadsheets?
+\end{itemize}
+
 \section{Principles and power of structured data formats}\label{module2}
 
 Guru Madhavan, Senior Director of Programs at the National Academy of
@@ -1190,6 +1244,34 @@ into other programs, with low risks of errors in the transfer of data from the
 spreadsheet. In module \ref{module3}, we'll go into detail about a more refined
 format for these two-dimensional data called the tidy data format.
 
+\subsection{Discussion questions}\label{discussion-questions-1}
+
+\begin{itemize}
+\item
+  This module discusses standards and how they can facilitate scientific
+  research. Give some examples of standards you have come across in your own
+  research. Did you follow them? Why or why not? What do you see as the advantages
+  and disadvantages of these standards?
+\item
+  The module discusses ontologies in the context of ``controlled vocabularies'',
+  which can insure researchers always use the same term when they are describing
+  the same thing. Do you have any examples from your own research where people
+  were using different terms to describe the same thing? What do you see as the
+  advantages and disadvantages of having a controlled vocabulary?
+\item
+  Find an example from your research field of \emph{minimum information} or
+  \emph{minimum reporting guidelines}. What do you see as the advantages or disadvantages
+  to the scientific field as a whole of establishing these guidelines? What are
+  the advantages or disadvantages to you as a researcher?
+\item
+  The module discusses how research data are sometimes recorded directly by
+  equipment, while other times they are ``low-throughput'' data that are recorded
+  ``by hand''. Can you give examples of each type of data that you've come across
+  in your own scientific work? Discuss how these data did or did not follow
+  standards in how they were recorded. The standards could include ontology,
+  minimum information, and file format.
+\end{itemize}
+
 \section{The ``tidy'' data format}\label{module3}
 
 In module \ref{module2}, we explained the benefits of saving data in a structured
@@ -1404,7 +1486,38 @@ data instead had different columns to record each study subject's measurements
 at different time points, then the data would still be tabular, but it would not
 be tidy.
 
-{[}No values in column names{]}
+For a dataset to be tidy, it cannot have variable values in any of its
+column names. It's helpful to talk about an example to understand how you
+might end up with a variable value in a column name. If you are measuring
+study subjects at different times, then one variable is the ting you measure
+at each timepoint (the subject's weight, for example). Another variable,
+though, is the timepoint itself. One observation might be recorded 14 days
+into the study, so it would have a timepoint of ``day 14''. Another might
+be measured 28 days into the study, and that measure would have a timepoint
+of ``day 28''.
+
+It can be tempting to put these types of variables---which were set as part
+of the study design---into the column names. It would be tempting, for example,
+to have a column for each timepoint, then put the weight measures within
+the cells for that timepoint. This type of format would look fine visually and
+would be easy for readers to interpret. What's the problem, then? Why aren't
+these data tidy?
+
+It is simply because this format doesn't work well with the software tools
+created to work with tidy data. Remember that the ``tidy'' data format isn't
+meant as a contrast, where everything else is objectively ``messy''. Instead,
+it's a standard format---by insisting on certain things consistently being
+in certain places, it allows for tools that work with that format. Some of
+the rules of the tidy format, then, exist to get things in the right place to
+work with the tools.
+
+To make the dataset we talked about (repeated measures of weights for each
+subject) tidy, we'd just need to move some of the elements around. We'd need
+to put the description of the timepoint (e.g., ``day 14'', ``day 28'') not in
+a column name, but instead with the cells of a column of the table. This
+will mean we'll need to add some rows to the table, but have fewer columns.
+We often refer to this change as \emph{pivoting} the dataframe from a \emph{wider}
+format to a \emph{longer} format.
 
 In the example of human subjects measured at repeated time points, you may
 initially find the tidy format unappealing, because it seems like it would
@@ -1439,10 +1552,35 @@ like the level of infection measured in an animal (a type of variable called a
 \emph{measured variable}, since its value is determined through the experiment)
 \citep{wickham2014tidy}.
 
-{[}One and only one variable in a column{]}
+Next, make sure that each column has one and only one variable. Let's look
+at an example to see the type of thing you should avoid to make sure you're
+following this rule. Say that you're recording weights for your study subjects,
+but sometimes you collect the weight in ounces and sometimes in grams. You will
+want to include in your data both the numeric measure of weight for each
+subject and also the unit of that measure. To keep your data tidy, you need
+to have one column to record the numeric value you measured for the weight
+and another column for the units in which that weight was measured. If you
+don't use separate columns, but instead record values like ``22 g'' and ``0.8 oz''
+in a single column, you'll have to do extra work once you read the data into
+a program like R to make the data tidy. This can be done using a tool
+called regular expressions, but it's even better to set up your initial
+data recording to record the numeric value (e.g., 22, 0.8) in one column
+and your units (e.g., ``g'', ``oz'') in a separate column.
 
-{[}Consistent data type in column (e.g., don't combine numberic with character
-comments){]}
+In each column of the dataframe, make sure you only have one type of data.
+For example, make sure all the values are numbers, or that all the values are
+character strings. Each column in a dataframe is treated by R as a vector, and
+a vector must be limited to one data type. If you try to mix different data
+types, then some of your entries may be coerced into a different data type or
+treated as a missing value.
+
+One culprit to look out for is putting comments in table cells as you record
+data. Say you're recording animal weights, but you forgot to weigh one animal.
+If you put a comment about that in the cell where you would have recorded the
+weight, you'll mix numeric values (since all other cells in the column
+record weight as a number) with one cell that is a character string (the
+comment). If you need to record comments, you could handle that by making a
+separate column just for that.
 
 \subsection{Why make your data tidy?}\label{why-make-your-data-tidy}
 
@@ -1616,17 +1754,20 @@ tidy data format, and they all provide similar user interfaces, making it
 easier to learn a large set of tools to do a range of data analysis and
 visualization, compared to if the set of tools lacked this coherence.
 
-\subsection{Discussion questions}\label{discussion-questions}
+\subsection{Discussion questions}\label{discussion-questions-2}
 
-What are your main considerations when you decide how to record your data?
-
-Based on the reading, can you define the tidy data format? Were you familiar with this format before preparing for this discussion? Do you use some of these principles when recording your own data?
-
-Describe advantages, as well as potential limitations, of storing data in a tidy data format
-
-In data that you have collected, can you think of examples when the data collection format included extra elements, beyond simply space for recording the data? Examples might include plots, calculations, notes, and highlighting. What were some of the advantages of having these extra elements in the template? Based on the reading or your own experience, what are some disadvantages to including these extra elements in a data collection template?
-
-In research collaborations, have you experienced a case where the data format for one researcher created difficulties for the other?
+\begin{itemize}
+\item
+  What are your main considerations when you decide how to record your data?
+\item
+  Based on the reading, can you define the tidy data format? Were you familiar with this format before preparing for this discussion? Do you use some of these principles when recording your own data?
+\item
+  Describe advantages, as well as potential limitations, of storing data in a tidy data format
+\item
+  In data that you have collected, can you think of examples when the data collection format included extra elements, beyond simply space for recording the data? Examples might include plots, calculations, notes, and highlighting. What were some of the advantages of having these extra elements in the template? Based on the reading or your own experience, what are some disadvantages to including these extra elements in a data collection template?
+\item
+  In research collaborations, have you experienced a case where the data format for one researcher created difficulties for the other?
+\end{itemize}
 
 \section{Designing templates for ``tidy'' data collection}\label{module4}
 
@@ -4380,7 +4521,7 @@ computers, but so is the full history of all changes made to that data and the
 recorded messages explaining those changes, through the repositories commit
 messages \citep{perez2016ten}.
 
-\subsection{Discussion questions}\label{discussion-questions-1}
+\subsection{Discussion questions}\label{discussion-questions-3}
 
 \begin{itemize}
 \tightlist
@@ -8595,12 +8736,12 @@ for common pre-processing tasks in your research group. We also described the
 key elements of creating a knitted document, regardless of the software system
 you are using. In this module, we will
 go into more detail about how you can create these documents using R and
-RStudio, and in the next module (3.9) we will walk through an example data
+RStudio, and in module \ref{module20} we will walk through an example data
 pre-processing protocol created using this method. We strongly recommend that
-you read the previous module (3.7) before working through this one.
+you read the previous module (module \ref{module18}) before working through this one.
 
-R has a special format for creating knitted documents called \emph{RMarkdown}. In the
-previous module, we talked about the elements of a knitted document, and later
+R has a special format for creating knitted documents called \emph{RMarkdown}. In
+module \ref{module18}, we talked about the elements of a knitted document, and later
 in this module we'll walk through how they apply to RMarkdown. However, the
 easiest way to learn how to use RMarkdown is to try an example, so we'll start
 with a very basic one. If you'd like to try it yourself, you'll need to download
@@ -8631,7 +8772,7 @@ there with this example. If you
 would like to use the PDF output, you will need to install one other piece of
 software: Miktex for Windows, MacTex for Mac, or TeX Live for Linux. These are
 all pieces of software with an underlying TeX engine and all are open-source and
-free. The example in the next module was created as a PDF using one of these tools.
+free. The example in module \ref{module20} was created as a PDF using one of these tools.
 
 \begin{figure}
 \includegraphics[width=1\linewidth]{figures/rmarkdown_choices} \caption{Options available when you create a new RMarkdown file in RStudio. You can specify information that will go into the document's preamble, including the title and authors and the format that the document will be output to (HTML, Word, or PDF).}\label{fig:rmarkdownchoices}
@@ -8716,7 +8857,7 @@ elements of the RMarkdown document work.
 
 \subsection{Formatting text with Markdown in RMarkdown}\label{formatting-text-with-markdown-in-rmarkdown}
 
-If you remember from the last module, one element of knitted documents is
+If you remember from module \ref{module18}, one element of knitted documents is
 that they are written in plain text, with all the formatting specified
 using a markup language.
 For the main text in an RMarkdown document, all formatting is done using
@@ -8791,7 +8932,7 @@ module.
 
 \subsection{Preambles in RMarkdown documents}\label{preambles-in-rmarkdown-documents}
 
-In the previous module, we explained how knitted documents include a
+In module \ref{module18}, we explained how knitted documents include a
 preamble to specify some metadata about the document, including elements
 like the title, authors, and output format. In R, this preamble is
 created using YAML. In this subsection, we provide some more details
@@ -8851,7 +8992,7 @@ past Posit conference, available at
 
 \subsection{Executable code in RMarkdown files}\label{executable-code-in-rmarkdown-files}
 
-In the previous module, we described how knitted documents use special markers
+In module \ref{module18}, we described how knitted documents use special markers
 to indicate where sections of executable code start and stop. In RMarkdown,
 the markers you will use to indicate executable code look like this:
 
@@ -9242,7 +9383,7 @@ research group.
 In this module, we'll provide advice and an example of how you can use the
 tools for knitted documents to create a reproducible data pre-processing
 protocol. This module builds on ideas and techniques that were introduced
-in the last two modules (3.7 and 3.8), to help you put them into practical use for
+in the last two modules (modules \ref{module18} and \ref{module19}), to help you put them into practical use for
 data pre-processing that you do repeatedly for research data in your
 laboratory.
 
@@ -9422,7 +9563,7 @@ For the example protocol for this module, we want to pre-process data that were
 collected ``by hand'' by counting CFUs on plates in the laboratory. These counts
 were recorded in a plain text delimited file (a csv file) using spreadsheet
 software. The spreadsheet was set up to ensure the data can easily be converted
-to a ``tidy'' format, as described in module 2.3. The first few rows of the input
+to a ``tidy'' format, as described in module \ref{module3}. The first few rows of the input
 data look like this:
 
 \begin{verbatim}
@@ -9497,8 +9638,8 @@ vaccine were lower than in control animals.
 Once you have decided on the input and output data formats, you will next want
 to set up a file directory for storing all the inputs needed in the protocol.
 You can include the project files for the protocol in an RStudio Project (see
-module 2.6) and post this either publicly or privately on GitHub (see modules
-2.9--2.11). This creates a ``packet'' of everything that a reader needs to use to
+module \ref{module6}) and post this either publicly or privately on GitHub (see modules
+\ref{module9}--\ref{module11}). This creates a ``packet'' of everything that a reader needs to use to
 recreate what you did---they can download the whole GitHub repository and will
 have a nice project directory on their computer with everything they need to try
 out the protocol.
@@ -9514,7 +9655,7 @@ Generally, in the project directory you should include a file with the input
 example data, in whatever file format you will usually collect this type of
 data. You will also include an RMarkdown file where the protocol is written. If
 you are planning to cite articles and other references, you can include a BibTeX
-file, with the bibliographical information for each source you plan to cite (see module 3.8).
+file, with the bibliographical information for each source you plan to cite (see module \ref{module19}).
 Finally, if you would like to include photographs or graphics, you can include
 these image files in the project directory. Often, you might want to group these
 together in a subdirectory of the project named something like ``figures''.
@@ -9599,7 +9740,7 @@ documentation will allow you to determine all of the function's parameters and
 the choices you can select for each.
 
 You can add each piece of code in the RMarkdown version of the protocol using
-the standard method for RMarkdown (module 3.8). Figure \ref{fig:protocolcode}
+the standard method for RMarkdown (module \ref{module11}). Figure \ref{fig:protocolcode}
 shows an example from the example protocol for this module. Here, we are using
 code to help identify a ``good'' dilution for counting CFUs for each sample. The
 code in included in an executable code chunk, and so it will be run each time
@@ -9641,7 +9782,7 @@ as clear as a traditional protocol, in particular in terms of providing a
 thorough description of what is being done at each step and why it is being
 done that way. Data pre-processing protocols can provide these more thorough
 descriptions, and by creating them with RMarkdown or with similar types
-of ``knitted'' documents (modules 3.7 and 3.8), you can combine the executable code
+of ``knitted'' documents (modules \ref{module18} and \ref{module19}), you can combine the executable code
 used to pre-process the data with extensive documentation. As a further
 advantage, the creation of these protocols will ensure that your research
 group has thought carefully about each step of the process, rather than
@@ -9686,14 +9827,14 @@ re-create the computational results from an earlier project---is referred to as
 ensuring that research is fully reproducible.
 
 By creating the data pre-processing protocol as a knitted document
-using a tool like RMarkdown (modules 3.7 and 3.8), you can ensure that the protocol is
+using a tool like RMarkdown (modules \ref{module18} and \ref{module19}), you can ensure that the protocol is
 computationally reproducible. In an RMarkdown document, you include the code
 examples as \emph{executable} code---this means that the code is run every time you
 render the document. You are therefore ``checking'' your code every time that you
 run it. As the last step of your pre-processing protocol, you should output the
 copy of the pre-processed data that you will use for any further analysis for
 the project. You can use functions in R to output this to a plain text format,
-for example a comma-separated delimited file (modules 2.4 and 2.5). Each time you render
+for example a comma-separated delimited file (modules \ref{module4} and \ref{module5}). Each time you render
 the protocol, you will re-write this output file, and so this provides assurance
 that the code in your protocol can be used to reproduce your output data (since
 that's how you yourself created that form of the data).
@@ -9721,7 +9862,7 @@ Write this as if you are explaining to a new research group member (or your
 future self) how to think about this step in the pre-processing, why you're
 doing it the way your doing it, and what code is used to do it that way. You
 should also include references that justify choices when they are
-available---include these using BibTeX (module 3.8). By doing this, you will make it much
+available---include these using BibTeX (module \ref{module19}). By doing this, you will make it much
 easier on yourself when you write the Methods section of papers that report on
 the data you have pre-processed, as you'll already have draft information on
 your pre-processing methods in your protocol.
@@ -9792,10 +9933,10 @@ this module.
 \end{figure}
 
 Other helpful tools in RMarkdown are tools for creating equations and tables. As
-described in the previous module, RMarkdown includes a number of formatting
+described in module \ref{module19}, RMarkdown includes a number of formatting
 tools. You can create simple tables through basic formatting, or more complex
 tables using add-on packages like \texttt{kableExtra}. Math can be typeset using
-conventions developed in the LaTeX mark-up language. The previous module
+conventions developed in the LaTeX mark-up language. The module \ref{module19}
 provided advice and links to resources on using these types of tools. Figure
 \ref{fig:protocolequations} gives an example of them in use within the example
 protocol for this module.
