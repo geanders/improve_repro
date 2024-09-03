@@ -187,7 +187,38 @@ data instead had different columns to record each study subject's measurements
 at different time points, then the data would still be tabular, but it would not
 be tidy. 
 
-[No values in column names]
+For a dataset to be tidy, it cannot have variable values in any of its 
+column names. It's helpful to talk about an example to understand how you 
+might end up with a variable value in a column name. If you are measuring 
+study subjects at different times, then one variable is the ting you measure 
+at each timepoint (the subject's weight, for example). Another variable, 
+though, is the timepoint itself. One observation might be recorded 14 days
+into the study, so it would have a timepoint of "day 14". Another might 
+be measured 28 days into the study, and that measure would have a timepoint
+of "day 28". 
+
+It can be tempting to put these types of variables---which were set as part
+of the study design---into the column names. It would be tempting, for example, 
+to have a column for each timepoint, then put the weight measures within 
+the cells for that timepoint. This type of format would look fine visually and 
+would be easy for readers to interpret. What's the problem, then? Why aren't
+these data tidy?
+
+It is simply because this format doesn't work well with the software tools 
+created to work with tidy data. Remember that the "tidy" data format isn't 
+meant as a contrast, where everything else is objectively "messy". Instead, 
+it's a standard format---by insisting on certain things consistently being
+in certain places, it allows for tools that work with that format. Some of 
+the rules of the tidy format, then, exist to get things in the right place to 
+work with the tools. 
+
+To make the dataset we talked about (repeated measures of weights for each 
+subject) tidy, we'd just need to move some of the elements around. We'd need
+to put the description of the timepoint (e.g., "day 14", "day 28") not in 
+a column name, but instead with the cells of a column of the table. This 
+will mean we'll need to add some rows to the table, but have fewer columns. 
+We often refer to this change as *pivoting* the dataframe from a *wider* 
+format to a *longer* format. 
 
 In the example of human subjects measured at repeated time points, you may
 initially find the tidy format unappealing, because it seems like it would
@@ -222,10 +253,35 @@ like the level of infection measured in an animal (a type of variable called a
 *measured variable*, since its value is determined through the experiment)
 [@wickham2014tidy].
 
-[One and only one variable in a column]
+Next, make sure that each column has one and only one variable. Let's look 
+at an example to see the type of thing you should avoid to make sure you're 
+following this rule. Say that you're recording weights for your study subjects,
+but sometimes you collect the weight in ounces and sometimes in grams. You will
+want to include in your data both the numeric measure of weight for each 
+subject and also the unit of that measure. To keep your data tidy, you need
+to have one column to record the numeric value you measured for the weight
+and another column for the units in which that weight was measured. If you 
+don't use separate columns, but instead record values like "22 g" and "0.8 oz"
+in a single column, you'll have to do extra work once you read the data into 
+a program like R to make the data tidy. This can be done using a tool 
+called regular expressions, but it's even better to set up your initial 
+data recording to record the numeric value (e.g., 22, 0.8) in one column
+and your units (e.g., "g", "oz") in a separate column.
 
-[Consistent data type in column (e.g., don't combine numberic with character
-comments)]
+In each column of the dataframe, make sure you only have one type of data. 
+For example, make sure all the values are numbers, or that all the values are
+character strings. Each column in a dataframe is treated by R as a vector, and
+a vector must be limited to one data type. If you try to mix different data
+types, then some of your entries may be coerced into a different data type or
+treated as a missing value. 
+
+One culprit to look out for is putting comments in table cells as you record 
+data. Say you're recording animal weights, but you forgot to weigh one animal. 
+If you put a comment about that in the cell where you would have recorded the
+weight, you'll mix numeric values (since all other cells in the column
+record weight as a number) with one cell that is a character string (the 
+comment). If you need to record comments, you could handle that by making a 
+separate column just for that. 
 
 ## Why make your data tidy?
 
@@ -487,12 +543,12 @@ visualization, compared to if the set of tools lacked this coherence.
 
 ## Discussion questions
 
-What are your main considerations when you decide how to record your data?
+- What are your main considerations when you decide how to record your data?
 
-Based on the reading, can you define the tidy data format? Were you familiar with this format before preparing for this discussion? Do you use some of these principles when recording your own data?
+- Based on the reading, can you define the tidy data format? Were you familiar with this format before preparing for this discussion? Do you use some of these principles when recording your own data?
 
-Describe advantages, as well as potential limitations, of storing data in a tidy data format
+- Describe advantages, as well as potential limitations, of storing data in a tidy data format
 
-In data that you have collected, can you think of examples when the data collection format included extra elements, beyond simply space for recording the data? Examples might include plots, calculations, notes, and highlighting. What were some of the advantages of having these extra elements in the template? Based on the reading or your own experience, what are some disadvantages to including these extra elements in a data collection template?
+- In data that you have collected, can you think of examples when the data collection format included extra elements, beyond simply space for recording the data? Examples might include plots, calculations, notes, and highlighting. What were some of the advantages of having these extra elements in the template? Based on the reading or your own experience, what are some disadvantages to including these extra elements in a data collection template?
 
-In research collaborations, have you experienced a case where the data format for one researcher created difficulties for the other?
+- In research collaborations, have you experienced a case where the data format for one researcher created difficulties for the other?
